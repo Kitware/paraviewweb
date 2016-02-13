@@ -1,0 +1,5 @@
+.exploreIcon {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-compass    from 'font-awesome/css/font-awesome.css';
+}

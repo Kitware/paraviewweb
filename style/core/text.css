@@ -1,0 +1,22 @@
+/* Text position */
+
+.txt-left   { text-align: left; }
+.txt-right  { text-align: right; }
+.txt-center { text-align: center; }
+
+/* Text transform */
+
+.txt-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.txt-first::first-letter { text-transform: uppercase; }
+
+.txt-noselect { user-select: none; }
+
+/* Text style */
+
+.txt-bold { font-weight: bold; }
+

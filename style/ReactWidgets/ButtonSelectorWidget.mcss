@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.button {
+    margin: 5px;
+    padding: 5px;
+    width: 80%;
+    font-size: 200%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: lightgray;
+    transition: all .12s ease;
+    box-sizing: border-box;
+}
+
+.button:focus, .button:active {
+  box-shadow: 0 0 1px 1px grey;
+  outline: none;
+}
+
+.button:active {
+    background-color: #a8a8a8;
+}

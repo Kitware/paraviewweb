@@ -1,0 +1,42 @@
+.container {
+    min-width: 5em;
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    display: flex;
+}
+
+.activeColor {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.colorCanvas {
+    flex: none;
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid #000;
+    margin-right: 5px;
+}
+
+.colorRGB {
+    flex: 1;
+    min-width: 1em;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: none;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.swatch {
+    display: flex;
+    flex-direction: row;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.swatchImage {
+    width: 100%;
+}

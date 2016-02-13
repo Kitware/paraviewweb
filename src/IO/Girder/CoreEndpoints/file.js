@@ -1,0 +1,106 @@
+function noTransform(data) {
+    return data;
+}
+
+export default function({client, filterQuery, mustContain, busy, encodeQueryAsString, progress}) {
+
+    function uploadChunk(uploadId, offset, chunk) {
+        const transformRequest = noTransform,
+            data = new FormData();
+
+        data.append('uploadId', uploadId);
+        data.append('offset', offset);
+        data.append('chunk', chunk);
+
+        return busy(client._.post('/file/chunk', data, {transformRequest}));
+    }
+
+    function uploadFileToItem(params, file) {
+        //upload file to item
+        return new Promise( (resolve, reject) => {
+            busy(client._.post(`/file${encodeQueryAsString(params)}`))
+                .then( (upload) => {
+                    var chunkSize =10*1024*1024,
+                        uploadNextChunk,
+                        i = 0,
+                        chunks = Math.floor(file.size / chunkSize);
+
+                    uploadNextChunk = (offset) => {
+                        var blob;
+                        progress(offset, file.size);
+                        if (offset + chunkSize >= file.size) {
+                            blob = file.slice(offset);
+                            uploadChunk(upload.data._id, offset, blob)
+                                .then((uploadResp) => {
+                                    progress(file.size, file.size);
+                                    resolve(uploadResp);
+                                })
+                                .catch((error) => {
+                                    console.warn('could not upload final chunk');
+                                    console.warn(error);
+                                    reject(error);
+                                });
+                        } else {
+                            blob = file.slice(offset, offset + chunkSize);
+                            uploadChunk(upload.data._id, offset, blob)
+                                .then((uploadResp) => {
+                                    var msg = '';
+                                    i += 1;
+                                    msg += 'chunk ' + i + ' of ' + chunks + ' uploaded';
+
+                                    uploadNextChunk(offset + chunkSize);
+                                })
+                                .catch((error) => {
+                                    console.warn('could not upload chunk');
+                                    console.warn(error);
+                                    reject(error);
+                                });
+                        }
+                    };
+                    uploadNextChunk(0);
+                })
+                .catch( (error) => {
+                    console.warn('Could not upload file');
+                    console.warn(error);
+                    reject(error);
+                });
+            });
+    }
+
+    return {
+
+        uploadFileToItem,
+
+        getUploadOffset(id) {
+            return busy(client._.get('/file/offset', { params: { uploadId: id } }));
+        },
+
+        downloadFile(id) {
+            return busy(client._.get(`/file/${id}/download`));
+        },
+
+        updateFileContent(id, size) {
+            return busy(client._.put(`/file/${id}/contents?size=${size}`));
+        },
+
+        deleteFile(id) {
+            return busy(client._.delete(`/file/${id}`));
+        },
+
+        editFile(file) {
+            const expected = ['name', 'mimeType'],
+                params = filterQuery(file, ...expected),
+                { missingKeys, promise } = mustContain(file, '_id');
+
+            return missingKeys ? busy(client._.put(`/file/${file._id}${encodeQueryAsString(params)}`)) : promise;
+        },
+
+        newFile(file) {
+            const expected = ['parentType', 'parentId', 'name', 'size', 'mimeType', 'linkUrl'],
+                params = filterQuery(file, ...expected),
+                { missingKeys, promise } = mustContain(file, 'parentType', 'parentId', 'name');
+
+            return missingKeys ? busy(client._.post(`/file${encodeQueryAsString(params)}`)) : promise;
+        },
+    };
+}

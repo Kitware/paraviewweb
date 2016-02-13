@@ -1,0 +1,74 @@
+.container {
+    width: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(screen) and (max-width: 400px) {
+    .container {
+        max-width: 400px;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.helpIcon {
+    composes: fa-question-circle from 'font-awesome/css/font-awesome.css';
+}
+
+.helpBox {
+    padding: 18px;
+    border: 1px solid #ddd;
+    background-color: #efefef;
+    margin-top: 6px;
+    width: 80%;
+}
+
+.inputBlock {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px 0;
+}
+
+.inputTable {
+    composes: inputBlock;
+}
+
+.inputRow {
+  margin: 0;
+  padding: 0;
+}
+
+.inputCell {
+  border-bottom: 1px solid gray;
+  min-height: 40px;
+  margin: 4px 5px;
+  padding: 0;
+}
+
+.inputCellLabel {
+  display: block;
+  min-height: 16px;
+  padding: 2px 6px 0;
+  font-size: 0.75em;
+  color: #aaa;
+}
+
+.inputCellInput {
+  margin: 0;
+  padding: 3px 6px;
+  width: 100%;
+  box-sizing: border-box;
+}

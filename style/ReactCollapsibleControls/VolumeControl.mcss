@@ -1,0 +1,11 @@
+.undoIcon {
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-undo   from 'font-awesome/css/font-awesome.css';
+}
+
+.mobileIcon {
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-mobile from 'font-awesome/css/font-awesome.css';
+}

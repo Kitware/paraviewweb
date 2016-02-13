@@ -1,0 +1,86 @@
+.container {
+}
+
+.breadcrumb {
+    width: 100%;
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #d0d0d0;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.breadcrumbItem {
+    display: inline;
+    padding-left: 10px;
+    color: #555;
+    cursor: pointer;
+}
+
+.breadcrumbItem:before {
+    content: '\\';
+    position: relative;
+    left: -5px;
+}
+
+.breadcrumbLabel {
+    position: absolute;
+    right: 10px;
+    display: none;
+    width: 50%;
+
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumbItem:hover {
+    color: black;
+}
+
+.breadcrumbItem:hover ~ .breadcrumbItem {
+    color: #555;
+}
+
+.breadcrumbItem:hover .breadcrumbLabel {
+    display: inline-block;
+}
+
+.breadcrumbItem:last-child {
+    color: black;
+}
+
+.breadcrumbItem:last-child .breadcrumbLabel {
+    display: inline-block;
+}
+
+li:hover ~ li:last-child .breadcrumbLabel {
+    display: none;
+}
+
+.breadcrumbFolderIcon {
+    composes: fa             from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw          from 'font-awesome/css/font-awesome.css';
+    composes: fa-folder-open from 'font-awesome/css/font-awesome.css';
+}
+
+.folderIcon {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-folder-o   from 'font-awesome/css/font-awesome.css';
+}
+
+.groupIcon {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-files-o    from 'font-awesome/css/font-awesome.css';
+}
+
+.fileIcon {
+    composes: fa             from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw          from 'font-awesome/css/font-awesome.css';
+    composes: fa-file-text-o from 'font-awesome/css/font-awesome.css';
+}

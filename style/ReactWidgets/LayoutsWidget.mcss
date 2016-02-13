@@ -1,0 +1,33 @@
+.table {
+  cursor: pointer;
+  margin: 5px;
+  border: solid 1px #333;
+  border-spacing: 2px;
+  border-collapse: separate;
+  line-height: 5px;
+  border-radius: 2px;
+  width: 22px;
+  height: 22px;
+  float: left;
+}
+
+.td {
+  background-color: #333;
+}
+
+@media screen and (max-width: 400px),
+screen and (orientation: landscape) and (max-device-width: 400px)  {
+  .table {
+    width: 55px;
+    height: 55px;
+    border-spacing: 4px;
+    border: 2px solid #333;
+  }
+}
+
+:global(.is-ios-device) .table {
+    width: 55px;
+    height: 55px;
+    border-spacing: 4px;
+    border: 2px solid #333;
+}

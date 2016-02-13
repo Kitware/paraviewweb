@@ -1,0 +1,46 @@
+.container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.content {
+    position: absolute;
+    z-index: 2;
+}
+
+.panelVisible {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye        from 'font-awesome/css/font-awesome.css';
+}
+
+.panelHidden {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye-slash  from 'font-awesome/css/font-awesome.css';
+}
+
+.button {
+    position: absolute;
+}
+
+/* Top */
+.content:global(.top), .button:global(.top) {
+    top: 0;
+}
+
+/* Left */
+.content:global(.left), .button:global(.left) {
+    left: 0;
+}
+
+/* Right */
+.content:global(.right), .button:global(.right) {
+    right: 0;
+}
+
+/* Bottom */
+.content:global(.bottom), .button:global(.bottom) {
+    bottom: 0;
+}

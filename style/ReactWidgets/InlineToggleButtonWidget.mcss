@@ -1,0 +1,47 @@
+.container {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.button {
+    border: 1px solid black;
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.active {
+
+}
+
+.first {
+    composes: button;
+    border-radius: 5px 0 0 5px;
+}
+
+.last {
+    composes: button;
+    border-radius: 0 5px 5px 0;
+    border-left: 0;
+}
+
+.middle {
+    composes: button;
+    border-radius: 0;
+    border-left: 0;
+}
+
+.activeFirst {
+    composes: active;
+    composes: first;
+}
+
+.activeLast {
+    composes: active;
+    composes: last;
+}
+
+.activeMiddle {
+    composes: active;
+    composes: middle;
+}

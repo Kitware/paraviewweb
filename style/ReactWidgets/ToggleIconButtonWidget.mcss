@@ -1,0 +1,31 @@
+.button {
+    cursor: pointer;
+    composes: fa    from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw from 'font-awesome/css/font-awesome.css';
+}
+
+.enabledButton {
+    composes: button;
+    color: black;
+}
+
+.disabledButton {
+    composes: button;
+    color: grey;
+}
+
+
+@media screen and (max-width: 400px),
+screen and (orientation: landscape) and (max-device-width: 400px) {
+
+    .button {
+        font-size: 1.4em;
+        height: 1.5em;
+    }
+
+}
+
+:global(.is-ios-device) .button {
+    font-size: 1.4em;
+    height: 1.5em;
+}

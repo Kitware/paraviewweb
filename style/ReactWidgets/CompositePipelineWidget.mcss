@@ -1,0 +1,215 @@
+.container {
+    min-width: 5em;
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    display: flex;
+}
+
+.section {
+    min-width: 5em;
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    display: flex;
+}
+
+.item {
+    width: 100%;
+    flex-direction: row;
+    display: flex;
+    box-sizing: border-box;
+    line-height: 2em;
+}
+
+.label {
+    font-weight: bold;
+    flex: 1;
+    text-align: left;
+    margin-left: 5px;
+    align-self: center;
+}
+
+.actions {
+    position: relative;
+    right: 0;
+}
+
+.menu {
+    position: absolute;
+    top: 2em;
+    right: 5px;
+    border: solid 1px black;
+    padding: 5px 10px;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.menuItem {
+    cursor: pointer;
+}
+
+.selectedMenuItem {
+    composes: menuItem;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.iconButton {
+    flex: none;
+    margin-right: 5px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.fadeButton {
+    color: #aaa;
+}
+
+.editButtonOn {
+    composes: iconButton;
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-pencil     from 'font-awesome/css/font-awesome.css';
+}
+
+.editButtonOff {
+    composes: editButtonOn;
+    composes: fadeButton;
+}
+
+.visibleButtonOn {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye    from 'font-awesome/css/font-awesome.css';
+}
+
+.visibleButtonOff {
+    composes: iconButton;
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye-slash  from 'font-awesome/css/font-awesome.css';
+}
+
+.dropDownButtonOn {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-tint   from 'font-awesome/css/font-awesome.css';
+}
+
+.dropDownButtonOff {
+    composes: dropDownButtonOn;
+    composes: fadeButton;
+}
+
+.deleteButtonOn {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-times  from 'font-awesome/css/font-awesome.css';
+}
+
+.deleteButtonOff {
+    composes: deleteButtonOn;
+    composes: fadeButton;
+}
+
+.activeButton {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-check  from 'font-awesome/css/font-awesome.css';
+}
+
+
+.opacity {
+    flex: 1;
+}
+
+.children {
+
+}
+
+.childItem {
+    composes: item;
+    padding-left: 20px;
+}
+
+
+@media screen and (max-device-width: 400px) {
+    .iconButton {
+        font-size: 1.45em;
+    }
+
+    .opacity {
+        height: 35px;
+    }
+
+    .item {
+        line-height: 3em;
+    }
+
+    .childItem {
+        line-height: 3em;
+    }
+
+    .opacity input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border: 1px solid gray;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    /* while the style is the same as above, neither will render if grouped */
+    .opacity input[type="range"]::-moz-range-thumb {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border: 1px solid gray;
+        background-color: white;
+        border-radius: 50%;
+    }
+}
+
+:global(.is-ios-device) .iconButton {
+    font-size: 1.45em;
+}
+
+:global(.is-ios-device) .opacity {
+    height: 35px;
+}
+
+:global(.is-ios-device) .item {
+    line-height: 3em;
+}
+
+:global(.is-ios-device) .childItem {
+    line-height: 3em;
+}
+
+:global(.is-ios-device) .opacity input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 1px solid gray;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* while the style is the same as above, neither will render if grouped */
+:global(.is-ios-device) .opacity input[type="range"]::-moz-range-thumb {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 1px solid gray;
+    background-color: white;
+    border-radius: 50%;
+}

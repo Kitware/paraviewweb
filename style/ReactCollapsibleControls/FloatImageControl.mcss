@@ -1,0 +1,113 @@
+.container {
+}
+
+.item {
+    width: 100%;
+    flex-direction: row;
+    display: flex;
+    box-sizing: border-box;
+    line-height: 2em;
+}
+
+.label {
+    font-weight: bold;
+    flex: 1;
+    text-align: left;
+    margin-left: 5px;
+    align-self: center;
+}
+
+.actions {
+    position: relative;
+    right: 0;
+}
+
+.lightSlider {
+}
+
+/* ----- LayerItem ------- */
+
+.hidden {
+    display: none;
+}
+
+.iconButton {
+    flex: none;
+    margin-right: 5px;
+    align-self: center;
+    cursor: pointer;
+    font-style: normal;
+    user-select: none;
+}
+
+.fadeButton {
+    color: #aaa;
+}
+
+.meshButtonOn {
+    composes: iconButton;
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-hashtag    from 'font-awesome/css/font-awesome.css';
+}
+
+.meshButtonOff {
+    composes: meshButtonOn;
+    composes: fadeButton;
+}
+
+.visibleButtonOn {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye    from 'font-awesome/css/font-awesome.css';
+}
+
+.visibleButtonOff {
+    composes: iconButton;
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-eye-slash  from 'font-awesome/css/font-awesome.css';
+}
+
+.dropDownButtonOn {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-tint   from 'font-awesome/css/font-awesome.css';
+}
+
+.dropDownButtonOff {
+    composes: dropDownButtonOn;
+    composes: fadeButton;
+}
+
+.menu {
+    position: absolute;
+    top: 2em;
+    right: 5px;
+    border: solid 1px black;
+    padding: 5px 10px;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.menuItem {
+    cursor: pointer;
+}
+
+.selectedMenuItem {
+    composes: menuItem;
+    font-weight: bold;
+}
+
+@media screen and (max-device-width: 400px) {
+    .iconButton {
+        font-size: 1.45em;
+    }
+}
+
+:global(.is-ios-device).iconButton {
+    font-size: 1.45em;
+}

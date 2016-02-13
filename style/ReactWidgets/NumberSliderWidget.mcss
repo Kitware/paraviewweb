@@ -1,0 +1,57 @@
+.container {
+    width: 100%;
+    padding: 1px;
+}
+
+.range {
+    width: calc(100% - 75px);
+    vertical-align: middle;
+}
+
+.text {
+    width: 60px;
+    margin-left: 10px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 400px),
+screen and (orientation: landscape) and (max-device-width: 400px) {
+
+    .range::-webkit-slider-thumb {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border: 1px solid gray;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    /* while the style is the same as above, neither will render if grouped */
+    .range::-moz-range-thumb {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border: 1px solid gray;
+        background-color: white;
+        border-radius: 50%;
+    }
+}
+
+:global(.is-ios-device) .range::-webkit-slider-thumb {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 1px solid gray;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* while the style is the same as above, neither will render if grouped */
+:global(.is-ios-device) .range::-moz-range-thumb {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 1px solid gray;
+    background-color: white;
+    border-radius: 50%;
+}

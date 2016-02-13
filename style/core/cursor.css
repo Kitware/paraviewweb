@@ -1,0 +1,18 @@
+/* cursor styles */
+
+.c-default      { cursor: default; }
+.c-move         { cursor: move; }
+.c-help         { cursor: help; }
+.c-wait         { cursor: wait; }
+.c-not-allowed  { cursor: not-allowed; }
+.c-none         { cursor: none; }
+.c-pointer      { cursor: pointer; }
+.c-text         { cursor: text; }
+
+/* Non standard */
+
+.c-alias        { cursor: alias; }
+.c-context-menu { cursor: context-menu;}
+.c-copy         { cursor: copy; }
+.c-zoom-in      { cursor: zoom-in; }
+.c-zoom-out     { cursor: zoom-out; }

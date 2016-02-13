@@ -1,0 +1,266 @@
+.container {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+.hidden {
+    display: none;
+}
+
+.button {
+    width: 1.52em;
+    height: 1.25em;
+    padding-top: 0.25em;
+
+    text-align: center;
+
+    margin-left: 0.5em;
+
+    /* click cursor */
+    cursor: pointer;
+    user-select: none;
+}
+
+.leftButton {
+    composes: button;
+    float: left;
+}
+
+.collapsedControl .leftButton {
+    display: none;
+}
+
+.magicLensButtonIn {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-search     from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+    border-radius: 5px;
+}
+
+.magicLensButtonOut {
+    composes: magicLensButtonIn;
+    composes: fa-inverse    from 'font-awesome/css/font-awesome.css';
+    background: #000;
+}
+
+.recordButtonOff {
+    composes: fa                from 'font-awesome/css/font-awesome.css';
+    composes: fa-circle-thin    from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+    color: #000;
+}
+
+.recordButtonOn {
+    composes: recordButtonOff;
+    composes: fa-circle     from 'font-awesome/css/font-awesome.css';
+    color: #FF0000;
+}
+
+.resetCameraButton {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-arrows-alt from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+}
+
+.playButton {
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-play   from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+}
+
+.stopButton {
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-stop   from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+}
+
+.speedButton {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-clock-o    from 'font-awesome/css/font-awesome.css';
+    composes: leftButton;
+}
+
+.animationSpeed {
+    float: left;
+}
+
+.collapsedControl .animationSpeed {
+    display: none;
+}
+
+.menuButton {
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-bars   from 'font-awesome/css/font-awesome.css';
+    composes: button;
+    float: right;
+}
+
+.collapsedMenuButton {
+    composes: menuButton;
+    border: 1px solid;
+    border-radius: 50%;
+    border-color: #ccc;
+
+    background-color: #eee;
+}
+
+.control {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20%;
+    max-width: 400px;
+    min-width: 300px;
+    z-index: 1;
+
+    border-radius: 5px;
+
+    background-color: rgba(255,255,255,0.3);
+    color: rgba(0,0,0,0.3);
+}
+
+.control:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.collapsedControl {
+    composes: control;
+
+    min-width: 1.5em;
+    width: 1.5em;
+    border-radius: 50%;
+}
+
+.collapsedControl:hover {
+    background: none;
+}
+
+.control input[type=number].LookupTableWidget__input {
+    color: black;
+}
+
+.control select,
+.control input[type=number],
+.control input[type=text] {
+    background-color: rgba(0,0,0,0);
+}
+
+.control select {
+    appearance: none;
+    padding: 1px 5px;
+    background-image: url('../images/select-arrows.png');
+    background-repeat: no-repeat;
+    background-position: 99%;
+    background-size: 13px 13px;
+    border-width: 1px;
+    border-color: lightgrey;
+    border-style: solid;
+    border-radius: 3px;
+}
+
+.controlContent {
+    border: 1px solid;
+    border-radius: 0 0 5px 5px;
+    border-color: #ccc;
+
+    padding-left: 5px;
+    padding-bottom: 0.5em;
+
+    max-height: calc(100vh - 55px);
+    overflow-y: scroll;
+}
+
+.collapsedControl > .controlContent {
+    display: none;
+}
+
+.controlBar {
+    height: 25px;
+    line-height: 25px;
+
+    border: 1px solid;
+    border-radius: 5px 5px 0 0;
+    border-color: #ccc;
+}
+
+.control:hover .controlBar {
+    background-color: #eee;
+}
+
+.collapsedControl > .controlBar {
+    background: none;
+    border: none;
+    display: inline;
+}
+
+.renderer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-left: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.row {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+.label {
+    flex: 1;
+
+    /* bold */
+    font-weight: bold;
+
+    /* can't select text */
+    user-select: none;
+}
+
+/* Start with upper case letter */
+.label::first-letter { text-transform: uppercase; }
+
+.row > select {
+    width: 100%;
+    background-color: rbga(0,0,0,0);
+}
+
+@media screen and (max-width: 400px),
+screen and (orientation: landscape) and (max-device-width: 400px)  {
+    .controlBar {
+        height: 40px;
+    }
+
+    .controlBar > .button {
+        font-size: 1.45em;
+    }
+
+    .controlContent {
+        max-height: calc(100vh - 70px);
+    }
+}
+
+:global(.is-ios-device) .controlBar {
+    height: 40px;
+}
+
+:global(.is-ios-device) .controlBar .button {
+    font-size: 1.45em;
+}
+
+:global(.is-ios-device) .controlContent {
+    max-height: calc(100vh - 70px);
+}

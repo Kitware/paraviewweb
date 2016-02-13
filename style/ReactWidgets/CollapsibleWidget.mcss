@@ -1,0 +1,60 @@
+.container {
+  width: 100%;
+  padding: 0;
+  font-family: sans-serif;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  clear: both;
+}
+
+.header {
+  position: relative;
+  left: 0;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  padding: 0;
+  border: none;
+  background-color: rgba(0,0,0,0);
+  width: 100%;
+}
+
+.caret {
+    composes: fa            from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+    composes: fa-caret-down from 'font-awesome/css/font-awesome.css';
+    transition: transform .2s ease;
+}
+
+.caretClosed {
+    composes: caret;
+    transform: rotate(-90deg);
+}
+
+.title {
+  text-transform: capitalize;
+}
+
+.subtitle {
+  position: absolute;
+  right: 15px;
+  top: 0px;
+}
+
+.visibleContent {
+  padding: 5px 15px 0px 15px;
+}
+
+.hiddenContent {
+  display: none;
+}
+
+@media screen and (max-device-width: 400px) {
+    .caret {
+        font-size: 1.45em;
+    }
+}
+
+:global(.is-ios-device) .caret {
+    font-size: 1.45em;
+}

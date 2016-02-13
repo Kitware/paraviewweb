@@ -1,0 +1,21 @@
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.item {
+    color: #333;
+    padding: 5px;
+    cursor: pointer;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item:hover {
+    background: #333;
+    color: #eee;
+}

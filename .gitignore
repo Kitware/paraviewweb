@@ -1,0 +1,6 @@
+.DS_Store
+.npm-packages
+.npmrc
+node_modules
+documentation/www
+documentation/_tmp

@@ -1,0 +1,18 @@
+.cursor {
+  cursor: pointer;
+}
+
+.regularText {
+    font-family: sans-serif;
+}
+
+.regularText::selection {
+  background-color: transparent;
+}
+
+.iconText {
+    font-family: FontAwesome;
+    cursor: pointer;
+}
+
+

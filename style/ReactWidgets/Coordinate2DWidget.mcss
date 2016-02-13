@@ -1,0 +1,33 @@
+.container {
+}
+
+.canvas {
+    border: 1px solid lightgray;
+    float: left;
+    margin-right: 3px;
+    font-family: sans-serif;
+}
+
+.canvas:active, .CoordinateControl > .canvas:hover {
+    cursor: crosshair;
+}
+
+.inputContainer {
+}
+
+.inputLabel {
+}
+
+.input {
+    margin: 3px 0 0 0;
+    padding: 2px 0 2px 3px;
+    width: 40px;
+}
+
+.input:first-child {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
