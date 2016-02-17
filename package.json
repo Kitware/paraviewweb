@@ -82,8 +82,9 @@
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
 
-        "doc": "./documentation/generator.js",
-        "doc:www": "npm run doc && serve ./documentation/www",
+        "doc": "node ./documentation/cli/pvw-doc -e",
+        "doc:www": "node ./documentation/cli/pvw-doc -aes",
+        "doc:publish": "node ./documentation/cli/pvw-doc -p",
 
         "build": "webpack --progress --colors",
         "build:release": "npm run build -- -p",
