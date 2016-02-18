@@ -23,7 +23,6 @@
         "monologue.js": "0.3.4",
         "mout": "0.11.1",
         "normalize.css": "3.0.3",
-        "npm-dep": "2.0.5",
         "react": "0.14.7",
         "react-dom": "0.14.7",
         "when": "3.7.7",
@@ -101,6 +100,8 @@
         "pvw-doc": "./documentation/cli/pvw-doc.js"
     },
     "scripts": {
+        "fix-autobahn"  : "sed -i.bak 's/WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && sed -i.bak 's/var var WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && rm ./node_modules/autobahn/lib/session.js.bak",
+        "postintall"    : "npm run fix-autobahn",
         "install:global": "npm install -g commitizen@2.5.0",
 
         "doc"           : "node ./documentation/cli/pvw-doc -e",
