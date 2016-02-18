@@ -29,7 +29,4 @@ module.exports = {
     eslint: {
         configFile: '.eslintrc',
     },
-    externals: {
-        "three": "THREE",
-    },
 };

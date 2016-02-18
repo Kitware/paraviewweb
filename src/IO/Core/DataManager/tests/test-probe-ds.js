@@ -14,7 +14,7 @@ describe("Data Manager - Download JSON/Images using pattern", function() {
 
         dataManager = new ParaViewWeb.IO.Core.DataManager();
 
-        dataManager.on('/base/data/dummy/info.json', function(data, envelope) {
+        dataManager.on('/data/probe/index.json', function(data, envelope) {
             testHelper(null, data);
         });
 
@@ -27,7 +27,7 @@ describe("Data Manager - Download JSON/Images using pattern", function() {
         });
 
         // Trigger the download request
-        var fetchURL = '/base/data/dummy/info.json',
+        var fetchURL = '/data/probe/index.json',
             url = dataManager.fetchURL(fetchURL, 'json');
         expect(url).toEqual(fetchURL);
 
@@ -39,15 +39,15 @@ describe("Data Manager - Download JSON/Images using pattern", function() {
 
             jsonDataModel = d.response.data;
 
-            expect(jsonDataModel.metadata.dimensions).toEqual([500, 250, 30]);
-            expect(jsonDataModel.metadata.fields).toEqual([ "temperature", "salinity" ]);
-            expect(jsonDataModel.metadata.size).toEqual(10);
+            expect(jsonDataModel.InSituDataProber.dimensions).toEqual([500, 250, 30]);
+            expect(jsonDataModel.InSituDataProber.fields).toEqual([ "temperature", "salinity" ]);
+            expect(jsonDataModel.InSituDataProber.sprite_size).toEqual(10);
 
             // Register file pattern
-            dataManager.registerURL('images', '/base/data/dummy/' + jsonDataModel.data[0].pattern, 'blob', 'image/png');
+            dataManager.registerURL('images', '/data/probe/' + jsonDataModel.data[0].pattern, 'blob', 'image/png');
             var count = exepectedNbImages = 1;
             while(count--) {
-                dataManager.fetch('images', { x: '2', y: '1' });
+                dataManager.fetch('images', { field: 'temperature', time: '0' });
             }
         });
 

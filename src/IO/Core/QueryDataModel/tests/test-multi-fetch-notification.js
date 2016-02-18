@@ -51,7 +51,7 @@ describe("Query Data Model - Fetch/Notification", function() {
             }
           }
         },
-        queryDataModel = new ParaViewWeb.IO.Core.QueryDataModel(dataDescription, '/arctic/probe/'),
+        queryDataModel = new ParaViewWeb.IO.Core.QueryDataModel(dataDescription, '/data/probe/'),
         fetchCount = 0,
         notificationCount = 0,
         numberOfRequests = 100;

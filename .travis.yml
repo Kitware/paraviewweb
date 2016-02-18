@@ -23,6 +23,7 @@ addons:
 script:
   - npm run build:release
   - npm run doc:publish
+  - npm run test:travis
 after_success:
   - npm run semantic-release
 branches:
