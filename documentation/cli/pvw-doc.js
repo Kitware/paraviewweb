@@ -206,8 +206,14 @@ function doneWithProcessing() {
 
     if(program.publish) {
         console.log('\n=> Publish', publishBaseURL, '\n');
+        var options = {};
 
-        require('gh-pages').publish(rootWWW, function(err) {
+        if(process.env.GIT_PUBLISH_URL) {
+            console.log('Got custom URL', process.env.GIT_PUBLISH_URL);
+            options.repo = process.env.GIT_PUBLISH_URL;
+        }
+
+        require('gh-pages').publish(rootWWW, options, function(err) {
             if(err) {
                 console.log('Error while publishing');
                 console.log(err);

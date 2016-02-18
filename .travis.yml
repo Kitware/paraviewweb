@@ -25,6 +25,7 @@ script:
   - npm run test:travis
   - git config user.name "Travis CI"
   - git config user.email "sebastien.jourdain@kitware.com"
+  - export GIT_PUBLISH_URL=https://${GH_TOKEN}@github.com/Kitware/paraviewweb.git
   - if [ "$TRAVIS_BRANCH" == "master" ]; then npm run doc:publish; fi
 after_success:
   - npm run semantic-release
