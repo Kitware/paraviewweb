@@ -23,6 +23,8 @@ addons:
 script:
   - npm run build:release
   - npm run test:travis
+  - git config user.name "Travis CI"
+  - git config user.email "sebastien.jourdain@kitware.com"
   - if [ "$TRAVIS_BRANCH" == "master" ]; then npm run doc:publish; fi
 after_success:
   - npm run semantic-release
