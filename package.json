@@ -104,7 +104,7 @@
         "install:global": "npm install -g commitizen@2.5.0",
 
         "doc"           : "node ./documentation/cli/pvw-doc -e",
-        "doc:www"       : "node ./documentation/cli/pvw-doc -aes",
+        "doc:www"       : "node ./documentation/cli/pvw-doc -aest",
         "doc:publish"   : "node ./documentation/cli/pvw-doc -p",
 
         "build"         : "webpack --progress --colors",
