@@ -209,7 +209,7 @@ function doneWithProcessing() {
         var options = {};
 
         if(process.env.GIT_PUBLISH_URL) {
-            console.log('Got custom URL', process.env.GIT_PUBLISH_URL);
+            console.log('Use custom URL');
             options.repo = process.env.GIT_PUBLISH_URL;
         }
 
