@@ -11,7 +11,9 @@ var program = require('commander'),
     baseUrl = "''",
     buildHelper = require('./pvw-build'),
     examples = buildHelper.examples,
-    rootWWW = path.join(process.env.PWD, 'documentation/www');
+    rootWWW = path.join(process.env.PWD, 'documentation/www'),
+    apiFound = [],
+    exampleFound = [];
 
 program
   .version(version)
@@ -20,6 +22,7 @@ program
   .option('-l, --list',                 'List examples')
   .option('-p, --publish',              'Publish documentation to github.io/gh-pages')
   .option('-s, --serve',                'Serve documentation at http://localhost:3000/')
+  .option('-t, --stats',                'List API / Example coverage')
   .parse(process.argv);
 
 // ----------------------------------------------------------------------------
@@ -53,7 +56,7 @@ if(program.publish) {
 // Extract examples
 // ----------------------------------------------------------------------------
 
-if(program.list || program.examples) {
+if(program.list || program.examples || program.stats) {
     // Single example use case
     shell.find('src')
         .filter( function(file) {
@@ -67,6 +70,7 @@ if(program.list || program.examples) {
             exampleName = fullPath.pop(); // example
             exampleName = fullPath.pop(); // className
 
+            exampleFound.push(exampleName);
             examples[exampleName] = './' + file;
         });
 
@@ -78,7 +82,7 @@ if(program.list || program.examples) {
 // Build API
 // ----------------------------------------------------------------------------
 
-if(program.api) {
+if(program.api || program.stats) {
     console.log('\n=> Build API\n');
 
     var rootTmp = path.join(process.env.PWD, 'documentation/_tmp');
@@ -98,6 +102,8 @@ if(program.api) {
             // Extract class name
             filePath.pop(); // api.md
             className = filePath.pop();
+
+            apiFound.push(className);
             console.log('  -', className);
 
             newPath = path.join(rootTmp, className + '.md');
@@ -130,6 +136,43 @@ if(program.list) {
     for(var name in examples) {
         console.log(' -', name);
     }
+}
+
+// ----------------------------------------------------------------------------
+// Stats
+// ----------------------------------------------------------------------------
+
+if(program.stats) {
+    console.log('\n=> Documentation coverage:\n');
+
+    var classNames = shell.find('src')
+        .filter( function(file) {
+            return file.split('/').length === 4 && file.indexOf('index.js') === -1;
+        }),
+        resultArray = [];
+
+    classNames.forEach( function(file) {
+            var fullPath = file.split('/');
+            fullPath.shift();
+            var fullPathName = fullPath.join('.');
+            var className = fullPath.pop();
+
+            resultArray.push({ fullPathName:fullPathName, className:className, api: (apiFound.indexOf(className) !== -1), example: !!examples[className]});
+        });
+
+    var apiCount = 0;
+    var exampleCount = 0;
+    resultArray.forEach(i => {
+        apiCount += i.api ? 1 : 0;
+        exampleCount += i.example ? 1 : 0;
+        console.log(i.api ? '+' : '-', i.example ? '+' : '-', i.fullPathName);
+    });
+
+    function count(c) {
+        return '(' + c + '/' + Math.floor(100*c/resultArray.length) + '%)'
+    }
+
+    console.log('\n=> API' + count(apiCount) + ' / Examples' + count(exampleCount) + ' / Total classes(' + resultArray.length + ')\n');
 }
 
 // ----------------------------------------------------------------------------

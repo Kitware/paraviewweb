@@ -22,10 +22,14 @@ addons:
       - g++-4.8
 script:
   - npm run build:release
-  - npm run doc:publish
   - npm run test:travis
 after_success:
   - npm run semantic-release
+deploy:
+    script:
+        - npm run doc:publish
+    on:
+        branch: master
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
