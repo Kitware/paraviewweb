@@ -26,6 +26,11 @@ script:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then npm run doc:publish; fi
 after_success:
   - npm run semantic-release
+deploy:
+    script:
+        - npm run doc:publish
+    on:
+        branch: master
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
