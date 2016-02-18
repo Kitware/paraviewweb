@@ -1,0 +1,36 @@
+{
+    "type": ["tonic-query-data-model"],
+    "metadata": {
+        "dimensions": [500, 250, 30],
+        "size": 10,
+        "fields": ["temperature", "salinity"]
+    },
+    "arguments": {
+        "x": {
+            "values": ["0", "1", "2"]
+        },
+        "y": {
+            "values": ["0", "1", "2"]
+        }
+    },
+    "arguments_order": [ "x", "y" ],
+    "data": [
+        {
+            "categories": ["images"],
+            "name": "image",
+            "type": "blob",
+            "mimeType": "image/png",
+            "pattern": "{x}_{y}.png"
+        },{
+            "categories": ["text"],
+            "name": "text",
+            "type": "text",
+            "pattern": "{x}_{y}.txt"
+        },{
+            "categories": ["json"],
+            "name": "json",
+            "type": "json",
+            "pattern": "{x}_{y}.json"
+        }
+    ]
+}

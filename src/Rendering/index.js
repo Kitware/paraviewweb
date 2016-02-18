@@ -1,9 +1,9 @@
-import Geometry     from './Geometry';
+// import Geometry     from './Geometry';
 import Image        from './Image';
 import Painter      from './Painter';
 
 export default {
-    Geometry,
+    // Geometry,
     Image,
     Painter,
 }

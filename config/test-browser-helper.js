@@ -8,13 +8,13 @@
         intervalID = setInterval(processCallbackFnStack, 10);
         callbackStack = [];
         callbackFnStack = [];
-    };
+    }
 
     // ----------------------------------------------------------------------------
 
     function callback(error, response) {
         callbackStack.push({error: error, response: response});
-    };
+    }
 
     // ----------------------------------------------------------------------------
 

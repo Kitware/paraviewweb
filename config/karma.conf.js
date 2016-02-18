@@ -22,18 +22,17 @@ module.exports = function(config) {
     ],
     files: [
         'https://raw.githubusercontent.com/peerlibrary/Blob.js/peerlibrary/Blob.js', // To fix blob issue with PhantomJS
-        'dist/Tonic-io.js',
-        'tests/*-browser-*.js',
-        'lib/**/tests/*.js',
+        'dist/ParaViewWeb.js',
+        'config/test-browser-*.js',
+        'src/**/tests/*.js',
         { pattern: 'data/**', watched: false, included: false, served: true },
         { pattern: 'node_modules/tonic-arctic-sample-data/data/**', watched: false, included: false, served: true },
     ],
     exclude: [
-        'lib/tests/**/*-node-only.js',
+        'src/tests/**/*-node-only.js',
     ],
     proxies: {
-        '/data/': 'http://localhost:' + 9876 + '/base/data/',
-        '/arctic/': 'http://localhost:' + 9876 + '/base/node_modules/tonic-arctic-sample-data/data/',
+        '/data/': 'http://localhost:' + 9876 + '/base/node_modules/tonic-arctic-sample-data/data/',
     },
   });
 };

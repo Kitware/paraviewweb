@@ -1,6 +1,6 @@
 import React                from 'react';
 import ReactDOM             from 'react-dom';
-import MultiLayoutRenderer  from '../..';
+import MultiLayoutRenderer  from '..';
 import QueryDataModel       from '../../../../IO/Core/QueryDataModel';
 import ImageBuilder         from '../../../../Rendering/Image/DataProberImageBuilder';
 import LookupTableManager   from '../../../../Common/Core/LookupTableManager';

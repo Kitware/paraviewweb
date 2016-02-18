@@ -8,26 +8,26 @@ describe("Query Data Model - API/Query/Validation", function() {
             "type": ["tonic-query-data-model"],
             "arguments": {
                 "x": {
-                    "values": ["0", "1", "2"]
+                    "values": ["0", "1", "2"],
                 },
                 "y": {
-                    "values": ["0", "1", "2"]
-                }
+                    "values": ["0", "1", "2"],
+                },
             },
             "arguments_order": [ "x", "y" ],
             "data": [
                 {
                     "name": "text",
                     "type": "text",
-                    "pattern": "{x}_{y}.txt"
+                    "pattern": "{x}_{y}.txt",
                 },{
                     "name": "json",
                     "type": "json",
-                    "pattern": "{x}_{y}.json"
-                }
-            ]
+                    "pattern": "{x}_{y}.json",
+                },
+            ],
         },
-        queryDataModel = new ParaViewWeb.IO.Core.QueryDataModel(dataDescription, '/data/dummy/'),
+        queryDataModel = new ParaViewWeb.IO.Core.QueryDataModel(dataDescription, '/base/data/dummy/'),
         expectedValues = ['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O'];
 
 
