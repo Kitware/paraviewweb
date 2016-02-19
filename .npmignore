@@ -3,7 +3,7 @@
 .npmrc
 .sass-cache
 .travis.yml
-documentation
+documentation/www
 npm-debug.log
 tests
 example
