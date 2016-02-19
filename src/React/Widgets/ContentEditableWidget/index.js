@@ -8,6 +8,7 @@ export default React.createClass({
     propTypes: {
         blurOnEnter: React.PropTypes.bool,
         html: React.PropTypes.string,
+        onBlur: React.PropTypes.func,
         onChange: React.PropTypes.func,
     },
 
@@ -39,6 +40,9 @@ export default React.createClass({
         if (event.charCode === 13) {
             ReactDOM.findDOMNode(this).blur();
             window.getSelection().removeAllRanges();
+            if (this.props.onBlur) {
+                this.props.onBlur();
+            }
         }
     },
 
@@ -49,6 +53,9 @@ export default React.createClass({
             this.props.onChange(evt);
         }
         this.lastHtml = html;
+        if (evt.type === 'blur' && this.props.onBlur) {
+            this.props.onBlur();
+        }
     },
 
     /* eslint-disable react/no-danger */
