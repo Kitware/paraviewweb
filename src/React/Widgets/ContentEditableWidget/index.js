@@ -7,6 +7,7 @@ export default React.createClass({
 
     propTypes: {
         blurOnEnter: React.PropTypes.bool,
+        className: React.PropTypes.string,
         html: React.PropTypes.string,
         onBlur: React.PropTypes.func,
         onChange: React.PropTypes.func,
@@ -15,6 +16,7 @@ export default React.createClass({
     getDefaultProps() {
         return {
             blurOnEnter: false,
+            className: '',
         };
     },
 
@@ -60,7 +62,7 @@ export default React.createClass({
 
     /* eslint-disable react/no-danger */
     render() {
-        return <div className="ContentEditable"
+        return <div className={ this.props.className }
             onInput={this.emitChange}
             onBlur={this.emitChange}
             onKeyPress={ this.props.blurOnEnter ? this.blurEditable : ()=>{} }
