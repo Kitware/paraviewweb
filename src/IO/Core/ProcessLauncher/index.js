@@ -9,7 +9,7 @@ const
 var
     connections = [];
 
-export default class Launcher {
+export default class ProcessLauncher {
     constructor(endPoint) {
         this.endPoint = endPoint;
     }
@@ -109,4 +109,4 @@ export default class Launcher {
         this.endPoint = null;
     }
 }
-Monologue.mixInto(Launcher);
+Monologue.mixInto(ProcessLauncher);
