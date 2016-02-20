@@ -39,7 +39,7 @@ export default class ProcessLauncher {
         xhr.send(JSON.stringify(config));
     }
 
-    fetchConnection(sessionId, success, error) {
+    fetchConnection(sessionId) {
         var xhr = new XMLHttpRequest(),
             url = [this.endPoint, sessionId].join('/');
 
