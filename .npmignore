@@ -3,7 +3,7 @@
 .npmrc
 .sass-cache
 .travis.yml
-docs
+documentation/www
 npm-debug.log
-site.config.js
 tests
+example
