@@ -25,8 +25,8 @@ export default function({client, filterQuery, mustContain, busy}) {
         },
 
         //PUT /taskflows/{id}/start Start the taskflow
-        startTaskflow(id) {
-            return busy(client._.put(`/taskflows/${id}/start`));
+        startTaskflow(id, cluster) {
+            return busy(client._.put(`/taskflows/${id}/start`, cluster));
         },
 
         //GET /taskflows/{id}/status Get the taskflow status
