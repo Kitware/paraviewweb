@@ -1,8 +1,19 @@
 var path = require('path'),
-    loaders = require('./config/webpack.loaders.js');
+    webpack = require('webpack'),
+    loaders = require('./config/webpack.loaders.js'),
+    plugins = [];
+
+if(process.env.NODE_ENV === 'production') {
+    console.log('==> Production build');
+    plugins.push(new webpack.DefinePlugin({
+        "process.env": {
+            NODE_ENV: JSON.stringify("production"),
+        },
+    }));
+}
 
 module.exports = {
-    plugins: [],
+    plugins: plugins,
     entry: './src/index.js',
     output: {
         path: './dist',

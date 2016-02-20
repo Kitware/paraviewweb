@@ -109,7 +109,7 @@
         "doc:publish"   : "node ./documentation/cli/pvw-doc -p",
 
         "build"         : "webpack --progress --colors",
-        "build:release" : "npm run build -- -p",
+        "build:release" : "export NODE_ENV=production && npm run build -- -p",
 
         "test"          : "karma start ./config/karma.conf.js",
         "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS --single-run",
