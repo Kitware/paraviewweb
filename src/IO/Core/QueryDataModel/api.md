@@ -1,4 +1,4 @@
-# QueryDataModel #
+# QueryDataModel
 
 This class definition lets you create a Data Model from a specific JSON object which
 describes a n-dimensional system. The created model allows you to query

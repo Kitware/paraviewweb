@@ -1,4 +1,4 @@
-# Data Manager #
+# Data Manager
 
 This module allows users to fetch data (JSON, Text, ArrayBuffer, blob) and
 cache the result for future use. Additional pattern based URL requests can
@@ -8,8 +8,9 @@ a generated browser url.
 A new instance is created with:
 
 ```javascript
-var DataManager = require('paraviewweb/src/IO/Core/DataManager'),
-    instance = new DataManager(cacheSize = 1 000 000 000); // 1 GB by default
+import DataManager from 'paraviewweb/src/IO/Core/DataManager';
+
+dataManager = new DataManager(cacheSize = 1 000 000 000); // 1 GB by default
 ```
 
 All listening is managed using [monolog.js](https://www.npmjs.com/package/monologue.js)

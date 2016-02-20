@@ -19,7 +19,7 @@ const
         ViewPortImageDelivery,
     };
 
-export default function createClient(connection, protocols=[], customProtocols={}) {
+export function createClient(connection, protocols=[], customProtocols={}) {
     var session = connection.getSession(),
         result = { connection, session },
         count = protocols.length;
@@ -34,4 +34,8 @@ export default function createClient(connection, protocols=[], customProtocols={
     }
 
     return result;
+}
+
+export default {
+    createClient,
 }
