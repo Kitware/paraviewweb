@@ -162,7 +162,7 @@ if(program.stats) {
 
     var apiCount = 0;
     var exampleCount = 0;
-    resultArray.forEach(i => {
+    resultArray.forEach(function(i) {
         apiCount += i.api ? 1 : 0;
         exampleCount += i.example ? 1 : 0;
         console.log(i.api ? '+' : '-', i.example ? '+' : '-', i.fullPathName);
