@@ -7,10 +7,10 @@
 
 ### Introduction
 
-ParaViewWeb aims to provide a framework or a Toolkit for building interactive
-web visualization relying on VTK or ParaView to produce visualization data.
+ParaViewWeb aims to provide a framework for building interactive
+web visualizations which rely on VTK or ParaView to produce visualization data.
 
-Those data could be static or dynamic ranging from a no-server setup to either
+This data can be static or dynamic ranging from a no-server setup to
 having a ParaView or VTK backend sending either geometry or images to the client.
 
 ## Documentation
