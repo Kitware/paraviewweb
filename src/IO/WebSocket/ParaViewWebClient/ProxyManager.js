@@ -6,8 +6,8 @@ export default function createMethods(session) {
         open: (relativePath) => {
             return session.call('pv.proxy.manager.create.reader', [ relativePath ]);
         },
-        get: (proxyId) => {
-            return session.call('pv.proxy.manager.get', [ proxyId ]);
+        get: (proxyId, ui=true) => {
+            return session.call('pv.proxy.manager.get', [ proxyId, ui ]);
         },
         findProxyId: (groupName, proxyName) => {
             return session.call('pv.proxy.manager.find.id', [ groupName, proxyName ]);
