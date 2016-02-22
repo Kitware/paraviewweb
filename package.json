@@ -13,9 +13,11 @@
     "homepage": "https://github.com/kitware/paraviewweb#readme",
     "main": "./dist/ParaViewWeb.js",
     "dependencies": {
+        "autobahn": "0.9.6",
+        "when": "3.7.7",
+        "ws": "0.8.1"
     },
     "devDependencies": {
-        "autobahn": "0.9.6",
         "axios": "0.9.0",
         "font-awesome": "4.5.0",
         "gl-matrix": "2.3.1",
@@ -25,8 +27,6 @@
         "normalize.css": "3.0.3",
         "react": "0.14.7",
         "react-dom": "0.14.7",
-        "when": "3.7.7",
-        "ws": "0.8.1",
 
         "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
 
@@ -101,7 +101,7 @@
     },
     "scripts": {
         "fix-autobahn"  : "sed -i.bak 's/WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && sed -i.bak 's/var var WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && rm ./node_modules/autobahn/lib/session.js.bak",
-        "postintall"    : "npm run fix-autobahn",
+        "postinstall"   : "npm run fix-autobahn",
         "install:global": "npm install -g commitizen@2.5.0",
 
         "doc"           : "node ./documentation/cli/pvw-doc -e",
