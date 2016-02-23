@@ -100,8 +100,6 @@
         "pvw-doc": "./documentation/cli/pvw-doc.js"
     },
     "scripts": {
-        "fix-autobahn"  : "sed -i.bak 's/WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && sed -i.bak 's/var var WAMP_FEATURES = {/var WAMP_FEATURES = {/' ./node_modules/autobahn/lib/session.js && rm ./node_modules/autobahn/lib/session.js.bak",
-        "postinstall"   : "npm run fix-autobahn",
         "install:global": "npm install -g commitizen@2.5.0",
 
         "doc"           : "node ./documentation/cli/pvw-doc -e",
