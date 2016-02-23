@@ -54,13 +54,12 @@ export default function({client, filterQuery, mustContain, busy}) {
             return busy(client._.get(`/simulations/${id}/download`));
         },
 
-
         getSimulationStep(id, name) {
             return busy(client._.get(`/simulations/${id}/steps/${name}`));
         },
 
-        updateSimulationStep(id, name, metadata) {
-            return busy(client._.patch(`/simulations/${id}/steps/${name}`, {metadata}, { headers, transformRequest }));
+        updateSimulationStep(id, name, step) {
+            return busy(client._.patch(`/simulations/${id}/steps/${name}`, step, { headers, transformRequest }));
         },
     };
 }
