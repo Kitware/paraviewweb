@@ -8,20 +8,23 @@ import {
 
 export default class NativeImageRenderer {
 
-    constructor(domElement, imageProvider, mouseListeners = null) {
+    constructor(domElement, imageProvider, mouseListeners = null, drawFPS=true) {
         this.size = getSize(domElement);
         this.container = domElement;
         this.canvas = document.createElement("canvas");
         this.image = new Image();
         this.fps = '';
+        this.drawFPS = drawFPS;
         this.subscriptions = [];
         this.imageProvider = imageProvider;
 
         this.image.onload = () => {
             this.ctx.drawImage(this.image, 0, 0);
-            this.ctx.textBaseline = "top";
-            this.ctx.textAlign = "left";
-            this.ctx.fillText(this.fps, 5, 5);
+            if(this.drawFPS) {
+              this.ctx.textBaseline = "top";
+              this.ctx.textAlign = "left";
+              this.ctx.fillText(this.fps, 5, 5);
+            }
         };
 
         // Update DOM
