@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.toolbar {
+  background-color: #ddd;
+  border: 1px solid #aaa;
+  line-height: 2em;
+  height: 2em;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.advancedButton {
+    composes: fa from 'font-awesome/css/font-awesome.css';
+    composes: fa-wrench from 'font-awesome/css/font-awesome.css';
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #aaa;
+    flex: none;
+}
+
+.activeAdvancedButton {
+    composes: advancedButton;
+    color: #111;
+    font-weight: 200;
+}
+
+.filter {
+    border-radius: 15px;
+    padding: 2px 15px;
+    flex: 1;
+    border: 1px solid #ddd;
+}
+
+.filter:active, .filter:focus {
+    border: 1px solid #aaa;
+}
+
+.validateButton {
+    composes: fa from 'font-awesome/css/font-awesome.css';
+    composes: fa-paper-plane from 'font-awesome/css/font-awesome.css';
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #aaa;
+    flex: none;
+}
+
+.validateButtonOn {
+    composes: validateButton;
+    color: #111;
+    font-weight: 200;
+}
+

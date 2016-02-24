@@ -32,8 +32,9 @@
     padding: 18px;
     border: 1px solid #ddd;
     background-color: #efefef;
-    margin-top: 6px;
-    width: 80%;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .inputBlock {

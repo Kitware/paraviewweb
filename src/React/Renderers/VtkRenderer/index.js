@@ -14,12 +14,14 @@ export default React.createClass({
         className: React.PropTypes.string,
         client: React.PropTypes.object,
         connection: React.PropTypes.object,
+        showFPS: React.PropTypes.bool,
         style: React.PropTypes.object,
     },
 
     getDefaultProps() {
         return {
             className: '',
+            showFPS: false,
             style: {},
         };
     },
@@ -55,7 +57,7 @@ export default React.createClass({
         });
 
         // Create render
-        this.imageRenderer = new NativeImageRenderer(container, this.binaryImageStream, this.mouseListener.getListeners());
+        this.imageRenderer = new NativeImageRenderer(container, this.binaryImageStream, this.mouseListener.getListeners(), this.props.showFPS);
 
         // Establish image stream connection
         this.binaryImageStream.connect({view_id: -1});

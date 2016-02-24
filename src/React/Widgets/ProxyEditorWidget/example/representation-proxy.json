@@ -1,0 +1,545 @@
+{
+    "colorBy": {
+        "color": [1, 1, 1],
+        "representation": "729",
+        "scalarBar": 0,
+        "array": [null, "", -1],
+        "mode": "array"
+    },
+    "ui": [{
+        "widget": "checkbox",
+        "name": "Cube Axes Visibility",
+        "doc": "Set the visibility for the cube axes.",
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "list-1",
+        "name": "Representation",
+        "doc": "Choose the type for the representation.",
+        "values": ["3D Glyphs", "Outline", "Points", "Surface", "Surface With Edges", "Volume", "Wireframe"],
+        "type": "str",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Ambient Color",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Diffuse Color",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "checkbox",
+        "name": "Map Scalars",
+        "doc": "When set to True, LookupTable will always be\n        used for scalar mapping. Otherwise, when up to 4 component\n        scalars are present, the components are clamped to a valid\n        color interval (0-255 for an integral type and 0.0-1.0 for a\n        floating point type) and then directly used as\n        color.",
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "checkbox",
+        "name": "Interpolate Scalars Before Mapping",
+        "doc": "When set to true (default), texture coordinates\n        are sent to and interpolated by the graphics card. This is\n        equivalent with interpolating scalars and then mapping them to\n        obtain colors between points. Otherwise, colors are sent to\n        and interpolated by the graphics card.\n        ",
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Opacity",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Point Size",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Line Width",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "list-1",
+        "name": "Interpolation",
+        "values": {
+            "Flat": 0,
+            "Gouraud": 1
+        },
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Specular",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Specular Color",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Specular Power",
+        "range": [{
+            "max": 100,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Ambient",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Diffuse",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Edge Color",
+        "doc": "Set the edge color. This color is used to draw the edge\n        for the polygonal data when EdgeVisibility is on.",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "list-1",
+        "name": "Backface Representation",
+        "doc": "Choose the representation type for the\n        backface.",
+        "values": {
+            "Cull Frontface": 402,
+            "Surface With Edges": 3,
+            "Wireframe": 1,
+            "Surface": 2,
+            "Cull Backface": 401,
+            "Points": 0,
+            "Follow Frontface": 400
+        },
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Backface Ambient Color",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Backface Diffuse Color",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }, {
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Backface Opacity",
+        "range": [{
+            "max": 1,
+            "min": 0
+        }],
+        "type": "float",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Translation",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Scale",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Orientation",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "name": "Origin",
+        "range": [],
+        "type": "float",
+        "advanced": 1,
+        "size": 3
+    }, {
+        "widget": "checkbox",
+        "type": "int",
+        "name": "Pickable",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "checkbox",
+        "name": "Triangulate",
+        "doc": "Triangulate the geometry internally to avoid rendering\n        issues of non-convex polygons. This feature has a processing and memory\n        cost, it should be enabled only when needed.",
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Nonlinear Subdivision Level",
+        "range": [{
+            "max": 4,
+            "min": 0
+        }],
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Block Colors Distinct Values",
+        "doc": "\n          Determines the number of distinct values in\n          vtkBlockColors. This array is added to each block if\n          the dataset is a composite dataset. The array has one value\n          set to (blockIndex % BlockColorsDistinctValues)\n        ",
+        "range": [],
+        "type": "int",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "list-1",
+        "name": "Glyph Type",
+        "doc": "Specify the source objects.",
+        "values": {
+            "Box": "603",
+            "2D Glyph": "647",
+            "Cylinder": "614",
+            "Sphere": "636",
+            "Cone": "592",
+            "Arrow": "581",
+            "Line": "625"
+        },
+        "type": "proxy",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "type": "float",
+        "name": "Custom Bounds",
+        "advanced": 0,
+        "size": 6
+    }, {
+        "widget": "textfield",
+        "type": "int",
+        "name": "Custom Bounds Active",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "type": "int",
+        "name": "Original Bounds Range Active",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "textfield",
+        "type": "float",
+        "name": "Custom Range",
+        "advanced": 0,
+        "size": 6
+    }, {
+        "widget": "textfield",
+        "type": "int",
+        "name": "Custom Range Active",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "checkbox",
+        "name": "Use Axes Origin",
+        "doc": "Specify if the AxesCenter should be used to draw the axes.",
+        "type": "int",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "name": "Axes Origin",
+        "range": [],
+        "type": "float",
+        "advanced": 0,
+        "size": 3
+    }, {
+        "widget": "checkbox",
+        "name": "Sticky Axes",
+        "doc": "Adjust the axes to always be visible in the viewport unless the\n  original bounds of the axes are entirely outside the viewport.",
+        "type": "int",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "checkbox",
+        "name": "Center Sticky Axes",
+        "doc": "Keep the sticky axes centered in the view window.",
+        "type": "int",
+        "advanced": 0,
+        "size": 1
+    }, {
+        "widget": "textfield",
+        "type": "float",
+        "name": "Scalar Opacity Unit Distance",
+        "advanced": 1,
+        "size": 1
+    }, {
+        "widget": "list-1",
+        "name": "Select Mapper",
+        "doc": "Select the volume mapper to use for Volume\n        rendering.",
+        "values": ["Projected tetra", "HAVS", "Z sweep", "Bunyk ray cast"],
+        "type": "str",
+        "advanced": 1,
+        "size": 1
+    }],
+    "id": "729",
+    "properties": [{
+        "name": "CubeAxesVisibility",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "Representation",
+        "value": "Surface",
+        "id": "729"
+    }, {
+        "name": "AmbientColor",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "DiffuseColor",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "MapScalars",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "InterpolateScalarsBeforeMapping",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "Opacity",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "PointSize",
+        "value": 2,
+        "id": "729"
+    }, {
+        "name": "LineWidth",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "Interpolation",
+        "value": "Gouraud",
+        "id": "729"
+    }, {
+        "name": "Specular",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "SpecularColor",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "SpecularPower",
+        "value": 100,
+        "id": "729"
+    }, {
+        "name": "Ambient",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "Diffuse",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "EdgeColor",
+        "value": [0, 0, 0.5],
+        "id": "729"
+    }, {
+        "name": "BackfaceRepresentation",
+        "value": "Follow Frontface",
+        "id": "729"
+    }, {
+        "name": "BackfaceAmbientColor",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "BackfaceDiffuseColor",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "BackfaceOpacity",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "Position",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "Scale",
+        "value": [1, 1, 1],
+        "id": "729"
+    }, {
+        "name": "Orientation",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "Origin",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "Pickable",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "Triangulate",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "NonlinearSubdivisionLevel",
+        "value": 1,
+        "id": "729"
+    }, {
+        "name": "BlockColorsDistinctValues",
+        "value": 12,
+        "id": "729"
+    }, {
+        "name": "GlyphType",
+        "value": "Arrow",
+        "id": "729"
+    }, {
+        "name": "CustomBounds",
+        "value": [0, 1, 0, 1, 0, 1],
+        "id": "729"
+    }, {
+        "name": "CustomBoundsActive",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "OriginalBoundsRangeActive",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "CustomRange",
+        "value": [0, 1, 0, 1, 0, 1],
+        "id": "729"
+    }, {
+        "name": "CustomRangeActive",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "UseAxesOrigin",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "AxesOrigin",
+        "value": [0, 0, 0],
+        "id": "729"
+    }, {
+        "name": "StickyAxes",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "CenterStickyAxes",
+        "value": 0,
+        "id": "729"
+    }, {
+        "name": "ScalarOpacityUnitDistance",
+        "value": 1.3901072164734267,
+        "id": "729"
+    }, {
+        "name": "SelectMapper",
+        "value": "Projected tetra",
+        "id": "729"
+    }]
+}

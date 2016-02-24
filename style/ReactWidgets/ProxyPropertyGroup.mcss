@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.toolbar {
+  background-color: #ddd;
+  border: 1px solid #aaa;
+  line-height: 2em;
+  height: 2em;
+  user-select: none;
+  margin-bottom: 5px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.expandedIcon {
+  margin-left: 10px;
+  composes: fa        from 'font-awesome/css/font-awesome.css';
+  composes: fa-minus  from 'font-awesome/css/font-awesome.css';
+}
+
+.collapedIcon {
+  margin-left: 10px;
+  composes: fa        from 'font-awesome/css/font-awesome.css';
+  composes: fa-plus   from 'font-awesome/css/font-awesome.css';
+}
+
+.title {
+   text-transform: capitalize;
+}
+
+.tag {
+  composes: fa-stack from 'font-awesome/css/font-awesome.css';
+  color: #aaa;
+  font-size: 75%;
+  margin-right: 10px;
+}
+
+.emptyTag {
+  composes: tag;
+  visibility: hidden;
+}
+
+.tagBackground {
+  composes: fa-stack-2x from 'font-awesome/css/font-awesome.css';
+  composes: fa-circle   from 'font-awesome/css/font-awesome.css';
+  composes: fa          from 'font-awesome/css/font-awesome.css';
+}
+
+.tagCount {
+  composes: fa-stack-1x from 'font-awesome/css/font-awesome.css';
+  composes: fa-stack-text from 'font-awesome/css/font-awesome.css';
+  composes: fa-inverse from 'font-awesome/css/font-awesome.css';
+}
+
+.hidden {
+  display: none;
+}
+
+.content {
+  margin-bottom: 5px;
+}

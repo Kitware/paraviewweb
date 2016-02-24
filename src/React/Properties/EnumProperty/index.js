@@ -51,7 +51,7 @@ export default React.createClass({
         const multiple = (this.props.ui.size === -1),
             mapper = () => {
                 var ret = [];
-                if (!multiple) {
+                if (!multiple && !this.props.ui.noEmpty) {
                     ret.push(<option key="empty-value" value={null}></option>);
                 }
 
@@ -79,7 +79,7 @@ export default React.createClass({
                 </div>
                 <div className={ style.inputBlock }>
                     <select
-                        className={ enumStyle.input }
+                        className={ multiple ? enumStyle.inputMultiSelect : enumStyle.input }
                         value={multiple ? this.props.data.value : this.props.data.value[0]}
                         defaultValue={null}
                         onChange={this.valueChange}

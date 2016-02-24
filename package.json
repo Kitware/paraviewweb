@@ -15,7 +15,15 @@
     "dependencies": {
         "autobahn": "0.9.6",
         "when": "3.7.7",
-        "ws": "0.8.1"
+        "ws": "0.8.1",
+
+        "commander": "2.9.0",
+        "shelljs": "0.5.3",
+        "connect": "3.4.1",
+        "serve-static": "1.10.2",
+        "serve-index": "1.7.3",
+        "mdoc": "0.5.2",
+        "gh-pages": "0.10.0"
     },
     "devDependencies": {
         "axios": "0.9.0",
@@ -81,15 +89,7 @@
 
         "commitizen": "2.5.0",
         "cz-conventional-changelog": "1.1.5",
-        "semantic-release": "4.3.5",
-
-        "commander": "2.9.0",
-        "shelljs": "0.5.3",
-        "connect": "3.4.1",
-        "serve-static": "1.10.2",
-        "serve-index": "1.7.3",
-        "mdoc": "0.5.2",
-        "gh-pages": "0.10.0"
+        "semantic-release": "4.3.5"
     },
     "config": {
         "commitizen": {
@@ -97,17 +97,21 @@
         }
     },
     "bin": {
-        "pvw-doc": "./documentation/cli/pvw-doc.js"
+        "pvw-doc": "./tools/doc-generator/doc-generator-cli.js",
+        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-9.6.0-cli.js"
     },
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
 
-        "doc"           : "node ./documentation/cli/pvw-doc -e",
-        "doc:www"       : "node ./documentation/cli/pvw-doc -aest",
-        "doc:publish"   : "node ./documentation/cli/pvw-doc -p",
+        "bin:pvw-doc"      : "node ./tools/doc-generator/doc-generator-cli.js",
+        "bin:fix-autobahn" : "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
 
-        "build"         : "webpack --progress --colors",
-        "build:release" : "export NODE_ENV=production && npm run build -- -p",
+        "doc"           : "npm run bin:pvw-doc -- -e",
+        "doc:www"       : "npm run bin:pvw-doc -- -aest",
+        "doc:publish"   : "npm run bin:pvw-doc -- -p",
+
+        "build"         : "npm run bin:fix-autobahn && webpack --progress --colors",
+        "build:release" : "npm run bin:fix-autobahn && export NODE_ENV=production && npm run build -- -p",
 
         "test"          : "karma start ./config/karma.conf.js",
         "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS --single-run",

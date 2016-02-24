@@ -9,14 +9,20 @@ export function double(val) {
 export function string(val) {
   return String(val);
 }
-  
+
 export function boolean(val) {
   return Boolean(val);
 }
 
+export function proxy(val) {
+  console.log('Try to convert to proxy', val)
+  return (val);
+}
+
 export default {
   integer, int: integer,
-  double, dbl: double,
+  double, dbl: double, float: double,
   string, str: string,
   boolean, bool: boolean,
+  proxy,
 }

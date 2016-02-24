@@ -329,7 +329,7 @@ export default React.createClass({
     toggleActive(event) {
         var { actives, nodes } = this.state;
 
-        if(event.target.nodeName !== 'circle' && !event.target.classList.contains('fa')) {
+        if(event.target.nodeName !== 'circle' && !event.target.classList.contains(style.iconText)) {
             const size = SizeHelper.getSize(ReactDOM.findDOMNode(this)),
                 { deltaY } = this.props,
                 originTop = size.clientRect.y || size.clientRect.top, // Firefox vs Chrome/Safari

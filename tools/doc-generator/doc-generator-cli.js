@@ -9,7 +9,7 @@ var program = require('commander'),
     publishBaseURL = '/' + pkg.repository.url.split('/').pop().split('.git')[0],
     version = /semantically-release/.test(pkg.version) ? 'development version' : pkg.version,
     baseUrl = "''",
-    buildHelper = require('./pvw-build'),
+    buildHelper = require('../example-build/example-builder.js'),
     examples = buildHelper.examples,
     rootWWW = path.join(process.env.PWD, 'documentation/www'),
     apiFound = [],
@@ -86,7 +86,7 @@ if(program.api || program.stats) {
     console.log('\n=> Build API\n');
 
     var rootTmp = path.join(process.env.PWD, 'documentation/_tmp');
-    var mdocTpl = path.join(process.env.PWD, 'documentation/style/mdoc')
+    var mdocTpl = path.join(__dirname, 'mdoc')
 
     shell.rm('-rf', rootTmp);
     shell.mkdir('-p', rootTmp);
@@ -180,7 +180,9 @@ if(program.stats) {
 // ----------------------------------------------------------------------------
 
 if(program.examples) {
-    console.log('\n=> Build Examples: ', program.args.length ? program.args.join(', ') : '(All)');
+    var examples = [].concat(program.examples, program.args);
+    var buildAll = program.examples === !!program.examples;
+    console.log('\n=> Build Examples: ', buildAll ? '(All)' : examples.join(', '));
     console.log();
 
     // Copy data
@@ -188,8 +190,8 @@ if(program.examples) {
 
     // Build examples
     buildHelper.addDoneListener(doneWithProcessing);
-    if(program.args.length) {
-        buildHelper.buildList(program.args, baseUrl);
+    if(!buildAll) {
+        buildHelper.buildList(examples, baseUrl);
     } else {
         buildHelper.buildAll(baseUrl);
     }
