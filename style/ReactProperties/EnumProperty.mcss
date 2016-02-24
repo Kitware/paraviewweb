@@ -8,3 +8,8 @@
     border-color: lightgray lightgray gray lightgray;
     border-style: solid;
 }
+
+.inputMultiSelect {
+  composes: input;
+  height: 5.5em;
+}
