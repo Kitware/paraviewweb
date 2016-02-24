@@ -3,19 +3,25 @@ var path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     examples = {},
     listToBuild = [],
-    doneListeners = [];
+    doneListeners = [],
+    templatePath = path.resolve(__dirname, './template.html'),
+    rootPath = path.resolve(__dirname, '../../documentation/www/examples');
+
+function setDestinationPath(p) {
+    rootPath = p;
+}
 
 function buildWebpackConfiguration(name, basepath) {
     var config = {
             plugins: [],
             entry: examples[name],
         output: {
-          path: path.join(__dirname, '../www/examples', name),
+          path: path.join(rootPath, name),
           filename: name + '.js',
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: './documentation/style/template.html',
+                template: templatePath,
                 inject: 'body',
                 title: name,
             }),
@@ -98,4 +104,5 @@ module.exports = {
     examples,
     buildList,
     buildAll,
+    setDestinationPath,
 }
