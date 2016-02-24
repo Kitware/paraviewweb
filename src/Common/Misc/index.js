@@ -1,5 +1,6 @@
 import CanvasOffscreenBuffer    from './CanvasOffscreenBuffer';
 import Convert                  from './Convert';
+import ConvertProxyProperty     from './ConvertProxyProperty';
 import Debounce                 from './Debounce';
 import ImageExporter            from './ImageExporter';
 import Loop                     from './Loop';
@@ -12,6 +13,7 @@ import WebGl                    from './WebGl';
 export default {
     CanvasOffscreenBuffer,
     Convert,
+    ConvertProxyProperty,
     Debounce,
     ImageExporter,
     Loop,
