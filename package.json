@@ -98,7 +98,7 @@
     },
     "bin": {
         "pvw-doc": "./tools/doc-generator/doc-generator-cli.js",
-        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-9.6.0-cli.js"
+        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js"
     },
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
