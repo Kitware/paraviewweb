@@ -51,7 +51,7 @@ export default React.createClass({
 
   valueChange(change) {
     const changeSet = this.state.changeSet;
-    changeSet[change.id] = change.value;
+    changeSet[change.id] = (change.size === 1 && Array.isArray(change.value)) ? change.value[0] : change.value;
     this.setState({changeSet});
     if(this.props.onChange) {
       this.props.onChange(changeSet);
@@ -59,8 +59,12 @@ export default React.createClass({
   },
 
   render() {
-    const ctx = { advanced: this.props.advanced, filter: this.props.filter };
+    const properties = {};
+    const ctx = { advanced: this.props.advanced, filter: this.props.filter, properties };
     const changeSetCount = Object.keys(this.state.changeSet).length;
+    this.state.properties.forEach(p => {
+      properties[p.data.id] = p.data.value;
+    });
 
     return (
         <div className={ style.container }>
