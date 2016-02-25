@@ -38,20 +38,21 @@ export default React.createClass({
 
         if (validate[this.props.type](newVal)) {
             let propVal = convert[this.props.type](newVal);
-            if (this.props.type === 'integer' || this.props.type === 'int' ||
-                this.props.type === 'double'  || this.props.type === 'dbl') {
-                propVal = this.clamp(propVal);
-            }
+            propVal = this.applyDomains(this.props.idx, propVal);
             this.props.onChange(this.props.idx, propVal);
         }
     },
 
-  clamp(val) {
-    if (this.props.domain.hasOwnProperty('min')) {
-      val = Math.max(this.props.domain.min, val);
+  applyDomains(idx, val) {
+    if(!this.props.domain) {
+      return val;
     }
-    if (this.props.domain.hasOwnProperty('max')) {
-      val = Math.min(this.props.domain.max, val);
+
+    // Handle range
+    if (this.props.domain.hasOwnProperty('range')) {
+      const { min, max } = this.props.domain.range[idx];
+      val = (min !== undefined) ? Math.max(min, val) : val;
+      val = (max !== undefined) ? Math.min(max, val) : val;
     }
     return val;
   },

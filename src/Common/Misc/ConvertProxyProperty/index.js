@@ -11,6 +11,10 @@ function extractLayout(ui) {
     return ui.size.toString();
   }
 
+  if(ui.widget === 'list-1') {
+    return '1';
+  }
+
   if(ui.size === 6) {
     if(ui.name.toLowerCase().indexOf('bound')) {
       return '3x2';
@@ -25,6 +29,13 @@ function extractLayout(ui) {
   return 'NO_LAYOUT';
 }
 
+function extractType(ui) {
+  if(ui.type === 'proxy') {
+    return 'string';
+  }
+  return ui.type;
+}
+
 function extractDomain(ui) {
   if(ui.values) {
     if(Array.isArray(ui.values)) {
@@ -34,11 +45,18 @@ function extractDomain(ui) {
       });
       return domain;
     }
+    if(ui.type === 'proxy') {
+      const domain = {};
+      for(const key in ui.values) {
+        domain[key] = key;
+      }
+      return domain;
+    }
     return ui.values;
   }
 
   if(ui.range) {
-    console.log('FIXME: build domain using range');
+    return { range: ui.range };
   }
 
   return {};
@@ -50,10 +68,17 @@ export function proxyPropToProp(property, ui) {
     console.log('No propType for', ui);
   }
 
+  const depList = ui.depends ? ui.depends.split(':') : null;
+  const depStatus = depList ? Boolean(Number(depList.pop())) : true;
+  const depValue = depList ? depList.pop() : null;
+  const depId = depList ? depList.join(':') : null;
   const searchString = [ ui.name, ui.doc ].concat(property.value).join(' ').toLowerCase();
 
   return {
     show(ctx) {
+      if(depId && ctx.properties[depId] !== undefined) {
+        return (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
+      }
       if(ctx.filter && ctx.filter.length) {
         const queries = ctx.filter.toLowerCase().split(' ');
         let match = true;
@@ -72,7 +97,7 @@ export function proxyPropToProp(property, ui) {
       help: ui.doc,
       noEmpty: true,
       layout: extractLayout(ui),
-      type: ui.type,
+      type: extractType(ui),
       domain: extractDomain(ui),
       componentLabels: [],
       size: ui.size,
@@ -80,6 +105,7 @@ export function proxyPropToProp(property, ui) {
     data: {
       id: [property.id, property.name].join(':'),
       value: [].concat(property.value),
+      size: ui.size,
     },
   }
 }
