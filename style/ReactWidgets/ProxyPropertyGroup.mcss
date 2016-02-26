@@ -9,8 +9,9 @@
 .toolbar {
   background-color: #ddd;
   border: 1px solid #aaa;
-  line-height: 2em;
-  height: 2em;
+  line-height: 30px;
+  height: 30px;
+  min-height: 30px;
   user-select: none;
   margin-bottom: 5px;
 

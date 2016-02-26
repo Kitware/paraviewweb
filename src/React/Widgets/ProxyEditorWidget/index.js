@@ -8,6 +8,7 @@ export default React.createClass({
 
   propTypes: {
     advanced: React.PropTypes.bool,
+    children: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]),
     onApply: React.PropTypes.func,
     sections: React.PropTypes.array.isRequired,
   },
@@ -62,15 +63,18 @@ export default React.createClass({
                   onClick={ this.applyChanges }>
                 </i>
             </div>
-            { this.props.sections.map( section => {
-                return <PropertyGroup
-                          key={ section.name }
-                          proxy={ section }
-                          filter={ this.state.filter }
-                          collapsed={ section.collapsed }
-                          advanced={ this.state.advanced }
-                          onChange={ this.updateChangeSet }/>
-            })}
+            <div className={ style.contentContainer }>
+              { this.props.children }
+              { this.props.sections.map( section => {
+                  return <PropertyGroup
+                            key={ section.name }
+                            proxy={ section }
+                            filter={ this.state.filter }
+                            collapsed={ section.collapsed }
+                            advanced={ this.state.advanced }
+                            onChange={ this.updateChangeSet }/>
+              })}
+            </div>
         </div>);
   },
 });
