@@ -15,6 +15,7 @@ import LayoutsWidget            from './LayoutsWidget';
 import LookupTableWidget        from './LookupTableWidget';
 import NumberInputWidget        from './NumberInputWidget';
 import NumberSliderWidget       from './NumberSliderWidget';
+import PresetListWidget         from './PresetListWidget';
 import ProxyEditorWidget        from './ProxyEditorWidget';
 import ProxyPropertyGroupWidget from './ProxyPropertyGroupWidget';
 import QueryDataModelWidget     from './QueryDataModelWidget';
@@ -42,6 +43,7 @@ export default {
     LookupTableWidget,
     NumberInputWidget,
     NumberSliderWidget,
+    PresetListWidget,
     ProxyEditorWidget,
     ProxyPropertyGroupWidget,
     QueryDataModelWidget,
