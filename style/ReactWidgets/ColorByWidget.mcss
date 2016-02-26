@@ -1,0 +1,155 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.advancedView {
+  margin-top: 3px;
+  position: relative;
+  width: 100%;
+  height: 6em;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.advancedViewControl {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.advancedViewContent {
+  flex: 1;
+  max-width: calc(100% - 1.28571em - 4px);
+}
+
+.hidden {
+  display: none;
+}
+
+.input {
+  flex: 1;
+}
+
+.scalarBar {
+  width: calc(100% - 2.5em);
+  height: 1em;
+  cursor: pointer;
+  border: solid 1px black;
+}
+
+.representationIcon {
+  composes: fa     from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw  from 'font-awesome/css/font-awesome.css';
+  composes: fa-eye from 'font-awesome/css/font-awesome.css';
+  flex: none;
+}
+
+.colorIcon {
+  composes: fa      from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw   from 'font-awesome/css/font-awesome.css';
+  composes: fa-tint from 'font-awesome/css/font-awesome.css';
+  flex: none;
+}
+
+.scalarBarIconOn {
+  composes: fa          from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw       from 'font-awesome/css/font-awesome.css';
+  composes: fa-bookmark from 'font-awesome/css/font-awesome.css';
+  flex: none;
+  cursor: pointer;
+}
+
+.scalarBarIconOff {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-bookmark-o from 'font-awesome/css/font-awesome.css';
+  flex: none;
+  cursor: pointer;
+}
+
+.advanceIconOn {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-cog        from 'font-awesome/css/font-awesome.css';
+  flex: none;
+  cursor: pointer;
+  color: #000;
+}
+
+.advanceIconOff {
+  composes: advanceIconOn;
+  color: #aaa;
+}
+
+.icon {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  width: 1.28571em;
+  height: 1.28571em;
+  line-height: 1.28571em;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.activeIcon {
+  composes: fa-inverse from 'font-awesome/css/font-awesome.css';
+  background: #555;
+  border-radius: 5px;
+}
+
+.presetIcon {
+  composes: icon;
+  composes: fa-heart from 'font-awesome/css/font-awesome.css';
+}
+
+
+.activePresetIcon {
+  composes: presetIcon;
+  composes: activeIcon;
+}
+
+.rangeIcon {
+  composes: icon;
+  composes: fa-arrows-h   from 'font-awesome/css/font-awesome.css';
+}
+
+.activeRangeIcon {
+  composes: rangeIcon;
+  composes: activeIcon;
+}
+
+.opacityIcon {
+  composes: icon;
+  composes: fa-adjust   from 'font-awesome/css/font-awesome.css';
+}
+
+.activeOpacityIcon {
+  composes: opacityIcon;
+  composes: activeIcon;
+}
+
+.colorEditIcon {
+  composes: icon;
+  composes: fa-tint   from 'font-awesome/css/font-awesome.css';
+}
+
+.activeColorEditIcon {
+  composes: colorEditIcon;
+  composes: activeIcon;
+}
