@@ -39,5 +39,8 @@ export default function createMethods(session) {
         listColorMapNames: () => {
             return session.call('pv.color.manager.list.preset', []);
         },
+        listColorMapImages: (numSamples=256) => {
+            return session.call('pv.color.manager.lut.image.all', [numSamples]);
+        },
     };
 }
