@@ -4,19 +4,34 @@
   justify-content: flex-start;
   align-items: stretch;
   box-sizing: border-box;
+  max-height: 100%;
+}
+
+.contentContainer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-y: scroll;
+  max-height: calc(100% - 30px);
+
+  background: linear-gradient(#eee 10px, hsla(0,0%,100%,0)) 0 0 / 100% 40px,
+              radial-gradient(at top, rgba(0,0,0,.3), transparent 70%) 0 0 / 100% 10px,
+              linear-gradient(to top, #eee 10px, hsla(0,0%,100%,0)) bottom / 100% 40px,
+              radial-gradient(at bottom, rgba(0,0,0,.3), transparent 70%) bottom / 100% 10px;
+  background-repeat: no-repeat;
+  background-attachment: local, scroll, local, scroll;
 }
 
 .toolbar {
   background-color: #ddd;
   border: 1px solid #aaa;
-  line-height: 2em;
-  height: 2em;
+  line-height: 30px;
+  height: 30px;
+  min-height: 30px;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
 }
 
 .advancedButton {

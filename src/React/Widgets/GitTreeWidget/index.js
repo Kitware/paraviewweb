@@ -131,6 +131,7 @@ export default React.createClass({
             React.PropTypes.instanceOf(null), //this could have some problematic effect
         ]),
         stroke: React.PropTypes.number,
+        style: React.PropTypes.object,
         textColor: React.PropTypes.array,
         textWeight: React.PropTypes.array,
         width: React.PropTypes.oneOfType([
@@ -143,6 +144,7 @@ export default React.createClass({
         return {
             nodes: [],
             actives: [],
+            style: {},
 
             enableDelete: false,
             deltaX: 20,
@@ -390,7 +392,7 @@ export default React.createClass({
 
     render() {
         return (
-            <svg width={this.props.width} height={this.props.deltaY * this.state.nodes.length + 'px'} onClick={ this.toggleActive }>
+            <svg style={this.props.style} width={this.props.width} height={this.props.deltaY * this.state.nodes.length + 'px'} onClick={ this.toggleActive }>
                 { this.renderActives()       }
                 { this.renderBranches()      }
                 { this.renderForks()         }

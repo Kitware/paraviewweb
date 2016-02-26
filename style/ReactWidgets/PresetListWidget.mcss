@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 100%;
+    overflow-y: scroll;
+    border: solid 1px black;
+    box-sizing: border-box;
+}
+
+.line {
+  border: 2px solid rgba(0,0,0,0);
+  border-color: none;
+  min-height: 1em;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.activeLine {
+  composes: line;
+  border-color: #000;
+}
+
+.bottomPadding {
+  position: relative;
+  min-height: 3px;
+}
