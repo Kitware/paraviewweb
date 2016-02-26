@@ -31,9 +31,7 @@
     transform: rotate(-90deg);
 }
 
-.title {
-  text-transform: capitalize;
-}
+.title {}
 
 .subtitle {
   position: absolute;
