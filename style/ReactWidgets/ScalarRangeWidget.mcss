@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.rangeInput {
+  flex: 1;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.actionLine {
+  flex: 1;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
+
+.iconButton {
+  flex: none;
+  cursor: pointer;
+  composes: fa from 'font-awesome/css/font-awesome.css';
+  text-align: center;
+  min-width: 2em;
+  min-height: 2em;
+  line-height: 2em;
+  border-radius: 5px;
+  background: #ccc;
+  border: solid 1px #aaa;
+}
+
+.dataRangeIcon {
+  composes: iconButton;
+  composes: fa-database from 'font-awesome/css/font-awesome.css';
+}
+
+.timeRangeIcon {
+  composes: iconButton;
+  composes: fa-clock-o from 'font-awesome/css/font-awesome.css';
+}
+
+.customRangeIcon {
+  composes: iconButton;
+  composes: fa-user from 'font-awesome/css/font-awesome.css';
+}
