@@ -1,0 +1,44 @@
+.small {
+  width: 15px;
+  height: 15px;
+}
+
+.medium {
+  width: 25px;
+  height: 25px;
+}
+
+.big {
+  width: 35px;
+  height: 35px;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.smallIcon {
+  composes: icon;
+  composes: small;
+}
+
+.mediumIcon {
+  composes: icon;
+  composes: medium;
+}
+
+.bigIcon {
+  composes: icon;
+  composes: big;
+}
+
+
+.redIcon {
+  composes: medium;
+  composes: icon;
+  fill: red;
+}
+
+.redIcon:hover {
+  fill: green;
+}
