@@ -1,7 +1,6 @@
-import React              from 'react';
-import PresetListWidget   from '../PresetListWidget';
-import ScalarRangeWidget  from '../ScalarRangeWidget';
-import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+import React        from 'react';
+import AdvancedView from './AdvancedView';
+import style        from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 
 const SEP = ':|:';
 
@@ -44,7 +43,6 @@ export default React.createClass({
         representationValues: [],
         scalarBarVisible: false,
         solidColor: '#fff',
-        activeAdvanceView: '0',
     };
   },
 
@@ -150,31 +148,6 @@ export default React.createClass({
     }
   },
 
-  updatePreset(name) {
-    if(this.props.onChange) {
-      this.props.onChange({
-        type: 'updatePreset',
-        representation: this.props.representation.id,
-        preset: name,
-      });
-    }
-  },
-
-  updateRange(options) {
-    options.proxyId = this.props.source.id;
-    if(this.props.onChange) {
-      this.props.onChange({
-        type: 'updateScalarRange',
-        options,
-      });
-    }
-  },
-
-  updateActiveView(event) {
-    const activeAdvanceView = event.target.dataset.idx;
-    this.setState({activeAdvanceView});
-  },
-
   render() {
     if(!this.props.source || !this.props.representation) {
       return null;
@@ -215,33 +188,7 @@ export default React.createClass({
           <i onClick={ this.toggleScalarBar }
              className={ this.state.scalarBarVisible ? style.scalarBarIconOn : style.scalarBarIconOff }></i>
         </div>
-        <div className={ this.state.advancedView ? style.advancedView : style.hidden } >
-          <div className={ style.advancedViewControl }>
-            <i data-idx='0'
-                onClick={ this.updateActiveView }
-                className={ this.state.activeAdvanceView === '0' ? style.activePresetIcon    : style.presetIcon    }></i>
-            <i data-idx='1'
-                onClick={ this.updateActiveView }
-                className={ this.state.activeAdvanceView === '1' ? style.activeRangeIcon     : style.rangeIcon     }></i>
-            <i data-idx='2'
-                onClick={ this.updateActiveView }
-                className={ this.state.activeAdvanceView === '2' ? style.activeOpacityIcon   : style.opacityIcon   }></i>
-            <i data-idx='3'
-                onClick={ this.updateActiveView }
-                className={ this.state.activeAdvanceView === '3' ? style.activeColorEditIcon : style.colorEditIcon }></i>
-          </div>
-          <div className={ style.advancedViewContent }>
-            <PresetListWidget
-                visible={ this.state.activeAdvanceView === '0' }
-                onChange={ this.updatePreset }
-                presets={ this.props.presets } />
-            <ScalarRangeWidget
-                visible={ this.state.activeAdvanceView === '1' }
-                min={ this.props.min }
-                max={ this.props.max }
-                onApply={ this.updateRange }/>
-          </div>
-        </div>
+        <AdvancedView visible={this.state.advancedView} { ...this.props }/>
       </div>);
   },
 });
