@@ -22,6 +22,7 @@ import ProxyPropertyGroupWidget from './ProxyPropertyGroupWidget';
 import QueryDataModelWidget     from './QueryDataModelWidget';
 import ResplendentWidget        from './ResplendentWidget';
 import ScalarRangeWidget        from './ScalarRangeWidget';
+import SvgIconWidget            from './SvgIconWidget';
 import TextInputWidget          from './TextInputWidget';
 import ToggleIconButtonWidget   from './ToggleIconButtonWidget';
 import TogglePanelWidget        from './TogglePanelWidget';
@@ -51,6 +52,7 @@ export default {
     QueryDataModelWidget,
     ResplendentWidget,
     ScalarRangeWidget,
+    SvgIconWidget,
     TextInputWidget,
     ToggleIconButtonWidget,
     TogglePanelWidget,
