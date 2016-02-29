@@ -25,7 +25,22 @@
 }
 
 .helpIcon {
+    composes: fa from 'font-awesome/css/font-awesome.css';
     composes: fa-question-circle from 'font-awesome/css/font-awesome.css';
+}
+
+.plusIcon {
+  composes: fa from 'font-awesome/css/font-awesome.css';
+  composes: fa-plus from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.deleteIcon {
+  position: relative;
+  top: 10px;
+  composes: fa from 'font-awesome/css/font-awesome.css';
+  composes: fa-trash-o from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
 }
 
 .helpBox {

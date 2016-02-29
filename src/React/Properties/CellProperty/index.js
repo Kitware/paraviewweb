@@ -22,11 +22,45 @@ export default React.createClass({
 
     valueChange(idx, newVal) {
         var newData = this.state.data;
-        newData.value[idx] = newVal;
+        if(newVal === null) {
+          newData.value.splice(idx, 1);
+        } else {
+          newData.value[idx] = newVal;
+        }
+
         this.setState({data: newData});
         if (this.props.onChange) {
             this.props.onChange(newData);
         }
+    },
+
+    addValue() {
+      var newData = this.state.data,
+        values = newData.value;
+
+      switch(values.length) {
+        case 0:
+          values.push(0);
+        break;
+        case 1:
+          values.push(values[0]);
+        break;
+        default:
+          const last = Number(values[values.length - 1]);
+          const beforeLast = Number(values[values.length - 2]);
+          const newValue = last + (last - beforeLast);
+          if(!Number.isNaN(newValue) && Number.isFinite(newValue)) {
+            values.push(newValue);
+          } else {
+            values.push(values[values.length - 1]);
+          }
+
+      }
+
+      this.setState({data: newData});
+      if (this.props.onChange) {
+          this.props.onChange(newData);
+      }
     },
 
     render() {
@@ -35,6 +69,9 @@ export default React.createClass({
                 <div className={ style.header }>
                     <strong>{this.props.ui.label}</strong>
                     <span>
+                        <i className={ this.props.ui.layout === '-1' ? style.plusIcon : style.hidden }
+                           onClick={ this.addValue }>
+                        </i>
                         <ToggleIconButton
                             icon={ style.helpIcon }
                             value={this.state.helpOpen}
@@ -44,9 +81,7 @@ export default React.createClass({
                 </div>
                 <div className={ style.inputBlock }>
                     <table className={ style.inputTable }>
-                        <tbody>
-                            { layouts(this.props.data, this.state.ui, this.valueChange) }
-                        </tbody>
+                      { layouts(this.props.data, this.props.ui, this.valueChange) }
                     </table>
                 </div>
                 <div className={ this.state.helpOpen ? style.helpBox : style.hidden }

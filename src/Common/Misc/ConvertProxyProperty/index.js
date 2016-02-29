@@ -7,6 +7,10 @@ const typeMapping = {
 };
 
 function extractLayout(ui) {
+  if(ui.size === 0) {
+    return '-1';
+  }
+
   if(ui.size < 4) {
     return ui.size.toString();
   }

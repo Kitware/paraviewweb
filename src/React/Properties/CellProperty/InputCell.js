@@ -49,12 +49,35 @@ export default React.createClass({
     }
 
     // Handle range
-    if (this.props.domain.hasOwnProperty('range')) {
-      const { min, max } = this.props.domain.range[idx];
-      val = (min !== undefined) ? Math.max(min, val) : val;
-      val = (max !== undefined) ? Math.min(max, val) : val;
+    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+      const size = this.props.domain.range.length;
+      const { min, max, force } = this.props.domain.range[idx % size];
+      if(force) {
+        val = (min !== undefined) ? Math.max(min, val) : val;
+        val = (max !== undefined) ? Math.min(max, val) : val;
+      }
     }
     return val;
+  },
+
+  getTooltip() {
+    var tooltip = '';
+    const idx = this.props.idx;
+
+    if(!this.props.domain) {
+      return tooltip;
+    }
+
+    // Handle range
+    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+      const size = this.props.domain.range.length;
+      const { min, max } = this.props.domain.range[idx % size] || {};
+
+      tooltip += (min !== undefined) ? `min(${min}) ` : '';
+      tooltip += (max !== undefined) ? `max(${max}) ` : '';
+    }
+
+    return tooltip;
   },
 
   endEditing(){
@@ -69,6 +92,7 @@ export default React.createClass({
             className={ style.inputCellInput }
             value={this.state.editing ? this.state.valueRep : this.props.value}
             onChange={this.valueChange}
+            title={ this.getTooltip() }
             onBlur={this.endEditing}/>
       </td>);
   },
