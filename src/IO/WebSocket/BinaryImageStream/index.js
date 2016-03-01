@@ -16,6 +16,8 @@ export default class BinaryImageStream {
         this.view_id = -1;
         this.stillQuality = stillQuality;
         this.interactiveQuality = interactiveQuality;
+
+        this.lastImageReadyEvent = null;
     }
 
     enableView(enabled) {
@@ -71,11 +73,13 @@ export default class BinaryImageStream {
                     this.fps = Math.floor(10000 / (time - this.lastTime)) / 10;
                     this.lastTime = time;
 
-                    this.emit(IMAGE_READY, {
+                    this.lastImageReadyEvent = {
                         url: this.activeURL,
                         fps: this.fps,
                         metadata: this.metadata,
-                    });
+                    };
+
+                    this.emit(IMAGE_READY, this.lastImageReadyEvent);
                 }
                 this.textMode = !this.textMode;
             };
@@ -92,6 +96,10 @@ export default class BinaryImageStream {
 
     onImageReady(callback) {
         return this.on(IMAGE_READY, callback);
+    }
+
+    getLastImageReadyEvent() {
+      return this.lastImageReadyEvent;
     }
 }
 

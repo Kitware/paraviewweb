@@ -1,7 +1,9 @@
 import ColorManager             from './ColorManager';
 import FileListing              from './FileListing';
+import KeyValuePairStore        from './KeyValuePairStore';
 import MouseHandler             from './MouseHandler';
 import ProxyManager             from './ProxyManager';
+import SaveData                 from './SaveData';
 import TimeHandler              from './TimeHandler';
 import ViewPort                 from './ViewPort';
 import ViewPortGeometryDelivery from './ViewPortGeometryDelivery';
@@ -11,8 +13,10 @@ const
     protocolsMap = {
         ColorManager,
         FileListing,
+        KeyValuePairStore,
         MouseHandler,
         ProxyManager,
+        SaveData,
         TimeHandler,
         ViewPort,
         ViewPortGeometryDelivery,
