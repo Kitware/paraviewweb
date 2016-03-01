@@ -4,6 +4,7 @@ const typeMapping = {
   'list-n': 'Enum',
   'list-1': 'Enum',
   checkbox: 'Checkbox',
+  textarea: 'Cell',
 };
 
 function extractLayout(ui) {
