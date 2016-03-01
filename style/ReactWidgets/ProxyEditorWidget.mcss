@@ -54,6 +54,7 @@
     padding: 2px 15px;
     flex: 1;
     border: 1px solid #ddd;
+    line-height: normal;
 }
 
 .filter:active, .filter:focus {

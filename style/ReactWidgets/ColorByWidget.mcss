@@ -10,7 +10,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    line-height: 2.5em;
+    height: 2.5em;
 }
 
 .advancedView {
@@ -36,6 +37,7 @@
 .advancedViewContent {
   flex: 1;
   max-width: calc(100% - 1.28571em - 4px);
+  height: 6em;
 }
 
 .hidden {
@@ -44,6 +46,13 @@
 
 .input {
   flex: 1;
+
+  height: 28px;
+  border-radius: 5px;
+  background-color: white;
+  border-width: 1px;
+  border-color: lightgray lightgray gray lightgray;
+  border-style: solid;
 }
 
 .scalarBar {

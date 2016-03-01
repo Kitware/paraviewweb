@@ -25,9 +25,9 @@
   cursor: pointer;
   composes: fa from 'font-awesome/css/font-awesome.css';
   text-align: center;
-  min-width: 2em;
-  min-height: 2em;
-  line-height: 2em;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  line-height: 1.5em;
   border-radius: 5px;
   background: #ccc;
   border: solid 1px #aaa;

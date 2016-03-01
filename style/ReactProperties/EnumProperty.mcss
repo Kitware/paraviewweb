@@ -2,7 +2,7 @@
     margin-top: 6px;
     width: 100%;
     height: 28px;
-    border-radius: 1px;
+    border-radius: 5px;
     background-color: white;
     border-width: 1px;
     border-color: lightgray lightgray gray lightgray;
