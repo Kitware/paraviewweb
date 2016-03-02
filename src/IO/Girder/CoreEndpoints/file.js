@@ -92,7 +92,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(file, ...expected),
                 { missingKeys, promise } = mustContain(file, '_id');
 
-            return missingKeys ? busy(client._.put(`/file/${file._id}${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/file/${file._id}${encodeQueryAsString(params)}`));
         },
 
         newFile(file) {
@@ -100,7 +100,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(file, ...expected),
                 { missingKeys, promise } = mustContain(file, 'parentType', 'parentId', 'name');
 
-            return missingKeys ? busy(client._.post(`/file${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.post(`/file${encodeQueryAsString(params)}`));
         },
     };
 }

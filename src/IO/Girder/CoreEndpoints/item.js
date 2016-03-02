@@ -55,7 +55,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(item, ...expected),
                 { missingKeys, promise } = mustContain(params, '_id');
 
-            return missingKeys ? busy(client._.put(`/item/${item._id}${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/item/${item._id}${encodeQueryAsString(params)}`));
         },
 
         // destinationItem = { folderId, name, description }
@@ -64,7 +64,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(destinationItem, ...expected),
                 { missingKeys, promise } = mustContain(params, 'folderId');
 
-            return missingKeys ? busy(client._.post(`/item/${id}/copy${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.post(`/item/${id}/copy${encodeQueryAsString(params)}`));
         },
     };
 }

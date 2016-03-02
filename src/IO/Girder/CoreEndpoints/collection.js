@@ -12,7 +12,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(collection, ...expected),
                 { missingKeys, promise } = mustContain(params, ...expected);
 
-            return missingKeys ? busy(client._.post('/collection' + encodeQueryAsString(params))) : promise;
+            return missingKeys ? promise : busy(client._.post('/collection' + encodeQueryAsString(params)));
         },
 
         deleteCollection(id) {
@@ -28,7 +28,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(collection, ...expected),
                 { missingKeys, promise } = mustContain(collection, '_id');
 
-            return missingKeys ? busy(client._.put(`/collection/${collection._id}${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}${encodeQueryAsString(params)}`));
         },
 
         getCollectionAccess(id) {
@@ -40,7 +40,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(collection, ...expected),
                 { missingKeys, promise } = mustContain(collection, '_id');
 
-            return missingKeys ? busy(client._.put(`/collection/${collection._id}/access${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}/access${encodeQueryAsString(params)}`));
         },
     };
 }
