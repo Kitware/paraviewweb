@@ -8,7 +8,7 @@ var program = require('commander'),
     pkg = require('../../package.json'),
     publishBaseURL = '/' + pkg.repository.url.split('/').pop().split('.git')[0],
     version = /semantically-release/.test(pkg.version) ? 'development version' : pkg.version,
-    baseUrl = "''",
+    baseUrl = "'" + publishBaseURL + "'",
     buildHelper = require('../example-build/example-builder.js'),
     examples = buildHelper.examples,
     rootWWW = path.join(process.env.PWD, 'documentation/www'),
@@ -45,7 +45,6 @@ shell.cd(process.env.PWD);
 // ----------------------------------------------------------------------------
 
 if(program.publish) {
-    baseUrl = "'" + publishBaseURL + "'";
     program.api = true;
     program.examples = true;
     program.args = [];
