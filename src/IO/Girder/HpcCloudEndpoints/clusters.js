@@ -67,6 +67,11 @@ export default function({client, filterQuery, mustContain, busy}) {
             return busy(client._.get(`/clusters/${taskId}/log`, {param:{offset}}))
         },
 
+        //PUT /clusters/{id}/provision Provision a cluster with ansible
+        provisionCluster(id, params) {
+            return busy(client._.put(`/clusters/${id}/provision`, params));
+        },
+
         // put /clusters/{id}/start
         //     Start a cluster (ec2 only)
         startCluster(id) {
