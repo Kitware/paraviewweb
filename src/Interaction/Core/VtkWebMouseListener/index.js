@@ -7,6 +7,7 @@ export default class VtkMouseListener {
 
     constructor(vtkWebClient, width=100, height=100) {
         this.client = vtkWebClient;
+        this.ready = true;
         this.width = width;
         this.height = height;
         this.listeners = {
@@ -35,7 +36,13 @@ export default class VtkMouseListener {
                     }
                     this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
                     if(this.client){
-                        this.client.MouseHandler.interaction(vtkEvent);
+                      if(this.ready || vtkEvent.action !== 'move') {
+                        this.ready = false;
+                        this.client.MouseHandler.interaction(vtkEvent)
+                        .then(resp => {
+                          this.ready = true;
+                        });
+                      }
                     }
                 },
                 zoom: (event) => {
