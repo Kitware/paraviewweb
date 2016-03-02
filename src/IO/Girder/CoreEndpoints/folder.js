@@ -17,7 +17,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(folder, ...allowed),
                 { missingKeys, promise } = mustContain(folder, 'parentType', 'parentId', 'name');
 
-            return missingKeys ? busy(client._.post(`/folder${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.post(`/folder${encodeQueryAsString(params)}`));
         },
 
         editFolderMetaData(id, metadata) {
@@ -37,7 +37,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(folder, ...allowed),
                 { missingKeys, promise } = mustContain(folder, '_id');
 
-            return missingKeys ? busy(client._.put(`/folder/${folder._id}${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/folder/${folder._id}${encodeQueryAsString(params)}`));
         },
 
         downloadFolder(id) {
@@ -53,7 +53,7 @@ export default function({client, filterQuery, mustContain, busy, encodeQueryAsSt
                 params = filterQuery(folder, ...allowed),
                 { missingKeys, promise } = mustContain(folder, '_id');
 
-            return missingKeys ? busy(client._.put(`/folder/${folder._id}/access${encodeQueryAsString(params)}`)) : promise;
+            return missingKeys ? promise : busy(client._.put(`/folder/${folder._id}/access${encodeQueryAsString(params)}`));
         },
     };
 }
