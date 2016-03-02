@@ -35,7 +35,7 @@ export default function({client, filterQuery, mustContain, busy}) {
         },
 
         //GET /taskflows/{id}/tasks Get all the tasks associated with this taskflow
-        getTaskflowTaskStatuses(id) {
+        getTaskflowTasks(id) {
             return busy(client._.get(`/taskflows/${id}/tasks`));
         },
 
