@@ -5,7 +5,7 @@ var path = require('path'),
     listToBuild = [],
     doneListeners = [],
     templatePath = path.resolve(__dirname, './template.html'),
-    rootPath = path.resolve(__dirname, '../../documentation/www/examples');
+    rootPath = path.resolve(__dirname, '../../documentation/www/public/examples');
 
 function setDestinationPath(p) {
     rootPath = p;

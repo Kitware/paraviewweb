@@ -106,11 +106,8 @@ if(program.api || program.stats) {
             newPath = path.join(rootTmp, className + '.md');
 
             // Copy file
-            shell.cp('-f', file, newPath);
-            rm('-f', newPath);
-            echo('title: ' + className).to(newPath);
-            echo('---').toEnd(newPath);
-            cat(file).toEnd(newPath);
+            ('title: ' + className + '\n---\n').to(newPath);
+            shell.cat(file).toEnd(newPath);
         });
 }
 
@@ -173,7 +170,7 @@ if(program.examples) {
     console.log();
 
     // Copy data
-    shell.cp('-r', path.join(process.env.PWD, 'node_modules/tonic-arctic-sample-data/data'), rootWWW);
+    shell.cp('-r', path.join(process.env.PWD, 'node_modules/tonic-arctic-sample-data/data'), rootWWW + '/public');
 
     // Build examples
     buildHelper.addDoneListener(doneWithProcessing);
@@ -186,13 +183,15 @@ if(program.examples) {
     doneWithProcessing();
 }
 
-// ----------------------------------------------------------------------------
-// Generate website using Hexo
-// ----------------------------------------------------------------------------
-
-
-
 function doneWithProcessing() {
+
+    // ----------------------------------------------------------------------------
+    // Generate website using Hexo
+    // ----------------------------------------------------------------------------
+
+    shell.cd(rootWWW);
+    shell.exec('npm install');
+    shell.exec('npm run build');
 
     // ----------------------------------------------------------------------------
     // Github pages
@@ -207,7 +206,7 @@ function doneWithProcessing() {
             options.repo = process.env.GIT_PUBLISH_URL;
         }
 
-        require('gh-pages').publish(rootWWW, options, function(err) {
+        require('gh-pages').publish(rootWWW + '/public', options, function(err) {
             if(err) {
                 console.log('Error while publishing');
                 console.log(err);
@@ -222,12 +221,7 @@ function doneWithProcessing() {
 
     if(program.serve) {
         console.log('\n=> Serve documentation:\n');
-        var server = connect();
-
-        server.use(require('serve-static')(rootWWW, { }));
-        server.use(require('serve-index')(rootWWW, { }));
-        server.listen(3000, function () {
-            console.log(' - Server ready at http://localhost:3000');
-        });
+        shell.cd(rootWWW);
+        shell.exec('npm run server');
     }
 }

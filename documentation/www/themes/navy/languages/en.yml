@@ -1,0 +1,72 @@
+menu:
+  docs: Docs
+  api: API
+  news: News
+  applications: Applications
+  search: Search
+
+index:
+  get_started: Get started
+
+page:
+  contents: Contents
+  back_to_top: Back to Top
+  improve: Improve this doc
+  prev: Prev
+  next: Next
+  last_updated: "Last updated: %s"
+
+sidebar:
+  docs:
+    getting_started: Getting Started
+    basic_usage: Basic Usage
+    import: Import
+    overview: Overview
+    setup: Setup
+    miscellaneous: Miscellaneous
+    troubleshooting: Troubleshooting
+    contributing: Contributing
+  api:
+    Common: Common
+    Core: Core
+    LookupTable: LookupTable
+    LookupTableManager: LookupTableManager
+    Misc: Misc
+    CanvasOffscreenBuffer: CanvasOffscreenBuffer
+    Convert: Convert
+    Debounce: Debounce
+    ImageExporter: ImageExporter
+    Loop: Loop
+    Observable: Observable
+    PingPong: PingPong
+    SizeHelper: SizeHelper
+    Validate: Validate
+    WebGl: WebGl
+    State: State
+    EqualizerState: EqualizerState
+    PipelineState: PipelineState
+    ToggleState: ToggleState
+    IO: IO
+    DataManager: DataManager
+    GeometryDataMod: GeometryDataMod
+    ProcessLauncher: ProcessLauncher
+    QueryDataModel: QueryDataModel
+    Girder: Girder
+    CoreEndpoints: CoreEndpoints
+    GirderClientBuilder: GirderClientBuilder
+    HpcCloudEndpoints: HpcCloudEndpoints
+    WebSocket: WebSocket
+    AutobahnConnection: AutobahnConnection
+    BinaryImageStream: BinaryImageStream
+    ParaViewWebClient: ParaViewWebClient
+    SmartConnect: SmartConnect
+    Rendering: Rendering
+    Image: Image
+    AbstractImageBuilder: AbstractImageBuilder
+    CompositeImageBuilder: CompositeImageBuilder
+    DataProberImageBuilder: DataProberImageBuilder
+    DepthCompositeImageBuilder: DepthCompositeImageBuilder
+    PixelOperatorImageBuilder: PixelOperatorImageBuilder
+    QueryDataModelImageBuilder: QueryDataModelImageBuilder
+    Painter: Painter
+    LineChartPainter: Line Chart Painter
