@@ -37,7 +37,6 @@ if (!process.argv.slice(2).length) {
 // Initialization
 // ----------------------------------------------------------------------------
 
-shell.rm('-rf', rootWWW);
 shell.mkdir('-p', rootWWW);
 shell.cd(process.env.PWD);
 
@@ -85,10 +84,8 @@ if(program.list || program.examples || program.stats) {
 if(program.api || program.stats) {
     console.log('\n=> Build API\n');
 
-    var rootTmp = path.join(process.env.PWD, 'documentation/_tmp');
-    var mdocTpl = path.join(__dirname, 'mdoc')
+    var rootTmp = path.join(process.env.PWD, 'documentation/www/source/api');
 
-    shell.rm('-rf', rootTmp);
     shell.mkdir('-p', rootTmp);
     shell.find('src')
         .filter( function(file) {
@@ -110,21 +107,11 @@ if(program.api || program.stats) {
 
             // Copy file
             shell.cp('-f', file, newPath);
+            rm('-f', newPath);
+            echo('title: ' + className).to(newPath);
+            echo('---').toEnd(newPath);
+            cat(file).toEnd(newPath);
         });
-
-    // Run mdoc
-    var log = console.log;
-    console.log = function(){};
-    require('mdoc').run({
-        inputDir: rootTmp,
-        outputDir: path.join(rootWWW,'api'),
-        templatePath: mdocTpl,
-        baseTitle : 'ParaViewWeb',
-        headingLevel : 2,
-    });
-    console.log = log;
-
-    shell.rm('-rf', rootTmp);
 }
 
 // ----------------------------------------------------------------------------
@@ -198,6 +185,11 @@ if(program.examples) {
 } else {
     doneWithProcessing();
 }
+
+// ----------------------------------------------------------------------------
+// Generate website using Hexo
+// ----------------------------------------------------------------------------
+
 
 
 function doneWithProcessing() {

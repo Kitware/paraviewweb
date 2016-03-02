@@ -22,7 +22,6 @@
         "connect": "3.4.1",
         "serve-static": "1.10.2",
         "serve-index": "1.7.3",
-        "mdoc": "0.5.2",
         "gh-pages": "0.10.0"
     },
     "devDependencies": {
