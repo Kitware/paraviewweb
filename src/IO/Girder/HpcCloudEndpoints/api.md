@@ -24,6 +24,7 @@ const client = build(location, ...CoreEndpoints, ...HpcCloudEndpoints);
 ### submitJob(clusterId, jobId)
 ### getClusterLogs(taskId, offset=0)
 ### startCluster(id)
+### provisionCluster(id, params)
 ### getClusterStatus(id)
 ### terminateCluster(id)
 
