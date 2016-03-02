@@ -36,8 +36,8 @@ export default function({client, filterQuery, mustContain, busy}) {
         },
 
         editSimulation(simulation) {
-            const expected = ['name', 'description', 'active', 'disabled', '_id'],
-                sfiltered = filterQuery(simulation, ...expected.slice(0,4)); // Remove '_id'
+            const expected = ['name', 'description', 'active', 'disabled', 'metadata', '_id'],
+                sfiltered = filterQuery(simulation, ...expected.slice(0,5)); // Remove '_id'
 
             return busy(client._.patch(`/simulations/${simulation._id}`, sfiltered, { headers, transformRequest }));
         },
