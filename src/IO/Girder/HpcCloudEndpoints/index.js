@@ -4,6 +4,7 @@ import jobs         from './jobs';
 import projects     from './projects';
 import simulations  from './simulations';
 import taskflows    from './taskflows';
+import tasks        from './tasks';
 
 export default [
     aws,
@@ -12,4 +13,5 @@ export default [
     projects,
     simulations,
     taskflows,
+    tasks,
 ];
