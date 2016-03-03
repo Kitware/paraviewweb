@@ -80,33 +80,67 @@ if(program.list || program.examples || program.stats) {
 // Build API
 // ----------------------------------------------------------------------------
 
+var traduction = [];
+var sideBar = [];
+var tabSpace = '  ';
+
+function processModule(mPath) {
+  traduction.push(tabSpace + tabSpace + mPath + ': ' + mPath);
+  sideBar.push(tabSpace + mPath + ':');
+
+  var bPath = path.join(process.env.PWD, 'src', mPath);
+  var classes = shell.ls(bPath)
+    .filter( function (f) {
+      return shell.test('-d', path.join(bPath,f));
+    });
+
+  classes.forEach(function(className) {
+    traduction.push(tabSpace + tabSpace + className + ': ' + className);
+    sideBar.push(tabSpace + tabSpace + className + ': ' + className + '.html');
+    processClass(bPath, className);
+  });
+}
+
+function processClass(bPath, className) {
+  var files = shell.ls(path.join(bPath, className))
+        .filter(function(f) {
+          return shell.test('-f', path.join(bPath, className, f));
+        }),
+      apiIdx = files.indexOf('api.md'),
+      newPath = path.join(process.env.PWD, 'documentation/www/source/api', className + '.md');
+
+  if(apiIdx !== -1) {
+    files.splice(apiIdx, 1);
+    apiFound.push(className);
+    console.log('  +', className);
+
+    // Create MD file
+    ('title: ' + className + '\n---\n').to(newPath);
+    shell.cat(path.join(bPath, className, 'api.md')).toEnd(newPath);
+  } else {
+    console.log('  -', className);
+    ('title: ' + className + '\n---\n').to(newPath);
+  }
+
+  ('\n\n### Source\n\n').toEnd(newPath);
+  files.forEach(function(sFile) {
+    ('``` js ' + sFile + '\n').toEnd(newPath);
+    shell.cat(path.join(bPath, className, sFile)).toEnd(newPath);
+    ('```\n').toEnd(newPath);
+  });
+}
+
 if(program.api || program.stats) {
     console.log('\n=> Build API\n');
-
-    var rootTmp = path.join(process.env.PWD, 'documentation/www/source/api');
-
-    shell.mkdir('-p', rootTmp);
-    shell.find('src')
+    traduction.push('  api:');
+    sideBar.push('api:');
+    shell.cd('src');
+    shell.find('.')
         .filter( function(file) {
-            return file.match(/api.md$/);
+            return file.split('/').length === 2 && shell.test('-d', file);
         })
-        .forEach( function(file) {
-            var filePath = file.split('/'),
-                newPath,
-                className;
-
-            // Extract class name
-            filePath.pop(); // api.md
-            className = filePath.pop();
-
-            apiFound.push(className);
-            console.log('  -', className);
-
-            newPath = path.join(rootTmp, className + '.md');
-
-            // Copy file
-            ('title: ' + className + '\n---\n').to(newPath);
-            shell.cat(file).toEnd(newPath);
+        .forEach( function(module) {
+          processModule(module);
         });
 }
 
@@ -128,6 +162,8 @@ if(program.list) {
 if(program.stats) {
     console.log('\n=> Documentation coverage:\n');
 
+
+    shell.cd(process.env.PWD);
     var classNames = shell.find('src')
         .filter( function(file) {
             return file.split('/').length === 4 && file.indexOf('index.js') === -1;
@@ -169,6 +205,7 @@ if(program.examples) {
     console.log();
 
     // Copy data
+    shell.cd(process.env.PWD);
     shell.cp('-r', path.join(process.env.PWD, 'node_modules/tonic-arctic-sample-data/data'), rootWWW + '/public');
 
     // Build examples
@@ -193,15 +230,61 @@ function printCmdOutput(output) {
 function doneWithProcessing() {
 
     // ----------------------------------------------------------------------------
+    // Generate examples Markdown for Hexo
+    // ----------------------------------------------------------------------------
+
+    traduction.push('  examples:');
+    sideBar.push('examples:');
+    var exampleGroups = {};
+    for(var exampleName in buildHelper.examples) {
+      var pathName = buildHelper.examples[exampleName].split('/').splice(2,2).join('/');
+
+      if(exampleGroups[pathName]) {
+        exampleGroups[pathName].push(exampleName);
+        traduction.push(tabSpace + tabSpace + exampleName + ': ' + exampleName);
+      } else {
+        traduction.push(tabSpace + tabSpace + pathName + ': ' + pathName);
+        traduction.push(tabSpace + tabSpace + exampleName + ': ' + exampleName);
+        exampleGroups[pathName] = [ exampleName ];
+      }
+    }
+    for(var gName in exampleGroups) {
+      sideBar.push(tabSpace + gName + ':');
+      exampleGroups[gName].forEach( function(exampleName) {
+        sideBar.push(tabSpace + tabSpace + exampleName + ': ' + exampleName + '.html');
+        var destMdFile = path.join(process.env.PWD, 'documentation/www/source/examples', exampleName + '.md');
+        (exampleName + '\n----\n### [Live example](./' + exampleName + ')\n\n').to(destMdFile);
+        ('<iframe src="./'+ exampleName +'" width="100%" height="500px"></iframe>\n\n### Source\n\n```js\n').toEnd(destMdFile);
+        shell.cat(buildHelper.examples[exampleName]).toEnd(destMdFile);
+        '\n```\n\n'.toEnd(destMdFile);
+      });
+    }
+
+
+    // ----------------------------------------------------------------------------
+    // Generate sidebar and traduction for Hexo
+    // ----------------------------------------------------------------------------
+
+    var destSideBar = path.join(process.env.PWD, 'documentation/www/source/_data/sidebar.yml');
+    shell.cat(destSideBar + '-tpl').to(destSideBar);
+    sideBar.join('\n').toEnd(destSideBar);
+    ('\n\n').toEnd(destSideBar);
+
+    var destTraduction = path.join(process.env.PWD, 'documentation/www/themes/navy/languages/en.yml');
+    shell.cat(destTraduction + '-tpl').to(destTraduction);
+    traduction.join('\n').toEnd(destTraduction);
+    ('\n\n').toEnd(destTraduction);
+
+    // ----------------------------------------------------------------------------
     // Generate website using Hexo
     // ----------------------------------------------------------------------------
 
     shell.cd(rootWWW);
     console.log('==> npm install');
-    printCmdOutput(shell.exec('npm install'));
+    shell.exec('npm install');
 
     console.log('==> npm run build');
-    printCmdOutput(shell.exec('npm run build'));
+    shell.exec('npm run build');
 
     // ----------------------------------------------------------------------------
     // Github pages
