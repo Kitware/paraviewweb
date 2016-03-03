@@ -10,6 +10,7 @@ notifications:
 cache:
   directories:
     - node_modules
+    - documentation/www/node_modules
 node_js:
   - "4.1"
 env:
