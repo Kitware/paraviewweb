@@ -182,6 +182,14 @@ if(program.examples) {
     doneWithProcessing();
 }
 
+function printCmdOutput(output) {
+  console.log('==================================================');
+  console.log('  Exit code:', output.code);
+  console.log('  Program output:\n', output.stdout);
+  console.log('  Program stderr:\n', output.stderr);
+  console.log('==================================================');
+}
+
 function doneWithProcessing() {
 
     // ----------------------------------------------------------------------------
@@ -189,20 +197,11 @@ function doneWithProcessing() {
     // ----------------------------------------------------------------------------
 
     shell.cd(rootWWW);
-    shell.exec('npm install', function(code, stdout, stderr) {
-      console.log('=> npm install');
-      console.log('  Exit code:', code);
-      console.log('  Program output:\n', stdout);
-      console.log('  Program stderr:\n', stderr);
-      console.log('=> npm install <------------------------------');
-    });
-    shell.exec('npm run build', function(code, stdout, stderr) {
-      console.log('=> npm run build');
-      console.log('  Exit code:', code);
-      console.log('  Program output:\n', stdout);
-      console.log('  Program stderr:\n', stderr);
-      console.log('=> npm run build <------------------------------');
-    });
+    console.log('==> npm install');
+    printCmdOutput(shell.exec('npm install'));
+
+    console.log('==> npm run build');
+    printCmdOutput(shell.exec('npm run build'));
 
     // ----------------------------------------------------------------------------
     // Github pages
