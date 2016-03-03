@@ -20,6 +20,8 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+env:
+  CXX=g++-4.8
 script:
   - npm run build:release
   - npm run test:travis
