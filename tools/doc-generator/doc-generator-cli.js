@@ -189,8 +189,20 @@ function doneWithProcessing() {
     // ----------------------------------------------------------------------------
 
     shell.cd(rootWWW);
-    shell.exec('npm install');
-    shell.exec('npm run build');
+    shell.exec('npm install', function(code, stdout, stderr) {
+      console.log('=> npm install');
+      console.log('  Exit code:', code);
+      console.log('  Program output:\n', stdout);
+      console.log('  Program stderr:\n', stderr);
+      console.log('=> npm install <------------------------------');
+    });
+    shell.exec('npm run build', function(code, stdout, stderr) {
+      console.log('=> npm run build');
+      console.log('  Exit code:', code);
+      console.log('  Program output:\n', stdout);
+      console.log('  Program stderr:\n', stderr);
+      console.log('=> npm run build <------------------------------');
+    });
 
     // ----------------------------------------------------------------------------
     // Github pages
