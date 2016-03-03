@@ -1,0 +1,11 @@
+docs:
+  getting_started:
+    overview: index.html
+    setup: setup.html
+  basic_usage:
+    import: import.html
+  miscellaneous:
+    troubleshooting: troubleshooting.html
+    contributing: contributing.html
+
+
