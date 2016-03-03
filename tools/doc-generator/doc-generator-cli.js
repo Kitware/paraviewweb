@@ -122,7 +122,7 @@ function processClass(bPath, className) {
     ('title: ' + className + '\n---\n').to(newPath);
   }
 
-  ('\n\n### Source\n\n').toEnd(newPath);
+  ('\n\n# Source\n\n').toEnd(newPath);
   files.forEach(function(sFile) {
     ('``` js ' + sFile + '\n').toEnd(newPath);
     shell.cat(path.join(bPath, className, sFile)).toEnd(newPath);
@@ -283,8 +283,8 @@ function doneWithProcessing() {
     console.log('==> npm install');
     shell.exec('npm install');
 
-    console.log('==> npm run build');
-    shell.exec('npm run build');
+    console.log('==> npm run generate');
+    shell.exec('npm run generate');
 
     // ----------------------------------------------------------------------------
     // Github pages

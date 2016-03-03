@@ -7,8 +7,9 @@
   },
   "scripts": {
     "build": "hexo generate && gulp",
+    "generate": "hexo generate",
     "server": "hexo server",
-    "doc": "npm run build && npm run server"
+    "doc": "npm run generate && npm run server"
   },
   "dependencies": {
     "cheerio": "^0.20.0",
