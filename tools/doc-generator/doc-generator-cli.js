@@ -8,7 +8,7 @@ var program = require('commander'),
     pkg = require('../../package.json'),
     publishBaseURL = '/' + pkg.repository.url.split('/').pop().split('.git')[0],
     version = /semantically-release/.test(pkg.version) ? 'development version' : pkg.version,
-    baseUrl = "''",
+    baseUrl = "'" + publishBaseURL + "'",
     buildHelper = require('../example-build/example-builder.js'),
     examples = buildHelper.examples,
     rootWWW = path.join(process.env.PWD, 'documentation/www'),
@@ -37,7 +37,6 @@ if (!process.argv.slice(2).length) {
 // Initialization
 // ----------------------------------------------------------------------------
 
-shell.rm('-rf', rootWWW);
 shell.mkdir('-p', rootWWW);
 shell.cd(process.env.PWD);
 
@@ -46,7 +45,6 @@ shell.cd(process.env.PWD);
 // ----------------------------------------------------------------------------
 
 if(program.publish) {
-    baseUrl = "'" + publishBaseURL + "'";
     program.api = true;
     program.examples = true;
     program.args = [];
@@ -85,10 +83,8 @@ if(program.list || program.examples || program.stats) {
 if(program.api || program.stats) {
     console.log('\n=> Build API\n');
 
-    var rootTmp = path.join(process.env.PWD, 'documentation/_tmp');
-    var mdocTpl = path.join(__dirname, 'mdoc')
+    var rootTmp = path.join(process.env.PWD, 'documentation/www/source/api');
 
-    shell.rm('-rf', rootTmp);
     shell.mkdir('-p', rootTmp);
     shell.find('src')
         .filter( function(file) {
@@ -109,22 +105,9 @@ if(program.api || program.stats) {
             newPath = path.join(rootTmp, className + '.md');
 
             // Copy file
-            shell.cp('-f', file, newPath);
+            ('title: ' + className + '\n---\n').to(newPath);
+            shell.cat(file).toEnd(newPath);
         });
-
-    // Run mdoc
-    var log = console.log;
-    console.log = function(){};
-    require('mdoc').run({
-        inputDir: rootTmp,
-        outputDir: path.join(rootWWW,'api'),
-        templatePath: mdocTpl,
-        baseTitle : 'ParaViewWeb',
-        headingLevel : 2,
-    });
-    console.log = log;
-
-    shell.rm('-rf', rootTmp);
 }
 
 // ----------------------------------------------------------------------------
@@ -186,7 +169,7 @@ if(program.examples) {
     console.log();
 
     // Copy data
-    shell.cp('-r', path.join(process.env.PWD, 'node_modules/tonic-arctic-sample-data/data'), rootWWW);
+    shell.cp('-r', path.join(process.env.PWD, 'node_modules/tonic-arctic-sample-data/data'), rootWWW + '/public');
 
     // Build examples
     buildHelper.addDoneListener(doneWithProcessing);
@@ -199,8 +182,15 @@ if(program.examples) {
     doneWithProcessing();
 }
 
-
 function doneWithProcessing() {
+
+    // ----------------------------------------------------------------------------
+    // Generate website using Hexo
+    // ----------------------------------------------------------------------------
+
+    shell.cd(rootWWW);
+    shell.exec('npm install');
+    shell.exec('npm run build');
 
     // ----------------------------------------------------------------------------
     // Github pages
@@ -215,7 +205,7 @@ function doneWithProcessing() {
             options.repo = process.env.GIT_PUBLISH_URL;
         }
 
-        require('gh-pages').publish(rootWWW, options, function(err) {
+        require('gh-pages').publish(rootWWW + '/public', options, function(err) {
             if(err) {
                 console.log('Error while publishing');
                 console.log(err);
@@ -230,12 +220,7 @@ function doneWithProcessing() {
 
     if(program.serve) {
         console.log('\n=> Serve documentation:\n');
-        var server = connect();
-
-        server.use(require('serve-static')(rootWWW, { }));
-        server.use(require('serve-index')(rootWWW, { }));
-        server.listen(3000, function () {
-            console.log(' - Server ready at http://localhost:3000');
-        });
+        shell.cd(rootWWW);
+        shell.exec('npm run server');
     }
 }

@@ -1,0 +1,3 @@
+title: ParaViewWeb 1.2 Released
+---
+The new version of ParaViewWeb is out...

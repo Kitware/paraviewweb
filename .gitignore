@@ -3,5 +3,3 @@
 .npmrc
 npm-debug.log
 node_modules
-documentation/www
-documentation/_tmp

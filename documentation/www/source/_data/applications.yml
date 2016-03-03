@@ -1,0 +1,12 @@
+- name: Visualizer
+  description: A full feature ParaView like application in the web.
+  link: https://github.com/kitware/visualizer
+  preview: https://github.com/kitware/visualizer
+  tags:
+    - ParaView
+- name: ArcticViewer
+  description: Artifact Web viewer
+  link: https://github.com/kitware/arctic-viewer
+  preview: http://kitware.github.io/arctic-viewer/
+  tags:
+    - ParaView

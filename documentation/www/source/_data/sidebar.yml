@@ -1,0 +1,48 @@
+docs:
+  getting_started:
+    overview: index.html
+    setup: setup.html
+  basic_usage:
+    import: import.html
+  miscellaneous:
+    troubleshooting: troubleshooting.html
+    contributing: contributing.html
+
+api:
+  Common:
+    LookupTable: LookupTable.html
+    LookupTableManager: LookupTableManager.html
+    CanvasOffscreenBuffer: CanvasOffscreenBuffer.html
+    Convert: Convert.html
+    Debounce: Debounce.html
+    ImageExporter: ImageExporter.html
+    Loop: Loop.html
+    Observable: Observable.html
+    PingPong: PingPong.html
+    SizeHelper: SizeHelper.html
+    Validate: Validate.html
+    WebGl: WebGl.html
+    EqualizerState: EqualizerState.html
+    PipelineState: PipelineState.html
+    ToggleState: ToggleState.html
+  IO:
+    DataManager: DataManager.html
+    GeometryDataMod: GeometryDataMod.html
+    ProcessLauncher: ProcessLauncher.html
+    QueryDataModel: QueryDataModel.html
+    CoreEndpoints: CoreEndpoints.html
+    GirderClientBuilder: GirderClientBuilder.html
+    HpcCloudEndpoints: HpcCloudEndpoints.html
+    AutobahnConnection: AutobahnConnection.html
+    BinaryImageStream: BinaryImageStream.html
+    ParaViewWebClient: ParaViewWebClient.html
+    SmartConnect: SmartConnect.html
+  Rendering:
+    AbstractImageBuilder: AbstractImageBuilder.html
+    CompositeImageBuilder: CompositeImageBuilder.html
+    DataProberImageBuilder: DataProberImageBuilder.html
+    DepthCompositeImageBuilder: DepthCompositeImageBuilder.html
+    PixelOperatorImageBuilder: PixelOperatorImageBuilder.html
+    QueryDataModelImageBuilder: QueryDataModelImageBuilder.html
+    LineChartPainter: LineChartPainter.html
+
