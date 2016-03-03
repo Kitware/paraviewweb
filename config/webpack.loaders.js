@@ -15,7 +15,6 @@ module.exports = [
         loader: 'url-loader?limit=8192',
     },{
         test: /\.css$/,
-        include: /node_modules/,
         loader: 'style!css!postcss',
     },{
         test: /\.mcss$/,

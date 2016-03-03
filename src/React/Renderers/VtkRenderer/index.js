@@ -32,10 +32,9 @@ export default React.createClass({
     },
 
     componentDidMount() {
-        const container = ReactDOM.findDOMNode(this),
-            { clientWidth, clientHeight } = sizeHelper.getSize(container);
+        const container = ReactDOM.findDOMNode(this);
 
-        this.binaryImageStream = new BinaryImageStream(this.props.connection.urls + 'b', clientWidth, clientHeight);
+        this.binaryImageStream = new BinaryImageStream(this.props.connection.urls + 'b');
         this.mouseListener = new VtkWebMouseListener(this.props.client);
 
         // Attach interaction listener for image quality
