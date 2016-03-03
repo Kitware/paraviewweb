@@ -34,7 +34,7 @@
 
         "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
 
-        "kw-web-suite": "1.0.2"
+        "kw-web-suite": "1.0.4"
     },
     "config": {
         "commitizen": {
@@ -46,6 +46,7 @@
         "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js"
     },
     "scripts": {
+        "postinstall": "fix-kw-web-suite",
         "install:global": "npm install -g commitizen@2.5.0",
 
         "bin:pvw-doc"      : "node ./tools/doc-generator/doc-generator-cli.js",
