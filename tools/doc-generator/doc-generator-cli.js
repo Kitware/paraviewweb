@@ -218,14 +218,6 @@ if(program.examples) {
     doneWithProcessing();
 }
 
-function printCmdOutput(output) {
-  console.log('==================================================');
-  console.log('  Exit code:', output.code);
-  console.log('  Program output:\n', output.stdout);
-  console.log('  Program stderr:\n', output.stderr);
-  console.log('==================================================');
-}
-
 function doneWithProcessing() {
 
     // ----------------------------------------------------------------------------
@@ -265,12 +257,14 @@ function doneWithProcessing() {
     // ----------------------------------------------------------------------------
 
     var destSideBar = path.join(process.env.PWD, 'documentation/www/source/_data/sidebar.yml');
-    shell.cat(destSideBar + '-tpl').to(destSideBar);
+    var srcSideBar = path.join(process.env.PWD, 'documentation/www/tpl/__sidebar__');
+    shell.cat(srcSideBar).to(destSideBar);
     sideBar.join('\n').toEnd(destSideBar);
     ('\n\n').toEnd(destSideBar);
 
     var destTraduction = path.join(process.env.PWD, 'documentation/www/themes/navy/languages/en.yml');
-    shell.cat(destTraduction + '-tpl').to(destTraduction);
+    var srcTraduction = path.join(process.env.PWD, 'documentation/www/tpl/__en__');
+    shell.cat(srcTraduction).to(destTraduction);
     traduction.join('\n').toEnd(destTraduction);
     ('\n\n').toEnd(destTraduction);
 
@@ -286,8 +280,6 @@ function doneWithProcessing() {
     shell.exec('npm install');
 
     console.log('==> npm run generate');
-    shell.exec('npm run generate');
-    console.log('-- rerun to force menu regeneration');
     shell.exec('npm run generate');
 
     // ----------------------------------------------------------------------------
