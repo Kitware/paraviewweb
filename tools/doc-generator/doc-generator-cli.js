@@ -274,6 +274,9 @@ function doneWithProcessing() {
     traduction.join('\n').toEnd(destTraduction);
     ('\n\n').toEnd(destTraduction);
 
+    console.log(shell.cat(destSideBar));
+    console.log(shell.cat(destTraduction));
+
     // ----------------------------------------------------------------------------
     // Generate website using Hexo
     // ----------------------------------------------------------------------------

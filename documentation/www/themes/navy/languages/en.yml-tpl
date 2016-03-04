@@ -44,4 +44,3 @@ sidebar:
     compilation: Compilation
     configure_and_build_vtkweb: VTK
     configure_and_build_pvweb: ParaView
-
