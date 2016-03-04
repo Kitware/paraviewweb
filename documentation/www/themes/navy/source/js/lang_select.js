@@ -10,6 +10,6 @@
     location.href = '/' + lang + canonical;
   }
 
-  document.getElementById('lang-select').addEventListener('change', changeLang);
-  document.getElementById('mobile-lang-select').addEventListener('change', changeLang);
+  // document.getElementById('lang-select').addEventListener('change', changeLang);
+  // document.getElementById('mobile-lang-select').addEventListener('change', changeLang);
 })();
