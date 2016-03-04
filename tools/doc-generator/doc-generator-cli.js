@@ -287,6 +287,8 @@ function doneWithProcessing() {
 
     console.log('==> npm run generate');
     shell.exec('npm run generate');
+    console.log('-- rerun to force menu regeneration');
+    shell.exec('npm run generate');
 
     // ----------------------------------------------------------------------------
     // Github pages
