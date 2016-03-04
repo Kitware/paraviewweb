@@ -9,7 +9,8 @@
     "build": "hexo generate && gulp",
     "generate": "hexo generate",
     "server": "hexo server",
-    "doc": "npm run generate && npm run server"
+    "doc": "npm run generate && npm run server",
+    "clean": "hexo clean"
   },
   "dependencies": {
     "cheerio": "^0.20.0",
