@@ -2,7 +2,6 @@
 
 /* eslint-disable */
 var program = require('commander'),
-    connect = require('connect'),
     shell = require('shelljs'),
     path = require('path'),
     pkg = require('../../package.json'),
