@@ -1,42 +1,54 @@
-export default function({client, filterQuery, mustContain, busy, encodeQueryAsString}) {
-    return {
-        listUsers(query) {
-            const params = filterQuery(query, 'text', 'limit', 'offset', 'sort', 'sortdir');
-            return busy(client._.get('/user', { params }));
-        },
+export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+  return {
+    listUsers(query) {
+      const params = filterQuery(query, 'text', 'limit', 'offset', 'sort', 'sortdir');
+      return busy(client._.get('/user', {
+        params,
+      }));
+    },
 
-        createUser(user) {
-            const expected = ['login', 'email', 'firstName', 'lastName', 'password', 'admin'],
-                params = filterQuery(user, ...expected),
-                { missingKeys, promise } = mustContain(user, ...expected);
+    createUser(user) {
+      const expected = ['login', 'email', 'firstName', 'lastName', 'password', 'admin'],
+        params = filterQuery(user, ...expected),
+        {
+          missingKeys, promise,
+        } = mustContain(user, ...expected);
 
-            return missingKeys ? promise : busy(client._.post('/user' + encodeQueryAsString(params)));
-        },
+      return missingKeys ? promise : busy(client._.post(`/user${encodeQueryAsString(params)}`));
+    },
 
-        changePassword(old, newPassword) {
-            const params = { old, new: newPassword };
-            return busy(client._.put('/user/password' + encodeQueryAsString(params)));
-        },
+    changePassword(old, newPassword) {
+      const params = {
+        old, new: newPassword,
+      };
+      return busy(client._.put(`/user/password${encodeQueryAsString(params)}`));
+    },
 
-        resetPassword(email) {
-            const params = { email };
-            return busy(client._.delete('/user/password', { params }));
-        },
+    resetPassword(email) {
+      const params = {
+        email,
+      };
+      return busy(client._.delete('/user/password', {
+        params,
+      }));
+    },
 
-        deleteUser(id) {
-            return busy(client._.delete(`/user/${id}`));
-        },
+    deleteUser(id) {
+      return busy(client._.delete(`/user/${id}`));
+    },
 
-        getUser(id) {
-            return busy(client._.get(`/user/${id}`));
-        },
+    getUser(id) {
+      return busy(client._.get(`/user/${id}`));
+    },
 
-        updateUser(user) {
-            const expected = ['email', 'firstName', 'lastName', '_id'],
-                params = filterQuery(user, ...expected.slice(0,3)), // Remove '_id'
-                { missingKeys, promise } = mustContain(user, ...expected);
+    updateUser(user) {
+      const expected = ['email', 'firstName', 'lastName', '_id'],
+        params = filterQuery(user, ...expected.slice(0, 3)), // Remove '_id'
+        {
+          missingKeys, promise,
+        } = mustContain(user, ...expected);
 
-            return missingKeys ? promise : busy(client._.put(`/user/${user._id}${encodeQueryAsString(params)}`));
-        },
-    };
+      return missingKeys ? promise : busy(client._.put(`/user/${user._id}${encodeQueryAsString(params)}`));
+    },
+  };
 }

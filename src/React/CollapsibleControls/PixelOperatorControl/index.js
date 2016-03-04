@@ -17,19 +17,24 @@ export default React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if(this.state.operation !== nextProps.operator.getOperation()) {
-      this.setState({operation: nextProps.operator.getOperation()});
+    if (this.state.operation !== nextProps.operator.getOperation()) {
+      this.setState({
+        operation: nextProps.operator.getOperation(),
+      });
     }
   },
 
   updateOperation(operation) {
-    this.setState({operation});
+    this.setState({
+      operation,
+    });
     this.props.operator.setOperation(operation);
   },
 
   render() {
-    return <CollapsibleWidget title='Pixel Operation'>
-                <TextInputWidget value={ this.state.operation } onChange={ this.updateOperation }/>
-           </CollapsibleWidget>;
+    return (
+      <CollapsibleWidget title="Pixel Operation">
+        <TextInputWidget value={ this.state.operation } onChange={ this.updateOperation } />
+      </CollapsibleWidget>);
   },
 });

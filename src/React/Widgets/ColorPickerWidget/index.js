@@ -27,7 +27,7 @@ export default React.createClass({
   },
 
   getDefaultProps() {
-    return { color: [0,0,0], swatch: swatchURL };
+    return { color: [0, 0, 0], swatch: swatchURL };
   },
 
   getInitialState() {
@@ -41,87 +41,87 @@ export default React.createClass({
 
   componentDidMount() {
     var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
-    ctx.fillStyle = 'rgb(' + this.state.originalColor.join(',') + ')';
-    ctx.fillRect(0,0,1,1);
+    ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
+    ctx.fillRect(0, 0, 1, 1);
   },
 
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-update-set-state */
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.color[0] !== this.props.color[0] ||
+    if (prevProps.color[0] !== this.props.color[0] ||
        prevProps.color[1] !== this.props.color[1] ||
        prevProps.color[2] !== this.props.color[2]) {
-      this.setState({originalColor: this.props.color});
+      this.setState({ originalColor: this.props.color });
     }
-    if(!this.state.preview) {
+    if (!this.state.preview) {
       const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
-      ctx.fillStyle = 'rgb(' + this.state.originalColor.join(',') + ')';
-      ctx.fillRect(0,0,1,1);
+      ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
+      ctx.fillRect(0, 0, 1, 1);
     }
   },
   /* eslint-enable react/no-did-update-set-state */
 
   showColor(event) {
     var color = this.state.originalColor,
-        ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+      ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
     event.preventDefault();
 
-    if(event.type === 'mouseleave') {
-      ctx.fillStyle = 'rgb(' + color.join(',') + ')';
-      ctx.fillRect(0,0,1,1);
+    if (event.type === 'mouseleave') {
+      ctx.fillStyle = `rgb(${color.join(',')})`;
+      ctx.fillRect(0, 0, 1, 1);
 
-      this.setState({ color: [color[0], color[1], color[2]], preview: false});
+      this.setState({ color: [color[0], color[1], color[2]], preview: false });
 
       return;
     }
 
     const img = ReactDOM.findDOMNode(this.refs.swatch),
-        rect = img.getBoundingClientRect();
+      rect = img.getBoundingClientRect();
 
     const scale = this.image.width / rect.width,
-        x = scale * (event.pageX - rect.left),
-        y = scale * (event.pageY - rect.top);
+      x = scale * (event.pageX - rect.left),
+      y = scale * (event.pageY - rect.top);
 
     ctx.drawImage(img, x, y, 1, 1, 0, 0, 1, 1);
 
     // Update state base on the event type
-    color = ctx.getImageData(0,0,1,1).data;
+    color = ctx.getImageData(0, 0, 1, 1).data;
 
-    if(event.type === 'click') {
-      this.setState({color: [color[0], color[1], color[2]], preview: false});
-      if(this.props.onChange) {
+    if (event.type === 'click') {
+      this.setState({ color: [color[0], color[1], color[2]], preview: false });
+      if (this.props.onChange) {
         this.props.onChange(color);
       }
     } else {
-      this.setState({color: [color[0], color[1], color[2]], preview: true});
+      this.setState({ color: [color[0], color[1], color[2]], preview: true });
     }
   },
 
   rgbColorChange(event) {
     var color = this.state.color,
-        value = event.target.value,
-        idx = Number(event.target.dataset.colorIdx);
+      value = event.target.value,
+      idx = Number(event.target.dataset.colorIdx);
 
     color[idx] = value;
 
     const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
-    ctx.fillStyle = 'rgb(' + color.join(',') + ')';
-    ctx.fillRect(0,0,1,1);
+    ctx.fillStyle = `rgb(${color.join(',')})`;
+    ctx.fillRect(0, 0, 1, 1);
 
-    this.setState({color: [color[0], color[1], color[2]], preview: false});
+    this.setState({ color: [color[0], color[1], color[2]], preview: false });
 
-    if(this.props.onChange) {
+    if (this.props.onChange) {
       this.props.onChange(color);
     }
   },
 
   updateColor(color) {
-    this.setState({originalColor: color});
+    this.setState({ originalColor: color });
   },
 
   updateSwatch(url) {
     this.image.src = url;
-    this.setState({swatch: url});
+    this.setState({ swatch: url });
   },
 
   render() {
@@ -129,40 +129,49 @@ export default React.createClass({
       <div className={ style.container }>
         <div className={ style.activeColor }>
           <canvas className={ style.colorCanvas }
-                ref='canvas'
-                width='1'
-                height='1'>
+            ref="canvas"
+            width="1"
+            height="1"
+          >
           </canvas>
-          <input className={ style.colorRGB }
-                type='number'
-                min='0'
-                max='255'
-                value={ this.state.color[0] }
-                data-color-idx='0'
-                onChange={ this.rgbColorChange } />
-          <input className={ style.colorRGB }
-                type='number'
-                min='0'
-                max='255'
-                value={ this.state.color[1] }
-                data-color-idx='1'
-                onChange={ this.rgbColorChange } />
-          <input className={ style.colorRGB }
-                type='number'
-                min='0'
-                max='255'
-                value={ this.state.color[2] }
-                data-color-idx='2'
-                onChange={ this.rgbColorChange } />
+          <input
+            className={ style.colorRGB }
+            type="number"
+            min="0"
+            max="255"
+            value={ this.state.color[0] }
+            data-color-idx="0"
+            onChange={ this.rgbColorChange }
+          />
+          <input
+            className={ style.colorRGB }
+            type="number"
+            min="0"
+            max="255"
+            value={ this.state.color[1] }
+            data-color-idx="1"
+            onChange={ this.rgbColorChange }
+          />
+          <input
+            className={ style.colorRGB }
+            type="number"
+            min="0"
+            max="255"
+            value={ this.state.color[2] }
+            data-color-idx="2"
+            onChange={ this.rgbColorChange }
+          />
         </div>
         <div className={ style.swatch }>
-          <img ref='swatch'
-                className={ style.swatchImage }
-                width="100%"
-                src={ this.state.swatch }
-                onClick={ this.showColor }
-                onMouseMove={ this.showColor }
-                onMouseLeave={ this.showColor } />
+          <img
+            ref="swatch"
+            className={ style.swatchImage }
+            width="100%"
+            src={ this.state.swatch }
+            onClick={ this.showColor }
+            onMouseMove={ this.showColor }
+            onMouseLeave={ this.showColor }
+          />
         </div>
       </div>
     );

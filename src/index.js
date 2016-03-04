@@ -9,11 +9,11 @@ import React        from './React';
 import Rendering    from './Rendering';
 
 export {
-    Common,
-    InfoViz,
-    Interaction,
-    IO,
-    NativeUI,
-    React,
-    Rendering,
-}
+  Common,
+  InfoViz,
+  Interaction,
+  IO,
+  NativeUI,
+  React,
+  Rendering,
+};

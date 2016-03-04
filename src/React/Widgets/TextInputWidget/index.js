@@ -28,16 +28,16 @@ export default React.createClass({
 
   valueChange(e) {
     var newVal = e.target.value;
-    this.setState({editing: true, valueRep: newVal});
+    this.setState({ editing: true, valueRep: newVal });
   },
 
-  endEditing(){
-    this.setState({editing: false});
+  endEditing() {
+    this.setState({ editing: false });
 
-    if (this.props.name){
-        this.props.onChange(this.state.valueRep, this.props.name);
+    if (this.props.name) {
+      this.props.onChange(this.state.valueRep, this.props.name);
     } else {
-        this.props.onChange(this.state.valueRep);
+      this.props.onChange(this.state.valueRep);
     }
   },
 
@@ -46,8 +46,9 @@ export default React.createClass({
               <input className={ style.entry }
                 type="text"
                 value={this.state.editing ? this.state.valueRep : this.props.value}
-                onChange={this.valueChange}
-                onBlur={this.endEditing} />
+                onChange={ this.valueChange }
+                onBlur={this.endEditing}
+              />
               <i className={ this.state.editing ? style.editingButton : style.button }></i>
             </div>);
   },

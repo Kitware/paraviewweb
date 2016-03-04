@@ -32,8 +32,8 @@ export default React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.value !== this.state.enabled) {
-        this.setState({enabled: nextProps.value});
+    if (nextProps.value !== this.state.enabled) {
+      this.setState({ enabled: nextProps.value });
     }
   },
 
@@ -42,15 +42,14 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(enabled, this.props.name);
     }
-    if(this.props.toggle) {
-      this.setState({enabled});
+    if (this.props.toggle) {
+      this.setState({ enabled });
     }
   },
 
   render() {
     var classList = [ this.props.icon, this.props.className];
     classList.push((this.state.enabled || this.props.alwaysOn) ? style.enabledButton : style.disabledButton);
-    return (
-        <i className={ classList.join(' ') } onClick={this.buttonClicked} /> );
+    return <i className={ classList.join(' ') } onClick={this.buttonClicked} />;
   },
 });

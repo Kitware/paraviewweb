@@ -19,4 +19,4 @@ export default {
   double, dbl: double, float: double,
   string, str: string,
   boolean, bool: boolean,
-}
+};

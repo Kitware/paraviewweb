@@ -43,10 +43,10 @@ export default React.createClass({
     this.drawControl();
     this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvas));
     this.mouseHandler.attach({
-        'click': this.pointerAction,
-        'mousedown': this.pointerAction,
-        'mouseup': this.pointerAction,
-        'drag' : this.pointerAction,
+      click: this.pointerAction,
+      mousedown: this.pointerAction,
+      mouseup: this.pointerAction,
+      drag: this.pointerAction,
     });
   },
 
@@ -59,7 +59,7 @@ export default React.createClass({
   },
 
   coordinates() {
-    return {x: this.state.x, y: this.state.y};
+    return { x: this.state.x, y: this.state.y };
   },
 
   updateCoordinates(coords) {
@@ -82,15 +82,15 @@ export default React.createClass({
     return Math.max(-1.0, Math.min(val, 1.0));
   },
 
-  //no need to limit the values, for updateX/Y, the input already does that.
+  // no need to limit the values, for updateX/Y, the input already does that.
   updateX(e) {
     var newVal = parseFloat(e.target.value);
-    this.setState({x: newVal });
+    this.setState({ x: newVal });
   },
 
   updateY(e) {
     var newVal = parseFloat(e.target.value);
-    this.setState({y: newVal });
+    this.setState({ y: newVal });
   },
 
   // covers clicks, mouseup/down, and drag.
@@ -109,7 +109,7 @@ export default React.createClass({
       height = ctx.canvas.height,
       width = ctx.canvas.width;
 
-    //clear
+    // clear
     ctx.clearRect(0, 0, width, height);
 
     // draw a lightgrey center plus
@@ -125,10 +125,10 @@ export default React.createClass({
 
     if (this.props.onChange) {
       const currentState = {
-        'x': this.state.x,
-        'y': this.state.y,
+        x: this.state.x,
+        y: this.state.y,
       };
-      if(!equals(currentState, this.lastSharedState)) {
+      if (!equals(currentState, this.lastSharedState)) {
         this.lastSharedState = currentState;
         this.props.onChange(this.lastSharedState);
       }
@@ -137,30 +137,31 @@ export default React.createClass({
 
   drawPlus(color, location) {
     var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
-    height = ctx.canvas.height,
-    width = ctx.canvas.width,
-    lineLen = 5;
+      height = ctx.canvas.height,
+      width = ctx.canvas.width,
+      lineLen = 5;
+
     if (location === undefined) {
       location = {
         x: width / 2,
         y: height / 2,
       };
     } else {
-      location.x += this.props.width/2;
-      location.y += this.props.height/2;
+      location.x += this.props.width / 2;
+      location.y += this.props.height / 2;
     }
 
-    //style
+    // style
     ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    //vert
+    // vert
     ctx.moveTo(location.x, location.y - lineLen);
     ctx.lineTo(location.x, location.y + lineLen);
     ctx.stroke();
 
-    //horiz
+    // horiz
     ctx.moveTo(location.x - lineLen, location.y);
     ctx.lineTo(location.x + lineLen, location.y);
     ctx.stroke();
@@ -171,16 +172,18 @@ export default React.createClass({
       <section className={ style.container }>
         <canvas ref="canvas" className={ style.canvas }
           width={ this.props.width }
-          height={ this.props.height } >
-        </canvas>
-        <section className={ (this.props.hideXY ? style.hidden : style.inputContainer ) } >
+          height={ this.props.height }
+        ></canvas>
+        <section className={ (this.props.hideXY ? style.hidden : style.inputContainer) } >
           <label className={ style.inputLabel }> x: </label>
           <input className={ style.input } type="number" onChange={ this.updateX }
-            min="-1.0" max="1.0" step="0.01" value={ this.state.x }/>
-          <br/>
+            min="-1.0" max="1.0" step="0.01" value={ this.state.x }
+          />
+          <br />
           <label className={ style.inputLabel }> y: </label>
           <input className={ style.input } type="number" onChange={ this.updateY }
-            min="-1.0" max="1.0" step="0.01" value={ this.state.y }/>
+            min="-1.0" max="1.0" step="0.01" value={ this.state.y }
+          />
         </section >
       </section>
     );

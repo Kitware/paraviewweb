@@ -12,16 +12,16 @@ import QueryDataModelImageBuilder               from './QueryDataModelImageBuild
 import SortedCompositeImageBuilder              from './SortedCompositeImageBuilder';
 
 export default {
-    AbstractImageBuilder,
-    BinaryDataProberImageBuilder,
-    CompositeImageBuilder,
-    DataProberImageBuilder,
-    DepthCompositeImageBuilder,
-    DepthImageBuilder,
-    FloatDataImageBuilder,
-    MagicLensImageBuilder,
-    MultiColorBySortedCompositeImageBuilder,
-    PixelOperatorImageBuilder,
-    QueryDataModelImageBuilder,
-    SortedCompositeImageBuilder,
-}
+  AbstractImageBuilder,
+  BinaryDataProberImageBuilder,
+  CompositeImageBuilder,
+  DataProberImageBuilder,
+  DepthCompositeImageBuilder,
+  DepthImageBuilder,
+  FloatDataImageBuilder,
+  MagicLensImageBuilder,
+  MultiColorBySortedCompositeImageBuilder,
+  PixelOperatorImageBuilder,
+  QueryDataModelImageBuilder,
+  SortedCompositeImageBuilder,
+};

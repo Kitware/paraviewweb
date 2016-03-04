@@ -9,13 +9,13 @@ import system       from './system';
 import user         from './user';
 
 export default [
-    assetstore,
-    collection,
-    file,
-    folder,
-    group,
-    item,
-    resource,
-    system,
-    user,
+  assetstore,
+  collection,
+  file,
+  folder,
+  group,
+  item,
+  resource,
+  system,
+  user,
 ];

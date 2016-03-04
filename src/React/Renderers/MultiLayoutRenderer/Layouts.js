@@ -1,4 +1,4 @@
-/* eslint-disable babel/object-shorthand */
+/* eslint-disable */
 export default {
     "2x2": function (center, spacing, width, height) {
        return [
@@ -137,4 +137,4 @@ export default {
        ];
     },
 };
-/* eslint-enable babel/object-shorthand */
+/* eslint-enable */

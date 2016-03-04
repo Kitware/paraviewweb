@@ -5,94 +5,98 @@ import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFa
 
 export default React.createClass({
 
-    displayName: 'MultiLayoutViewer',
+  displayName: 'MultiLayoutViewer',
 
-    propTypes: {
-        layout: React.PropTypes.string,
-        menuAddOn: React.PropTypes.array,
-        queryDataModel: React.PropTypes.object.isRequired,
-        renderers: React.PropTypes.object.isRequired,
-    },
+  propTypes: {
+    layout: React.PropTypes.string,
+    menuAddOn: React.PropTypes.array,
+    queryDataModel: React.PropTypes.object.isRequired,
+    renderers: React.PropTypes.object.isRequired,
+  },
 
-    getInitialState() {
-        return {
-            activeRenderer: null,
-            renderer: null,
-        };
-    },
+  getInitialState() {
+    return {
+      activeRenderer: null,
+      renderer: null,
+    };
+  },
 
-    // FIXME need to do that properly if possible?
-    /* eslint-disable react/no-did-mount-set-state */
-    componentDidMount() {
-        var renderer = this.refs.catalystWidget.getRenderer();
+  // FIXME need to do that properly if possible?
+  /* eslint-disable react/no-did-mount-set-state */
+  componentDidMount() {
+    var renderer = this.refs.catalystWidget.getRenderer();
 
-        this.setState({renderer});
+    this.setState({ renderer });
 
-        this.activeViewportSubscription = renderer.onActiveViewportChange((data, envelope) => {
-            this.setState({activeRenderer: this.props.renderers[data.name]});
-        });
-    },
-    /* eslint-enable react/no-did-mount-set-state */
+    this.activeViewportSubscription = renderer.onActiveViewportChange((data, envelope) => {
+      this.setState({
+        activeRenderer: this.props.renderers[data.name],
+      });
+    });
+  },
+  /* eslint-enable react/no-did-mount-set-state */
 
-    componentWillUpdate(nextProps, nextState) {
-        var previousDataModel = (this.state.activeRenderer && this.state.activeRenderer.builder && this.state.activeRenderer.builder.queryDataModel)
-                                ? this.state.activeRenderer.builder.queryDataModel : this.props.queryDataModel,
-            nextDataModel = (nextState.activeRenderer && nextState.activeRenderer.builder && nextState.activeRenderer.builder.queryDataModel)
-                            ? nextState.activeRenderer.builder.queryDataModel : nextProps.queryDataModel;
-        if(previousDataModel !== nextDataModel) {
-            this.detachListener();
-            this.attachListener(nextDataModel);
-        }
-    },
+  componentWillUpdate(nextProps, nextState) {
+    var previousDataModel = (this.state.activeRenderer && this.state.activeRenderer.builder && this.state.activeRenderer.builder.queryDataModel)
+      ? this.state.activeRenderer.builder.queryDataModel : this.props.queryDataModel,
+      nextDataModel = (nextState.activeRenderer && nextState.activeRenderer.builder && nextState.activeRenderer.builder.queryDataModel)
+      ? nextState.activeRenderer.builder.queryDataModel : nextProps.queryDataModel;
 
-    // Auto unmount listener
-    componentWillUnmount() {
-        this.detachListener();
-        if(this.activeViewportSubscription) {
-            this.activeViewportSubscription.unsubscribe();
-            this.activeViewportSubscription = null;
-        }
-    },
+    if (previousDataModel !== nextDataModel) {
+      this.detachListener();
+      this.attachListener(nextDataModel);
+    }
+  },
 
-    attachListener(dataModel) {
-        this.detachListener();
-        if(dataModel) {
-            this.queryDataModelChangeSubscription = dataModel.onStateChange((data, envelope) => {
-                this.forceUpdate();
-            });
-        }
-    },
+  // Auto unmount listener
+  componentWillUnmount() {
+    this.detachListener();
+    if (this.activeViewportSubscription) {
+      this.activeViewportSubscription.unsubscribe();
+      this.activeViewportSubscription = null;
+    }
+  },
 
-    detachListener() {
-        if (this.queryDataModelChangeSubscription) {
-            this.queryDataModelChangeSubscription.unsubscribe();
-            this.queryDataModelChangeSubscription = null;
-        }
-    },
+  attachListener(dataModel) {
+    this.detachListener();
+    if (dataModel) {
+      this.queryDataModelChangeSubscription = dataModel.onStateChange((data, envelope) => {
+        this.forceUpdate();
+      });
+    }
+  },
 
-    render() {
-        var queryDataModel = (this.state.activeRenderer && this.state.activeRenderer.builder && this.state.activeRenderer.builder.queryDataModel)
-                            ? this.state.activeRenderer.builder.queryDataModel : this.props.queryDataModel,
-            controlWidgets = [];
+  detachListener() {
+    if (this.queryDataModelChangeSubscription) {
+      this.queryDataModelChangeSubscription.unsubscribe();
+      this.queryDataModelChangeSubscription = null;
+    }
+  },
 
-        if(this.state.activeRenderer) {
-            controlWidgets = WidgetFactory.getWidgets(this.state.activeRenderer.builder || this.state.activeRenderer.painter);
-        }
+  render() {
+    var queryDataModel = (this.state.activeRenderer && this.state.activeRenderer.builder && this.state.activeRenderer.builder.queryDataModel)
+      ? this.state.activeRenderer.builder.queryDataModel : this.props.queryDataModel,
+      controlWidgets = [];
 
-        // Add menuAddOn if any at the top
-        if(this.props.menuAddOn) {
-            controlWidgets = this.props.menuAddOn.concat(controlWidgets);
-        }
+    if (this.state.activeRenderer) {
+      controlWidgets = WidgetFactory.getWidgets(this.state.activeRenderer.builder || this.state.activeRenderer.painter);
+    }
 
-        return (
-            <AbstractViewerMenu ref='catalystWidget'
-                            queryDataModel={queryDataModel}
-                            renderers={this.props.renderers}
-                            renderer='MultiViewRenderer'
-                            layout={ this.props.layout }>
-                <MultiViewControl renderer={ this.state.renderer }/>
-                { controlWidgets }
-            </AbstractViewerMenu>
-         );
-    },
+    // Add menuAddOn if any at the top
+    if (this.props.menuAddOn) {
+      controlWidgets = this.props.menuAddOn.concat(controlWidgets);
+    }
+
+    return (
+      <AbstractViewerMenu
+        ref="catalystWidget"
+        queryDataModel={queryDataModel}
+        renderers={this.props.renderers}
+        renderer="MultiViewRenderer"
+        layout={ this.props.layout }
+      >
+        <MultiViewControl renderer={ this.state.renderer } />
+        { controlWidgets }
+      </AbstractViewerMenu>);
+  },
 });

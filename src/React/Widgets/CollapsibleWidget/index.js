@@ -14,26 +14,26 @@ export default React.createClass({
     visible: React.PropTypes.bool,
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
-        title: '',
-        subtitle: '',
-        open: true,
-        visible: true,
+      title: '',
+      subtitle: '',
+      open: true,
+      visible: true,
     };
   },
 
-  getInitialState(){
+  getInitialState() {
     return {
-        open: this.props.open,
+      open: this.props.open,
     };
   },
 
   toggleOpen() {
     var newState = !this.state.open;
-    this.setState({open: newState});
+    this.setState({ open: newState });
 
-    if(this.props.onChange) {
+    if (this.props.onChange) {
       this.props.onChange(newState);
     }
   },
@@ -48,7 +48,7 @@ export default React.createClass({
 
   render() {
     var localStyle = {};
-    if(!this.props.visible) {
+    if (!this.props.visible) {
       localStyle.display = 'none';
     }
     return (

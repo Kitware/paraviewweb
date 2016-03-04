@@ -18,125 +18,138 @@ import LookupTableWidget            from '../../Widgets/LookupTableWidget';
 
 /* eslint-disable react/display-name */
 /* eslint-disable react/no-multi-comp */
+/* eslint-disable react/prop-types */
 const WidgetFactoryMapping = {
-        QueryDataModelWidget({queryDataModel, handleExploration}) {
-            return <QueryDataModelControl
-                        key='QueryDataModel'
-                        handleExploration={!!handleExploration}
-                        model={queryDataModel} />;
-        },
-        EqualizerWidget({levels, colors=['#cccccc'], callback}) {
-            return <EqualizerWidget
-                        key='Equalizer'
-                        width={300}
-                        height={120}
-                        layers={levels}
-                        onChange={callback}
-                        colors={colors} />;
-        },
-        LookupTableWidget({originalRange=[0,1], lookupTable, lookupTableManager}) {
-            return  <CollapsibleWidget title="LookupTable" key='LookupTableWidget_parent'>
-                        <LookupTableWidget
-                            key='LookupTableWidget'
-                            ref='LookupTableWidget'
-                            originalRange={ originalRange }
-                            lookupTable={ lookupTable }
-                            lookupTableManager={ lookupTableManager }
-                        />
-                    </CollapsibleWidget>;
-        },
-        LookupTableManagerWidget({lookupTableManager, field}) {
-            if(!field) {
-                field = lookupTableManager.getActiveField();
-            }
-            return <LookupTableManagerControl
-                        key='LookupTableManagerWidget'
-                        ref='LookupTableManagerWidget'
-                        field={ field }
-                        lookupTableManager={ lookupTableManager }
-                    />;
-        },
-        CompositeControl({pipelineModel}) {
-            return  <CollapsibleWidget title="Pipeline" key='CompositeControl_parent'>
-                        <CompositePipelineWidget
-                            key='CompositeControl'
-                            ref='CompositeControl'
-                            model={ pipelineModel }
-                        />
-                    </CollapsibleWidget>
-        },
-        ProbeControl({model}) {
-            return  <ProbeControl
-                        key='ProbeControl'
-                        ref='ProbeControl'
-                        imageBuilder={ model }
-                    />
-        },
-        LightPropertiesWidget({light}) {
-            return  <LightControl
-                        key='LightPropertiesWidget'
-                        ref='LightPropertiesWidget'
-                        light={light}
-                    />
-        },
-        VolumeControlWidget({ lookupTable, equalizer, intensity, computation }) {
-            return  <VolumeControl
-                        key='VolumeControlWidget'
-                        ref='VolumeControlWidget'
-                        intensity={intensity}
-                        computation={computation}
-                        equalizer={equalizer}
-                        lookupTable={lookupTable}
-                    />
-        },
-        PixelOperatorControl({model}) {
-            return  <PixelOperatorControl
-                        key='PixelOperatorControl'
-                        ref='PixelOperatorControl'
-                        operator={model}
-                    />
-        },
-        FloatImageControl({model}) {
-            return  <FloatImageControl
-                        key='FloatImageControl'
-                        ref='FloatImageControl'
-                        model={model}
-                    />
-        },
-    };
+  QueryDataModelWidget({ queryDataModel, handleExploration }) {
+    return (
+      <QueryDataModelControl
+        key="QueryDataModel"
+        handleExploration={!!handleExploration}
+        model={queryDataModel}
+      />);
+  },
+  EqualizerWidget({ levels, colors = ['#cccccc'], callback }) {
+    return (
+      <EqualizerWidget
+        key="Equalizer"
+        width={300}
+        height={120}
+        layers={levels}
+        onChange={callback}
+        colors={colors}
+      />);
+  },
+  LookupTableWidget({ originalRange = [0, 1], lookupTable, lookupTableManager }) {
+    return  (
+      <CollapsibleWidget title="LookupTable" key="LookupTableWidget_parent">
+        <LookupTableWidget
+          key="LookupTableWidget"
+          ref="LookupTableWidget"
+          originalRange={ originalRange }
+          lookupTable={ lookupTable }
+          lookupTableManager={ lookupTableManager }
+        />
+      </CollapsibleWidget>);
+  },
+  LookupTableManagerWidget({ lookupTableManager, field }) {
+    if (!field) {
+      field = lookupTableManager.getActiveField();
+    }
+    return (
+      <LookupTableManagerControl
+        key="LookupTableManagerWidget"
+        ref="LookupTableManagerWidget"
+        field={ field }
+        lookupTableManager={ lookupTableManager }
+      />);
+  },
+  CompositeControl({ pipelineModel }) {
+    return (
+      <CollapsibleWidget title="Pipeline" key="CompositeControl_parent">
+        <CompositePipelineWidget
+          key="CompositeControl"
+          ref="CompositeControl"
+          model={ pipelineModel }
+        />
+      </CollapsibleWidget>);
+  },
+  ProbeControl({ model }) {
+    return (
+      <ProbeControl
+        key="ProbeControl"
+        ref="ProbeControl"
+        imageBuilder={ model }
+      />);
+  },
+  LightPropertiesWidget({ light }) {
+    return (
+      <LightControl
+        key="LightPropertiesWidget"
+        ref="LightPropertiesWidget"
+        light={light}
+      />);
+  },
+  VolumeControlWidget({ lookupTable, equalizer, intensity, computation }) {
+    return (
+      <VolumeControl
+        key="VolumeControlWidget"
+        ref="VolumeControlWidget"
+        intensity={intensity}
+        computation={computation}
+        equalizer={equalizer}
+        lookupTable={lookupTable}
+      />);
+  },
+  PixelOperatorControl({ model }) {
+    return (
+      <PixelOperatorControl
+        key="PixelOperatorControl"
+        ref="PixelOperatorControl"
+        operator={model}
+      />);
+  },
+  FloatImageControl({ model }) {
+    return (
+      <FloatImageControl
+        key="FloatImageControl"
+        ref="FloatImageControl"
+        model={model}
+      />);
+  },
+};
 /* eslint-enable react/display-name */
 /* eslint-enable react/no-multi-comp */
-
+/* eslint-enable react/prop-types */
 function createWidget(name, options) {
-    var fn = WidgetFactoryMapping[name];
+  var fn = WidgetFactoryMapping[name];
 
-    if(fn) {
-        return fn(options);
-    }
-    return null
+  if (fn) {
+    return fn(options);
+  }
+  return null;
 }
 
 function getWidgets(obj) {
-    if(!obj) {
-        return [];
+  if (!obj) {
+    return [];
+  }
+
+  const widgetDesc = obj.getControlWidgets(),
+    widgetList = [];
+
+  widgetDesc.forEach(desc => {
+    var widget = createWidget(desc.name, desc);
+    if (widget) {
+      widgetList.push(widget);
+    } else {
+      console.error('Unable to create widget for name:', name);
     }
+  });
 
-    const widgetDesc = obj.getControlWidgets(),
-        widgetList = [];
-
-    widgetDesc.forEach(function(desc) {
-        var widget = createWidget(desc.name, desc);
-        if(widget) {
-            widgetList.push(widget);
-        } else {
-            console.error('Unable to create widget for name: ' + name);
-        }
-    });
-
-    return widgetList;
+  return widgetList;
 }
 
 export default {
-    createWidget,
-    getWidgets,
+  createWidget,
+  getWidgets,
 };

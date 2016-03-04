@@ -13,13 +13,13 @@ export default React.createClass({
     sections: React.PropTypes.array.isRequired,
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
-        advanced: false,
+      advanced: false,
     };
   },
 
-  getInitialState(){
+  getInitialState() {
     return {
       advanced: this.props.advanced,
       changeSet: {},
@@ -29,12 +29,12 @@ export default React.createClass({
 
   toggleAdvanced() {
     const advanced = !this.state.advanced;
-    this.setState({advanced});
+    this.setState({ advanced });
   },
 
   updateFilter(event) {
     const filter = event.target.value;
-    this.setState({filter});
+    this.setState({ filter });
   },
 
   updateChangeSet(change) {
@@ -43,38 +43,46 @@ export default React.createClass({
   },
 
   applyChanges() {
-    if(this.props.onApply) {
+    if (this.props.onApply) {
       this.props.onApply(this.state.changeSet);
     }
     // Reset changeSet
-    this.setState({ changeSet:{} });
+    this.setState({ changeSet: {} });
   },
 
   render() {
     const changeCount = Object.keys(this.state.changeSet).length;
     return (
-        <div className={ style.container }>
-            <div className={ style.toolbar }>
-                <i  className={ this.state.advanced ? style.activeAdvancedButton : style.advancedButton }
-                    onClick={ this.toggleAdvanced }>
-                </i>
-                <input type='text' placeholder='filter properties...' onChange={ this.updateFilter } className={ style.filter }/>
-                <i className={ changeCount ? style.validateButtonOn : style.validateButton }
-                  onClick={ this.applyChanges }>
-                </i>
-            </div>
-            <div className={ style.contentContainer }>
-              { this.props.children }
-              { this.props.sections.map( section => {
-                  return <PropertyGroup
-                            key={ section.name }
-                            proxy={ section }
-                            filter={ this.state.filter }
-                            collapsed={ section.collapsed }
-                            advanced={ this.state.advanced }
-                            onChange={ this.updateChangeSet }/>
-              })}
-            </div>
-        </div>);
+      <div className={ style.container }>
+        <div className={ style.toolbar }>
+          <i
+            className={ this.state.advanced ? style.activeAdvancedButton : style.advancedButton }
+            onClick={ this.toggleAdvanced }
+          ></i>
+          <input
+            type="text"
+            placeholder="filter properties..."
+            onChange={ this.updateFilter }
+            className={ style.filter }
+          />
+          <i
+            className={ changeCount ? style.validateButtonOn : style.validateButton }
+            onClick={ this.applyChanges }
+          ></i>
+        </div>
+        <div className={ style.contentContainer }>
+          { this.props.children }
+          { this.props.sections.map(section =>
+            <PropertyGroup
+              key={ section.name }
+              proxy={ section }
+              filter={ this.state.filter }
+              collapsed={ section.collapsed }
+              advanced={ this.state.advanced }
+              onChange={ this.updateChangeSet }
+            />
+          )}
+        </div>
+      </div>);
   },
 });

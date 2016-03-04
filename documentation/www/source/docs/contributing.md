@@ -8,7 +8,7 @@ We welcome you to join the development of ParaViewWeb. This document will help y
 
 Please follow the coding style:
 
-- Follow [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+- Follow [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
 - Use soft-tabs with a two space indent.
 - Don't put commas first.
 

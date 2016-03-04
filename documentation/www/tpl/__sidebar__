@@ -5,6 +5,7 @@ docs:
   basic_usage:
     import: /paraviewweb/docs/import.html
   miscellaneous:
+    tools: /paraviewweb/docs/tools.html
     troubleshooting: /paraviewweb/docs/troubleshooting.html
     contributing: /paraviewweb/docs/contributing.html
   pvw_server:

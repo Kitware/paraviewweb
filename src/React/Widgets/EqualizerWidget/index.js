@@ -27,8 +27,8 @@ export default React.createClass({
 
   getDefaultProps() {
     return {
-      layers: [1,1,1,1,1,1,1],
-      colors: ['#0000ff','#ffffff','#ff0000'],
+      layers: [1, 1, 1, 1, 1, 1, 1],
+      colors: ['#0000ff', '#ffffff', '#ff0000'],
       stroke: '#000000',
       height: 120,
       width: 300,
@@ -57,17 +57,17 @@ export default React.createClass({
     this.draw();
     this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvas));
     this.mouseHandler.attach({
-        'click': this.clicked,
-        'drag' : this.clicked,
+      click: this.clicked,
+      drag: this.clicked,
     });
   },
 
   componentWillReceiveProps(nextProps) {
-      const layers = nextProps.layers;
+    const layers = nextProps.layers;
 
-      if(!equals(this.state.layers, layers)) {
-          this.setState({layers});
-      }
+    if (!equals(this.state.layers, layers)) {
+      this.setState({ layers });
+    }
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -77,19 +77,19 @@ export default React.createClass({
   componentWillUnmount() {
     this.mouseHandler.destroy();
     // Remove window listener
-    if(this.sizeSubscription){
-        this.sizeSubscription.unsubscribe();
-        this.sizeSubscription = null;
+    if (this.sizeSubscription) {
+      this.sizeSubscription.unsubscribe();
+      this.sizeSubscription = null;
     }
   },
 
   updateDimensions() {
     var el = ReactDOM.findDOMNode(this).parentNode,
-        innerWidth = getSize(el).clientWidth;
+      innerWidth = getSize(el).clientWidth;
 
-    if(el && innerWidth && (this.state.width !== innerWidth)) {
-        this.setState({ width: innerWidth });
-        return true;
+    if (el && innerWidth && (this.state.width !== innerWidth)) {
+      this.setState({ width: innerWidth });
+      return true;
     }
     return false;
   },
@@ -100,13 +100,13 @@ export default React.createClass({
     ctx.lineWidth = '1';
 
     const array = this.state.layers,
-        width = this.state.width,
-        height = this.state.height,
-        size = array.length,
-        spacing = this.props.spacing,
-        layerWidth = Math.floor(((width - 5*spacing) / size) - spacing),
-        maxLayerHeight = height - (4 * spacing),
-        layerStep = layerWidth + (width - layerWidth * array.length - 2 * spacing) / (array.length + 1);
+      width = this.state.width,
+      height = this.state.height,
+      size = array.length,
+      spacing = this.props.spacing,
+      layerWidth = Math.floor(((width - 5 * spacing) / size) - spacing),
+      maxLayerHeight = height - (4 * spacing),
+      layerStep = layerWidth + (width - layerWidth * array.length - 2 * spacing) / (array.length + 1);
 
     ctx.clearRect(0, 0, this.state.width, this.state.height);
 
@@ -114,14 +114,14 @@ export default React.createClass({
     ctx.rect(spacing, spacing, width - 2 * spacing, height - 2 * spacing);
     ctx.stroke();
 
-    for(let i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       const layerHeight = array[i] * maxLayerHeight;
 
       ctx.fillStyle = this.props.colors[i % this.props.colors.length];
-      ctx.fillRect(layerStep*i + 2*spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
+      ctx.fillRect(layerStep * i + 2 * spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
 
       ctx.beginPath();
-      ctx.rect(layerStep*i + 2*spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
+      ctx.rect(layerStep * i + 2 * spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
       ctx.stroke();
     }
 
@@ -148,8 +148,8 @@ export default React.createClass({
     opacity = (opacity < 0.0) ? 0.0 : opacity;
     layers[idx] = opacity;
 
-    this.setState({layers});
-    if(this.props.onChange) {
+    this.setState({ layers });
+    if (this.props.onChange) {
       this.props.onChange(layers);
     }
     this.draw();
@@ -158,7 +158,8 @@ export default React.createClass({
   render() {
     return (
       <div className={ style.container }>
-          <canvas className={ style.canvas } ref='canvas' width={this.state.width} height={this.state.height}></canvas>
+        <canvas className={ style.canvas } ref="canvas" width={this.state.width} height={this.state.height}>
+        </canvas>
       </div>
     );
   },

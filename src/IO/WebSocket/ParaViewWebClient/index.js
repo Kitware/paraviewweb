@@ -1,45 +1,47 @@
-import ColorManager             from './ColorManager';
-import FileListing              from './FileListing';
-import KeyValuePairStore        from './KeyValuePairStore';
-import MouseHandler             from './MouseHandler';
-import ProxyManager             from './ProxyManager';
-import SaveData                 from './SaveData';
-import TimeHandler              from './TimeHandler';
-import ViewPort                 from './ViewPort';
+import ColorManager from './ColorManager';
+import FileListing from './FileListing';
+import KeyValuePairStore from './KeyValuePairStore';
+import MouseHandler from './MouseHandler';
+import ProxyManager from './ProxyManager';
+import SaveData from './SaveData';
+import TimeHandler from './TimeHandler';
+import ViewPort from './ViewPort';
 import ViewPortGeometryDelivery from './ViewPortGeometryDelivery';
-import ViewPortImageDelivery    from './ViewPortImageDelivery';
+import ViewPortImageDelivery from './ViewPortImageDelivery';
 
 const
-    protocolsMap = {
-        ColorManager,
-        FileListing,
-        KeyValuePairStore,
-        MouseHandler,
-        ProxyManager,
-        SaveData,
-        TimeHandler,
-        ViewPort,
-        ViewPortGeometryDelivery,
-        ViewPortImageDelivery,
-    };
+  protocolsMap = {
+    ColorManager,
+    FileListing,
+    KeyValuePairStore,
+    MouseHandler,
+    ProxyManager,
+    SaveData,
+    TimeHandler,
+    ViewPort,
+    ViewPortGeometryDelivery,
+    ViewPortImageDelivery,
+  };
 
-export function createClient(connection, protocols=[], customProtocols={}) {
-    var session = connection.getSession(),
-        result = { connection, session },
-        count = protocols.length;
+export function createClient(connection, protocols = [], customProtocols = {}) {
+  var session = connection.getSession(),
+    result = {
+      connection, session,
+    },
+    count = protocols.length;
 
-    while(count--) {
-        const name = protocols[count];
-        result[name] = protocolsMap[name](session);
-    }
+  while (count--) {
+    const name = protocols[count];
+    result[name] = protocolsMap[name](session);
+  }
 
-    for(const key in customProtocols) {
-        result[key] = customProtocols[key](session);
-    }
+  for (const key in customProtocols) {
+    result[key] = customProtocols[key](session);
+  }
 
-    return result;
+  return result;
 }
 
 export default {
-    createClient,
-}
+  createClient,
+};

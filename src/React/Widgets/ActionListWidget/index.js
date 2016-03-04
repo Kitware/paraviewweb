@@ -12,12 +12,12 @@ export default React.createClass({
 
   processClick(event) {
     var target = event.target;
-    while(!target.dataset.name) {
-        target = target.parentNode;
+    while (!target.dataset.name) {
+      target = target.parentNode;
     }
 
-    if(this.props.onClick) {
-        this.props.onClick(target.dataset.name, target.dataset.action, target.dataset.user);
+    if (this.props.onClick) {
+      this.props.onClick(target.dataset.name, target.dataset.action, target.dataset.user);
     }
   },
 
@@ -25,17 +25,19 @@ export default React.createClass({
     var list = [];
 
     this.props.list.forEach((item) => {
-      list.push(<li
-                    className={ style.item }
-                    key={item.name}
-                    title={item.name}
-                    data-name={item.name}
-                    data-action={item.action || 'default'}
-                    data-user={item.data || ''}
-                    onClick={this.processClick}>
-                        <i className={item.icon}></i>{item.name}
-                </li>);
-    })
+      list.push(
+        <li
+          className={ style.item }
+          key={item.name}
+          title={item.name}
+          data-name={item.name}
+          data-action={item.action || 'default'}
+          data-user={item.data || ''}
+          onClick={this.processClick}
+        >
+          <i className={item.icon}></i>{item.name}
+        </li>);
+    });
 
     return <ul className={ style.list }>{ list }</ul>;
   },

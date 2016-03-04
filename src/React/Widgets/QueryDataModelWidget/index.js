@@ -15,35 +15,40 @@ import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget
  */
 export default React.createClass({
 
-    displayName: 'QueryDataModelWidget',
+  displayName: 'QueryDataModelWidget',
 
-    propTypes: {
-        model: React.PropTypes.object,
-    },
+  propTypes: {
+    model: React.PropTypes.object,
+  },
 
-    mixins: [DataListenerMixin, DataListenerUpdateMixin],
+  mixins: [DataListenerMixin, DataListenerUpdateMixin],
 
-    render() {
-        var model = this.props.model,
-            orderList = model.originalData.arguments_order;
-        return (
-            <div className={ style.container }>
-                { orderList.map(function(name) {
-                    if(model.getUiType(name) === 'list') {
-                        return <ListWidget
-                                    key={name}
-                                    model={model}
-                                    arg={name}
-                                    listener={false} />;
-                    } else if (model.getUiType(name) === 'slider') {
-                        return <NumberWidget
-                                    key={name}
-                                    model={model}
-                                    arg={name}
-                                    listener={false} />;
-                    }
-                })}
-            </div>
-        );
-    },
+  render() {
+    var model = this.props.model,
+      orderList = model.originalData.arguments_order;
+
+    return (
+      <div className={ style.container }>
+        { orderList.map(name => {
+          if (model.getUiType(name) === 'list') {
+            return (
+              <ListWidget
+                key={name}
+                model={model}
+                arg={name}
+                listener={false}
+              />);
+          } else if (model.getUiType(name) === 'slider') {
+            return (
+              <NumberWidget
+                key={name}
+                model={model}
+                arg={name}
+                listener={false}
+              />);
+          }
+          return null;
+        })}
+      </div>);
+  },
 });

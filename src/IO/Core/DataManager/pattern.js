@@ -31,28 +31,31 @@
 //     }
 //     m.unregisterPattern('imageURL');
 
-export default function PatternMap() {
+export default class PatternMap {
+
+  constructor() {
     this.keyPatternMap = {};
-}
+  }
 
-// Register a pattern to a given key
-PatternMap.prototype.registerPattern = function(key, pattern) {
+  // Register a pattern to a given key
+  registerPattern(key, pattern) {
     this.keyPatternMap[key] = pattern;
-};
+  }
 
-// Unregister a key
-PatternMap.prototype.unregisterPattern = function(key) {
+  // Unregister a key
+  unregisterPattern(key) {
     delete this.keyPatternMap[key];
-}
+  }
 
-// Evaluate the pattern base on its registered key and set of key to be replaced
-PatternMap.prototype.getValue = function(key, options) {
+  // Evaluate the pattern base on its registered key and set of key to be replaced
+  getValue(key, options) {
     var result = this.keyPatternMap[key],
-        keyPattern = ['{', '}'];
+      keyPattern = ['{', '}'];
 
-    for(const opt in options) {
-        result = result.replace(keyPattern.join(opt), options[opt]);
+    for (const opt in options) {
+      result = result.replace(keyPattern.join(opt), options[opt]);
     }
 
     return result;
+  }
 }

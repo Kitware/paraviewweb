@@ -38,6 +38,6 @@ module.exports = {
         require('autoprefixer')({ browsers: ['last 2 versions'] }),
     ],
     eslint: {
-        configFile: '.eslintrc',
+        configFile: '.eslintrc.js',
     },
 };

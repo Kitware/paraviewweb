@@ -17,14 +17,14 @@ export default React.createClass({
     proxy: React.PropTypes.object,
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
-        advanced: false,
-        collapsed: false,
+      advanced: false,
+      collapsed: false,
     };
   },
 
-  getInitialState(){
+  getInitialState() {
     return {
       collapsed: this.props.collapsed,
       changeSet: {},
@@ -33,27 +33,27 @@ export default React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-      var previous = this.props.proxy,
-          next = nextProps.proxy;
+    var previous = this.props.proxy,
+      next = nextProps.proxy;
 
-      if(!equals(previous, next)) {
-          this.setState({
-              properties: proxyToProps(next),
-              changeSet: {},
-          });
-      }
+    if (!equals(previous, next)) {
+      this.setState({
+        properties: proxyToProps(next),
+        changeSet: {},
+      });
+    }
   },
 
   toggleCollapsedMode() {
     const collapsed = !this.state.collapsed;
-    this.setState({collapsed});
+    this.setState({ collapsed });
   },
 
   valueChange(change) {
     const changeSet = this.state.changeSet;
     changeSet[change.id] = (change.size === 1 && Array.isArray(change.value)) ? change.value[0] : change.value;
-    this.setState({changeSet});
-    if(this.props.onChange) {
+    this.setState({ changeSet });
+    if (this.props.onChange) {
       this.props.onChange(changeSet);
     }
   },
@@ -77,7 +77,7 @@ export default React.createClass({
                 </span>
             </div>
             <div className={ this.state.collapsed ? style.hidden : style.content}>
-              { this.state.properties.map( p => factory(p, ctx, this.valueChange) ) }
+              { this.state.properties.map(p => factory(p, ctx, this.valueChange)) }
             </div>
         </div>);
   },
