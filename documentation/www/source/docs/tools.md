@@ -54,6 +54,9 @@ Will generate the following commit message:
 
         style(ESLint): Update code formatting to comply with our ESLint specification
 
+
+[Full convention](https://gist.github.com/stephenparish/9941e89d80e2bc58a153) 
+
 ## Code editing
 
 [Sublime Text 3](http://www.sublimetext.com) with the following set of plugins.
