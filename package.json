@@ -46,7 +46,7 @@
         "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js"
     },
     "scripts": {
-        "postinstall": "command -v fix-kw-web-suite && fix-kw-web-suite",
+        "postinstall": "fix-kw-web-suite || true",
         "install:global": "npm install -g commitizen@2.5.0",
 
         "bin:pvw-doc"      : "node ./tools/doc-generator/doc-generator-cli.js",
