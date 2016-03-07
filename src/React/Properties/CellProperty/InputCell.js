@@ -5,46 +5,49 @@ import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 export default React.createClass({
 
-    displayName: 'InputCell',
+  displayName: 'InputCell',
 
-    propTypes: {
-        domain: React.PropTypes.object,
-        idx:    React.PropTypes.number.isRequired,
-        label:  React.PropTypes.string,
-        onChange: React.PropTypes.func,
-        type:   React.PropTypes.string,
-        value:  React.PropTypes.any,
-    },
+  propTypes: {
+    domain: React.PropTypes.object,
+    idx: React.PropTypes.number.isRequired,
+    label: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    type: React.PropTypes.string,
+    value: React.PropTypes.any,
+  },
 
-    getDefaultProps() {
-        return {
-            label: '',
-            idx: 0,
-            value: '',
-            type: 'string',
-        };
-    },
+  getDefaultProps() {
+    return {
+      label: '',
+      idx: 0,
+      value: '',
+      type: 'string',
+    };
+  },
 
-    getInitialState() {
-        return {
-            editing: false,
-            valueRep: this.props.value,
-        };
-    },
+  getInitialState() {
+    return {
+      editing: false,
+      valueRep: this.props.value,
+    };
+  },
 
-    valueChange(e) {
-        var newVal = e.target.value;
-        this.setState({editing: true, valueRep: newVal});
+  valueChange(e) {
+    var newVal = e.target.value;
+    this.setState({
+      editing: true,
+      valueRep: newVal,
+    });
 
-        if (validate[this.props.type](newVal)) {
-            let propVal = convert[this.props.type](newVal);
-            propVal = this.applyDomains(this.props.idx, propVal);
-            this.props.onChange(this.props.idx, propVal);
-        }
-    },
+    if (validate[this.props.type](newVal)) {
+      let propVal = convert[this.props.type](newVal);
+      propVal = this.applyDomains(this.props.idx, propVal);
+      this.props.onChange(this.props.idx, propVal);
+    }
+  },
 
   applyDomains(idx, val) {
-    if(!this.props.domain) {
+    if (!this.props.domain) {
       return val;
     }
 
@@ -52,7 +55,7 @@ export default React.createClass({
     if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
       const size = this.props.domain.range.length;
       const { min, max, force } = this.props.domain.range[idx % size];
-      if(force) {
+      if (force) {
         val = (min !== undefined) ? Math.max(min, val) : val;
         val = (max !== undefined) ? Math.min(max, val) : val;
       }
@@ -64,7 +67,7 @@ export default React.createClass({
     var tooltip = '';
     const idx = this.props.idx;
 
-    if(!this.props.domain) {
+    if (!this.props.domain) {
       return tooltip;
     }
 
@@ -80,8 +83,10 @@ export default React.createClass({
     return tooltip;
   },
 
-  endEditing(){
-    this.setState({editing: false});
+  endEditing() {
+    this.setState({
+      editing: false,
+    });
   },
 
   render() {
@@ -89,11 +94,12 @@ export default React.createClass({
       <td className={ style.inputCell }>
         <label className={ style.inputCellLabel }>{this.props.label}</label>
         <input
-            className={ style.inputCellInput }
-            value={this.state.editing ? this.state.valueRep : this.props.value}
-            onChange={this.valueChange}
-            title={ this.getTooltip() }
-            onBlur={this.endEditing}/>
+          className={ style.inputCellInput }
+          value={this.state.editing ? this.state.valueRep : this.props.value}
+          onChange={this.valueChange}
+          title={ this.getTooltip() }
+          onBlur={this.endEditing}
+        />
       </td>);
   },
 });

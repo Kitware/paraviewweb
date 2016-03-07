@@ -8,41 +8,46 @@ import style                    from 'PVWStyle/ReactCollapsibleControls/QueryDat
 
 export default React.createClass({
 
-    displayName: 'QueryDataModelControl',
+  displayName: 'QueryDataModelControl',
 
-    propTypes: {
-        handleExploration: React.PropTypes.bool,
-        model: React.PropTypes.object,
-    },
+  propTypes: {
+    handleExploration: React.PropTypes.bool,
+    model: React.PropTypes.object,
+  },
 
-    mixins: [DataListenerMixin, DataListenerUpdateMixin],
+  mixins: [DataListenerMixin, DataListenerUpdateMixin],
 
-    getDefaultProps() {
-      return {
-            handleExploration: false,
-        };
-    },
+  getDefaultProps() {
+    return {
+      handleExploration: false,
+    };
+  },
 
-    toggleExploration(enabled) {
-        this.props.model.exploreQuery(enabled, true, !this.props.handleExploration);
-    },
+  toggleExploration(enabled) {
+    this.props.model.exploreQuery(enabled, true, !this.props.handleExploration);
+  },
 
-    render() {
-        var exploreButton = <ExploreButton
-                                key='explore-button'
-                                icon={ style.exploreIcon }
-                                onChange={this.toggleExploration}
-                                value={this.props.model.exploreState.animate}/>;
-        return <CollapsibleWidget
-                    title="Parameters"
-                    key='QueryDataModelWidget_parent'
-                    visible={ this.props.model.originalData.arguments_order.length > 0 }
-                    subtitle={ exploreButton }>
-                    <QueryDataModelWidget
-                        key='QueryDataModelWidget'
-                        ref='QueryDataModelWidget'
-                        model={ this.props.model }
-                    />
-                </CollapsibleWidget>;
-    },
+  render() {
+    var exploreButton = (
+      <ExploreButton
+        key="explore-button"
+        icon={ style.exploreIcon }
+        onChange={this.toggleExploration}
+        value={this.props.model.exploreState.animate}
+      />);
+
+    return (
+      <CollapsibleWidget
+        title="Parameters"
+        key="QueryDataModelWidget_parent"
+        visible={ this.props.model.originalData.arguments_order.length > 0 }
+        subtitle={ exploreButton }
+      >
+        <QueryDataModelWidget
+          key="QueryDataModelWidget"
+          ref="QueryDataModelWidget"
+          model={ this.props.model }
+        />
+      </CollapsibleWidget>);
+  },
 });

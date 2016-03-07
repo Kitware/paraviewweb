@@ -8,23 +8,23 @@ const typeMapping = {
 };
 
 function extractLayout(ui) {
-  if(ui.size === 0) {
+  if (ui.size === 0) {
     return '-1';
   }
 
-  if(ui.size < 4) {
+  if (ui.size < 4) {
     return ui.size.toString();
   }
 
-  if(ui.widget === 'list-1') {
+  if (ui.widget === 'list-1') {
     return '1';
   }
 
-  if(ui.size === 6) {
-    if(ui.name.toLowerCase().indexOf('bound')) {
+  if (ui.size === 6) {
+    if (ui.name.toLowerCase().indexOf('bound')) {
       return '3x2';
     }
-    if(ui.name.toLowerCase().indexOf('range')) {
+    if (ui.name.toLowerCase().indexOf('range')) {
       return '3x2';
     }
     console.log('What is the layout for', ui);
@@ -35,24 +35,24 @@ function extractLayout(ui) {
 }
 
 function extractType(ui) {
-  if(ui.type === 'proxy') {
+  if (ui.type === 'proxy') {
     return 'string';
   }
   return ui.type;
 }
 
 function extractDomain(ui) {
-  if(ui.values) {
-    if(Array.isArray(ui.values)) {
+  if (ui.values) {
+    if (Array.isArray(ui.values)) {
       const domain = {};
       ui.values.forEach(txt => {
         domain[txt] = txt;
       });
       return domain;
     }
-    if(ui.type === 'proxy') {
+    if (ui.type === 'proxy') {
       const domain = {};
-      for(const key in ui.values) {
+      for (const key in ui.values) {
         domain[key] = key;
       }
       return domain;
@@ -60,7 +60,7 @@ function extractDomain(ui) {
     return ui.values;
   }
 
-  if(ui.range) {
+  if (ui.range) {
     return { range: ui.range };
   }
 
@@ -68,8 +68,7 @@ function extractDomain(ui) {
 }
 
 export function proxyPropToProp(property, ui) {
-
-  if(!typeMapping[ui.widget]) {
+  if (!typeMapping[ui.widget]) {
     console.log('No propType for', ui);
   }
 
@@ -81,10 +80,10 @@ export function proxyPropToProp(property, ui) {
 
   return {
     show(ctx) {
-      if(depId && ctx.properties[depId] !== undefined) {
+      if (depId && ctx.properties[depId] !== undefined) {
         return (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
       }
-      if(ctx.filter && ctx.filter.length) {
+      if (ctx.filter && ctx.filter.length) {
         const queries = ctx.filter.toLowerCase().split(' ');
         let match = true;
 
@@ -112,17 +111,15 @@ export function proxyPropToProp(property, ui) {
       value: [].concat(property.value),
       size: ui.size,
     },
-  }
+  };
 }
 
 
 export function proxyToProps(proxy) {
-  return proxy.properties.map((property, index) => {
-    return proxyPropToProp(property, proxy.ui[index]);
-  })
+  return proxy.properties.map((property, index) => proxyPropToProp(property, proxy.ui[index]));
 }
 
 export default {
   proxyToProps,
   proxyPropToProp,
-}
+};

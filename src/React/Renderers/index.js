@@ -4,8 +4,8 @@ import MultiLayoutRenderer  from './MultiLayoutRenderer';
 import VtkRenderer          from './VtkRenderer';
 
 export default {
-    GeometryRenderer,
-    ImageRenderer,
-    MultiLayoutRenderer,
-    VtkRenderer,
-}
+  GeometryRenderer,
+  ImageRenderer,
+  MultiLayoutRenderer,
+  VtkRenderer,
+};

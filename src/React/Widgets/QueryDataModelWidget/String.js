@@ -19,14 +19,14 @@ export default React.createClass({
   displayName: 'ParameterSet.String',
 
   propTypes: {
-      arg: React.PropTypes.string,
-      model: React.PropTypes.object.isRequired,
+    arg: React.PropTypes.string,
+    model: React.PropTypes.object.isRequired,
   },
 
   mixins: [DataListenerMixin, DataListenerUpdateMixin],
 
   handleChange(event) {
-    if(this.props.model.setValue(this.props.arg, event.target.value)) {
+    if (this.props.model.setValue(this.props.arg, event.target.value)) {
       this.props.model.lazyFetchData();
     }
   },
@@ -47,15 +47,16 @@ export default React.createClass({
           { this.props.model.label(this.props.arg) }
         </div>
         <div className={ style.row } onMouseEnter={this.grabFocus}>
-            <select
-                className={ style.input }
-                ref='select'
-                value={ this.props.model.getValue(this.props.arg) }
-                onChange={ this.handleChange } >
-            { this.props.model.getValues(this.props.arg).map(function(v) {
-              return <option key={v} value={v}>{v}</option>;
-            })}
-            </select>
+          <select
+            className={ style.input }
+            ref="select"
+            value={ this.props.model.getValue(this.props.arg) }
+            onChange={ this.handleChange }
+          >
+            { this.props.model.getValues(this.props.arg).map(v =>
+              <option key={v} value={v}>{v}</option>
+            )}
+          </select>
         </div>
       </div>
     );

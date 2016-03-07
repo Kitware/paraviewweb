@@ -9,55 +9,58 @@ import style    from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
  */
 export default React.createClass({
 
-    displayName: 'CompositePipelineWidget',
+  displayName: 'CompositePipelineWidget',
 
-    propTypes: {
-        model: React.PropTypes.object.isRequired,
-    },
+  propTypes: {
+    model: React.PropTypes.object.isRequired,
+  },
 
-    componentDidMount() {
-        this.attachListener(this.props.model);
-    },
+  componentDidMount() {
+    this.attachListener(this.props.model);
+  },
 
-    componentWillReceiveProps(nextProps) {
-        var previous = this.props.model,
-            next = nextProps.model;
+  componentWillReceiveProps(nextProps) {
+    var previous = this.props.model,
+      next = nextProps.model;
 
-        if(previous !== next) {
-            this.detachListener();
-            this.attachListener(next);
-        }
-    },
+    if (previous !== next) {
+      this.detachListener();
+      this.attachListener(next);
+    }
+  },
 
-    // Auto unmount listener
-    componentWillUnmount() {
-        this.detachListener();
-    },
+  // Auto unmount listener
+  componentWillUnmount() {
+    this.detachListener();
+  },
 
-     attachListener(pipelineModel) {
-        this.pipelineSubscription = pipelineModel.onChange((data, envelope) => {
-            this.forceUpdate();
-        });
-    },
+  attachListener(pipelineModel) {
+    this.pipelineSubscription = pipelineModel.onChange((data, envelope) => {
+      this.forceUpdate();
+    });
+  },
 
-    detachListener() {
-        if (this.pipelineSubscription) {
-            this.pipelineSubscription.unsubscribe();
-            this.pipelineSubscription = null;
-        }
-    },
+  detachListener() {
+    if (this.pipelineSubscription) {
+      this.pipelineSubscription.unsubscribe();
+      this.pipelineSubscription = null;
+    }
+  },
 
-    render() {
-        var pipelineModel = this.props.model,
-            pipelineDescription = pipelineModel.getPipelineDescription();
-        return (<div className={ style.container }>
-                    { pipelineDescription.map(function(item, idx) {
-                        return <RootItem
-                                    key={idx}
-                                    item={item}
-                                    layer={item.ids.join('')}
-                                    model={pipelineModel} />;
-                    })}
-                </div>);
-    },
+  render() {
+    var pipelineModel = this.props.model,
+      pipelineDescription = pipelineModel.getPipelineDescription();
+
+    return (
+      <div className={ style.container }>
+        { pipelineDescription.map((item, idx) =>
+          <RootItem
+            key={idx}
+            item={item}
+            layer={item.ids.join('')}
+            model={pipelineModel}
+          />
+        )}
+      </div>);
+  },
 });

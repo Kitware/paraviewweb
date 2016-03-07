@@ -3,7 +3,7 @@ import Girder       from './Girder';
 import WebSocket    from './WebSocket';
 
 export default {
-    Core,
-    Girder,
-    WebSocket,
-}
+  Core,
+  Girder,
+  WebSocket,
+};

@@ -6,9 +6,9 @@ export default React.createClass({
   displayName: 'DropDownWidget',
 
   propTypes: {
-        field: React.PropTypes.string,
-        fields: React.PropTypes.array,
-        onChange: React.PropTypes.func,
+    field: React.PropTypes.string,
+    fields: React.PropTypes.array,
+    onChange: React.PropTypes.func,
   },
 
   getInitialState() {
@@ -19,11 +19,11 @@ export default React.createClass({
   },
 
   toggleDropdown() {
-    this.setState({open: !this.state.open});
+    this.setState({ open: !this.state.open });
   },
 
   setField(e) {
-    this.setState({field: e.target.innerHTML});
+    this.setState({ field: e.target.innerHTML });
     this.props.onChange(e.target.innerHTML);
   },
 
@@ -36,16 +36,17 @@ export default React.createClass({
       <div className={ style.container } onClick={ this.toggleDropdown }>
           {this.state.field}
           <ul className={ this.state.open ? style.list : style.hidden }>
-              { this.props.fields.map( (v) => {
-                  if (v === '__internal') { //this pops up in there for some reason.
-                    return null;
-                  }
+              { this.props.fields.map(v => {
+                // this pops up in there for some reason.
+                if (v === '__internal') {
+                  return null;
+                }
 
-                  if (v === this.state.field) {
-                    return <li className={ style.selectedItem } key={v} onClick={this.setField}>{v}</li>;
-                  }
+                if (v === this.state.field) {
+                  return <li className={ style.selectedItem } key={v} onClick={this.setField}>{v}</li>;
+                }
 
-                  return <li className={ style.item } key={v} onClick={this.setField}>{v}</li>;
+                return <li className={ style.item } key={v} onClick={this.setField}>{v}</li>;
               })}
           </ul>
       </div>

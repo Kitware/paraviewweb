@@ -1,12 +1,9 @@
 import Monologue from 'monologue.js';
 
 export default class Observable {
-    constructor() {
-    }
-
-    destroy() {
-        this.off();
-    }
+  destroy() {
+    this.off();
+  }
 }
 
 // Add Observer pattern using Monologue.js

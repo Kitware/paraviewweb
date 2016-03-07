@@ -3,7 +3,7 @@ import Misc   from './Misc';
 import State  from './State';
 
 export default {
-    Core,
-    Misc,
-    State,
-}
+  Core,
+  Misc,
+  State,
+};

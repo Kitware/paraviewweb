@@ -6,10 +6,10 @@ import PropertyPanel from './PropertyPanel';
 import SliderProperty from './SliderProperty';
 
 export default {
-    CellProperty,
-    CheckboxProperty,
-    EnumProperty,
-    PropertyFactory,
-    PropertyPanel,
-    SliderProperty,
-}
+  CellProperty,
+  CheckboxProperty,
+  EnumProperty,
+  PropertyFactory,
+  PropertyPanel,
+  SliderProperty,
+};

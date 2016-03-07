@@ -15,7 +15,6 @@ export function boolean(val) {
 }
 
 export function proxy(val) {
-  console.log('Try to convert to proxy', val)
   return (val);
 }
 
@@ -25,4 +24,4 @@ export default {
   string, str: string,
   boolean, bool: boolean,
   proxy,
-}
+};

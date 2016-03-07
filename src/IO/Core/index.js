@@ -4,8 +4,8 @@ import ProcessLauncher   from './ProcessLauncher';
 import QueryDataModel    from './QueryDataModel';
 
 export default {
-    DataManager,
-    GeometryDataModel,
-    ProcessLauncher,
-    QueryDataModel,
-}
+  DataManager,
+  GeometryDataModel,
+  ProcessLauncher,
+  QueryDataModel,
+};

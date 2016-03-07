@@ -3,69 +3,72 @@ import style from 'PVWStyle/ReactWidgets/NumberSliderWidget.mcss';
 
 export default React.createClass({
 
-    displayName: 'NumberSliderWidget',
+  displayName: 'NumberSliderWidget',
 
-    propTypes: {
-        max: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
-        min: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
-        name: React.PropTypes.string,
-        onChange: React.PropTypes.func,
-        step: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
-        value: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string]),
-    },
+  propTypes: {
+    max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    min: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    name: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    step: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    value: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+  },
 
-    getDefaultProps() {
-        return {
-            max: 100,
-            min:0,
-            step: 1,
-            value: 50,
-        };
-    },
+  getDefaultProps() {
+    return {
+      max: 100,
+      min: 0,
+      step: 1,
+      value: 50,
+    };
+  },
 
-    getInitialState() {
-        return {
-            max: this.props.max,
-            min: this.props.min,
-            step: this.props.step,
-            value: this.props.value,
-        };
-    },
+  getInitialState() {
+    return {
+      max: this.props.max,
+      min: this.props.min,
+      step: this.props.step,
+      value: this.props.value,
+    };
+  },
 
-    valInput(e) {
-        this.setState({value: e.target.value});
-        if (this.props.onChange) {
-            if (this.props.name) {
-                e.target.name = this.props.name;
-            }
-            this.props.onChange(e);
-        }
-    },
+  valInput(e) {
+    this.setState({ value: e.target.value });
+    if (this.props.onChange) {
+      if (this.props.name) {
+        e.target.name = this.props.name;
+      }
+      this.props.onChange(e);
+    }
+  },
 
-    value(newVal) {
-        if (arguments.length === 0) {
-            return this.state.value;
-        }
+  value(newVal) {
+    if (newVal === null || newVal === undefined) {
+      return this.state.value;
+    }
 
-        newVal = Math.max(this.state.min, Math.min(newVal, this.state.max));
-        this.setState({value: newVal});
-    },
+    newVal = Math.max(this.state.min, Math.min(newVal, this.state.max));
+    this.setState({ value: newVal });
+    return newVal;
+  },
 
-    render(){
-        var [min,max] = [this.props.min, this.props.max];
-        return (
-            <div className={ style.container }>
-              <input type="range"
-                className={ style.range }
-                value={this.props.value}
-                onChange={this.valInput}
-                max={max} min={min}/>
-              <input type="number"
-                className={ style.text }
-                value={this.props.value}
-                onChange={this.valInput}
-                max={max} min={min}/>
-            </div>
-        );
-    },
+  render() {
+    var [min, max] = [this.props.min, this.props.max];
+
+    return (
+      <div className={ style.container }>
+        <input type="range"
+          className={ style.range }
+          value={this.props.value}
+          onChange={this.valInput}
+          max={max} min={min}
+        />
+        <input type="number"
+          className={ style.text }
+          value={this.props.value}
+          onChange={this.valInput}
+          max={max} min={min}
+        />
+      </div>);
+  },
 });

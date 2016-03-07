@@ -4,8 +4,8 @@ import ParaViewWebClient    from './ParaViewWebClient';
 import SmartConnect         from './SmartConnect';
 
 export default {
-    AutobahnConnection,
-    BinaryImageStream,
-    ParaViewWebClient,
-    SmartConnect,
-}
+  AutobahnConnection,
+  BinaryImageStream,
+  ParaViewWebClient,
+  SmartConnect,
+};

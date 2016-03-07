@@ -5,9 +5,9 @@ import Viewers              from './Viewers';
 import Widgets              from './Widgets';
 
 export default {
-    Properties,
-    CollapsibleControls,
-    Renderers,
-    Viewers,
-    Widgets,
-}
+  Properties,
+  CollapsibleControls,
+  Renderers,
+  Viewers,
+  Widgets,
+};

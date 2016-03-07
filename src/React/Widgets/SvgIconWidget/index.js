@@ -13,10 +13,10 @@ export default React.createClass({
   },
 
   getDefaultProps() {
-      return {
-          className: '',
-          icon: defaultIcon,
-      };
+    return {
+      className: '',
+      icon: defaultIcon,
+    };
   },
 
   /* eslint-disable react/no-danger */
@@ -31,8 +31,8 @@ export default React.createClass({
         className={ this.props.className }
         dangerouslySetInnerHTML={{
           __html: `<use xlink:href="${this.props.icon}"></use>`,
-        }}/>
-    );
+        }}
+      />);
   },
   /* eslint-enable react/no-danger */
 });

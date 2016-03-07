@@ -7,11 +7,11 @@ import taskflows    from './taskflows';
 import tasks        from './tasks';
 
 export default [
-    aws,
-    clusters,
-    jobs,
-    projects,
-    simulations,
-    taskflows,
-    tasks,
+  aws,
+  clusters,
+  jobs,
+  projects,
+  simulations,
+  taskflows,
+  tasks,
 ];

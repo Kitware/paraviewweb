@@ -15,9 +15,9 @@ export default React.createClass({
       array = this.props.list,
       count = array.length;
 
-    if(this.props.onChange) {
-      while(count--) {
-        if(array[count].name === name) {
+    if (this.props.onChange) {
+      while (count--) {
+        if (array[count].name === name) {
           this.props.onChange(count, array);
         }
       }
@@ -29,7 +29,7 @@ export default React.createClass({
 
     this.props.list.forEach((item) => {
       list.push(<button className={ style.button } key={item.name} name={item.name} onClick={this.processItem}>{item.name}</button>);
-    })
+    });
 
     return <section className={style.container}>{ list }</section>;
   },

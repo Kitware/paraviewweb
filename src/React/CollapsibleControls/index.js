@@ -9,13 +9,13 @@ import QueryDataModelControl        from './QueryDataModelControl';
 import VolumeControl                from './VolumeControl';
 
 export default {
-    CollapsibleControlFactory,
-    FloatImageControl,
-    LightControl,
-    LookupTableManagerControl,
-    MultiViewControl,
-    PixelOperatorControl,
-    ProbeControl,
-    QueryDataModelControl,
-    VolumeControl,
-}
+  CollapsibleControlFactory,
+  FloatImageControl,
+  LightControl,
+  LookupTableManagerControl,
+  MultiViewControl,
+  PixelOperatorControl,
+  ProbeControl,
+  QueryDataModelControl,
+  VolumeControl,
+};

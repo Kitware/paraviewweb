@@ -26,27 +26,26 @@ export default React.createClass({
   getInitialState() {
     return {
       editing: false,
-      valueRep:this.props.value,
+      valueRep: this.props.value,
     };
   },
 
   valueChange(e) {
     var newVal = e.target.value;
-    this.setState({editing: true, valueRep: newVal});
+    this.setState({ editing: true, valueRep: newVal });
 
     const propVal = parseFloat(newVal);
     if (!isNaN(propVal) && this.props.onChange) {
-      if (this.props.name){
+      if (this.props.name) {
         this.props.onChange(propVal, this.props.name);
-      }
-      else {
+      } else {
         this.props.onChange(propVal);
       }
     }
   },
 
-  endEditing(){
-    this.setState({editing: false});
+  endEditing() {
+    this.setState({ editing: false });
   },
 
   render() {
@@ -59,6 +58,7 @@ export default React.createClass({
         step={this.props.step}
         value={this.state.editing ? this.state.valueRep : this.props.value}
         onChange={this.valueChange}
-        onBlur={this.endEditing} /> );
+        onBlur={this.endEditing}
+      />);
   },
 });
