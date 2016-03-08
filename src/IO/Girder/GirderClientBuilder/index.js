@@ -28,7 +28,9 @@ function encodeQueryAsString(query = {}) {
 function filterQuery(query = {}, ...keys) {
   const out = {};
   keys.forEach(key => {
-    out[key] = query[key];
+    if (query[key] !== undefined && query[key] !== null) {
+      out[key] = query[key];
+    }
   });
   return out;
 }
