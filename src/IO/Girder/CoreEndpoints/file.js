@@ -67,6 +67,8 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
   }
 
   return {
+    uploadChunk,
+
     uploadFileToItem,
 
     getUploadOffset(id) {
