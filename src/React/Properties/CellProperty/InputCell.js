@@ -34,12 +34,15 @@ export default React.createClass({
 
   valueChange(e) {
     var newVal = e.target.value;
+    const isValid = validate[this.props.type](newVal);
     this.setState({
       editing: true,
       valueRep: newVal,
     });
 
-    if (validate[this.props.type](newVal)) {
+    if(!this.props.noEmpty && newVal.length === 0 && !isValid) {
+      this.props.onChange(this.props.idx, undefined);
+    } else if (isValid) {
       let propVal = convert[this.props.type](newVal);
       propVal = this.applyDomains(this.props.idx, propVal);
       this.props.onChange(this.props.idx, propVal);
