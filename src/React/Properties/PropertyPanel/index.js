@@ -18,6 +18,7 @@ export default React.createClass({
     return {
       className: '',
       input: [],
+      viewData: {},
     };
   },
 

@@ -278,8 +278,13 @@ function doneWithProcessing() {
       console.log('==> npm install');
       shell.exec('npm install');
 
-      console.log('==> npm run generate');
-      shell.exec('npm run generate');
+      if (program.publish) {
+        console.log('==> npm run build');
+        shell.exec('npm run build');
+      } else {
+        console.log('==> npm run generate');
+        shell.exec('npm run generate');
+      }
     }
 
     // ----------------------------------------------------------------------------
