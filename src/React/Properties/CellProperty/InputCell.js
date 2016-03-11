@@ -11,6 +11,7 @@ export default React.createClass({
     domain: React.PropTypes.object,
     idx: React.PropTypes.number.isRequired,
     label: React.PropTypes.string,
+    noEmpty: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     type: React.PropTypes.string,
     value: React.PropTypes.any,
@@ -40,7 +41,7 @@ export default React.createClass({
       valueRep: newVal,
     });
 
-    if(!this.props.noEmpty && newVal.length === 0 && !isValid) {
+    if (!this.props.noEmpty && newVal.length === 0 && !isValid) {
       this.props.onChange(this.props.idx, undefined);
     } else if (isValid) {
       let propVal = convert[this.props.type](newVal);
