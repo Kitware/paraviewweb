@@ -149,9 +149,10 @@ if(program.api || program.stats) {
 
 if(program.list) {
     console.log('\n=> Examples list:\n');
-    for(var name in examples) {
+    const names = Object.keys(examples).sort();
+    names.forEach( name => {
         console.log(' -', name);
-    }
+    });
 }
 
 // ----------------------------------------------------------------------------
@@ -268,19 +269,23 @@ function doneWithProcessing() {
     traduction.join('\n').toEnd(destTraduction);
     ('\n\n').toEnd(destTraduction);
 
-    console.log(shell.cat(destSideBar));
-    console.log(shell.cat(destTraduction));
-
     // ----------------------------------------------------------------------------
     // Generate website using Hexo
     // ----------------------------------------------------------------------------
 
-    shell.cd(rootWWW);
-    console.log('==> npm install');
-    shell.exec('npm install');
+    if (!program.list) {
+      shell.cd(rootWWW);
+      console.log('==> npm install');
+      shell.exec('npm install');
 
-    console.log('==> npm run generate');
-    shell.exec('npm run generate');
+      if (program.publish) {
+        console.log('==> npm run build');
+        shell.exec('npm run build');
+      } else {
+        console.log('==> npm run generate');
+        shell.exec('npm run generate');
+      }
+    }
 
     // ----------------------------------------------------------------------------
     // Github pages
