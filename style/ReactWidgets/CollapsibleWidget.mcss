@@ -36,7 +36,10 @@
 .subtitle {
   position: absolute;
   right: 15px;
-  top: 0px;
+  top: 0;
+  left: 5px;
+  text-align: right;
+  z-index: -1;
 }
 
 .visibleContent {
