@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+}
+
+.addButton {
+  composes: fa from 'font-awesome/css/font-awesome.css';
+  composes: fa-plus from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+  padding: 5px;
+}
+
+.inputColumn {
+  padding: 2px 5px;
+}
+
+.actionColumn {
+  text-align: center;
+  width: 35px;
+}
+
+.deleteButton {
+  composes: fa from 'font-awesome/css/font-awesome.css';
+  composes: fa-trash-o from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+  padding: 5px;
+}

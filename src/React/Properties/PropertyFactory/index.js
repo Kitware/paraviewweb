@@ -1,6 +1,7 @@
 import CellProperty     from '../CellProperty';
 import CheckboxProperty from '../CheckboxProperty';
 import EnumProperty     from '../EnumProperty';
+import MapProperty     from '../MapProperty';
 import React            from 'react';
 import SliderProperty   from '../SliderProperty';
 
@@ -12,6 +13,7 @@ const factoryMapping = {
   Slider: (prop, viewData, onChange) => <SliderProperty   key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
   Enum: (prop, viewData, onChange) => <EnumProperty     key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
   Checkbox: (prop, viewData, onChange) => <CheckboxProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
+  Map: (prop, viewData, onChange) => <MapProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
 };
 
 /* eslint-enable react/display-name */
