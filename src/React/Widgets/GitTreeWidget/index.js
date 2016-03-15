@@ -397,7 +397,7 @@ export default React.createClass({
     if (this.props.onChange) {
       const { id, parent, name, visible } = node,
         active = (actives.indexOf(yVal) !== -1),
-        changeSet = [ { id, parent, name, visible, active } ];
+        changeSet = [{ id, parent, name, visible, active }];
 
       this.props.onChange({ type: 'visibility', changeSet });
     }

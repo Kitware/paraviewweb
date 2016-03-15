@@ -131,7 +131,7 @@ export default class LinearPieceWiseEditor {
   }
 
   resetControlPoints() {
-    this.controlPoints = [ pointBuilder(0, 0), pointBuilder(1, 1) ];
+    this.controlPoints = [pointBuilder(0, 0), pointBuilder(1, 1)];
     sortPoints(this.controlPoints);
   }
 

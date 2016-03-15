@@ -51,7 +51,8 @@ const WidgetFactoryMapping = {
         />
       </CollapsibleWidget>);
   },
-  LookupTableManagerWidget({ lookupTableManager, field }) {
+  LookupTableManagerWidget({ lookupTableManager, activeField }) {
+    var field = activeField;
     if (!field) {
       field = lookupTableManager.getActiveField();
     }

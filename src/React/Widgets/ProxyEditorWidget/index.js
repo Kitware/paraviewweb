@@ -8,7 +8,7 @@ export default React.createClass({
 
   propTypes: {
     advanced: React.PropTypes.bool,
-    children: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]),
+    children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
     onApply: React.PropTypes.func,
     sections: React.PropTypes.array.isRequired,
   },

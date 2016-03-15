@@ -33,10 +33,12 @@ export default React.createClass({
   getInitialState() {
     this.image = new Image();
     this.image.src = this.props.swatch;
-    return { swatch: this.props.swatch,
+    return {
+      swatch: this.props.swatch,
       color: this.props.color,
       preview: false,
-      originalColor: [ this.props.color[0], this.props.color[1], this.props.color[2] ] };
+      originalColor: [this.props.color[0], this.props.color[1], this.props.color[2]],
+    };
   },
 
   componentDidMount() {

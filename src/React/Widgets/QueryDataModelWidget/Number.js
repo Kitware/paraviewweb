@@ -23,7 +23,7 @@ export default React.createClass({
     model: React.PropTypes.object.isRequired,
   },
 
-  mixins: [ DataListenerMixin, DataListenerUpdateMixin ],
+  mixins: [DataListenerMixin, DataListenerUpdateMixin],
 
   getInitialState() {
     return {
@@ -110,7 +110,7 @@ export default React.createClass({
           <div className={ style.mobileOnly }>
             { this.props.model.getValue(this.props.arg) }
           </div>
-          <div className={ [ style.itemControl, style.noMobile ].join(' ') }
+          <div className={ [style.itemControl, style.noMobile].join(' ') }
             onMouseEnter={this.enableButtons}
             onMouseLeave={this.disableButtons}
           >
@@ -127,7 +127,7 @@ export default React.createClass({
             ></i>
           </div>
         </div>
-        <div className={ [ style.row, style.mobileOnly ].join(' ') }>
+        <div className={ [style.row, style.mobileOnly].join(' ') }>
           <div className={ style.itemControl }>
             <br />
             <i

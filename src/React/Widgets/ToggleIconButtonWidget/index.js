@@ -48,7 +48,7 @@ export default React.createClass({
   },
 
   render() {
-    var classList = [ this.props.icon, this.props.className];
+    var classList = [this.props.icon, this.props.className];
     classList.push((this.state.enabled || this.props.alwaysOn) ? style.enabledButton : style.disabledButton);
     return <i className={ classList.join(' ') } onClick={this.buttonClicked} />;
   },

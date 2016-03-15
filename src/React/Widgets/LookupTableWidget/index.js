@@ -278,7 +278,11 @@ export default React.createClass({
     var scalarRange = this.props.lookupTable.getScalarRange(),
       controlPoint = this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex),
       controlPointValue = ((controlPoint.x * (scalarRange[1] - scalarRange[0])) + scalarRange[0]),
-      color = [ Math.floor(255 * controlPoint.r), Math.floor(255 * controlPoint.g), Math.floor(255 * controlPoint.b) ];
+      color = [
+        Math.floor(255 * controlPoint.r),
+        Math.floor(255 * controlPoint.g),
+        Math.floor(255 * controlPoint.b),
+      ];
 
     return (
         <div className={ style.container }>

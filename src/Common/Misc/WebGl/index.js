@@ -66,7 +66,7 @@ export function applyProgramDataMapping(gl, programName, mappingName, glConfig, 
     gl.bindBuffer(gl.ARRAY_BUFFER, glBuffer);
     program[bufferMapping.name] = gl.getAttribLocation(program, bufferMapping.attribute);
     gl.enableVertexAttribArray(program[bufferMapping.name]);
-    gl.vertexAttribPointer.apply(gl, [ program[bufferMapping.name] ].concat(bufferMapping.format));
+    gl.vertexAttribPointer.apply(gl, [program[bufferMapping.name]].concat(bufferMapping.format));
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   });
 }
@@ -205,9 +205,10 @@ export function createGLResources(gl, glConfig) {
 
 //----------------------------------------------------------------------------
 
-export function transformShader(shaderString, variableDict, config) {
+export function transformShader(shaderContent, variableDict, config) {
   var match = null;
   var unrolledContents = null;
+  var shaderString = shaderContent;
 
   // First do all the variable replacements
   for (const vname in variableDict) {

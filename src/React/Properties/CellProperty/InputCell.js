@@ -56,15 +56,16 @@ export default React.createClass({
     }
 
     // Handle range
+    let newValue = val;
     if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
       const size = this.props.domain.range.length;
       const { min, max, force } = this.props.domain.range[idx % size];
       if (force) {
-        val = (min !== undefined) ? Math.max(min, val) : val;
-        val = (max !== undefined) ? Math.min(max, val) : val;
+        newValue = (min !== undefined) ? Math.max(min, newValue) : newValue;
+        newValue = (max !== undefined) ? Math.min(max, newValue) : newValue;
       }
     }
-    return val;
+    return newValue;
   },
 
   getTooltip() {
