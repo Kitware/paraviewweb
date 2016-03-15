@@ -33,21 +33,24 @@ export default React.createClass({
     };
   },
 
-  valueChange(e) {
-    var newVal = e.target.value;
-    const isValid = validate[this.props.type](newVal);
-    this.setState({
-      editing: true,
-      valueRep: newVal,
-    });
+  getTooltip() {
+    var tooltip = '';
+    const idx = this.props.idx;
 
-    if (!this.props.noEmpty && newVal.length === 0 && !isValid) {
-      this.props.onChange(this.props.idx, undefined);
-    } else if (isValid) {
-      let propVal = convert[this.props.type](newVal);
-      propVal = this.applyDomains(this.props.idx, propVal);
-      this.props.onChange(this.props.idx, propVal);
+    if (!this.props.domain) {
+      return tooltip;
     }
+
+    // Handle range
+    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+      const size = this.props.domain.range.length;
+      const { min, max } = this.props.domain.range[idx % size] || {};
+
+      tooltip += (min !== undefined) ? `min(${min}) ` : '';
+      tooltip += (max !== undefined) ? `max(${max}) ` : '';
+    }
+
+    return tooltip;
   },
 
   applyDomains(idx, val) {
@@ -68,24 +71,21 @@ export default React.createClass({
     return newValue;
   },
 
-  getTooltip() {
-    var tooltip = '';
-    const idx = this.props.idx;
+  valueChange(e) {
+    var newVal = e.target.value;
+    const isValid = validate[this.props.type](newVal);
+    this.setState({
+      editing: true,
+      valueRep: newVal,
+    });
 
-    if (!this.props.domain) {
-      return tooltip;
+    if (!this.props.noEmpty && newVal.length === 0 && !isValid) {
+      this.props.onChange(this.props.idx, undefined);
+    } else if (isValid) {
+      let propVal = convert[this.props.type](newVal);
+      propVal = this.applyDomains(this.props.idx, propVal);
+      this.props.onChange(this.props.idx, propVal);
     }
-
-    // Handle range
-    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
-      const size = this.props.domain.range.length;
-      const { min, max } = this.props.domain.range[idx % size] || {};
-
-      tooltip += (min !== undefined) ? `min(${min}) ` : '';
-      tooltip += (max !== undefined) ? `max(${max}) ` : '';
-    }
-
-    return tooltip;
   },
 
   endEditing() {

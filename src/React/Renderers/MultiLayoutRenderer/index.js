@@ -118,18 +118,26 @@ var MultiViewRenderer = React.createClass({
     }
   },
 
-  setLayout(name) {
-    this.layout = name;
-    this.drawLayout();
-    this.emit(LAYOUT_CHANGE, name);
+  onActiveViewportChange(callback) {
+    return this.on(ACTIVE_VIEWPORT_CHANGE, callback);
+  },
+
+  onLayoutChange(callback) {
+    return this.on(LAYOUT_CHANGE, callback);
+  },
+
+  getActiveLayout() {
+    return this.layout;
   },
 
   getLayouts() {
     return layoutNames;
   },
 
-  getActiveLayout() {
-    return this.layout;
+  setLayout(name) {
+    this.layout = name;
+    this.drawLayout();
+    this.emit(LAYOUT_CHANGE, name);
   },
 
   setRenderMethod(name) {
@@ -154,6 +162,20 @@ var MultiViewRenderer = React.createClass({
       }
     });
     return name;
+  },
+
+  getViewPort(event) {
+    var count = this.viewports.length,
+      x = event.relative.x,
+      y = event.relative.y;
+
+    while (count--) {
+      const area = this.viewports[count].activeArea || this.viewports[count].region;
+      if (x >= area[0] && y >= area[1] && x <= (area[0] + area[2]) && y <= (area[1] + area[3])) {
+        return this.viewports[count];
+      }
+    }
+    return null;
   },
 
   updateDimensions() {
@@ -254,20 +276,6 @@ var MultiViewRenderer = React.createClass({
         listeners.zoom(event, envelope);
       }
     }
-  },
-
-  getViewPort(event) {
-    var count = this.viewports.length,
-      x = event.relative.x,
-      y = event.relative.y;
-
-    while (count--) {
-      const area = this.viewports[count].activeArea || this.viewports[count].region;
-      if (x >= area[0] && y >= area[1] && x <= (area[0] + area[2]) && y <= (area[1] + area[3])) {
-        return this.viewports[count];
-      }
-    }
-    return null;
   },
 
   drawViewport(viewport) {
@@ -387,14 +395,6 @@ var MultiViewRenderer = React.createClass({
     }
 
     this.drawViewportByName(null);
-  },
-
-  onActiveViewportChange(callback) {
-    return this.on(ACTIVE_VIEWPORT_CHANGE, callback);
-  },
-
-  onLayoutChange(callback) {
-    return this.on(LAYOUT_CHANGE, callback);
   },
 
   render() {

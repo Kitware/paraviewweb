@@ -87,6 +87,16 @@ export default React.createClass({
     this.props.lookupTable.drawToCanvas(canvas);
   },
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.lookupTable !== this.props.lookupTable) {
+      this.removeListener();
+      this.attachListener(nextProps.lookupTable);
+    }
+    if (this.props.originalRange[0] !== nextProps.originalRange[0] || this.props.originalRange[1] !== nextProps.originalRange[1]) {
+      this.setState({ originalRange: nextProps.originalRange });
+    }
+  },
+
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.internal_lut) {
       const canvas = ReactDOM.findDOMNode(this.refs.canvas);
@@ -108,48 +118,13 @@ export default React.createClass({
     }
   },
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.lookupTable !== this.props.lookupTable) {
-      this.removeListener();
-      this.attachListener(nextProps.lookupTable);
-    }
-    if (this.props.originalRange[0] !== nextProps.originalRange[0] || this.props.originalRange[1] !== nextProps.originalRange[1]) {
-      this.setState({ originalRange: nextProps.originalRange });
-    }
-  },
-
   componentWillUnmount() {
     this.removeListener();
   },
 
-  attachListener(lut) {
-    this.subscription = lut.onChange((data, envelope) => {
-      this.forceUpdate();
-    });
-  },
-
-  removeListener() {
-    if (this.subscription) {
-      this.subscription.unsubsribe();
-      this.subscription = null;
-    }
-  },
-
-  toggleEditMode() {
-    if (this.state.mode === 'none' || this.state.mode !== 'edit') {
-      this.setState({ mode: 'edit', internal_lut: false });
-    } else {
-      this.setState({ mode: 'none', internal_lut: false });
-    }
-  },
-
-  togglePresetMode() {
-    if (this.state.mode === 'none' || this.state.mode !== 'preset') {
-      this.deltaPreset(0); // Render preset
-      this.setState({ mode: 'preset', internal_lut: true });
-    } else {
-      this.setState({ mode: 'none', internal_lut: false });
-    }
+  setPreset(event) {
+    this.props.lookupTable.setPreset(event.target.dataset.name);
+    this.togglePresetMode();
   },
 
   updateScalarRange() {
@@ -219,9 +194,34 @@ export default React.createClass({
     this.setState({ currentControlPointIndex: newIdx });
   },
 
-  setPreset(event) {
-    this.props.lookupTable.setPreset(event.target.dataset.name);
-    this.togglePresetMode();
+  toggleEditMode() {
+    if (this.state.mode === 'none' || this.state.mode !== 'edit') {
+      this.setState({ mode: 'edit', internal_lut: false });
+    } else {
+      this.setState({ mode: 'none', internal_lut: false });
+    }
+  },
+
+  togglePresetMode() {
+    if (this.state.mode === 'none' || this.state.mode !== 'preset') {
+      this.deltaPreset(0); // Render preset
+      this.setState({ mode: 'preset', internal_lut: true });
+    } else {
+      this.setState({ mode: 'none', internal_lut: false });
+    }
+  },
+
+  attachListener(lut) {
+    this.subscription = lut.onChange((data, envelope) => {
+      this.forceUpdate();
+    });
+  },
+
+  removeListener() {
+    if (this.subscription) {
+      this.subscription.unsubsribe();
+      this.subscription = null;
+    }
   },
 
   updateOriginalRange(min, max) {

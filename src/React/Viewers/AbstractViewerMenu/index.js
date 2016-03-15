@@ -58,6 +58,10 @@ export default React.createClass({
     this.detachListener();
   },
 
+  getRenderer() {
+    return this.refs.imageRenderer;
+  },
+
   attachListener(dataModel) {
     this.detachListener();
     this.queryDataModelChangeSubscription = dataModel.onStateChange((data, envelope) => {
@@ -113,10 +117,6 @@ export default React.createClass({
     if (queryDataModel.isAnimating()) {
       queryDataModel.animate(true, this.state.speeds[newIdx]);
     }
-  },
-
-  getRenderer() {
-    return this.refs.imageRenderer;
   },
 
   /* eslint-disable complexity */

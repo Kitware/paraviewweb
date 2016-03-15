@@ -54,6 +54,26 @@ export default React.createClass({
     this.detachImageBuilderListeners();
   },
 
+  onProbeVisibilityChange(isProbeOpen) {
+    this.setState({
+      showFieldValue: isProbeOpen,
+    });
+
+    setImmediate(() => {
+      if (this.props.imageBuilders) {
+        Object.keys(this.props.imageBuilders).forEach(key => {
+          const builder = this.props.imageBuilders[key].builder;
+          builder.setCrossHairEnable(isProbeOpen);
+          builder.render();
+        });
+      }
+      if (this.props.imageBuilder) {
+        this.props.imageBuilder.setCrossHairEnable(isProbeOpen);
+        this.props.imageBuilder.render();
+      }
+    });
+  },
+
   getImageBuilder(props) {
     var imageBuilder = props.imageBuilder;
 
@@ -113,26 +133,6 @@ export default React.createClass({
     probe[idx] = value;
 
     this.getImageBuilder(this.props).setProbe(probe[0], probe[1], probe[2]);
-  },
-
-  onProbeVisibilityChange(isProbeOpen) {
-    this.setState({
-      showFieldValue: isProbeOpen,
-    });
-
-    setImmediate(() => {
-      if (this.props.imageBuilders) {
-        Object.keys(this.props.imageBuilders).forEach(key => {
-          const builder = this.props.imageBuilders[key].builder;
-          builder.setCrossHairEnable(isProbeOpen);
-          builder.render();
-        });
-      }
-      if (this.props.imageBuilder) {
-        this.props.imageBuilder.setCrossHairEnable(isProbeOpen);
-        this.props.imageBuilder.render();
-      }
-    });
   },
 
   render() {

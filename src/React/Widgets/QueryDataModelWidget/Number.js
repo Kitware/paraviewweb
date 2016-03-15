@@ -33,6 +33,12 @@ export default React.createClass({
     };
   },
 
+  onIndexChange(event) {
+    if (this.props.model.setIndex(this.props.arg, Number(event.target.value))) {
+      this.props.model.lazyFetchData();
+    }
+  },
+
   previous() {
     if (this.props.model.previous(this.props.arg)) {
       this.props.model.lazyFetchData();
@@ -58,12 +64,6 @@ export default React.createClass({
     if (this.props.model.last(this.props.arg)) {
       this.props.model.lazyFetchData();
       ReactDOM.findDOMNode(this.refs.slider).focus();
-    }
-  },
-
-  onIndexChange(event) {
-    if (this.props.model.setIndex(this.props.arg, Number(event.target.value))) {
-      this.props.model.lazyFetchData();
     }
   },
 

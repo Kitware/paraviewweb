@@ -80,8 +80,14 @@ export default React.createClass({
     }
   },
 
-  toggleLegend() {
-    this.setState({ legend: !this.state.legend });
+  onMove(event) {
+    this.xPosition = event.clientX - (event.target.getClientRects()[0].x || event.target.getClientRects()[0].left);
+
+    // Update fields values
+
+    if (this.isMounted() && this.state.legend) {
+      this.drawChart();
+    }
   },
 
   updateDimensions() {
@@ -100,14 +106,8 @@ export default React.createClass({
     return false;
   },
 
-  onMove(event) {
-    this.xPosition = event.clientX - (event.target.getClientRects()[0].x || event.target.getClientRects()[0].left);
-
-    // Update fields values
-
-    if (this.isMounted() && this.state.legend) {
-      this.drawChart();
-    }
+  toggleLegend() {
+    this.setState({ legend: !this.state.legend });
   },
 
   drawChart() {

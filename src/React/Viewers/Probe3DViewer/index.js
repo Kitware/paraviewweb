@@ -108,6 +108,13 @@ export default React.createClass({
     }
   },
 
+  onChartVisibilityChange(isOpen) {
+    if (isOpen) {
+      this.validateChartAxis();
+    }
+    this.setState({ chartVisible: isOpen });
+  },
+
   validateChartAxis() {
     var renderCoords = this.props.imageBuilder.getRenderMethod(),
       chartAxis = 'XYZ'[this.liveChartAxis];
@@ -120,13 +127,6 @@ export default React.createClass({
       this.liveChartAxis = chartAxis;
       this.setState({ chartAxis, chartData });
     }
-  },
-
-  onChartVisibilityChange(isOpen) {
-    if (isOpen) {
-      this.validateChartAxis();
-    }
-    this.setState({ chartVisible: isOpen });
   },
 
   updateChart(event) {

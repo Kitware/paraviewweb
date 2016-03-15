@@ -208,6 +208,70 @@ export default React.createClass({
     this.setState({ nodes, branches, forks, actives, leaves });
   },
 
+  toggleActive(event) {
+    var { actives, nodes } = this.state;
+
+    if (event.target.nodeName !== 'circle' && !event.target.classList.contains(style.iconText)) {
+      const size = SizeHelper.getSize(ReactDOM.findDOMNode(this)),
+        { deltaY } = this.props,
+        // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
+        originTop = size.clientRect.y || size.clientRect.top,
+        yVal = Math.floor((event.clientY - originTop) / deltaY),
+        index = actives.indexOf(yVal);
+
+      // command key for osx, control key for windows
+      if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
+        if (index === -1) {
+          actives.push(yVal);
+        } else {
+          actives.splice(index, 1);
+        }
+      } else {
+        actives = [yVal];
+      }
+      this.setState({ actives });
+
+      if (this.props.onChange) {
+        const changeSet = [],
+          active = true;
+
+        actives.forEach(idx => {
+          const { id, parent, name, visible } = nodes[idx];
+          changeSet.push({ id, parent, name, visible, active });
+        });
+
+        this.props.onChange({ type: 'active', changeSet });
+      }
+    }
+  },
+
+  toggleVisibility(event) {
+    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+      { actives, nodes } = this.state,
+      node = nodes[yVal];
+
+    node.visible = !node.visible;
+    this.setState({ nodes });
+
+    if (this.props.onChange) {
+      const { id, parent, name, visible } = node,
+        active = (actives.indexOf(yVal) !== -1),
+        changeSet = [{ id, parent, name, visible, active }];
+
+      this.props.onChange({ type: 'visibility', changeSet });
+    }
+  },
+
+  deleteNode(event) {
+    if (this.props.onChange) {
+      const  yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+        { id, parent, name, visible } = this.state.nodes[yVal],
+        changeSet = [{ id, parent, name, visible }];
+
+      this.props.onChange({ type: 'delete', changeSet });
+    }
+  },
+
   renderNodes() {
     return this.state.nodes.map((el, index) => {
       const {
@@ -347,70 +411,6 @@ export default React.createClass({
         >&#xf014;
         </text>);
     });
-  },
-
-  toggleActive(event) {
-    var { actives, nodes } = this.state;
-
-    if (event.target.nodeName !== 'circle' && !event.target.classList.contains(style.iconText)) {
-      const size = SizeHelper.getSize(ReactDOM.findDOMNode(this)),
-        { deltaY } = this.props,
-        // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
-        originTop = size.clientRect.y || size.clientRect.top,
-        yVal = Math.floor((event.clientY - originTop) / deltaY),
-        index = actives.indexOf(yVal);
-
-      // command key for osx, control key for windows
-      if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
-        if (index === -1) {
-          actives.push(yVal);
-        } else {
-          actives.splice(index, 1);
-        }
-      } else {
-        actives = [yVal];
-      }
-      this.setState({ actives });
-
-      if (this.props.onChange) {
-        const changeSet = [],
-          active = true;
-
-        actives.forEach(idx => {
-          const { id, parent, name, visible } = nodes[idx];
-          changeSet.push({ id, parent, name, visible, active });
-        });
-
-        this.props.onChange({ type: 'active', changeSet });
-      }
-    }
-  },
-
-  toggleVisibility(event) {
-    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-      { actives, nodes } = this.state,
-      node = nodes[yVal];
-
-    node.visible = !node.visible;
-    this.setState({ nodes });
-
-    if (this.props.onChange) {
-      const { id, parent, name, visible } = node,
-        active = (actives.indexOf(yVal) !== -1),
-        changeSet = [{ id, parent, name, visible, active }];
-
-      this.props.onChange({ type: 'visibility', changeSet });
-    }
-  },
-
-  deleteNode(event) {
-    if (this.props.onChange) {
-      const  yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-        { id, parent, name, visible } = this.state.nodes[yVal],
-        changeSet = [{ id, parent, name, visible }];
-
-      this.props.onChange({ type: 'delete', changeSet });
-    }
   },
 
   render() {
