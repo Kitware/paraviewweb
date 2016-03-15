@@ -23,7 +23,10 @@ export default class CanvasOffscreenBuffer {
     if (height) {
       this.el.setAttribute('height', this.height = height);
     }
-    return [ Number(this.width), Number(this.height) ];
+    return [
+      Number(this.width),
+      Number(this.height),
+    ];
   }
 
   get2DContext() {

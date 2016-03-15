@@ -52,9 +52,9 @@ function extractDomain(ui) {
     }
     if (ui.type === 'proxy') {
       const domain = {};
-      for (const key in ui.values) {
+      Object.keys(ui.values).forEach(key => {
         domain[key] = key;
-      }
+      });
       return domain;
     }
     return ui.values;
@@ -76,7 +76,7 @@ export function proxyPropToProp(property, ui) {
   const depStatus = depList ? Boolean(Number(depList.pop())) : true;
   const depValue = depList ? depList.pop() : null;
   const depId = depList ? depList.join(':') : null;
-  const searchString = [ ui.name, ui.doc ].concat(property.value).join(' ').toLowerCase();
+  const searchString = [ui.name, ui.doc].concat(property.value).join(' ').toLowerCase();
 
   return {
     show(ctx) {

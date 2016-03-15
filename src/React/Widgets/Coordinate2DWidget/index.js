@@ -135,11 +135,12 @@ export default React.createClass({
     }
   },
 
-  drawPlus(color, location) {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
-      height = ctx.canvas.height,
-      width = ctx.canvas.width,
-      lineLen = 5;
+  drawPlus(color, location_) {
+    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    const height = ctx.canvas.height;
+    const width = ctx.canvas.width;
+    const lineLen = 5;
+    let location = location_;
 
     if (location === undefined) {
       location = {

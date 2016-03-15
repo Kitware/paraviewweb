@@ -382,49 +382,34 @@ export default React.createClass({
     }
   },
 
-  renderImage(data) {
-    this.imageToDraw.drawToCanvas = drawToCanvasAsImage;
-    this.imageToDraw.src = data.url;
+  updateMetadata() {
+    this.setState({
+      dialog: !this.state.dialog,
+    });
+    this.imageExporter.updateMetadata({
+      title: this.state.title,
+      description: this.state.description,
+      image: ReactDOM.findDOMNode(this.refs.thumbnail).src,
+      path: this.props.imageBuilder.queryDataModel.basepath,
+    });
   },
 
-  renderCanvas(data) {
-    this.imageToDraw.drawToCanvas = drawToCanvasAsBuffer;
-    this.imageToDraw.data = data;
-    this.imageToDraw.width = data.outputSize[0];
-    this.imageToDraw.height = data.outputSize[1];
-
-    // Send data to server for export
-    if (this.sendToServer) {
-      this.imageExporter.exportImage(data);
-    }
-
-    // No need to wait to render it
-    if (this.imageToDraw.firstRender) {
-      this.imageToDraw.firstRender = false;
-      this.resetCamera();
-    } else {
-      this.imageToDraw.drawToCanvas();
-    }
+  updateTitle(event) {
+    var title = event.target.value;
+    this.setState({ title });
   },
 
-  resetCamera() {
-    var w = this.state.width,
-      h = this.state.height,
-      image = this.imageToDraw,
-      iw = image ? image.width : 500,
-      ih = image ? image.height : 500;
-
-    this.zoom = Math.min(w / iw, h / ih);
-    this.baseZoom = Math.min(w / iw, h / ih);
-    this.baseCenter = [0.5, 0.5];
-    this.center = [0.5, 0.5];
-
-    image.drawToCanvas();
+  updateDescription(event) {
+    var description = event.target.value;
+    this.setState({ description });
   },
 
-  recordImages(record) {
-    this.sendToServer = record;
+  toggleDialog() {
+    this.setState({
+      dialog: !this.state.dialog,
+    });
   },
+
 
   handleKeyDown(event) {
     if (event.keyCode === 82) {
@@ -456,32 +441,48 @@ export default React.createClass({
     }
   },
 
-  updateTitle(event) {
-    var title = event.target.value;
-    this.setState({ title });
+  recordImages(record) {
+    this.sendToServer = record;
   },
 
-  updateDescription(event) {
-    var description = event.target.value;
-    this.setState({ description });
+  resetCamera() {
+    var w = this.state.width,
+      h = this.state.height,
+      image = this.imageToDraw,
+      iw = image ? image.width : 500,
+      ih = image ? image.height : 500;
+
+    this.zoom = Math.min(w / iw, h / ih);
+    this.baseZoom = Math.min(w / iw, h / ih);
+    this.baseCenter = [0.5, 0.5];
+    this.center = [0.5, 0.5];
+
+    image.drawToCanvas();
   },
 
-  toggleDialog() {
-    this.setState({
-      dialog: !this.state.dialog,
-    });
+  renderImage(data) {
+    this.imageToDraw.drawToCanvas = drawToCanvasAsImage;
+    this.imageToDraw.src = data.url;
   },
 
-  updateMetadata() {
-    this.setState({
-      dialog: !this.state.dialog,
-    });
-    this.imageExporter.updateMetadata({
-      title: this.state.title,
-      description: this.state.description,
-      image: ReactDOM.findDOMNode(this.refs.thumbnail).src,
-      path: this.props.imageBuilder.queryDataModel.basepath,
-    });
+  renderCanvas(data) {
+    this.imageToDraw.drawToCanvas = drawToCanvasAsBuffer;
+    this.imageToDraw.data = data;
+    this.imageToDraw.width = data.outputSize[0];
+    this.imageToDraw.height = data.outputSize[1];
+
+    // Send data to server for export
+    if (this.sendToServer) {
+      this.imageExporter.exportImage(data);
+    }
+
+    // No need to wait to render it
+    if (this.imageToDraw.firstRender) {
+      this.imageToDraw.firstRender = false;
+      this.resetCamera();
+    } else {
+      this.imageToDraw.drawToCanvas();
+    }
   },
 
   render() {

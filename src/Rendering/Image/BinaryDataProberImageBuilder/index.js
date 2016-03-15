@@ -61,9 +61,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     // Handle events
     this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
       this.dataFields = {};
-      for (const field in data) {
+      Object.keys(data).forEach(field => {
         this.dataFields[field] = new window[this.metadata.types[field]](data[field].data);
-      }
+      });
       this.render();
     }));
 
@@ -214,16 +214,19 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  setProbe(x, y, z) {
-    var fn = dataMapping[this.renderMethod].hasChange,
-      idx = dataMapping[this.renderMethod].idx,
-      previousValue = [].concat(this.probeXYZ);
+  setProbe(i, j, k) {
+    var fn = dataMapping[this.renderMethod].hasChange;
+    var idx = dataMapping[this.renderMethod].idx;
+    var previousValue = [].concat(this.probeXYZ);
+    var x = i;
+    var y = j;
+    var z = k;
 
-    // Allow x to be [x,y,z]
-    if (Array.isArray(x)) {
-      z = x[2];
-      y = x[1];
-      x = x[0];
+    // Allow i to be [i,j,k]
+    if (Array.isArray(i)) {
+      z = i[2];
+      y = i[1];
+      x = i[0];
     }
 
     if (fn(this.probeXYZ, x, y, z)) {

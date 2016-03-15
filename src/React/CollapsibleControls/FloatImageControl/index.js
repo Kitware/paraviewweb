@@ -34,6 +34,16 @@ export default React.createClass({
     }
   },
 
+  onProbeChange(e) {
+    var name = e.target.name,
+      newVal = Number(e.target.value),
+      newState = { x: this.state.x, y: this.state.y };
+
+    newState[name] = newVal;
+    this.setState(newState);
+    this.props.model.getTimeChart(newState.x, newState.y);
+  },
+
   attachListener(model) {
     this.changeSubscription = model.onProbeChange((data, envelope) => {
       this.forceUpdate();
@@ -50,16 +60,6 @@ export default React.createClass({
   updateLight(event) {
     this.props.model.setLight(255 - event.target.value);
     this.setState({ change: !this.state.change });
-  },
-
-  onProbeChange(e) {
-    var name = e.target.name,
-      newVal = Number(e.target.value),
-      newState = { x: this.state.x, y: this.state.y };
-
-    newState[name] = newVal;
-    this.setState(newState);
-    this.props.model.getTimeChart(newState.x, newState.y);
   },
 
   toggleProbe(newVal) {

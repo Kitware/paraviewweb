@@ -41,12 +41,13 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
 
   /* eslint-disable no-new-func */
   updateOperationFunction() {
-    var functionBody = [],
-      isValid = true;
-    for (const key in this.data) {
+    var isValid = true;
+    const functionBody = [];
+
+    Object.keys(this.data).forEach(key => {
       functionBody.push('var X = data.X[i];'.replace(/X/g, key));
-    }
-    this.dependency.forEach((dep) => {
+    });
+    this.dependency.forEach(dep => {
       isValid = this.data[dep] && isValid;
     });
 
@@ -164,16 +165,17 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
     }
 
     // Validate Array sizes
-    let size = -1,
-      sizeValid = true;
-    for (const key in this.data) {
+    let size = -1;
+    let sizeValid = true;
+
+    Object.keys(this.data).forEach(key => {
       const array = this.data[key];
       if (size === -1) {
         size = array.length;
       } else {
         sizeValid = sizeValid && (size === array.length);
       }
-    }
+    });
 
     if (!sizeValid || size === -1) {
       console.log('The array size are invalid!!!', size);

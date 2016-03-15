@@ -18,8 +18,8 @@ export default React.createClass({
     };
   },
 
-  toggleDropdown() {
-    this.setState({ open: !this.state.open });
+  getField(e) {
+    return this.state.field;
   },
 
   setField(e) {
@@ -27,8 +27,8 @@ export default React.createClass({
     this.props.onChange(e.target.innerHTML);
   },
 
-  getField(e) {
-    return this.state.field;
+  toggleDropdown() {
+    this.setState({ open: !this.state.open });
   },
 
   render() {

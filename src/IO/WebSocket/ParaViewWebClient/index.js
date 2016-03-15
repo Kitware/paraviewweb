@@ -35,9 +35,9 @@ export function createClient(connection, protocols = [], customProtocols = {}) {
     result[name] = protocolsMap[name](session);
   }
 
-  for (const key in customProtocols) {
+  Object.keys(customProtocols).forEach(key => {
     result[key] = customProtocols[key](session);
-  }
+  });
 
   return result;
 }

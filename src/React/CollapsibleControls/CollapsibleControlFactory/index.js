@@ -40,7 +40,7 @@ const WidgetFactoryMapping = {
       />);
   },
   LookupTableWidget({ originalRange = [0, 1], lookupTable, lookupTableManager }) {
-    return  (
+    return (
       <CollapsibleWidget title="LookupTable" key="LookupTableWidget_parent">
         <LookupTableWidget
           key="LookupTableWidget"
@@ -51,7 +51,8 @@ const WidgetFactoryMapping = {
         />
       </CollapsibleWidget>);
   },
-  LookupTableManagerWidget({ lookupTableManager, field }) {
+  LookupTableManagerWidget({ lookupTableManager, activeField }) {
+    var field = activeField;
     if (!field) {
       field = lookupTableManager.getActiveField();
     }

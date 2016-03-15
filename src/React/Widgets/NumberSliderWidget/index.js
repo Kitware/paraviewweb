@@ -47,9 +47,9 @@ export default React.createClass({
       return this.state.value;
     }
 
-    newVal = Math.max(this.state.min, Math.min(newVal, this.state.max));
-    this.setState({ value: newVal });
-    return newVal;
+    const value = Math.max(this.state.min, Math.min(newVal, this.state.max));
+    this.setState({ value });
+    return value;
   },
 
   render() {

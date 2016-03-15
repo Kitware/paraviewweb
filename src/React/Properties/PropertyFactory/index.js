@@ -9,9 +9,9 @@ import SliderProperty   from '../SliderProperty';
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable max-len */
 const factoryMapping = {
-  Cell: (prop, viewData, onChange) => <CellProperty     key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
-  Slider: (prop, viewData, onChange) => <SliderProperty   key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
-  Enum: (prop, viewData, onChange) => <EnumProperty     key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
+  Cell: (prop, viewData, onChange) => <CellProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
+  Slider: (prop, viewData, onChange) => <SliderProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
+  Enum: (prop, viewData, onChange) => <EnumProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
   Checkbox: (prop, viewData, onChange) => <CheckboxProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
   Map: (prop, viewData, onChange) => <MapProperty key={prop.data.id} data={prop.data} ui={prop.ui} viewData={viewData} show={prop.show} onChange={onChange} />,
 };

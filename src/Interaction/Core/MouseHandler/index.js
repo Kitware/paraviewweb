@@ -61,7 +61,7 @@ export default class MouseHandler {
         threshold: 0,
       },
     };
-    options = merge(defaultOptions, options);
+    var optionsWithDefault = merge(defaultOptions, options);
 
     this.Modifier = Modifier;
 
@@ -158,8 +158,8 @@ export default class MouseHandler {
     };
 
     // set hammer options
-    this.hammer.get('pan').set(options.pan);
-    this.hammer.get('pinch').set(options.pinch);
+    this.hammer.get('pan').set(optionsWithDefault.pan);
+    this.hammer.get('pinch').set(optionsWithDefault.pinch);
 
     // Listen to hammer events
     this.hammer.on('tap', (e) => {
@@ -242,9 +242,9 @@ export default class MouseHandler {
 
   attach(listeners) {
     var subscriptions = {};
-    for (const key in listeners) {
+    Object.keys(listeners).forEach(key => {
       subscriptions[key] = this.on(key, listeners[key]);
-    }
+    });
     return subscriptions;
   }
 

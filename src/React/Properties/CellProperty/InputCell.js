@@ -33,40 +33,6 @@ export default React.createClass({
     };
   },
 
-  valueChange(e) {
-    var newVal = e.target.value;
-    const isValid = validate[this.props.type](newVal);
-    this.setState({
-      editing: true,
-      valueRep: newVal,
-    });
-
-    if (!this.props.noEmpty && newVal.length === 0 && !isValid) {
-      this.props.onChange(this.props.idx, undefined);
-    } else if (isValid) {
-      let propVal = convert[this.props.type](newVal);
-      propVal = this.applyDomains(this.props.idx, propVal);
-      this.props.onChange(this.props.idx, propVal);
-    }
-  },
-
-  applyDomains(idx, val) {
-    if (!this.props.domain) {
-      return val;
-    }
-
-    // Handle range
-    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
-      const size = this.props.domain.range.length;
-      const { min, max, force } = this.props.domain.range[idx % size];
-      if (force) {
-        val = (min !== undefined) ? Math.max(min, val) : val;
-        val = (max !== undefined) ? Math.min(max, val) : val;
-      }
-    }
-    return val;
-  },
-
   getTooltip() {
     var tooltip = '';
     const idx = this.props.idx;
@@ -85,6 +51,41 @@ export default React.createClass({
     }
 
     return tooltip;
+  },
+
+  applyDomains(idx, val) {
+    if (!this.props.domain) {
+      return val;
+    }
+
+    // Handle range
+    let newValue = val;
+    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+      const size = this.props.domain.range.length;
+      const { min, max, force } = this.props.domain.range[idx % size];
+      if (force) {
+        newValue = (min !== undefined) ? Math.max(min, newValue) : newValue;
+        newValue = (max !== undefined) ? Math.min(max, newValue) : newValue;
+      }
+    }
+    return newValue;
+  },
+
+  valueChange(e) {
+    var newVal = e.target.value;
+    const isValid = validate[this.props.type](newVal);
+    this.setState({
+      editing: true,
+      valueRep: newVal,
+    });
+
+    if (!this.props.noEmpty && newVal.length === 0 && !isValid) {
+      this.props.onChange(this.props.idx, undefined);
+    } else if (isValid) {
+      let propVal = convert[this.props.type](newVal);
+      propVal = this.applyDomains(this.props.idx, propVal);
+      this.props.onChange(this.props.idx, propVal);
+    }
   },
 
   endEditing() {

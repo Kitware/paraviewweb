@@ -54,6 +54,50 @@ export default React.createClass({
     this.updateState(nextProps);
   },
 
+  onRepresentationChange(event) {
+    const representationValue = event.target.value;
+    this.setState({ representationValue });
+    if (this.props.onChange) {
+      this.props.onChange({
+        type: 'propertyChange',
+        changeSet: [{
+          id: this.props.representation.id,
+          name: 'Representation',
+          value: representationValue,
+        }],
+      });
+    }
+  },
+
+  onColorChange(event) {
+    var scalarBarVisible = this.state.scalarBarVisible;
+    const colorValue = event.target.value;
+    const [arrayLocation, arrayName] = colorValue.split(SEP);
+    const colorMode = arrayName ? 'array' : 'SOLID';
+    const vectorMode = 'Magnitude';
+    const vectorComponent = 0;
+    const rescale = false;
+
+    if (colorMode === 'SOLID') {
+      scalarBarVisible = false;
+    }
+
+
+    this.setState({ colorValue, scalarBarVisible, colorMode });
+    if (this.props.onChange) {
+      this.props.onChange({
+        type: 'colorBy',
+        representation: this.props.representation.id,
+        arrayLocation,
+        arrayName,
+        colorMode,
+        vectorMode,
+        vectorComponent,
+        rescale,
+      });
+    }
+  },
+
   updateState(props) {
     if (!props.source || !props.representation) {
       return;
@@ -102,50 +146,6 @@ export default React.createClass({
   toggleAdvancedView() {
     const advancedView = !this.state.advancedView;
     this.setState({ advancedView });
-  },
-
-  onRepresentationChange(event) {
-    const representationValue = event.target.value;
-    this.setState({ representationValue });
-    if (this.props.onChange) {
-      this.props.onChange({
-        type: 'propertyChange',
-        changeSet: [{
-          id: this.props.representation.id,
-          name: 'Representation',
-          value: representationValue,
-        }],
-      });
-    }
-  },
-
-  onColorChange(event) {
-    var scalarBarVisible = this.state.scalarBarVisible;
-    const colorValue = event.target.value;
-    const [arrayLocation, arrayName] = colorValue.split(SEP);
-    const colorMode = arrayName ? 'array' : 'SOLID';
-    const vectorMode = 'Magnitude';
-    const vectorComponent = 0;
-    const rescale = false;
-
-    if (colorMode === 'SOLID') {
-      scalarBarVisible = false;
-    }
-
-
-    this.setState({ colorValue, scalarBarVisible, colorMode });
-    if (this.props.onChange) {
-      this.props.onChange({
-        type: 'colorBy',
-        representation: this.props.representation.id,
-        arrayLocation,
-        arrayName,
-        colorMode,
-        vectorMode,
-        vectorComponent,
-        rescale,
-      });
-    }
   },
 
   render() {

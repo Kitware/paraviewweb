@@ -6,10 +6,10 @@ export default React.createClass({
   displayName: 'CollapsibleWidget',
 
   propTypes: {
-    children: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]),
+    children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
     onChange: React.PropTypes.func,
     open: React.PropTypes.bool,
-    subtitle: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.string, React.PropTypes.array ]),
+    subtitle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.string, React.PropTypes.array]),
     title: React.PropTypes.string,
     visible: React.PropTypes.bool,
   },

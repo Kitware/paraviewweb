@@ -68,9 +68,9 @@ export default React.createClass({
           }}
           onClick={ this.togglePanel }
         ></span>
-        <div className={ [ style.button, buttonAnchor ].join(' ') }>
+        <div className={ [style.button, buttonAnchor].join(' ') }>
             <div
-              className={ [ style.content, panelAnchor ].join(' ') }
+              className={ [style.content, panelAnchor].join(' ') }
               style={{
                 display: this.state.panelVisible ? 'block' : 'none',
                 width: this.props.size.panel[0],

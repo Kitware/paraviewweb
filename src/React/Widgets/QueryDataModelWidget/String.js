@@ -43,7 +43,7 @@ export default React.createClass({
   render() {
     return (
       <div className={ (this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item) }>
-        <div className={ [ style.row, style.label ].join(' ') } onClick={this.toggleAnimation}>
+        <div className={ [style.row, style.label].join(' ') } onClick={this.toggleAnimation}>
           { this.props.model.label(this.props.arg) }
         </div>
         <div className={ style.row } onMouseEnter={this.grabFocus}>

@@ -21,7 +21,7 @@ function getTransportObject(url) {
     };
   }
 
-  throw `Unknown protocol (${protocol}) for url (${url}).  Unable to create transport object.`;
+  throw new Error(`Unknown protocol (${protocol}) for url (${url}).  Unable to create transport object.`);
 }
 
 export default class AutobahnConnection {
@@ -57,7 +57,7 @@ export default class AutobahnConnection {
           return autobahn.auth_cra.sign(secretKey, extra.challenge);
         }
 
-        throw `don't know how to authenticate using '${method}'`;
+        throw new Error(`don't know how to authenticate using '${method}'`);
       },
     });
 

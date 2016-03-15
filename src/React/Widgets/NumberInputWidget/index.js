@@ -6,12 +6,12 @@ export default React.createClass({
 
   propTypes: {
     className: React.PropTypes.string,
-    max: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
-    min: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
+    max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    min: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
-    step: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
-    value: React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]),
+    step: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    value: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   },
 
   getDefaultProps() {

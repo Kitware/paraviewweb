@@ -230,9 +230,9 @@ export default class PipelineState {
   // ------------------------------------------------------------------------
 
   resetOpacity(alpha) {
-    for (const key in this.opacityMap) {
+    Object.keys(this.opacityMap).forEach(key => {
       this.opacityMap[key] = alpha;
-    }
+    });
 
     const opacityArray = [];
     for (let i = 0; i < this.nbLayers; ++i) {

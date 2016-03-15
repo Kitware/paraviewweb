@@ -153,9 +153,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     this.timeProbe.query = query;
 
     // Synch the time query data model
-    for (const key in query) {
+    Object.keys(query).forEach(key => {
       this.timeDataQueryDataModel.setValue(key, query[key]);
-    }
+    });
 
     this.timeDataQueryDataModel.first('time');
     this.timeDataQueryDataModel.fetchData({
@@ -167,9 +167,12 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   /* eslint-disable complexity */
-  getTimeChart(x, y) {
+  getTimeChart(xx, yy) {
+    var x = xx;
+    var y = yy;
     var probeHasChanged = !this.timeProbe.enabled || this.timeProbe.forceUpdate;
     this.timeProbe.enabled = true;
+
     // this.timeProbe.value = '';
     if (x === undefined && y === undefined) {
       x = this.timeProbe.x;

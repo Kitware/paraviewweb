@@ -28,25 +28,6 @@ export default React.createClass({
     this.processProps(nextProps);
   },
 
-  processProps(props) {
-    const list = [];
-    props.directories.forEach(name => {
-      list.push({ name, icon: style.folderIcon, action: 'directory' });
-    });
-    props.groups.forEach(g => {
-      list.push({
-        name: g.label,
-        icon: style.groupIcon,
-        action: 'group',
-        data: btoa(JSON.stringify(g.files)),
-      });
-    });
-    props.files.forEach(name => {
-      list.push({ name, icon: style.fileIcon, action: 'file' });
-    });
-    this.setState({ list });
-  },
-
   onAction(name, action, data) {
     if (this.props.onAction) {
       this.props.onAction(action, name, data.length ? JSON.parse(atob(data)) : null);
@@ -66,6 +47,25 @@ export default React.createClass({
       }
       this.props.onAction('path', path.join('/'), path);
     }
+  },
+
+  processProps(props) {
+    const list = [];
+    props.directories.forEach(name => {
+      list.push({ name, icon: style.folderIcon, action: 'directory' });
+    });
+    props.groups.forEach(g => {
+      list.push({
+        name: g.label,
+        icon: style.groupIcon,
+        action: 'group',
+        data: btoa(JSON.stringify(g.files)),
+      });
+    });
+    props.files.forEach(name => {
+      list.push({ name, icon: style.fileIcon, action: 'file' });
+    });
+    this.setState({ list });
   },
 
   render() {

@@ -12,14 +12,21 @@ function applyRatio(a, b, ratio) {
 
 function interpolateColor(pointA, pointB, scalar) {
   var ratio = (scalar - pointA[0]) / (pointB[0] - pointA[0]);
-  return [ applyRatio(pointA[1], pointB[1], ratio),
-           applyRatio(pointA[2], pointB[2], ratio),
-           applyRatio(pointA[3], pointB[3], ratio),
-           255 ];
+  return [
+    applyRatio(pointA[1], pointB[1], ratio),
+    applyRatio(pointA[2], pointB[2], ratio),
+    applyRatio(pointA[3], pointB[3], ratio),
+    255,
+  ];
 }
 
 function extractPoint(controlPoints, idx) {
-  return [ controlPoints[idx].x, controlPoints[idx].r, controlPoints[idx].g, controlPoints[idx].b ];
+  return [
+    controlPoints[idx].x,
+    controlPoints[idx].r,
+    controlPoints[idx].g,
+    controlPoints[idx].b,
+  ];
 }
 
 function xrgbCompare(a, b) {
@@ -249,7 +256,7 @@ export default class LookupTable {
       return this.colorTable[0];
     }
     if (idxValue >= this.colorTableSize) {
-      return this.colorTable[this.colorTable.length  - 1];
+      return this.colorTable[this.colorTable.length - 1];
     }
     return this.colorTable[idxValue];
   }

@@ -42,7 +42,7 @@ __Python launcher config__
     "resources": [ {"host": "localhost", "port_range": [9001, 9003] } ],
     ...
     "configuration": {
-      "host": "localhost",
+      "host": "${launcher_IP}",
       "port": 8080,
       "sessionURL": "ws://host1.example.com/proxy?sessionId=${id}",
       "proxy_file": "<MAPPING-FILE-DIR>/proxy.txt"
@@ -94,7 +94,7 @@ __Python launcher config__
     "resources": [ {"host": "host2.example.com", "port_range": [9001, 9003] } ],
     ...
     "configuration": {
-      "host": "localhost",
+      "host": "${launcher_IP}",
       "port": 8080,
       "sessionURL": "ws://host1.example.com/proxy?sessionId=${id}",
       "proxy_file": "<MAPPING-FILE-DIR>/proxy.txt"
@@ -149,7 +149,7 @@ __Python launcher config__
                    {"host": "host4.example.com", "port_range": [9001, 9003] } ],
     ...
     "configuration": {
-      "host": "localhost",
+      "host": "${launcher_IP}",
       "port": 8080,
       "sessionURL": "ws://host1.example.com/proxy?sessionId=${id}",
       "proxy_file": "<MAPPING-FILE-DIR>/proxy.txt"

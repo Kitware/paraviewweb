@@ -104,11 +104,11 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       };
       let canRenderNow = true;
 
-      for (const key in data) {
+      Object.keys(data).forEach(key => {
         const img = data[key].image;
         img.addEventListener('load', renderCallback);
         canRenderNow = canRenderNow && img.complete;
-      }
+      });
 
       if (canRenderNow) {
         this.render();
@@ -219,23 +219,25 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getYOffset(slice) {
-    if (slice === undefined) {
-      slice = this.probeXYZ[2];
+    var sliceIdx = slice;
+    if (sliceIdx === undefined) {
+      sliceIdx = this.probeXYZ[2];
     }
-    return this.metadata.sprite_size - slice % this.metadata.sprite_size - 1;
+    return this.metadata.sprite_size - sliceIdx % this.metadata.sprite_size - 1;
   }
 
   // ------------------------------------------------------------------------
 
   getImage(slice, callback) {
-    if (slice === undefined) {
-      slice = this.probeXYZ[2];
+    var sliceIdx = slice;
+    if (sliceIdx === undefined) {
+      sliceIdx = this.probeXYZ[2];
     }
 
     // Use the pre-loaded image
     const max = this.metadata.slices.length - 1;
 
-    let idx = Math.floor(slice / this.metadata.sprite_size);
+    let idx = Math.floor(sliceIdx / this.metadata.sprite_size);
     idx = idx < 0 ? 0 : (idx > max) ? max : idx;
 
     const data = this.lastImageStack[this.metadata.slices[idx]],
@@ -255,16 +257,19 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  setProbe(x, y, z) {
-    var fn = dataMapping[this.renderMethod].hasChange,
-      idx = dataMapping[this.renderMethod].idx,
-      previousValue = [].concat(this.probeXYZ);
+  setProbe(i, j, k) {
+    var fn = dataMapping[this.renderMethod].hasChange;
+    var idx = dataMapping[this.renderMethod].idx;
+    var previousValue = [].concat(this.probeXYZ);
+    var x = i;
+    var y = j;
+    var z = k;
 
-    // Allow x to be [x,y,z]
-    if (Array.isArray(x)) {
-      z = x[2];
-      y = x[1];
-      x = x[0];
+    // Allow i to be [x,y,z]
+    if (Array.isArray(i)) {
+      z = i[2];
+      y = i[1];
+      x = i[0];
     }
 
     if (fn(this.probeXYZ, x, y, z)) {
