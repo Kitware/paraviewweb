@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 export default {
   lookuptables: {
     spectralflip: {

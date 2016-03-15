@@ -180,7 +180,7 @@ export default React.createClass({
 
     return (
       <div className={ style.container }>
-          <AbstractViewerMenu  queryDataModel={queryDataModel} imageBuilder={imageBuilder} mouseListener={imageBuilder.getListeners()}>
+          <AbstractViewerMenu queryDataModel={queryDataModel} imageBuilder={imageBuilder} mouseListener={imageBuilder.getListeners()}>
               <LookupTableManagerControl
                 key="LookupTableManagerWidget"
                 ref="LookupTableManagerWidget"

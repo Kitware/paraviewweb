@@ -40,7 +40,7 @@ const WidgetFactoryMapping = {
       />);
   },
   LookupTableWidget({ originalRange = [0, 1], lookupTable, lookupTableManager }) {
-    return  (
+    return (
       <CollapsibleWidget title="LookupTable" key="LookupTableWidget_parent">
         <LookupTableWidget
           key="LookupTableWidget"

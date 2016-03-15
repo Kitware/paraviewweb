@@ -264,7 +264,7 @@ export default React.createClass({
 
   deleteNode(event) {
     if (this.props.onChange) {
-      const  yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+      const yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
         { id, parent, name, visible } = this.state.nodes[yVal],
         changeSet = [{ id, parent, name, visible }];
 
@@ -292,10 +292,10 @@ export default React.createClass({
         branchColor = palette[el.x % palette.length];
 
       // Styles
-      const currentTextColor = textColor[isActive ? 1 : 0],
-        weight = textWeight[isActive  ? 1 : 0],
-        strokeColor = isActive  ? activeCircleStrokeColor : branchColor   || branchColor,
-        fillColor   = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
+      const currentTextColor = textColor[isActive ? 1 : 0];
+      const weight = textWeight[isActive ? 1 : 0];
+      const strokeColor = isActive ? activeCircleStrokeColor : branchColor || branchColor;
+      const fillColor = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
 
       // Positions
       const cx = deltaX * el.x + offset,
@@ -416,10 +416,10 @@ export default React.createClass({
   render() {
     return (
       <svg style={this.props.style} width={this.props.width} height={ `${this.props.deltaY * this.state.nodes.length}px` } onClick={ this.toggleActive }>
-        { this.renderActives()       }
-        { this.renderBranches()      }
-        { this.renderForks()         }
-        { this.renderNodes()         }
+        { this.renderActives() }
+        { this.renderBranches() }
+        { this.renderForks() }
+        { this.renderNodes() }
         { this.renderDeleteActions() }
       </svg>);
   },

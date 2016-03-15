@@ -256,7 +256,7 @@ export default class LookupTable {
       return this.colorTable[0];
     }
     if (idxValue >= this.colorTableSize) {
-      return this.colorTable[this.colorTable.length  - 1];
+      return this.colorTable[this.colorTable.length - 1];
     }
     return this.colorTable[idxValue];
   }
