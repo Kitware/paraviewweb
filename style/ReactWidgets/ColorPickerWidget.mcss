@@ -39,4 +39,5 @@
 
 .swatchImage {
     width: 100%;
+    cursor: crosshair;
 }

@@ -4,12 +4,6 @@ import Monologue from 'monologue.js';
 const
     CHANGE_TOPIC = 'LookupTable.change';
 
-// Initialize liste
-var presetList = [];
-for (const key in Presets.lookuptables) {
-  presetList.push(key);
-}
-
 // Global helper methods ------------------------------------------------------
 
 function applyRatio(a, b, ratio) {
@@ -57,7 +51,7 @@ export default class LookupTable {
   }
 
   getPresets() {
-    return presetList;
+    return Object.keys(Presets.lookuptables);
   }
 
   setPreset(name) {

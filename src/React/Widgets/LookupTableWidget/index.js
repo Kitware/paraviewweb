@@ -74,7 +74,12 @@ export default React.createClass({
       activePreset: this.props.lookupTable.getPresets()[0],
       currentControlPointIndex: 0,
       internal_lut: false,
+      originalRange: this.props.originalRange,
     };
+  },
+
+  componentWillMount() {
+    this.attachListener(this.props.lookupTable);
   },
 
   componentDidMount() {
@@ -100,6 +105,33 @@ export default React.createClass({
 
         ctx.putImageData(imageData, 0, 0);
       }
+    }
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.lookupTable !== this.props.lookupTable) {
+      this.removeListener();
+      this.attachListener(nextProps.lookupTable);
+    }
+    if (this.props.originalRange[0] !== nextProps.originalRange[0] || this.props.originalRange[1] !== nextProps.originalRange[1]) {
+      this.setState({ originalRange: nextProps.originalRange });
+    }
+  },
+
+  componentWillUnmount() {
+    this.removeListener();
+  },
+
+  attachListener(lut) {
+    this.subscription = lut.onChange((data, envelope) => {
+      this.forceUpdate();
+    });
+  },
+
+  removeListener() {
+    if (this.subscription) {
+      this.subscription.unsubsribe();
+      this.subscription = null;
     }
   },
 
@@ -192,8 +224,15 @@ export default React.createClass({
     this.togglePresetMode();
   },
 
+  updateOriginalRange(min, max) {
+    console.log(`Someone asked LookupTableWidget to update original range to [${min}, ${max}]`);
+    this.setState({ originalRange: [min, max] });
+  },
+
   resetRange() {
-    var range = this.props.originalRange;
+    const range = this.state.originalRange;
+    const currentRange = this.props.lookupTable.getScalarRange();
+    console.log(`LookupTableWidget current range: [${currentRange[0]}, ${currentRange[1]}], new range: [${range[0]}, ${range[1]}]`);
     this.props.lookupTable.setScalarRange(range[0], range[1]);
   },
 
