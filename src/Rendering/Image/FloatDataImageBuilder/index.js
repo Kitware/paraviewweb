@@ -153,9 +153,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     this.timeProbe.query = query;
 
     // Synch the time query data model
-    for (const key in query) {
+    Object.keys(query).forEach(key => {
       this.timeDataQueryDataModel.setValue(key, query[key]);
-    }
+    });
 
     this.timeDataQueryDataModel.first('time');
     this.timeDataQueryDataModel.fetchData({

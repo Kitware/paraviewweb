@@ -63,7 +63,7 @@ export default class LookupTableManager {
   }
 
   addFields(fieldsRange, lutConfigs) {
-    for (const field in fieldsRange) {
+    Object.keys(fieldsRange).forEach(field => {
       const lut = this.addLookupTable(field, fieldsRange[field]);
       if (lutConfigs && lutConfigs[field]) {
         if (lutConfigs[field].discrete !== undefined) {
@@ -78,7 +78,7 @@ export default class LookupTableManager {
           lut.setScalarRange(lutConfigs[field].range[0], lutConfigs[field].range[1]);
         }
       }
-    }
+    });
   }
 
   getActiveField() {

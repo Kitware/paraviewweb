@@ -214,7 +214,7 @@ export default React.createClass({
   render() {
     var legend = [];
 
-    for (const name in this.state.fieldsColors) {
+    Object.keys(this.state.fieldsColors).forEach(name => {
       const color = this.state.fieldsColors[name];
       legend.push(
         <li className={ style.legendItem } key={name}>
@@ -222,7 +222,7 @@ export default React.createClass({
           <b>{name}</b>
           <span className={ style.legendItemValue } ref={name}></span>
         </li>);
-    }
+    });
 
     return (
       <div className={ style.container }>

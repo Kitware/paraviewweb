@@ -242,9 +242,9 @@ export default class MouseHandler {
 
   attach(listeners) {
     var subscriptions = {};
-    for (const key in listeners) {
+    Object.keys(listeners).forEach(key => {
       subscriptions[key] = this.on(key, listeners[key]);
-    }
+    });
     return subscriptions;
   }
 

@@ -52,9 +52,9 @@ function extractDomain(ui) {
     }
     if (ui.type === 'proxy') {
       const domain = {};
-      for (const key in ui.values) {
+      Object.keys(ui.values).forEach(key => {
         domain[key] = key;
-      }
+      });
       return domain;
     }
     return ui.values;

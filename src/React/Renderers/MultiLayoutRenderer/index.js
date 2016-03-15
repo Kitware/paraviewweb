@@ -58,7 +58,7 @@ var MultiViewRenderer = React.createClass({
     }
 
     // Init viewports from props
-    for (const name in this.props.renderers) {
+    Object.keys(this.props.renderers).forEach(name => {
       const item = this.props.renderers[name],
         imageBuilder = item.builder,
         painter = item.painter;
@@ -76,7 +76,7 @@ var MultiViewRenderer = React.createClass({
         name,
         active: false,
       });
-    }
+    });
 
     // Listen to window resize
     this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);

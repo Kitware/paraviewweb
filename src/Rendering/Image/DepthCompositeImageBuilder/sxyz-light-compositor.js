@@ -104,10 +104,11 @@ export default class SXYZLightCompositor {
     this.lookupTableManager.addFields(this.compositePipeline.ranges, this.queryDataModel.originalData.LookupTables);
     this.numLutSamples = 1024;
     this.lutMap = {};
-    for (const key in this.compositePipeline.ranges) {
+
+    Object.keys(this.compositePipeline.ranges).forEach(key => {
       this.lutMap[key] = new Uint8Array(this.numLutSamples * 4);
       this.resampleLookupTable(key);
-    }
+    });
     this.lookupTableManager.onChange((data, envelope) => {
       if (data.lut.name !== '__internal') {
         this.resampleLookupTable(data.lut.name);

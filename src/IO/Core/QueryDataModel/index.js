@@ -186,7 +186,7 @@ export default class QueryDataModel {
     };
 
     // Flatten args
-    for (const key in jsonData.arguments) {
+    Object.keys(jsonData.arguments).forEach(key => {
       const arg = jsonData.arguments[key];
       this.args[key] = {
         label: arg.label ? arg.label : key,
@@ -199,7 +199,7 @@ export default class QueryDataModel {
           (arg.loop === 'reverse' ?
             deltaReverse : (arg.loop === 'modulo' ? deltaModulo : deltaNone)) : deltaNone,
       };
-    }
+    });
 
     // Register all data urls
     jsonData.data.forEach(dataEntry => {
@@ -247,15 +247,15 @@ export default class QueryDataModel {
   getQuery() {
     var query = {};
 
-    for (const key in this.args) {
+    Object.keys(this.args).forEach(key => {
       const arg = this.args[key];
       query[key] = arg.values[arg.idx];
-    }
+    });
 
     // Add external args to the query too
-    for (const eKey in this.externalArgs) {
+    Object.keys(this.externalArgs).forEach(eKey => {
       query[eKey] = this.externalArgs[eKey];
-    }
+    });
 
     return query;
   }
@@ -542,10 +542,10 @@ export default class QueryDataModel {
       actions = {};
 
     // Create an action map
-    for (const key in this.originalData.arguments) {
+    Object.keys(this.originalData.arguments).forEach(key => {
       const value = this.originalData.arguments[key];
       if (value.bind && value.bind.mouse) {
-        for (const action in value.bind.mouse) {
+        Object.keys(value.bind.mouse).forEach(action => {
           const obj = omit(value.bind.mouse[action]);
           obj.name = key;
           obj.lastCoord = 0;
@@ -557,9 +557,9 @@ export default class QueryDataModel {
           } else {
             actions[action] = [obj];
           }
-        }
+        });
       }
-    }
+    });
 
     /* eslint-disable complexity */
     function processEvent(event, envelope) {
@@ -605,10 +605,10 @@ export default class QueryDataModel {
     /* eslint-enable complexity */
 
     this.mouseListener = {};
-    for (const actionName in actions) {
+    Object.keys(actions).forEach(actionName => {
       this.mouseListener[actionName] = processEvent;
       this.lastTime[actionName] = now();
-    }
+    });
 
     return this.mouseListener;
   }

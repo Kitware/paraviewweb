@@ -118,7 +118,7 @@ function freeGLResources(glResources) {
   var gl = glResources.gl;
 
   // Delete each program
-  for (const programName in glResources.programs) {
+  Object.keys(glResources.programs).forEach(programName => {
     const program = glResources.programs[programName];
     const shaders = program.shaders;
 
@@ -131,22 +131,22 @@ function freeGLResources(glResources) {
 
     // Delete program
     gl.deleteProgram(program);
-  }
+  });
 
   // Delete framebuffers
-  for (const fbName in glResources.framebuffers) {
+  Object.keys(glResources.framebuffers).forEach(fbName => {
     gl.deleteFramebuffer(glResources.framebuffers[fbName]);
-  }
+  });
 
   // Delete textures
-  for (const textureName in glResources.textures) {
+  Object.keys(glResources.textures).forEach(textureName => {
     gl.deleteTexture(glResources.textures[textureName]);
-  }
+  });
 
   // Delete buffers
-  for (const bufferName in glResources.buffers) {
+  Object.keys(glResources.buffers).forEach(bufferName => {
     gl.deleteBuffer(glResources.buffers[bufferName]);
-  }
+  });
 }
 
 // Create GL resources
@@ -193,9 +193,9 @@ export function createGLResources(gl, glConfig) {
   });
 
   // Create programs
-  for (const programName in glConfig.programs) {
+  Object.keys(glConfig.programs).forEach(programName => {
     buildShaderProgram(gl, programName, glConfig, resources);
-  }
+  });
 
   // Add destroy function
   resources.destroy = () => { freeGLResources(resources); };
@@ -211,11 +211,11 @@ export function transformShader(shaderContent, variableDict, config) {
   var shaderString = shaderContent;
 
   // First do all the variable replacements
-  for (const vname in variableDict) {
+  Object.keys(variableDict).forEach(vname => {
     const value = variableDict[vname];
     const r = new RegExp(`\\$\\{${vname}\\}`, 'g');
     shaderString = shaderString.replace(r, value);
-  }
+  });
 
   // Now check if any loops need to be inlined
   if (config.inlineLoops) {

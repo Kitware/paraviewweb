@@ -208,9 +208,9 @@ export default class DataManager {
   // Empty cache
   clear() {
     var urlToDelete = [];
-    for (const url in this.cacheData.cache) {
+    Object.keys(this.cacheData.cache).forEach(url => {
       urlToDelete.push(url);
-    }
+    });
 
     let count = urlToDelete.length;
     while (count--) {

@@ -104,11 +104,11 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       };
       let canRenderNow = true;
 
-      for (const key in data) {
+      Object.keys(data).forEach(key => {
         const img = data[key].image;
         img.addEventListener('load', renderCallback);
         canRenderNow = canRenderNow && img.complete;
-      }
+      });
 
       if (canRenderNow) {
         this.render();

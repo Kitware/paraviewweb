@@ -61,9 +61,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     // Handle events
     this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
       this.dataFields = {};
-      for (const field in data) {
+      Object.keys(data).forEach(field => {
         this.dataFields[field] = new window[this.metadata.types[field]](data[field].data);
-      }
+      });
       this.render();
     }));
 

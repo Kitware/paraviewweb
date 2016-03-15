@@ -57,7 +57,7 @@ export default React.createClass({
           ret.push(<option key="empty-value" value={null}></option>);
         }
 
-        for (const key in this.props.ui.domain) {
+        Object.keys(this.props.ui.domain).forEach(key => {
           ret.push(
             <option
               value={this.props.ui.domain[key]}
@@ -65,7 +65,8 @@ export default React.createClass({
             >
               {key}
             </option>);
-        }
+        });
+
         return ret;
       };
 
