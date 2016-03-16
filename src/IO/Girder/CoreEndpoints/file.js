@@ -1,17 +1,63 @@
-function noTransform(data) {
-  return data;
-}
+// function noTransform(data) {
+//   return data;
+// }
 
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString, progress }) {
+  // function uploadChunk(uploadId, offset, chunk) {
+  //   const transformRequest = noTransform,
+  //     data = new FormData();
+
+  //   data.append('uploadId', uploadId);
+  //   data.append('offset', offset);
+  //   data.append('chunk', chunk);
+
+  //   return busy(client._.post('/file/chunk', data, { transformRequest, headers: { Connection: 'close' } }));
+  // }
+
   function uploadChunk(uploadId, offset, chunk) {
-    const transformRequest = noTransform,
-      data = new FormData();
+    return new Promise((resolve, reject) => {
+      const data = new FormData();
+      data.append('uploadId', uploadId);
+      data.append('offset', offset);
+      data.append('chunk', chunk);
 
-    data.append('uploadId', uploadId);
-    data.append('offset', offset);
-    data.append('chunk', chunk);
+      const xhr = new XMLHttpRequest();
 
-    return busy(client._.post('/file/chunk', data, { transformRequest }));
+      function extractResponse(ctx) {
+        return {
+          ctx,
+          data: JSON.parse(xhr.responseText),
+          status: xhr.status,
+          statusText: xhr.statusText,
+          headers: {},
+          config: {},
+        };
+      }
+
+      xhr.addEventListener('progress', event => {
+        if (event.lengthComputable) {
+          const complete = event.loaded / event.total;
+          console.log('chunk progress', complete);
+        }
+      });
+      xhr.addEventListener('load', event => {
+        resolve(extractResponse('load'));
+      });
+      xhr.addEventListener('error', event => {
+        console.log('Transfer as failed', event);
+        reject(extractResponse('error'));
+      });
+      xhr.addEventListener('abort', event => {
+        console.log('Transfer as been canceled', event);
+        reject(extractResponse('abort'));
+      });
+
+      xhr.open('POST', `${client.baseURL}/file/chunk`, true);
+      xhr.responseType = 'text';
+      xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
+      xhr.setRequestHeader('Girder-Token', client.token);
+      xhr.send(data);
+    });
   }
 
   function uploadFileToItem(params, file) {
