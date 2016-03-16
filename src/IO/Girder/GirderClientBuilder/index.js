@@ -133,6 +133,7 @@ export function build(config = location, ...extensions) {
             token = undefined;
             // Update userData for external modules
             client.user = userData;
+            client.token = undefined;
           }
 
           // Update internal state
@@ -172,6 +173,7 @@ export function build(config = location, ...extensions) {
 
           // Update userData for external modules
           client.user = userData;
+          client.token = token;
 
           updateAuthenticationState(true);
         }));
@@ -237,6 +239,7 @@ export function build(config = location, ...extensions) {
 
             // Update userData for external modules
             client.user = userData;
+            client.token = token;
 
             updateAuthenticationState(true);
             accept();
@@ -250,14 +253,17 @@ export function build(config = location, ...extensions) {
     }
   });
 
+  // Expend client
+  client.baseURL = baseURL;
+
   // Add extensions
   const spec = {
+    busy,
     client,
+    encodeQueryAsString,
     filterQuery,
     mustContain,
     notification,
-    busy,
-    encodeQueryAsString,
     progress,
   };
 
