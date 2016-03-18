@@ -29,9 +29,9 @@ export default function ({ client, filterQuery, mustContain, busy }) {
     // GET /taskflows/{id}/log Get log entries for taskflow
     getTaskflowLog(id, offset = 0) {
       if (offset !== 0) {
-        return busy(client._.put(`/taskflows/${id}/log?offset=${offset}`));
+        return busy(client._.get(`/taskflows/${id}/log?offset=${offset}`));
       }
-      return busy(client._.put(`/taskflows/${id}/log`));
+      return busy(client._.get(`/taskflows/${id}/log`));
     },
 
     // PUT /taskflows/{id}/start Start the taskflow
