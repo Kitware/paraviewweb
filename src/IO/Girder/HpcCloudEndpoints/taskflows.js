@@ -26,6 +26,14 @@ export default function ({ client, filterQuery, mustContain, busy }) {
       return busy(client._.delete(`/taskflows/${id}`));
     },
 
+    // GET /taskflows/{id}/log Get log entries for taskflow
+    getTaskflowLog(id, offset = 0) {
+      if (offset !== 0) {
+        return busy(client._.put(`/taskflows/${id}/log?offset=${offset}`));
+      }
+      return busy(client._.put(`/taskflows/${id}/log`));
+    },
+
     // PUT /taskflows/{id}/start Start the taskflow
     startTaskflow(id, cluster) {
       return busy(client._.put(`/taskflows/${id}/start`, cluster));
