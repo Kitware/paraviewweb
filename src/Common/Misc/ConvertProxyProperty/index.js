@@ -7,8 +7,15 @@ const typeMapping = {
   textarea: 'Cell',
 };
 
+function extractSize(ui) {
+  if (ui.widget === 'list-n') {
+    return -1;
+  }
+  return ui.size;
+}
+
 function extractLayout(ui) {
-  if (ui.size === 0) {
+  if (ui.size === 0 || ui.size === -1 || ui.widget === 'list-n') {
     return '-1';
   }
 
@@ -104,7 +111,7 @@ export function proxyPropToProp(property, ui) {
       type: extractType(ui),
       domain: extractDomain(ui),
       componentLabels: [],
-      size: ui.size,
+      size: extractSize(ui),
     },
     data: {
       id: [property.id, property.name].join(':'),
