@@ -63,6 +63,7 @@ const client = build(location, ...CoreEndpoints, ...HpcCloudEndpoints);
 ### getTaskflow(id, path)
 ### updateTaskflow(id, params)
 ### deleteTaskflow(id)
+### getTaskflowLog(id, offset=0)
 ### startTaskflow(id, cluster)
 ### getTaskflowStatus(id)
 ### getTaskflowTasks(id)
