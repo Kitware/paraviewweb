@@ -7,6 +7,20 @@ import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
 import enumStyle        from 'PVWStyle/ReactProperties/EnumProperty.mcss';
 
+function valueToString(obj) {
+  if (typeof obj === 'string') {
+    return `S${obj}`;
+  }
+  return `J${JSON.stringify(obj)}`;
+}
+
+function stringToValue(str) {
+  if (!str || str.length === 0) {
+    return str;
+  }
+  return (str[0] === 'S') ? str.substring(1) : JSON.parse(str.substring(1));
+}
+
 /* eslint-disable react/no-danger */
 export default React.createClass({
 
@@ -31,14 +45,14 @@ export default React.createClass({
       for (let i = 0; i < e.target.options.length; i++) {
         const el = e.target.options.item(i);
         if (el.selected) {
-          newVals.push(el.value);
+          [].concat(stringToValue(el.value)).forEach(v => newVals.push(v));
         }
       }
       newData.value = newVals.map(convert[this.props.ui.type]);
     } else if (e.target.value === null) {
       newData.value = null;
     } else {
-      newData.value = [convert[this.props.ui.type](e.target.value)];
+      newData.value = [convert[this.props.ui.type](stringToValue(e.target.value))];
     }
 
     this.setState({
@@ -50,6 +64,7 @@ export default React.createClass({
   },
 
   render() {
+    var selectedValue = null;
     const multiple = (this.props.ui.size === -1),
       mapper = () => {
         var ret = [];
@@ -60,7 +75,7 @@ export default React.createClass({
         Object.keys(this.props.ui.domain).forEach(key => {
           ret.push(
             <option
-              value={this.props.ui.domain[key]}
+              value={valueToString(this.props.ui.domain[key])}
               key={ `${this.props.data.id}_${key}` }
             >
               {key}
@@ -69,6 +84,14 @@ export default React.createClass({
 
         return ret;
       };
+
+    if (multiple) {
+      selectedValue = this.props.data.value.map(valueToString);
+    } else if (this.props.ui.size === 1) {
+      selectedValue = valueToString(this.props.data.value[0]);
+    } else {
+      selectedValue = valueToString(this.props.data.value);
+    }
 
     return (
       <div className={ this.props.show(this.props.viewData) ? style.container : style.hidden }>
@@ -86,7 +109,7 @@ export default React.createClass({
           <div className={ style.inputBlock }>
               <select
                 className={ multiple ? enumStyle.inputMultiSelect : enumStyle.input }
-                value={multiple ? this.props.data.value : this.props.data.value[0]}
+                value={selectedValue}
                 defaultValue={null}
                 onChange={this.valueChange}
                 multiple={multiple}

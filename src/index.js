@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import Common       from './Common';
 import InfoViz      from './InfoViz';
 import Interaction  from './Interaction';
