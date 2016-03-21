@@ -34,7 +34,7 @@
 
         "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
 
-        "kw-web-suite": "1.0.7"
+        "kw-web-suite": "1.1.0"
     },
     "config": {
         "commitizen": {
@@ -60,7 +60,7 @@
         "build:release" : "npm run bin:fix-autobahn && export NODE_ENV=production && npm run build -- -p",
 
         "test"          : "karma start ./config/karma.conf.js",
-        "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS --single-run",
+        "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS2 --single-run",
 
         "commit"        : "git cz",
         "semantic-release": "semantic-release pre && npm publish && semantic-release post"
