@@ -240,7 +240,6 @@ export function build(config = location, ...extensions) {
             // Update userData for external modules
             client.user = userData;
             client.token = token;
-
             updateAuthenticationState(true);
             accept();
           },
@@ -279,7 +278,6 @@ export function build(config = location, ...extensions) {
   }
 
   processExtension(extensions);
-
 
   // Return the newly composed object
   return Object.freeze(publicObject);
