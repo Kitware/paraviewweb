@@ -17,11 +17,9 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     // query = { folderId, text, limit, offset, sort, sortdir }
     listItems(query = {}) {
       const allowed = ['folderId', 'text', 'limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, allowed);
+        params = filterQuery(query, ...allowed);
 
-      return busy(client._.get('/item', {
-        params,
-      }));
+      return busy(client._.get(`/item${encodeQueryAsString(params)}`));
     },
 
     createItem(folderId, name, description = '') {
@@ -34,7 +32,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     // query = { limit, offset, sort }
     listFiles(id, query) {
       const allowed = ['limit', 'offset', 'sort'],
-        params = filterQuery(query, allowed);
+        params = filterQuery(query, ...allowed);
 
       if (!id) {
         return new Promise((resolve, reject) => reject('No argument id provided'));
