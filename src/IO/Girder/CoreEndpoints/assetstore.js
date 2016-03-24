@@ -2,7 +2,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
   return {
     listAssetStores(query = {}) {
       const expected = ['limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, expected);
+        params = filterQuery(query, ...expected);
 
       return client._.get('/assetstore', {
         params,
@@ -12,7 +12,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     createAssetStore(assetstore) {
       var required = ['name', 'type'],
         possible = ['root', 'db', 'bucket', 'prefix', 'accessKeyId', 'secretKey', 'service'],
-        params = filterQuery(assetstore, [].concat(required, possible)),
+        params = filterQuery(assetstore, ...[].concat(required, possible)),
         {
           missingKeys, promise,
         } = mustContain(assetstore, ...required);
