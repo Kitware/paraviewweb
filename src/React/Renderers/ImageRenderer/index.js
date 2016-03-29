@@ -359,11 +359,11 @@ export default React.createClass({
       const deltaX = event.deltaX / this.state.width,
         deltaY = event.deltaY / this.state.height;
 
-      this.center[0] = this.baseCenter[0] + deltaX;
-      this.center[1] = this.baseCenter[1] + deltaY;
-
       if (event.isFinal) {
         this.baseCenter = [this.center[0], this.center[1]];
+      } else {
+        this.center[0] = this.baseCenter[0] + deltaX;
+        this.center[1] = this.baseCenter[1] + deltaY;
       }
 
       if (this.imageToDraw.drawToCanvas) {
