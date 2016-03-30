@@ -33,7 +33,7 @@ $ npm run build
 
 ### Licensing
 
-**ParaViewWeb** is licensed under [BSD Clause 3](LICENSE).
+**ParaViewWeb** is licensed under the [BSD 3-Clause License](LICENSE).
 
 ### Getting Involved
 
