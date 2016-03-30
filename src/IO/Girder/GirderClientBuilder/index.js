@@ -114,7 +114,7 @@ export function build(config = location, ...extensions) {
         }
       },
       updateGirderInstance() {
-        const timeout = 1000;
+        const timeout = 60000;
         const headers = {};
 
         if (token) {
