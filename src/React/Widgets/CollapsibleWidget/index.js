@@ -12,6 +12,7 @@ export default React.createClass({
     subtitle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.string, React.PropTypes.array]),
     title: React.PropTypes.string,
     visible: React.PropTypes.bool,
+    activeSubTitle: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -20,6 +21,7 @@ export default React.createClass({
       subtitle: '',
       open: true,
       visible: true,
+      activeSubTitle: false,
     };
   },
 
@@ -58,7 +60,7 @@ export default React.createClass({
             <i className={ style[this.state.open ? 'caret' : 'caretClosed'] }></i>
             <strong className={ style.title }>{this.props.title}</strong>
           </div>
-          <span className={ style.subtitle }>{this.props.subtitle}</span>
+          <span className={ this.props.activeSubTitle ? style.subtitle : style.subtitleAcitve }>{this.props.subtitle}</span>
         </div>
 
         <div className={ style[this.state.open ? 'visibleContent' : 'hiddenContent'] }>

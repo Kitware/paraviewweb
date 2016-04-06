@@ -7,9 +7,7 @@
         "url": "git+https://github.com/kitware/paraviewweb.git"
     },
     "license": "BSD-3-Clause",
-    "bugs": {
-        "url": "https://github.com/kitware/paraviewweb/issues"
-    },
+    "bugs": { "url": "https://github.com/kitware/paraviewweb/issues" },
     "homepage": "https://github.com/kitware/paraviewweb#readme",
     "main": "./dist/ParaViewWeb.js",
     "dependencies": {
@@ -36,15 +34,6 @@
 
         "kw-web-suite": "1.1.0"
     },
-    "config": {
-        "commitizen": {
-            "path": "node_modules/cz-conventional-changelog"
-        }
-    },
-    "bin": {
-        "pvw-doc": "./tools/doc-generator/doc-generator-cli.js",
-        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js"
-    },
     "scripts": {
         "postinstall": "fix-kw-web-suite || true",
         "install:global": "npm install -g commitizen@2.5.0",
@@ -64,5 +53,14 @@
 
         "commit"        : "git cz",
         "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-conventional-changelog"
+        }
+    },
+    "bin": {
+        "pvw-doc": "./tools/doc-generator/doc-generator-cli.js",
+        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js"
     }
 }

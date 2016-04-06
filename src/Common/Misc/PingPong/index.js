@@ -1,6 +1,6 @@
 import { bindTextureToFramebuffer } from '../WebGl';
 
-export class PingPong {
+export default class PingPong {
 
   constructor(gl, fbos, textures) {
     this.gl = gl;
