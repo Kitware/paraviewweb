@@ -52,6 +52,7 @@ export default React.createClass({
     return (
       <CollapsibleWidget
         title="Lookup Table"
+        activeSubTitle
         subtitle={
           <DropDownWidget
             field={this.state.field}

@@ -42,6 +42,12 @@
   z-index: -1;
 }
 
+.subtitleAcitve {
+  position: absolute;
+  right: 15px;
+  top: 0;
+}
+
 .visibleContent {
   padding: 5px 15px 0px 15px;
 }
