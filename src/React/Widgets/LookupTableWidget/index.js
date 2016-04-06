@@ -219,7 +219,7 @@ export default React.createClass({
 
   removeListener() {
     if (this.subscription) {
-      this.subscription.unsubsribe();
+      this.subscription.unsubscribe();
       this.subscription = null;
     }
   },
