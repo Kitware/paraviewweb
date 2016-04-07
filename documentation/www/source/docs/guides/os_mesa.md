@@ -11,7 +11,7 @@ This documentation will focus on how to build ParaView so that it can be used in
 
 More informations can be found in the [wiki](http://paraview.org/Wiki/ParaView/ParaView_And_Mesa_3D), but this page provides a nice and easy summary.
 
-The Mesa 9.2.2 OSMesa Gallium llvmpipe state-tracker is the preferred Mesa back-end renderer for ParaView and VTK. The following shows how to configure it with system installed LLVM. Our strategy is to configure Mesa with the minimal number of options needed for OSMesa. This greatly simplifies the build, as many of the other drivers/renderers depend on X11 or other libraries. The following set of options are from the Mesa v9.2.2 release. Older or newer releases may require slightly different options. Consult ./configure --help for the details.
+The Mesa 11.0.7 OSMesa Gallium llvmpipe state-tracker is the preferred Mesa back-end renderer for ParaView and VTK. The following shows how to configure it with system installed LLVM. Our strategy is to configure Mesa with the minimal number of options needed for OSMesa. This greatly simplifies the build, as many of the other drivers/renderers depend on X11 or other libraries. The following set of options are from the Mesa v11.0.7 release. Older or newer releases may require slightly different options. Consult ./configure --help for the details.
 
 ```sh
 #!/bin/bash
@@ -34,8 +34,10 @@ autoreconf -fi
     --with-egl-platforms="" \
     --enable-gallium-osmesa \
     --enable-gallium-llvm=yes \
-    --with-llvm-shared-libs \
-    --prefix=/opt/mesa/9.2.2/llvmpipe
+    --enable-llvm-shared-libs \
+    --disable-gles1 \
+    --disable-gles2 \
+    --prefix=/opt/mesa/11.0.7/llvmpipe
 
 make -j2
 make -j4 install
@@ -68,12 +70,12 @@ $ ccmake ../src
     PARAVIEW_BUILD_QT_GUI       OFF
     CMAKE_INSTALL_PREFIX        /.../ParaView/install
     VTK_USE_X                   OFF
-    OPENGL_INCLUDE_DIR          /opt/mesa/9.2.2/llvmpipe/include
+    OPENGL_INCLUDE_DIR          /opt/mesa/11.0.7/llvmpipe/include
     OPENGL_gl_LIBRARY
-    OPENGL_glu_LIBRARY          /opt/mesa/9.2.2/llvmpipe/lib/libGLU.[so|a]
+    OPENGL_glu_LIBRARY          /opt/mesa/11.0.7/llvmpipe/lib/libGLU.[so|a]
     VTK_OPENGL_HAS_OSMESA       ON
-    OSMESA_INCLUDE_DIR          /opt/mesa/9.2.2/llvmpipe/include
-    OSMESA_LIBRARY              /opt/mesa/9.2.2/llvmpipe/lib/libOSMesa.[so|a]
+    OSMESA_INCLUDE_DIR          /opt/mesa/11.0.7/llvmpipe/include
+    OSMESA_LIBRARY              /opt/mesa/11.0.7/llvmpipe/lib/libOSMesa.[so|a]
 
 $ make
 $ make install
