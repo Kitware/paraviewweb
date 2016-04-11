@@ -9,6 +9,8 @@ const modifier = {
   },
   INTERATION_TOPIC = 'vtk.web.interaction';
 
+const NoOp = () => {};
+
 export default class VtkMouseListener {
 
   constructor(vtkWebClient, width = 100, height = 100) {
@@ -16,6 +18,7 @@ export default class VtkMouseListener {
     this.ready = true;
     this.width = width;
     this.height = height;
+    this.setInteractionDoneCallback();
     this.listeners = {
       drag: (event) => {
         const vtkEvent = {
@@ -45,9 +48,15 @@ export default class VtkMouseListener {
           if (this.ready || vtkEvent.action !== 'move') {
             this.ready = false;
             this.client.MouseHandler.interaction(vtkEvent)
-              .then(resp => {
-                this.ready = true;
-              });
+              .then(
+                resp => {
+                  this.ready = true;
+                  this.doneCallback(vtkEvent.action !== 'up');
+                },
+                err => {
+                  console.log('event err', err);
+                  this.doneCallback(vtkEvent.action !== 'up');
+                });
           }
         }
       },
@@ -76,7 +85,14 @@ export default class VtkMouseListener {
         }
         this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
         if (this.client) {
-          this.client.MouseHandler.interaction(vtkEvent);
+          this.client.MouseHandler.interaction(vtkEvent)
+            .then(
+              resp => {
+                this.doneCallback(vtkEvent.action !== 'up');
+              },
+              err => {
+                this.doneCallback(vtkEvent.action !== 'up');
+              });
         }
       },
     };
@@ -84,6 +100,10 @@ export default class VtkMouseListener {
 
   getListeners() {
     return this.listeners;
+  }
+
+  setInteractionDoneCallback(callback) {
+    this.doneCallback = callback || NoOp;
   }
 
   updateSize(w, h) {
