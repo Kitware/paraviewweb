@@ -110,7 +110,6 @@ export default React.createClass({
               <select
                 className={ multiple ? enumStyle.inputMultiSelect : enumStyle.input }
                 value={selectedValue}
-                defaultValue={null}
                 onChange={this.valueChange}
                 multiple={multiple}
               >
