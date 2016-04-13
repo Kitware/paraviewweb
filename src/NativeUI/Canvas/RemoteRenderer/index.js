@@ -69,6 +69,8 @@ export default class RemoteRenderer {
       // Clean previous container
       this.container.removeChild(this.canvas);
       this.mouseHandler.destroy();
+
+      this.container = null;
       this.mouseHandler = null;
       this.size = null;
     }
