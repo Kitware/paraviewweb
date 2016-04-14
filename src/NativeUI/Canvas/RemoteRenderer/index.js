@@ -36,11 +36,11 @@ export default class RemoteRenderer {
       localTime: 0,
     };
 
-    this.renderOnIdle = () => {
+    this.renderOnIdle = (force = false) => {
       if (this.__timeout === null) {
         this.__timeout = setTimeout(() => {
-          if (!this.render()) {
-            this.renderOnIdle();
+          if (!this.render(force)) {
+            this.renderOnIdle(force);
           }
         }, 250);
       }
@@ -49,8 +49,8 @@ export default class RemoteRenderer {
     this.mouseListener = new VtkWebMouseListener(pvwClient);
     this.mouseListener.setInteractionDoneCallback((interact) => {
       this.quality = interact ? this.interactiveQuality : this.stillQuality;
-      if (!this.render()) {
-        this.renderOnIdle();
+      if (!this.render(!interact)) {
+        this.renderOnIdle(!interact);
       }
     });
   }
