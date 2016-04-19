@@ -52,6 +52,16 @@ $ git push origin new_feature
 $ npm test
 ```
 
+## Testing Changes
+
+Testing changes to UI components is done by running the documentation and examples locally
+and viewing the results.  To build and run the documentation/examples run the following:
+
+    $ npm run doc:www
+
+Then open a web browser to http://localhost:4000/paraviewweb to view 
+the documentation and examples based on the locally modified paraviewweb.
+
 ## Updating Documentation
 
 The ParaViewWeb documentation is part of the code repository.
