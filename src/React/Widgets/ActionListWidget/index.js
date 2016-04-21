@@ -27,7 +27,7 @@ export default React.createClass({
     this.props.list.forEach((item) => {
       list.push(
         <li
-          className={ style.item }
+          className={ item.active ? style.activeItem : style.item }
           key={item.name}
           title={item.name}
           data-name={item.name}
