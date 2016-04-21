@@ -17,8 +17,10 @@
 
 .activeItem {
   composes: item;
-  background: A3CEFF;
-  color: 4A4A4A;
+  background: #ccc;
+  color: #000;
+  border-bottom: 1px solid #999;
+  border-top: 1px solid #999;
 }
 
 .item:hover {
