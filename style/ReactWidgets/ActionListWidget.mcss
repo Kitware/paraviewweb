@@ -15,6 +15,12 @@
     text-overflow: ellipsis;
 }
 
+.activeItem {
+  composes: item;
+  background: A3CEFF;
+  color: 4A4A4A;
+}
+
 .item:hover {
     background: #333;
     color: #eee;
