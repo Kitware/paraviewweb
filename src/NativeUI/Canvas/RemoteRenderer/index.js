@@ -166,8 +166,10 @@ export default class RemoteRenderer {
   destroy() {
     this.off();
     this.setContainer(null);
-    this.mouseListener.destroy();
-    this.mouseListener = null;
+    if (this.mouseListener) {
+      this.mouseListener.destroy();
+      this.mouseListener = null;
+    }
     this.client = null;
     this.imageDecoder = null;
     this.canvas = null;
