@@ -24,11 +24,11 @@ export default React.createClass({
   render() {
     var list = [];
 
-    this.props.list.forEach((item) => {
+    this.props.list.forEach((item, idx) => {
       list.push(
         <li
           className={ item.active ? style.activeItem : style.item }
-          key={item.name}
+          key={idx}
           title={item.name}
           data-name={item.name}
           data-action={item.action || 'default'}
