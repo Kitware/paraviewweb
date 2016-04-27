@@ -120,7 +120,8 @@ export default class LinearPieceWiseEditor {
 
     this.onDblClick = (event) => {
       const point = getNormalizePosition(event, this.ctx, this.radius);
-      this.controlPoints.push(point);
+      const sanitizedPoint = { x: clamp(point.x), y: clamp(point.y) };
+      this.controlPoints.push(sanitizedPoint);
       sortPoints(this.controlPoints);
       this.render();
     };
