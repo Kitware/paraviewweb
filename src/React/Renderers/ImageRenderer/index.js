@@ -341,7 +341,7 @@ const ImageRenderer = React.createClass({
     if (event.keyCode === 82) {
       // r => reset camera
       this.resetCamera();
-    } else if (event.keyCode === 85 && !this.state.dialog) {
+    } else if (event.keyCode === 85 && !this.state.dialog && (event.altKey || event.ctrlKey || event.metaKey)) {
       // u => Update dataset metadata
       const thumbnailImage = ReactDOM.findDOMNode(this.refs.thumbnail);
 
