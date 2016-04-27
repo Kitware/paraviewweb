@@ -17,6 +17,16 @@
     align-self: center;
 }
 
+.smallLabel {
+  font-weight: bold;
+  flex: none;
+  text-align: left;
+  margin-left: 5px;
+  align-self: center;
+  max-width: 25%;
+  min-width: 50px;
+}
+
 .actions {
     position: relative;
     right: 0;
@@ -82,6 +92,20 @@
     composes: fadeButton;
 }
 
+.addProbeIcon {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-plus   from 'font-awesome/css/font-awesome.css';
+}
+
+.removeProbeIcon {
+    composes: iconButton;
+    composes: fa        from 'font-awesome/css/font-awesome.css';
+    composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+    composes: fa-minus  from 'font-awesome/css/font-awesome.css';
+}
+
 .menu {
     position: absolute;
     top: 2em;
@@ -100,6 +124,74 @@
 .selectedMenuItem {
     composes: menuItem;
     font-weight: bold;
+}
+
+.input {
+  flex: 1;
+  box-shadow: none;
+  border: 1px solid #aaa;
+  min-width: 30%;
+  margin: 2px;
+  border-radius: 2px;
+}
+
+.dropDown {
+  flex: none;
+  width: 15px;
+  height: calc(2em - 4px);
+  margin: 2px;
+  border: 1px solid #aaa !important;
+  box-shadow: none !important;
+  padding-left: 8px !important;
+}
+
+.dropDown:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+.imageViewIcon {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-picture-o  from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.chartViewIcon {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-line-chart from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.bothViewIcon {
+  composes: fa          from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw       from 'font-awesome/css/font-awesome.css';
+  composes: fa-th-large from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.enableLegendIcon {
+  composes: fa        from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+  composes: fa-square from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.disableLegendIcon {
+  composes: fa        from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw     from 'font-awesome/css/font-awesome.css';
+  composes: fa-square-o from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.value {
+  text-align: right;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40%;
+  cursor: pointer;
 }
 
 @media screen and (max-device-width: 400px) {
