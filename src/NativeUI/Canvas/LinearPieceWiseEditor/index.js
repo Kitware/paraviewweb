@@ -113,6 +113,10 @@ export default class LinearPieceWiseEditor {
         const controlPoint = findPoint(click, this.controlPoints);
         if (controlPoint && !controlPoint.fixedX) {
           this.controlPoints.splice(controlPoint.index, 1);
+          // fix indexes after deletion
+          for (let i = 0; i < this.controlPoints.length; ++i) {
+            this.controlPoints[i].index = i;
+          }
         }
         this.render();
       }
@@ -120,7 +124,8 @@ export default class LinearPieceWiseEditor {
 
     this.onDblClick = (event) => {
       const point = getNormalizePosition(event, this.ctx, this.radius);
-      this.controlPoints.push(point);
+      const sanitizedPoint = { x: clamp(point.x), y: clamp(point.y) };
+      this.controlPoints.push(sanitizedPoint);
       sortPoints(this.controlPoints);
       this.render();
     };
@@ -133,6 +138,16 @@ export default class LinearPieceWiseEditor {
   resetControlPoints() {
     this.controlPoints = [pointBuilder(0, 0), pointBuilder(1, 1)];
     sortPoints(this.controlPoints);
+  }
+
+  // Sets the control points to the new list of points.  The input should be a list
+  // of objects with members x and y (i.e. { x: 0.0, y: 1.0 }).  The valid range for
+  // x and y is [0,1] with 0 being the left/bottom edge of the canvas and 1 being
+  // the top/right edge.
+  setControlPoints(points) {
+    this.controlPoints = points.map(pt => pointBuilder(pt.x, pt.y));
+    sortPoints(this.controlPoints);
+    this.render();
   }
 
   setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {}) {
