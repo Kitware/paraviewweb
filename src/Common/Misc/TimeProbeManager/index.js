@@ -112,6 +112,7 @@ export class TimeProbe {
     var max = Number.MIN_VALUE;
     const op = createOperation(this.operation);
     const width = size[0];
+    const height = size[1];
     const name = this.name;
     const data = [];
     const active = this.active;
@@ -120,7 +121,7 @@ export class TimeProbe {
       op.begin();
       for (let x = this.extent[0]; x < this.extent[1]; x++) {
         for (let y = this.extent[2]; y < this.extent[3]; y++) {
-          const idx = x + (y * width);
+          const idx = (height - y - 1) * width + x;
           op.next(array[idx]);
         }
       }
@@ -226,6 +227,10 @@ export class TimeProbeManager {
 
   getProbes() {
     return this.probes;
+  }
+
+  sortProbesByName() {
+    this.probes.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   getProbeNames() {
