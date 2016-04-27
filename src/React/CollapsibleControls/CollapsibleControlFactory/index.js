@@ -3,6 +3,7 @@ import CollapsibleWidget            from '../../Widgets/CollapsibleWidget';
 
 // Full feature control
 import FloatImageControl            from '../FloatImageControl';
+import TimeFloatImageControl        from '../TimeFloatImageControl';
 import LightControl                 from '../LightControl';
 import LookupTableManagerControl    from '../LookupTableManagerControl';
 import PixelOperatorControl         from '../PixelOperatorControl';
@@ -114,6 +115,14 @@ const WidgetFactoryMapping = {
       <FloatImageControl
         key="FloatImageControl"
         ref="FloatImageControl"
+        model={model}
+      />);
+  },
+  TimeFloatImageControl({ model }) {
+    return (
+      <TimeFloatImageControl
+        key="TimeFloatImageControl"
+        ref="TimeFloatImageControl"
         model={model}
       />);
   },
