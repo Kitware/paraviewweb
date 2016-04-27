@@ -1,0 +1,23 @@
+- name: Common configuration
+  hosts: all
+  become_user: root
+  roles:
+    - common
+
+- name: Install ParaView
+  hosts: all
+  become_user: root
+  roles:
+    - paraview
+
+- name: Install Apache
+  hosts: all
+  become_user: root
+  roles:
+    - apache
+
+- name: Setup ParaViewWeb launcher
+  hosts: all
+  become_user: root
+  roles:
+    - launcher

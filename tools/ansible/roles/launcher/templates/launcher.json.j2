@@ -1,0 +1,31 @@
+{
+
+      "configuration": {
+        "host" : "localhost",
+        "port" : 9000,
+        "endpoint": "paraview",
+        "proxy_file" : "{{proxy_db_path}}",
+        "sessionURL" : "ws://{{ hostname }}:{{port|default(80)}}/proxy?sessionId=${id}",
+        "timeout" : 10,
+        "log_dir" : "/tmp",
+        "fields" : ["host", "port"]
+      },
+
+      "resources" : [ { "host" : "localhost", "port_range" : [9001, 9999] } ],
+
+      "properties" : {
+        "python_exec" : "/opt/paraview/bin/pvpython",
+        "visualizer" : "{{paraview_versioned_lib_directory}}/site-packages/paraview/web/pv_web_visualizer.py"
+      },
+
+
+      "apps" : {
+        "visualizer": {
+          "cmd" : [
+            "${python_exec}", "${visualizer}", "--port", "${port}" {{ ', "--mesa-llvm"' if virtualbox else '' }}
+              ],
+          "ready_line" : "Starting factory"
+        }
+     }
+}
+
