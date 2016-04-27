@@ -135,6 +135,16 @@ export default class LinearPieceWiseEditor {
     sortPoints(this.controlPoints);
   }
 
+  // Sets the control points to the new list of points.  The input should be a list
+  // of objects with members x and y (i.e. { x: 0.0, y: 1.0 }).  The valid range for
+  // x and y is [0,1] with 0 being the left/bottom edge of the canvas and 1 being
+  // the top/right edge.
+  setControlPoints(points) {
+    this.controlPoints = points.map(pt => pointBuilder(pt.x, pt.y));
+    sortPoints(this.controlPoints);
+    this.render();
+  }
+
   setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {}) {
     this.radius = radius;
     this.stroke = stroke;
