@@ -185,6 +185,13 @@
   cursor: pointer;
 }
 
+.sortProbeIcon {
+  composes: fa                from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw             from 'font-awesome/css/font-awesome.css';
+  composes: fa-sort-alpha-asc from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
 .value {
   text-align: right;
   font-style: italic;

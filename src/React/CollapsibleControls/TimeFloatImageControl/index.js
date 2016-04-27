@@ -103,6 +103,10 @@ export default React.createClass({
     this.props.model.enableProbe(name, enable);
   },
 
+  sortProbes() {
+    this.props.model.sortProbesByName();
+  },
+
   render() {
     const probeManager = this.props.model.probeManager;
     const { queryDataModel } = this.props.model.getControlModels();
@@ -114,6 +118,7 @@ export default React.createClass({
     if (activeProbe) {
       buttons.push(<ToggleIconButtonWidget key="1" toggle={ false } className={ style.removeProbeIcon } icon="" onChange={ this.removeProbe } />);
     }
+    const sortProbes = <ToggleIconButtonWidget toggle={ false } className={ style.sortProbeIcon } icon="" onChange={ this.sortProbes } />;
 
     // Put minus before
     buttons.reverse();
@@ -150,7 +155,7 @@ export default React.createClass({
             <input className={style.input} type="number" name="3" value={ activeProbe ? activeProbe.extent[3] : 5} onChange={ this.updateProbe } />
           </section>
         </CollapsibleWidget>
-        <CollapsibleWidget title="Legend" visible={ activeView > 0}>
+        <CollapsibleWidget title="Legend" visible={ activeView > 0} activeSubTitle subtitle={ sortProbes }>
           { chartData.fields.map((field, index) =>
             <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'} onClick={ this.toggleProbe }>
               <label className={style.label}>

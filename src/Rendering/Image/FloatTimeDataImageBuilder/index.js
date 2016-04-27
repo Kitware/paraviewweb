@@ -32,6 +32,10 @@ function buildListenerWrapper(floatTimeDataImageBuilder) {
   return myListener;
 }
 
+function updateRange(rangeToUpdate, range) {
+  rangeToUpdate[0] = rangeToUpdate[0] < range[0] ? rangeToUpdate[0] : range[0];
+  rangeToUpdate[1] = rangeToUpdate[1] > range[1] ? rangeToUpdate[1] : range[1];
+}
 
 export default class FloatTimeDataImageBuilder {
 
@@ -145,6 +149,14 @@ export default class FloatTimeDataImageBuilder {
 
     this.chartData = Object.assign({}, { xRange: data.xRange });
     this.chartData.fields = this.probeManager.processTimeData(timeTypedArray);
+
+    // Use same y scale for each field
+    const sharedRange = [Number.MAX_VALUE, Number.MIN_VALUE];
+    this.chartData.fields.forEach(f => {
+      updateRange(sharedRange, f.range);
+      f.range = sharedRange;
+    });
+
     this.painter.updateData(this.chartData);
     this.render();
 
@@ -161,6 +173,14 @@ export default class FloatTimeDataImageBuilder {
 
   onModelChange(callback) {
     return this.on(CHANGE_TOPIC, callback);
+  }
+
+  // ------------------------------------------------------------------------
+
+  sortProbesByName() {
+    this.probeManager.sortProbesByName();
+    this.emit(CHANGE_TOPIC, this);
+    this.imageBuilder.fetchTimeData();
   }
 
   // ------------------------------------------------------------------------
