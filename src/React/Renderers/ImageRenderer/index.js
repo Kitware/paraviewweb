@@ -6,8 +6,11 @@ import ImageExporter    from '../../../Common/Misc/ImageExporter';
 import sizeHelper       from '../../../Common/Misc/SizeHelper';
 import MouseHandler     from '../../../Interaction/Core/MouseHandler';
 
+import Monologue        from 'monologue.js';
+
 import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
+const DRAW_DONE = 'ImageRenderer.draw.done';
 
 function onImageLoaded() {
   var image = this;
@@ -34,6 +37,10 @@ function drawToCanvasAsImage() {
     zoomLevel = component.zoom,
     drawingCenter = component.center;
 
+  if (!component.enableRendering) {
+    return;
+  }
+
   ctx.clearRect(0, 0, w, h);
 
   const tw = Math.floor(iw * zoomLevel),
@@ -48,6 +55,8 @@ function drawToCanvasAsImage() {
       image,
       0, 0, iw, ih, // Source image   [Location,Size]
       tx, ty, tw, th); // Target drawing [Location,Size]
+
+    component.drawDone();
   } catch (err) {
     console.log('Error in ImageRenderer::drawToCanvasAsImage', err);
   }
@@ -71,6 +80,10 @@ function drawToCanvasAsBuffer() {
     ih = data.outputSize[1],
     zoomLevel = component.zoom,
     drawingCenter = component.center;
+
+  if (!component.enableRendering) {
+    return;
+  }
 
   ctx.clearRect(0, 0, w, h);
 
@@ -103,6 +116,7 @@ function drawToCanvasAsBuffer() {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
+    component.drawDone();
   } catch (err) {
     console.log('Error in ImageRenderer::drawToCanvasAsBuffer', err);
   }
@@ -122,7 +136,7 @@ function drawToCanvasAsBuffer() {
  *   - renderCanvas({ outputSize: [width, height], canvas: canvasDomElement, area: [x,y,width,height], crosshair: [x,y]})
  *   - resetCamera()
  */
-export default React.createClass({
+const ImageRenderer = React.createClass({
 
   displayName: 'ImageRenderer',
 
@@ -160,6 +174,7 @@ export default React.createClass({
   },
 
   componentWillMount() {
+    this.enableLocalRendering();
     this.imageToDraw = new Image();
 
     // Monitor image builder
@@ -234,6 +249,11 @@ export default React.createClass({
         image.drawToCanvas();
       }, 300);
     });
+
+    // Provide canvas to ImageBuilder if possible
+    if (this.props.imageBuilder && this.props.imageBuilder.setRenderer) {
+      this.props.imageBuilder.setRenderer(this);
+    }
   },
 
   componentDidUpdate(nextProps, nextState) {
@@ -244,6 +264,7 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
+    this.off();
     // Remove key listener
     document.removeEventListener('keydown', this.handleKeyDown);
 
@@ -269,20 +290,85 @@ export default React.createClass({
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
     }
+
+    // Provide canvas to ImageBuilder if possible
+    if (this.props.imageBuilder && this.props.imageBuilder.setRenderer) {
+      this.props.imageBuilder.setRenderer(null);
+    }
   },
 
-  updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
-      elSize = sizeHelper.getSize(el);
+  onDrawDone(callback) {
+    return this.on(DRAW_DONE, callback);
+  },
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+  getRenderingCanvas() {
+    return ReactDOM.findDOMNode(this.refs.canvasRenderer);
+  },
+
+  enableLocalRendering(enable = true) {
+    this.enableRendering = enable;
+  },
+
+  updateMetadata() {
+    this.setState({
+      dialog: !this.state.dialog,
+    });
+    this.imageExporter.updateMetadata({
+      title: this.state.title,
+      description: this.state.description,
+      image: ReactDOM.findDOMNode(this.refs.thumbnail).src,
+      path: this.props.imageBuilder.queryDataModel.basepath,
+    });
+  },
+
+  updateTitle(event) {
+    var title = event.target.value;
+    this.setState({ title });
+  },
+
+  updateDescription(event) {
+    var description = event.target.value;
+    this.setState({ description });
+  },
+
+  toggleDialog() {
+    this.setState({
+      dialog: !this.state.dialog,
+    });
+  },
+
+  handleKeyDown(event) {
+    if (event.keyCode === 82) {
+      // r => reset camera
+      this.resetCamera();
+    } else if (event.keyCode === 85 && !this.state.dialog && (event.altKey || event.ctrlKey || event.metaKey)) {
+      // u => Update dataset metadata
+      const thumbnailImage = ReactDOM.findDOMNode(this.refs.thumbnail);
+
+      if (this.imageToDraw.data.canvas.nodeName === 'CANVAS') {
+        if (this.imageToDraw.data.canvas.width === this.imageToDraw.data.area[2] && this.imageToDraw.data.canvas.height === this.imageToDraw.data.area[3]) {
+          thumbnailImage.src = this.imageToDraw.data.canvas.toDataURL('image/png');
+        } else {
+          // Need to extract region
+          thumbnailImage.src =
+            this.imageExporter.extractCanvasRegion(
+              this.imageToDraw.data.canvas,
+              this.imageToDraw.data.area,
+              this.imageToDraw.data.outputSize);
+        }
+      } else {
+        // Use image URL
+        thumbnailImage.src = this.imageToDraw.data.canvas.src;
+      }
+
       this.setState({
-        width: elSize.clientWidth,
-        height: elSize.clientHeight,
+        dialog: !this.state.dialog,
       });
-      return true;
     }
-    return false;
+  },
+
+  recordImages(record) {
+    this.sendToServer = record;
   },
 
   zoomCallback(event, envelope) {
@@ -382,67 +468,18 @@ export default React.createClass({
     }
   },
 
-  updateMetadata() {
-    this.setState({
-      dialog: !this.state.dialog,
-    });
-    this.imageExporter.updateMetadata({
-      title: this.state.title,
-      description: this.state.description,
-      image: ReactDOM.findDOMNode(this.refs.thumbnail).src,
-      path: this.props.imageBuilder.queryDataModel.basepath,
-    });
-  },
+  updateDimensions() {
+    var el = ReactDOM.findDOMNode(this).parentNode,
+      elSize = sizeHelper.getSize(el);
 
-  updateTitle(event) {
-    var title = event.target.value;
-    this.setState({ title });
-  },
-
-  updateDescription(event) {
-    var description = event.target.value;
-    this.setState({ description });
-  },
-
-  toggleDialog() {
-    this.setState({
-      dialog: !this.state.dialog,
-    });
-  },
-
-
-  handleKeyDown(event) {
-    if (event.keyCode === 82) {
-      // r => reset camera
-      this.resetCamera();
-    } else if (event.keyCode === 85 && !this.state.dialog) {
-      // u => Update dataset metadata
-      const thumbnailImage = ReactDOM.findDOMNode(this.refs.thumbnail);
-
-      if (this.imageToDraw.data.canvas.nodeName === 'CANVAS') {
-        if (this.imageToDraw.data.canvas.width === this.imageToDraw.data.area[2] && this.imageToDraw.data.canvas.height === this.imageToDraw.data.area[3]) {
-          thumbnailImage.src = this.imageToDraw.data.canvas.toDataURL('image/png');
-        } else {
-          // Need to extract region
-          thumbnailImage.src =
-            this.imageExporter.extractCanvasRegion(
-              this.imageToDraw.data.canvas,
-              this.imageToDraw.data.area,
-              this.imageToDraw.data.outputSize);
-        }
-      } else {
-        // Use image URL
-        thumbnailImage.src = this.imageToDraw.data.canvas.src;
-      }
-
+    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
       this.setState({
-        dialog: !this.state.dialog,
+        width: elSize.clientWidth,
+        height: elSize.clientHeight,
       });
+      return true;
     }
-  },
-
-  recordImages(record) {
-    this.sendToServer = record;
+    return false;
   },
 
   resetCamera() {
@@ -458,6 +495,10 @@ export default React.createClass({
     this.center = [0.5, 0.5];
 
     image.drawToCanvas();
+  },
+
+  drawDone() {
+    this.emit(DRAW_DONE, this);
   },
 
   renderImage(data) {
@@ -516,3 +557,7 @@ export default React.createClass({
     );
   },
 });
+
+Monologue.mixInto(ImageRenderer);
+
+export default ImageRenderer;

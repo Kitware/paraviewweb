@@ -101,6 +101,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
           this.getTimeChart();
         }
         this.timeProbe.triggerChange();
+        this.emit(TIME_DATA_READY, { fields: [], xRange: [0, this.timeDataQueryDataModel.getSize('time')], fullData: this.timeData });
       }
     }));
   }
