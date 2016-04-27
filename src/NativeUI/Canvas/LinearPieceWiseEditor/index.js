@@ -113,6 +113,10 @@ export default class LinearPieceWiseEditor {
         const controlPoint = findPoint(click, this.controlPoints);
         if (controlPoint && !controlPoint.fixedX) {
           this.controlPoints.splice(controlPoint.index, 1);
+          // fix indexes after deletion
+          for (let i = 0; i < this.controlPoints.length; ++i) {
+            this.controlPoints[i].index = i;
+          }
         }
         this.render();
       }
