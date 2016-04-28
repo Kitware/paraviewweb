@@ -72,11 +72,10 @@ export default function ({ client, filterQuery, mustContain, busy }) {
     // get /clusters/{id}/log
     //     Get log entries for cluster
     getClusterLogs(taskId, offset = 0) {
-      return busy(client._.get(`/clusters/${taskId}/log`, {
-        param: {
-          offset,
-        },
-      }));
+      if (offset) {
+        return busy(client._.get(`/clusters/${taskId}/log?offset=${offset}`));
+      }
+      return busy(client._.get(`/clusters/${taskId}/log`));
     },
 
     // PUT /clusters/{id}/provision Provision a cluster with ansible

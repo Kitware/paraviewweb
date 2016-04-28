@@ -1,19 +1,4 @@
-// function noTransform(data) {
-//   return data;
-// }
-
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString, progress }) {
-  // function uploadChunk(uploadId, offset, chunk) {
-  //   const transformRequest = noTransform,
-  //     data = new FormData();
-
-  //   data.append('uploadId', uploadId);
-  //   data.append('offset', offset);
-  //   data.append('chunk', chunk);
-
-  //   return busy(client._.post('/file/chunk', data, { transformRequest, headers: { Connection: 'close' } }));
-  // }
-
   function uploadChunk(uploadId, offset, chunk) {
     return new Promise((resolve, reject) => {
       const data = new FormData();

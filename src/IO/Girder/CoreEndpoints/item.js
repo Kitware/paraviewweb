@@ -38,9 +38,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         return new Promise((resolve, reject) => reject('No argument id provided'));
       }
 
-      return busy(client._.get(`/item/${id}/files`, {
-        params,
-      }));
+      return busy(client._.get(`/item/${id}/files${encodeQueryAsString(params)}`));
     },
 
     getItemRootPath(id) {
