@@ -137,8 +137,8 @@ export default React.createClass({
         <CollapsibleWidget title="Time probes" activeSubTitle subtitle={ buttons } visible={ activeView !== 1}>
           <section className={style.item}>
             <label className={style.smallLabel}>Name</label>
-            <input className={style.input} type="text" name="name" value={ activeProbe ? activeProbe.name : ''} onChange={ this.updateProbe } />
-            <select className={style.dropDown} value={null} onChange={ this.updateActive }>
+            <input className={style.input} type="text" name="name" value={ activeProbe ? activeProbe.name : '' || '' } onChange={ this.updateProbe } />
+            <select className={style.dropDown} value={ undefined } onChange={ this.updateActive }>
               { probeManager.getProbeNames().map((name, index) =>
                 <option key={index} value={name}>{name}</option>
               )}
