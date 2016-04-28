@@ -10,21 +10,23 @@ export default React.createClass({
     height: React.PropTypes.string,
     icon: React.PropTypes.string,
     width: React.PropTypes.string,
+    style: React.PropTypes.object,
   },
 
   getDefaultProps() {
     return {
       className: '',
       icon: defaultIcon,
+      style: {},
     };
   },
 
   /* eslint-disable react/no-danger */
   render() {
-    const style = {
+    const style = Object.assign({}, this.props.style, {
       width: this.props.width,
       height: this.props.height,
-    };
+    });
     return (
       <svg
         style={style}
