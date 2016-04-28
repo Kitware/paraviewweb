@@ -151,9 +151,9 @@ export function build(config = location, ...extensions) {
         }
       },
     },
-    progress = (current, total = 1) => {
+    progress = (id, current, total = 1) => {
       notification.emit(PROGRESS_TOPIC, {
-        current, total,
+        id, current, total,
       });
     };
 
