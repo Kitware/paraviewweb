@@ -47,7 +47,7 @@ export class TimeProbe {
       return false;
     }
 
-    if (event.isFirst || !this.originalExtent) {
+    if (event.isFirst) {
       this.originalExtent = [].concat(this.extent);
       this.dragActions = [];
       if (x < this.extent[0] + EDGE_WIDTH_FOR_GRAB) {
@@ -66,8 +66,10 @@ export class TimeProbe {
         this.dragActions.push('drag');
       }
     }
+
     if (event.isFinal) {
       this.originalExtent = null;
+      this.dragActions = [];
 
       // Sort extent if needed
       if (this.extent[0] > this.extent[1] && this.extent[2] > this.extent[3]) {
