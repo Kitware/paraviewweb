@@ -47,8 +47,12 @@ $ ansible-playbook                       \
    -i /path/to/your/myInventory_file.txt \
    paraviewweb/tools/ansible/site.yml    \
    -u <your passwordless ssh user here>  \
-   -e hostname=<the hostname to use to connect to apache>
+   -e hostname=<the hostname to use to connect to apache> \
+   -e gpu=<yes|no> \
+   -e install_nvidia_driver=<yes|no> \
 ```
+
+- If gpu is set to 'no' the Mesa LLVM pipeline will be used for rendering.
 
 ## Testing
 

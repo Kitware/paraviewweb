@@ -23,7 +23,7 @@
   apt: name={{ item }} state=present
   with_items:
     - nvidia-current
-  when: not virtualbox
+  when: not virtualbox and install_nvidia_driver
   tags:
     - paraview
 
@@ -31,6 +31,6 @@
   become: yes
   become_user: root
   command: nvidia-xconfig
-  when: not virtualbox
+  when: not virtualbox and install_nvidia_driver
   tags:
     - paraview
