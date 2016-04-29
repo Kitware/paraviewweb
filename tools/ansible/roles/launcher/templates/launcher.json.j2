@@ -5,7 +5,7 @@
         "port" : 9000,
         "endpoint": "paraview",
         "proxy_file" : "{{proxy_db_path}}",
-        "sessionURL" : "ws://{{ hostname }}:{{port|default(80)}}/proxy?sessionId=${id}",
+        "sessionURL" : "ws://{{ hostname }}:{{port|default(80)}}/proxy?sessionId=${id}&path=ws",
         "timeout" : 10,
         "log_dir" : "/tmp",
         "fields" : ["host", "port"]
