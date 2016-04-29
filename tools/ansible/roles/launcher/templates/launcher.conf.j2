@@ -1,0 +1,16 @@
+description "ParaViewWeb launcher"
+
+# used to be: start on startup
+# until we found some mounts weren't ready yet while booting:
+start on started mountall
+stop on shutdown
+
+# Automatically Respawn:
+respawn
+respawn limit 20 5
+
+script
+
+    exec sudo -u {{pvw_user}} DISPLAY=:0 PYTHONPATH={{paraview_versioned_lib_directory}}/site-packages LD_LIBRARY_PATH={{paraview_versioned_lib_directory}} /usr/bin/python -m vtk.web.launcher /etc/opt/paraview/launcher.json > /dev/null 2>&1
+
+end script

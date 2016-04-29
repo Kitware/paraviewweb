@@ -1,0 +1,12 @@
+- name: Ensure packages cache is up to date
+  become: yes
+  become_user: root
+  apt: update_cache=yes
+  tags: common
+
+- name: Create ParaViewWeb user
+  user: name={{pvw_user}}
+  become: yes
+  become_user: root
+  tags: common
+
