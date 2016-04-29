@@ -23,7 +23,7 @@ The possible OS targets are:
 
 On the source machine:
 
-1) [Ansible](http://www.ansible.com/) need to be installed.
+1) [Ansible (2.0.0.2 or greater)](http://www.ansible.com/) need to be installed.
 
 On the target machine:
 
