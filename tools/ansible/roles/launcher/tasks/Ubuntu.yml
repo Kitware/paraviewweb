@@ -1,0 +1,13 @@
+- name: Install launcher as service
+  become: yes
+  become_user: root
+  template: src=launcher.conf.j2 dest=/etc/init/pvw-launcher.conf mode=644 owner=root
+  tags:
+    - launcher
+
+- name: Start launcher
+  become: yes
+  become_user: root
+  service: name=pvw-launcher state=started
+  tags:
+    - launcher

@@ -1,0 +1,6 @@
+packages:
+  - xorg-x11-server-Xorg
+  - "@^gnome-desktop-environment"
+  - mesa-libGL-devel
+  - libXt-devel
+  - libatomic

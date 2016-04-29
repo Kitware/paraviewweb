@@ -1,0 +1,72 @@
+- name: Enable mod_proxy
+  become: yes
+  become_user: root
+  apache2_module: state=present name=proxy
+  tags:
+    - apache
+
+- name: Enable mod_rewrite
+  become: yes
+  become_user: root
+  apache2_module: state=present name=rewrite
+  tags:
+    - apache
+
+- name: Enable mod_proxy_http
+  become: yes
+  become_user: root
+  apache2_module: state=present name=proxy_http
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+
+- name: Enable mod_proxy_wstunnel
+  become: yes
+  become_user: root
+  apache2_module: state=present name=proxy_wstunnel
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Disable the default site
+  become: yes
+  become_user: root
+  action: command a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Copy over config
+  become: yes
+  become_user: root
+  template: src=../files/Ubuntu/pvw.conf dest=/etc/apache2/sites-available/pvw.conf mode=644 owner=root
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Enable pvw-web site
+  become: yes
+  become_user: root
+  action: command a2ensite pvw  creates=/etc/apache2/sites-enabled/pvw.conf
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Update directory
+  become: yes
+  become_user: root
+  replace:
+    dest: /etc/apache2/apache2.conf
+    regexp: '^<Directory /var/www/>$'
+    replace: '<Directory {{pvw_site_root.rstrip("/")}}/>'
+  notify:
+    - restart apache2
+  tags:
+    - apache
+

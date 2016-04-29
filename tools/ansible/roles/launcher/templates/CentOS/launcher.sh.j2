@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export DISPLAY=:9
+
+/opt/paraview/bin/pvpython {{paraview_versioned_lib_directory}}/site-packages/vtk/web/launcher.py /etc/opt/paraview/launcher.json

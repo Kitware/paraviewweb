@@ -1,0 +1,5 @@
+packages:
+  - xorg
+  - slim
+  - mesa-common-dev
+  - libxt-dev

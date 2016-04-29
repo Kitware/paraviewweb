@@ -23,7 +23,7 @@
       "apps" : {
         "visualizer": {
           "cmd" : [
-            "${python_exec}", "${visualizer}", "--port", "${port}", "--data-dir", "${data_dir}" {{ ', "--mesa-llvm"' if virtualbox else '' }}
+            "${python_exec}", "${visualizer}", "--port", "${port}", "--data-dir", "${data_dir}" {{ ', "--mesa-llvm"' if virtualbox or not gpu else '' }}
               ],
           "ready_line" : "Starting factory"
         }

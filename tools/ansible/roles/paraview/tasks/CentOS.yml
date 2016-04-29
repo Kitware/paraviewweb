@@ -1,0 +1,6 @@
+- name: Enable graphical desktop on boot
+  become: yes
+  become_user: root
+  command: systemctl set-default graphical.target
+  tags:
+    - paraview

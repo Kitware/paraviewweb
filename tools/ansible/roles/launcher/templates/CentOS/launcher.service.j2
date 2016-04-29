@@ -1,0 +1,12 @@
+[Unit]
+Description=ParaViewWeb Launcher
+
+[Service]
+User={{pvw_user}}
+Type=simple
+ExecStart=/usr/bin/launcher.sh
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
