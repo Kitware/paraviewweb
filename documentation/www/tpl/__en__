@@ -43,6 +43,8 @@ sidebar:
     virtualgl_turbovnc_howto: VirtualGL and TurboVNC
     deploy: Deployment
     ubuntu_14_04: Ubuntu 14.04 LTS
+    ansible: Ansible playbook
+    vagrant: Vangrant setup
     compilation: Compilation
     configure_and_build_vtkweb: VTK
     configure_and_build_pvweb: ParaView
