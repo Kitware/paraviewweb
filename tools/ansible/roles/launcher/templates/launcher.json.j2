@@ -15,14 +15,15 @@
 
       "properties" : {
         "python_exec" : "/opt/paraview/bin/pvpython",
-        "visualizer" : "{{paraview_versioned_lib_directory}}/site-packages/paraview/web/pv_web_visualizer.py"
+        "visualizer" : "{{paraview_versioned_lib_directory}}/site-packages/paraview/web/pv_web_visualizer.py",
+        "data_dir": "/home/{{pvw_user}}/data/ParaViewData/Data"
       },
 
 
       "apps" : {
         "visualizer": {
           "cmd" : [
-            "${python_exec}", "${visualizer}", "--port", "${port}" {{ ', "--mesa-llvm"' if virtualbox else '' }}
+            "${python_exec}", "${visualizer}", "--port", "${port}", "--data-dir", "${data_dir}" {{ ', "--mesa-llvm"' if virtualbox else '' }}
               ],
           "ready_line" : "Starting factory"
         }

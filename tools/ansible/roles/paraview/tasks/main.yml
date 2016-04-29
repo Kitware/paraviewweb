@@ -118,6 +118,41 @@
   tags:
     - paraview
 
+
+- name: stat ParaView sample data download
+  stat: path=/var/tmp/ParaViewData-3.8.1.tar.gz
+  register: paraview_data_download_stat
+  tags:
+    - paraview
+
+- name: Download sample data
+  get_url:
+    url="http://www.paraview.org/files/v3.8/ParaViewData-3.8.1.tar.gz"
+    dest="/var/tmp"
+  register: paraview_data_tarball
+  when: not paraview_data_download_stat.stat.exists
+  tags:
+    - paraview
+
+- name: Create data directory
+  become: yes
+  become_user: "{{pvw_user}}"
+  file:
+    path="/home/{{pvw_user}}/data" state=directory
+  tags:
+    - paraview
+
+- name: Install ParaView sample data
+  become: yes
+  become_user: "{{pvw_user}}"
+  unarchive:
+    src=/var/tmp/ParaViewData-3.8.1.tar.gz
+    dest="/home/{{pvw_user}}/data"
+    copy=no
+  when: paraview_data_tarball|changed
+  tags:
+    - paraview
+
 - name: Restart server
   become: yes
   become_user: root
