@@ -1,0 +1,47 @@
+- name: Enable mod_rewrite
+  become: yes
+  become_user: root
+  lineinfile:
+    line="LoadModule rewrite_module modules/mod_rewrite.so"
+    dest=/etc/httpd/conf.modules.d/00-proxy.conf
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Changing security context of proxy file
+  become: yes
+  become_user: root
+  command: chcon -Rv --type=httpd_sys_content_t "{{proxy_db_path}}"
+  tags:
+    - apache
+
+- name: Copy over config
+  become: yes
+  become_user: root
+  template: src=../files/CentOS/pvw.conf dest=/etc/httpd/conf.d/pvw.conf mode=644 owner=root
+  notify:
+    - restart apache2
+  tags:
+    - apache
+
+- name: Copy ParaViewWeb site into /var/www/html
+  become: yes
+  become_user: root
+  shell: cp -r {{paraview_versioned_shared_directory}}/www/* /var/www/html/
+  tags:
+    - apache
+
+- name: Ensure Apache starts at boot
+  become: yes
+  become_user: root
+  command: chkconfig httpd on
+  tags:
+      - apache
+
+- name: Allow Apache to create network connections
+  become: yes
+  become_user: root
+  command: setsebool -P httpd_can_network_connect 1
+  tags:
+      - apache

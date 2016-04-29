@@ -1,50 +1,10 @@
+- include_vars: ../vars/{{ ansible_distribution }}.yml
+
 - name: Install ParaView prerequisite packages
   become: yes
   become_user: root
-  apt: name={{ item }} state=present
-  with_items:
-    - xorg
-    - slim
-    - openbox
-    - mesa-common-dev
-    - libxt-dev
-  tags:
-    - paraview
-
-- name: Step up ParaViewWeb user to auto login to start X
-  become: yes
-  become_user: root
-  lineinfile:
-    line={{item.line}}
-    regexp={{item.regex}}
-    dest=/etc/slim.conf
-  with_items:
-    - {
-        line: "auto_login          yes",
-        regex: "^#auto_login          no$"
-      }
-    - {
-        line: "default_user        {{pvw_user}}",
-        regex: "^#default_user        simone$"
-      }
-  tags:
-    - paraview
-
-- name: Install NVIDIA drivers
-  become: yes
-  become_user: root
-  apt: name={{ item }} state=present
-  with_items:
-    - nvidia-current
-  when: virtualbox is not defined
-  tags:
-    - paraview
-
-- name: Run nvida-xconfig
-  become: yes
-  become_user: root
-  command: nvidia-xconfig
-  when: virtualbox is not defined
+  package: name={{ item }} state=present
+  with_items: "{{ packages }}"
   tags:
     - paraview
 
@@ -62,7 +22,6 @@
   when: not paraview_download_stat.stat.exists
   tags:
     - paraview
-
 
 - name: Install ParaView
   become: yes
@@ -102,6 +61,19 @@
   set_fact:
     paraview_versioned_lib_directory: "{{paraview_find.files[0].path}}"
 
+- name: Find ParaView version shared directory
+  find:
+    paths="/opt/paraview/share"
+    patterns="paraview-*"
+    recurse=yes file_type=directory
+  register: paraview_shared_find
+  tags:
+    - paraview
+
+- name: Set ParaView versioned shared directory
+  set_fact:
+    paraview_versioned_shared_directory: "{{paraview_shared_find.files[0].path}}"
+
 - name: Create ParaView data directory
   become: yes
   become_user: root
@@ -117,7 +89,6 @@
     path=/etc/opt/paraview state=directory
   tags:
     - paraview
-
 
 - name: stat ParaView sample data download
   stat: path=/var/tmp/ParaViewData-3.8.1.tar.gz
@@ -152,6 +123,8 @@
   when: paraview_data_tarball|changed
   tags:
     - paraview
+
+- include: ./{{ ansible_distribution }}.yml
 
 - name: Restart server
   become: yes

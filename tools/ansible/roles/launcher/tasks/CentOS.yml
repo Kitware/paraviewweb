@@ -1,0 +1,27 @@
+- name: Install launcher as service
+  become: yes
+  become_user: root
+  template: src=../templates/CentOS/launcher.service.j2 dest=/etc/systemd/system/pvw-launcher.service mode=644 owner=root
+  tags:
+    - launcher
+
+- name: Make launcher come up at boot time
+  become: yes
+  become_user: root
+  command: systemctl enable pvw-launcher.service
+  tags:
+    - launcher
+
+- name: Install launcher script
+  become: yes
+  become_user: root
+  template: src=../templates/CentOS/launcher.sh.j2 dest=/usr/bin/launcher.sh mode=755 owner=root
+  tags:
+    - launcher
+
+- name: Start launcher
+  become: yes
+  become_user: root
+  service: name=pvw-launcher state=started
+  tags:
+    - launcher

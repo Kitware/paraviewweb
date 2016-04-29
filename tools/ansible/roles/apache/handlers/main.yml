@@ -1,9 +1,11 @@
+- include_vars: ../vars/{{ ansible_distribution }}.yml
+
 - name: restart apache2
-  service: name=apache2 state=restarted
+  service: name={{apache_service_name}} state=restarted
   become: yes
   become_user: root
 
 - name: reload apache2
-  service: name=apache2 state=reloaded
+  service: name={{apache_service_name}} state=reloaded
   become: yes
   become_user: root

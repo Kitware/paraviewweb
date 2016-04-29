@@ -1,0 +1,36 @@
+- name: Step up ParaViewWeb user to auto login to start X
+  become: yes
+  become_user: root
+  lineinfile:
+    line={{item.line}}
+    regexp={{item.regex}}
+    dest=/etc/slim.conf
+  with_items:
+    - {
+        line: "auto_login          yes",
+        regex: "^#auto_login          no$"
+      }
+    - {
+        line: "default_user        {{pvw_user}}",
+        regex: "^#default_user        simone$"
+      }
+  tags:
+    - paraview
+
+- name: Install NVIDIA drivers
+  become: yes
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+    - nvidia-current
+  when: not virtualbox
+  tags:
+    - paraview
+
+- name: Run nvida-xconfig
+  become: yes
+  become_user: root
+  command: nvidia-xconfig
+  when: not virtualbox
+  tags:
+    - paraview

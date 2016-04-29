@@ -17,7 +17,7 @@ ParaViewWeb provides an Ansible Playbook for:
 The possible OS targets are:
 
 - Linux Ubuntu 14.04 LTS
-- CentOS xxx (Work in progress) 
+- CentOS 7
 
 ## Prerequisites
 
