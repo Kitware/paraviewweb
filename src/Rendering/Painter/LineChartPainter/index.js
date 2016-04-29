@@ -110,6 +110,7 @@ export default class LineChartPainter {
     this.markerLocation = -1;
     this.showMarker = true;
     this.title = title;
+    this.fillBackground = null;
   }
 
   // ----------------------------------------------------------------------------
@@ -136,6 +137,12 @@ export default class LineChartPainter {
     });
 
     this.emit(PAINTER_READY, this);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  setBackgroundColor(color) {
+    this.fillBackground = color;
   }
 
   // ----------------------------------------------------------------------------
@@ -180,9 +187,16 @@ export default class LineChartPainter {
     // Empty content
     ctx.clearRect(location.x - 1, location.y - 1, location.width + 2, location.height + 2);
 
+    if (this.fillBackground) {
+      ctx.fillStyle = this.fillBackground;
+      ctx.fillRect(location.x, location.y, location.width, location.height);
+    }
+
     // Paint each field
     this.data.fields.forEach((field) => {
-      paintField(ctx, location, field, field.range);
+      if (field.active === undefined || field.active) {
+        paintField(ctx, location, field, field.range);
+      }
     });
 
     // Paint marker if any

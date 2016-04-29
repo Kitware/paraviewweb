@@ -41,6 +41,7 @@ export default React.createClass({
         title="Parameters"
         key="QueryDataModelWidget_parent"
         visible={ this.props.model.originalData.arguments_order.length > 0 }
+        activeSubTitle
         subtitle={ exploreButton }
       >
         <QueryDataModelWidget

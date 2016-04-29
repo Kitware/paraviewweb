@@ -1,19 +1,4 @@
-// function noTransform(data) {
-//   return data;
-// }
-
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString, progress }) {
-  // function uploadChunk(uploadId, offset, chunk) {
-  //   const transformRequest = noTransform,
-  //     data = new FormData();
-
-  //   data.append('uploadId', uploadId);
-  //   data.append('offset', offset);
-  //   data.append('chunk', chunk);
-
-  //   return busy(client._.post('/file/chunk', data, { transformRequest, headers: { Connection: 'close' } }));
-  // }
-
   function uploadChunk(uploadId, offset, chunk) {
     return new Promise((resolve, reject) => {
       const data = new FormData();
@@ -61,6 +46,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
   }
 
   function uploadFileToItem(params, file) {
+    const fileId = `${file.name}_${file.lastModified}`;
     // upload file to item
     return new Promise((resolve, reject) => {
       busy(client._.post(`/file${encodeQueryAsString(params)}`))
@@ -72,12 +58,12 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
 
           uploadNextChunk = (offset) => {
             var blob;
-            progress(offset, file.size);
+            progress(fileId, offset, file.size);
             if (offset + chunkSize >= file.size) {
               blob = file.slice(offset);
               uploadChunk(upload.data._id, offset, blob)
                 .then((uploadResp) => {
-                  progress(file.size, file.size);
+                  progress(fileId, file.size, file.size);
                   resolve(uploadResp);
                 })
                 .catch((error) => {

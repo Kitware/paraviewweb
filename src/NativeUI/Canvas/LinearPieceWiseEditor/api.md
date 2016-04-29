@@ -12,6 +12,10 @@ Create new instance and bind it to the given canvas or wait for one provided by 
 
 Reset control points to [{ x:0.0, y:0.0 }, { x:1.0, y:1.0 }];
 
+### setControlPoints(newPoints)
+
+Set control points to the given list of points.  The list should be similar to the one above in the description of **resetControlPoints**.  It should be a list of objects with x and y attributes where x and y have a valid range of [0, 1].
+
 ### setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {})
 
 Update rendering style:

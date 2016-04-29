@@ -25,7 +25,8 @@ export default React.createClass({
 
   render() {
     var model = this.props.model,
-      orderList = model.originalData.arguments_order;
+      args = model.originalData.arguments,
+      orderList = model.originalData.arguments_order.filter(name => args[name].values.length > 1);
 
     return (
       <div className={ style.container }>

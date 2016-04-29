@@ -6,6 +6,7 @@ import MultiViewControl             from './MultiViewControl';
 import PixelOperatorControl         from './PixelOperatorControl';
 import ProbeControl                 from './ProbeControl';
 import QueryDataModelControl        from './QueryDataModelControl';
+import TimeFloatImageControl        from './TimeFloatImageControl';
 import VolumeControl                from './VolumeControl';
 
 export default {
@@ -17,5 +18,6 @@ export default {
   PixelOperatorControl,
   ProbeControl,
   QueryDataModelControl,
+  TimeFloatImageControl,
   VolumeControl,
 };
