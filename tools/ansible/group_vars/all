@@ -1,3 +1,4 @@
+virtualbox: no
 default_user: ubuntu
 # Supported version 5.0.0 or 5.0.1
 paraview_version: 5.0.0
