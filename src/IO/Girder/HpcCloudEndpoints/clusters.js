@@ -66,7 +66,7 @@ export default function ({ client, filterQuery, mustContain, busy }) {
     // put /clusters/{id}/job/{jobId}/submit
     //     Submit a job to the cluster
     submitJob(clusterId, jobId) {
-      console.log('Not implemented yet');
+      return busy(client._.put(`/clusters/${clusterId}/job/${jobId}/submit`));
     },
 
     // get /clusters/{id}/log
@@ -98,7 +98,7 @@ export default function ({ client, filterQuery, mustContain, busy }) {
     // put /clusters/{id}/terminate
     //     Terminate a cluster
     terminateCluster(id) {
-      console.log('Not implemented yet');
+      return busy(client._.put(`/clusters/${id}/terminate`));
     },
   };
 }
