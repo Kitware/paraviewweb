@@ -28,7 +28,6 @@ autoreconf -fi
     --disable-dri \
     --with-dri-drivers="" \
     --with-gallium-drivers="swrast" \
-    --enable-texture-float \
     --disable-shared-glapi \
     --disable-egl \
     --with-egl-platforms="" \
