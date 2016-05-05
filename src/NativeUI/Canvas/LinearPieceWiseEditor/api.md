@@ -16,14 +16,25 @@ Reset control points to [{ x:0.0, y:0.0 }, { x:1.0, y:1.0 }];
 
 Set control points to the given list of points.  The list should be similar to the one above in the description of **resetControlPoints**.  It should be a list of objects with x and y attributes where x and y have a valid range of [0, 1].
 
-### setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {})
+### setStyle({ radius = 6, stroke = 2, color = '#000000', activePointColor = '#EE3333', fillColor = '#ccc' } = {})
 
 Update rendering style:
 
 -- radius: Radius size in pixels for the control point.
 -- stroke: Line width in pixel for the line connecting the control points.
 -- color: Color used for the lines and circles.
+-- activePointColor: Color used for the active point
 -- fillColor: Background color.
+
+### setActivePoint(index)
+
+Sets the active point given its index.  The index of the active point can be obtained via the
+activeIndex property on the LinearPieceWiseEditor.  The active point by default is the last
+point the user added/modified and is colored differently than the other points.
+
+### clearActivePoint()
+
+Clears the active point so that no points are active.
 
 ### setContainer(canvas)
 
