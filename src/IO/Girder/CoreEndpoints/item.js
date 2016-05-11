@@ -4,8 +4,14 @@ function jsonToString(data) {
 
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
   return {
-    downloadItem(id) {
-      return busy(client._.get(`/item/${id}/download`));
+    downloadItem(id, offset, endByte, contentDisposition) {
+      const params = { offset, endByte, contentDisposition };
+      Object.keys(params).forEach((key) => {
+        if (params[key] === null) {
+          delete params[key];
+        }
+      });
+      return busy(client._.get(`/item/${id}/download${encodeQueryAsString(params)}`));
     },
 
     updateItemMetadata(id, metadata = {}) {
