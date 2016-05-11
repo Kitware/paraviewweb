@@ -107,8 +107,14 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
       return busy(client._.get('/file/offset', { params: { uploadId: id } }));
     },
 
-    downloadFile(id) {
-      return busy(client._.get(`/file/${id}/download`));
+    downloadFile(id, offset, endByte, contentDisposition) {
+      const params = { offset, endByte, contentDisposition };
+      Object.keys(params).forEach((key) => {
+        if (params[key] === null) {
+          delete params[key];
+        }
+      });
+      return busy(client._.get(`/file/${id}/download${encodeQueryAsString(params)}`));
     },
 
     updateFileContent(id, size) {
