@@ -14,9 +14,10 @@ export default function ({ client, filterQuery, mustContain, busy }) {
     // get /clusters
     //     Search for clusters with certain properties
     listClusters(params) {
-      return busy(client._.get('/clusters', {
-        params,
-      }));
+      if (Object.keys(params).length) {
+        return busy(client._.get('/clusters', { params }));
+      }
+      return busy(client._.get('/clusters'));
     },
 
     // post /clusters
