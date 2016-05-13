@@ -25,10 +25,12 @@ function getTransportObject(url) {
 }
 
 export default class AutobahnConnection {
-  constructor(urls, secret = 'vtkweb-secret') {
+  constructor(urls, secret = 'vtkweb-secret', retry = false) {
     this.urls = urls;
     this.secret = secret;
     this.connection = null;
+    // Should autobahn try to reconnect on error?
+    this.retry = retry;
   }
 
   connect() {
@@ -70,7 +72,7 @@ export default class AutobahnConnection {
     this.connection.onclose = () => {
       this.emit(CONNECTION_CLOSE_TOPIC, this);
       this.connection = null;
-      return true; // true => Stop retry
+      return !this.retry; // true => Stop retry
     };
 
     this.connection.open();

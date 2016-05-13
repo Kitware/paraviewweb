@@ -12,7 +12,7 @@ const
 
 
 function autobahnConnect(self) {
-  var wsConnection = new AutobahnConnection(self.config.sessionURL, self.config.secret);
+  var wsConnection = new AutobahnConnection(self.config.sessionURL, self.config.secret, self.config.retry);
   self.subscriptions.push(wsConnection.onConnectionReady(self.readyForwarder));
   self.subscriptions.push(wsConnection.onConnectionClose(self.closeForwarder));
   wsConnection.connect();
