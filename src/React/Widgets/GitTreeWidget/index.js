@@ -86,7 +86,7 @@ function extractBranchesAndForks(model, leaf) {
   }
 
   // Do we really have a new branch?
-  if (branch.to !== branch.y) {
+  if (typeof branch.to !== 'undefined' && branch.to !== branch.y) {
     branches.push(branch);
   }
 
