@@ -16,6 +16,7 @@ import LayoutsWidget            from './LayoutsWidget';
 import LookupTableWidget        from './LookupTableWidget';
 import NumberInputWidget        from './NumberInputWidget';
 import NumberSliderWidget       from './NumberSliderWidget';
+import PieceWiseFunctionEditorWidget from './PieceWiseFunctionEditorWidget';
 import PresetListWidget         from './PresetListWidget';
 import ProxyEditorWidget        from './ProxyEditorWidget';
 import ProxyPropertyGroupWidget from './ProxyPropertyGroupWidget';
@@ -46,6 +47,7 @@ export default {
   LookupTableWidget,
   NumberInputWidget,
   NumberSliderWidget,
+  PieceWiseFunctionEditorWidget,
   PresetListWidget,
   ProxyEditorWidget,
   ProxyPropertyGroupWidget,
