@@ -62,7 +62,7 @@
         "build:release" : "npm run bin:fix-autobahn && export NODE_ENV=production && npm run build -- -p",
 
         "test"          : "karma start ./config/karma.conf.js",
-        "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS2 --single-run",
+        "test:travis"   : "karma start ./config/karma.conf.js --browsers PhantomJS --single-run",
 
         "commit"        : "git cz",
         "semantic-release": "semantic-release pre && npm publish && semantic-release post"

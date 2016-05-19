@@ -3,7 +3,7 @@ module.exports = function karmaConf(config) {
     basePath: '..',
     frameworks: ['jasmine'],
     browsers: [
-      'PhantomJS2',
+      'PhantomJS',
       'Chrome',
       // 'ChromeCanary',
       'Safari',
@@ -15,7 +15,7 @@ module.exports = function karmaConf(config) {
       'karma-coverage',
       'karma-firefox-launcher',
       'karma-jasmine',
-      'karma-phantomjs2-launcher',
+      'karma-phantomjs-launcher',
       'karma-safari-launcher',
       'karma-sourcemap-loader',
       'karma-webpack',
