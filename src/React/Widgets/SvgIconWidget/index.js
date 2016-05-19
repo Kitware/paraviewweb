@@ -11,6 +11,7 @@ export default React.createClass({
     icon: React.PropTypes.string,
     width: React.PropTypes.string,
     style: React.PropTypes.object,
+    onClick: React.PropTypes.func,
   },
 
   getDefaultProps() {
@@ -34,6 +35,7 @@ export default React.createClass({
         dangerouslySetInnerHTML={{
           __html: `<use xlink:href="${this.props.icon}"></use>`,
         }}
+        onClick={this.props.onClick}
       />);
   },
   /* eslint-enable react/no-danger */
