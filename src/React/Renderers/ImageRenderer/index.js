@@ -528,31 +528,36 @@ const ImageRenderer = React.createClass({
 
   render() {
     return (
-      <div className={ style.container } >
-          <canvas
-            className={ style.renderer }
-            ref="canvasRenderer"
-            width={ this.state.width }
-            height={ this.state.height }
-          >
-          </canvas>
-          <div className={ this.state.dialog ? style.dialog : style.hidden }>
-              <div className={ style.inside }>
-                  <img ref="thumbnail" className={ style.thumbnail } height={ Math.floor(this.state.height / 2) } />
-                  <div className={ style.metadata } style={{ height: `${Math.floor(this.state.height / 2)}px` }}>
-                      <strong className={ style.title }>
-                          <ContentEditable html={ this.state.title } onChange={ this.updateTitle } />
-                      </strong>
-                      <div className={ style.description }>
-                          <ContentEditable html={ this.state.description } onChange={ this.updateDescription } />
-                      </div>
-                  </div>
-                  <div className={ style.buttons }>
-                      <button className={ style.button } onClick={ this.toggleDialog }>Cancel</button>
-                      <button className={ style.button } onClick={ this.updateMetadata }>Save</button>
-                  </div>
+      <div className={style.container} >
+        <canvas
+          className={style.renderer}
+          ref="canvasRenderer"
+          width={this.state.width}
+          height={this.state.height}
+        >
+        </canvas>
+        <div className={this.state.dialog ? style.dialog : style.hidden}>
+          <div className={style.inside}>
+            <img
+              ref="thumbnail"
+              className={style.thumbnail}
+              height={Math.floor(this.state.height / 2)}
+              alt="thumbnail"
+            />
+            <div className={style.metadata} style={{ height: `${Math.floor(this.state.height / 2)}px` }}>
+              <strong className={style.title}>
+                <ContentEditable html={this.state.title} onChange={this.updateTitle} />
+              </strong>
+              <div className={style.description}>
+                <ContentEditable html={this.state.description} onChange={this.updateDescription} />
               </div>
+            </div>
+            <div className={style.buttons}>
+              <button className={style.button} onClick={this.toggleDialog}>Cancel</button>
+              <button className={style.button} onClick={this.updateMetadata}>Save</button>
+            </div>
           </div>
+        </div>
       </div>
     );
   },

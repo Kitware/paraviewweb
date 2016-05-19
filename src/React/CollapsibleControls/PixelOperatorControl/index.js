@@ -34,7 +34,7 @@ export default React.createClass({
   render() {
     return (
       <CollapsibleWidget title="Pixel Operation">
-        <TextInputWidget value={ this.state.operation } onChange={ this.updateOperation } />
+        <TextInputWidget value={this.state.operation} onChange={this.updateOperation} />
       </CollapsibleWidget>);
   },
 });

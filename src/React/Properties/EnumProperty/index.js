@@ -76,7 +76,7 @@ export default React.createClass({
           ret.push(
             <option
               value={valueToString(this.props.ui.domain[key])}
-              key={ `${this.props.data.id}_${key}` }
+              key={`${this.props.data.id}_${key}`}
             >
               {key}
             </option>);
@@ -94,32 +94,32 @@ export default React.createClass({
     }
 
     return (
-      <div className={ this.props.show(this.props.viewData) ? style.container : style.hidden }>
-          <div className={ style.header }>
-              <strong>{this.props.ui.label}</strong>
-              <span>
-                  <ToggleIconButton
-                    icon={ style.helpIcon }
-                    value={this.state.helpOpen}
-                    toggle={!!this.props.ui.help}
-                    onChange={this.helpToggled}
-                  />
-              </span>
-          </div>
-          <div className={ style.inputBlock }>
-              <select
-                className={ multiple ? enumStyle.inputMultiSelect : enumStyle.input }
-                value={selectedValue}
-                onChange={this.valueChange}
-                multiple={multiple}
-              >
-                  { mapper() }
-              </select>
-          </div>
-          <div
-            className={ this.state.helpOpen ? style.helpBox : style.hidden }
-            dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
-          />
+      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+        <div className={style.header}>
+          <strong>{this.props.ui.label}</strong>
+          <span>
+            <ToggleIconButton
+              icon={style.helpIcon}
+              value={this.state.helpOpen}
+              toggle={!!this.props.ui.help}
+              onChange={this.helpToggled}
+            />
+          </span>
+        </div>
+        <div className={style.inputBlock}>
+          <select
+            className={multiple ? enumStyle.inputMultiSelect : enumStyle.input}
+            value={selectedValue}
+            onChange={this.valueChange}
+            multiple={multiple}
+          >
+            {mapper()}
+          </select>
+        </div>
+        <div
+          className={this.state.helpOpen ? style.helpBox : style.hidden}
+          dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
+        />
       </div>);
   },
 });

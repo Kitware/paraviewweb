@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>Trash</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Trash" stroke="#4A4A4A" stroke-width="28">
+            <g id="Group" transform="translate(50.000000, 43.000000)">
+                <path d="M46,56 L366,56 C366,56 366,314.560763 366,380.343007 C366,426.02512 339.922861,427.261051 206,426.02512 C72.0771391,424.789189 45.9999867,426.02512 46,380.343007 C46.0000141,314.560763 46,56 46,56 Z" id="Rectangle-2" fill="#D8D8D8"></path>
+                <path d="M206,136 L206,346" id="Path-5" stroke-linecap="round"></path>
+                <path d="M299,136 L299,346" id="Path-5" stroke-linecap="round"></path>
+                <path d="M113,136 L113,346" id="Path-5" stroke-linecap="round"></path>
+                <path d="M0,56 L128,56 C128,56 128,6.61870558e-12 160,6.61870558e-12 C198,6.61870558e-12 215,-8.27427016e-12 254,6.61870558e-12 C283,-8.27427016e-12 283,56 283,56 L412,56" id="Path-8" stroke-linecap="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -3,6 +3,10 @@ import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 import max from 'mout/object/max';
 
+import vertexShader from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
+import fragmentShaderDisplay from './shaders/fragment/display.c';
+import fragmentShaderComposite from './shaders/fragment/composite.c';
+
 export default class BinaryCompositor {
 
   constructor({ queryDataModel, imageBuilder }) {
@@ -35,13 +39,13 @@ export default class BinaryCompositor {
     this.glConfig = {
       programs: {
         displayProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/display.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderDisplay,
           mapping: 'default',
         },
         compositeProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/composite.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderComposite,
           mapping: 'default',
         },
       },

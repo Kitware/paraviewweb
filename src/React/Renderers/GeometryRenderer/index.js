@@ -78,8 +78,8 @@ export default React.createClass({
       <canvas
         className="CanvasImageRenderer"
         ref="canvasRenderer"
-        width={ this.state.width }
-        height={ this.state.height }
+        width={this.state.width}
+        height={this.state.height}
       >
       </canvas>);
   },

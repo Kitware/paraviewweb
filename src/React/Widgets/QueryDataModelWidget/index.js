@@ -29,8 +29,8 @@ export default React.createClass({
       orderList = model.originalData.arguments_order.filter(name => args[name].values.length > 1);
 
     return (
-      <div className={ style.container }>
-        { orderList.map(name => {
+      <div className={style.container}>
+        {orderList.map(name => {
           if (model.getUiType(name) === 'list') {
             return (
               <ListWidget

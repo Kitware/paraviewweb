@@ -5,6 +5,12 @@ import vec4 from 'gl-matrix/src/gl-matrix/vec4.js';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 
+import vertexShader from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
+import fragmentShaderDisplay from '../SortedCompositeImageBuilder/shaders/fragment/display.c';
+import fragmentShaderLayerColor from './shaders/fragment/addLayerColor.c';
+import fragmentShaderLitLayerColor from './shaders/fragment/addLitLayerColor.c';
+import fragmentShaderAlphaBlend from '../SortedCompositeImageBuilder/shaders/fragment/alphaBlend.c';
+
 const
   texParameter = [
     ['TEXTURE_MAG_FILTER', 'NEAREST'],
@@ -85,29 +91,29 @@ export default class GPUCompositor {
     this.glConfig = {
       programs: {
         displayProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('../SortedCompositeImageBuilder/shaders/fragment/display.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderDisplay,
           mapping: 'default',
         },
         colorProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
+          vertexShader,
           fragmentShader: WebGlUtil.transformShader(
-            require('./shaders/fragment/addLayerColor.c'),
+            fragmentShaderLayerColor,
             { SIMULTANEOUS_LAYERS: this.shaderLayers },
             { inlineLoops: true }),
           mapping: 'default',
         },
         lightColorProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
+          vertexShader,
           fragmentShader: WebGlUtil.transformShader(
-            require('./shaders/fragment/addLitLayerColor.c'),
+            fragmentShaderLitLayerColor,
             { SIMULTANEOUS_LAYERS: this.shaderLayers },
             { inlineLoops: true }),
           mapping: 'default',
         },
         blendProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('../SortedCompositeImageBuilder/shaders/fragment/alphaBlend.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderAlphaBlend,
           mapping: 'default',
         },
       },

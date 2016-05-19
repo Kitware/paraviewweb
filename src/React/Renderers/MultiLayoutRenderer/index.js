@@ -13,7 +13,7 @@ const LAYOUT_CHANGE = 'multiview-layout-change';
 /**
  * This React component expect the following input properties:
  */
-var MultiViewRenderer = React.createClass({
+const MultiViewRenderer = React.createClass({
 
   displayName: 'MultiViewRenderer',
 
@@ -402,8 +402,8 @@ var MultiViewRenderer = React.createClass({
       <canvas
         className="CanvasMultiImageRenderer"
         ref="canvasRenderer"
-        width={ this.state.width }
-        height={ this.state.height }
+        width={this.state.width}
+        height={this.state.height}
       >
       </canvas>
     );

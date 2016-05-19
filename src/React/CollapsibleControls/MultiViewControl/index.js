@@ -83,10 +83,10 @@ export default React.createClass({
           <select
             style={{ width: '100%' }}
             ref="select"
-            value={ this.state.renderMethod }
-            onChange={ this.onRenderMethodChange }
+            value={this.state.renderMethod}
+            onChange={this.onRenderMethodChange}
           >
-            { renderMethods }
+            {renderMethods}
           </select>
         </CollapsibleWidget>
       </div>

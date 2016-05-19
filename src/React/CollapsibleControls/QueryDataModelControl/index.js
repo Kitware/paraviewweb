@@ -31,7 +31,7 @@ export default React.createClass({
     var exploreButton = (
       <ExploreButton
         key="explore-button"
-        icon={ style.exploreIcon }
+        icon={style.exploreIcon}
         onChange={this.toggleExploration}
         value={this.props.model.exploreState.animate}
       />);
@@ -40,14 +40,14 @@ export default React.createClass({
       <CollapsibleWidget
         title="Parameters"
         key="QueryDataModelWidget_parent"
-        visible={ this.props.model.originalData.arguments_order.length > 0 }
+        visible={this.props.model.originalData.arguments_order.length > 0}
         activeSubTitle
-        subtitle={ exploreButton }
+        subtitle={exploreButton}
       >
         <QueryDataModelWidget
           key="QueryDataModelWidget"
           ref="QueryDataModelWidget"
-          model={ this.props.model }
+          model={this.props.model}
         />
       </CollapsibleWidget>);
   },

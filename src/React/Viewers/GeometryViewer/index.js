@@ -33,9 +33,9 @@ export default React.createClass({
         queryDataModel={queryDataModel}
         geometryBuilder={geometryBuilder}
         renderer="GeometryRenderer"
-        config={ this.props.config || {} }
+        config={this.props.config || {}}
       >
-        { controlWidgets }
+        {controlWidgets}
       </AbstractViewerMenu>
     );
   },

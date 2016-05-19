@@ -91,7 +91,7 @@ export default React.createClass({
   },
 
   render() {
-    return <div className={ this.props.className } style={ this.props.style } ></div>;
+    return <div className={this.props.className} style={this.props.style} ></div>;
   },
 });
 

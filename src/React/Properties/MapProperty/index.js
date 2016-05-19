@@ -49,9 +49,9 @@ export default React.createClass({
         for (let i = 0; i < this.state.data.value.length; i++) {
           ret.push(
             <KeyValuePair
-              idx={ i }
+              idx={i}
               value={this.state.data.value[i]}
-              key={ `${this.state.data.id}_${i}` }
+              key={`${this.state.data.id}_${i}`}
               onChange={this.valueChange}
             />);
         }
@@ -62,31 +62,32 @@ export default React.createClass({
     };
 
     return (
-      <div className={ this.props.show(this.props.viewData) ? style.container : style.hidden }>
-        <div className={ style.header }>
+      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+        <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
             <ToggleIconButton
-              icon={ style.helpIcon }
+              icon={style.helpIcon}
               value={this.state.helpOpen}
               toggle={!!this.props.ui.help}
               onChange={this.helpToggled}
             />
           </span>
         </div>
-        <div className={ style.inputBlock }>
-          <table className={ styleProp.table }>
-          <tbody>
-          <tr>
-            <th className={ styleProp.inputColumn }>Name</th>
-            <th className={ styleProp.inputColumn }>Value</th>
-            <th className={ styleProp.actionColumn }><i className={ styleProp.addButton } onClick={ this.addEntry }></i></th></tr>
-          { mapper() }
-          </tbody>
+        <div className={style.inputBlock}>
+          <table className={styleProp.table}>
+            <tbody>
+              <tr>
+                <th className={styleProp.inputColumn}>Name</th>
+                <th className={styleProp.inputColumn}>Value</th>
+                <th className={styleProp.actionColumn}><i className={styleProp.addButton} onClick={this.addEntry}></i></th>
+              </tr>
+              {mapper()}
+            </tbody>
           </table>
         </div>
         <div
-          className={ this.state.helpOpen ? style.helpBox : style.hidden }
+          className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
       </div>);

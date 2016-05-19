@@ -29,11 +29,11 @@ export default class GeometryDataModel {
 
         this.sceneData[dataDescription.name][dataDescription.field] = new window[dataDescription.type](data.data);
 
-        for (const key in obj) {
+        Object.keys(obj).forEach(key => {
           if (obj[key] === null) {
             objectComplete = false;
           }
-        }
+        });
         if (objectComplete) {
           this.geometryReady(obj);
         }

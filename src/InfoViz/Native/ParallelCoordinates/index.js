@@ -95,9 +95,7 @@ export function createParallelCoordinates(canvasElement, fetchHistogramFunction,
     var leftBinMap = {},
       rightBinMap = {},
       bin = null,
-      i,
-      leftKey,
-      rightKey;
+      i;
 
     for (i = 0; i < hLeft.bins.length; ++i) {
       bin = hLeft.bins[i];
@@ -115,17 +113,17 @@ export function createParallelCoordinates(canvasElement, fetchHistogramFunction,
       rightBinMap[bin.y] += bin.count;
     }
 
-    for (leftKey in leftBinMap) {
+    Object.keys(leftBinMap).forEach(leftKey => {
       if (leftBinMap[leftKey] !== rightBinMap[leftKey]) {
         console.error('Sanity check failed for bin:', leftKey);
       }
-    }
+    });
 
-    for (rightKey in rightBinMap) {
+    Object.keys(rightBinMap).forEach(rightKey => {
       if (rightBinMap[rightKey] !== leftBinMap[rightKey]) {
         console.error('Sanity check failed for bin:', rightKey);
       }
-    }
+    });
 
     // console.log('Sanity check results:');
     // console.log(leftBinMap);

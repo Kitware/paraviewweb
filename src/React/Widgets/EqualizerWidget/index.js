@@ -157,8 +157,8 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={ style.container }>
-        <canvas className={ style.canvas } ref="canvas" width={this.state.width} height={this.state.height}>
+      <div className={style.container}>
+        <canvas className={style.canvas} ref="canvas" width={this.state.width} height={this.state.height}>
         </canvas>
       </div>
     );

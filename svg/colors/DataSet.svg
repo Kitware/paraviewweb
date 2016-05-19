@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>DataSet</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="DataSet" stroke="#4A4A4A" stroke-width="25" fill="#89BBF7">
+            <g id="Group" transform="translate(54.000000, 325.000000)">
+                <path d="M405,119 C405,138.329966 314.337662,154 202.5,154 C90.6623382,154 0,138.329966 0,119 L0,49 L405,49 L405,119 Z" id="Combined-Shape"></path>
+                <ellipse id="Oval-12" cx="202.5" cy="35" rx="202.5" ry="35"></ellipse>
+            </g>
+            <g id="Group" transform="translate(54.000000, 179.000000)">
+                <path d="M405,119 C405,138.329966 314.337662,154 202.5,154 C90.6623382,154 0,138.329966 0,119 L0,49 L405,49 L405,119 Z" id="Combined-Shape"></path>
+                <ellipse id="Oval-12" cx="202.5" cy="35" rx="202.5" ry="35"></ellipse>
+            </g>
+            <g id="Group" transform="translate(54.000000, 33.000000)">
+                <path d="M405,119 C405,138.329966 314.337662,154 202.5,154 C90.6623382,154 0,138.329966 0,119 L0,49 L405,49 L405,119 Z" id="Combined-Shape"></path>
+                <ellipse id="Oval-12" cx="202.5" cy="35" rx="202.5" ry="35"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

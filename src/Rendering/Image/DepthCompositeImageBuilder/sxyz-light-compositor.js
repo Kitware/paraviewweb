@@ -6,6 +6,12 @@ import vec4 from 'gl-matrix/src/gl-matrix/vec4.js';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 
+import vertexShader from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
+import fragmentShaderDisplay from './shaders/fragment/display.c';
+import fragmentShaderCompositeLight from './shaders/fragment/compositeLight.c';
+import fragmentShaderCompositeLUT from './shaders/fragment/compositeLut.c';
+import fragmentShaderBacground from './shaders/fragment/background.c';
+
 const texParameter = [
     ['TEXTURE_MAG_FILTER', 'NEAREST'],
     ['TEXTURE_MIN_FILTER', 'NEAREST'],
@@ -154,23 +160,23 @@ export default class SXYZLightCompositor {
     this.glConfig = {
       programs: {
         displayProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/display.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderDisplay,
           mapping: 'default',
         },
         compositeLightProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/compositeLight.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderCompositeLight,
           mapping: 'default',
         },
         compositeLutProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/compositeLut.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderCompositeLUT,
           mapping: 'default',
         },
         backgroundProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/background.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderBacground,
           mapping: 'default',
         },
       },

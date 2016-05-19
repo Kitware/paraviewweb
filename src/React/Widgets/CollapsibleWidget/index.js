@@ -53,16 +53,16 @@ export default React.createClass({
       localStyle.display = 'none';
     }
     return (
-      <section className={ style.container } style={ localStyle }>
-        <div className={ style.header }>
-          <div onClick={ this.toggleOpen }>
-            <i className={ style[this.state.open ? 'caret' : 'caretClosed'] }></i>
-            <strong className={ style.title }>{this.props.title}</strong>
+      <section className={style.container} style={localStyle}>
+        <div className={style.header}>
+          <div onClick={this.toggleOpen}>
+            <i className={style[this.state.open ? 'caret' : 'caretClosed']}></i>
+            <strong className={style.title}>{this.props.title}</strong>
           </div>
-          <span className={ this.props.activeSubTitle ? style.subtitleActive : style.subtitle }>{this.props.subtitle}</span>
+          <span className={this.props.activeSubTitle ? style.subtitleActive : style.subtitle}>{this.props.subtitle}</span>
         </div>
 
-        <div className={ style[this.state.open ? 'visibleContent' : 'hiddenContent'] }>
+        <div className={style[this.state.open ? 'visibleContent' : 'hiddenContent']}>
           {this.props.children}
         </div>
       </section>

@@ -11,5 +11,9 @@ module.exports = {
     'one-var': 0,
     'react/no-is-mounted': 1,
     'react/prefer-es6-class': 0,
+    // 'no-restricted-syntax': 1,
+  },
+  'settings': {
+    'import/resolver': 'webpack'
   }
 };

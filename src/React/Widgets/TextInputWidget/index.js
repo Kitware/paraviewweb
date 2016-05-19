@@ -42,14 +42,16 @@ export default React.createClass({
   },
 
   render() {
-    return (<div className={ [style.container, this.props.className].join(' ') }>
-              <input className={ style.entry }
-                type="text"
-                value={this.state.editing ? this.state.valueRep : this.props.value}
-                onChange={ this.valueChange }
-                onBlur={this.endEditing}
-              />
-              <i className={ this.state.editing ? style.editingButton : style.button }></i>
-            </div>);
+    return (
+      <div className={[style.container, this.props.className].join(' ')}>
+        <input
+          className={style.entry}
+          type="text"
+          value={this.state.editing ? this.state.valueRep : this.props.value}
+          onChange={this.valueChange}
+          onBlur={this.endEditing}
+        />
+        <i className={this.state.editing ? style.editingButton : style.button}></i>
+      </div>);
   },
 });

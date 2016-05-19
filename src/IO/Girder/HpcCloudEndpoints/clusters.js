@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import deepClone from 'mout/src/lang/deepClone';
 
 function transformRequest(data) {

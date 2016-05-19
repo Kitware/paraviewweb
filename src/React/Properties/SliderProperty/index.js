@@ -50,7 +50,7 @@ export default React.createClass({
               step={step} // int 1, double 0.1
               idx={i}
               onChange={this.valueChange}
-              key={ `${this.props.data.id}_${i}` }
+              key={`${this.props.data.id}_${i}`}
             />);
         }
         return ret;
@@ -68,23 +68,23 @@ export default React.createClass({
     };
 
     return (
-      <div className={ this.props.show(this.props.viewData) ? style.container : style.hidden }>
-        <div className={ style.header }>
+      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+        <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
             <ToggleIconButton
-              icon={ style.helpIcon }
+              icon={style.helpIcon}
               value={this.state.helpOpen}
               toggle={!!this.props.ui.help}
               onChange={this.helpToggled}
             />
-            </span>
+          </span>
         </div>
-        <div className={ style.inputBlock }>
-            { mapper() }
+        <div className={style.inputBlock}>
+          {mapper()}
         </div>
         <div
-          className={ this.state.helpOpen ? style.helpBox : style.hidden }
+          className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
       </div>);

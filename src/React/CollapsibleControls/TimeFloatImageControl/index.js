@@ -113,60 +113,60 @@ export default React.createClass({
     const timeIdx = queryDataModel.getIndex('time');
     const chartData = this.props.model.chartData;
     const activeView = this.props.model.getActiveView();
-    const buttons = [<ToggleIconButtonWidget key="0" toggle={ false } className={ style.addProbeIcon } icon="" onChange={ this.addProbe } />];
+    const buttons = [<ToggleIconButtonWidget key="0" toggle={false} className={style.addProbeIcon} icon="" onChange={this.addProbe} />];
     const activeProbe = probeManager.getActiveProbe();
     if (activeProbe) {
-      buttons.push(<ToggleIconButtonWidget key="1" toggle={ false } className={ style.removeProbeIcon } icon="" onChange={ this.removeProbe } />);
+      buttons.push(<ToggleIconButtonWidget key="1" toggle={false} className={style.removeProbeIcon} icon="" onChange={this.removeProbe} />);
     }
-    const sortProbes = <ToggleIconButtonWidget toggle={ false } className={ style.sortProbeIcon } icon="" onChange={ this.sortProbes } />;
+    const sortProbes = <ToggleIconButtonWidget toggle={false} className={style.sortProbeIcon} icon="" onChange={this.sortProbes} />;
 
     // Put minus before
     buttons.reverse();
 
     return (
-      <div className={ style.container }>
+      <div className={style.container}>
         <div style={{ padding: '10px 5px 5px' }}>
           <InlineToggleButtonWidget
             options={[{ icon: style.imageViewIcon }, { icon: style.chartViewIcon }, { icon: style.bothViewIcon }]}
             activeColor="#ccc"
             defaultColor="rgba(0,0,0,0)"
-            active={ activeView }
-            onChange={ this.onActiveView }
+            active={activeView}
+            onChange={this.onActiveView}
           />
         </div>
-        <CollapsibleWidget title="Time probes" activeSubTitle subtitle={ buttons } visible={ activeView !== 1}>
+        <CollapsibleWidget title="Time probes" activeSubTitle subtitle={buttons} visible={activeView !== 1}>
           <section className={style.item}>
             <label className={style.smallLabel}>Name</label>
-            <input className={style.input} type="text" name="name" value={ activeProbe ? activeProbe.name : '' || '' } onChange={ this.updateProbe } />
-            <select className={style.dropDown} value={ undefined } onChange={ this.updateActive }>
-              { probeManager.getProbeNames().map((name, index) =>
+            <input className={style.input} type="text" name="name" value={activeProbe ? activeProbe.name : '' || ''} onChange={this.updateProbe} />
+            <select className={style.dropDown} value={undefined} onChange={this.updateActive}>
+              {probeManager.getProbeNames().map((name, index) =>
                 <option key={index} value={name}>{name}</option>
               )}
             </select>
           </section>
           <section className={style.item}>
             <label className={style.smallLabel}>X</label>
-            <input className={style.input} type="number" name="0" value={ activeProbe ? activeProbe.extent[0] : 0} onChange={ this.updateProbe } />
-            <input className={style.input} type="number" name="1" value={ activeProbe ? activeProbe.extent[1] : 5} onChange={ this.updateProbe } />
+            <input className={style.input} type="number" name="0" value={activeProbe ? activeProbe.extent[0] : 0} onChange={this.updateProbe} />
+            <input className={style.input} type="number" name="1" value={activeProbe ? activeProbe.extent[1] : 5} onChange={this.updateProbe} />
           </section>
           <section className={style.item}>
             <label className={style.smallLabel}>Y</label>
-            <input className={style.input} type="number" name="2" value={ activeProbe ? activeProbe.extent[2] : 0} onChange={ this.updateProbe } />
-            <input className={style.input} type="number" name="3" value={ activeProbe ? activeProbe.extent[3] : 5} onChange={ this.updateProbe } />
+            <input className={style.input} type="number" name="2" value={activeProbe ? activeProbe.extent[2] : 0} onChange={this.updateProbe} />
+            <input className={style.input} type="number" name="3" value={activeProbe ? activeProbe.extent[3] : 5} onChange={this.updateProbe} />
           </section>
         </CollapsibleWidget>
-        <CollapsibleWidget title="Legend" visible={ activeView > 0} activeSubTitle subtitle={ sortProbes }>
-          { chartData.fields.map((field, index) =>
-            <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'} onClick={ this.toggleProbe }>
+        <CollapsibleWidget title="Legend" visible={activeView > 0} activeSubTitle subtitle={sortProbes}>
+          {chartData.fields.map((field, index) =>
+            <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'} onClick={this.toggleProbe}>
               <label className={style.label}>
-                <i className={ field.active ? style.enableLegendIcon : style.disableLegendIcon } style={{ color: field.color }}></i>
+                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }}></i>
                 {field.name}
               </label>
-              <span className={ style.value } title={field.data[timeIdx]}>{field.data[timeIdx]}</span>
+              <span className={style.value} title={field.data[timeIdx]}>{field.data[timeIdx]}</span>
             </section>
           )}
         </CollapsibleWidget>
-        { activeView === 1 ? <TimeSlider model={queryDataModel} arg="time" /> : null }
+        {activeView === 1 ? <TimeSlider model={queryDataModel} arg="time" /> : null}
       </div>);
   },
 });

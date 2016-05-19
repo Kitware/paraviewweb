@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 function transformRequest(data) {
   return JSON.stringify(data);
 }

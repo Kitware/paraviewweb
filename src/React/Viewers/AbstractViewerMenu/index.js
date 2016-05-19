@@ -134,9 +134,9 @@ export default React.createClass({
       renderer = (
         <ImageRenderer
           ref="imageRenderer"
-          className={ style.renderer }
-          imageBuilder={ rootImageBuilder }
-          listener={ this.props.mouseListener || rootImageBuilder.getListeners() }
+          className={style.renderer}
+          imageBuilder={rootImageBuilder}
+          listener={this.props.mouseListener || rootImageBuilder.getListeners()}
         />);
     }
 
@@ -144,7 +144,7 @@ export default React.createClass({
       renderer = (
         <MultiViewRenderer
           ref="imageRenderer"
-          className={ style.renderer }
+          className={style.renderer}
           renderers={this.props.renderers}
           layout={this.props.layout}
         />);
@@ -154,67 +154,67 @@ export default React.createClass({
       renderer = (
         <GeometryRenderer
           ref="imageRenderer"
-          className={ style.renderer }
+          className={style.renderer}
           geometryBuilder={this.props.geometryBuilder}
         />);
     }
 
     return (
-      <div className={ style.container }>
+      <div className={style.container}>
         <div
-          className={ this.state.collapsed ? style.collapsedControl : style.control }
+          className={this.state.collapsed ? style.collapsedControl : style.control}
         >
-          <div className={ style.controlBar }>
+          <div className={style.controlBar}>
             <i
-              className={ magicLensController ?
+              className={magicLensController ?
                 (magicLensController.isFront() ? style.magicLensButtonIn : style.magicLensButtonOut)
-                : style.hidden }
-              onClick={ this.toggleLens }
+                : style.hidden}
+              onClick={this.toggleLens}
             >
             </i>
             <i
-              className={ (serverRecording && isImageRenderer && this.props.imageBuilder.handleRecord)
-                ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden }
-              onClick={ this.toggleRecord }
+              className={(serverRecording && isImageRenderer && this.props.imageBuilder.handleRecord)
+                ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden}
+              onClick={this.toggleRecord}
             >
             </i>
             <i
-              className={ (isImageRenderer || isGeometryViewer) ? style.resetCameraButton : style.hidden }
-              onClick={ this.resetCamera }
+              className={(isImageRenderer || isGeometryViewer) ? style.resetCameraButton : style.hidden}
+              onClick={this.resetCamera}
             >
             </i>
             <i
-              className={ (queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? style.playButton : style.hidden) }
-              onClick={ this.play }
+              className={(queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? style.playButton : style.hidden)}
+              onClick={this.play}
             >
             </i>
             <i
-              className={ (queryDataModel.isAnimating() ? style.stopButton : style.hidden) }
-              onClick={ this.stop }
+              className={(queryDataModel.isAnimating() ? style.stopButton : style.hidden)}
+              onClick={this.stop}
             >
             </i>
             <i
-              className={ (queryDataModel.hasAnimationFlag() ? style.speedButton : style.hidden) }
-              onClick={ this.updateSpeed }
+              className={(queryDataModel.hasAnimationFlag() ? style.speedButton : style.hidden)}
+              onClick={this.updateSpeed}
             >
             </i>
             <i
-              className={ (queryDataModel.hasAnimationFlag() ? style.animationSpeed : style.hidden) }
-              onClick={ this.updateSpeed }
+              className={(queryDataModel.hasAnimationFlag() ? style.animationSpeed : style.hidden)}
+              onClick={this.updateSpeed}
             >
-              { `${this.state.speeds[this.state.speedIdx]}ms` }
+              {`${this.state.speeds[this.state.speedIdx]}ms`}
             </i>
             <i
-              className={ this.state.collapsed ? style.collapsedMenuButton : style.menuButton }
-              onClick={ this.togglePanel }
+              className={this.state.collapsed ? style.collapsedMenuButton : style.menuButton}
+              onClick={this.togglePanel}
             >
             </i>
-            </div>
-            <div className={ style.controlContent }>
-                { this.props.children }
-            </div>
+          </div>
+          <div className={style.controlContent}>
+            {this.props.children}
+          </div>
         </div>
-        { renderer }
+        {renderer}
       </div>
       );
   },

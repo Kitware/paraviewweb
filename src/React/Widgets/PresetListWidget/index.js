@@ -47,19 +47,20 @@ export default React.createClass({
       names = Object.keys(presets);
 
     return (
-      <div className={ style.container }>
-        <div className={ style.bottomPadding } />
-        { names.map(name =>
+      <div className={style.container}>
+        <div className={style.bottomPadding} />
+        {names.map(name =>
           <img
-            src={ `data:image/png;base64,${presets[name]}` }
-            key={ name }
+            alt="Preset"
+            src={`data:image/png;base64,${presets[name]}`}
+            key={name}
             style={{ height }}
-            data-name={ name }
-            onClick={ this.updateActive }
-            className={ (name === activeName) ? style.activeLine : style.line }
+            data-name={name}
+            onClick={this.updateActive}
+            className={(name === activeName) ? style.activeLine : style.line}
           />
         )}
-        <div className={ style.bottomPadding } />
+        <div className={style.bottomPadding} />
       </div>);
   },
 });

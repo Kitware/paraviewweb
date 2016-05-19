@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
     get /simulations/{id}
         Get a simulation

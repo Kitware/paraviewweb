@@ -34,22 +34,22 @@ export default React.createClass({
       hasOpacity = this.props.model.hasOpacity();
 
     return (
-      <div className={ hidden ? style.hidden : style.childItem }>
-          <i
-            className={ !inEditMode ? style.deleteButtonOff : isActive ? style.activeButton : style.deleteButtonOn }
-            onClick={this.toggleActiveLayer}
-          ></i>
-          <div className={ style.label }>
-              { this.props.item.name }
-          </div>
-          <input
-            className={ hasOpacity ? style.opacity : style.hidden }
-            type="range"
-            min="0"
-            max="100"
-            value={ this.props.model.getOpacity(this.props.layer) }
-            onChange={ this.updateOpacity }
-          />
+      <div className={hidden ? style.hidden : style.childItem}>
+        <i
+          className={!inEditMode ? style.deleteButtonOff : isActive ? style.activeButton : style.deleteButtonOn}
+          onClick={this.toggleActiveLayer}
+        ></i>
+        <div className={style.label}>
+          {this.props.item.name}
+        </div>
+        <input
+          className={hasOpacity ? style.opacity : style.hidden}
+          type="range"
+          min="0"
+          max="100"
+          value={this.props.model.getOpacity(this.props.layer)}
+          onChange={this.updateOpacity}
+        />
       </div>);
   },
 

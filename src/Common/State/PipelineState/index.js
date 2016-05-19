@@ -145,12 +145,13 @@ export default class PipelineState {
   // ------------------------------------------------------------------------
 
   isLayerInEditMode(layerId) {
-    for (const key in this.editMode) {
+    let found = false;
+    Object.keys(this.editMode).forEach(key => {
       if (this.editMode[key] && key.indexOf(layerId) !== -1) {
-        return true;
+        found = true;
       }
-    }
-    return false;
+    });
+    return found;
   }
 
   // ------------------------------------------------------------------------

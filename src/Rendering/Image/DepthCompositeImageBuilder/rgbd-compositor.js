@@ -3,6 +3,10 @@ import max from 'mout/object/max';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 
+import vertexShader from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
+import fragmentShaderDisplay from './shaders/fragment/display.c';
+import fragmentShaderComposite from './shaders/fragment/composite.c';
+
 export default class RGBACompositor {
 
   // ------------------------------------------------------------------------
@@ -49,13 +53,13 @@ export default class RGBACompositor {
     this.glConfig = {
       programs: {
         displayProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/display.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderDisplay,
           mapping: 'default',
         },
         compositeProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/composite.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderComposite,
           mapping: 'default',
         },
       },

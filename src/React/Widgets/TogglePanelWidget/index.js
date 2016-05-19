@@ -52,7 +52,7 @@ export default React.createClass({
 
     return (
       <div
-        className={ style.container }
+        className={style.container}
         style={{
           width: this.props.size.button[0],
           height: this.props.size.button[1],
@@ -60,24 +60,24 @@ export default React.createClass({
         }}
       >
         <span
-          className={ this.state.panelVisible ? style.panelVisible : style.panelHidden }
+          className={this.state.panelVisible ? style.panelVisible : style.panelHidden}
           style={{
             width: this.props.size.button[0],
             height: this.props.size.button[1],
             lineHeight: this.props.size.button[1],
           }}
-          onClick={ this.togglePanel }
+          onClick={this.togglePanel}
         ></span>
-        <div className={ [style.button, buttonAnchor].join(' ') }>
-            <div
-              className={ [style.content, panelAnchor].join(' ') }
-              style={{
-                display: this.state.panelVisible ? 'block' : 'none',
-                width: this.props.size.panel[0],
-              }}
-            >
-              { this.props.children }
-            </div>
+        <div className={[style.button, buttonAnchor].join(' ')}>
+          <div
+            className={[style.content, panelAnchor].join(' ')}
+            style={{
+              display: this.state.panelVisible ? 'block' : 'none',
+              width: this.props.size.panel[0],
+            }}
+          >
+            {this.props.children}
+          </div>
         </div>
       </div>);
   },

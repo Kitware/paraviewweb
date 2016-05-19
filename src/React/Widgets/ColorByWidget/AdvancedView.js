@@ -52,38 +52,42 @@ export default React.createClass({
 
   render() {
     return (
-        <div className={ this.props.visible ? style.advancedView : style.hidden } >
-          <div className={ style.advancedViewControl }>
-            <i data-idx="0"
-              onClick={ this.updateActiveView }
-              className={ this.state.activeAdvanceView === '0' ? style.activePresetIcon : style.presetIcon }
-            ></i>
-            <i data-idx="1"
-              onClick={ this.updateActiveView }
-              className={ this.state.activeAdvanceView === '1' ? style.activeRangeIcon : style.rangeIcon }
-            ></i>
-            <i data-idx="2"
-              onClick={ this.updateActiveView }
-              className={ this.state.activeAdvanceView === '2' ? style.activeOpacityIcon : style.opacityIcon }
-            ></i>
-            <i data-idx="3"
-              onClick={ this.updateActiveView }
-              className={ this.state.activeAdvanceView === '3' ? style.activeColorEditIcon : style.colorEditIcon }
-            ></i>
-          </div>
-          <div className={ style.advancedViewContent }>
-            <PresetListWidget
-              visible={ this.state.activeAdvanceView === '0' }
-              onChange={ this.updatePreset }
-              presets={ this.props.presets }
-            />
-            <ScalarRangeWidget
-              visible={ this.state.activeAdvanceView === '1' }
-              min={ this.props.min }
-              max={ this.props.max }
-              onApply={ this.updateRange }
-            />
-          </div>
-        </div>);
+      <div className={this.props.visible ? style.advancedView : style.hidden} >
+        <div className={style.advancedViewControl}>
+          <i
+            data-idx="0"
+            onClick={this.updateActiveView}
+            className={this.state.activeAdvanceView === '0' ? style.activePresetIcon : style.presetIcon}
+          ></i>
+          <i
+            data-idx="1"
+            onClick={this.updateActiveView}
+            className={this.state.activeAdvanceView === '1' ? style.activeRangeIcon : style.rangeIcon}
+          ></i>
+          <i
+            data-idx="2"
+            onClick={this.updateActiveView}
+            className={this.state.activeAdvanceView === '2' ? style.activeOpacityIcon : style.opacityIcon}
+          ></i>
+          <i
+            data-idx="3"
+            onClick={this.updateActiveView}
+            className={this.state.activeAdvanceView === '3' ? style.activeColorEditIcon : style.colorEditIcon}
+          ></i>
+        </div>
+        <div className={style.advancedViewContent}>
+          <PresetListWidget
+            visible={this.state.activeAdvanceView === '0'}
+            onChange={this.updatePreset}
+            presets={this.props.presets}
+          />
+          <ScalarRangeWidget
+            visible={this.state.activeAdvanceView === '1'}
+            min={this.props.min}
+            max={this.props.max}
+            onApply={this.updateRange}
+          />
+        </div>
+      </div>);
   },
 });

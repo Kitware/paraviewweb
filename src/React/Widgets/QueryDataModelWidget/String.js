@@ -42,18 +42,18 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={ (this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item) }>
-        <div className={ [style.row, style.label].join(' ') } onClick={this.toggleAnimation}>
-          { this.props.model.label(this.props.arg) }
+      <div className={this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item}>
+        <div className={[style.row, style.label].join(' ')} onClick={this.toggleAnimation}>
+          {this.props.model.label(this.props.arg)}
         </div>
-        <div className={ style.row } onMouseEnter={this.grabFocus}>
+        <div className={style.row} onMouseEnter={this.grabFocus}>
           <select
-            className={ style.input }
+            className={style.input}
             ref="select"
-            value={ this.props.model.getValue(this.props.arg) }
-            onChange={ this.handleChange }
+            value={this.props.model.getValue(this.props.arg)}
+            onChange={this.handleChange}
           >
-            { this.props.model.getValues(this.props.arg).map(v =>
+            {this.props.model.getValues(this.props.arg).map(v =>
               <option key={v} value={v}>{v}</option>
             )}
           </select>
