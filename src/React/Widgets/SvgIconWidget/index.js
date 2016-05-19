@@ -30,7 +30,7 @@ export default React.createClass({
     return (
       <svg
         style={style}
-        className={ this.props.className }
+        className={this.props.className}
         dangerouslySetInnerHTML={{
           __html: `<use xlink:href="${this.props.icon}"></use>`,
         }}

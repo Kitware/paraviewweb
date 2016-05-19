@@ -32,14 +32,14 @@ export default React.createClass({
   render() {
     return (
       <div>
-          <label className={ style.label }>{this.props.label}</label>
-          <input
-            className={ style.input }
-            type="checkbox"
-            checked={this.props.value}
-            onChange={this.valueChange}
-          >
-          </input>
+        <label className={style.label}>{this.props.label}</label>
+        <input
+          className={style.input}
+          type="checkbox"
+          checked={this.props.value}
+          onChange={this.valueChange}
+        >
+        </input>
       </div>);
   },
 });

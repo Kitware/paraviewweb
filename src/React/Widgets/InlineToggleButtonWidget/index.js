@@ -55,23 +55,23 @@ export default React.createClass({
       height = this.props.height;
 
     return (
-      <div className={ style.container }>
-          { this.props.options.map((obj, idx) => {
+      <div className={style.container}>
+          {this.props.options.map((obj, idx) => {
             const isActive = (currentActive === idx),
               background = isActive ? this.props.activeColor : this.props.defaultColor,
-              className = ((idx === 0) ?
-                      (isActive ? 'activeFirst' : 'first') :
-                      (idx === this.props.options.length - 1) ?
-                          (isActive ? 'activeLast' : 'last') :
-                          (isActive ? 'activeMiddle' : 'middle'));
+              className = (idx === 0) ?
+                isActive ? 'activeFirst' : 'first' :
+                (idx === this.props.options.length - 1) ?
+                  (isActive ? 'activeLast' : 'last') :
+                  (isActive ? 'activeMiddle' : 'middle');
             if (obj.label) {
               return (
                 <button
                   style={{ lineHeight, fontSize, background }}
                   key={idx}
-                  onClick={ this.activateButton }
+                  onClick={this.activateButton}
                   data-idx={idx}
-                  className={ style[className] }
+                  className={style[className]}
                 >{obj.label}
                 </button>);
             }
@@ -80,11 +80,17 @@ export default React.createClass({
                 <div
                   style={{ lineHeight, height, fontSize, background }}
                   key={idx}
-                  onClick={ this.activateButton }
+                  onClick={this.activateButton}
                   data-idx={idx}
-                  className={ style[className] }
+                  className={style[className]}
                 >
-                <img data-idx={idx} onClick={ this.activateButton } height="100%" src={obj.img} />
+                  <img
+                    data-idx={idx}
+                    onClick={this.activateButton}
+                    height="100%"
+                    src={obj.img}
+                    alt="ToggleButton"
+                  />
                 </div>);
             }
             if (obj.icon) {
@@ -92,9 +98,9 @@ export default React.createClass({
                 <i
                   key={idx}
                   style={{ lineHeight, fontSize, background }}
-                  onClick={ this.activateButton }
+                  onClick={this.activateButton}
                   data-idx={idx}
-                  className={ [style[className], obj.icon].join(' ')}
+                  className={[style[className], obj.icon].join(' ')}
                 ></i>);
             }
             return null;

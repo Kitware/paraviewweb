@@ -53,27 +53,27 @@ export default React.createClass({
     }
 
     return (
-      <div className={ style.container }>
+      <div className={style.container}>
         <input
-          className={ style.rangeInput }
+          className={style.rangeInput}
           type="text"
           pattern="-*[0-9]*.*[0-9]*"
           name="min"
-          value={ this.state.min }
-          onChange={ this.updateRange }
+          value={this.state.min}
+          onChange={this.updateRange}
         />
         <input
-          className={ style.rangeInput }
+          className={style.rangeInput}
           type="text"
           pattern="-*[0-9]*.*[0-9]*"
           name="max"
-          value={ this.state.max }
-          onChange={ this.updateRange }
+          value={this.state.max}
+          onChange={this.updateRange}
         />
-        <div className={ style.actionLine }>
-            <i onClick={ this.apply } data-type="data" className={ style.dataRangeIcon }></i>
-            <i onClick={ this.apply } data-type="time" className={ style.timeRangeIcon }></i>
-            <i onClick={ this.apply } data-type="custom" className={ style.customRangeIcon}></i>
+        <div className={style.actionLine}>
+          <i onClick={this.apply} data-type="data" className={style.dataRangeIcon}></i>
+          <i onClick={this.apply} data-type="time" className={style.timeRangeIcon}></i>
+          <i onClick={this.apply} data-type="custom" className={style.customRangeIcon}></i>
         </div>
       </div>);
   },

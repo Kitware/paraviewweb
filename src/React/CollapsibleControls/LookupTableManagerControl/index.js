@@ -61,11 +61,11 @@ export default React.createClass({
           />
         }
       >
-      <LookupTableWidget
-        lookupTableManager={ lutManager }
-        lookupTable={ lut }
-        originalRange={ originalRange }
-      />
+        <LookupTableWidget
+          lookupTableManager={lutManager}
+          lookupTable={lut}
+          originalRange={originalRange}
+        />
       </CollapsibleWidget>
     );
   },

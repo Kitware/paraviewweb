@@ -52,8 +52,8 @@ export default React.createClass({
       pipelineDescription = pipelineModel.getPipelineDescription();
 
     return (
-      <div className={ style.container }>
-        { pipelineDescription.map((item, idx) =>
+      <div className={style.container}>
+        {pipelineDescription.map((item, idx) =>
           <RootItem
             key={idx}
             item={item}

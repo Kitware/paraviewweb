@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString, progress }) {
   function uploadChunk(uploadId, offset, chunk) {
     return new Promise((resolve, reject) => {

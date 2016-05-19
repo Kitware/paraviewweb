@@ -45,7 +45,7 @@ export default class ColorByHelper {
   }
 
   updateData(data) {
-    for (const name in data) {
+    Object.keys(data).forEach(name => {
       if (name.indexOf('_') !== -1) {
         const splitName = name.split('_'),
           layerName = encoding[Number(splitName.shift())],
@@ -53,7 +53,7 @@ export default class ColorByHelper {
 
         this.layerFloatData[layerName][colorBy] = new Float32Array(data[name].data);
       }
-    }
+    });
   }
 
   updatePipeline(query) {

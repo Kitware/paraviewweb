@@ -98,67 +98,68 @@ export default React.createClass({
   render() {
     return (
       <div
-        className={ (this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item) }
+        className={this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item}
         onKeyDown={this.updateMode}
         onKeyUp={this.resetState}
         onMouseLeave={this.disableButtons}
       >
-        <div className={ style.row }>
-          <div className={ style.label } onClick={this.toggleAnimation}>
-            { this.props.model.label(this.props.arg) }
+        <div className={style.row}>
+          <div className={style.label} onClick={this.toggleAnimation}>
+            {this.props.model.label(this.props.arg)}
           </div>
-          <div className={ style.mobileOnly }>
-            { this.props.model.getValue(this.props.arg) }
+          <div className={style.mobileOnly}>
+            {this.props.model.getValue(this.props.arg)}
           </div>
-          <div className={ [style.itemControl, style.noMobile].join(' ') }
+          <div
+            className={[style.itemControl, style.noMobile].join(' ')}
             onMouseEnter={this.enableButtons}
             onMouseLeave={this.disableButtons}
           >
-            <div className={ (this.state.button ? style.hidden : style.itemControlValue) }>
-              { this.props.model.getValue(this.props.arg) }
+            <div className={this.state.button ? style.hidden : style.itemControlValue}>
+              {this.props.model.getValue(this.props.arg)}
             </div>
             <i
-              className={ this.state.button ? (this.state.advanced ? style.firstButton : style.previousButton) : style.hidden }
-              onClick={ this.state.advanced ? this.first : this.previous }
+              className={this.state.button ? (this.state.advanced ? style.firstButton : style.previousButton) : style.hidden}
+              onClick={this.state.advanced ? this.first : this.previous}
             ></i>
             <i
-              className={ this.state.button ? (this.state.advanced ? style.lastButton : style.nextButton) : style.hidden }
-              onClick={ this.state.advanced ? this.last : this.next }
+              className={this.state.button ? (this.state.advanced ? style.lastButton : style.nextButton) : style.hidden}
+              onClick={this.state.advanced ? this.last : this.next}
             ></i>
           </div>
         </div>
-        <div className={ [style.row, style.mobileOnly].join(' ') }>
-          <div className={ style.itemControl }>
+        <div className={[style.row, style.mobileOnly].join(' ')}>
+          <div className={style.itemControl}>
             <br />
             <i
-              className={ style.firstButton }
-              onClick={ this.first }
+              className={style.firstButton}
+              onClick={this.first}
             ></i>
             <i
-              className={ style.lastButton }
-              onClick={ this.last }
+              className={style.lastButton}
+              onClick={this.last}
             ></i>
             <i
-              className={ style.previousButton }
-              onClick={ this.previous }
+              className={style.previousButton}
+              onClick={this.previous}
             ></i>
             <i
-              className={ style.nextButton }
-              onClick={ this.next }
+              className={style.nextButton}
+              onClick={this.next}
             ></i>
           </div>
         </div>
-        <div className={ style.row }>
-          <div className={ style.slider } onMouseEnter={this.grabFocus}>
-              <input
-                className={ style.input }
-                ref="slider"
-                type="range"
-                min="0"
-                max={ this.props.model.getSize(this.props.arg) - 1 }
-                value={ this.props.model.getIndex(this.props.arg) }
-                onChange={ this.onIndexChange }
-              />
+        <div className={style.row}>
+          <div className={style.slider} onMouseEnter={this.grabFocus}>
+            <input
+              className={style.input}
+              ref="slider"
+              type="range"
+              min="0"
+              max={this.props.model.getSize(this.props.arg) - 1}
+              value={this.props.model.getIndex(this.props.arg)}
+              onChange={this.onIndexChange}
+            />
           </div>
         </div>
       </div>

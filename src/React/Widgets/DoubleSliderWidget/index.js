@@ -74,19 +74,21 @@ export default React.createClass({
     var [min, max, size, value] = [this.props.min, this.props.max, this.props.size, this.state.value];
 
     return (
-      <div className={ style.container }>
-          <input type="range"
-            className={ style.rangeInput }
-            value={ Math.floor((value - min) / (max - min) * size) }
-            onChange={ this.sliderInput }
-            min="0" max={size}
-          />
-          <input type="text"
-            className={ style.textInput }
-            pattern="-*[0-9]*.*[0-9]*"
-            value={ this.state.txtValue !== null ? this.state.txtValue : this.state.value }
-            onChange={this.textInput}
-          />
+      <div className={style.container}>
+        <input
+          type="range"
+          className={style.rangeInput}
+          value={Math.floor((value - min) / (max - min) * size)}
+          onChange={this.sliderInput}
+          min="0" max={size}
+        />
+        <input
+          type="text"
+          className={style.textInput}
+          pattern="-*[0-9]*.*[0-9]*"
+          value={this.state.txtValue !== null ? this.state.txtValue : this.state.value}
+          onChange={this.textInput}
+        />
       </div>);
   },
 });

@@ -46,9 +46,9 @@ const WidgetFactoryMapping = {
         <LookupTableWidget
           key="LookupTableWidget"
           ref="LookupTableWidget"
-          originalRange={ originalRange }
-          lookupTable={ lookupTable }
-          lookupTableManager={ lookupTableManager }
+          originalRange={originalRange}
+          lookupTable={lookupTable}
+          lookupTableManager={lookupTableManager}
         />
       </CollapsibleWidget>);
   },
@@ -61,8 +61,8 @@ const WidgetFactoryMapping = {
       <LookupTableManagerControl
         key="LookupTableManagerWidget"
         ref="LookupTableManagerWidget"
-        field={ field }
-        lookupTableManager={ lookupTableManager }
+        field={field}
+        lookupTableManager={lookupTableManager}
       />);
   },
   CompositeControl({ pipelineModel }) {
@@ -71,7 +71,7 @@ const WidgetFactoryMapping = {
         <CompositePipelineWidget
           key="CompositeControl"
           ref="CompositeControl"
-          model={ pipelineModel }
+          model={pipelineModel}
         />
       </CollapsibleWidget>);
   },
@@ -80,7 +80,7 @@ const WidgetFactoryMapping = {
       <ProbeControl
         key="ProbeControl"
         ref="ProbeControl"
-        imageBuilder={ model }
+        imageBuilder={model}
       />);
   },
   LightPropertiesWidget({ light }) {

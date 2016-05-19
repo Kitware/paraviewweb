@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 
 export default React.createClass({
@@ -36,7 +37,7 @@ export default React.createClass({
   },
 
   render() {
-    return <div ref={ this.applyRef }></div>;
+    return <div ref={this.applyRef}></div>;
   },
 
 });

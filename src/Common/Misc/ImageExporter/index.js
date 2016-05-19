@@ -23,6 +23,7 @@ export default class ImageExporter {
     }
     dataToSend.arguments = data.arguments;
     dataToSend.image = data.canvas.toDataURL(this.format);
+    /* eslint-disable no-underscore-dangle */
     dataToSend.arguments.__ = ts;
 
     xhr.open('POST', '/export', true);

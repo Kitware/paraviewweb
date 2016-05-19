@@ -24,7 +24,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
     this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
       this.sprite = data.sprite;
       this.composite = data.composite.data['pixel-order'].split('+');
-      this._updateCompositeMap(this.query, this.composite);
+      this.updateCompositeMap(this.query, this.composite);
       this.render();
     }));
 
@@ -37,7 +37,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  _updateOffsetMap(query) {
+  updateOffsetMap(query) {
     var layers = this.metadata.layers,
       count = layers.length,
       offsets = this.metadata.offset;
@@ -56,7 +56,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  _updateCompositeMap(query, composite) {
+  updateCompositeMap(query, composite) {
     if (query === null || composite === null) {
       return;
     }
@@ -85,7 +85,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  _pushToFrontAsImage(width, height) {
+  pushToFrontAsImage(width, height) {
     var ctx = null;
 
     // Make sure we have a foreground buffer
@@ -110,7 +110,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  _pushToFrontAsBuffer(width, height) {
+  pushToFrontAsBuffer(width, height) {
     var readyImage = {
       canvas: this.bgCanvas.el,
       imageData: this.bgCanvas.el.getContext('2d').getImageData(0, 0, width, height),
@@ -135,8 +135,8 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
   setPipelineQuery(query) {
     if (this.query !== query) {
       this.query = query;
-      this._updateOffsetMap(query);
-      this._updateCompositeMap(query, this.composite);
+      this.updateOffsetMap(query);
+      this.updateCompositeMap(query, this.composite);
       this.render();
     }
   }
@@ -189,7 +189,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
         }
       }
 
-      this._pushToFrontAsBuffer(dimensions[0], dimensions[1]);
+      this.pushToFrontAsBuffer(dimensions[0], dimensions[1]);
     } else {
       this.sprite.image.onload = () => {
         this.render();

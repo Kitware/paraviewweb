@@ -71,9 +71,9 @@ export default React.createClass({
         queryDataModel={queryDataModel}
         magicLensController={magicLensController}
         imageBuilder={imageBuilder}
-        config={ this.props.config || {} }
+        config={this.props.config || {}}
       >
-        { controlWidgets }
+        {controlWidgets}
       </AbstractViewerMenu>
     );
   },

@@ -154,47 +154,54 @@ export default React.createClass({
     }
 
     return (
-      <div className={ [style.container, this.props.className].join(' ') }>
-        <div className={ style.line}>
-          <i className={ style.representationIcon }></i>
-          <select className={ style.input }
-            value={ this.state.representationValue }
-            onChange={ this.onRepresentationChange }
+      <div className={[style.container, this.props.className].join(' ')}>
+        <div className={style.line}>
+          <i className={style.representationIcon}></i>
+          <select
+            className={style.input}
+            value={this.state.representationValue}
+            onChange={this.onRepresentationChange}
           >
-            { this.state.representationValues.map((v, idx) =>
+            {this.state.representationValues.map((v, idx) =>
               <option key={idx} value={v}>{v}</option>
             )}
           </select>
         </div>
-        <div className={ style.line}>
-          <i className={ style.colorIcon }></i>
-          <select className={ style.input }
-            value={ this.state.colorValue }
-            onChange={ this.onColorChange }
+        <div className={style.line}>
+          <i className={style.colorIcon}></i>
+          <select
+            className={style.input}
+            value={this.state.colorValue}
+            onChange={this.onColorChange}
           >
-            { this.state.colorValues.map((c, idx) =>
+            {this.state.colorValues.map((c, idx) =>
               <option key={idx} value={c.location ? [c.location, c.name].join(SEP) : ''}>
                 {c.location ? `(${c.location === 'POINTS' ? 'p' : 'c'}${c.size}) ${c.name}` : c.name}
               </option>
             )}
           </select>
         </div>
-        <div className={ style.line }>
+        <div className={style.line}>
           <i
-            onClick={ this.toggleAdvancedView }
-            className={ this.state.advancedView ? style.advanceIconOn : style.advanceIconOff }
+            onClick={this.toggleAdvancedView}
+            className={this.state.advancedView ? style.advanceIconOn : style.advanceIconOff}
           >
           </i>
-          { this.props.scalarBar && this.state.colorValue && this.state.colorValue.split(SEP)[1].length ?
-            <img onClick={ this.toggleScalarBar } className={ style.scalarBar } src={ `data:image/png;base64,${this.props.scalarBar}` } />
-            : <div className={ style.scalarBar } style={{ backgroundColor: this.state.solidColor }}></div>
-          }
+          {this.props.scalarBar && this.state.colorValue && this.state.colorValue.split(SEP)[1].length ?
+            <img
+              onClick={this.toggleScalarBar}
+              className={style.scalarBar}
+              src={`data:image/png;base64,${this.props.scalarBar}`}
+              alt="ScalarBar"
+            />
+            : <div className={style.scalarBar} style={{ backgroundColor: this.state.solidColor }}></div>
+         }
           <i
-            onClick={ this.toggleScalarBar }
-            className={ this.state.scalarBarVisible ? style.scalarBarIconOn : style.scalarBarIconOff }
+            onClick={this.toggleScalarBar}
+            className={this.state.scalarBarVisible ? style.scalarBarIconOn : style.scalarBarIconOff}
           ></i>
         </div>
-        <AdvancedView visible={this.state.advancedView} { ...this.props } />
+        <AdvancedView visible={this.state.advancedView} {...this.props} />
       </div>);
   },
 });

@@ -152,43 +152,46 @@ export default React.createClass({
     }
 
     return (
-        <div>
-            <CollapsibleWidget title="Render method" visible={ imageBuilder.isRenderMethodMutable() } >
-              <select
-                style={{ width: '100%' }}
-                value={ imageBuilder.getRenderMethod() }
-                onChange={ this.updateRenderMethod }
-              >
-                { imageBuilder.getRenderMethods().map(v => <option key={v} value={v}>{v}</option>) }
-              </select>
-            </CollapsibleWidget>
-            <CollapsibleWidget
-              title="Probe"
-              subtitle={ this.state.showFieldValue ? valueStr : ''}
-              ref="ProbeInput"
-              onChange={ this.onProbeVisibilityChange }
-              open={imageBuilder.isCrossHairEnabled()}
-            >
-              <NumberSliderWidget name="0"
-                min="0" max={ imageBuilder.metadata.dimensions[0] - 1 }
-                key="slider-x"
-                value={this.state.probe[0]}
-                onChange={ this.probeChange }
-              />
-              <NumberSliderWidget name="1"
-                min="0" max={ imageBuilder.metadata.dimensions[1] - 1 }
-                key="slider-Y"
-                value={this.state.probe[1]}
-                onChange={ this.probeChange }
-              />
-              <NumberSliderWidget name="2"
-                min="0" max={ imageBuilder.metadata.dimensions[2] - 1 }
-                key="slider-Z"
-                value={this.state.probe[2]}
-                onChange={ this.probeChange }
-              />
-            </CollapsibleWidget>
-        </div>
+      <div>
+        <CollapsibleWidget title="Render method" visible={imageBuilder.isRenderMethodMutable()} >
+          <select
+            style={{ width: '100%' }}
+            value={imageBuilder.getRenderMethod()}
+            onChange={this.updateRenderMethod}
+          >
+            {imageBuilder.getRenderMethods().map(v => <option key={v} value={v}>{v}</option>)}
+          </select>
+        </CollapsibleWidget>
+        <CollapsibleWidget
+          title="Probe"
+          subtitle={this.state.showFieldValue ? valueStr : ''}
+          ref="ProbeInput"
+          onChange={this.onProbeVisibilityChange}
+          open={imageBuilder.isCrossHairEnabled()}
+        >
+          <NumberSliderWidget
+            name="0"
+            min="0" max={imageBuilder.metadata.dimensions[0] - 1}
+            key="slider-x"
+            value={this.state.probe[0]}
+            onChange={this.probeChange}
+          />
+          <NumberSliderWidget
+            name="1"
+            min="0" max={imageBuilder.metadata.dimensions[1] - 1}
+            key="slider-Y"
+            value={this.state.probe[1]}
+            onChange={this.probeChange}
+          />
+          <NumberSliderWidget
+            name="2"
+            min="0" max={imageBuilder.metadata.dimensions[2] - 1}
+            key="slider-Z"
+            value={this.state.probe[2]}
+            onChange={this.probeChange}
+          />
+        </CollapsibleWidget>
+      </div>
     );
   },
 });

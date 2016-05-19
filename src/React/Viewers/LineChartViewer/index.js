@@ -217,35 +217,35 @@ export default React.createClass({
     Object.keys(this.state.fieldsColors).forEach(name => {
       const color = this.state.fieldsColors[name];
       legend.push(
-        <li className={ style.legendItem } key={name}>
-          <i className={ style.legendItemColor } style={{ color }}></i>
+        <li className={style.legendItem} key={name}>
+          <i className={style.legendItemColor} style={{ color }}></i>
           <b>{name}</b>
-          <span className={ style.legendItemValue } ref={name}></span>
+          <span className={style.legendItemValue} ref={name}></span>
         </li>);
     });
 
     return (
-      <div className={ style.container }>
+      <div className={style.container}>
         <canvas
-          className={ style.canvas }
+          className={style.canvas}
           ref="canvas"
-          onMouseMove={ this.onMove }
+          onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
         >
         </canvas>
-        <div className={ this.state.legend ? style.legend : style.hidden }>
-          <div className={ style.legendBar }>
-            <span className={ style.legendText } ref="xValueLabel"></span>
-            <i className={ style.toggleLegendButton } onClick={ this.toggleLegend }></i>
+        <div className={this.state.legend ? style.legend : style.hidden}>
+          <div className={style.legendBar}>
+            <span className={style.legendText} ref="xValueLabel"></span>
+            <i className={style.toggleLegendButton} onClick={this.toggleLegend}></i>
           </div>
-          <ul className={ style.legendContent }>
-            { legend }
+          <ul className={style.legendContent}>
+            {legend}
           </ul>
         </div>
-        <div className={ this.state.legend ? style.hidden : style.legend } onClick={ this.toggleLegend }>
-          <div className={ style.legendButtons }>
-            <i className={ style.toggleLegendButton }></i>
+        <div className={this.state.legend ? style.hidden : style.legend} onClick={this.toggleLegend}>
+          <div className={style.legendButtons}>
+            <i className={style.toggleLegendButton}></i>
           </div>
         </div>
       </div>

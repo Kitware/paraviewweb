@@ -2,6 +2,7 @@ import React      from 'react';
 import ReactDOM   from 'react-dom';
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 import style      from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
+
 function sortById(a, b) {
   return Number(a.id) < Number(b.id);
 }
@@ -304,8 +305,9 @@ export default React.createClass({
         ty = cy + radius - 1;
 
       return (
-        <g key={ `node-${index}` } className={ style.cursor }>
-          <circle data-id={el.y}
+        <g key={`node-${index}`} className={style.cursor}>
+          <circle
+            data-id={el.y}
             cx={cx}
             cy={cy}
             r={radius}
@@ -315,7 +317,7 @@ export default React.createClass({
             onClick={this.toggleVisibility}
           />
           <text
-            className={ style.regularText }
+            className={style.regularText}
             data-id={el.y}
             x={tx}
             y={ty}
@@ -340,7 +342,7 @@ export default React.createClass({
 
       return (
         <path
-          key={ `branch-${index}` }
+          key={`branch-${index}`}
           d={`M${x1},${y1} L${x1},${y2}`}
           stroke={strokeColor}
           strokeWidth={stroke}
@@ -363,7 +365,7 @@ export default React.createClass({
 
       return (
         <path
-          key={ `fork-${index}` }
+          key={`fork-${index}`}
           d={dPath}
           stroke={strokeColor}
           strokeWidth={stroke}
@@ -377,7 +379,7 @@ export default React.createClass({
 
     return this.state.actives.map((el, index) =>
       <rect
-        key={ `active-${index}` }
+        key={`active-${index}`}
         data-id={this.state.nodes[el].y}
         x="-50"
         width="1000"
@@ -401,11 +403,11 @@ export default React.createClass({
 
       return (
         <text
-          key={ `delete-${idx}` }
-          className={ style.iconText }
-          onClick={ this.deleteNode }
-          data-id={ node.y }
-          x={ Number(width) - offset - 10}
+          key={`delete-${idx}`}
+          className={style.iconText}
+          onClick={this.deleteNode}
+          data-id={node.y}
+          x={Number(width) - offset - 10}
           y={deltaY * node.y + deltaY / 2 + radius - 1}
           fill={currentTextColor}
         >&#xf014;
@@ -415,12 +417,17 @@ export default React.createClass({
 
   render() {
     return (
-      <svg style={this.props.style} width={this.props.width} height={ `${this.props.deltaY * this.state.nodes.length}px` } onClick={ this.toggleActive }>
-        { this.renderActives() }
-        { this.renderBranches() }
-        { this.renderForks() }
-        { this.renderNodes() }
-        { this.renderDeleteActions() }
+      <svg
+        style={this.props.style}
+        width={this.props.width}
+        height={`${this.props.deltaY * this.state.nodes.length}px`}
+        onClick={this.toggleActive}
+      >
+        {this.renderActives()}
+        {this.renderBranches()}
+        {this.renderForks()}
+        {this.renderNodes()}
+        {this.renderDeleteActions()}
       </svg>);
   },
 });

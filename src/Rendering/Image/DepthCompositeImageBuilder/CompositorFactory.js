@@ -11,13 +11,16 @@ const
   };
 
 function createCompositor(dataType, options) {
-  for (const type in CompositorMap) {
-    if (contains(dataType, type)) {
-      return new CompositorMap[type](options);
+  let instance = null;
+  Object.keys(CompositorMap).forEach(type => {
+    if (!instance && contains(dataType, type)) {
+      instance = new CompositorMap[type](options);
     }
+  });
+  if (!instance) {
+    console.error('No compositor found for type', dataType);
   }
-  console.error('No compositor found for type', dataType);
-  return null;
+  return instance;
 }
 
 export default {

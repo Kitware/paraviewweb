@@ -33,17 +33,14 @@ export default React.createClass({
       uiContents = (content) => factory(content, viewData, this.valueChange),
       uiContainer = (property) => (
         <div key={property.title}>
-            <div className={ style.propertyHeader }>
-                <strong>
-                    {property.title}
-                </strong>
-            </div>
-            {property.contents.map(uiContents)}
+          <div className={style.propertyHeader}>
+            <strong>{property.title}</strong>
+          </div>
+          {property.contents.map(uiContents)}
         </div>);
 
-
     return (
-      <section className={ [this.props.className, style.propertyPanel].join(' ') }>
+      <section className={[this.props.className, style.propertyPanel].join(' ')}>
         {this.props.input.map(uiContainer)}
       </section>);
   },

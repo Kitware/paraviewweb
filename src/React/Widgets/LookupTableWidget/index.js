@@ -285,93 +285,92 @@ export default React.createClass({
       ];
 
     return (
-        <div className={ style.container }>
-            <div className={ style.line }>
-              <i
-                className={ style.editButton }
-                onClick={ this.toggleEditMode }
-              ></i>
-              <canvas
-                ref="canvas"
-                className={ style.canvas }
-                width={ this.props.lookupTable.colorTableSize * this.props.lookupTable.scale }
-                height="1"
-              ></canvas>
-              <i
-                className={ style.presetButton }
-                onClick={ this.togglePresetMode }
-              ></i>
-            </div>
-            <div className={ style.range } style={ STYLE.range[this.state.mode]}>
-              <NumberInputWidget
-                ref="min"
-                className={ style.input }
-                value={this.props.lookupTable.getScalarRange()[0]}
-                onChange={this.updateScalarRange}
-              />
-              <i
-                onClick={ this.resetRange }
-                className={ style.resetRangeButton }
-              ></i>
-              <NumberInputWidget
-                ref="max"
-                className={ style.inputRight }
-                value={this.props.lookupTable.getScalarRange()[1]}
-                onChange={this.updateScalarRange}
-              />
-            </div>
-            <div className={ style.editContent } style={ STYLE.editContent[this.state.mode]}>
-                <div className={ style.line }>
-                    <i
-                      onClick={ this.previousControlPoint }
-                      className={ style.previousButton }
-                    ></i>
-                    <div className={ style.label }>{ this.state.currentControlPointIndex + 1 } / { this.props.lookupTable.getNumberOfControlPoints() }</div>
-                    <i
-                      onClick={ this.nextControlPoint }
-                      className={ style.nextButton }
-                    ></i>
-                    <i
-                      onClick={ this.addControlPoint }
-                      className={ style.addButton }
-                    ></i>
-                    <NumberInputWidget
-                      ref="x"
-                      className={ style.inputRight }
-                      value={controlPointValue}
-                      onChange={this.updateScalar }
-                    />
-                    <i
-                      onClick={ this.deleteControlPoint }
-                      className={ style.deleteButton }
-                    ></i>
-                </div>
-                <ColorPicker color={ color } onChange={ this.updateRGB } />
-            </div>
-            <div className={ style.presets } style={ STYLE.presets[this.state.mode]}>
-                <i
-                  onClick={ this.previousPreset }
-                  className={
-                    (this.state.activePreset === this.props.lookupTable.getPresets()[0]
-                    ? style.disablePreviousButton : style.previousButton) }
-                ></i>
-                { this.props.lookupTable.getPresets().map(preset =>
-                  <div
-                    onClick={ this.setPreset }
-                    onScroll={ this.changePreset }
-                    onWheel={ this.changePreset }
-                    className={ (this.state.activePreset === preset ? style.preset : style.hiddenPreset) }
-                    data-name={preset}
-                    key={preset}
-                  >{preset}</div>
-                )}
-                <i
-                  onClick={ this.nextPreset }
-                  className={ (this.state.activePreset === this.props.lookupTable.getPresets()[this.props.lookupTable.getPresets().length - 1]
-                    ? style.disableNextButton : style.nextButton)}
-                ></i>
-            </div>
+      <div className={style.container}>
+        <div className={style.line}>
+          <i
+            className={style.editButton}
+            onClick={this.toggleEditMode}
+          ></i>
+          <canvas
+            ref="canvas"
+            className={style.canvas}
+            width={this.props.lookupTable.colorTableSize * this.props.lookupTable.scale}
+            height="1"
+          ></canvas>
+          <i
+            className={style.presetButton}
+            onClick={this.togglePresetMode}
+          ></i>
         </div>
-    );
+        <div className={style.range} style={STYLE.range[this.state.mode]}>
+          <NumberInputWidget
+            ref="min"
+            className={style.input}
+            value={this.props.lookupTable.getScalarRange()[0]}
+            onChange={this.updateScalarRange}
+          />
+          <i
+            onClick={this.resetRange}
+            className={style.resetRangeButton}
+          ></i>
+          <NumberInputWidget
+            ref="max"
+            className={style.inputRight}
+            value={this.props.lookupTable.getScalarRange()[1]}
+            onChange={this.updateScalarRange}
+          />
+        </div>
+        <div className={style.editContent} style={STYLE.editContent[this.state.mode]}>
+          <div className={style.line}>
+            <i
+              onClick={this.previousControlPoint}
+              className={style.previousButton}
+            ></i>
+            <div className={style.label}>{this.state.currentControlPointIndex + 1} / {this.props.lookupTable.getNumberOfControlPoints()}</div>
+            <i
+              onClick={this.nextControlPoint}
+              className={style.nextButton}
+            ></i>
+            <i
+              onClick={this.addControlPoint}
+              className={style.addButton}
+            ></i>
+            <NumberInputWidget
+              ref="x"
+              className={style.inputRight}
+              value={controlPointValue}
+              onChange={this.updateScalar}
+            />
+            <i
+              onClick={this.deleteControlPoint}
+              className={style.deleteButton}
+            ></i>
+          </div>
+          <ColorPicker color={color} onChange={this.updateRGB} />
+        </div>
+        <div className={style.presets} style={STYLE.presets[this.state.mode]}>
+          <i
+            onClick={this.previousPreset}
+            className={
+              this.state.activePreset === this.props.lookupTable.getPresets()[0]
+              ? style.disablePreviousButton : style.previousButton}
+          ></i>
+          {this.props.lookupTable.getPresets().map(preset =>
+            <div
+              onClick={this.setPreset}
+              onScroll={this.changePreset}
+              onWheel={this.changePreset}
+              className={(this.state.activePreset === preset ? style.preset : style.hiddenPreset)}
+              data-name={preset}
+              key={preset}
+            >{preset}</div>
+          )}
+          <i
+            onClick={this.nextPreset}
+            className={(this.state.activePreset === this.props.lookupTable.getPresets()[this.props.lookupTable.getPresets().length - 1]
+              ? style.disableNextButton : style.nextButton)}
+          ></i>
+        </div>
+      </div>);
   },
 });

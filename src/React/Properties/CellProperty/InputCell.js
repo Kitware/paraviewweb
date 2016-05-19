@@ -96,13 +96,13 @@ export default React.createClass({
 
   render() {
     return (
-      <td className={ style.inputCell }>
-        <label className={ style.inputCellLabel }>{this.props.label}</label>
+      <td className={style.inputCell}>
+        <label className={style.inputCellLabel}>{this.props.label}</label>
         <input
-          className={ style.inputCellInput }
+          className={style.inputCellInput}
           value={this.state.editing ? this.state.valueRep : this.props.value}
           onChange={this.valueChange}
-          title={ this.getTooltip() }
+          title={this.getTooltip()}
           onBlur={this.endEditing}
         />
       </td>);

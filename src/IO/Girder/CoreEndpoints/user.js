@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
   return {
     listUsers(query) {

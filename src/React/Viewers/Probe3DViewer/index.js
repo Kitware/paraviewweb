@@ -179,72 +179,72 @@ export default React.createClass({
     });
 
     return (
-      <div className={ style.container }>
-          <AbstractViewerMenu queryDataModel={queryDataModel} imageBuilder={imageBuilder} mouseListener={imageBuilder.getListeners()}>
-              <LookupTableManagerControl
-                key="LookupTableManagerWidget"
-                ref="LookupTableManagerWidget"
-                lookupTableManager={ imageBuilder.lookupTableManager }
-                field={ imageBuilder.getField() }
-              />
-              <ProbeControl
-                ref="ProbeControl"
-                imageBuilder={ imageBuilder }
-              />
-              <CollapsibleWidget
-                ref="chartCollapsable"
-                title="Chart"
-                visible={this.props.probe && imageBuilder.isCrossHairEnabled()}
-                onChange={this.onChartVisibilityChange}
-                open={this.state.chartVisible}
-              >
-                <div
-                  ref="chartButtons"
-                  className={ style.row }
-                >
-                  <button
-                    className={ buttonClasses[0] }
-                    type="button"
-                    data-index="0"
-                    onClick={ this.updateChart }
-                  >X</button>
-                  <button
-                    className={ buttonClasses[1] }
-                    type="button"
-                    data-index="1"
-                    onClick={ this.updateChart }
-                  >Y</button>
-                  <button
-                    className={ buttonClasses[2] }
-                    type="button"
-                    data-index="2"
-                    onClick={ this.updateChart }
-                  >Z</button>
-              </div>
-              </CollapsibleWidget>
-              <CollapsibleWidget
-                ref="queryDataModelParameters"
-                title="Parameters"
-                visible={ queryDataModel.originalData.arguments_order.length > 0 }
-              >
-                <QueryDataModelWidget model={queryDataModel} />
-              </CollapsibleWidget>
-          </AbstractViewerMenu>
-          <div
-            ref="chartContainer"
-            className={ (this.state.chartVisible && imageBuilder.isCrossHairEnabled()) ? style.chartContainer : style.hidden }
-            onMouseMove={ this.dragChart }
-            onMouseUp={ this.dragOff }
-            onMouseDown={ this.dragOn }
+      <div className={style.container}>
+        <AbstractViewerMenu queryDataModel={queryDataModel} imageBuilder={imageBuilder} mouseListener={imageBuilder.getListeners()}>
+          <LookupTableManagerControl
+            key="LookupTableManagerWidget"
+            ref="LookupTableManagerWidget"
+            lookupTableManager={imageBuilder.lookupTableManager}
+            field={imageBuilder.getField()}
+          />
+          <ProbeControl
+            ref="ProbeControl"
+            imageBuilder={imageBuilder}
+          />
+          <CollapsibleWidget
+            ref="chartCollapsable"
+            title="Chart"
+            visible={this.props.probe && imageBuilder.isCrossHairEnabled()}
+            onChange={this.onChartVisibilityChange}
+            open={this.state.chartVisible}
           >
-            <LineChartViewer
-              ref="chartViewer"
-              cursor={ (this.state.probe[this.state.chartAxis] / dimensions[this.state.chartAxis]) }
-              data={this.state.chartData}
-              width={ this.state.chartSize.width }
-              height={ this.state.chartSize.height }
-            />
-          </div>
+            <div
+              ref="chartButtons"
+              className={style.row}
+            >
+              <button
+                className={buttonClasses[0]}
+                type="button"
+                data-index="0"
+                onClick={this.updateChart}
+              >X</button>
+              <button
+                className={buttonClasses[1]}
+                type="button"
+                data-index="1"
+                onClick={this.updateChart}
+              >Y</button>
+              <button
+                className={buttonClasses[2]}
+                type="button"
+                data-index="2"
+                onClick={this.updateChart}
+              >Z</button>
+            </div>
+          </CollapsibleWidget>
+          <CollapsibleWidget
+            ref="queryDataModelParameters"
+            title="Parameters"
+            visible={queryDataModel.originalData.arguments_order.length > 0}
+          >
+            <QueryDataModelWidget model={queryDataModel} />
+          </CollapsibleWidget>
+        </AbstractViewerMenu>
+        <div
+          ref="chartContainer"
+          className={(this.state.chartVisible && imageBuilder.isCrossHairEnabled()) ? style.chartContainer : style.hidden}
+          onMouseMove={this.dragChart}
+          onMouseUp={this.dragOff}
+          onMouseDown={this.dragOn}
+        >
+          <LineChartViewer
+            ref="chartViewer"
+            cursor={(this.state.probe[this.state.chartAxis] / dimensions[this.state.chartAxis])}
+            data={this.state.chartData}
+            width={this.state.chartSize.width}
+            height={this.state.chartSize.height}
+          />
+        </div>
       </div>);
   },
 });

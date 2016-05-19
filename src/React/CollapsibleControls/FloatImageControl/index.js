@@ -82,55 +82,56 @@ export default React.createClass({
       height = floatImageModel.dimensions[1];
 
     return (
-      <div className={ style.container }>
+      <div className={style.container}>
         <CollapsibleWidget title="Scene">
-          { floatImageModel.getLayers().map((item, idx) =>
+          {floatImageModel.getLayers().map((item, idx) =>
             <LayerItem key={idx} item={item} model={floatImageModel} />
           )}
-          <div className={ style.item }>
-            <div className={ style.label }>
+          <div className={style.item}>
+            <div className={style.label}>
               Light
             </div>
-            <div className={ style.actions }>
-              <input className={ style.lightSlider }
+            <div className={style.actions}>
+              <input
+                className={style.lightSlider}
                 type="range" min="0" max="128"
                 value={255 - floatImageModel.getLight()}
-                onChange={ this.updateLight }
+                onChange={this.updateLight}
               />
             </div>
           </div>
-          </CollapsibleWidget>
-          <CollapsibleWidget
-            title="Time probe"
-            open={timeProbe.enabled}
-            subtitle={ timeProbe.enabled ? timeProbe.value : '' }
-            visible={ floatImageModel.isMultiView() }
-            onChange={ this.toggleProbe }
-          >
-            <div className={ style.item }>
-              <div className={ style.label }>
-                  X
-              </div>
-              <div className={ style.actions }>
-                <NumberSliderWidget
-                  step={1} min={0.0} max={width}
-                  key="x" value={this.state.x} name="x"
-                  onChange={this.onProbeChange}
-                />
-              </div>
+        </CollapsibleWidget>
+        <CollapsibleWidget
+          title="Time probe"
+          open={timeProbe.enabled}
+          subtitle={timeProbe.enabled ? timeProbe.value : ''}
+          visible={floatImageModel.isMultiView()}
+          onChange={this.toggleProbe}
+        >
+          <div className={style.item}>
+            <div className={style.label}>
+                X
             </div>
-            <div className={ style.item }>
-              <div className={ style.label }>
-                Y
-              </div>
-              <div className={ style.actions }>
-                <NumberSliderWidget
-                  step={1} min={0.0} max={height}
-                  key="y" value={this.state.y} name="y" onChange={this.onProbeChange}
-                />
-              </div>
+            <div className={style.actions}>
+              <NumberSliderWidget
+                step={1} min={0.0} max={width}
+                key="x" value={this.state.x} name="x"
+                onChange={this.onProbeChange}
+              />
             </div>
-          </CollapsibleWidget>
+          </div>
+          <div className={style.item}>
+            <div className={style.label}>
+              Y
+            </div>
+            <div className={style.actions}>
+              <NumberSliderWidget
+                step={1} min={0.0} max={height}
+                key="y" value={this.state.y} name="y" onChange={this.onProbeChange}
+              />
+            </div>
+          </div>
+        </CollapsibleWidget>
       </div>
       );
   },

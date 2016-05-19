@@ -86,11 +86,11 @@ export default class QueryDataModel {
         this.lastPlay = +(new Date());
 
         // Move all flagged arg to next()
-        for (const argName in this.args) {
+        Object.keys(this.args).forEach(argName => {
           if (this.args[argName].anime) {
             changeDetected = this.next(argName) || changeDetected;
           }
-        }
+        });
 
         // Keep moving if change detected
         if (changeDetected) {
@@ -503,12 +503,13 @@ export default class QueryDataModel {
 
   // Check if one of the argument is currently active for the animation
   hasAnimationFlag() {
-    for (const key in this.args) {
+    let flag = false;
+    Object.keys(this.args).forEach(key => {
       if (this.args[key].anime) {
-        return true;
+        flag = true;
       }
-    }
-    return false;
+    });
+    return flag;
   }
 
   // Return true if an animation is currently running

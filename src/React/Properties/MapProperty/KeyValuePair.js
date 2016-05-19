@@ -42,26 +42,26 @@ export default React.createClass({
   render() {
     return (
       <tr>
-        <td className={ style.inputColumn }>
+        <td className={style.inputColumn}>
           <input
-            className={ style.input }
+            className={style.input}
             name="name"
             type="text"
             value={this.props.value.name}
             onChange={this.valueChange}
           />
         </td>
-        <td className={ style.inputColumn }>
+        <td className={style.inputColumn}>
           <input
-            className={ style.input }
+            className={style.input}
             name="value"
             type="text"
             value={this.props.value.value}
             onChange={this.valueChange}
           />
         </td>
-        <td className={ style.actionColumn }>
-          <i className={ style.deleteButton } onClick={ this.removeItem }></i>
+        <td className={style.actionColumn}>
+          <i className={style.deleteButton} onClick={this.removeItem}></i>
         </td>
       </tr>);
   },

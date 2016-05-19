@@ -10,10 +10,10 @@ const EVENT_TOPIC = 'girder.notification';
 class Observable {}
 Monologue.mixInto(Observable);
 
-const _LOGIN_PROMISE = () => new Promise((resolve, reject) => {
+const loginPromiseBuilder = () => new Promise((resolve, reject) => {
   resolve();
 });
-const _LOGOUT_PROMISE = () => new Promise((resolve, reject) => {
+const logoutPromiseBuilder = () => new Promise((resolve, reject) => {
   reject();
 });
 // ----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ export function build(config = location, ...extensions) {
 
           // Broadcast information
           /* eslint-disable babel/new-cap */
-          loginPromise = state ? _LOGIN_PROMISE() : _LOGOUT_PROMISE();
+          loginPromise = state ? loginPromiseBuilder() : logoutPromiseBuilder();
           /* eslint-enable babel/new-cap */
           notification.emit(AUTH_CHANGE_TOPIC, isAuthenticated);
           if (isAuthenticated && eventSource === null) {

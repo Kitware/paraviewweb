@@ -51,7 +51,7 @@ export default React.createClass({
   render() {
     return (
       <input
-        className={ this.props.className }
+        className={this.props.className}
         type="number"
         min={this.props.min}
         max={this.props.max}

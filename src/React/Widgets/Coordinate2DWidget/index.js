@@ -170,20 +170,28 @@ export default React.createClass({
 
   render() {
     return (
-      <section className={ style.container }>
-        <canvas ref="canvas" className={ style.canvas }
-          width={ this.props.width }
-          height={ this.props.height }
+      <section className={style.container}>
+        <canvas
+          ref="canvas"
+          className={style.canvas}
+          width={this.props.width}
+          height={this.props.height}
         ></canvas>
-        <section className={ (this.props.hideXY ? style.hidden : style.inputContainer) } >
-          <label className={ style.inputLabel }> x: </label>
-          <input className={ style.input } type="number" onChange={ this.updateX }
-            min="-1.0" max="1.0" step="0.01" value={ this.state.x }
+        <section className={(this.props.hideXY ? style.hidden : style.inputContainer)} >
+          <label className={style.inputLabel}> x: </label>
+          <input
+            className={style.input}
+            type="number"
+            onChange={this.updateX}
+            min="-1.0" max="1.0" step="0.01" value={this.state.x}
           />
           <br />
-          <label className={ style.inputLabel }> y: </label>
-          <input className={ style.input } type="number" onChange={ this.updateY }
-            min="-1.0" max="1.0" step="0.01" value={ this.state.y }
+          <label className={style.inputLabel}> y: </label>
+          <input
+            className={style.input}
+            type="number"
+            onChange={this.updateY}
+            min="-1.0" max="1.0" step="0.01" value={this.state.y}
           />
         </section >
       </section>

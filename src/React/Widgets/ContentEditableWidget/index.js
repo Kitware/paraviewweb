@@ -68,10 +68,10 @@ export default React.createClass({
   render() {
     return (
       <div
-        className={ this.props.className }
+        className={this.props.className}
         onInput={this.emitChange}
         onBlur={this.emitChange}
-        onKeyPress={ this.props.blurOnEnter ? this.blurEditable : noOp }
+        onKeyPress={this.props.blurOnEnter ? this.blurEditable : noOp}
         contentEditable
         dangerouslySetInnerHTML={{ __html: this.props.html }}
       ></div>);

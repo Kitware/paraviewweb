@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 function jsonToString(data) {
   return JSON.stringify(data);
 }

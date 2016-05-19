@@ -128,51 +128,53 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={ style.container }>
-        <div className={ style.activeColor }>
-          <canvas className={ style.colorCanvas }
+      <div className={style.container}>
+        <div className={style.activeColor}>
+          <canvas
+            className={style.colorCanvas}
             ref="canvas"
             width="1"
             height="1"
           >
           </canvas>
           <input
-            className={ style.colorRGB }
+            className={style.colorRGB}
             type="number"
             min="0"
             max="255"
-            value={ this.state.color[0] }
+            value={this.state.color[0]}
             data-color-idx="0"
-            onChange={ this.rgbColorChange }
+            onChange={this.rgbColorChange}
           />
           <input
-            className={ style.colorRGB }
+            className={style.colorRGB}
             type="number"
             min="0"
             max="255"
-            value={ this.state.color[1] }
+            value={this.state.color[1]}
             data-color-idx="1"
-            onChange={ this.rgbColorChange }
+            onChange={this.rgbColorChange}
           />
           <input
-            className={ style.colorRGB }
+            className={style.colorRGB}
             type="number"
             min="0"
             max="255"
-            value={ this.state.color[2] }
+            value={this.state.color[2]}
             data-color-idx="2"
-            onChange={ this.rgbColorChange }
+            onChange={this.rgbColorChange}
           />
         </div>
-        <div className={ style.swatch }>
+        <div className={style.swatch}>
           <img
+            alt="swatch"
             ref="swatch"
-            className={ style.swatchImage }
+            className={style.swatchImage}
             width="100%"
-            src={ this.state.swatch }
-            onClick={ this.showColor }
-            onMouseMove={ this.showColor }
-            onMouseLeave={ this.showColor }
+            src={this.state.swatch}
+            onClick={this.showColor}
+            onMouseMove={this.showColor}
+            onMouseLeave={this.showColor}
           />
         </div>
       </div>

@@ -33,22 +33,22 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={ style.container } onClick={ this.toggleDropdown }>
-          {this.state.field}
-          <ul className={ this.state.open ? style.list : style.hidden }>
-              { this.props.fields.map(v => {
-                // this pops up in there for some reason.
-                if (v === '__internal') {
-                  return null;
-                }
+      <div className={style.container} onClick={this.toggleDropdown}>
+        {this.state.field}
+        <ul className={this.state.open ? style.list : style.hidden}>
+            {this.props.fields.map(v => {
+              // this pops up in there for some reason.
+              if (v === '__internal') {
+                return null;
+              }
 
-                if (v === this.state.field) {
-                  return <li className={ style.selectedItem } key={v} onClick={this.setField}>{v}</li>;
-                }
+              if (v === this.state.field) {
+                return <li className={style.selectedItem} key={v} onClick={this.setField}>{v}</li>;
+              }
 
-                return <li className={ style.item } key={v} onClick={this.setField}>{v}</li>;
-              })}
-          </ul>
+              return <li className={style.item} key={v} onClick={this.setField}>{v}</li>;
+            })}
+        </ul>
       </div>
     );
   },

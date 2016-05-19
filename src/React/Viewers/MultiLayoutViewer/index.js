@@ -93,10 +93,10 @@ export default React.createClass({
         queryDataModel={queryDataModel}
         renderers={this.props.renderers}
         renderer="MultiViewRenderer"
-        layout={ this.props.layout }
+        layout={this.props.layout}
       >
-        <MultiViewControl renderer={ this.state.renderer } />
-        { controlWidgets }
+        <MultiViewControl renderer={this.state.renderer} />
+        {controlWidgets}
       </AbstractViewerMenu>);
   },
 });

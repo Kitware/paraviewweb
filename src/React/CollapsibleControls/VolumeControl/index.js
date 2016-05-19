@@ -49,23 +49,23 @@ export default React.createClass({
       intensityButton = (
         <LightButton
           key="toggle-intensity"
-          onChange={ this.props.intensity.toggleState }
-          value={ this.props.intensity.getState() }
+          onChange={this.props.intensity.toggleState}
+          value={this.props.intensity.getState()}
         />),
       resetOpacityButton = (
         <LightButton
           key="reset"
-          icon={ style.undoIcon }
+          icon={style.undoIcon}
           toggle={false}
-          onChange={ this.props.equalizer.resetOpacities }
+          onChange={this.props.equalizer.resetOpacities}
           value
         />),
       cpuGpuButton = (
         <LightButton
           key="toggle-gpu"
-          icon={ style.mobileIcon }
-          onChange={ this.props.computation.toggleState }
-          value={ !this.props.computation.getState() }
+          icon={style.mobileIcon}
+          onChange={this.props.computation.toggleState}
+          value={!this.props.computation.getState()}
         />);
 
     return (
@@ -78,18 +78,18 @@ export default React.createClass({
           <LookupTableWidget
             key="LookupTableWidget"
             ref="LookupTableWidget"
-            originalRange={ lut.originalRange }
-            lookupTable={ lut.lookupTable }
-            lookupTableManager={ lut.lookupTableManager }
+            originalRange={lut.originalRange}
+            lookupTable={lut.lookupTable}
+            lookupTableManager={lut.lookupTableManager}
           />
         </CollapsibleWidget>
         <CollapsibleWidget title="Opacity Control" subtitle={[cpuGpuButton, resetOpacityButton]}>
           <EqualizerWidget
             ref="EqualizerWidget"
             key="Equalizer"
-            layers={ equalizer.getOpacities() }
-            onChange={ equalizer.updateOpacities }
-            colors={ equalizer.getColors() }
+            layers={equalizer.getOpacities()}
+            onChange={equalizer.updateOpacities}
+            colors={equalizer.getColors()}
             spacing={5}
           />
         </CollapsibleWidget>

@@ -70,16 +70,16 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={ style.container }>
-        <ul className={ style.breadcrumb }>
-          { this.props.path.map((name, idx) =>
-            <li className={ style.breadcrumbItem } key={name} data-idx={idx} title={name} onClick={ this.onPathChange }>
-              <i className={ style.breadcrumbFolderIcon }></i>
-              <span className={ style.breadcrumbLabel }>{name}</span>
+      <div className={style.container}>
+        <ul className={style.breadcrumb}>
+          {this.props.path.map((name, idx) =>
+            <li className={style.breadcrumbItem} key={name} data-idx={idx} title={name} onClick={this.onPathChange}>
+              <i className={style.breadcrumbFolderIcon}></i>
+              <span className={style.breadcrumbLabel}>{name}</span>
             </li>
           )}
         </ul>
-        <ActionList list={this.state.list} onClick={ this.onAction } />
+        <ActionList list={this.state.list} onClick={this.onAction} />
       </div>);
   },
 });

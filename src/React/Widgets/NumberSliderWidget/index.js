@@ -56,15 +56,17 @@ export default React.createClass({
     var [min, max] = [this.props.min, this.props.max];
 
     return (
-      <div className={ style.container }>
-        <input type="range"
-          className={ style.range }
+      <div className={style.container}>
+        <input
+          type="range"
+          className={style.range}
           value={this.props.value}
           onChange={this.valInput}
           max={max} min={min}
         />
-        <input type="number"
-          className={ style.text }
+        <input
+          type="number"
+          className={style.text}
           value={this.props.value}
           onChange={this.valInput}
           max={max} min={min}

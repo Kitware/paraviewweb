@@ -3,6 +3,11 @@ import WebGlUtil from '../../../Common/Misc/WebGl';
 import { loop } from '../../../Common/Misc/Loop';
 import PingPong from '../../../Common/Misc/PingPong';
 
+import vertexShader   from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
+import fragmentShaderDisplay from './shaders/fragment/display.c';
+import fragmentShaderColor from './shaders/fragment/rgbaColor.c';
+import fragmentShaderAlpha from './shaders/fragment/alphaBlend.c';
+
 const
   texParameter = [
     ['TEXTURE_MAG_FILTER', 'NEAREST'],
@@ -53,18 +58,18 @@ export default class WebGLSortedVolumeCompositor {
     this.glConfig = {
       programs: {
         displayProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/display.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderDisplay,
           mapping: 'default',
         },
         colorProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/rgbaColor.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderColor,
           mapping: 'default',
         },
         blendProgram: {
-          vertexShader: require('../../../Common/Misc/WebGl/shaders/vertex/basic.c'),
-          fragmentShader: require('./shaders/fragment/alphaBlend.c'),
+          vertexShader,
+          fragmentShader: fragmentShaderAlpha,
           mapping: 'default',
         },
       },

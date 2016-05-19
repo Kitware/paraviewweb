@@ -53,33 +53,33 @@ export default React.createClass({
   render() {
     const changeCount = Object.keys(this.state.changeSet).length;
     return (
-      <div className={ style.container }>
-        <div className={ style.toolbar }>
+      <div className={style.container}>
+        <div className={style.toolbar}>
           <i
-            className={ this.state.advanced ? style.activeAdvancedButton : style.advancedButton }
-            onClick={ this.toggleAdvanced }
+            className={this.state.advanced ? style.activeAdvancedButton : style.advancedButton}
+            onClick={this.toggleAdvanced}
           ></i>
           <input
             type="text"
             placeholder="filter properties..."
-            onChange={ this.updateFilter }
-            className={ style.filter }
+            onChange={this.updateFilter}
+            className={style.filter}
           />
           <i
-            className={ changeCount ? style.validateButtonOn : style.validateButton }
-            onClick={ this.applyChanges }
+            className={changeCount ? style.validateButtonOn : style.validateButton}
+            onClick={this.applyChanges}
           ></i>
         </div>
-        <div className={ style.contentContainer }>
-          { this.props.children }
-          { this.props.sections.map(section =>
+        <div className={style.contentContainer}>
+          {this.props.children}
+          {this.props.sections.map(section =>
             <PropertyGroup
-              key={ section.name }
-              proxy={ section }
-              filter={ this.state.filter }
-              collapsed={ section.collapsed }
-              advanced={ this.state.advanced }
-              onChange={ this.updateChangeSet }
+              key={section.name}
+              proxy={section}
+              filter={this.state.filter}
+              collapsed={section.collapsed}
+              advanced={this.state.advanced}
+              onChange={this.updateChangeSet}
             />
           )}
         </div>

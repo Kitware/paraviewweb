@@ -45,7 +45,7 @@ export default React.createClass({
             <Checkbox
               value={!!this.props.data.value[i]}
               label={this.props.ui.componentLabels[i]}
-              key={ `${this.props.data.id}_${i}` }
+              key={`${this.props.data.id}_${i}`}
               onChange={this.valueChange}
             />);
         }
@@ -61,23 +61,23 @@ export default React.createClass({
     };
 
     return (
-      <div className={ this.props.show(this.props.viewData) ? style.container : style.hidden }>
-        <div className={ style.header }>
+      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+        <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
             <ToggleIconButton
-              icon={ style.helpIcon }
+              icon={style.helpIcon}
               value={this.state.helpOpen}
               toggle={!!this.props.ui.help}
               onChange={this.helpToggled}
             />
           </span>
         </div>
-        <div className={ style.inputBlock }>
-          { mapper() }
+        <div className={style.inputBlock}>
+          {mapper()}
         </div>
         <div
-          className={ this.state.helpOpen ? style.helpBox : style.hidden }
+          className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
       </div>);
