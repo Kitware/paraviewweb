@@ -87,6 +87,7 @@ export default React.createClass({
     if (this.sizeSubscription) {
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
+      this.editor = null;
     }
   },
 
