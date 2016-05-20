@@ -79,15 +79,6 @@ export default React.createClass({
   },
 
   render() {
-    const opacityControls = (
-      <PieceWiseFunctionEditorWidget
-        initialPoints={this.state.currentOpacityPoints}
-        ref="pieceWiseEditor"
-        rangeMin={this.state.range[0]}
-        rangeMax={this.state.range[1]}
-        onChange={this.onOpacityTransferFunctionChanged}
-      />
-    );
     const presets = this.props.presets;
     const name = this.props.currentPreset;
     return (
@@ -141,7 +132,14 @@ export default React.createClass({
             onChange={this.rangeMaxChanged}
           />
         </div>
-        {this.state.showOpacityControls ? opacityControls : null}
+        <PieceWiseFunctionEditorWidget
+          initialPoints={this.props.currentOpacityPoints}
+          ref="pieceWiseEditor"
+          rangeMin={this.props.rangeMin}
+          rangeMax={this.props.rangeMax}
+          onChange={this.onOpacityTransferFunctionChanged}
+          visible={this.state.showOpacityControls}
+        />
         <div className={style.presetList}>
           <PresetListWidget
             presets={presets}
