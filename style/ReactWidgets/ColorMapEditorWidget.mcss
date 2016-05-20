@@ -1,0 +1,53 @@
+.colormapeditor {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.mainControls {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.presetImage {
+  flex: 1;
+  height: 1.5em;
+  min-width: 50%;
+  padding: 0 5px;
+}
+
+.svgIcon {
+  flex: none;
+  height: 1em;
+  width: 1em;
+  cursor: pointer;
+}
+
+.rangeControls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.rangeResetButtons {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.minRangeInput {
+  flex: 1;
+  text-align: left;
+}
+
+.maxRangeInput {
+  flex: 1;
+  text-align: right;
+}
+
+.presetList {
+  max-height: 400px;
+}

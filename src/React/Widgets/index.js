@@ -2,6 +2,7 @@ import ActionListWidget         from './ActionListWidget';
 import ButtonSelectorWidget     from './ButtonSelectorWidget';
 import CollapsibleWidget        from './CollapsibleWidget';
 import ColorByWidget            from './ColorByWidget';
+import ColorMapEditorWidget     from './ColorMapEditorWidget';
 import ColorPickerWidget        from './ColorPickerWidget';
 import CompositePipelineWidget  from './CompositePipelineWidget';
 import ContentEditableWidget    from './ContentEditableWidget';
@@ -33,6 +34,7 @@ export default {
   ButtonSelectorWidget,
   CollapsibleWidget,
   ColorByWidget,
+  ColorMapEditorWidget,
   ColorPickerWidget,
   CompositePipelineWidget,
   ContentEditableWidget,
