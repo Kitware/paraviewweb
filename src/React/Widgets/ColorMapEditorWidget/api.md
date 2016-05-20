@@ -1,14 +1,14 @@
-A widget for modifying colormaps.  Allows control of opacity transfer function, range and preset.
+A widget for modifying colormaps.  Allows control of opacity transfer function, range and preset.  This widget displays the colormap information passed in and provides controls for editing.  However the controls will not work unless the callbacks they trigger set the correct properties on the widget.  This is so that external events (such as changing which colormap is being edited) are free to update these properties as well.
 
 ## Properties
 
-### initialOpacityMap
+### currentOpacityPoints
 
-This property is the initial value of the opacity transfer function.  It should be a list of objects of the form `{ x: dataValue, y: opacity}` where dataValue is a valid point in the data range and opacity is in the interval [0, 1].
+This property is the current point values of the opacity transfer function.  It should be a list of objects of the form `{ x: dataValue, y: opacity}` where dataValue is a valid point in the data range and opacity is in the interval [0, 1].  To properly update the widget it should be set by the function *onOpacityTransferFunctionChanged*.
 
-### initialPreset
+### currentPreset
 
-The name of the default lookup table preset.  See the *presets* property for valid names.
+The name of the current lookup table preset.  See the *presets* property for valid names.  To properly update the widget it should be set by the function *onPresetChanged*.
 
 ### dataRangeMin
 
@@ -22,22 +22,30 @@ The highest value that can be set for the range maximum.
 
 This is an object with the names an images of each lookup table preset.  `presets['abc']` should be the image for the preset with name `'abc'`.
 
+### rangeMin
+
+The current minimum range of the colorMap.  To properly update the widget, it should be set by *onRangeEdited*, *onScaleRangeToCurrent* and *onScaleRangeOverTime*.
+
+### rangeMax
+
+The current maximum range of the colorMap.  To properly update the widget, it should be set by *onRangeEdited*, *onScaleRangeToCurrent* and *onScaleRangeOverTime*.
+
 ### onOpacityTransferFunctionChanged
 
-This function will be called whenever the opacity transfer function changes.  It will be passed a list of objects of the form `{ x: dataValue, y: opacity }` where `dataValue` is a number in the current range of the colorMap and `opacity` is a floating point value in the interval [0, 1].
+This function will be called whenever the opacity transfer function changes.  It will be passed a list of objects of the form `{ x: dataValue, y: opacity }` where `dataValue` is a number in the current range of the colorMap and `opacity` is a floating point value in the interval [0, 1].  Should update *currentOpacityPoints*.
 
 ### onPresetChanged
 
-This function will be called when the user chooses a new preset to use.  It will be passed the name of the new preset as a string.
+This function will be called when the user chooses a new preset to use.  It will be passed the name of the new preset as a string. Should update *onPresetChanged*.
 
 ### onRangeEdited
 
-This function will be called when the user manually edits the range of the dataset.  It will be passed an array with two values: the new min and max of the range.
+This function will be called when the user manually edits the range of the dataset.  It will be passed an array with two values: the new min and max of the range.  Should update *rangeMin* and *rangeMax*.
 
 ### onScaleRangeToCurrent
 
-This function will be called when the user presses the *Scale Range to Dataset* button.
+This function will be called when the user presses the *Scale Range to Dataset* button.  Should update *rangeMin* and *rangeMax*.
 
 ### onScaleRangeOverTime
 
-This function will be called when the user presses the *Scale Range to Data Over Time* button.
+This function will be called when the user presses the *Scale Range to Data Over Time* button.  Should update *rangeMin* and *rangeMax*.
