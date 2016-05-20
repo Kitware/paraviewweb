@@ -15,6 +15,7 @@
 
 .input {
   flex: 1;
+  min-width: 40%;
 }
 
 .svgIcon {
@@ -43,4 +44,8 @@
   font-weight: bold;
   text-align: right;
   padding-right: 5px;
+}
+
+.hidden {
+  display: none;
 }

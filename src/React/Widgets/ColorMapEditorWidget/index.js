@@ -15,12 +15,13 @@ export default React.createClass({
   displayName: 'ColorMapEditorWidget',
 
   propTypes: {
-    initialOpacityMap: React.PropTypes.string,
-    initialPreset: React.PropTypes.string,
-    initialRange: React.PropTypes.array,
+    currentOpacityPoints: React.PropTypes.array,
+    currentPreset: React.PropTypes.string,
     dataRangeMin: React.PropTypes.number,
     dataRangeMax: React.PropTypes.number,
     presets: React.PropTypes.object,
+    rangeMin: React.PropTypes.number,
+    rangeMax: React.PropTypes.number,
     onOpacityTransferFunctionChanged: React.PropTypes.func,
     onPresetChanged: React.PropTypes.func,
     onRangeEdited: React.PropTypes.func,
@@ -30,24 +31,15 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      currentPreset: this.props.initialPreset,
-      range: this.props.initialRange,
-      currentOpacityPoints: this.props.initialOpacityMap,
       showOpacityControls: false,
       showPresetSelection: false,
     };
   },
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.initialRange[0] !== this.props.initialRange[0] ||
-        newProps.initialRange[1] !== this.props.initialRange[1]) {
-      this.setState({ range: newProps.initialRange });
-    }
-  },
-
   onOpacityTransferFunctionChanged(newPoints) {
-    this.setState({ currentOpacityPoints: newPoints });
-    this.props.onOpacityTransferFunctionChanged(newPoints);
+    if (this.props.onOpacityTransferFunctionChanged) {
+      this.props.onOpacityTransferFunctionChanged(newPoints);
+    }
   },
 
   toggleShowOpacityControls() {
@@ -68,39 +60,27 @@ export default React.createClass({
 
   rangeMinChanged(e) {
     const newMin = parseFloat(e.target.value);
-    this.setState({ range: [newMin, this.state.range[1]] });
     if (this.props.onRangeEdited) {
-      this.props.onRangeEdited([newMin, this.state.range[1]]);
+      this.props.onRangeEdited([newMin, this.props.rangeMax]);
     }
   },
 
   rangeMaxChanged(e) {
     const newMax = parseFloat(e.target.value);
-    this.setState({ range: [this.state.range[0], newMax] });
     if (this.props.onRangeEdited) {
-      this.props.onRangeEdited([this.state.range[0], newMax]);
+      this.props.onRangeEdited([this.props.rangeMin, newMax]);
     }
   },
 
   presetChanged(name) {
-    this.setState({ currentPreset: name });
     if (this.props.onPresetChanged) {
       this.props.onPresetChanged(name);
     }
   },
 
   render() {
-    const opacityControls = (
-      <PieceWiseFunctionEditorWidget
-        initialPoints={this.state.currentOpacityPoints}
-        ref="pieceWiseEditor"
-        rangeMin={this.state.range[0]}
-        rangeMax={this.state.range[1]}
-        onChange={this.onOpacityTransferFunctionChanged}
-      />
-    );
     const presets = this.props.presets;
-    const name = this.state.currentPreset;
+    const name = this.props.currentPreset;
     return (
       <div className={style.colormapeditor}>
         <div className={style.mainControls}>
@@ -112,7 +92,7 @@ export default React.createClass({
           <img
             className={style.presetImage}
             src={`data:image/png;base64,${presets[name]}`}
-            alt={this.state.currentPreset}
+            alt={this.props.currentPreset}
           />
           <SvgIconWidget
             className={style.svgIcon}
@@ -127,7 +107,7 @@ export default React.createClass({
             step="any"
             min={this.props.dataRangeMin}
             max={this.props.dataRangeMax}
-            value={this.state.range[0]}
+            value={this.props.rangeMin}
             onChange={this.rangeMinChanged}
           />
           <div className={style.rangeResetButtons}>
@@ -148,11 +128,18 @@ export default React.createClass({
             step="any"
             min={this.props.dataRangeMin}
             max={this.props.dataRangeMax}
-            value={this.state.range[1]}
+            value={this.props.rangeMax}
             onChange={this.rangeMaxChanged}
           />
         </div>
-        {this.state.showOpacityControls ? opacityControls : null}
+        <PieceWiseFunctionEditorWidget
+          initialPoints={this.props.currentOpacityPoints}
+          ref="pieceWiseEditor"
+          rangeMin={this.props.rangeMin}
+          rangeMax={this.props.rangeMax}
+          onChange={this.onOpacityTransferFunctionChanged}
+          visible={this.state.showOpacityControls}
+        />
         <div className={style.presetList}>
           <PresetListWidget
             presets={presets}

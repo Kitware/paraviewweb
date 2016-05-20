@@ -29,6 +29,7 @@ export default React.createClass({
     rangeMin: React.PropTypes.number,
     rangeMax: React.PropTypes.number,
     onChange: React.PropTypes.func,
+    visible: React.PropTypes.bool,
   },
 
   getInitialState() {
@@ -50,8 +51,10 @@ export default React.createClass({
   },
 
   componentWillMount() {
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-    sizeHelper.startListening();
+    if (this.props.visible) {
+      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+      sizeHelper.startListening();
+    }
   },
 
   componentDidMount() {
@@ -62,11 +65,19 @@ export default React.createClass({
     this.editor.render();
     this.editor.onChange(this.updatePoints);
 
-    sizeHelper.triggerChange();
+    if (this.sizeHelper) {
+      sizeHelper.triggerChange();
+    }
   },
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.width !== prevState.width) {
+    if (this.props.visible && !prevProps.visible && this.state.width === -1) {
+      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+      sizeHelper.startListening();
+      sizeHelper.triggerChange();
+    }
+    if (this.state.width !== prevState.width ||
+        (this.props.visible && !prevProps.visible)) {
       this.editor.render();
     }
     // We get some duplicate events from the editor, filter them out
@@ -87,6 +98,7 @@ export default React.createClass({
     if (this.sizeSubscription) {
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
+      this.editor = null;
     }
   },
 
@@ -145,7 +157,7 @@ export default React.createClass({
     const activePointOpacity = this.state.activePoint !== -1 ?
       this.state.points[this.state.activePoint].y : 0.5;
     return (
-      <div className={style.pieceWiseFunctionEditorWidget}>
+      <div className={this.props.visible ? style.pieceWiseFunctionEditorWidget : style.hidden}>
         <canvas
           className={style.canvas}
           width={this.state.width}
