@@ -41,11 +41,13 @@
 .minRangeInput {
   flex: 1;
   text-align: left;
+  min-width: 20%;
 }
 
 .maxRangeInput {
   flex: 1;
   text-align: right;
+  min-width: 20%;
 }
 
 .presetList {
