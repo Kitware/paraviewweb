@@ -1,3 +1,10 @@
+- name: Create ParaView log directory
+  become: yes
+  become_user: root
+  file: path=/var/log/paraview owner={{pvw_user}} group={{pvw_user}} state=directory
+  tags:
+    - launcher
+
 - include: ./{{ ansible_distribution }}.yml
 
 - name: Template launcher config
