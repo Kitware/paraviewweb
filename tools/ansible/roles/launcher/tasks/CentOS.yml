@@ -1,3 +1,5 @@
+- include_vars: ../vars/{{ ansible_distribution }}.yml
+
 - name: Install launcher as service
   become: yes
   become_user: root
