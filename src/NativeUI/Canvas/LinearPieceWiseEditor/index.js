@@ -82,6 +82,13 @@ export default class LinearPieceWiseEditor {
       const click = getNormalizePosition(event, this.ctx, this.radius);
       const controlPoint = findPoint(click, this.controlPoints);
       this.activeControlPoint = controlPoint;
+      if (this.activeControlPoint) {
+        this.activeIndex = controlPoint.index;
+        this.render();
+      } else {
+        this.activeIndex = -1;
+        this.render();
+      }
       this.canvas.addEventListener('mousemove', this.onMouseMove);
     };
 
@@ -93,6 +100,7 @@ export default class LinearPieceWiseEditor {
         }
         this.activeControlPoint.y = clamp(newPosition.y);
         sortPoints(this.controlPoints);
+        this.activeIndex = this.activeControlPoint.index;
         this.render();
       }
     };
@@ -117,6 +125,7 @@ export default class LinearPieceWiseEditor {
           for (let i = 0; i < this.controlPoints.length; ++i) {
             this.controlPoints[i].index = i;
           }
+          this.activeIndex = -1;
         }
         this.render();
       }
@@ -127,12 +136,14 @@ export default class LinearPieceWiseEditor {
       const sanitizedPoint = { x: clamp(point.x), y: clamp(point.y) };
       this.controlPoints.push(sanitizedPoint);
       sortPoints(this.controlPoints);
+      this.activeIndex = sanitizedPoint.index;
       this.render();
     };
 
     this.resetControlPoints();
     this.setStyle(style);
     this.setContainer(canvas);
+    this.activeIndex = -1;
   }
 
   resetControlPoints() {
@@ -144,16 +155,32 @@ export default class LinearPieceWiseEditor {
   // of objects with members x and y (i.e. { x: 0.0, y: 1.0 }).  The valid range for
   // x and y is [0,1] with 0 being the left/bottom edge of the canvas and 1 being
   // the top/right edge.
-  setControlPoints(points) {
+  // The second parameter specifies (in the list passed in) which point should be
+  // active after setting the control points.  Pass -1 for no point should be active
+  setControlPoints(points, activeIndex = -1) {
     this.controlPoints = points.map(pt => pointBuilder(pt.x, pt.y));
+    let activePoint = null;
+    if (activeIndex !== -1) {
+      activePoint = this.controlPoints[activeIndex];
+    }
     sortPoints(this.controlPoints);
+    if (activeIndex !== -1) {
+      for (let i = 0; i < this.controlPoints.length; ++i) {
+        if (activePoint === this.controlPoints[i]) {
+          this.activeIndex = i;
+        }
+      }
+    } else {
+      this.activeIndex = -1;
+    }
     this.render();
   }
 
-  setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {}) {
+  setStyle({ radius = 6, stroke = 2, color = '#000000', activePointColor = '#EE3333', fillColor = '#ccc' } = {}) {
     this.radius = radius;
     this.stroke = stroke;
     this.color = color;
+    this.activePointColor = activePointColor;
     this.fillColor = fillColor;
   }
 
@@ -181,6 +208,15 @@ export default class LinearPieceWiseEditor {
     }
   }
 
+  setActivePoint(index) {
+    this.activeIndex = index;
+    this.render();
+  }
+
+  clearActivePoint() {
+    this.setActivePoint(-1);
+  }
+
   render() {
     const { width, height, margin } = getCanvasSize(this.ctx, this.radius);
     this.ctx.fillStyle = this.fillColor;
@@ -205,8 +241,8 @@ export default class LinearPieceWiseEditor {
     this.ctx.stroke();
 
     // Draw control points
-    linearPath.forEach(point => {
-      drawControlPoint(this.ctx, point, this.radius, this.color);
+    linearPath.forEach((point, index) => {
+      drawControlPoint(this.ctx, point, this.radius, this.activeIndex === index ? this.activePointColor : this.color);
     });
 
     // Notify control points

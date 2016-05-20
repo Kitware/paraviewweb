@@ -2,6 +2,7 @@ import ActionListWidget         from './ActionListWidget';
 import ButtonSelectorWidget     from './ButtonSelectorWidget';
 import CollapsibleWidget        from './CollapsibleWidget';
 import ColorByWidget            from './ColorByWidget';
+import ColorMapEditorWidget     from './ColorMapEditorWidget';
 import ColorPickerWidget        from './ColorPickerWidget';
 import CompositePipelineWidget  from './CompositePipelineWidget';
 import ContentEditableWidget    from './ContentEditableWidget';
@@ -16,6 +17,7 @@ import LayoutsWidget            from './LayoutsWidget';
 import LookupTableWidget        from './LookupTableWidget';
 import NumberInputWidget        from './NumberInputWidget';
 import NumberSliderWidget       from './NumberSliderWidget';
+import PieceWiseFunctionEditorWidget from './PieceWiseFunctionEditorWidget';
 import PresetListWidget         from './PresetListWidget';
 import ProxyEditorWidget        from './ProxyEditorWidget';
 import ProxyPropertyGroupWidget from './ProxyPropertyGroupWidget';
@@ -32,6 +34,7 @@ export default {
   ButtonSelectorWidget,
   CollapsibleWidget,
   ColorByWidget,
+  ColorMapEditorWidget,
   ColorPickerWidget,
   CompositePipelineWidget,
   ContentEditableWidget,
@@ -46,6 +49,7 @@ export default {
   LookupTableWidget,
   NumberInputWidget,
   NumberSliderWidget,
+  PieceWiseFunctionEditorWidget,
   PresetListWidget,
   ProxyEditorWidget,
   ProxyPropertyGroupWidget,
