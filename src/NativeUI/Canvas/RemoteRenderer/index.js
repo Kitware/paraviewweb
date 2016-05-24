@@ -27,7 +27,6 @@ export default class RemoteRenderer {
     });
 
     this.container = null;
-    this.setContainer(container);
     this.options = {
       view: id,
       size: [400, 400],
@@ -53,6 +52,8 @@ export default class RemoteRenderer {
         this.renderOnIdle(!interact);
       }
     });
+
+    this.setContainer(container);
   }
 
   setQuality(interactive = 50, still = 100) {
