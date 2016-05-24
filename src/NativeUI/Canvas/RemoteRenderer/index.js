@@ -88,7 +88,7 @@ export default class RemoteRenderer {
 
   render(force = false) {
     if (this.renderPending) {
-      this.renderOnIdle();
+      this.renderOnIdle(force);
       return false;
     }
 
@@ -139,7 +139,7 @@ export default class RemoteRenderer {
 
             // final image
             if (resp.stale) {
-              this.renderOnIdle();
+              this.renderOnIdle(force);
             } else {
               this.emit(IMAGE_READY_TOPIC, this);
             }
