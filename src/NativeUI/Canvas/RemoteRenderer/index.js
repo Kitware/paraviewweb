@@ -27,7 +27,6 @@ export default class RemoteRenderer {
     });
 
     this.container = null;
-    this.setContainer(container);
     this.options = {
       view: id,
       size: [400, 400],
@@ -53,6 +52,8 @@ export default class RemoteRenderer {
         this.renderOnIdle(!interact);
       }
     });
+
+    this.setContainer(container);
   }
 
   setQuality(interactive = 50, still = 100) {
@@ -87,7 +88,7 @@ export default class RemoteRenderer {
 
   render(force = false) {
     if (this.renderPending) {
-      this.renderOnIdle();
+      this.renderOnIdle(force);
       return false;
     }
 
@@ -138,7 +139,7 @@ export default class RemoteRenderer {
 
             // final image
             if (resp.stale) {
-              this.renderOnIdle();
+              this.renderOnIdle(force);
             } else {
               this.emit(IMAGE_READY_TOPIC, this);
             }
