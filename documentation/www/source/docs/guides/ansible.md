@@ -54,6 +54,26 @@ $ ansible-playbook                       \
 
 - If gpu is set to 'no' the Mesa LLVM pipeline will be used for rendering.
 
+## Installation Structure
+
+### Common to distributions
+- `/opt/paraview` - ParaView installation
+- `/etc/opt/paraview/launcher.json` - Launcher configuration file
+- `/home/<pvw_user>/data` - Sample test data
+- `<proxy_db_path>` - Path to Apache websocket proxy file. Default is `/var/opt/paraview/proxy.txt`
+- `/var/log/paraview` - ParaViewWeb log files
+
+### Ubuntu
+- `/etc/init/pvw-launcher.conf` - Launcher service configuration
+- `/etc/apache2/sites-available/pvw.conf` - Apache site configuration
+- `<pvw_site_root>` - Root of ParaViewWeb site. Default is `/opt/paraview/share/paraview-5.0/www/`
+
+### CentOS/RedHat
+- `/etc/systemd/system/pvw-launcher.service` - Launcher service configuration
+- `/etc/httpd/conf.d/pvw.conf`- Apache site configuration
+- `/var/www/html` - Root of ParaViewWeb site
+
+
 ## Testing
 
 To validate the setup, you can connect to the following URL
