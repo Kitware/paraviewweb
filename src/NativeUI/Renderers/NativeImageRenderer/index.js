@@ -50,6 +50,7 @@ export default class NativeImageRenderer {
       this.size = getSize(domElement);
       this.canvas.setAttribute('width', this.size.clientWidth);
       this.canvas.setAttribute('height', this.size.clientHeight);
+      this.image.onload();
     }));
     startListening();
   }
