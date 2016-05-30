@@ -4,7 +4,7 @@ import ReactDOM           from 'react-dom';
 import LegendHelper from '..';
 import SvgIconWidget from '../../../../React/Widgets/SvgIconWidget';
 
-const names = [
+const legendEntries = [
   'Aashish',
   'Alex',
   'Alexis',
@@ -113,7 +113,7 @@ const priorityOptions = [
   [],
 ];
 
-const legend = LegendHelper.newInstance({ names });
+const legend = LegendHelper.newInstance({ legendEntries });
 const container = document.querySelector('.content');
 //
 
@@ -123,7 +123,7 @@ function next() {
   ReactDOM.render(
     <ul>
       <li>{priorityOptions[optionIdx].join(', ')}</li>
-      {names.map((name, idx) =>
+      {legendEntries.map((name, idx) =>
         <li key={idx}>
           <SvgIconWidget
             icon={legend.getLegend(name).shape}

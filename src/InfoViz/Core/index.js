@@ -1,5 +1,11 @@
-import LegendHelper from './LegendHelper';
+import FieldProvider from './FieldProvider';
+import Histogram2DProvider from './Histogram2DProvider';
+import LegendProvider from './LegendProvider';
+import SelectionProvider from './SelectionProvider';
 
 export default {
-  LegendHelper,
+  FieldProvider,
+  Histogram2DProvider,
+  LegendProvider,
+  SelectionProvider,
 };

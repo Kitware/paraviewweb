@@ -1,5 +1,5 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import shapes from './shapes';
+import legendShapes from './shapes';
 
 // ----------------------------------------------------------------------------
 // Global
@@ -7,7 +7,7 @@ import shapes from './shapes';
 
 function convert(item, model) {
   const result = { color: item.colors };
-  result.shape = model.shapes[item.shapes];
+  result.shape = model.legendShapes[item.shapes];
   return result;
 }
 
@@ -458,88 +458,88 @@ const palettes = {
 // ----------------------------------------------------------------------------
 
 export const STATIC = {
-  shapes,
+  shapes: legendShapes,
   palettes,
 };
 
 // ----------------------------------------------------------------------------
-// Legend Helper
+// Legend Provider
 // ----------------------------------------------------------------------------
 
-function legendHelper(publicAPI, model) {
-  publicAPI.addName = name => {
-    if (model.names.indexOf(name) === -1 && name) {
-      model.names.push(name);
-      model.dirty = true;
+function legendProvider(publicAPI, model) {
+  publicAPI.addLegendEntry = name => {
+    if (model.legendEntries.indexOf(name) === -1 && name) {
+      model.legendEntries.push(name);
+      model.legendDirty = true;
     }
   };
 
-  publicAPI.removeName = name => {
-    if (model.names.indexOf(name) !== -1 && name) {
-      model.names.splice(model.names.indexOf(name), 1);
-      model.dirty = true;
+  publicAPI.removeLegendEntry = name => {
+    if (model.legendEntries.indexOf(name) !== -1 && name) {
+      model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
+      model.legendDirty = true;
     }
   };
-  publicAPI.removeAllNames = () => {
-    model.names = [];
-    model.dirty = true;
+  publicAPI.removeAllLegendEntry = () => {
+    model.legendEntries = [];
+    model.legendDirty = true;
   };
 
   publicAPI.assignLegend = (newPriority = null) => {
     if (newPriority) {
-      model.priorities = newPriority;
-      model.dirty = true;
+      model.legendPriorities = newPriority;
+      model.legendDirty = true;
     }
-    if (model.dirty) {
-      const shapesArray = Object.keys(model.shapes);
-      model.dirty = false;
+    if (model.legendDirty) {
+      const shapesArray = Object.keys(model.legendShapes);
+      model.legendDirty = false;
       model.legendMapping = {};
 
-      if (model.priorities && model.priorities.length) {
-        const defaultColor = model.colors[0];
+      if (model.legendPriorities && model.legendPriorities.length) {
+        const defaultColor = model.legendColors[0];
         const defaultShape = shapesArray[0];
 
         const iterator = createSortedIterator(
-          model.priorities,
-          { colors: model.colors, shapes: shapesArray },
+          model.legendPriorities,
+          { colors: model.legendColors, shapes: shapesArray },
           { colors: defaultColor, shapes: defaultShape });
 
-        model.names.forEach(name => {
+        model.legendEntries.forEach(name => {
           model.legendMapping[name] = convert(iterator.get(), model);
           iterator.next();
         });
       } else {
-        model.names.forEach((name, idx) => {
+        model.legendEntries.forEach((name, idx) => {
           model.legendMapping[name] = {
-            color: model.colors[idx % model.colors.length],
-            shape: model.shapes[shapesArray[idx % shapesArray.length]],
+            color: model.legendColors[idx % model.legendColors.length],
+            shape: model.legendShapes[shapesArray[idx % shapesArray.length]],
           };
         });
       }
     }
   };
 
-  publicAPI.usePalette = name => {
+  publicAPI.useLegendPalette = name => {
     const colorSet = palettes[name];
     if (colorSet) {
-      model.colors = [].concat(colorSet);
-      model.dirty = true;
+      model.legendColors = [].concat(colorSet);
+      model.legendDirty = true;
     }
   };
 
-  publicAPI.updateSettings = settings => {
-    ['shapes', 'colors', 'names', 'priorities'].forEach(key => {
+  publicAPI.updateLegendSettings = settings => {
+    ['legendShapes', 'legendColors', 'legendEntries', 'priorities'].forEach(key => {
       if (settings[key]) {
         model[key] = [].concat(settings.key);
-        model.dirty = true;
+        model.legendDirty = true;
       }
     });
   };
 
-  publicAPI.listPalettes = () => Object.keys(palettes);
+  publicAPI.listLegendColorPalettes = () => Object.keys(palettes);
 
   publicAPI.getLegend = name => {
-    if (model.dirty) {
+    if (model.legendDirty) {
       publicAPI.assignLegend();
     }
     return model.legendMapping[name];
@@ -551,10 +551,10 @@ function legendHelper(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  shapes,
-  colors: [].concat(palettes.Paired),
-  names: [],
-  priorities: ['shapes', 'colors'],
+  legendShapes,
+  legendColors: [].concat(palettes.Paired),
+  legendEntries: [],
+  legendPriorities: ['shapes', 'colors'],
   legendMapping: {},
   dirty: true,
 };
@@ -565,9 +565,9 @@ export function extend(publicAPI, model, initialValues = {}) {
   Object.assign(model, DEFAULT_VALUES, initialValues);
 
   CompositeClosureHelper.destroy(publicAPI, model);
-  CompositeClosureHelper.isA(publicAPI, model, 'LegendHelper');
+  CompositeClosureHelper.isA(publicAPI, model, 'LegendProvider');
 
-  legendHelper(publicAPI, model);
+  legendProvider(publicAPI, model);
 }
 
 // ----------------------------------------------------------------------------

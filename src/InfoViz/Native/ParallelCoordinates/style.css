@@ -1,0 +1,166 @@
+/*@font-face {
+    font-family: "Linux Biolinum";
+    src: url(../../../assets/fonts/LinBiolinum_R.ttf) format("truetype");
+}*/
+
+span.pc-placeholder-title, span.pc-placeholder-info {
+    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+    text-align: center;
+    user-select: none;
+}
+
+div.parallel-coords-placeholder span.pc-placeholder-title {
+    font-size: 45px;
+}
+
+div.parallel-coords-placeholder {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+}
+
+div.pc-placeholder-row {
+  text-align: center;
+}
+
+div.parallel-coords-placeholder.hidden {
+  display: none;
+}
+
+svg.parallel-coords-overlay.hidden {
+  display: none;
+}
+
+canvas.hidden {
+  display: none;
+}
+
+
+svg.parallel-coords-overlay text.axis-labels {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 12px;
+  fill: black;
+  user-select: none;
+}
+
+svg.parallel-coords-overlay text.axis-labels.annotated-axis-text {
+  font-size: 13px;
+  fill: rgb(105, 195, 255);
+  pointer-events: all;
+  cursor: pointer;
+}
+
+svg.parallel-coords-overlay text.axis-ticks {
+    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+    font-size: 9px;
+    fill: black;
+    user-select: none;
+}
+
+svg.parallel-coords-overlay rect.hover-bin-indicator {
+  fill: blue;
+  position: relative;
+}
+
+svg.parallel-coords-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
+svg.parallel-coords-overlay .control-item {
+  cursor: pointer;
+}
+
+svg.parallel-coords-overlay rect.selection-bars {
+  stroke: white;
+  stroke-width: 2;
+  fill: rgb(105, 195, 255);
+}
+
+svg.parallel-coords-overlay rect.axis-selection-pending {
+  stroke: white;
+  stroke-width: 2;
+  fill: rgb(105, 195, 255);
+}
+
+svg.parallel-coords-overlay rect.axis-lines {
+  fill: grey;
+}
+
+svg.parallel-coords-overlay g.annotated-axis-glyph {
+  outline: 2px solid rgb(105, 195, 255);
+  cursor: pointer;
+  pointer-events: all;
+}
+
+svg.parallel-coords-overlay g.axis-control-elements {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+svg.parallel-coords-overlay g.axis-controls-group-container {
+  stroke: none;
+  stroke-width: 1;
+  fill: none;
+  fill-rule: evenodd;
+}
+
+svg.parallel-coords-overlay polygon {
+  stroke: #979797;
+  fill: #D8D8D8;
+}
+
+svg.parallel-coords-overlay g.rightside-up g.axis-controls-group polygon.top {
+  stroke: rgb(151, 151, 151);
+  fill: black;
+}
+
+svg.parallel-coords-overlay g.upside-down polygon.top {
+  stroke: rgb(151, 151, 151);
+  fill: rgb(216, 216, 216);
+}
+
+svg.parallel-coords-overlay g.rightside-up polygon.bottom {
+  stroke: rgb(151, 151, 151);
+  fill: rgb(216, 216, 216);
+}
+
+svg.parallel-coords-overlay g.upside-down g.axis-controls-group polygon.bottom {
+  stroke: rgb(151, 151, 151);
+  fill: black;
+}
+
+svg.parallel-coords-overlay g.axis-controls-group polygon {
+  pointer-events: none;
+}
+
+svg.parallel-coords-overlay rect.left-rect:hover ~ polygon.left {
+  stroke: black;
+  fill: darkgray;
+}
+
+svg.parallel-coords-overlay rect.right-rect:hover ~ polygon.right {
+  stroke: black;
+  fill: darkgray;
+}
+
+svg.parallel-coords-overlay rect.center-rect:hover ~ polygon.top , svg.parallel-coords-overlay rect.center-rect:hover ~ polygon.bottom {
+  stroke: black;
+  fill: darkgray;
+}
+
+svg.parallel-coords-overlay rect.axis-annotation-indicators {
+  fill: none;
+  stroke-width: 2;
+  stroke: rgb(105, 195, 255);
+  display: none;
+}
+
+svg.parallel-coords-overlay rect.axis-annotation-indicators.axis-annotated {
+  display: block;
+}
