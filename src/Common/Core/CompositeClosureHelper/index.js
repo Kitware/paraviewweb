@@ -25,18 +25,43 @@ export function isA(publicAPI, model = {}, name = null) {
 }
 
 // ----------------------------------------------------------------------------
+// Basic setter
+// ----------------------------------------------------------------------------
+
+export function set(publicAPI, model = {}, names = []) {
+  names.forEach(name => {
+    publicAPI[`set${capitalize(name)}`] = value => {
+      model[name] = value;
+    };
+  });
+}
+
+// ----------------------------------------------------------------------------
+// Basic getter
+// ----------------------------------------------------------------------------
+
+export function get(publicAPI, model = {}, names = []) {
+  names.forEach(name => {
+    publicAPI[`get${capitalize(name)}`] = () => model[name];
+  });
+}
+
+// ----------------------------------------------------------------------------
 // Add destroy function
 // ----------------------------------------------------------------------------
 
 export function destroy(publicAPI, model = {}) {
-  if (!publicAPI.destroy) {
-    publicAPI.destroy = () => {
-      Object.keys(model).forEach(field => delete model[field]);
+  const previousDestroy = publicAPI.destroy;
 
-      // Flag the instance beeing deleted
-      model.deleted = true;
-    };
-  }
+  publicAPI.destroy = () => {
+    if (previousDestroy) {
+      previousDestroy();
+    }
+    Object.keys(model).forEach(field => delete model[field]);
+
+    // Flag the instance beeing deleted
+    model.deleted = true;
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -45,7 +70,7 @@ export function destroy(publicAPI, model = {}) {
 
 export function event(publicAPI, model, eventName) {
   const callbacks = [];
-  const previousDelete = publicAPI.destroy;
+  const previousDestroy = publicAPI.destroy;
 
   function off(index) {
     callbacks[index] = null;
@@ -79,7 +104,7 @@ export function event(publicAPI, model, eventName) {
   };
 
   publicAPI.destroy = () => {
-    previousDelete();
+    previousDestroy();
     callbacks.forEach((el, index) => off(index));
   };
 }
@@ -102,4 +127,6 @@ export default {
   destroy,
   isA,
   event,
+  set,
+  get,
 };
