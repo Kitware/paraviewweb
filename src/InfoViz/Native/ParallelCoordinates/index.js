@@ -1,7 +1,7 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';
-import './style.css';
+import style from './ParallelCoordinates.mcss';
 import axisControlSvg from './AxisControl-svg.html';
 import iconImage from './ParallelCoordsIconSmall.png';
 import htmlContent from './body.html';
@@ -153,13 +153,14 @@ function parallelCoordinate(publicAPI, model) {
     selectionBarNodes
       .enter()
       .append('rect')
-      .classed('selection-bars', true);
+      .classed('selection-bars', true)
+      .classed(style.selectionBars, true);
 
     selectionBarNodes.exit().remove();
 
     selBarGroup
       .selectAll('rect.selection-bars')
-      .classed('control-item', true)
+      .classed(style.controlItem, true)
       .attr('width', model.selectionBarWidth)
       .attr('height', (d, i) => {
         let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
@@ -216,21 +217,22 @@ function parallelCoordinate(publicAPI, model) {
     axisControlNodes.enter()
       .append('g')
       .classed('axis-control-elements', true)
+      .classed(style.axisControlElements, true)
       .html(axisControlSvg);
 
     axisControlNodes.exit().remove();
 
     const scale = 0.5;
     svg.selectAll('g.axis-control-elements')
-      .classed('upside-down', (d, i) => !d.orient)
-      .classed('rightside-up', (d, i) => d.orient)
+      .classed(style.upsideDown, (d, i) => !d.orient)
+      .classed(style.rightsideUp, (d, i) => d.orient)
       .attr('transform', function inner(d, i) {
         const elt = d3.select(this).select('g.axis-controls-group-container');
         const tx = d.centerX - ((elt.attr('width') * scale) / 2);
         const ty = d.centerY - ((elt.attr('height') * scale) / 2);
         return `translate(${tx}, ${ty}) scale(${scale})`;
-      }).
-      on('click', function inner(d, i) {
+      })
+      .on('click', function inner(d, i) {
         const cc = d3.mouse(this);
         const elt = d3.select(this).select('g.axis-controls-group-container');
         const ratio = cc[0] / elt.attr('width');
@@ -247,7 +249,9 @@ function parallelCoordinate(publicAPI, model) {
           model.axes.swapAxes(i, i + 1);
           fetchData();
         }
-      });
+      })
+      .selectAll('.axis-controls-group-container')
+      .classed(style.axisControlsGroupContainer, true);
   }
 
   function drawAxisLabels(labelDataModel) {
@@ -273,7 +277,8 @@ function parallelCoordinate(publicAPI, model) {
 
       glyphGroup
         .enter()
-        .append('g').classed('glyphs', true);
+        .append('g')
+        .classed('glyphs', true);
 
       // Create nested structure
       const svgGroup = glyphGroup.selectAll('svg').data([0]);
@@ -307,7 +312,8 @@ function parallelCoordinate(publicAPI, model) {
       indicatorNodes
         .enter()
         .append('rect')
-        .classed('axis-annotation-indicators', true);
+        .classed('axis-annotation-indicators', true)
+        .classed(style.axisAnnotationIndicators, true);
 
       indicatorNodes.exit().remove();
 
@@ -316,7 +322,7 @@ function parallelCoordinate(publicAPI, model) {
         .attr('width', glyphSize + 3)
         .attr('height', glyphSize + 3)
         .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5 + 1)}, ${glyphPadding - 1.5})`)
-        .classed('axis-annotated', (d, i) => d.annotated);
+        .classed(style.axisAnnotated, (d, i) => d.annotated);
     } else {
       // Now manage the svg dom for the axis labels
       const axisLabelNodes = svg
@@ -326,7 +332,8 @@ function parallelCoordinate(publicAPI, model) {
       axisLabelNodes
         .enter()
         .append('text')
-        .classed('axis-labels', true);
+        .classed('axis-labels', true)
+        .classed(style.axisLabels, true);
 
       axisLabelNodes
         .exit()
@@ -335,7 +342,7 @@ function parallelCoordinate(publicAPI, model) {
       svg
         .selectAll('text.axis-labels')
         .text((d, i) => d.name)
-        .classed('annotated-axis-text', (d, i) => d.annotated)
+        .classed(style.annotatedAxisText, (d, i) => d.annotated)
         .on('click', (d, i) => {
           model.axes.clearSelection(i);
         }).
@@ -409,29 +416,35 @@ function parallelCoordinate(publicAPI, model) {
     const axisLineNodes = axisLineGroup.selectAll('rect.axis-lines').
       data(axesCenters);
 
-    axisLineNodes.enter().append('rect').
-      classed('axis-lines', true);
+    axisLineNodes
+      .enter()
+      .append('rect')
+      .classed('axis-lines', true)
+      .classed(style.axisLines, true);
 
     axisLineNodes.exit().remove();
 
-    axisLineGroup.selectAll('rect.axis-lines').
-      classed('control-item', true).
-      attr('height', (model.canvasArea.height - model.borderOffsetBottom) - model.borderOffsetTop).
-      attr('width', model.axisWidth).
-      attr('transform', (d, i) => `translate(${d - (model.axisWidth / 2)}, ${model.borderOffsetTop})`).
-      on('mousedown', (d, i) => {
+    axisLineGroup
+      .selectAll('rect.axis-lines')
+      .classed(style.controlItem, true)
+      .attr('height', (model.canvasArea.height - model.borderOffsetBottom) - model.borderOffsetTop)
+      .attr('width', model.axisWidth)
+      .attr('transform', (d, i) => `translate(${d - (model.axisWidth / 2)}, ${model.borderOffsetTop})`)
+      .on('mousedown', (d, i) => {
         d3.event.preventDefault();
         const coords = d3.mouse(model.container);
         const initialY = coords[1];
         const initialX = d - (model.selectionBarWidth / 2);
         const prect = svg.append('rect');
-        prect.classed('axis-selection-pending', true).
-          attr('height', 0.5).
-          attr('width', model.selectionBarWidth).
-          attr('transform', `translate(${initialX}, ${initialY})`).
-          attr('data-initial-x', initialX).
-          attr('data-initial-y', initialY).
-          attr('data-index', i);
+        prect
+          .classed('axis-selection-pending', true)
+          .classed(style.selectionBars, true)
+          .attr('height', 0.5)
+          .attr('width', model.selectionBarWidth)
+          .attr('transform', `translate(${initialX}, ${initialY})`)
+          .attr('data-initial-x', initialX)
+          .attr('data-initial-y', initialY)
+          .attr('data-index', i);
 
         svg.on('mousemove', axisMouseDragHandler);
         svg.on('mouseup', (data, index) => {
@@ -510,15 +523,15 @@ function parallelCoordinate(publicAPI, model) {
     }
 
     if (!model.axes.canRender() || model.container === null || model.containerHidden === true) {
-      d3.select(model.container).select('svg.parallel-coords-overlay').classed('hidden', true);
-      d3.select(model.container).select('canvas').classed('hidden', true);
-      d3.select(model.container).select('div.parallel-coords-placeholder').classed('hidden', false);
+      d3.select(model.container).select('svg.parallel-coords-overlay').classed(style.hidden, true);
+      d3.select(model.container).select('canvas').classed(style.hidden, true);
+      d3.select(model.container).select('div.parallel-coords-placeholder').classed(style.hidden, false);
       return;
     }
 
-    d3.select(model.container).select('svg.parallel-coords-overlay').classed('hidden', false);
-    d3.select(model.container).select('canvas').classed('hidden', false);
-    d3.select(model.container).select('div.parallel-coords-placeholder').classed('hidden', true);
+    d3.select(model.container).select('svg.parallel-coords-overlay').classed(style.hidden, false);
+    d3.select(model.container).select('canvas').classed(style.hidden, false);
+    d3.select(model.container).select('div.parallel-coords-placeholder').classed(style.hidden, true);
 
     model.ctx.globalAlpha = 1.0;
 
@@ -534,9 +547,11 @@ function parallelCoordinate(publicAPI, model) {
     model.drawableArea.height = model.canvasArea.height - (model.borderOffsetTop + model.borderOffsetBottom);
 
     const svg = d3.select(model.container).select('svg');
-    svg.attr('width', model.canvas.width).
-      attr('height', model.canvas.height).
-      classed('parallel-coords-overlay', true);
+    svg
+      .attr('width', model.canvas.width)
+      .attr('height', model.canvas.height)
+      .classed('parallel-coords-overlay', true)
+      .classed(style.parallelCoordsOverlay, true);
 
     if (d3.select(model.container).selectAll('g').empty()) {
       // Have not added groups yet, do so now.  Order matters.
