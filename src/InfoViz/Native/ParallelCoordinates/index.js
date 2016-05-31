@@ -1,7 +1,7 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';
-import style from './ParallelCoordinates.mcss';
+import style from 'PVWStyle/InfoVizNative/ParallelCoordinates.mcss';
 import axisControlSvg from './AxisControl-svg.html';
 import iconImage from './ParallelCoordsIconSmall.png';
 import htmlContent from './body.html';
