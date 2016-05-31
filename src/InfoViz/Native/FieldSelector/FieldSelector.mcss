@@ -1,0 +1,57 @@
+.icon {
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw from 'font-awesome/css/font-awesome.css';
+  user-select: none;
+  cursor: pointer;
+}
+
+.selectedFieldsIcon {
+  composes: icon;
+  composes: fa-check-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.allFieldsIcon {
+  composes: icon;
+  composes: fa-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.legend {
+  text-align: center;
+  padding: 5px 5px 0 5px;
+}
+
+.fieldName {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row {
+  user-select: none;
+  cursor: pointer;
+  line-height: 25px;
+}
+
+.unselectedRow {
+  composes: row;
+  opacity: 0.5;
+}
+
+.selectedRow {
+  composes: row;
+  opacity: 1;
+}
+
+.row:hover {
+  background-color: #ccd;
+}
+
+.thead {
+  user-select: none;
+  cursor: pointer;
+  border-bottom: solid 2px #aaa;
+}
+
+.tbody {
+}

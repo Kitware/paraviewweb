@@ -737,18 +737,6 @@ function parallelCoordinate(publicAPI, model) {
     }
   };
 
-  publicAPI.destroy = () => {
-    publicAPI.setContainer(null);
-    while (model.subscriptions.length) {
-      model.subscriptions.pop().unsubscribe();
-    }
-
-    Object.keys(model).forEach(field => delete model[field]);
-
-    // Flag the instance beeing deleted
-    model.deleted = true;
-  };
-
   // function handleHoverBinUpdate(data) {
   //   if (!model.axes.canRender() || model.containerHidden === true) {
   //     // let's not do anything if we don't have enough axes for rendering.
@@ -839,10 +827,15 @@ function parallelCoordinate(publicAPI, model) {
   // }
 
   // Attach listener to provider
-  model.subscriptions = [];
+  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   ['onHistogram2DDataReady', 'onHistogram2DSelectionDataReady'].forEach(method => {
     if (model.provider[method]) {
       model.subscriptions.push(model.provider[method](publicAPI.render));
+    }
+  });
+  ['onFieldsChange'].forEach(method => {
+    if (model.provider[method]) {
+      model.subscriptions.push(model.provider[method](fetchData));
     }
   });
 
@@ -898,6 +891,7 @@ const DEFAULT_VALUES = {
 export function extend(publicAPI, model, initialValues = {}) {
   Object.assign(model, DEFAULT_VALUES, initialValues);
 
+  CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
   CompositeClosureHelper.get(publicAPI, model, ['provider', 'container']);
 

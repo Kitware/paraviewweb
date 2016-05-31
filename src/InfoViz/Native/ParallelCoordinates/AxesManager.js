@@ -113,6 +113,9 @@ export default class AxesManager {
   }
 
   swapAxes(aIdx, bIdx) {
+    if (!this.axes[aIdx] || !this.axes[bIdx]) {
+      return;
+    }
     const a = this.axes[aIdx];
     const b = this.axes[bIdx];
     this.axes[aIdx] = b;
