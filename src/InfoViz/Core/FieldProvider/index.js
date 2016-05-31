@@ -15,14 +15,26 @@ function fieldProvider(publicAPI, model) {
 
   publicAPI.addField = (name, range = [0, 1], active = false) => {
     model.fields[name] = { range, active };
+    publicAPI.fireFieldsChange();
   };
 
+  publicAPI.getField = (name) => model.fields[name];
+
   publicAPI.activateField = (name, active = true) => {
-    model.fields[name].active = active;
+    if (model.fields[name].active !== active) {
+      model.fields[name].active = active;
+      publicAPI.fireFieldsChange();
+    }
+  };
+
+  publicAPI.toggleFieldSelection = name => {
+    model.fields[name].active = !model.fields[name].active;
+    publicAPI.fireFieldsChange();
   };
 
   publicAPI.removeAllFields = () => {
     model.fields = {};
+    publicAPI.fireFieldsChange();
   };
 
   publicAPI.getFieldRange = name => model.fields[name].range;
@@ -43,6 +55,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'FieldProvider');
+  CompositeClosureHelper.event(publicAPI, model, 'FieldsChange');
 
   fieldProvider(publicAPI, model);
 }

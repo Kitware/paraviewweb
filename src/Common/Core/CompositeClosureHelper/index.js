@@ -53,11 +53,20 @@ export function get(publicAPI, model = {}, names = []) {
 export function destroy(publicAPI, model = {}) {
   const previousDestroy = publicAPI.destroy;
 
+  if (!model.subscriptions) {
+    model.subscriptions = [];
+  }
+
   publicAPI.destroy = () => {
     if (previousDestroy) {
       previousDestroy();
     }
-    Object.keys(model).forEach(field => delete model[field]);
+    Object.keys(model).forEach(field => {
+      if (field === 'subscriptions') {
+        model[field].forEach(subscription => subscription.unsubscribe());
+      }
+      delete model[field];
+    });
 
     // Flag the instance beeing deleted
     model.deleted = true;

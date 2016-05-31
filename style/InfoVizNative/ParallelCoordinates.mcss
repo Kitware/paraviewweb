@@ -1,0 +1,140 @@
+.hidden {
+  display: none;
+}
+
+.selectionBars {
+  stroke: white;
+  stroke-width: 2;
+  fill: rgb(105, 195, 255);
+}
+
+.controlItem {
+  cursor: pointer;
+}
+
+.axisControlElements {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.upsideDown polygon:global(.top) {
+  stroke: rgb(151, 151, 151);
+  fill: rgb(216, 216, 216);
+}
+
+.upsideDown polygon:global(.bottom) {
+  stroke: rgb(151, 151, 151);
+  fill: black;
+}
+
+.rightsideUp polygon:global(.bottom) {
+  stroke: rgb(151, 151, 151);
+  fill: rgb(216, 216, 216);
+}
+
+.rightsideUp polygon:global(.top) {
+  stroke: rgb(151, 151, 151);
+  fill: black;
+}
+
+.axisAnnotationIndicators {
+  fill: none;
+  stroke-width: 2;
+  stroke: rgb(105, 195, 255);
+  display: none;
+}
+
+.axisAnnotated {
+  display: block;
+}
+
+.axisLabels {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 12px;
+  fill: black;
+  user-select: none;
+}
+
+.annotatedAxisText {
+  font-size: 13px;
+  fill: rgb(105, 195, 255);
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.axisLines {
+  fill: grey;
+}
+
+.parallelCoordsOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.parallelCoordsOverlay polygon {
+  stroke: #979797;
+  fill: #D8D8D8;
+}
+
+.axisControlsGroupContainer {
+  stroke: none;
+  stroke-width: 1;
+  fill: none;
+  fill-rule: evenodd;
+}
+
+.hoverBinIndicator {
+  fill: blue;
+  position: relative;
+}
+
+.parallelCoordsOverlay rect:global(.left-rect):hover ~ polygon:global(.left) {
+  stroke: black;
+  fill: darkgray;
+}
+
+.parallelCoordsOverlay rect:global(.right-rect):hover ~ polygon:global(.right) {
+  stroke: black;
+  fill: darkgray;
+}
+
+.parallelCoordsOverlay rect:global(.center-rect):hover ~ polygon:global(.top) {
+  stroke: black;
+  fill: darkgray;
+}
+
+.parallelCoordsOverlay rect:global(.center-rect):hover ~ polygon:global(.bottom) {
+  stroke: black;
+  fill: darkgray;
+}
+
+span:global(.pc-placeholder-title), span:global(.pc-placeholder-info) {
+    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+    text-align: center;
+    user-select: none;
+}
+
+div:global(.parallel-coords-placeholder) span:global(.pc-placeholder-title) {
+    font-size: 45px;
+}
+
+div:global(.parallel-coords-placeholder) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+}
+
+div:global(.pc-placeholder-row) {
+  text-align: center;
+}
+
+.parallelCoordsOverlay g:global(.axis-controls-group) polygon {
+  pointer-events: none;
+}
+
+
