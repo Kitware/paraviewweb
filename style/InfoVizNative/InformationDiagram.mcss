@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 div.info-diagram-container {
   position: absolute;
   top: 0;
@@ -41,11 +45,6 @@ div.info-diagram-container span.status-bar-text {
   position: relative;
   top: 10px;
   left: 20px;
-}
-
-@font-face {
-    font-family: "Linux Biolinum";
-    src: url(../../../assets/fonts/LinBiolinum_R.ttf) format("truetype");
 }
 
 span.status-bar-text, text, span.id-placeholder-title, span.id-placeholder-info {

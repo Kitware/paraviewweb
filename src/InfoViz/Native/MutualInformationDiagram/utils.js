@@ -199,17 +199,18 @@ export function calculateAngleAndRadius(coords, containerDims) {
 }
 
 export default {
+  calculateAngleAndRadius,
   constantMatrix,
-  zeros,
   downsample,
-  freqToProb,
   flattenMatrix,
-  quantile,
+  freqToProb,
+  matrixChoose,
   matrixFind,
   matrixSubset,
-  matrixChoose,
-  topProb,
-  topPmi,
-  topBinProb,
+  quantile,
   topBinPmi,
+  topBinProb,
+  topPmi,
+  topProb,
+  zeros,
 };
