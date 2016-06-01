@@ -1,5 +1,9 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
+const DEFAULT_FIELD_STATE = {
+  range: [0, 1],
+  active: false,
+};
 // ----------------------------------------------------------------------------
 // Field Provider
 // ----------------------------------------------------------------------------
@@ -9,35 +13,45 @@ function fieldProvider(publicAPI, model) {
     model.fields = {};
   }
 
-  publicAPI.listFields = () => Object.keys(model.fields);
+  publicAPI.getFieldNames = () => Object.keys(model.fields);
 
-  publicAPI.getActiveFields = () => Object.keys(model.fields).filter(name => model.fields[name].active);
+  publicAPI.getActiveFieldNames = () => Object.keys(model.fields).filter(name => model.fields[name].active);
 
-  publicAPI.addField = (name, range = [0, 1], active = false) => {
-    model.fields[name] = { range, active };
-    publicAPI.fireFieldsChange();
+  publicAPI.addField = (name, initialState = {}) => {
+    const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name });
+    field.range = [].concat(field.range); // Make sure we copy the array
+    model.fields[name] = field;
+    publicAPI.fireFieldChange(field);
   };
 
   publicAPI.getField = (name) => model.fields[name];
 
-  publicAPI.activateField = (name, active = true) => {
-    if (model.fields[name].active !== active) {
-      model.fields[name].active = active;
-      publicAPI.fireFieldsChange();
+  publicAPI.updateField = (name, changeSet = {}) => {
+    const field = model.fields[name] || {};
+    let hasChange = false;
+
+    Object.keys(changeSet).forEach(key => {
+      hasChange = hasChange || field[key] !== changeSet[key];
+      // Set changes
+      field[key] = changeSet[key];
+    });
+
+    if (hasChange) {
+      field.name = name; // Just in case
+      model.fields[name] = field;
+      publicAPI.fireFieldChange(field);
     }
   };
 
   publicAPI.toggleFieldSelection = name => {
     model.fields[name].active = !model.fields[name].active;
-    publicAPI.fireFieldsChange();
+    publicAPI.fireFieldChange(model.fields[name]);
   };
 
   publicAPI.removeAllFields = () => {
     model.fields = {};
-    publicAPI.fireFieldsChange();
+    publicAPI.fireFieldChange();
   };
-
-  publicAPI.getFieldRange = name => model.fields[name].range;
 }
 
 // ----------------------------------------------------------------------------
@@ -55,7 +69,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'FieldProvider');
-  CompositeClosureHelper.event(publicAPI, model, 'FieldsChange');
+  CompositeClosureHelper.event(publicAPI, model, 'FieldChange');
 
   fieldProvider(publicAPI, model);
 }

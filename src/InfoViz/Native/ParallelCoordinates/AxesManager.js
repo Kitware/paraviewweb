@@ -73,6 +73,14 @@ export default class AxesManager {
     return this.axes.map(axis => axis.name);
   }
 
+  getAxesPairs() {
+    const axesPairs = [];
+    for (let i = 1; i < this.axes.length; i++) {
+      axesPairs.push([this.axes[i - 1].name, this.axes[i].name]);
+    }
+    return axesPairs;
+  }
+
   resetSelections(selections = {}) {
     this.clearSelection(true);
 

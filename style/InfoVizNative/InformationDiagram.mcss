@@ -1,0 +1,159 @@
+div.info-diagram-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+div.info-diagram-container div.status-bar-container {
+  position: absolute;
+  /*left: 10px;*/
+  right: 10px;
+  height: 40px;
+  bottom: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: rgba(200, 200, 200, 0.5);
+  z-index: 4;
+  transition: right 0.5s;
+}
+
+div.info-diagram-container i.panel-visibility {
+  position: absolute;
+  pointer-events: all;
+  cursor: pointer;
+  color: gray;
+  left: 3px;
+  top: 4px;
+}
+
+div.info-diagram-container i.panel-visibility:hover {
+  color: black;
+}
+
+div.info-diagram-container i.panel-visibility.hidden {
+  display: none;
+}
+
+div.info-diagram-container span.status-bar-text {
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+@font-face {
+    font-family: "Linux Biolinum";
+    src: url(../../../assets/fonts/LinBiolinum_R.ttf) format("truetype");
+}
+
+span.status-bar-text, text, span.id-placeholder-title, span.id-placeholder-info {
+    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+    text-align: center;
+    user-select: none;
+}
+
+div.information-diagram svg {
+  float:left;
+  display:inline;
+  vertical-align:top;
+}
+
+div.info-diagram-container div.info-diagram-placeholder {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25%;
+}
+
+div.info-diagram-container div.info-diagram-placeholder.hidden {
+    display: none;
+}
+
+div.info-diagram-placeholder div.id-placeholder-row {
+  text-align: center;
+}
+
+div.info-diagram-container span.id-placeholder-title {
+    font-size: 45px;
+}
+
+svg.information-diagram.hidden {
+  display: none;
+}
+
+svg.information-diagram {
+  opacity: 1.0;
+}
+
+svg.information-diagram.no-interact {
+  opacity: 0.75;
+}
+
+svg.information-diagram g.group textPath {
+    user-select: none;
+    fill: black;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+svg.information-diagram g.group g.glyph {
+    pointer-events: none;
+}
+
+svg.information-diagram g.main-circle {
+  fill: none;
+  pointer-events: all;
+}
+
+.group path {
+  fill-opacity: .5;
+}
+
+path.chord {
+  fill: #bbb;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+}
+
+path.pmiChord {
+  fill: #ccc;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+  transition: fill 0.5s;
+}
+
+path.pmiChord.positive {
+  fill: #33b733;
+}
+
+path.pmiChord.negative {
+  fill: #b73333;
+}
+
+path.pmiChord.highlight-pmi {
+  fill: #ffff00;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+  transition: fill 0.3s;
+}
+
+path.chord:hover, path.pmichord:hover {
+  fill: #b73333;
+}
+
+g.mutualInfoChords path.fade {
+  display: none;
+}
+
+g.pmiChords path.fade {
+  display: none;
+}
+
+path.htile.hilite {
+  fill: blue;
+}

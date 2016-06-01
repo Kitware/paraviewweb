@@ -27,8 +27,6 @@ function fieldSelector(publicAPI, model) {
     if (el) {
       d3.select(model.container).html(template);
       publicAPI.render();
-    } else {
-      // fixme: this.clearSubscriptions();
     }
   };
 
@@ -59,7 +57,7 @@ function fieldSelector(publicAPI, model) {
       });
 
     // Handle variables
-    const data = model.displayUnselected ? model.provider.listFields() : model.provider.getActiveFields();
+    const data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
     const variablesContainer = d3
       .select(model.container)
       .select('tbody.fields')
@@ -125,7 +123,7 @@ function fieldSelector(publicAPI, model) {
   publicAPI.setContainer(model.container);
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  model.subscriptions.push(model.provider.onFieldsChange(publicAPI.render));
+  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
 }
 
 // ----------------------------------------------------------------------------

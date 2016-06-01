@@ -85,16 +85,13 @@ function parallelCoordinate(publicAPI, model) {
   model.bgCtx = model.bgCanvas.getContext('2d');
 
   model.axes = new AxesManager();
-  model.histogramList = [];
-  model.hoverBinData = [];
 
   function fetchSelectionData() {
     model.provider.resetSelectionHistogram2D();
-    const fieldNames = model.axes.getAxesNames();
-    for (let i = 1; i < fieldNames.length; i++) {
-      model.provider.loadSelectionHistogram2D(fieldNames[i - 1], fieldNames[i]);
-    }
-    model.provider.applySelection(model.axes.getSelections());
+    model.axes.getAxesPairs().forEach(pair => {
+      model.provider.loadSelectionHistogram2D(...pair);
+    });
+    model.provider.setSelection(model.axes.getSelections());
   }
 
   function fetchData() {
@@ -106,10 +103,10 @@ function parallelCoordinate(publicAPI, model) {
       // Initialize axes
       if (model.provider.isA('FieldProvider')) {
         /* eslint-disable arrow-body-style */
-        model.axes.updateAxes(model.provider.getActiveFields().map(name => {
+        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name => {
           return {
             name,
-            range: model.provider.getFieldRange(name),
+            range: model.provider.getField(name).range,
           };
         }));
       }
@@ -564,15 +561,12 @@ function parallelCoordinate(publicAPI, model) {
       svg.append('g').classed('glyphs', true);
     }
 
-    model.hoverIndicatorHeight = model.drawableArea.height / model.provider.getHistogram2DNumberOfBins();
-
     model.ctx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
     model.fgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
     model.bgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
 
-
     // First lay down the "context" polygons
-    model.maxBinCountForOpacityCalculation = model.provider.getParallelCoordinateMaxCount(model.axes.getAxesNames());
+    model.maxBinCountForOpacityCalculation = model.provider.getMaxOfMaxCounts(model.axes.getAxesPairs());
 
     const nbPolyDraw = model.axes.getNumberOf2DHistogram();
     const axesCenters = model.axes.extractAxesCenters(model);
@@ -592,13 +586,13 @@ function parallelCoordinate(publicAPI, model) {
 
     // If there is a selection, draw that (the "focus") on top of the polygons
     if (model.axes.hasSelection() && model.provider.isA('SelectionProvider')) {
-      model.maxBinCountForOpacityCalculation = model.provider.getSelectionParallelCoordinateMaxCount(model.axes.getAxesNames());
+      model.maxBinCountForOpacityCalculation = model.provider.getSelectionMaxOfMaxCounts(model.axes.getAxesPairs());
       for (let k = 0; k < nbPolyDraw; ++k) {
         drawPolygons(
           axesCenters,
           model.fgCtx,
           k, k + 1,
-          model.provider.getSelection2DHistogram(model.axes.getAxis(k).name, model.axes.getAxis(k + 1).name),
+          model.provider.getSelectionHistogram2D(model.axes.getAxis(k).name, model.axes.getAxis(k + 1).name),
           model.selectionColors);
       }
 
@@ -717,7 +711,6 @@ function parallelCoordinate(publicAPI, model) {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
     model.canvas.setAttribute('width', clientRect.width);
     model.canvas.setAttribute('height', clientRect.height);
-    model.hoverBinData = [];
     d3.select(model.container)
       .select('svg')
       .selectAll('rect.hover-bin-indicator')
@@ -843,12 +836,12 @@ function parallelCoordinate(publicAPI, model) {
 
   // Attach listener to provider
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  ['onHistogram2DDataReady', 'onHistogram2DSelectionDataReady'].forEach(method => {
+  ['onHistogram2DReady', 'onSelectionHistogram2DReady'].forEach(method => {
     if (model.provider[method]) {
       model.subscriptions.push(model.provider[method](publicAPI.render));
     }
   });
-  ['onFieldsChange'].forEach(method => {
+  ['onFieldChange'].forEach(method => {
     if (model.provider[method]) {
       model.subscriptions.push(model.provider[method](fetchData));
     }
@@ -876,8 +869,6 @@ const DEFAULT_VALUES = {
 
   containerHidden: false,
 
-  histogramCount: 0,
-
   borderOffsetTop: 35,
   borderOffsetRight: 10,
   borderOffsetBottom: 45,
@@ -889,12 +880,6 @@ const DEFAULT_VALUES = {
   polygonColors: [0, 0, 0],
   selectionColors: [70, 130, 180],
 
-  hoverIndicatorHeight: 10,
-  hoverIndicatorWidth: 7,
-  hoverBinData: [],
-
-  maxBinCountOverAllHistograms: 0,
-  maxBinCountOverAllSelections: 0,
   maxBinCountForOpacityCalculation: 0,
 
   selectionOpacityAdjustment: 1,
