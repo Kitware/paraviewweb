@@ -25,94 +25,120 @@ function flipHistogram(histo2d) {
 // ----------------------------------------------------------------------------
 
 function histogram2DProvider(publicAPI, model) {
-  if (!model.cache) {
-    model.cache = {};
-  }
-  model.histogram2dRequestQueue = [];
-  model.dataReadyListeners = [];
+  // Private members
+  let fetchCallback = null;
+  const requestQueue = [];
+  const readyListeners = [];
 
+  // Protected members
+  if (!model.histogram2DData) {
+    model.histogram2DData = {};
+  }
+
+  // Free listeners at delete time
+  function unsubscribeListeners() {
+    let count = readyListeners.length;
+    while (count--) {
+      readyListeners[count] = null;
+    }
+  }
+  model.subscriptions.push({ unsubscribe: unsubscribeListeners });
+
+  // Provide data fetcher
+  publicAPI.setHistogram2DFetchCallback = fetch => {
+    if (requestQueue.length) {
+      fetch(requestQueue);
+    }
+    fetchCallback = fetch;
+  };
+
+  // Data access
   publicAPI.setHistogram2DNumberOfBins = bin => {
-    model.cache = {};
+    model.histogram2DData = {};
     model.histogram2DNumberOfBins = bin;
   };
 
   // Return true if data is available
   publicAPI.loadHistogram2D = (axisA, axisB) => {
-    if (model.cache[axisA] && model.cache[axisA][axisB]) {
-      if (model.cache[axisA][axisB].pending) {
+    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
+      if (model.histogram2DData[axisA][axisB].pending) {
         return false;
       }
       return true;
     }
-    if (model.cache[axisB] && model.cache[axisB][axisA]) {
-      if (!model.cache[axisA]) {
-        model.cache[axisA] = {};
+    if (model.histogram2DData[axisB] && model.histogram2DData[axisB][axisA]) {
+      if (!model.histogram2DData[axisA]) {
+        model.histogram2DData[axisA] = {};
       }
-      model.cache[axisA][axisB] = flipHistogram(model.cache[axisB][axisA]);
+      model.histogram2DData[axisA][axisB] = flipHistogram(model.histogram2DData[axisB][axisA]);
       return true;
     }
 
-    if (!model.cache[axisA]) {
-      model.cache[axisA] = {};
+    if (!model.histogram2DData[axisA]) {
+      model.histogram2DData[axisA] = {};
     }
-    model.cache[axisA][axisB] = { pending: true };
+    model.histogram2DData[axisA][axisB] = { pending: true };
 
-    // Queue the call
-    model.histogram2dRequestQueue.push([axisA, axisB]);
-    setImmediate(publicAPI.processRequests);
+    // Request data if possible
+    requestQueue.push([axisA, axisB]);
+    if (fetchCallback) {
+      fetchCallback(requestQueue);
+    }
 
     return false;
   };
 
-  publicAPI.processRequests = () => {
-    console.log('Default implementation expect only cached data', model.histogram2dRequestQueue);
-  };
-
-  publicAPI.onHistogram2DDataReady = callback => {
-    const idx = model.dataReadyListeners.length;
-    const unsubscribe = () => { model.dataReadyListeners[idx] = null; };
-    model.dataReadyListeners.push(callback);
+  publicAPI.onHistogram2DReady = callback => {
+    const idx = readyListeners.length;
+    const unsubscribe = () => { readyListeners[idx] = null; };
+    readyListeners.push(callback);
     return { unsubscribe };
   };
 
-  publicAPI.triggerHistogram2DDataReady = () => {
-    model.dataReadyListeners.forEach(ready => {
-      if (ready) {
-        ready();
-      }
-    });
-  };
-
   publicAPI.getHistogram2D = (axisA, axisB) => {
-    if (model.cache[axisA] && model.cache[axisA][axisB]) {
-      return model.cache[axisA][axisB];
+    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
+      return model.histogram2DData[axisA][axisB];
     }
     return null;
   };
 
-  publicAPI.getMaxCount = (axisA, axisB) => {
-    if (model.cache[axisA] && model.cache[axisA][axisB]) {
-      if (!model.cache[axisA][axisB].maxCount) {
-        let count = 0;
-        model.cache[axisA][axisB].bins.forEach(item => {
-          count = count < item.count ? item.count : count;
-        });
-        model.cache[axisA][axisB].maxCount = count;
-      }
-      return model.cache[axisA][axisB].maxCount;
+  publicAPI.setHistogram2D = (axisA, axisB, data) => {
+    if (!model.histogram2DData[axisA]) {
+      model.histogram2DData[axisA] = {};
     }
-    return 1;
+    if (!model.histogram2DData[axisB]) {
+      model.histogram2DData[axisB] = {};
+    }
+    model.histogram2DData[axisA][axisB] = data;
+    model.histogram2DData[axisB][axisA] = flipHistogram(data);
+
+    setImmediate(() => {
+      readyListeners.filter(ready => !!ready).forEach(ready => {
+        try {
+          ready(axisA, axisB, data);
+        } catch (err) {
+          console.log('Fail notifying ready callback', err);
+        }
+      });
+    });
   };
 
-  publicAPI.getParallelCoordinateMaxCount = axesNames => {
-    let maxCount = 1;
-    const nbAxes = axesNames.length;
-    for (let i = 1; i < nbAxes; i++) {
-      const currentCount = publicAPI.getMaxCount(axesNames[i - 1], axesNames[i]);
-      maxCount = maxCount < currentCount ? currentCount : maxCount;
+  publicAPI.getMaxCount = (axisA, axisB) => {
+    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB] && model.histogram2DData[axisA][axisB].bins) {
+      if (!model.histogram2DData[axisA][axisB].maxCount) {
+        let count = 0;
+        model.histogram2DData[axisA][axisB].bins.forEach(item => {
+          count = count < item.count ? item.count : count;
+        });
+        model.histogram2DData[axisA][axisB].maxCount = count;
+      }
+      return model.histogram2DData[axisA][axisB].maxCount;
     }
-    return maxCount;
+    return 0;
   };
+
+  publicAPI.getMaxCounts = listOfAxisPair => listOfAxisPair.map(args => publicAPI.getMaxCount(args[0], args[1]));
+  publicAPI.getMaxOfMaxCounts = listOfAxisPair => Math.max.apply(null, publicAPI.getMaxCounts(listOfAxisPair));
 }
 
 // ----------------------------------------------------------------------------
@@ -120,7 +146,7 @@ function histogram2DProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  cache: null,
+  histogram2DData: null,
   histogram2DNumberOfBins: 32,
 };
 
