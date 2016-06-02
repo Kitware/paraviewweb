@@ -99,7 +99,7 @@ function fieldSelector(publicAPI, model) {
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(d);
         legendCell
-          .html(`<svg width="${legendSize}" height="${legendSize}" fill="${color}"><use xlink:href="${shape}"/></svg>`);
+          .html(`<svg width="${legendSize}" height="${legendSize}" fill="${color}" stroke="black"><use xlink:href="${shape}"/></svg>`);
       } else {
         legendCell
           .html('<i></i>')

@@ -29,8 +29,25 @@ function informationDiagram(publicAPI, model) {
     || !model.provider.isA('MutualInformationProvider')
     || !model.provider.isA('Histogram1DProvider')
     || !model.provider.isA('FieldProvider')) {
-    console.log('Invalid provider provided...', model.provider);
+    console.log('Invalid provider:', model.provider);
     return;
+  }
+
+  // Handle style for status bar
+  function updateStatusBarVisibility() {
+    const cntnr = d3.select(model.container);
+    if (model.statusBarVisible) {
+      cntnr.select('.status-bar-container')
+        .style('width', function updateWidth() { return this.dataset.width; });
+      cntnr.select('.show-button').classed(style.hidden, true);
+      cntnr.select('.hide-button').classed(style.hidden, false);
+      cntnr.select('.status-bar-text').classed(style.hidden, false);
+    } else {
+      cntnr.select('.status-bar-container').style('width', '20px');
+      cntnr.select('.show-button').classed(style.hidden, false);
+      cntnr.select('.hide-button').classed(style.hidden, true);
+      cntnr.select('.status-bar-text').classed(style.hidden, true);
+    }
   }
 
   // Fetch needed data
@@ -56,8 +73,6 @@ function informationDiagram(publicAPI, model) {
     // Do we have all the data?
     model.needData = !!needDataCount;
 
-    console.log('fetchData', needDataCount, model.provider.getMutualInformation());
-
     // Render if everything is available
     if (!model.needData) {
       // Will trigger render with proper size
@@ -71,9 +86,10 @@ function informationDiagram(publicAPI, model) {
     }
 
     const clientRect = model.container.getBoundingClientRect();
+
     d3.select(model.container)
       .select('div.status-bar-container')
-      .style('width', `${clientRect.width - 20}px`);
+      .attr('data-width', `${clientRect.width - 20}px`);
 
     publicAPI.render(clientRect.width, clientRect.height);
   };
@@ -88,13 +104,46 @@ function informationDiagram(publicAPI, model) {
     model.container = el;
 
     if (model.container) {
-      const svgdoc = d3.select(model.container);
-
       // Create placeholder
       model.container.innerHTML = htmlContent;
-      svgdoc.select('div.info-diagram-placeholder')
+
+      // Apply style
+      const d3Container = d3
+        .select(model.container)
+        .select('.info-diagram-container')
+        .classed(style.infoDiagramContainer, true);
+
+      d3Container
+        .select('.status-bar-container')
+        .classed(style.statusBarContainer, true);
+
+      d3Container
+        .select('.status-bar-text')
+        .classed(style.statusBarText, true);
+
+      d3Container
+        .select('.show-button')
+        .classed(style.showButton, true);
+
+      d3Container
+        .select('.hide-button')
+        .classed(style.hideButton, true);
+
+      d3Container
+        .select('.info-diagram-placeholder')
+        .classed(style.infoDiagramPlaceholder, true)
         .select('img')
         .attr('src', iconImage);
+
+      // Attach listener for show/hide status bar
+      d3Container.selectAll('.show-button, .hide-button').on('click', () => {
+        model.statusBarVisible = !model.statusBarVisible;
+        updateStatusBarVisibility();
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      });
+
+      updateStatusBarVisibility();
 
       // Fetch data for rendering
       fetchData();
@@ -104,7 +153,7 @@ function informationDiagram(publicAPI, model) {
   publicAPI.updateStatusBarText = msg => d3.select(model.container).select('span.status-bar-text').text(msg);
 
   publicAPI.render = (width, height) => {
-    // Extract provider data for local variable
+    // Extract provider data for local access
     const getLegend = model.provider.isA('LegendProvider') ? model.provider.getLegend : null;
     const histogram1DnumberOfBins = model.provider.getHistogram1DNumberOfBins();
     const variableList = model.provider.getActiveFieldNames();
@@ -133,7 +182,8 @@ function informationDiagram(publicAPI, model) {
       return;
     }
 
-    console.log('render mutualInformationData', mutualInformationData);
+    // Update
+    updateStatusBarVisibility();
 
     d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, true);
 
@@ -160,7 +210,9 @@ function informationDiagram(publicAPI, model) {
 
     const histoArc = d3.svg.arc().innerRadius(outerRadius + 10);
 
-    const layout = d3.layout.chord()
+    const layout = d3
+      .layout
+      .chord()
       .padding(0.04)
       .sortSubgroups(d3.descending)
       .sortChords(d3.ascending);
@@ -179,9 +231,11 @@ function informationDiagram(publicAPI, model) {
       .attr('height', height)
       .style('float', 'left')
       .classed('information-diagram', true)
-      .classed('no-interact', true)
+      .classed(style.informationDiagramSvg, true)
+      .classed(style.noInteract, true)
       .append('g')
       .classed('main-circle', true)
+      .classed(style.mainCircle, true)
       .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
     function findGroupAndBin(relCoords) {
@@ -349,6 +403,7 @@ function informationDiagram(publicAPI, model) {
       .enter()
       .append('path')
       .classed('chord', true)
+      .classed(style.chord, true)
       .classed('selfchord', d => (d.source.index === d.target.index))
       .attr('d', path)
       .on('click', drawPMIAllBinsTwoVars)
@@ -409,7 +464,11 @@ function informationDiagram(publicAPI, model) {
         .data(d3.zip(linksToDraw.idx, linksToDraw.pmi,
           new Array(linksToDraw.idx.length).fill([va, vb])));
 
-      linkData.enter().append('path').classed('pmiChord', true);
+      linkData
+        .enter()
+        .append('path')
+        .classed('pmiChord', true)
+        .classed(style.pmiChord, true);
       linkData.exit().remove();
 
       const vaGroup = layout.groups()[d.source.index];
@@ -469,10 +528,10 @@ function informationDiagram(publicAPI, model) {
         }
 
         if (info.radius > veryOutermostRadius) {
-          d3.select(this).classed('no-interact', true);
+          d3.select(this).classed(style.noInteract, true);
           clearStatusBar = true;
         } else {
-          d3.select(this).classed('no-interact', false);
+          d3.select(this).classed(style.noInteract, false);
           if (info.found) {
             let binMap = {};
             const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
@@ -557,7 +616,8 @@ function informationDiagram(publicAPI, model) {
       .data(layout.groups)
       .enter()
       .append('g')
-      .classed('group', true);
+      .classed('group', true)
+      .classed(style.group, true);
 
     // Get lookups for pmi chords
     mutualInformationData.lkup = {};
@@ -592,34 +652,50 @@ function informationDiagram(publicAPI, model) {
       .remove();
 
     // Add group for glyph
-    // FIXME (We have a different legend service)
-    // if (getLegend) {
-    //   group.each(function() {
-    //   self.legendService.createGlyph(d3.select(this));
-    //   });
-    //   let groupGlyph = group.selectAll('g.glyph');
+    if (getLegend) {
+      group.each(function addLegend() {
+        const glyph = d3.select(this).select('g.glyph');
+        if (glyph.empty()) {
+          d3.select(this)
+            .append('g')
+            .classed('glyph', true)
+            .classed(style.glyph, true)
+            .append('svg')
+            .append('use');
+        }
 
-    //   groupGlyph.each(function(glyphData) {
-    //     // Add the glyph to the group
-    //     let textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
-    //     let pathLength = groupPath[0][glyphData.index].getTotalLength();
-    //     let avgRadius = (innerRadius + outerRadius) / 2;
-    //     // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-    //     let glyphAngle = glyphData.startAngle + (pathLength / 4 / outerRadius) - (textLength + glyphSize) / 2 / avgRadius;
+        const groupGlyph = group.selectAll('g.glyph');
+        groupGlyph.each(function updateColor(glyphData) {
+          const legend = getLegend(mutualInformationData.vmap[glyphData.index].name);
+          // Add the glyph to the group
+          const textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
+          const pathLength = groupPath[0][glyphData.index].getTotalLength();
+          const avgRadius = (innerRadius + outerRadius) / 2;
+          // Start at edge of arc, move to text anchor, back up half of text length and glyph size
+          const glyphAngle = glyphData.startAngle + (pathLength / 4 / outerRadius) - (textLength + model.glyphSize) / 2 / avgRadius;
 
-    //     let currGlyph = d3.select(this);
-    //     currGlyph.
-    //       attr('transform', 'translate(' +
-    //         avgRadius*Math.sin(glyphAngle) + ',' +
-    //         (-avgRadius*Math.cos(glyphAngle)) + ')');
-    //     let color = self.legendService.updateGlyph(mutualInformationData.vmap[glyphData.index].name, currGlyph);
-    //     mutualInformationData.vmap[glyphData.index].color = color;
-    //   });
+          const currGlyph = d3.select(this);
+          currGlyph
+            .attr('transform', `translate(
+              ${avgRadius * Math.sin(glyphAngle) - model.glyphSize / 2},
+              ${-avgRadius * Math.cos(glyphAngle) - model.glyphSize / 2})`)
+            .select('svg')
+            .attr('width', model.glyphSize)
+            .attr('height', model.glyphSize)
+            .attr('stroke', 'black')
+            .attr('fill', legend.color)
+            .select('use')
+            .attr('xlink:href', legend.shape);
 
-    //   // Remove the glyphs that don't fit
-    //   groupGlyph.filter(function(d, i) { return groupPath[0][i].getTotalLength() / 2 - deltaRadius <  glyphSize; }).
-    //     remove();
-    // }
+          mutualInformationData.vmap[glyphData.index].color = legend.color;
+        });
+
+        // Remove the glyphs that don't fit
+        groupGlyph
+          .filter((d, i) => groupPath[0][i].getTotalLength() / 2 - deltaRadius < model.glyphSize)
+          .remove();
+      });
+    }
 
     function getParamBinRange(index, numberOfBins, paramName) {
       const paramRange = model.provider.getField(paramName).range;
@@ -637,7 +713,7 @@ function informationDiagram(publicAPI, model) {
     // Zip histogram info into layout.groups() (which we initially have no control over as it is
     // generated for us).
     svg.selectAll('g.group')
-      .each(groupData => {
+      .each(function buildHistogram(groupData) {
         const gname = mutualInformationData.vmap[groupData.index].name;
         const gvar = histogramData[gname];
 
@@ -647,8 +723,9 @@ function informationDiagram(publicAPI, model) {
         }
 
         // Add the color to the group arc
-        d3.select(this).select('path').
-          style('fill', mutualInformationData.vmap[groupData.index].color);
+        d3.select(this)
+          .select('path')
+          .style('fill', mutualInformationData.vmap[groupData.index].color || 'red');
 
         groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
 
@@ -691,7 +768,7 @@ function informationDiagram(publicAPI, model) {
     chord
       .attr('data-details', (d, i) =>
         `Mutual information: ${mutualInformationData.vmap[d.source.index].name} ↔︎ ${mutualInformationData.vmap[d.target.index].name} `
-        + `${formatMI(mutualInformationData.matrix[d.source.index][d.target.index] )}`);
+        + `${formatMI(mutualInformationData.matrix[d.source.index][d.target.index])}`);
     // The lines below are for the case when the MI matrix has been row-normalized:
     // mutualInformationData.matrix[d.source.index][d.target.index] *
     // mutualInformationData.vmap[d.source.index].autoInfo/mutualInformationData.matrix[d.source.index][d.source.index]);
@@ -756,7 +833,9 @@ function informationDiagram(publicAPI, model) {
           .selectAll('path.pmiChord')
           .data(linkAccum);
 
-        linkData.enter().append('path').classed('pmiChord', true);
+        linkData.enter().append('path')
+          .classed('pmiChord', true)
+          .classed(style.pmiChord, true);
         linkData.exit().remove();
 
         d3.select('g.pmiChords')
@@ -790,7 +869,7 @@ function informationDiagram(publicAPI, model) {
             const targetBinRange = getParamBinRange(data[0][1], histogram1DnumberOfBins, data[3][1]);
             return 'PMI: '
               + `${data[3][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
-              + `${data[3][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(d[1])}`;
+              + `${data[3][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
           }).
           on('mouseover', function mouseOver() {
             publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
@@ -821,6 +900,8 @@ const DEFAULT_VALUES = {
   needData: true,
 
   glyphSize: 15,
+
+  statusBarVisible: false,
 };
 
 // ----------------------------------------------------------------------------

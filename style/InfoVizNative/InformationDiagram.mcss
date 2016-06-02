@@ -1,17 +1,20 @@
 .hidden {
   display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
-div.info-diagram-container {
+.infoDiagramContainer {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
-div.info-diagram-container div.status-bar-container {
+.statusBarContainer {
   position: absolute;
   /*left: 10px;*/
   right: 10px;
@@ -21,87 +24,85 @@ div.info-diagram-container div.status-bar-container {
   border-radius: 5px;
   background-color: rgba(200, 200, 200, 0.5);
   z-index: 4;
-  transition: right 0.5s;
+  transition: width 0.5s;
 }
 
-div.info-diagram-container i.panel-visibility {
+.button {
   position: absolute;
   pointer-events: all;
   cursor: pointer;
   color: gray;
   left: 3px;
   top: 4px;
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-2x from 'font-awesome/css/font-awesome.css';
 }
 
-div.info-diagram-container i.panel-visibility:hover {
+.button:hover {
   color: black;
 }
 
-div.info-diagram-container i.panel-visibility.hidden {
-  display: none;
+.showButton {
+  composes: button;
+  composes: fa-caret-left from 'font-awesome/css/font-awesome.css';
 }
 
-div.info-diagram-container span.status-bar-text {
+.hideButton {
+  composes: button;
+  composes: fa-caret-right from 'font-awesome/css/font-awesome.css';
+}
+
+.statusBarText {
   position: relative;
   top: 10px;
   left: 20px;
+  transition: opacity 1s;
 }
 
-span.status-bar-text, text, span.id-placeholder-title, span.id-placeholder-info {
+.statusBarText, .infoDiagramContainer text {
     font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
     text-align: center;
     user-select: none;
 }
 
-div.information-diagram svg {
-  float:left;
-  display:inline;
-  vertical-align:top;
+.informationDiagramSvg {
+  float: left;
+  display: inline;
+  vertical-align: top;
+  opacity: 1.0;
 }
 
-div.info-diagram-container div.info-diagram-placeholder {
+.infoDiagramPlaceholder {
     position: absolute;
     left: 0;
     right: 0;
     top: 25%;
 }
 
-div.info-diagram-container div.info-diagram-placeholder.hidden {
-    display: none;
-}
-
-div.info-diagram-placeholder div.id-placeholder-row {
+.infoDiagramPlaceholder :global(.id-placeholder-row) {
   text-align: center;
 }
 
-div.info-diagram-container span.id-placeholder-title {
+.infoDiagramPlaceholder :global(.id-placeholder-title) {
     font-size: 45px;
 }
 
-svg.information-diagram.hidden {
-  display: none;
-}
-
-svg.information-diagram {
-  opacity: 1.0;
-}
-
-svg.information-diagram.no-interact {
+.noInteract {
   opacity: 0.75;
 }
 
-svg.information-diagram g.group textPath {
-    user-select: none;
-    fill: black;
-    text-anchor: middle;
+.group textPath {
+  user-select: none;
+  fill: black;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.glyph {
     pointer-events: none;
 }
 
-svg.information-diagram g.group g.glyph {
-    pointer-events: none;
-}
-
-svg.information-diagram g.main-circle {
+.mainCircle {
   fill: none;
   pointer-events: all;
 }
@@ -110,14 +111,14 @@ svg.information-diagram g.main-circle {
   fill-opacity: .5;
 }
 
-path.chord {
+.chord {
   fill: #bbb;
   fill-opacity: 0.5;
   stroke: #000;
   stroke-width: .25px;
 }
 
-path.pmiChord {
+.pmiChord {
   fill: #ccc;
   fill-opacity: 0.5;
   stroke: #000;
@@ -125,15 +126,15 @@ path.pmiChord {
   transition: fill 0.5s;
 }
 
-path.pmiChord.positive {
+.pmiChord:global(.positive) {
   fill: #33b733;
 }
 
-path.pmiChord.negative {
+.pmiChord:global(.negative) {
   fill: #b73333;
 }
 
-path.pmiChord.highlight-pmi {
+.pmiChord:global(.highlight-pmi) {
   fill: #ffff00;
   fill-opacity: 0.5;
   stroke: #000;
@@ -141,18 +142,14 @@ path.pmiChord.highlight-pmi {
   transition: fill 0.3s;
 }
 
-path.chord:hover, path.pmichord:hover {
+.chord:hover, .pmichord:hover {
   fill: #b73333;
 }
 
-g.mutualInfoChords path.fade {
+.informationDiagramSvg path:global(.fade) {
   display: none;
 }
 
-g.pmiChords path.fade {
-  display: none;
-}
-
-path.htile.hilite {
+.informationDiagramSvg path:global(.htile.hilite) {
   fill: blue;
 }
