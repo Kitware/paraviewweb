@@ -20,12 +20,7 @@ export default class NativeImageRenderer {
     this.imageProvider = imageProvider;
 
     this.image.onload = () => {
-      this.ctx.drawImage(this.image, 0, 0);
-      if (this.drawFPS) {
-        this.ctx.textBaseline = 'top';
-        this.ctx.textAlign = 'left';
-        this.ctx.fillText(this.fps, 5, 5);
-      }
+      this.updateDrawnImage();
     };
 
     // Update DOM
@@ -50,7 +45,9 @@ export default class NativeImageRenderer {
       this.size = getSize(domElement);
       this.canvas.setAttribute('width', this.size.clientWidth);
       this.canvas.setAttribute('height', this.size.clientHeight);
-      this.image.onload();
+      if (this.image.src && this.image.complete) {
+        this.updateDrawnImage();
+      }
     }));
     startListening();
   }
@@ -67,5 +64,14 @@ export default class NativeImageRenderer {
 
     this.container = null;
     this.imageProvider = null;
+  }
+
+  updateDrawnImage() {
+    this.ctx.drawImage(this.image, 0, 0);
+    if (this.drawFPS) {
+      this.ctx.textBaseline = 'top';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(this.fps, 5, 5);
+    }
   }
 }
