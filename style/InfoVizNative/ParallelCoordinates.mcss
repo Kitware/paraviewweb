@@ -137,4 +137,10 @@ div:global(.pc-placeholder-row) {
   pointer-events: none;
 }
 
+use.colorToFill * {
+  fill: currentColor;
+}
 
+use.blackStroke * {
+  stroke: black;
+}
