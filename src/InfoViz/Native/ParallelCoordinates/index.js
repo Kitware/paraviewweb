@@ -286,21 +286,24 @@ function parallelCoordinate(publicAPI, model) {
       useGroup.enter().append('use');
 
       glyphGroup
-        .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5)}, ${glyphPadding})`);
-
-      glyphGroup
-        .select('svg')
-        .attr('fill', (d, i) => d.legend.color)
-        .attr('width', glyphSize)
-        .attr('height', glyphSize)
-        .select('use')
-        .data(labelDataModel)
-        .attr('xlink:href', (d, i) => d.legend.shape);
-
-      glyphGroup
+        .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5)}, ${glyphPadding})`)
         .on('click', (d, i) => {
           model.axes.clearSelection(i);
         });
+
+      glyphGroup.each(function applyLegendStyle(d, i) {
+        d3.select(this)
+          .select('svg')
+          .attr('fill', d.legend.color)
+          .attr('stroke', 'black')
+          .attr('width', glyphSize)
+          .attr('height', glyphSize)
+          .style('color', d.legend.color) // Firefox SVG use color bug workaround fix
+          .select('use')
+          .classed(style.colorToFill, true) // Firefox SVG use color bug workaround fix
+          .classed(style.blackStroke, true)
+          .attr('xlink:href', d.legend.shape);
+      });
 
       // Augment the legend glyphs with extra DOM for annotated axes
       const indicatorGroup = svg.select('g.axis-annotation-indicators');
@@ -604,9 +607,9 @@ function parallelCoordinate(publicAPI, model) {
     model.ctx.globalAlpha = 1.0;
 
     // Now draw all the decorations and controls
+    drawAxisLabels(model.axes.extractLabels(model));
     drawAxes(axesCenters);
     drawSelectionBars(model.axes.extractSelections(model));
-    drawAxisLabels(model.axes.extractLabels(model));
     drawAxisControls(model.axes.extractAxesControl(model));
   };
 
@@ -849,6 +852,10 @@ function parallelCoordinate(publicAPI, model) {
   if (model.provider.isA('SelectionProvider')) {
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       fetchSelectionData();
+      publicAPI.render();
+    }));
+  } else {
+    model.subscriptions.push(model.axes.onSelectionChange(() => {
       publicAPI.render();
     }));
   }
