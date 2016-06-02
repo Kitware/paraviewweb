@@ -87,11 +87,13 @@ function parallelCoordinate(publicAPI, model) {
   model.axes = new AxesManager();
 
   function fetchSelectionData() {
-    model.provider.resetSelectionHistogram2D();
-    model.axes.getAxesPairs().forEach(pair => {
-      model.provider.loadSelectionHistogram2D(...pair);
-    });
-    model.provider.setSelection(model.axes.getSelections());
+    if (model.provider && model.provider.isA('SelectionProvider')) {
+      model.provider.resetSelectionHistogram2D();
+      model.axes.getAxesPairs().forEach(pair => {
+        model.provider.loadSelectionHistogram2D(...pair);
+      });
+      model.provider.setSelection(model.axes.getSelections());
+    }
   }
 
   function fetchData() {
@@ -532,16 +534,13 @@ function parallelCoordinate(publicAPI, model) {
 
     model.ctx.globalAlpha = 1.0;
 
-    model.canvasArea.width = model.canvas.width;
-    model.canvasArea.height = model.canvas.height;
+    // Update canvas area and drawable info
+    updateSizeInformation();
 
     model.fgCanvas.width = model.canvas.width;
     model.fgCanvas.height = model.canvas.height;
     model.bgCanvas.width = model.canvas.width;
     model.bgCanvas.height = model.canvas.height;
-
-    model.drawableArea.width = model.canvasArea.width - (model.borderOffsetLeft + model.borderOffsetRight);
-    model.drawableArea.height = model.canvasArea.height - (model.borderOffsetTop + model.borderOffsetBottom);
 
     const svg = d3.select(model.container).select('svg');
     svg
