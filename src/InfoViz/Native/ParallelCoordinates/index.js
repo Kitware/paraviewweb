@@ -20,7 +20,7 @@ export function perfRound(val) {
 }
 
 export function dataToScreen(model, dataY, axis) {
-  return perfRound(axis.isUpsideDown()
+  return perfRound(!axis.isUpsideDown()
     ? affine(
         axis.range[0],
         dataY,
@@ -36,7 +36,7 @@ export function dataToScreen(model, dataY, axis) {
 }
 
 export function screenToData(model, screenY, axis) {
-  return axis.isUpsideDown()
+  return !axis.isUpsideDown()
     ? affine(
         model.canvasArea.height - model.borderOffsetBottom,
         screenY,
@@ -255,7 +255,8 @@ function parallelCoordinate(publicAPI, model) {
 
   function drawAxisLabels(labelDataModel) {
     const ypos = 15;
-    const glyphPadding = 10;
+    const glyphRegion = 22;
+    const glyphPadding = 3;
     const svg = d3.select(model.container).select('svg');
 
     if (model.provider && model.provider.isA('LegendProvider')) {
@@ -263,7 +264,7 @@ function parallelCoordinate(publicAPI, model) {
       labelDataModel.forEach(entry => {
         entry.legend = model.provider.getLegend(entry.name);
       });
-      let glyphSize = model.borderOffsetTop - glyphPadding - glyphPadding;
+      let glyphSize = glyphRegion - glyphPadding - glyphPadding;
       if (glyphSize % 2 !== 0) {
         glyphSize++;
       }
@@ -351,43 +352,25 @@ function parallelCoordinate(publicAPI, model) {
         attr('text-anchor', (d, i) => d.align).
         attr('transform', (d, i) => `translate(${d.centerX}, ${ypos})`);
     }
+  }
 
-    // Update axis tick data model
-    // --- is it used / needed ????
-    //   const tickModel = [];
-    //   for (let i = 0; i < axisList.length; ++i) {
-    //     tickModel.push({
-    //       value: orientationList[i] ? axesDataRanges[i][1] : axesDataRanges[i][0],
-    //       xpos: axesCenters[i],
-    //       ypos: borderOffset.top - 5,
-    //       align: 'middle',
-    //     });
-    //     tickModel.push({
-    //       value: orientationList[i] ? axesDataRanges[i][0] : axesDataRanges[i][1],
-    //       xpos: axesCenters[i],
-    //       ypos: borderOffset.top + drawableArea.height + 13,
-    //       align: 'middle',
-    //     });
-    //   }
-    //   tickModel[0].align = 'start';
-    //   tickModel[1].align = 'start';
-    //   tickModel[(axisList.length * 2) - 1].align = 'end';
-    //   tickModel[(axisList.length * 2) - 2].align = 'end';
+  function drawAxisTicks(tickDataModel) {
+    // Manage the svg dom for the axis ticks
+    const svg = d3.select(model.container).select('svg');
+    const ticksGroup = svg.select('g.axis-ticks');
+    const axisTickNodes = ticksGroup.selectAll('text.axis-ticks').
+      data(tickDataModel);
 
-    //   // Manage the svg dom for the axis ticks
-    //   const ticksGroup = svg.select('g.axis-ticks');
-    //   const axisTickNodes = ticksGroup.selectAll('text.axis-ticks').
-    //     data(tickModel);
+    axisTickNodes.enter().append('text').
+      classed('axis-ticks', true).
+      classed(style.axisTicks, true);
 
-    //   axisTickNodes.enter().append('text').
-    //     classed('axis-ticks', true);
+    axisTickNodes.exit().remove();
 
-    //   axisTickNodes.exit().remove();
-
-    //   ticksGroup.selectAll('text.axis-ticks').
-    //     text((d, i) => d.value).
-    //     attr('text-anchor', (d, i) => d.align).
-    //     attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
+    ticksGroup.selectAll('text.axis-ticks').
+      text((d, i) => d.value).
+      attr('text-anchor', (d, i) => d.align).
+      attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
   }
 
   function axisMouseDragHandler(data, index) {
@@ -608,6 +591,7 @@ function parallelCoordinate(publicAPI, model) {
 
     // Now draw all the decorations and controls
     drawAxisLabels(model.axes.extractLabels(model));
+    drawAxisTicks(model.axes.extractAxisTicks(model));
     drawAxes(axesCenters);
     drawSelectionBars(model.axes.extractSelections(model));
     drawAxisControls(model.axes.extractAxesControl(model));
@@ -876,9 +860,9 @@ const DEFAULT_VALUES = {
   containerHidden: false,
 
   borderOffsetTop: 35,
-  borderOffsetRight: 10,
+  borderOffsetRight: 12,
   borderOffsetBottom: 45,
-  borderOffsetLeft: 10,
+  borderOffsetLeft: 12,
 
   axisWidth: 6,
   selectionBarWidth: 8,
