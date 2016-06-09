@@ -113,7 +113,7 @@ export default class AxesManager {
   }
 
   getAxisCenter(index, width) {
-    return index * width / this.axes.length;
+    return index * width / (this.axes.length - 1);
   }
 
   toggleOrientation(index) {
@@ -203,7 +203,7 @@ export default class AxesManager {
     const selections = [];
     if (this.hasSelection()) {
       this.axes.forEach((axis, index) => {
-        const screenX = this.getAxisCenter(index, model.canvasArea.width) + model.borderOffsetLeft;
+        const screenX = this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
         axis.selections.forEach((selection, selectionIndex) => {
           selections.push({
             index,
@@ -224,8 +224,8 @@ export default class AxesManager {
     const controlsDataModel = [];
     this.axes.forEach((axis, index) => {
       controlsDataModel.push({
-        orient: axis.isUpsideDown(),
-        centerX: this.getAxisCenter(index, model.canvasArea.width) + model.borderOffsetLeft,
+        orient: !axis.isUpsideDown(),
+        centerX: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
         centerY: model.canvasArea.height - model.borderOffsetBottom + 30, // FIXME what is 30?
       });
     });
@@ -243,7 +243,7 @@ export default class AxesManager {
     this.axes.forEach((axis, index) => {
       labelModel.push({
         name: axis.name,
-        centerX: this.getAxisCenter(index, model.canvasArea.width) + model.borderOffsetLeft,
+        centerX: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
         annotated: axis.hasSelection(),
         align: 'middle',
       });
@@ -256,10 +256,42 @@ export default class AxesManager {
     return labelModel;
   }
 
+  extractAxisTicks(model) {
+    const tickModel = [];
+
+    this.axes.forEach((axis, index) => {
+      tickModel.push({
+        value: !axis.upsideDown ? axis.range[1] : axis.range[0],
+        xpos: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+        ypos: model.borderOffsetTop - 4,
+        align: 'middle',
+      });
+      tickModel.push({
+        value: !axis.upsideDown ? axis.range[0] : axis.range[1],
+        xpos: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+        ypos: model.borderOffsetTop + model.drawableArea.height + 13,
+        align: 'middle',
+      });
+    });
+
+    // Make adjustments to ticks for first and last axes
+    tickModel[0].align = 'start';
+    tickModel[1].align = 'start';
+    tickModel[0].xpos -= (model.axisWidth / 2);
+    tickModel[1].xpos -= (model.axisWidth / 2);
+
+    tickModel[(this.axes.length * 2) - 1].align = 'end';
+    tickModel[(this.axes.length * 2) - 2].align = 'end';
+    tickModel[(this.axes.length * 2) - 1].xpos += (model.axisWidth / 2);
+    tickModel[(this.axes.length * 2) - 2].xpos += (model.axisWidth / 2);
+
+    return tickModel;
+  }
+
   extractAxesCenters(model) {
     const axesCenters = [];
     this.axes.forEach((axis, index) => {
-      axesCenters.push(this.getAxisCenter(index, model.canvasArea.width) + model.borderOffsetLeft);
+      axesCenters.push(this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft);
     });
     return axesCenters;
   }

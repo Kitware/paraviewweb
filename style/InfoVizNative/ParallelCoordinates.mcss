@@ -55,6 +55,13 @@
   user-select: none;
 }
 
+.axisTicks {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 9px;
+  fill: black;
+  user-select: none;
+}
+
 .annotatedAxisText {
   font-size: 13px;
   fill: rgb(105, 195, 255);
