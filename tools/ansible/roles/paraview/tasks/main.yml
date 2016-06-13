@@ -107,19 +107,24 @@
 
 - name: Create data directory
   become: yes
-  become_user: "{{pvw_user}}"
+  become_user: root
   file:
-    path="/home/{{pvw_user}}/data" state=directory
+    path="/home/{{pvw_user}}/data"
+    state=directory
+    owner="{{pvw_user}}"
+    group="{{pvw_user}}"
   tags:
     - paraview
 
 - name: Install ParaView sample data
   become: yes
-  become_user: "{{pvw_user}}"
+  become_user: root
   unarchive:
     src=/var/tmp/ParaViewData-3.8.1.tar.gz
     dest="/home/{{pvw_user}}/data"
     copy=no
+    owner="{{pvw_user}}"
+    group="{{pvw_user}}"
   when: paraview_data_tarball|changed
   tags:
     - paraview
