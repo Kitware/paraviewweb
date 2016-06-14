@@ -1,6 +1,6 @@
 import d3 from 'd3';
 
-const DOUBLE_CLICK_TIMEOUT = 200;
+const DOUBLE_CLICK_TIMEOUT = 300; // win7 default is 500 ms
 
 /*
  * Use this function if you need both single-click and double-click handlers on

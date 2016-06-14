@@ -1,0 +1,147 @@
+.histogramSelector {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 8pt;
+    top: 0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+/*empty styles allow for d3 selection in javascript*/
+.gHist, .gRect, .box, .histRect, .legendRow, .legend, .fieldName,
+.tr2, .tr3, .sparkline, .axis, .brush {
+
+}
+
+.backgroundColor {
+  background: #999;
+
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.icon {
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw from 'font-awesome/css/font-awesome.css';
+  user-select: none;
+  cursor: pointer;
+}
+
+.selectedFieldsIcon {
+  composes: icon;
+  composes: fa-check-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.allFieldsIcon {
+  composes: icon;
+  composes: fa-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.legendStyle {
+  composes: legend;
+  text-align: center;
+}
+.legend svg {
+  padding: 2px 2px 0 2px;
+  vertical-align: middle;
+}
+
+.fieldNameStyle {
+  composes: fieldName;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.rowStyle {
+  position: absolute;
+  background: #999;
+}
+
+.legendRowStyle {
+  composes: legendRow;
+  user-select: none;
+  cursor: pointer;
+}
+
+.unselectedLegendRow {
+  composes: legendRowStyle;
+  opacity: 0.5;
+}
+
+.selectedLegendRow {
+  composes: legendRowStyle;
+  opacity: 1;
+}
+
+.legendRow:hover {
+  background-color: #ccd;
+}
+
+.boxStyle {
+  composes: box;
+  user-select: none;
+  /*cursor: crosshair;*/
+  padding: 0px;
+  margin: 0 auto;
+  border-width: 2px;
+  border-spacing: 0px;
+  border-style: solid;
+  background-color: #fff;
+  float: left;
+}
+.unselectedBox {
+  composes: boxStyle;
+  border-color: #999;
+}
+.selectedBox {
+  composes: boxStyle;
+  border-color: #222;
+}
+.hiddenBox {
+  composes: boxStyle;
+  composes: hidden;
+}
+/* When hovering over the box, set the legendRow's hover color */
+.box:hover .legendRow {
+  background-color: #ccd;
+}
+.box svg {
+  vertical-align: middle;
+}
+.histogramSelector td {
+  padding: 0px;
+}
+
+.histRectStyle {
+  composes: histRect;
+  fill: #999;
+  stroke: #999;
+  stroke-width: 0.25px;
+}
+.hmax {
+  text-align: right;
+}
+.hmin {
+  text-align: left;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brushStyle {
+  composes: brush;
+  stroke: #fff;
+  fill-opacity: .125;
+  fill: #0B0096;
+  shape-rendering: crispEdges;
+}

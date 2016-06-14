@@ -43,6 +43,7 @@ function fieldSelector(publicAPI, model) {
         publicAPI.render();
       })
       .select('i')
+      // apply class - 'false' should come first to not remove common base class.
       .classed(!model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
       .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
 
@@ -71,8 +72,8 @@ function fieldSelector(publicAPI, model) {
     function renderField(d, i) {
       const field = model.provider.getField(d);
       const fieldContainer = d3.select(this);
-      let legendCell = fieldContainer.select('.legend');
-      let fieldCell = fieldContainer.select('.field');
+      let legendCell = fieldContainer.select(`.${style.legend}`);
+      let fieldCell = fieldContainer.select(`.${style.fieldName}`);
 
       // Apply style to row (selected/unselected)
       fieldContainer
@@ -86,12 +87,10 @@ function fieldSelector(publicAPI, model) {
       if (legendCell.empty()) {
         legendCell = fieldContainer
           .append('td')
-          .classed('legend', true)
           .classed(style.legend, true);
 
         fieldCell = fieldContainer
           .append('td')
-          .classed('field', true)
           .classed(style.fieldName, true);
       }
 
@@ -104,8 +103,8 @@ function fieldSelector(publicAPI, model) {
         legendCell
           .html('<i></i>')
           .select('i')
-          .classed(style.selectedRow, field.active)
-          .classed(style.row, !field.active);
+          .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
+          .classed(field.active ? style.selectedRow : style.unselectedRow, true);
       }
 
       // Apply field name
@@ -113,9 +112,7 @@ function fieldSelector(publicAPI, model) {
     }
 
     // Render all fields
-    d3.select(model.container)
-      .select('tbody.fields')
-      .selectAll('tr')
+    variablesContainer
       .each(renderField);
   };
 
