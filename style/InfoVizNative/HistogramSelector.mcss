@@ -9,8 +9,8 @@
 }
 
 /*empty styles allow for d3 selection in javascript*/
-.gHist, .gRect, .box, .histRect, .legendRow, .legend, .fieldName,
-.tr2, .tr3, .sparkline, .axis, .brush {
+.jsGHist, .jsGRect, .jsBox, .jsHistRect, .jsLegendRow, .jsLegend, .jsFieldName,
+.jsTr2, .jsTr3, .jsSparkline, .jsAxis, .jsBrush {
 
 }
 
@@ -40,17 +40,17 @@
   composes: fa-square-o from 'font-awesome/css/font-awesome.css';
 }
 
-.legendStyle {
-  composes: legend;
+.legend {
+  composes: jsLegend;
   text-align: center;
 }
-.legend svg {
+.jsLegend svg {
   padding: 2px 2px 0 2px;
   vertical-align: middle;
 }
 
-.fieldNameStyle {
-  composes: fieldName;
+.fieldName {
+  composes: jsFieldName;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -58,33 +58,33 @@
   text-overflow: ellipsis;
 }
 
-.rowStyle {
+.row {
   position: absolute;
   background: #999;
 }
 
-.legendRowStyle {
-  composes: legendRow;
+.legendRow {
+  composes: jsLegendRow;
   user-select: none;
   cursor: pointer;
 }
 
 .unselectedLegendRow {
-  composes: legendRowStyle;
+  composes: legendRow;
   opacity: 0.5;
 }
 
 .selectedLegendRow {
-  composes: legendRowStyle;
+  composes: legendRow;
   opacity: 1;
 }
 
-.legendRow:hover {
+.jsLegendRow:hover {
   background-color: #ccd;
 }
 
-.boxStyle {
-  composes: box;
+.box {
+  composes: jsBox;
   user-select: none;
   /*cursor: crosshair;*/
   padding: 0px;
@@ -96,30 +96,30 @@
   float: left;
 }
 .unselectedBox {
-  composes: boxStyle;
+  composes: box;
   border-color: #999;
 }
 .selectedBox {
-  composes: boxStyle;
+  composes: box;
   border-color: #222;
 }
 .hiddenBox {
-  composes: boxStyle;
+  composes: box;
   composes: hidden;
 }
-/* When hovering over the box, set the legendRow's hover color */
-.box:hover .legendRow {
+/* When hovering over the box, set the jsLegendRow's hover color */
+.jsBox:hover .jsLegendRow {
   background-color: #ccd;
 }
-.box svg {
+.jsBox svg {
   vertical-align: middle;
 }
 .histogramSelector td {
   padding: 0px;
 }
 
-.histRectStyle {
-  composes: histRect;
+.histRect {
+  composes: jsHistRect;
   fill: #999;
   stroke: #999;
   stroke-width: 0.25px;
@@ -131,15 +131,15 @@
   text-align: left;
 }
 
-.axis path,
-.axis line {
+.jsAxis path,
+.jsAxis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.brushStyle {
-  composes: brush;
+.brush {
+  composes: jsBrush;
   stroke: #fff;
   fill-opacity: .125;
   fill: #0B0096;

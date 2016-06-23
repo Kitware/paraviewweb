@@ -72,8 +72,8 @@ function fieldSelector(publicAPI, model) {
     function renderField(d, i) {
       const field = model.provider.getField(d);
       const fieldContainer = d3.select(this);
-      let legendCell = fieldContainer.select(`.${style.legend}`);
-      let fieldCell = fieldContainer.select(`.${style.fieldName}`);
+      let legendCell = fieldContainer.select(`.${style.jsLegend}`);
+      let fieldCell = fieldContainer.select(`.${style.jsFieldName}`);
 
       // Apply style to row (selected/unselected)
       fieldContainer

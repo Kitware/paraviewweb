@@ -55,7 +55,7 @@ const transformCSSProp = (function tcssp(property) {
 // Apply our desired attributes to the grid rows
 function styleRows(selection, self) {
   selection
-    .classed(style.rowStyle, true)
+    .classed(style.row, true)
     .style('height', `${self.boxSize}px`)
     .style(transformCSSProp, (d, i) =>
       `translate3d(0,${d.key * self.boxSize}px,0)`
@@ -312,19 +312,19 @@ function histogramSelector(publicAPI, model) {
 
       // get existing sub elements
       const ttab = d3.select(this);
-      let trow1 = ttab.select(`tr.${style.legendRow}`);
-      let trow2 = ttab.select(`tr.${style.tr2}`);
-      let trow3 = ttab.select(`tr.${style.tr3}`);
-      let tdsl = trow2.select(`td.${style.sparkline}`);
+      let trow1 = ttab.select(`tr.${style.jsLegendRow}`);
+      let trow2 = ttab.select(`tr.${style.jsTr2}`);
+      let trow3 = ttab.select(`tr.${style.jsTr3}`);
+      let tdsl = trow2.select(`td.${style.jsSparkline}`);
       let tdmn = trow3.select(`.${style.hmin}`);
       let tdmx = trow3.select(`.${style.hmax}`);
-      let legendCell = trow1.select(`.${style.legend}`);
-      let fieldCell = trow1.select(`.${style.fieldName}`);
-      let svgGr = tdsl.select('svg').select(`.${style.gHist}`);
+      let legendCell = trow1.select(`.${style.jsLegend}`);
+      let fieldCell = trow1.select(`.${style.jsFieldName}`);
+      let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
 
       // if they are not created yet then create them
       if (trow1.empty()) {
-        trow1 = ttab.append('tr').classed(style.legendRowStyle, true)
+        trow1 = ttab.append('tr').classed(style.legendRow, true)
           .on('click', multiClicker([
             function singleClick(d, i) { // single click handler
               // const overCoords = d3.mouse(model.container);
@@ -339,29 +339,29 @@ function histogramSelector(publicAPI, model) {
             },
           ])
           );
-        trow2 = ttab.append('tr').classed(style.tr2, true);
-        trow3 = ttab.append('tr').classed(style.tr3, true);
-        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '2');
+        trow2 = ttab.append('tr').classed(style.jsTr2, true);
+        trow3 = ttab.append('tr').classed(style.jsTr3, true);
+        tdsl = trow2.append('td').classed(style.jsSparkline, true).attr('colspan', '2');
         tdmn = trow3.append('td').classed(style.hmin, true);
         tdmx = trow3.append('td').classed(style.hmax, true);
         legendCell = trow1
           .append('td')
-          .classed(style.legendStyle, true);
+          .classed(style.legend, true);
 
         fieldCell = trow1
           .append('td')
-          .classed(style.fieldNameStyle, true);
+          .classed(style.fieldName, true);
 
         svgGr = tdsl.append('svg')
           .append('g')
-            .classed(style.gHist, true)
+            .classed(style.jsGHist, true)
             .attr('transform', `translate( ${model.histMargin.left}, ${model.histMargin.top} )`);
         svgGr.append('g')
-          .classed(style.axis, true);
+          .classed(style.jsAxis, true);
         svgGr.append('g')
-          .classed(style.gRect, true);
+          .classed(style.jsGRect, true);
         svgGr.append('g')
-          .classed(style.brushStyle, true);
+          .classed(style.brush, true);
       }
       const dataActive = model.provider.getField(def.name).active;
       // Apply legend
@@ -396,13 +396,13 @@ function histogramSelector(publicAPI, model) {
       if (hobj !== null) {
         const cmax = 1.0 * d3.max(hobj.counts);
         const hsize = hobj.counts.length;
-        const hdata = svgGr.select(`.${style.gRect}`)
-          .selectAll(`.${style.histRect}`).data(hobj.counts);
+        const hdata = svgGr.select(`.${style.jsGRect}`)
+          .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
 
         hdata.enter().append('rect');
         // changes apply to both enter and update data join:
         hdata
-          .classed(style.histRectStyle, true)
+          .classed(style.histRect, true)
           .attr('pname', def.name)
           .attr('y', d => model.histHeight * (1.0 - d / cmax))
           .attr('x', (d, i) => (model.histWidth / hsize) * i)
@@ -462,7 +462,7 @@ function histogramSelector(publicAPI, model) {
           .tickValues(def.xScale.domain());
 
         // nested group for the x-axis min/max display.
-        const gAxis = svgGr.select(`.${style.axis}`);
+        const gAxis = svgGr.select(`.${style.jsAxis}`);
         gAxis
           .attr('transform', `translate(0, ${model.histHeight})`)
           .call(def.xAxis)
@@ -486,7 +486,7 @@ function histogramSelector(publicAPI, model) {
         if (typeof def.extent !== 'undefined') {
           def.brush.extent(def.extent);
         }
-        const gBrush = svgGr.select(`.${style.brush}`);
+        const gBrush = svgGr.select(`.${style.jsBrush}`);
         gBrush.call(def.brush)
           .selectAll('rect')
           .attr('y', 0)
