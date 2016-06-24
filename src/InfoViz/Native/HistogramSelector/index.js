@@ -56,17 +56,17 @@ const transformCSSProp = (function tcssp(property) {
 function styleRows(selection, self) {
   selection
     .classed(style.row, true)
-    .style('height', `${self.boxSize}px`)
+    .style('height', `${self.boxHeight}px`)
     .style(transformCSSProp, (d, i) =>
-      `translate3d(0,${d.key * self.boxSize}px,0)`
+      `translate3d(0,${d.key * self.boxHeight}px,0)`
     );
 }
 
 // apply our desired attributes to the boxes of a row
 function styleBoxes(selection, self) {
   selection
-    .style('width', `${self.boxSize}px`)
-    .style('height', `${self.boxSize}px`)
+    .style('width', `${self.boxWidth}px`)
+    .style('height', `${self.boxHeight}px`)
     // .style('margin', `${self.boxMargin / 2}px`)
   ;
 }
@@ -121,8 +121,7 @@ function histogramSelector(publicAPI, model) {
   }
 
   function updateSizeInformation(singleMode) {
-    let updateBoxSize = false,
-      updateBoxPerRow = false;
+    let updateBoxPerRow = false;
     const clientRect = model.container.getBoundingClientRect();
 
     // hard coded because I did not figure out how to
@@ -138,23 +137,20 @@ function histogramSelector(publicAPI, model) {
 
     // compute key values based on our new size
     const boxesPerRow = (singleMode ? 1 : Math.ceil(dimensions[0] / maxBoxSize));
-    const boxSize = Math.floor(dimensions[0] / boxesPerRow);
-    model.rowsPerPage = Math.ceil(dimensions[1] / boxSize);
-    // console.log('size ', dimensions[0], boxesPerRow, boxSize);
+    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow);
+    model.boxHeight = (singleMode ? Math.floor(model.boxWidth * 5 / 8) : model.boxWidth);
+    model.rowsPerPage = Math.ceil(dimensions[1] / model.boxHeight);
+    // console.log('size ', dimensions[0], boxesPerRow, boxHeight);
     if (boxesPerRow !== model.boxesPerRow) {
       updateBoxPerRow = true;
       model.boxesPerRow = boxesPerRow;
     }
-    if (boxSize !== model.boxSize) {
-      updateBoxSize = true;
-      model.boxSize = boxSize;
-    }
 
-    model.histWidth = model.boxSize - boxOutline * 2 -
+    model.histWidth = model.boxWidth - boxOutline * 2 -
                       model.histMargin.left - model.histMargin.right;
     // other row size, probably a way to query for this
-    const otherRowHeight = 18;
-    model.histHeight = model.boxSize - boxOutline * 2 - otherRowHeight -
+    const otherRowHeight = 19;
+    model.histHeight = model.boxHeight - boxOutline * 2 - otherRowHeight -
                        model.histMargin.top - model.histMargin.bottom;
 
     return updateBoxPerRow;
@@ -225,7 +221,7 @@ function histogramSelector(publicAPI, model) {
 
     // resize the div area to be tall enough to hold all our
     // boxes even though most are "virtual" and lack DOM
-    const newHeight = `${Math.ceil(model.nest.length * model.boxSize)}px`;
+    const newHeight = `${Math.ceil(model.nest.length * model.boxHeight)}px`;
     model.parameterList.style('height', newHeight);
 
     // if we went from less than a page to something that has to scroll
@@ -242,14 +238,14 @@ function histogramSelector(publicAPI, model) {
     // we need to re-scroll.
     if (model.scrollToName !== null) {
       const topRow = getFieldRow(model.scrollToName);
-      model.container.scrollTop = topRow * model.boxSize;
+      model.container.scrollTop = topRow * model.boxHeight;
       model.scrollToName = null;
     }
 
      // scroll distance, in pixels.
     const scrollY = model.container.scrollTop;
     // convert scroll from pixels to rows, get one row above (-1)
-    const offset = Math.max(0, Math.floor(scrollY / model.boxSize) - 1);
+    const offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
 
     // extract the visible graphs from the data based on how many rows
     // we have scrolled down plus one above and one below (+2)
@@ -314,10 +310,7 @@ function histogramSelector(publicAPI, model) {
       const ttab = d3.select(this);
       let trow1 = ttab.select(`tr.${style.jsLegendRow}`);
       let trow2 = ttab.select(`tr.${style.jsTr2}`);
-      let trow3 = ttab.select(`tr.${style.jsTr3}`);
       let tdsl = trow2.select(`td.${style.jsSparkline}`);
-      let tdmn = trow3.select(`.${style.hmin}`);
-      let tdmx = trow3.select(`.${style.hmax}`);
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
@@ -340,10 +333,7 @@ function histogramSelector(publicAPI, model) {
           ])
           );
         trow2 = ttab.append('tr').classed(style.jsTr2, true);
-        trow3 = ttab.append('tr').classed(style.jsTr3, true);
-        tdsl = trow2.append('td').classed(style.jsSparkline, true).attr('colspan', '2');
-        tdmn = trow3.append('td').classed(style.hmin, true);
-        tdmx = trow3.append('td').classed(style.hmax, true);
+        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '2');
         legendCell = trow1
           .append('td')
           .classed(style.legend, true);
@@ -352,10 +342,12 @@ function histogramSelector(publicAPI, model) {
           .append('td')
           .classed(style.fieldName, true);
 
-        svgGr = tdsl.append('svg')
+        // Create SVG, and main group created inside the margins for use by axes, title, etc.
+        svgGr = tdsl.append('svg').classed(style.sparklineSvg, true)
           .append('g')
             .classed(style.jsGHist, true)
             .attr('transform', `translate( ${model.histMargin.left}, ${model.histMargin.top} )`);
+        // nested groups inside main group
         svgGr.append('g')
           .classed(style.axis, true);
         svgGr.append('g')
@@ -368,7 +360,8 @@ function histogramSelector(publicAPI, model) {
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(def.name);
         legendCell
-          .html(`<svg width="${legendSize}" height="${legendSize}" fill="${color}" stroke="black"><use xlink:href="${shape}"/></svg>`);
+          .html(`<svg class="${style.legendSvg}" width="${legendSize}" height="${legendSize}"
+                  fill="${color}" stroke="black"><use xlink:href="${shape}"/></svg>`);
       } else {
         legendCell
           .html('<i></i>')
@@ -435,13 +428,6 @@ function histogramSelector(publicAPI, model) {
         //   }
         // });
 
-        const formatter = d3.format('.3s');
-        // TODO remove these completely, instead of hiding.
-        tdmn.text(formatter(hobj.min)).classed('no-select', true)
-          .style('display', 'none');
-        tdmx.text(formatter(hobj.max)).classed('no-select', true)
-          .style('display', 'none');
-
         // Show an x-axis with just min/max displayed.
         // Attach scale, axis and brush objects to this box's
         // data (the 'def' object) to allow persistence when scrolled.
@@ -453,6 +439,7 @@ function histogramSelector(publicAPI, model) {
           .domain([hobj.min, hobj.max]);
 
         if (typeof def.xAxis === 'undefined') {
+          const formatter = d3.format('.3s');
           def.xAxis = d3.svg.axis()
           .tickFormat(formatter)
           .orient('bottom');
@@ -467,9 +454,12 @@ function histogramSelector(publicAPI, model) {
           .attr('transform', `translate(0, ${model.histHeight})`)
           .call(def.xAxis)
           .selectAll('text')
+            .classed(style.axisText, true)
             .style('text-anchor', (d, i) => (
               i === 0 ? 'start' : 'end'
             ));
+        gAxis.selectAll('line').classed(style.axisLine, true);
+        gAxis.selectAll('path').classed(style.axisPath, true);
 
         if (typeof def.brush === 'undefined') {
           def.brush = d3.svg.brush();
@@ -549,7 +539,8 @@ const DEFAULT_VALUES = {
   nest: null, // nested aray of data nest[rows][boxes]
   boxesPerRow: 0,
   rowsPerPage: 0,
-  boxSize: 120,
+  boxWidth: 120,
+  boxHeight: 120,
   // show 1 per row?
   singleMode: false,
   scrollToName: null,
