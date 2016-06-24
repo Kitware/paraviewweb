@@ -1,3 +1,8 @@
+/*empty styles allow for d3 selection in javascript*/
+.jsLegend, .jsFieldName {
+
+}
+
 .icon {
   composes: fa    from 'font-awesome/css/font-awesome.css';
   composes: fa-fw from 'font-awesome/css/font-awesome.css';
@@ -16,11 +21,13 @@
 }
 
 .legend {
+  composes: jsLegend;
   text-align: center;
   padding: 5px 5px 0 5px;
 }
 
 .fieldName {
+  composes: jsFieldName;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;

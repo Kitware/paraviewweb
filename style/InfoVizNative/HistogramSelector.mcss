@@ -1,0 +1,163 @@
+.histogramSelector {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 8pt;
+    top: 0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+/*empty styles allow for d3 selection in javascript*/
+.jsGHist, .jsGRect, .jsBox, .jsHistRect, .jsLegendRow, .jsLegend, .jsFieldName,
+.jsTr2, .jsTr3, .jsSparkline, .jsAxis, .jsBrush {
+
+}
+
+.backgroundColor {
+  background: #999;
+
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.icon {
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw from 'font-awesome/css/font-awesome.css';
+  user-select: none;
+  cursor: pointer;
+}
+
+.selectedFieldsIcon {
+  composes: icon;
+  composes: fa-check-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.allFieldsIcon {
+  composes: icon;
+  composes: fa-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.baseLegend {
+  text-align: center;
+}
+.legend {
+  composes: jsLegend;
+  composes: baseLegend;
+}
+.baseLegend svg {
+  padding: 2px 2px 0 2px;
+  vertical-align: middle;
+}
+
+.fieldName {
+  composes: jsFieldName;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.row {
+  position: absolute;
+  background: #999;
+}
+
+.baseLegendRow {
+  user-select: none;
+  cursor: pointer;
+}
+.legendRow {
+  composes: jsLegendRow;
+  composes: baseLegendRow;
+}
+
+.unselectedLegendRow {
+  composes: legendRow;
+  opacity: 0.5;
+}
+
+.selectedLegendRow {
+  composes: legendRow;
+  opacity: 1;
+}
+
+.baseLegendRow:hover {
+  background-color: #ccd;
+}
+
+.baseBox {
+  composes: jsBox;
+  user-select: none;
+  /*cursor: crosshair;*/
+  padding: 0px;
+  margin: 0 auto;
+  border-width: 2px;
+  border-spacing: 0px;
+  border-style: solid;
+  background-color: #fff;
+  float: left;
+}
+.box {
+  composes: jsBox;
+  composes: baseBox;
+}
+.unselectedBox {
+  composes: box;
+  border-color: #999;
+}
+.selectedBox {
+  composes: box;
+  border-color: #222;
+}
+.hiddenBox {
+  composes: box;
+  composes: hidden;
+}
+/* When hovering over the box, set the legendRow's hover color */
+.baseBox:hover .baseLegendRow {
+  background-color: #ccd;
+}
+.baseBox svg {
+  vertical-align: middle;
+}
+.histogramSelector td {
+  padding: 0px;
+}
+
+.histRect {
+  composes: jsHistRect;
+  fill: #999;
+  stroke: #999;
+  stroke-width: 0.25px;
+}
+.hmax {
+  text-align: right;
+}
+.hmin {
+  text-align: left;
+}
+
+.baseAxis{
+}
+.axis {
+  composes: jsAxis;
+  composes: baseAxis;
+}
+.baseAxis path,
+.baseAxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush {
+  composes: jsBrush;
+  stroke: #fff;
+  fill-opacity: .125;
+  fill: #0B0096;
+  shape-rendering: crispEdges;
+}
