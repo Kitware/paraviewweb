@@ -40,11 +40,14 @@
   composes: fa-square-o from 'font-awesome/css/font-awesome.css';
 }
 
-.legend {
-  composes: jsLegend;
+.baseLegend {
   text-align: center;
 }
-.jsLegend svg {
+.legend {
+  composes: jsLegend;
+  composes: baseLegend;
+}
+.baseLegend svg {
   padding: 2px 2px 0 2px;
   vertical-align: middle;
 }
@@ -63,10 +66,13 @@
   background: #999;
 }
 
-.legendRow {
-  composes: jsLegendRow;
+.baseLegendRow {
   user-select: none;
   cursor: pointer;
+}
+.legendRow {
+  composes: jsLegendRow;
+  composes: baseLegendRow;
 }
 
 .unselectedLegendRow {
@@ -79,11 +85,11 @@
   opacity: 1;
 }
 
-.jsLegendRow:hover {
+.baseLegendRow:hover {
   background-color: #ccd;
 }
 
-.box {
+.baseBox {
   composes: jsBox;
   user-select: none;
   /*cursor: crosshair;*/
@@ -94,6 +100,10 @@
   border-style: solid;
   background-color: #fff;
   float: left;
+}
+.box {
+  composes: jsBox;
+  composes: baseBox;
 }
 .unselectedBox {
   composes: box;
@@ -107,11 +117,11 @@
   composes: box;
   composes: hidden;
 }
-/* When hovering over the box, set the jsLegendRow's hover color */
-.jsBox:hover .jsLegendRow {
+/* When hovering over the box, set the legendRow's hover color */
+.baseBox:hover .baseLegendRow {
   background-color: #ccd;
 }
-.jsBox svg {
+.baseBox svg {
   vertical-align: middle;
 }
 .histogramSelector td {
@@ -131,8 +141,14 @@
   text-align: left;
 }
 
-.jsAxis path,
-.jsAxis line {
+.baseAxis{
+}
+.axis {
+  composes: jsAxis;
+  composes: baseAxis;
+}
+.baseAxis path,
+.baseAxis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;

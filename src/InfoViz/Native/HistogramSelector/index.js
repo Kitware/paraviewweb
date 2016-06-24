@@ -357,7 +357,7 @@ function histogramSelector(publicAPI, model) {
             .classed(style.jsGHist, true)
             .attr('transform', `translate( ${model.histMargin.left}, ${model.histMargin.top} )`);
         svgGr.append('g')
-          .classed(style.jsAxis, true);
+          .classed(style.axis, true);
         svgGr.append('g')
           .classed(style.jsGRect, true);
         svgGr.append('g')
