@@ -1,0 +1,85 @@
+import React        from 'react';
+import ReactDOM     from 'react-dom';
+import sizeHelper   from '../../../Common/Misc/SizeHelper';
+import style        from 'PVWStyle/ReactRenderers/PlotlyRenderer.mcss';
+
+import Plotly from 'plotly.js';
+
+export default React.createClass({
+
+  displayName: 'PlotlyRenderer',
+
+  propTypes: {
+    chartBuilder: React.PropTypes.object,
+  },
+
+  getDefaultProps() {
+    return {};
+  },
+
+  componentWillMount() {
+    // Listen to window resize
+    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+
+    // Make sure we monitor window size if it is not already the case
+    sizeHelper.startListening();
+
+    this.dataSubscription = this.props.chartBuilder.onDataReady(data => {
+      const container = ReactDOM.findDOMNode(this.refs.chartRenderer);
+      if (!data.forceNewPlot &&
+        container.data &&
+        container.data[0].type === data.traces[0].type) {
+        container.data = data.traces;
+        Plotly.redraw(container);
+      } else {
+        const layout = {
+          title: data.title,
+          showlegend: true,
+          legend: {   // Somehow positions legend in lower right of div
+            x: 100,
+            y: 0,
+          },
+        };
+        const config = {
+          showLink: false,
+          scrollZoom: true,
+          displayModeBar: false,
+        };
+
+        Plotly.newPlot(container, data.traces, layout, config);
+      }
+    });
+  },
+
+  componentDidMount() {
+    this.updateDimensions();
+  },
+
+  componentDidUpdate(nextProps, nextState) {
+    this.updateDimensions();
+  },
+
+  componentWillUnmount() {
+    // Remove window listener
+    if (this.sizeSubscription) {
+      this.sizeSubscription.unsubscribe();
+      this.sizeSubscription = null;
+    }
+
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = null;
+    }
+  },
+
+  updateDimensions() {
+    const elt = ReactDOM.findDOMNode(this.refs.chartRenderer);
+    if (elt.layout) {
+      Plotly.relayout(elt, elt.layout);
+    }
+  },
+
+  render() {
+    return (<div className={style.chartContainer} ref="chartRenderer"></div>);
+  },
+});

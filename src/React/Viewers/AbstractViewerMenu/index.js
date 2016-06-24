@@ -2,6 +2,7 @@ import React             from 'react';
 import GeometryRenderer  from '../../Renderers/GeometryRenderer';
 import ImageRenderer     from '../../Renderers/ImageRenderer';
 import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
+import PlotlyRenderer    from '../../Renderers/PlotlyRenderer';
 
 import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
 
@@ -14,6 +15,7 @@ export default React.createClass({
     config: React.PropTypes.object,
     geometryBuilder: React.PropTypes.object,
     imageBuilder: React.PropTypes.object,
+    chartBuilder: React.PropTypes.object,
     layout: React.PropTypes.string,
     magicLensController: React.PropTypes.object,
     mouseListener: React.PropTypes.object,
@@ -59,7 +61,7 @@ export default React.createClass({
   },
 
   getRenderer() {
-    return this.refs.imageRenderer;
+    return this.refs.renderer;
   },
 
   attachListener(dataModel) {
@@ -97,7 +99,7 @@ export default React.createClass({
 
   resetCamera() {
     if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
-      this.refs.imageRenderer.resetCamera();
+      this.refs.renderer.resetCamera();
     }
   },
 
@@ -128,12 +130,13 @@ export default React.createClass({
       serverRecording = !!this.props.config.Recording,
       isImageRenderer = (this.props.renderer === 'ImageRenderer'),
       isMultiViewer = (this.props.renderer === 'MultiViewRenderer'),
+      isChartViewer = (this.props.renderer === 'PlotlyRenderer'),
       isGeometryViewer = (this.props.renderer === 'GeometryRenderer');
 
     if (isImageRenderer) {
       renderer = (
         <ImageRenderer
-          ref="imageRenderer"
+          ref="renderer"
           className={style.renderer}
           imageBuilder={rootImageBuilder}
           listener={this.props.mouseListener || rootImageBuilder.getListeners()}
@@ -143,7 +146,7 @@ export default React.createClass({
     if (isMultiViewer) {
       renderer = (
         <MultiViewRenderer
-          ref="imageRenderer"
+          ref="renderer"
           className={style.renderer}
           renderers={this.props.renderers}
           layout={this.props.layout}
@@ -153,9 +156,18 @@ export default React.createClass({
     if (isGeometryViewer) {
       renderer = (
         <GeometryRenderer
-          ref="imageRenderer"
+          ref="renderer"
           className={style.renderer}
           geometryBuilder={this.props.geometryBuilder}
+        />);
+    }
+
+    if (isChartViewer) {
+      renderer = (
+        <PlotlyRenderer
+          ref="renderer"
+          className={style.renderer}
+          chartBuilder={this.props.chartBuilder}
         />);
     }
 

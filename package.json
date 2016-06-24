@@ -18,6 +18,7 @@
         "autobahn": "0.9.6",
         "when": "3.7.7",
         "ws": "0.8.1",
+        "plotly.js": "1.14.0",
 
         "commander": "2.9.0",
         "shelljs": "0.5.3",

@@ -1,0 +1,99 @@
+{
+  "Histogram": {
+    "inputArrays": [
+      {
+        "key": "x",
+        "type": "numeric"
+      }
+    ],
+    "type": "histogram",
+    "multiTrace": false
+  },
+  "3D Scatter Plot": {
+    "inputArrays": [
+      {
+        "key": "x",
+        "type": "numeric"
+      },
+      {
+        "key": "y",
+        "type": "numeric"
+      },
+      {
+        "key": "z",
+        "type": "numeric"
+      }
+    ],
+    "type": "scatter3d",
+    "multiTrace": false,
+    "plotAttributes": {
+      "mode": "markers+text"
+    }
+  },
+  "2D Histogram": {
+    "inputArrays": [
+      {
+        "key": "x",
+        "type": "numeric"
+      },
+      {
+        "key": "y",
+        "type": "numeric"
+      }
+    ],
+    "type": "histogram2d",
+    "multiTrace": false
+  },
+  "Histogram 2D Contour": {
+    "inputArrays": [
+      {
+        "key": "x",
+        "type": "numeric"
+      },
+      {
+        "key": "y",
+        "type": "numeric"
+      }
+    ],
+    "type": "histogram2dcontour",
+    "multiTrace": false
+  },
+  "Box": {
+    "inputArrays": [
+      {
+        "key": "y",
+        "type": "numeric"
+      }
+    ],
+    "type": "box",
+    "multiTrace": true
+  },
+  "Bar": {
+    "inputArrays": [
+      {
+        "key": "x",
+        "type": "categorical"
+      },
+      {
+        "key": "y",
+        "type": "numeric"
+      }
+    ],
+    "type": "bar",
+    "multiTrace": true
+  },
+  "Pie": {
+    "inputArrays": [
+      {
+        "key": "values",
+        "type": "numeric"
+      },
+      {
+        "key": "labels",
+        "type": "categorical"
+      }
+    ],
+    "type": "pie",
+    "multiTrace": false
+  }
+}

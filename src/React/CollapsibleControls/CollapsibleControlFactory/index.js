@@ -7,6 +7,7 @@ import TimeFloatImageControl        from '../TimeFloatImageControl';
 import LightControl                 from '../LightControl';
 import LookupTableManagerControl    from '../LookupTableManagerControl';
 import PixelOperatorControl         from '../PixelOperatorControl';
+import PlotlyChartControl           from '../PlotlyChartControl';
 import ProbeControl                 from '../ProbeControl';
 import QueryDataModelControl        from '../QueryDataModelControl';
 import VolumeControl                from '../VolumeControl';
@@ -123,6 +124,14 @@ const WidgetFactoryMapping = {
       <TimeFloatImageControl
         key="TimeFloatImageControl"
         ref="TimeFloatImageControl"
+        model={model}
+      />);
+  },
+  PlotlyChartControl({ model }) {
+    return (
+      <PlotlyChartControl
+        key="PlotlyChartControl"
+        ref="PlotlyChartControl"
         model={model}
       />);
   },
