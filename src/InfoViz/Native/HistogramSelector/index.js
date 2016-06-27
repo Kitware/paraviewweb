@@ -140,7 +140,7 @@ function histogramSelector(publicAPI, model) {
     model.boxWidth = Math.floor(dimensions[0] / boxesPerRow);
     model.boxHeight = (singleMode ? Math.floor(model.boxWidth * 5 / 8) : model.boxWidth);
     model.rowsPerPage = Math.ceil(dimensions[1] / model.boxHeight);
-    // console.log('size ', dimensions[0], boxesPerRow, boxHeight);
+
     if (boxesPerRow !== model.boxesPerRow) {
       updateBoxPerRow = true;
       model.boxesPerRow = boxesPerRow;
@@ -167,6 +167,33 @@ function histogramSelector(publicAPI, model) {
       return prev;
     }, 0);
     return foundRow;
+  }
+
+  // scoring interface, where are we (to the left of) in the divider list?
+  // Did we hit one?
+  function dividerPick(overCoords, def, marginPx, minVal) {
+    const val = def.xScale.invert(overCoords[0]);
+    // TODO - careful when we attach uncertainty to dividers.
+    const index = d3.bisectLeft(def.dividers, val);
+    let hitIndex = index;
+    if (index === 0 || index === def.dividers.length) {
+      if (index === def.dividers.length) hitIndex = index - 1;
+    } else {
+      hitIndex = (def.dividers[index] - val < val - def.dividers[index - 1] ? index : index - 1);
+    }
+    const margin = def.xScale.invert(marginPx) - minVal;
+    if (Math.abs(def.dividers[hitIndex] - val) > margin) {
+      // we weren't close enough...
+      hitIndex = -1;
+    }
+    return [val, index, hitIndex];
+  }
+  function scoreRegionPick(overCoords, def, hobj) {
+    if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
+    const val = def.xScale.invert(overCoords[0]);
+    const hitIndex = d3.bisectLeft(def.dividers, val);
+    // if (hobj.hmin === def.dividers[0]) hitIndex = hitIndex - 1;
+    return hitIndex;
   }
 
   publicAPI.resize = () => {
@@ -199,7 +226,7 @@ function histogramSelector(publicAPI, model) {
       }
       const mungedData = fieldNames.map(name => {
         const d = model.provider.getField(name);
-        if (!d.selectedGen) {
+        if (typeof d.selectedGen === 'undefined') {
           d.selectedGen = 0;
         }
         return d;
@@ -220,7 +247,7 @@ function histogramSelector(publicAPI, model) {
     }
 
     // resize the div area to be tall enough to hold all our
-    // boxes even though most are "virtual" and lack DOM
+    // boxes even though most are 'virtual' and lack DOM
     const newHeight = `${Math.ceil(model.nest.length * model.boxHeight)}px`;
     model.parameterList.style('height', newHeight);
 
@@ -314,6 +341,7 @@ function histogramSelector(publicAPI, model) {
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
+      let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
       // if they are not created yet then create them
       if (trow1.empty()) {
@@ -352,16 +380,21 @@ function histogramSelector(publicAPI, model) {
           .classed(style.axis, true);
         svgGr.append('g')
           .classed(style.jsGRect, true);
+        // svgGr.append('g')
+        //   .classed(style.brush, true);
         svgGr.append('g')
-          .classed(style.brush, true);
+          .classed(style.score, true);
+        svgOverlay = svgGr.append('rect')
+          .classed(style.overlay, true)
+          .style('cursor', 'default');
       }
       const dataActive = model.provider.getField(def.name).active;
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(def.name);
         legendCell
-          .html(`<svg class="${style.legendSvg}" width="${legendSize}" height="${legendSize}"
-                  fill="${color}" stroke="black"><use xlink:href="${shape}"/></svg>`);
+          .html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}'
+                  fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
       } else {
         legendCell
           .html('<i></i>')
@@ -461,26 +494,196 @@ function histogramSelector(publicAPI, model) {
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);
 
-        if (typeof def.brush === 'undefined') {
-          def.brush = d3.svg.brush();
+        const getMouseCoords = () => {
+          // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
+          const coord = d3.mouse(tdsl.node());
+          return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
+        };
+
+        // scoring interface
+        if (typeof model.scores !== 'undefined') {
+          if (typeof def.dividers === 'undefined') {
+            def.dividers = [];
+            def.regions = [model.defaultScore];
+            def.editScore = false;
+          }
+
+          const gScore = svgGr.select(`.${style.jsScore}`);
+          let drag = null;
+          if (def.editScore) {
+            // add temp dragged divider, if needed.
+            const dividerData = ((typeof def.dragDivider !== 'undefined') && def.dragDivider.value !== undefined) ?
+                                  def.dividers.concat(def.dragDivider.value) : def.dividers;
+            const dividers = gScore.selectAll('line')
+              .data(dividerData);
+            dividers.enter().append('line');
+            dividers
+              .attr('x1', d => def.xScale(d))
+              .attr('y1', 0)
+              .attr('x2', d => def.xScale(d))
+              .attr('y2', () => model.histHeight)
+              .attr('stroke-width', 1)
+              .attr('stroke', 'black');
+            dividers.exit().remove();
+            // divider interaction events.
+            // Drag flow: drag a divider inside its current neighbors.
+            // A divider outside its neighbors or a new divider is a temp divider,
+            // added to the end of the list when rendering. Doesn't affect regions that way.
+            drag = d3.behavior.drag()
+              .on('dragstart', (d) => {
+                const overCoords = getMouseCoords();
+                const [val, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+                if (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey) {
+                  // create a temp divider to render.
+                  def.dragDivider = { index: -1,
+                                      value: val,
+                                      low: hobj.min,
+                                      high: hobj.max,
+                                    };
+                  publicAPI.render();
+                } else {
+                  if (hitIndex >= 0) {
+                    // start dragging existing divider
+                    // it becomes a temporary copy if we go outside our bounds
+                    def.dragDivider = { index: hitIndex,
+                                        value: undefined,
+                                        low: (hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1]),
+                                        high: (hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1]),
+                                      };
+                    // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
+                  }
+                }
+              })
+              .on('drag', (d) => {
+                const overCoords = getMouseCoords();
+                if (typeof def.dragDivider === 'undefined') return;
+                const val = def.xScale.invert(overCoords[0]);
+                if (def.dragDivider.index >= 0) {
+                  // if we drag outside our bounds, make this a 'temporary' extra divider.
+                  if (val < def.dragDivider.low) {
+                    def.dragDivider.value = val;
+                    def.dividers[def.dragDivider.index] = def.dragDivider.low;
+                  } else if (val > def.dragDivider.high) {
+                    def.dragDivider.value = val;
+                    def.dividers[def.dragDivider.index] = def.dragDivider.high;
+                  } else {
+                    def.dividers[def.dragDivider.index] = val;
+                    def.dragDivider.value = undefined;
+                  }
+                } else {
+                  def.dragDivider.value = val;
+                }
+                publicAPI.render();
+              })
+              .on('dragend', (d) => {
+                if (typeof def.dragDivider === 'undefined') return;
+                let val = def.dragDivider.value;
+                // if val is defined, we moved an existing divider inside
+                // its region, and we just need to render. Otherwise...
+                if (val !== undefined) {
+                  // drag 30 pixels out of the hist to delete.
+                  const dragOut = def.xScale.invert(30) - hobj.min;
+                  if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
+                    if (def.dragDivider.index >= 0) {
+                      // delete a region.
+                      if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+                        def.regions.splice(def.dragDivider.index, 1);
+                      } else {
+                        def.regions.splice(def.dragDivider.index + 1, 1);
+                      }
+                      // console.log('del reg ', def.regions);
+                      // delete the divider.
+                      def.dividers.splice(def.dragDivider.index, 1);
+                      // console.log('del div ', def.dividers);
+                    }
+                  } else {
+                    // if we moved a divider, delete the old region
+                    if (def.dragDivider.index >= 0) {
+                      if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+                        def.regions.splice(def.dragDivider.index, 1);
+                      } else {
+                        def.regions.splice(def.dragDivider.index + 1, 1);
+                      }
+                      // console.log('del reg ', def.regions);
+                      // delete the old divider
+                      def.dividers.splice(def.dragDivider.index, 1);
+                      // console.log('del div ', def.dividers);
+                    }
+                    // add a new divider
+                    val = Math.min(hobj.max, Math.max(hobj.min, val));
+                    // TODO - careful when we attach uncertainty to dividers.
+                    const index = d3.bisectLeft(def.dividers, val);
+                    def.dividers.splice(index, 0, val);
+                    // console.log('add div ', index, def.dividers);
+                    // add a new region, copies the score of existing region.
+                    def.regions.splice(index, 0, def.regions[index]);
+                    // console.log('add reg ', index, def.regions);
+                  }
+                  def.dragDivider = undefined;
+                }
+                publicAPI.render();
+              });
+          } else {
+            gScore.selectAll('line').remove();
+          }
+
+          // score regions
+          // there are implicit bounds at the min and max.
+          const regionBounds = [hobj.min].concat(def.dividers, hobj.max);
+          const scoreRegions = gScore.selectAll('rect')
+            .data(def.regions);
+
+          // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+          const showScore = def.editScore || (def.regions.length > 1) || (def.regions[0] !== model.defaultScore);
+          scoreRegions.enter().append('rect')
+            .classed(style.scoreRegion, true);
+          scoreRegions
+            .attr('x', (d, i) => def.xScale(regionBounds[i]))
+            .attr('y', def.editScore ? 0 : model.histHeight)
+            // width might be zero if a divider is dragged all the way to min/max.
+            .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
+            .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
+            .attr('fill', (d) => (model.scores[d].color))
+            .attr('opacity', showScore ? '0.2' : '0');
+          scoreRegions.exit().remove();
+
+          // invisible overlay to catch mouse events.
+          svgOverlay
+            .attr('width', model.histWidth)
+            .attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
+            .on('click', () => {
+              // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
+              if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
+              const overCoords = getMouseCoords();
+              if (overCoords[1] > model.histHeight) {
+                def.editScore = !def.editScore;
+                publicAPI.render();
+                return;
+              }
+              if (def.editScore) {
+                // if we didn't create or pick a divider, pick a region
+                const hitRegionIndex = scoreRegionPick(overCoords, def, hobj);
+                def.regions[hitRegionIndex] = (def.regions[hitRegionIndex] + 1) % (model.scores.length);
+                publicAPI.render();
+              }
+            })
+            .on('mousemove', () => {
+              const overCoords = getMouseCoords();
+              if (def.editScore) {
+                const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+                const moveIt = (def.dragIndex >= 0) || (hitIndex >= 0);
+                svgOverlay.style('cursor', moveIt ? 'ew-resize' : 'crosshair');
+              } else {
+                const pickIt = overCoords[1] > model.histHeight;
+                svgOverlay.style('cursor', pickIt ? 'crosshair' : 'default');
+              }
+            });
+          if (def.editScore) {
+            svgOverlay.call(drag);
+          } else {
+            svgOverlay.on('.drag', null);
+          }
         }
-        // record and set the extent, so it persists.
-        def.brush.x(def.xScale)
-          .on('brushend', () => {
-            if (def.brush.empty()) {
-              def.extent = undefined;
-            } else {
-              def.extent = def.brush.extent();
-            }
-          });
-        if (typeof def.extent !== 'undefined') {
-          def.brush.extent(def.extent);
-        }
-        const gBrush = svgGr.select(`.${style.jsBrush}`);
-        gBrush.call(def.brush)
-          .selectAll('rect')
-          .attr('y', 0)
-          .attr('height', model.histHeight);
       }
     }
 
@@ -550,6 +753,10 @@ const DEFAULT_VALUES = {
   histHeight: 70,
   lastHeight: 0,
   lastOffset: -1,
+  // scoring interface activated by passing in 'scores' array externally.
+  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
+  defaultScore: 0,
+  dragMargin: 8,
 };
 
 // ----------------------------------------------------------------------------

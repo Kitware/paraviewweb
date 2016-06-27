@@ -37,7 +37,16 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
 })(dataModel);
 
 // Create histogram selector
-const histogramSelector = HistogramSelector.newInstance({ provider, container: histogramSelectorContainer });
+const histogramSelector = HistogramSelector.newInstance({
+  provider,
+  container: histogramSelectorContainer,
+  // activate scoring gui
+  scores: [{ name: 'Yes', color: '#00C900' },
+           { name: 'Maybe', color: '#FFFF00' },
+           { name: 'No', color: '#C90000' },
+          ],
+  defaultScore: 1,
+});
 histogramSelector.resize();
 
 // Create field selector

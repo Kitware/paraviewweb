@@ -18,6 +18,8 @@
 .jsHistRect,
 .jsLegend,
 .jsLegendRow,
+.jsScore,
+.jsOverlay,
 .jsSparkline,
 .jsTr2,
 .jsTr3 {
@@ -176,10 +178,18 @@
   cursor: default;
 }
 
-.brush {
-  composes: jsBrush;
+.overlay {
+  composes: jsOverlay;
+  fill: none;
+  pointer-events: all;
+}
+
+.score {
+  composes: jsScore;
   stroke: #fff;
-  fill-opacity: .125;
-  fill: #0B0096;
   shape-rendering: crispEdges;
+}
+
+.jsBox:hover .scoreRegion {
+  opacity: 0.2;
 }
