@@ -1,7 +1,7 @@
 virtualbox: no
 default_user: ubuntu
 # Supported version 5.0.0 or 5.0.1
-paraview_version: 5.0.0
+paraview_version: 5.0.1
 paraview_download_filename: "ParaView-{{paraview_version}}-Qt4-OpenGL2-MPI-Linux-64bit"
 pvw_user: pvw-user
 proxy_db_path: /var/opt/paraview/proxy.txt
