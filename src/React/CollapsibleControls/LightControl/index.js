@@ -41,7 +41,7 @@ export default React.createClass({
   render() {
     var lightButton = <LightButton key="enable-light-button" onChange={this.toggleLight} value={this.props.light.getLightingEnabled()} />;
     return (
-      <CollapsibleWidget title="Light Properties" subtitle={lightButton}>
+      <CollapsibleWidget title="Light Properties" subtitle={lightButton} activeSubTitle>
         <section className={style.container}>
           <Coordinate2DWidget onChange={this.onLightPositionChange} width={114} height={114} hideXY />
           <section className={style.controls}>
