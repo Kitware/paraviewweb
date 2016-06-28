@@ -4,3 +4,16 @@
   command: systemctl set-default graphical.target
   tags:
     - paraview
+
+- name: Step up ParaViewWeb user to auto login to start X
+  become: yes
+  become_user: root
+  lineinfile:
+    line={{ item }}
+    insertafter="^\[daemon\]$"
+    dest=/etc/gdm/custom.conf
+  with_items:
+    - "AutomaticLoginEnable=True"
+    - "AutomaticLogin={{ pvw_user }}"
+  tags:
+    - paraview
