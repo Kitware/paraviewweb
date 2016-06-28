@@ -74,6 +74,7 @@ export default React.createClass({
           title="LookupTable"
           key="LookupTableWidget_parent"
           subtitle={intensityButton}
+          activeSubTitle
         >
           <LookupTableWidget
             key="LookupTableWidget"
@@ -83,7 +84,7 @@ export default React.createClass({
             lookupTableManager={lut.lookupTableManager}
           />
         </CollapsibleWidget>
-        <CollapsibleWidget title="Opacity Control" subtitle={[cpuGpuButton, resetOpacityButton]}>
+        <CollapsibleWidget title="Opacity Control" subtitle={[cpuGpuButton, resetOpacityButton]} activeSubTitle>
           <EqualizerWidget
             ref="EqualizerWidget"
             key="Equalizer"
