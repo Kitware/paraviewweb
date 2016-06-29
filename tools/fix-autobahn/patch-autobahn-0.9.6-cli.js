@@ -7,7 +7,7 @@
 /* eslint-disable */
 var shell = require('shelljs'),
     path = require('path'),
-    searchPath = path.resolve(process.env.PWD, 'node_modules');
+    searchPath = path.resolve(process.cwd(), 'node_modules');
 
 shell
   .find(searchPath)
