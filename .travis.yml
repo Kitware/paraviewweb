@@ -12,7 +12,7 @@ cache:
     - node_modules
     - documentation/www/node_modules
 node_js:
-  - "4.1"
+  - "5.1"
 env:
   - CXX=g++-4.8
 addons:
