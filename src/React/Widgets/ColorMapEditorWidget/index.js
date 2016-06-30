@@ -33,7 +33,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       pieceWiseHeight: 200,
-    }
+    };
   },
 
   getInitialState() {
