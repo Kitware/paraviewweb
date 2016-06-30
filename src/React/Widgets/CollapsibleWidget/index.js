@@ -13,6 +13,7 @@ export default React.createClass({
     title: React.PropTypes.string,
     visible: React.PropTypes.bool,
     activeSubTitle: React.PropTypes.bool,
+    disableCollapse: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -21,6 +22,7 @@ export default React.createClass({
       subtitle: '',
       open: true,
       visible: true,
+      disableCollapse: false,
     };
   },
 
@@ -31,7 +33,10 @@ export default React.createClass({
   },
 
   toggleOpen() {
-    var newState = !this.state.open;
+    if (this.props.disableCollapse && this.state.open) {
+      return;
+    }
+    const newState = !this.state.open;
     this.setState({ open: newState });
 
     if (this.props.onChange) {

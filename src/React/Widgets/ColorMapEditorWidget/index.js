@@ -27,6 +27,13 @@ export default React.createClass({
     onRangeEdited: React.PropTypes.func,
     onScaleRangeToCurrent: React.PropTypes.func,
     onScaleRangeOverTime: React.PropTypes.func,
+    pieceWiseHeight: React.PropTypes.number,
+  },
+
+  getDefaultProps() {
+    return {
+      pieceWiseHeight: 200,
+    }
   },
 
   getInitialState() {
@@ -139,6 +146,7 @@ export default React.createClass({
           rangeMax={this.props.rangeMax}
           onChange={this.onOpacityTransferFunctionChanged}
           visible={this.state.showOpacityControls}
+          height={this.props.pieceWiseHeight}
         />
         <div className={style.presetList}>
           <PresetListWidget

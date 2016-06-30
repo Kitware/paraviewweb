@@ -30,6 +30,8 @@
   flex: 1;
   display: flex;
   align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .rangeResetButtons {
@@ -51,5 +53,5 @@
 }
 
 .presetList {
-  max-height: 400px;
+  max-height: 85px;
 }
