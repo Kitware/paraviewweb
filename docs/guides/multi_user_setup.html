@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>ParaViewWeb</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://kitware.github.io/paraviewweb/docs/guides/multi_user_setup.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://kitware.github.io/paraviewweb/docs/guides/multi_user_setup.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/paraviewweb/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/paraviewweb/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/paraviewweb/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/paraviewweb/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/paraviewweb/icon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/paraviewweb/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/paraviewweb/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/paraviewweb/icon/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-32x32.png" sizes="32x32">
+  <meta name="msapplication-TileColor" content="#2f83cd">
+  <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  <!-- endbuild -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <!-- RSS -->
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <!-- Open Graph -->
+  <meta name="description" content="Multi-user Setup GuideIntroductionThis document describes the three components required to deploy ParaViewWeb in a multi-user environment.  These three components are depicted in the following image,">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ParaViewWeb">
+<meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/multi_user_setup.html">
+<meta property="og:site_name" content="ParaViewWeb">
+<meta property="og:description" content="Multi-user Setup GuideIntroductionThis document describes the three components required to deploy ParaViewWeb in a multi-user environment.  These three components are depicted in the following image,">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/multi_user_setup/pvw-3comp-resize.png">
+<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="Multi-user Setup GuideIntroductionThis document describes the three components required to deploy ParaViewWeb in a multi-user environment.  These three components are depicted in the following image,">
+<meta name="twitter:image" content="https://kitware.github.io/paraviewweb/multi_user_setup/pvw-3comp-resize.png">
+  <!-- Google Analytics -->
+  
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/paraviewweb/" id="logo">ParaViewWeb</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
+      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search...">
+      </div>
+    </nav>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name"></h1>
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <h1 id="Multi-user-Setup-Guide" class="article-heading"><a href="#Multi-user-Setup-Guide" class="headerlink" title="Multi-user Setup Guide"></a>Multi-user Setup Guide<a class="article-anchor" href="#Multi-user-Setup-Guide" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>This document describes the three components required to deploy ParaViewWeb in a multi-user environment.  These three components are depicted in the following image, and include 1) a front end to act as a single point of entry for all clients, 2) a launcher which can start a new visualization process for each client who requests one, and 3) ParaViewWeb itself.</p>
+<center><br><img src="multi_user_setup/pvw-3comp-resize.png" title="The three components of multi-user ParaViewWeb"><br></center>
+
+<p>The shortest path to getting all these components set up and working together is the recommended approach, using Ubuntu 14.04 LTS, Apache &gt;= 2.4.7, and the Python launcher that is included with ParaViewWeb.  This approach is discussed in a separate guide, <a href="/paraviewweb/docs/guides/ubuntu_14_04.html">Ubuntu 14.04 LTS</a>.  Note that although the Ubuntu 14.04 LTS guide is tailored specifically to that operating system, several parts of the guide are applicable to any operating system.  The generally applicable sections include configuration of the Apache virtual host as well as the setup of the launcher.</p>
+<p>However, the recommended approach is not by any means the only one.  The rest of this document is dedicated to describing the three main components in a bit more detail, and providing pointers to relevant in-depth documentation in each section.  While there is really only one option for the ParaViewWeb component (that is ParaViewWeb itself), there are many technologies which can serve as a front end component, and the same is true for the launcher component.</p>
+<h2 id="Front-End" class="article-heading"><a href="#Front-End" class="headerlink" title="Front End"></a>Front End<a class="article-anchor" href="#Front-End" aria-hidden="true"></a></h2><p>The point of the front end is to serve static content as well as to do network forwarding, so that there is a single point of entry through which all clients communicate.  The front end must be able to forward certain requests to the launcher when a new client wants to start a new visualization session, and then it must be able to learn from the launcher how to map subsequent session requests from that client to the port where the clients visualization session is listening.</p>
+<p>While we recommend Apache (a version &gt;= 2.4.7) as a front end component, there are really any number of potential options here.  In the past we provided a <a href="/paraviewweb/docs/guides/jetty_session_manager.html">Jetty front end</a>, and may in the future provide specific support for other front ends such as NGINX or crossbar.io.</p>
+<p>We have provided a detailed guide on using <a href="/paraviewweb/docs/guides/apache_front_end.html">Apache as a front end</a>, including how to build a suitable copy if your system does not come with one.</p>
+<h2 id="Launcher" class="article-heading"><a href="#Launcher" class="headerlink" title="Launcher"></a>Launcher<a class="article-anchor" href="#Launcher" aria-hidden="true"></a></h2><p>The launcher component (sometimes previously called the “Session Manager”) is responsible for launching a ParaViewWeb process for each user who requests one, and also for communicating the session ID and an associated port number to the front end component.  This allows the front end component to know how to forward future requests from each client to the correct port where that clients visualization session is listening.</p>
+<p>Currently ParaViewWeb includes our recommended <a href="/paraviewweb/docs/guides/python_launcher.html">Python launcher</a> which is based on Twisted.  However, in the past we provided a <a href="/paraviewweb/docs/guides/jetty_session_manager.html">Jetty launcher</a> (which also served as a front end).  Also, many other approaches for launching visualization processes have been developed for specific applications and specific deployments.  Please see the <a href="/paraviewweb/docs/guides/launcher_api.html">Laucher RESTful API</a> guide for information about the API that should be implemented by any launcher.</p>
+<h2 id="ParaViewWeb" class="article-heading"><a href="#ParaViewWeb" class="headerlink" title="ParaViewWeb"></a>ParaViewWeb<a class="article-anchor" href="#ParaViewWeb" aria-hidden="true"></a></h2><p>ParaViewWeb is simply ParaView, compiled with the Python option turned on.  Any machine where it is to be run must either have a suitable graphics environment, or else ParaView must also be compiled with OSMesa support so that it can do offscreen (software) rendering.</p>
+<p>There is some basic information about getting up and running with ParaViewWeb in the <a href="/paraviewweb/docs/guides/quick_start.html">Quick start</a> guide.</p>
+<h3 id="Rendering-environment" class="article-heading"><a href="#Rendering-environment" class="headerlink" title="Rendering environment"></a>Rendering environment<a class="article-anchor" href="#Rendering-environment" aria-hidden="true"></a></h3><p>Perhaps the first task to be undertaken is to decide whether you want hardware or software rendering.  There is a great deal of information available throughout these guides regarding how to do either task.</p>
+<h4 id="Software-rendering" class="article-heading"><a href="#Software-rendering" class="headerlink" title="Software rendering"></a>Software rendering<a class="article-anchor" href="#Software-rendering" aria-hidden="true"></a></h4><p>For instructions on how to compile ParaView for software rendering, see <a href="/paraviewweb/docs/guides/os_mesa.html">Offscreen OSMesa ParaViewWeb</a>.  The ParaView wiki <a href="http://www.paraview.org/Wiki/ParaView_And_Mesa_3D" target="_blank" rel="external">section</a> on Mesa 3D also has a lot of information on this topic.</p>
+<h4 id="Hardware-rendering" class="article-heading"><a href="#Hardware-rendering" class="headerlink" title="Hardware rendering"></a>Hardware rendering<a class="article-anchor" href="#Hardware-rendering" aria-hidden="true"></a></h4><p>For instructions on how to set up a hardware rendering environment, there are also many sources of information.  Again, the ParaView <a href="http://www.paraview.org/Wiki/ParaView" target="_blank" rel="external">wiki</a> is one such source.  We have also compiled instructions for setting up an environment suitable for hardware rendering on several kinds of Amazon EC2 AMI images running on g2.2xlarge instances.  That information can be found in the <a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html">EC2 Graphics Setup</a> guide.</p>
+<h3 id="Server-configuration" class="article-heading"><a href="#Server-configuration" class="headerlink" title="Server configuration"></a>Server configuration<a class="article-anchor" href="#Server-configuration" aria-hidden="true"></a></h3><p>Even the most basic ParaViewWeb server application comes out-of-the-box with a lot of configurable options, currently available as command line arguments.  You can learn about some of those options, as well as get more paraViewWeb details, in the <a href="/paraviewweb/docs/guides/developer_howto.html">Introduction for developers</a> guide.</p>
+
+              </div>
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+              
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-user-Setup-Guide"><span class="toc-text">Multi-user Setup Guide</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Front-End"><span class="toc-text">Front End</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Launcher"><span class="toc-text">Launcher</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParaViewWeb"><span class="toc-text">ParaViewWeb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rendering-environment"><span class="toc-text">Rendering environment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Software-rendering"><span class="toc-text">Software rendering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hardware-rendering"><span class="toc-text">Hardware rendering</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Server-configuration"><span class="toc-text">Server configuration</span></a></li></ol></li></ol></li></ol>
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="sidebar-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="sidebar-link">Setup</a><strong class="sidebar-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="sidebar-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="sidebar-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="sidebar-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="sidebar-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="sidebar-link">EC2 AMIs</a><strong class="sidebar-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="sidebar-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="sidebar-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="sidebar-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="sidebar-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+</aside>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2016 <a href="http://www.kitware.com" target="_blank">Kitware Inc.</a>
+    </div>
+    <div id="footer-links">
+      <a href="https://github.com/kitware/paraviewweb" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <a href="/paraviewweb/docs/" class="mobile-nav-link">Docs</a><a href="/paraviewweb/api/" class="mobile-nav-link">API</a><a href="/paraviewweb/examples/" class="mobile-nav-link">Examples</a><a href="/paraviewweb/applications/" class="mobile-nav-link">Applications</a>
+      <li class="mobile-nav-item">
+        <a href="https://github.com/kitware/paraviewweb" class="mobile-nav-link" rel="external" target="_blank">GitHub</a>
+      </li>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="mobile-nav-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="mobile-nav-link">Setup</a><strong class="mobile-nav-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="mobile-nav-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="mobile-nav-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="mobile-nav-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="mobile-nav-link">EC2 AMIs</a><strong class="mobile-nav-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="mobile-nav-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="mobile-nav-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/guides/multi_user_setup.html">
+      
+        <option value="en" selected>English</option>
+      
+    </select>
+  </div>
+</nav>
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+<script src="/paraviewweb/js/lang_select.js"></script>
+<script src="/paraviewweb/js/toc.js"></script>
+<script src="/paraviewweb/js/mobile_nav.js"></script>
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>ParaViewWeb</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_vtkweb.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_vtkweb.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/paraviewweb/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/paraviewweb/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/paraviewweb/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/paraviewweb/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/paraviewweb/icon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/paraviewweb/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/paraviewweb/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/paraviewweb/icon/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-32x32.png" sizes="32x32">
+  <meta name="msapplication-TileColor" content="#2f83cd">
+  <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  <!-- endbuild -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <!-- RSS -->
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <!-- Open Graph -->
+  <meta name="description" content="VTKWeb Source Configure and BuildIntroductionThis document describes the process of configuring and building VTK from source. Useful information can always be found on the VTK Homepage.
+Required Tools">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ParaViewWeb">
+<meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_vtkweb.html">
+<meta property="og:site_name" content="ParaViewWeb">
+<meta property="og:description" content="VTKWeb Source Configure and BuildIntroductionThis document describes the process of configuring and building VTK from source. Useful information can always be found on the VTK Homepage.
+Required Tools">
+<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="VTKWeb Source Configure and BuildIntroductionThis document describes the process of configuring and building VTK from source. Useful information can always be found on the VTK Homepage.
+Required Tools">
+  <!-- Google Analytics -->
+  
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/paraviewweb/" id="logo">ParaViewWeb</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
+      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search...">
+      </div>
+    </nav>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name"></h1>
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <h1 id="VTKWeb-Source-Configure-and-Build" class="article-heading"><a href="#VTKWeb-Source-Configure-and-Build" class="headerlink" title="VTKWeb Source Configure and Build"></a>VTKWeb Source Configure and Build<a class="article-anchor" href="#VTKWeb-Source-Configure-and-Build" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>This document describes the process of configuring and building VTK from source. Useful information can always be found on the <a href="http://www.vtk.org" target="_blank" rel="external">VTK Homepage</a>.</p>
+<h2 id="Required-Tools" class="article-heading"><a href="#Required-Tools" class="headerlink" title="Required Tools"></a>Required Tools<a class="article-anchor" href="#Required-Tools" aria-hidden="true"></a></h2><h3 id="The-CMake-cross-platform-open-source-build-system" class="article-heading"><a href="#The-CMake-cross-platform-open-source-build-system" class="headerlink" title="The CMake cross-platform, open-source build system."></a>The CMake cross-platform, open-source build system.<a class="article-anchor" href="#The-CMake-cross-platform-open-source-build-system" aria-hidden="true"></a></h3><p>CMake binaries and source code are available here: <a href="http://www.cmake.org/cmake/resources/software.html" target="_blank" rel="external">CMake Releases</a>.<br>Many Linux style distributions include CMake in their package management systems.</p>
+<h3 id="Git" class="article-heading"><a href="#Git" class="headerlink" title="Git"></a>Git<a class="article-anchor" href="#Git" aria-hidden="true"></a></h3><p>The VTK source code is hosted in a git repository. It can also be obtained in archived format. If you intend to edit the source code and submit patches/features, you will need git.</p>
+<h4 id="Linux" class="article-heading"><a href="#Linux" class="headerlink" title="Linux"></a>Linux<a class="article-anchor" href="#Linux" aria-hidden="true"></a></h4><p>Git is usually available through the package management systems. You can also build from the source code found <a href="http://git-scm.com/downloads" target="_blank" rel="external">Here</a>.</p>
+<h4 id="Windows" class="article-heading"><a href="#Windows" class="headerlink" title="Windows"></a>Windows<a class="article-anchor" href="#Windows" aria-hidden="true"></a></h4><p>Install <a href="http://msysgit.github.io/" target="_blank" rel="external">msysgit</a></p>
+<h2 id="Obtaining-source-code" class="article-heading"><a href="#Obtaining-source-code" class="headerlink" title="Obtaining source code"></a>Obtaining source code<a class="article-anchor" href="#Obtaining-source-code" aria-hidden="true"></a></h2><h3 id="Zip-Tar-file" class="article-heading"><a href="#Zip-Tar-file" class="headerlink" title="Zip/Tar file"></a>Zip/Tar file<a class="article-anchor" href="#Zip-Tar-file" aria-hidden="true"></a></h3><p><a href="http://www.vtk.org/VTK/resources/software.html" target="_blank" rel="external">VTK Source Code</a></p>
+<h3 id="With-Git" class="article-heading"><a href="#With-Git" class="headerlink" title="With Git"></a>With Git<a class="article-anchor" href="#With-Git" aria-hidden="true"></a></h3><p>Additional information is provided on the <a href="http://www.vtk.org/Wiki/VTK/Git" target="_blank" rel="external">VTK/Git Wiki</a></p>
+<h2 id="Configure-with-CMake" class="article-heading"><a href="#Configure-with-CMake" class="headerlink" title="Configure with CMake"></a>Configure with CMake<a class="article-anchor" href="#Configure-with-CMake" aria-hidden="true"></a></h2><p>Create a build directory - The preferred structure when building VTK is to separate your source code from your build directory.</p>
+<h4 id="Linux-users" class="article-heading"><a href="#Linux-users" class="headerlink" title="Linux users:"></a>Linux users:<a class="article-anchor" href="#Linux-users" aria-hidden="true"></a></h4><ol>
+<li>In a terminal cd to your build_dir.</li>
+<li>Run <code>ccmake path/to/source-code</code> that opens a curses dialog</li>
+<li>Press ‘c’ to configure. Configuration needs to occur until issues are resolved and CMake presents the option to generate ‘g’.</li>
+</ol>
+<h4 id="Windows-users" class="article-heading"><a href="#Windows-users" class="headerlink" title="Windows users:"></a>Windows users:<a class="article-anchor" href="#Windows-users" aria-hidden="true"></a></h4><ol>
+<li>Open cmake-gui.</li>
+<li>Select your compiler.</li>
+<li>Fill in the path to your source code and build directories in the appropriate boxes.</li>
+<li>Click the configure button. Configuration needs to occur until issues are resolved and CMake presents the generate button.</li>
+</ol>
+<p>From this point forward, the process between Linux and Windows is basically the same. The following options provide minor deviations from the default configuration and are sufficient to build VTK for the web.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">CMake option</th>
+<th style="text-align:center">Recommended value</th>
+<th style="text-align:left">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">BUILD_DOCUMENTATION</td>
+<td style="text-align:center">OFF</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center">BUILD_TESTING</td>
+<td style="text-align:center">OFF</td>
+<td style="text-align:left">While the testing code is very useful, it can take a long time to compile. Users looking for a shorter build time can disable testing code by setting this option to OFF.</td>
+</tr>
+<tr>
+<td style="text-align:center">CMAKE_BUILD_TYPE</td>
+<td style="text-align:center">Release</td>
+<td style="text-align:left">Options include Debug, Release, and RelWithDebInfo. Set for your needs.</td>
+</tr>
+<tr>
+<td style="text-align:center">VTK_Group_Web</td>
+<td style="text-align:center">ON</td>
+<td style="text-align:left">Mandatory for VTK-Web</td>
+</tr>
+<tr>
+<td style="text-align:center">VTK_WRAP_PYTHON</td>
+<td style="text-align:center">ON</td>
+<td style="text-align:left">Builds the python bindings. You will need python 2.7 binaries and header files (devel packages )installed for this option.</td>
+</tr>
+</tbody>
+</table>
+<p>CMake Configure.<br>Build using your compiler.  </p>
+<p>##Contributions</p>
+<p>Details of the VTK software process can be obtained from <a href="https://docs.google.com/a/kitware.com/document/d/1nzinw-dR5JQRNi_gb8qwLL5PnkGMK2FETlQGLr10tZw/edit" target="_blank" rel="external">The VTK Software Process Guide</a></p>
+
+              </div>
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+              
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#VTKWeb-Source-Configure-and-Build"><span class="toc-text">VTKWeb Source Configure and Build</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Required-Tools"><span class="toc-text">Required Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-CMake-cross-platform-open-source-build-system"><span class="toc-text">The CMake cross-platform, open-source build system.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-text">Git</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux"><span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Obtaining-source-code"><span class="toc-text">Obtaining source code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zip-Tar-file"><span class="toc-text">Zip/Tar file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#With-Git"><span class="toc-text">With Git</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configure-with-CMake"><span class="toc-text">Configure with CMake</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-users"><span class="toc-text">Linux users:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows-users"><span class="toc-text">Windows users:</span></a></li></ol></li></ol></li></ol></li></ol>
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="sidebar-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="sidebar-link">Setup</a><strong class="sidebar-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="sidebar-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="sidebar-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="sidebar-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="sidebar-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="sidebar-link">EC2 AMIs</a><strong class="sidebar-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="sidebar-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="sidebar-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="sidebar-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="sidebar-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+</aside>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2016 <a href="http://www.kitware.com" target="_blank">Kitware Inc.</a>
+    </div>
+    <div id="footer-links">
+      <a href="https://github.com/kitware/paraviewweb" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <a href="/paraviewweb/docs/" class="mobile-nav-link">Docs</a><a href="/paraviewweb/api/" class="mobile-nav-link">API</a><a href="/paraviewweb/examples/" class="mobile-nav-link">Examples</a><a href="/paraviewweb/applications/" class="mobile-nav-link">Applications</a>
+      <li class="mobile-nav-item">
+        <a href="https://github.com/kitware/paraviewweb" class="mobile-nav-link" rel="external" target="_blank">GitHub</a>
+      </li>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="mobile-nav-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="mobile-nav-link">Setup</a><strong class="mobile-nav-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="mobile-nav-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="mobile-nav-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="mobile-nav-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="mobile-nav-link">EC2 AMIs</a><strong class="mobile-nav-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="mobile-nav-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="mobile-nav-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/guides/configure_and_build_vtkweb.html">
+      
+        <option value="en" selected>English</option>
+      
+    </select>
+  </div>
+</nav>
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+<script src="/paraviewweb/js/lang_select.js"></script>
+<script src="/paraviewweb/js/toc.js"></script>
+<script src="/paraviewweb/js/mobile_nav.js"></script>
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
+
+
+
+</body>
+</html>

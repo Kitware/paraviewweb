@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>ParaViewWeb</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://kitware.github.io/paraviewweb/docs/guides/apache_front_end.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://kitware.github.io/paraviewweb/docs/guides/apache_front_end.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/paraviewweb/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/paraviewweb/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/paraviewweb/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/paraviewweb/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/paraviewweb/icon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/paraviewweb/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/paraviewweb/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/paraviewweb/icon/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-32x32.png" sizes="32x32">
+  <meta name="msapplication-TileColor" content="#2f83cd">
+  <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  <!-- endbuild -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <!-- RSS -->
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <!-- Open Graph -->
+  <meta name="description" content="Using Apache as a front endIntroductionIn order to use Apache as a front end for ParaViewWeb, we recommend that you use version 2.4.7 or later of Apache.  This is because as of version 2.4.7 Apache ha">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ParaViewWeb">
+<meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/apache_front_end.html">
+<meta property="og:site_name" content="ParaViewWeb">
+<meta property="og:description" content="Using Apache as a front endIntroductionIn order to use Apache as a front end for ParaViewWeb, we recommend that you use version 2.4.7 or later of Apache.  This is because as of version 2.4.7 Apache ha">
+<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="Using Apache as a front endIntroductionIn order to use Apache as a front end for ParaViewWeb, we recommend that you use version 2.4.7 or later of Apache.  This is because as of version 2.4.7 Apache ha">
+  <!-- Google Analytics -->
+  
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/paraviewweb/" id="logo">ParaViewWeb</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
+      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search...">
+      </div>
+    </nav>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name"></h1>
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <h1 id="Using-Apache-as-a-front-end" class="article-heading"><a href="#Using-Apache-as-a-front-end" class="headerlink" title="Using Apache as a front end"></a>Using Apache as a front end<a class="article-anchor" href="#Using-Apache-as-a-front-end" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>In order to use Apache as a front end for ParaViewWeb, we recommend that you use version 2.4.7 or later of Apache.  This is because as of version 2.4.7 Apache has, out of the box, everything required for it to serve as a ParaViewWeb front end.  If you must use an older version, you will have to compile it yourself, after patching it so that mod_rewrite can handle web sockets, and so that it can do websocket tunnelling.  At the bottom of this guide, you can find some notes on how to patch and build Apache yourself.  Although those instructions are specific to an Amazon Linux AMI instance, you should hopefully be able to adapt them to your own environment without too much trouble.</p>
+<p>In either case, once Apache is ready to run, you will need to configure it together with your chosen launcher (see <a href="/paraviewweb/docs/guides/multi_user_setup.html">Multi-User Setup</a> for information) to manage visualization sessions.</p>
+<p>If you build Apache yourself, it’s usually a good idea to put it somewhere out of the way, where it won’t conflict with any system Apache you may have in place.  We usually choose somewhere in <code>/opt</code>.  Otherwise, if you use a package-installed version of Apache, it’s typically already located in <code>/etc/apache2</code>.</p>
+<h2 id="Getting-Apache" class="article-heading"><a href="#Getting-Apache" class="headerlink" title="Getting Apache"></a>Getting Apache<a class="article-anchor" href="#Getting-Apache" aria-hidden="true"></a></h2><p>The easiest thing to do is just to install Apache from a package.  On recent Ubuntu distributions, this can be done as follows:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install apache2-dev apache2 libapr1-dev apache2-utils</span><br></pre></td></tr></table></figure>
+<p>If the packaged version of Apache is not recent enough on your system, or in case you want to compile it yourself for some other reason, there are instructions on how to do that at the bottom of this guide.</p>
+<h2 id="Configure-Apache-httpd-for-use-with-ParaViewWeb" class="article-heading"><a href="#Configure-Apache-httpd-for-use-with-ParaViewWeb" class="headerlink" title="Configure Apache httpd for use with ParaViewWeb"></a>Configure Apache httpd for use with ParaViewWeb<a class="article-anchor" href="#Configure-Apache-httpd-for-use-with-ParaViewWeb" aria-hidden="true"></a></h2><p>Next we address the configuration of Apache for use with ParaViewWeb.</p>
+<h3 id="Create-a-proxy-mapping-file" class="article-heading"><a href="#Create-a-proxy-mapping-file" class="headerlink" title="Create a proxy/mapping file"></a>Create a proxy/mapping file<a class="article-anchor" href="#Create-a-proxy-mapping-file" aria-hidden="true"></a></h3><p>Choose a directory for the mapping file that the launcher and Apache use to communicate about sessions and port locations.  Then create a group so that both components have access to the file.  For the purpose of these instructions, assume the full path to the directory you have chosen is <code>&lt;MAPPING-FILE-DIR&gt;</code>, assume that <code>daemon</code> is the user who will run Apache, and assume that <code>pvw-user</code> is the user who will run the launcher and you are logged in as this user.  Then you would do the following:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo mkdir -p &lt;MAPPING-FILE-DIR&gt;</span><br><span class="line">$ sudo touch &lt;MAPPING-FILE-DIR&gt;/proxy.txt</span><br><span class="line">$ sudo groupadd mappingfileusers</span><br><span class="line">$ sudo usermod <span class="_">-a</span> -G mappingfileusers pvw-user</span><br><span class="line">$ newgrp mappingfileusers</span><br><span class="line">$ sudo usermod <span class="_">-a</span> -G mappingfileusers daemon</span><br><span class="line">$ sudo chgrp mappingfileusers &lt;MAPPING-FILE-DIR&gt;/proxy.txt</span><br><span class="line">$ sudo chmod 660 &lt;MAPPING-FILE-DIR&gt;/proxy.txt</span><br></pre></td></tr></table></figure>
+<h3 id="Add-a-virtual-host" class="article-heading"><a href="#Add-a-virtual-host" class="headerlink" title="Add a virtual host"></a>Add a virtual host<a class="article-anchor" href="#Add-a-virtual-host" aria-hidden="true"></a></h3><p>Now add a virtual host to the Apache configuration.</p>
+<h4 id="If-you-compiled-Apache-yourself" class="article-heading"><a href="#If-you-compiled-Apache-yourself" class="headerlink" title="If you compiled Apache yourself"></a>If you compiled Apache yourself<a class="article-anchor" href="#If-you-compiled-Apache-yourself" aria-hidden="true"></a></h4><p>In this case, you will probably find a file named <code>httpd-vhosts.conf</code> located in <code>/opt/apache-2.4.7/conf/extra/</code> or similar.  You should remove the contents of that file and replace them with the virtual host configuration shown below.</p>
+<h4 id="If-you-installed-Apache-2-4-7-from-a-package" class="article-heading"><a href="#If-you-installed-Apache-2-4-7-from-a-package" class="headerlink" title="If you installed Apache 2.4.7 from a package"></a>If you installed Apache 2.4.7 from a package<a class="article-anchor" href="#If-you-installed-Apache-2-4-7-from-a-package" aria-hidden="true"></a></h4><p>In this case you should create a file in <code>/etc/apache2/sites-available/</code> and make a symbolic link to it from <code>/etc/apache2/sites-enabled/</code>.  We’ll assume you named this file <code>001-pvw.conf</code>.</p>
+<p>In either case, make sure to replace the <code>ServerName</code> value (shown below as <code>${MY-SERVER-NAME}</code>) with the correct host name.  Also make sure the <code>DocumentRoot</code> value (shown below as <code>${MY-DOCUMENT-ROOT}</code>) makes sense for your particular deployment, we typically point it at the <code>www</code> directory of the ParaView build or install tree.  Additionally, be sure to change <code>${MAPPING-FILE-DIR}</code> to the real location where you have put the map file.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    ServerName $&#123;MY-SERVER-NAME&#125;</span><br><span class="line">    ServerAdmin webmaster@example-host.example.com</span><br><span class="line">    DocumentRoot $&#123;MY-DOCUMENT-ROOT&#125;</span><br><span class="line">    ErrorLog &quot;logs/pv-error_log&quot;</span><br><span class="line">    CustomLog &quot;logs/pv-access_log&quot; common</span><br><span class="line"></span><br><span class="line">    ### The following commented lines could be useful when running</span><br><span class="line">    ### over https and wss:</span><br><span class="line">    # SSLEngine On</span><br><span class="line">    # SSLCertificateFile    /etc/apache2/ssl/your_certificate.crt</span><br><span class="line">    # SSLCertificateKeyFile /etc/apache2/ssl/your_domain_key.key</span><br><span class="line">    # SSLCertificateChainFile /etc/apache2/ssl/DigiCertCA.crt</span><br><span class="line">    #</span><br><span class="line">    # &lt;Location $&#123;MY-DOCUMENT-ROOT&#125; &gt;</span><br><span class="line">    #   SSLRequireSSL On</span><br><span class="line">    #   SSLVerifyClient optional</span><br><span class="line">    #   SSLVerifyDepth 1</span><br><span class="line">    #   SSLOptions +StdEnvVars +StrictRequire</span><br><span class="line">    # &lt;/Location&gt;</span><br><span class="line"></span><br><span class="line">    # Have Apache pass these requests to the launcher</span><br><span class="line">    ProxyPass /paraview http://localhost:9000/paraview</span><br><span class="line"></span><br><span class="line">    # Turn on the rewrite engine</span><br><span class="line">    RewriteEngine On</span><br><span class="line"></span><br><span class="line">    # This is the path the mapping file Jetty creates</span><br><span class="line">    RewriteMap session-to-port txt:$&#123;MAPPING-FILE-DIR&#125;/proxy.txt</span><br><span class="line"></span><br><span class="line">    # This is the rewrite condition. Look for anything with a sessionId= in the query part of the URL and capture the value to use below.</span><br><span class="line">    RewriteCond %&#123;QUERY_STRING&#125;     ^sessionId=(.*)$ [NC]</span><br><span class="line"></span><br><span class="line">    # This does the rewrite using the mapping file and the sessionId</span><br><span class="line">    RewriteRule    ^/proxy.*$  ws://$&#123;session-to-port:%1&#125;/ws  [P]</span><br><span class="line"></span><br><span class="line">    &lt;Directory &quot;$&#123;MY-DOCUMENT-ROOT&#125;&quot;&gt;</span><br><span class="line">        Options Indexes FollowSymLinks</span><br><span class="line">        Order allow,deny</span><br><span class="line">        Allow from all</span><br><span class="line">        AllowOverride None</span><br><span class="line">        Require all granted</span><br><span class="line">    &lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="If-you-compiled-Apache-yourself-1" class="article-heading"><a href="#If-you-compiled-Apache-yourself-1" class="headerlink" title="If you compiled Apache yourself"></a>If you compiled Apache yourself<a class="article-anchor" href="#If-you-compiled-Apache-yourself-1" aria-hidden="true"></a></h4><p>The following notes are only relevant if you compiled Apache yourself.  If you installed Apache &gt;= 2.4.7 from a package, skip to the next subsection.</p>
+<p>Include the virtual host file you configured above in the main httpd configuration file.  Find the following line in <code>httpd.conf</code> and uncomment it:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Include conf/extra/httpd-vhosts.conf</span><br></pre></td></tr></table></figure>
+<p>Find the following lines in the httpd.conf file and uncomment them in order to load some necessary modules:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadModule slotmem_shm_module modules/mod_slotmem_shm.so</span><br><span class="line">LoadModule rewrite_module modules/mod_rewrite.so</span><br></pre></td></tr></table></figure>
+<p>Start the httpd daemon.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo /opt/apache-2.4.7/bin/apachectl -k start</span><br></pre></td></tr></table></figure>
+<h4 id="If-you-installed-Apache-2-4-7-from-a-package-1" class="article-heading"><a href="#If-you-installed-Apache-2-4-7-from-a-package-1" class="headerlink" title="If you installed Apache 2.4.7 from a package"></a>If you installed Apache 2.4.7 from a package<a class="article-anchor" href="#If-you-installed-Apache-2-4-7-from-a-package-1" aria-hidden="true"></a></h4><p>First of all, you will need to enable the modules that will be used by our ParaViewWeb virtual host.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo a2enmod vhost_<span class="built_in">alias</span></span><br><span class="line">$ sudo a2enmod proxy</span><br><span class="line">$ sudo a2enmod proxy_http</span><br><span class="line">$ sudo a2enmod proxy_wstunnel</span><br><span class="line">$ sudo a2enmod rewrite</span><br></pre></td></tr></table></figure>
+<p>Then enable the virtual host you created above and restart Apache</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo a2ensite 001-pvw.conf</span><br><span class="line">$ sudo service apache2 restart</span><br></pre></td></tr></table></figure>
+<p>If you run into problems with your new virtual host listening properly, you may need to disable the default virtual hosts file as follows:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo a2dissite 000-default.conf</span><br></pre></td></tr></table></figure>
+<h2 id="Building-Apache-EC2-Amazon-Linux-AMI" class="article-heading"><a href="#Building-Apache-EC2-Amazon-Linux-AMI" class="headerlink" title="Building Apache: EC2 Amazon Linux AMI"></a>Building Apache: EC2 Amazon Linux AMI<a class="article-anchor" href="#Building-Apache-EC2-Amazon-Linux-AMI" aria-hidden="true"></a></h2><p>This section describes steps for compiling Apache on an EC2 instance running the Amazon Linux AMI.  It is recommended to obtain Apache 2.4.7 or later to ease compilation, but instructions for patching earlier versions of Apache are included below, in case Apache 2.4.7 can not be used for some reason.  The steps for compiling Apache on other operating systems will be very similar to the ones below, the major differences are in how you install packages and the names of those packages.</p>
+<p>The first step is to install some required packages on the instance.  The <code>patch</code> package is required for patching the Apache httpd source, and <code>pcre-devel</code> is required by the Apache compilation phase.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install patch.x86_64</span><br><span class="line">$ sudo yum install pcre-devel.x86_64</span><br></pre></td></tr></table></figure>
+<h3 id="Download-build-and-install-Apache-httpd" class="article-heading"><a href="#Download-build-and-install-Apache-httpd" class="headerlink" title="Download, build, and install Apache httpd"></a>Download, build, and install Apache httpd<a class="article-anchor" href="#Download-build-and-install-Apache-httpd" aria-hidden="true"></a></h3><p>General instructions for building and installing Apache 2.4.7 on the EC2 machine can be found at the following URL:</p>
+<pre><code>http://httpd.apache.org/docs/2.4/install.html
+</code></pre><p>However, the instructions below give detailed steps that can be followed on the Amazon EC2 AMI instance.</p>
+<p>Obtain the necessary source tarballs. You will need httpd source, as well as apr and apr-util sources.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir /home/ec2-user/downloads</span><br><span class="line">$ <span class="built_in">cd</span> /home/ec2-user/downloads</span><br><span class="line">$ wget http://mirrors.sonic.net/apache/httpd/httpd-2.4.7.tar.gz -O httpd.tgz</span><br><span class="line">$ wget http://apache.petsads.us/apr/apr-1.5.0.tar.gz -O apr.tgz</span><br><span class="line">$ wget http://apache.petsads.us/apr/apr-util-1.5.3.tar.gz -O apr-util.tgz</span><br></pre></td></tr></table></figure>
+<p>Now unpack everything in the right places.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir /home/ec2-user/apache-2.4.7-src</span><br><span class="line">$ <span class="built_in">cd</span> /home/ec2-user/apache-2.4.7-src</span><br><span class="line">$ tar zxvf /home/ec2-user/downloads/httpd.tgz</span><br><span class="line">$ <span class="built_in">cd</span> httpd-2.4.7/srclib</span><br><span class="line">$ tar zxvf /home/ec2-user/downloads/apr.tgz</span><br><span class="line">$ mv apr-1.5.0 apr</span><br><span class="line">$ tar zxvf /home/ec2-user/downloads/apr-util.tgz</span><br><span class="line">$ mv apr-util-1.5.3 apr-util</span><br></pre></td></tr></table></figure>
+<p>Note that for Apache version less than 2.4.7, you will need to patch<br>the sources before building:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget -O httpd-patch.txt https://issues.apache.org/bugzilla/attachment.cgi?id=30886&amp;action=diff&amp;context=patch&amp;collapsed=&amp;headers=1&amp;format=raw</span><br><span class="line">$ <span class="built_in">cd</span> httpd-[version]</span><br><span class="line">$ patch -u -p1 &lt; /home/ec2-user/downloads/httpd-patch.txt</span><br></pre></td></tr></table></figure>
+<p>Now configure the Apache build.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/ec2-user/apache-2.4.7-src/httpd-2.4.7</span><br><span class="line">$ ./configure --prefix /opt/apache-2.4.7 --with-included-apr --enable-proxy</span><br></pre></td></tr></table></figure>
+<p>Check how many processors are available and use them all to build httpd.  The nproc command returns the number of processors that are available. Use this number in the make command.  When the build is finished, install httpd.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ nproc</span><br><span class="line">$ make -j&lt;number&gt;</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="Run-your-new-version-of-Apache" class="article-heading"><a href="#Run-your-new-version-of-Apache" class="headerlink" title="Run your new version of Apache"></a>Run your new version of Apache<a class="article-anchor" href="#Run-your-new-version-of-Apache" aria-hidden="true"></a></h3><p>Now that you have compiled and installed the new version of Apache, you run it as follows:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo /opt/apache-2.4.7/bin/apachectl -k start</span><br></pre></td></tr></table></figure>
+
+              </div>
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+              
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Using-Apache-as-a-front-end"><span class="toc-text">Using Apache as a front end</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Getting-Apache"><span class="toc-text">Getting Apache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configure-Apache-httpd-for-use-with-ParaViewWeb"><span class="toc-text">Configure Apache httpd for use with ParaViewWeb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-proxy-mapping-file"><span class="toc-text">Create a proxy/mapping file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Add-a-virtual-host"><span class="toc-text">Add a virtual host</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#If-you-compiled-Apache-yourself"><span class="toc-text">If you compiled Apache yourself</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#If-you-installed-Apache-2-4-7-from-a-package"><span class="toc-text">If you installed Apache 2.4.7 from a package</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#If-you-compiled-Apache-yourself-1"><span class="toc-text">If you compiled Apache yourself</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#If-you-installed-Apache-2-4-7-from-a-package-1"><span class="toc-text">If you installed Apache 2.4.7 from a package</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Building-Apache-EC2-Amazon-Linux-AMI"><span class="toc-text">Building Apache: EC2 Amazon Linux AMI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Download-build-and-install-Apache-httpd"><span class="toc-text">Download, build, and install Apache httpd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-your-new-version-of-Apache"><span class="toc-text">Run your new version of Apache</span></a></li></ol></li></ol></li></ol>
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="sidebar-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="sidebar-link">Setup</a><strong class="sidebar-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="sidebar-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="sidebar-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="sidebar-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="sidebar-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="sidebar-link">EC2 AMIs</a><strong class="sidebar-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="sidebar-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="sidebar-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="sidebar-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="sidebar-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+</aside>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2016 <a href="http://www.kitware.com" target="_blank">Kitware Inc.</a>
+    </div>
+    <div id="footer-links">
+      <a href="https://github.com/kitware/paraviewweb" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <a href="/paraviewweb/docs/" class="mobile-nav-link">Docs</a><a href="/paraviewweb/api/" class="mobile-nav-link">API</a><a href="/paraviewweb/examples/" class="mobile-nav-link">Examples</a><a href="/paraviewweb/applications/" class="mobile-nav-link">Applications</a>
+      <li class="mobile-nav-item">
+        <a href="https://github.com/kitware/paraviewweb" class="mobile-nav-link" rel="external" target="_blank">GitHub</a>
+      </li>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="mobile-nav-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="mobile-nav-link">Setup</a><strong class="mobile-nav-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="mobile-nav-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="mobile-nav-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="mobile-nav-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="mobile-nav-link">EC2 AMIs</a><strong class="mobile-nav-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="mobile-nav-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="mobile-nav-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/guides/apache_front_end.html">
+      
+        <option value="en" selected>English</option>
+      
+    </select>
+  </div>
+</nav>
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+<script src="/paraviewweb/js/lang_select.js"></script>
+<script src="/paraviewweb/js/toc.js"></script>
+<script src="/paraviewweb/js/mobile_nav.js"></script>
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
+
+
+
+</body>
+</html>

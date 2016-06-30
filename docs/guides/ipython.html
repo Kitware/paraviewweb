@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>ParaViewWeb</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://kitware.github.io/paraviewweb/docs/guides/ipython.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://kitware.github.io/paraviewweb/docs/guides/ipython.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/paraviewweb/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/paraviewweb/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/paraviewweb/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/paraviewweb/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/paraviewweb/icon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/paraviewweb/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/paraviewweb/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/paraviewweb/icon/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-32x32.png" sizes="32x32">
+  <meta name="msapplication-TileColor" content="#2f83cd">
+  <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  <!-- endbuild -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <!-- RSS -->
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <!-- Open Graph -->
+  <meta name="description" content="ParaViewWeb and iPython/notebookIntroductionThe goal of the integration is to be able to createa PostProcessing notebook from iPython that allows the user to generate a post-processingpipeline and vis">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ParaViewWeb">
+<meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/ipython.html">
+<meta property="og:site_name" content="ParaViewWeb">
+<meta property="og:description" content="ParaViewWeb and iPython/notebookIntroductionThe goal of the integration is to be able to createa PostProcessing notebook from iPython that allows the user to generate a post-processingpipeline and vis">
+<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="ParaViewWeb and iPython/notebookIntroductionThe goal of the integration is to be able to createa PostProcessing notebook from iPython that allows the user to generate a post-processingpipeline and vis">
+  <!-- Google Analytics -->
+  
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/paraviewweb/" id="logo">ParaViewWeb</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
+      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search...">
+      </div>
+    </nav>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name"></h1>
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <h1 id="ParaViewWeb-and-iPython-notebook" class="article-heading"><a href="#ParaViewWeb-and-iPython-notebook" class="headerlink" title="ParaViewWeb and iPython/notebook"></a>ParaViewWeb and iPython/notebook<a class="article-anchor" href="#ParaViewWeb-and-iPython-notebook" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>The goal of the integration is to be able to create<br>a PostProcessing notebook from iPython that allows the user to generate a post-processing<br>pipeline and visualization inside iPython. To accomplish this,<br>ParaViewWeb and, thus, ParaView are required on the computational cluster. All of the<br>interactions will occur within iPython.</p>
+<h2 id="iPython-notebook" class="article-heading"><a href="#iPython-notebook" class="headerlink" title="iPython-notebook"></a>iPython-notebook<a class="article-anchor" href="#iPython-notebook" aria-hidden="true"></a></h2><h3 id="Installation" class="article-heading"><a href="#Installation" class="headerlink" title="Installation"></a>Installation<a class="article-anchor" href="#Installation" aria-hidden="true"></a></h3><p>This documentation will create a virtual environment where we will install<br>our iPython/notebook configuration.</p>
+<p>In order to create a Virtual Environment for Python, you will need to have<br>virtualenv, which can be downloaded here:</p>
+<ul>
+<li><a href="https://pypi.python.org/pypi/virtualenv" target="_blank" rel="external">https://pypi.python.org/pypi/virtualenv</a></li>
+</ul>
+<p>Virtualenv does not need to be installed. In order to create a new virtual environment, Virtualenv can simply be run from the command<br>line.</p>
+<pre><code>$ wget https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.10.1.tar.gz
+$ tar xvzf virtualenv-1.10.1.tar.gz
+$ cd virtualenv-1.10.1
+$ python virtualenv.py ~/Work/python-base
+</code></pre><p>In order to make a given python environment active, just execute the following<br>command line:</p>
+<pre><code>$ source ~/Work/python-base/bin/activate
+</code></pre><p>This command line can easily be added to your ~/.profile or ~/.bash_profile.</p>
+<p>Thanks to Virtualenv, pip will automatically be available to you. Meanwhile, iPython/notebook<br>can be installed with the following command lines:</p>
+<pre><code>(python-base)$ pip install ipython[all]
+</code></pre><h3 id="Configuration" class="article-heading"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration<a class="article-anchor" href="#Configuration" aria-hidden="true"></a></h3><p>In order to use ParaViewWeb inside iPython/notebook, you will need to create<br>a profile, which will provide convenient methods for starting a Web visualization.</p>
+<p>To create a new iPython profile, you will need to execute the following<br>command line:</p>
+<pre><code>(python-base)$ ipython profile create --parallel --profile=pvw
+</code></pre><p>This should generate a profile directory inside<br><strong>${user.home}/.ipython/profile_pvw</strong>.</p>
+<p>Once the profile is created, you will need to add a ParaView script. This will make the previously mentioned<br>methods for starting a Web visualization accessible inside your iPython environment.</p>
+<p>Create the file <strong>00-pvw-extension.py</strong> inside <strong>${user.home}/.ipython/profile_pvw/startup/</strong> with the following content:</p>
+<pre><code># Global python import
+import exceptions, logging, random, sys, threading, time, os
+
+# ============================================= #
+# CAUTION: update the path for your local setup #
+# Update python path to have ParaView libs      #
+# ============================================= #
+pv_path = &apos;/.../ParaView/build&apos;                 # &lt;--- FIXME
+sys.path.append(&apos;%s/lib&apos; % pv_path)
+sys.path.append(&apos;%s/lib/site-packages&apos; % pv_path)
+# ============================================= #
+
+# iPython import
+from IPython.display import HTML
+from IPython.parallel import Client
+import Paraview
+from paraview.web import ipython as pv_ipython
+from VTK import *
+
+iPythonClient = None
+paraviewHelper = pv_ipython.ParaViewIPython()
+webArguments = pv_ipython.WebArguments(&apos;/.../path-to-web-directory&apos;)
+source = None
+resolutionIdx = None
+resolutions = None
+
+def _start_paraview():
+   paraviewHelper.Initialize()
+   paraviewHelper.SetWebProtocol(pv_ipython.IPythonProtocol, webArguments)
+   return paraviewHelper.Start()
+
+def _stop_paraview():
+   paraviewHelper.Finalize()
+
+def _pv_activate_dataset():
+   pv_ipython.IPythonProtocol.ActivateDataSet(&apos;iPython-demo&apos;)
+
+def _push_new_timestep():
+   # ================================================ #
+   # CAUTION: Generate new dataset based on your code #
+   # ================================================ #
+   global source, resolutionIdx, resolutions
+   if not source:
+      position = [random.random() * 2, random.random() * 2, random.random() * 2];
+      source = vtkConeSource()
+      source.SetCenter(position)
+      resolutionIdx = 0
+      resolutions = [8, 16, 32, 64]
+   else:
+      resolutionIdx = (resolutionIdx + 1) % len(resolutions)
+      source.SetResolution(resolutions[resolutionIdx])
+      source.SetCenter([random.random() * 2, random.random() * 2, random.random() * 2])
+   source.Update()
+   newDataset = source.GetOutput()
+   # ================================================ #
+   pv_ipython.IPythonProtocol.RegisterDataSet(&apos;iPython-demo&apos;, newDataset)
+
+def StartParaView(height=600, path=&apos;/apps/Visualizer/&apos;):
+   global iPythonClient, paraviewHelper
+   if not iPythonClient:
+      iPythonClient = Client(profile=&apos;pvw&apos;)
+   urls = iPythonClient[:].apply_sync(lambda:_start_paraview())
+   url = &quot;&quot;
+   for i in urls:
+      if len(i) &gt; 0:
+         url = i
+   return  HTML(&quot;&lt;iframe src=&apos;%s/%s&apos; width=&apos;100%%&apos; height=&apos;%i&apos;&gt;&lt;/iframe&gt;&quot;%(url, path, height))
+
+def StopParaView():
+   global iPythonClient, paraviewHelper
+   iPythonClient[:].apply_sync(lambda:_stop_paraview())
+
+def ActivateDataSet():
+   iPythonClient[:].apply_sync(lambda:_pv_activate_dataset())
+
+def ComputeNextTimeStep(ds):
+   iPythonClient[:].apply_sync(lambda:_push_new_timestep())
+</code></pre><p>Make sure that the parallel mode is using MPI. You can do this by uncommenting or writing the following<br>line into the file <strong>${user.home}/.ipython/profile_pvw/ipcluster_config.py</strong>:</p>
+<pre><code>c.IPClusterEngines.engine_launcher_class = &apos;MPIEngineSetLauncher&apos;
+c.IPClusterStart.controller_launcher_class = &apos;MPIControllerLauncher&apos;
+</code></pre><h2 id="ParaViewWeb-integration" class="article-heading"><a href="#ParaViewWeb-integration" class="headerlink" title="ParaViewWeb integration"></a>ParaViewWeb integration<a class="article-anchor" href="#ParaViewWeb-integration" aria-hidden="true"></a></h2><p>In order to run ParaViewWeb inside iPython/notebook, you will need to start your iPython/notebook environment by executing the following command in your Python virtual environment:</p>
+<pre><code>             $ source ~/Work/python-base/bin/activate
+(python-base)$ export LD_LIBRARY_PATH=/.../ParaView/build/lib
+(python-base)$ ipython notebook --profile=pvw
+</code></pre><p>This should open a web page with your iPython/notebook. In order to start remote cluster<br>nodes, go to the <strong>Clusters</strong> tab and choose the number of nodes you want to use to start your engines.<br>Then, start the engines inside the <strong>pvw</strong> profile.</p>
+<p>Once started, go back to the <strong>Notebooks</strong> tab and create a <strong>New Notebook</strong>.</p>
+<p>Once in the notebook, verify that you have proper access to the engines you<br>started in the <strong>Clusters</strong> tab.</p>
+<p>Execute a cell with the following content:</p>
+<pre><code>$ from IPython.parallel import Client
+$ nodes = Client(profile=&apos;pvw&apos;)
+$ print nodes
+$ print len(nodes)
+</code></pre><p>If everything is good and your iPython is properly set up, you can start using ParaViewWeb.<br>The following section lists the cells that you should execute in order to use ParaViewWeb<br>inside iPython/notebook:</p>
+<pre><code>In [1]: ComputeNextTimeStep()
+</code></pre><p>We need to push data on all of the nodes for the Trivial producer before ParaView starts.</p>
+<pre><code>In [2]: ActivateDataSet()
+</code></pre><p>This will activate all of the previously pushed data inside the ParaView proxy framework.</p>
+<pre><code>In [3]: StartParaView()
+</code></pre><p>This will start a ParaViewWeb server and provide an interactive Window, which will have<br>the trivial producer pre-loaded.</p>
+<p>Then, to dynamically update the dataset, repeat steps (1) and (2).</p>
+
+              </div>
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+              
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ParaViewWeb-and-iPython-notebook"><span class="toc-text">ParaViewWeb and iPython/notebook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iPython-notebook"><span class="toc-text">iPython-notebook</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Installation"><span class="toc-text">Installation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration"><span class="toc-text">Configuration</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParaViewWeb-integration"><span class="toc-text">ParaViewWeb integration</span></a></li></ol></li></ol>
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="sidebar-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="sidebar-link">Setup</a><strong class="sidebar-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="sidebar-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="sidebar-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="sidebar-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="sidebar-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="sidebar-link">EC2 AMIs</a><strong class="sidebar-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="sidebar-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="sidebar-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="sidebar-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="sidebar-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+</aside>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2016 <a href="http://www.kitware.com" target="_blank">Kitware Inc.</a>
+    </div>
+    <div id="footer-links">
+      <a href="https://github.com/kitware/paraviewweb" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <a href="/paraviewweb/docs/" class="mobile-nav-link">Docs</a><a href="/paraviewweb/api/" class="mobile-nav-link">API</a><a href="/paraviewweb/examples/" class="mobile-nav-link">Examples</a><a href="/paraviewweb/applications/" class="mobile-nav-link">Applications</a>
+      <li class="mobile-nav-item">
+        <a href="https://github.com/kitware/paraviewweb" class="mobile-nav-link" rel="external" target="_blank">GitHub</a>
+      </li>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="/paraviewweb/docs/index.html" class="mobile-nav-link">Overview</a><a href="/paraviewweb/docs/setup.html" class="mobile-nav-link">Setup</a><strong class="mobile-nav-title">Basic Usage</strong><a href="/paraviewweb/docs/import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="/paraviewweb/docs/tools.html" class="mobile-nav-link">Developer guide</a><a href="/paraviewweb/docs/troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="/paraviewweb/docs/contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="/paraviewweb/docs/guides/getting_started.html" class="mobile-nav-link">Getting Started</a><a href="/paraviewweb/docs/guides/architecture.html" class="mobile-nav-link">Architecture</a><a href="/paraviewweb/docs/guides/multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="/paraviewweb/docs/guides/apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="/paraviewweb/docs/guides/ami.html" class="mobile-nav-link">EC2 AMIs</a><strong class="mobile-nav-title">Launchers</strong><a href="/paraviewweb/docs/guides/launcher_api.html" class="mobile-nav-link">API</a><a href="/paraviewweb/docs/guides/python_launcher.html" class="mobile-nav-link">Python</a><a href="/paraviewweb/docs/guides/launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="/paraviewweb/docs/guides/graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="/paraviewweb/docs/guides/os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="/paraviewweb/docs/guides/ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="/paraviewweb/docs/guides/ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="/paraviewweb/docs/guides/vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="/paraviewweb/docs/guides/nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="/paraviewweb/docs/guides/configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="/paraviewweb/docs/guides/configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/guides/ipython.html">
+      
+        <option value="en" selected>English</option>
+      
+    </select>
+  </div>
+</nav>
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+<script src="/paraviewweb/js/lang_select.js"></script>
+<script src="/paraviewweb/js/toc.js"></script>
+<script src="/paraviewweb/js/mobile_nav.js"></script>
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
+
+
+
+</body>
+</html>
