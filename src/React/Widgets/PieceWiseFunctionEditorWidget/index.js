@@ -30,6 +30,13 @@ export default React.createClass({
     rangeMax: React.PropTypes.number,
     onChange: React.PropTypes.func,
     visible: React.PropTypes.bool,
+    height: React.PropTypes.number,
+  },
+
+  getDefaultProps() {
+    return {
+      height: 200,
+    }
   },
 
   getInitialState() {
@@ -45,7 +52,7 @@ export default React.createClass({
     return {
       activePoint: 0,
       width: -1,
-      height: 300,
+      height: this.props.height,
       points: controlPoints,
     };
   },
