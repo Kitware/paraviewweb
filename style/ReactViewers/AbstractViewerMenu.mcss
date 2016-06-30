@@ -169,7 +169,7 @@
     padding-bottom: 0.5em;
 
     max-height: calc(100vh - 55px);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .collapsedControl > .controlContent {
