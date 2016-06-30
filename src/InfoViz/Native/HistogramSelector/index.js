@@ -1,7 +1,9 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';
+/* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
+/* eslint-enable import/no-unresolved */
 import multiClicker from '../../Core/D3MultiClick';
 // import template from './template.html';
 
@@ -127,8 +129,8 @@ function histogramSelector(publicAPI, model) {
     // hard coded because I did not figure out how to
     // properly query this value from our container.
     const borderSize = 3;
-    // 10 for linux/firefox, 14 for win7/chrome
-    const scrollbarWidth = 14;
+    // 8? for linux/firefox, 10 for win10/chrome
+    const scrollbarWidth = 10;
     const boxOutline = 2;
 
     // Get the client area size
@@ -194,6 +196,117 @@ function histogramSelector(publicAPI, model) {
     const hitIndex = d3.bisectLeft(def.dividers, val);
     // if (hobj.hmin === def.dividers[0]) hitIndex = hitIndex - 1;
     return hitIndex;
+  }
+  function finishDivider(def, hobj) {
+    let val = def.dragDivider.value;
+    // if val is defined, we moved an existing divider inside
+    // its region, and we just need to render. Otherwise...
+    if (val !== undefined) {
+      // drag 30 pixels out of the hist to delete.
+      const dragOut = def.xScale.invert(30) - hobj.min;
+      if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
+        if (def.dragDivider.index >= 0) {
+          // delete a region.
+          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+            def.regions.splice(def.dragDivider.index, 1);
+          } else {
+            def.regions.splice(def.dragDivider.index + 1, 1);
+          }
+          // console.log('del reg ', def.regions);
+          // delete the divider.
+          def.dividers.splice(def.dragDivider.index, 1);
+          // console.log('del div ', def.dividers);
+        }
+      } else {
+        // if we moved a divider, delete the old region
+        if (def.dragDivider.index >= 0) {
+          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+            def.regions.splice(def.dragDivider.index, 1);
+          } else {
+            def.regions.splice(def.dragDivider.index + 1, 1);
+          }
+          // console.log('del reg ', def.regions);
+          // delete the old divider
+          def.dividers.splice(def.dragDivider.index, 1);
+          // console.log('del div ', def.dividers);
+        }
+        // add a new divider
+        val = Math.min(hobj.max, Math.max(hobj.min, val));
+        // TODO - careful when we attach uncertainty to dividers.
+        const index = d3.bisectLeft(def.dividers, val);
+        def.dividers.splice(index, 0, val);
+        // console.log('add div ', index, def.dividers);
+        // add a new region, copies the score of existing region.
+        def.regions.splice(index, 0, def.regions[index]);
+        // console.log('add reg ', index, def.regions);
+      }
+    }
+    def.dragDivider = undefined;
+  }
+
+  function showScorePopup(scorePopupDiv, coord, selRow) {
+    // it seemed like a good idea to use getBoundingClientRect() to determine row height
+    // but it returns all zeros when the popup has been invisible...
+    const topMargin = 4;
+    const rowHeight = 13;
+
+    scorePopupDiv
+      .style('display', 'initial')
+      .style('left', `${coord[0] - topMargin - 0.5 * rowHeight}px`)
+      .style('top', `${coord[1] - topMargin - (0.7 + selRow) * rowHeight}px`);
+    scorePopupDiv.selectAll(`.${style.jsScoreLabel}`)
+      .style('background-color', (d, i) => {
+        const interp = d3.interpolateRgb('#fff', d.color);
+        return interp((i === selRow) ? 0.4 : 0.2);
+      });
+  }
+
+  function createScorePopup() {
+    const scorePopupDiv = d3.select(model.container).append('div')
+      .classed(style.scorePopup, true)
+      .style('display', 'none')
+      .on('mouseleave', () => {
+        scorePopupDiv
+          .style('display', 'none');
+        model.selectedDef.dragDivider = undefined;
+      });
+    // create radio-buttons that allow choosing the score for the selected region
+    const scoreChoices = scorePopupDiv.selectAll(`.${style.jsScoreChoice}`)
+      .data(model.scores);
+    scoreChoices.enter()
+      .append('label')
+        .classed(style.scoreLabel, true)
+        .text((d) => d.name)
+      .append('input')
+        .classed(style.scoreChoice, true)
+        .attr('name', 'score_choice_rb')
+        .attr('type', 'radio')
+        .attr('value', (d) => (d.name))
+        .property('checked', (d, i) => (i === model.defaultScore))
+        .on('click', (d, i) => {
+          // use click, not change, so we get notified even when current value is chosen.
+          const def = model.selectedDef;
+          def.regions[def.hitRegionIndex] = i;
+          def.dragDivider = undefined;
+          scorePopupDiv
+            .style('display', 'none');
+          publicAPI.render();
+        });
+    // create a button for creating a new divider, so we don't require
+    // the invisible alt/ctrl click to create one.
+    scorePopupDiv
+      .append('input')
+        .classed(style.scoreButton, true)
+        .attr('type', 'button')
+        .attr('value', 'New |')
+        .on('click', () => {
+          const hobj = model.provider.getHistogram1D(model.selectedDef.name);
+          if (hobj !== null) finishDivider(model.selectedDef, hobj);
+          scorePopupDiv
+            .style('display', 'none');
+          publicAPI.render();
+        });
+    return scorePopupDiv;
   }
 
   publicAPI.resize = () => {
@@ -316,6 +429,15 @@ function histogramSelector(publicAPI, model) {
 
     // free up any extra boxes
     boxes.exit().remove();
+
+    // create a floating control to set scores, when needed.
+    let scorePopupDiv = null;
+    if (typeof model.scores !== 'undefined') {
+      scorePopupDiv = d3.select(model.container).select(`.${style.jsScorePopup}`);
+      if (scorePopupDiv.empty()) {
+        scorePopupDiv = createScorePopup();
+      }
+    }
 
     // for every item that has data, create all the sub-elements
     // and size them correctly based on our data
@@ -556,7 +678,7 @@ function histogramSelector(publicAPI, model) {
               })
               .on('drag', (d) => {
                 const overCoords = getMouseCoords();
-                if (typeof def.dragDivider === 'undefined') return;
+                if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
                 const val = def.xScale.invert(overCoords[0]);
                 if (def.dragDivider.index >= 0) {
                   // if we drag outside our bounds, make this a 'temporary' extra divider.
@@ -576,51 +698,8 @@ function histogramSelector(publicAPI, model) {
                 publicAPI.render();
               })
               .on('dragend', (d) => {
-                if (typeof def.dragDivider === 'undefined') return;
-                let val = def.dragDivider.value;
-                // if val is defined, we moved an existing divider inside
-                // its region, and we just need to render. Otherwise...
-                if (val !== undefined) {
-                  // drag 30 pixels out of the hist to delete.
-                  const dragOut = def.xScale.invert(30) - hobj.min;
-                  if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
-                    if (def.dragDivider.index >= 0) {
-                      // delete a region.
-                      if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
-                        def.regions.splice(def.dragDivider.index, 1);
-                      } else {
-                        def.regions.splice(def.dragDivider.index + 1, 1);
-                      }
-                      // console.log('del reg ', def.regions);
-                      // delete the divider.
-                      def.dividers.splice(def.dragDivider.index, 1);
-                      // console.log('del div ', def.dividers);
-                    }
-                  } else {
-                    // if we moved a divider, delete the old region
-                    if (def.dragDivider.index >= 0) {
-                      if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
-                        def.regions.splice(def.dragDivider.index, 1);
-                      } else {
-                        def.regions.splice(def.dragDivider.index + 1, 1);
-                      }
-                      // console.log('del reg ', def.regions);
-                      // delete the old divider
-                      def.dividers.splice(def.dragDivider.index, 1);
-                      // console.log('del div ', def.dividers);
-                    }
-                    // add a new divider
-                    val = Math.min(hobj.max, Math.max(hobj.min, val));
-                    // TODO - careful when we attach uncertainty to dividers.
-                    const index = d3.bisectLeft(def.dividers, val);
-                    def.dividers.splice(index, 0, val);
-                    // console.log('add div ', index, def.dividers);
-                    // add a new region, copies the score of existing region.
-                    def.regions.splice(index, 0, def.regions[index]);
-                    // console.log('add reg ', index, def.regions);
-                  }
-                  def.dragDivider = undefined;
-                }
+                if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
+                finishDivider(def, hobj);
                 publicAPI.render();
               });
           } else {
@@ -657,25 +736,51 @@ function histogramSelector(publicAPI, model) {
               const overCoords = getMouseCoords();
               if (overCoords[1] > model.histHeight) {
                 def.editScore = !def.editScore;
+                svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
                 publicAPI.render();
                 return;
               }
               if (def.editScore) {
                 // if we didn't create or pick a divider, pick a region
                 const hitRegionIndex = scoreRegionPick(overCoords, def, hobj);
-                def.regions[hitRegionIndex] = (def.regions[hitRegionIndex] + 1) % (model.scores.length);
-                publicAPI.render();
+                // select a def, show popup.
+                def.hitRegionIndex = hitRegionIndex;
+                // create a temp divider in case we choose 'new |' from the popup.
+                /* eslint-disable array-bracket-spacing */
+                const [val, , ] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+                /* eslint-enable array-bracket-spacing */
+                if (typeof def.dragDivider === 'undefined') {
+                  def.dragDivider = { index: -1,
+                                      value: val,
+                                      low: hobj.min,
+                                      high: hobj.max,
+                                    };
+                } else {
+                  def.dragDivider.value = val;
+                }
+                model.selectedDef = def;
+                const coord = d3.mouse(model.parameterList.node());
+
+                const selRow = def.regions[def.hitRegionIndex];
+                showScorePopup(scorePopupDiv, coord, selRow);
               }
             })
             .on('mousemove', () => {
               const overCoords = getMouseCoords();
               if (def.editScore) {
                 const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-                const moveIt = (def.dragIndex >= 0) || (hitIndex >= 0);
-                svgOverlay.style('cursor', moveIt ? 'ew-resize' : 'crosshair');
+                let cursor = 'pointer';
+                // if we're over the bottom, indicate a click will shrink regions
+                if (overCoords[1] > model.histHeight) cursor = 's-resize';
+                // if we're over a divider, indicate drag-to-move
+                else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
+                // if modifiers are held down, we'll create a divider
+                else if (d3.event.altKey || d3.event.ctrlKey) cursor = 'crosshair';
+                svgOverlay.style('cursor', cursor);
               } else {
+                // over the bottom, indicate we can start editing regions
                 const pickIt = overCoords[1] > model.histHeight;
-                svgOverlay.style('cursor', pickIt ? 'crosshair' : 'default');
+                svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
               }
             });
           if (def.editScore) {
@@ -757,6 +862,7 @@ const DEFAULT_VALUES = {
   // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
   defaultScore: 0,
   dragMargin: 8,
+  selectedDef: null,
 };
 
 // ----------------------------------------------------------------------------
