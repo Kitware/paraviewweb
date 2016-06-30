@@ -5,14 +5,14 @@ function parseCsv(csvText) {
   const columns = [];
 
   for (let colIdx = 0; colIdx < columnNames.length; ++colIdx) {
-    columnNames[colIdx] = columnNames[colIdx].replace(/[\s"]/g, '').trim();
+    columnNames[colIdx] = columnNames[colIdx].replace(/[\s"]/g, ' ').trim();
     columns.push([]);
   }
 
   for (let rowIdx = 1; rowIdx < lines.length; ++rowIdx) {
     const cells = lines[rowIdx].split(',');
     for (let colIdx = 0; colIdx < cells.length; ++colIdx) {
-      columns[colIdx].push(cells[colIdx].replace(/[\s"]/g, '').trim());
+      columns[colIdx].push(cells[colIdx].replace(/[\s"]/g, ' ').trim());
     }
   }
 
