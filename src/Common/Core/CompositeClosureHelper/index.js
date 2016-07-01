@@ -98,7 +98,15 @@ export function event(publicAPI, model, eventName) {
       return;
     }
 
-    callbacks.forEach(callback => callback && callback.apply(publicAPI, args));
+    callbacks.forEach(callback => {
+      if (callback) {
+        try {
+          callback.apply(publicAPI, args);
+        } catch (errObj) {
+          console.log('Error event:', eventName, errObj);
+        }
+      }
+    });
   };
 
   publicAPI[`on${capitalize(eventName)}`] = callback => {
@@ -119,6 +127,30 @@ export function event(publicAPI, model, eventName) {
 }
 
 // ----------------------------------------------------------------------------
+// Fetch handling: setXXXFetchCallback / return { addRequest }
+// ----------------------------------------------------------------------------
+export function fetch(publicAPI, model, name) {
+  let fetchCallback = null;
+  const requestQueue = [];
+
+  publicAPI[`set${capitalize(name)}FetchCallback`] = fetchMethod => {
+    if (requestQueue.length) {
+      fetchMethod(requestQueue);
+    }
+    fetchCallback = fetchMethod;
+  };
+
+  return {
+    addRequest(request) {
+      requestQueue.push(request);
+      if (fetchCallback) {
+        fetchCallback(requestQueue);
+      }
+    },
+  };
+}
+
+// ----------------------------------------------------------------------------
 // newInstance
 // ----------------------------------------------------------------------------
 
@@ -134,6 +166,7 @@ export function newInstance(extend) {
 export default {
   newInstance,
   destroy,
+  fetch,
   isA,
   event,
   set,
