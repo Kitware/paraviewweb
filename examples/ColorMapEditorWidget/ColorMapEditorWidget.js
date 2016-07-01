@@ -20968,7 +20968,8 @@
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      height: 200
+	      height: 200,
+	      visible: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -20984,7 +20985,7 @@
 	      });
 	    }
 	    return {
-	      activePoint: 0,
+	      activePoint: -1,
 	      width: -1,
 	      height: this.props.height,
 	      points: controlPoints
@@ -21008,8 +21009,23 @@
 	      _SizeHelper2.default.triggerChange();
 	    }
 	  },
-	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
 	    var _this2 = this;
+
+	    if (newProps.initialPoints) {
+	      var controlPoints = newProps.initialPoints.map(function (pt) {
+	        return makeESLintHappy({
+	          x: (pt.x - _this2.props.rangeMin) / (_this2.props.rangeMax - _this2.props.rangeMin),
+	          y: pt.y
+	        });
+	      });
+	      if (!(0, _deepEquals2.default)(this.state.points, controlPoints) && !(0, _deepEquals2.default)(newProps.initialPoints, this.props.initialPoints)) {
+	        this.setState({ points: controlPoints });
+	      }
+	    }
+	  },
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    var _this3 = this;
 
 	    if (this.props.visible && !prevProps.visible && this.state.width === -1) {
 	      this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
@@ -21023,7 +21039,7 @@
 	    if (!(0, _deepEquals2.default)(this.state.points, prevState.points) || this.props.rangeMin !== prevProps.rangeMin || this.props.rangeMax !== prevProps.rangeMax) {
 	      var dataPoints = this.state.points.map(function (pt) {
 	        return makeESLintHappy({
-	          x: pt.x * (_this2.props.rangeMax - _this2.props.rangeMin) + _this2.props.rangeMin,
+	          x: pt.x * (_this3.props.rangeMax - _this3.props.rangeMin) + _this3.props.rangeMin,
 	          y: pt.y
 	        });
 	      });
