@@ -58,7 +58,7 @@
 
 	var _2 = _interopRequireDefault(_);
 
-	var _SvgIconWidget = __webpack_require__(183);
+	var _SvgIconWidget = __webpack_require__(184);
 
 	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
 
@@ -20233,7 +20233,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _shapes = __webpack_require__(170);
+	var _shapes = __webpack_require__(171);
 
 	var _shapes2 = _interopRequireDefault(_shapes);
 
@@ -20403,7 +20403,7 @@
 	  };
 
 	  publicAPI.updateLegendSettings = function (settings) {
-	    ['legendShapes', 'legendColors', 'legendEntries', 'priorities'].forEach(function (key) {
+	    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(function (key) {
 	      if (settings[key]) {
 	        model[key] = [].concat(settings.key);
 	        model.legendDirty = true;
@@ -20433,7 +20433,7 @@
 	  legendEntries: [],
 	  legendPriorities: ['shapes', 'colors'],
 	  legendMapping: {},
-	  dirty: true
+	  legendDirty: true
 	};
 
 	// ----------------------------------------------------------------------------
@@ -20459,9 +20459,9 @@
 
 /***/ },
 /* 169 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -20472,6 +20472,7 @@
 	exports.get = get;
 	exports.destroy = destroy;
 	exports.event = event;
+	exports.fetch = fetch;
 	exports.newInstance = newInstance;
 	// ----------------------------------------------------------------------------
 	// capitilze provided string
@@ -20570,6 +20571,8 @@
 	// ----------------------------------------------------------------------------
 
 	function event(publicAPI, model, eventName) {
+	  var asynchrounous = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+
 	  var callbacks = [];
 	  var previousDestroy = publicAPI.destroy;
 
@@ -20594,9 +20597,23 @@
 	      return;
 	    }
 
-	    callbacks.forEach(function (callback) {
-	      return callback && callback.apply(publicAPI, args);
-	    });
+	    function processCallbacks() {
+	      callbacks.forEach(function (callback) {
+	        if (callback) {
+	          try {
+	            callback.apply(publicAPI, args);
+	          } catch (errObj) {
+	            console.log('Error event:', eventName, errObj);
+	          }
+	        }
+	      });
+	    }
+
+	    if (asynchrounous) {
+	      setImmediate(processCallbacks);
+	    } else {
+	      processCallbacks();
+	    }
 	  };
 
 	  publicAPI['on' + capitalize(eventName)] = function (callback) {
@@ -20619,6 +20636,35 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Fetch handling: setXXXFetchCallback / return { addRequest }
+	// ----------------------------------------------------------------------------
+	function fetch(publicAPI, model, name) {
+	  var fetchCallback = null;
+	  var requestQueue = [];
+
+	  publicAPI['set' + capitalize(name) + 'FetchCallback'] = function (fetchMethod) {
+	    if (requestQueue.length) {
+	      fetchMethod(requestQueue);
+	    }
+	    fetchCallback = fetchMethod;
+	  };
+
+	  return {
+	    addRequest: function addRequest(request) {
+	      requestQueue.push(request);
+	      if (fetchCallback) {
+	        fetchCallback(requestQueue);
+	      }
+	    },
+	    clearRequests: function clearRequests() {
+	      while (requestQueue.length) {
+	        requestQueue.pop();
+	      }
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
 	// newInstance
 	// ----------------------------------------------------------------------------
 
@@ -20636,14 +20682,98 @@
 	exports.default = {
 	  newInstance: newInstance,
 	  destroy: destroy,
+	  fetch: fetch,
 	  isA: isA,
 	  event: event,
 	  set: set,
 	  get: get
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(170).setImmediate))
 
 /***/ },
 /* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
+	var apply = Function.prototype.apply;
+	var slice = Array.prototype.slice;
+	var immediateIds = {};
+	var nextImmediateId = 0;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) { timeout.close(); };
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// That's not how node.js implements it but the exposed api is the same.
+	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+	  var id = nextImmediateId++;
+	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+	  immediateIds[id] = true;
+
+	  nextTick(function onNextTick() {
+	    if (immediateIds[id]) {
+	      // fn.call() is faster so we optimize for the common use-case
+	      // @see http://jsperf.com/call-apply-segu
+	      if (args) {
+	        fn.apply(null, args);
+	      } else {
+	        fn.call(null);
+	      }
+	      // Prevent ids from leaking
+	      exports.clearImmediate(id);
+	    }
+	  });
+
+	  return id;
+	};
+
+	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+	  delete immediateIds[id];
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(170).setImmediate, __webpack_require__(170).clearImmediate))
+
+/***/ },
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20652,39 +20782,39 @@
 	  value: true
 	});
 
-	var _Circle = __webpack_require__(171);
+	var _Circle = __webpack_require__(172);
 
 	var _Circle2 = _interopRequireDefault(_Circle);
 
-	var _Square = __webpack_require__(175);
+	var _Square = __webpack_require__(176);
 
 	var _Square2 = _interopRequireDefault(_Square);
 
-	var _Triangle = __webpack_require__(176);
+	var _Triangle = __webpack_require__(177);
 
 	var _Triangle2 = _interopRequireDefault(_Triangle);
 
-	var _Diamond = __webpack_require__(177);
+	var _Diamond = __webpack_require__(178);
 
 	var _Diamond2 = _interopRequireDefault(_Diamond);
 
-	var _X = __webpack_require__(178);
+	var _X = __webpack_require__(179);
 
 	var _X2 = _interopRequireDefault(_X);
 
-	var _Pentagon = __webpack_require__(179);
+	var _Pentagon = __webpack_require__(180);
 
 	var _Pentagon2 = _interopRequireDefault(_Pentagon);
 
-	var _InvertedTriangle = __webpack_require__(180);
+	var _InvertedTriangle = __webpack_require__(181);
 
 	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
 
-	var _Star = __webpack_require__(181);
+	var _Star = __webpack_require__(182);
 
 	var _Star2 = _interopRequireDefault(_Star);
 
-	var _Plus = __webpack_require__(182);
+	var _Plus = __webpack_require__(183);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
@@ -20703,19 +20833,19 @@
 	};
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
+	var sprite = __webpack_require__(173);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Circle");
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(173);
+	var Sprite = __webpack_require__(174);
 	var globalSprite = new Sprite();
 
 	if (document.body) {
@@ -20730,10 +20860,10 @@
 
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sniffr = __webpack_require__(174);
+	var Sniffr = __webpack_require__(175);
 
 	/**
 	 * List of SVG attributes to fix url target in them
@@ -20985,7 +21115,7 @@
 
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports) {
 
 	(function(host) {
@@ -21109,79 +21239,79 @@
 
 
 /***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
-
-/***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
 
 /***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
 
 /***/ },
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
 
 /***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
 
 /***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
 
 /***/ },
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
+	var sprite = __webpack_require__(173);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(173);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21194,7 +21324,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _kitware = __webpack_require__(184);
+	var _kitware = __webpack_require__(185);
 
 	var _kitware2 = _interopRequireDefault(_kitware);
 
@@ -21240,11 +21370,11 @@
 	});
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(172);;
+	var sprite = __webpack_require__(173);;
 	var image = "<symbol viewBox=\"0 0 256 256\" id=\"kitware\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g id=\"kitware_kitware\"> <g> <g> <path d=\"M216.9,77c-6.2,0-12.3,0-18.5,0c-66.9,18.7-76.9,102.5-30,142.9c-54.2-36.8-44.4-130,29.5-149.8c-6.2,0-12.3,0-18.5,0\n\t\t\t\tc-66.9,18.7-76.9,102.5-30,142.9c-54.2-36.8-44.4-130,29.5-149.8c-6.2,0-12.3,0-18.5,0c-21,5.9-36.3,18.2-46.1,33.5\n\t\t\t\tc-0.7-28.8-5.2-58.2-13.9-87.7c-5.2,5-10.4,9.9-15.6,14.9c25.8,73.8,21.6,151.9-10.2,217.1c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tc12.7-22.5,22-47.1,28-73c8.8,23.8,28.3,44.2,58.5,52.3c0.3,0,0.6,0,1,0c5.5,2.8,11.4,5.2,17.9,6.9c0.3,0,0.6,0,1,0\n\t\t\t\tc5.5,2.8,11.4,5.2,17.9,6.9c2.8,0,5.7,0,8.5,0C131.6,215.7,133.3,99.4,216.9,77z\"/> </g> <g> <path d=\"M57.1,50.6c-5.2,5-10.4,9.9-15.5,14.9c28,43.5,37,102.5,21.4,164c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tC88.5,170.7,84.3,104.9,57.1,50.6z\"/> </g> <g> <path d=\"M78.8,29.8c-5.2,5-10.4,9.9-15.5,14.9c26.9,58.6,29.3,127.2,5.6,190.6c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tC102.6,174.6,105,99.2,78.8,29.8z\"/> </g> </g> </g> </symbol>";
 	module.exports = sprite.add(image, "kitware");
 
