@@ -528,7 +528,7 @@ function legendProvider(publicAPI, model) {
   };
 
   publicAPI.updateLegendSettings = settings => {
-    ['legendShapes', 'legendColors', 'legendEntries', 'priorities'].forEach(key => {
+    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(key => {
       if (settings[key]) {
         model[key] = [].concat(settings.key);
         model.legendDirty = true;
@@ -556,7 +556,7 @@ const DEFAULT_VALUES = {
   legendEntries: [],
   legendPriorities: ['shapes', 'colors'],
   legendMapping: {},
-  dirty: true,
+  legendDirty: true,
 };
 
 // ----------------------------------------------------------------------------
