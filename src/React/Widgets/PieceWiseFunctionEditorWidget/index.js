@@ -36,6 +36,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       height: 200,
+      visible: false,
     };
   },
 
