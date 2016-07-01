@@ -24,38 +24,22 @@ function flipHistogram(histo2d) {
 // Histogram 2D Provider
 // ----------------------------------------------------------------------------
 
-function histogram2DProvider(publicAPI, model) {
+function histogram2DProvider(publicAPI, model, fetchHelper) {
   // Private members
-  let fetchCallback = null;
-  const requestQueue = [];
-  const readyListeners = [];
+  const ready = publicAPI.fireHistogram2DReady;
+  delete publicAPI.fireHistogram2DReady;
 
   // Protected members
   if (!model.histogram2DData) {
     model.histogram2DData = {};
   }
 
-  // Free listeners at delete time
-  function unsubscribeListeners() {
-    let count = readyListeners.length;
-    while (count--) {
-      readyListeners[count] = null;
-    }
-  }
-  model.subscriptions.push({ unsubscribe: unsubscribeListeners });
-
-  // Provide data fetcher
-  publicAPI.setHistogram2DFetchCallback = fetch => {
-    if (requestQueue.length) {
-      fetch(requestQueue);
-    }
-    fetchCallback = fetch;
-  };
-
   // Data access
   publicAPI.setHistogram2DNumberOfBins = bin => {
-    model.histogram2DData = {};
-    model.histogram2DNumberOfBins = bin;
+    if (model.histogram2DNumberOfBins !== bin) {
+      model.histogram2DData = {};
+      model.histogram2DNumberOfBins = bin;
+    }
   };
 
   // Return true if data is available
@@ -66,7 +50,7 @@ function histogram2DProvider(publicAPI, model) {
       }
       return true;
     }
-    if (model.histogram2DData[axisB] && model.histogram2DData[axisB][axisA]) {
+    if (model.histogram2DData[axisB] && model.histogram2DData[axisB][axisA] && !model.histogram2DData[axisB][axisA].pending) {
       if (!model.histogram2DData[axisA]) {
         model.histogram2DData[axisA] = {};
       }
@@ -80,19 +64,9 @@ function histogram2DProvider(publicAPI, model) {
     model.histogram2DData[axisA][axisB] = { pending: true };
 
     // Request data if possible
-    requestQueue.push([axisA, axisB]);
-    if (fetchCallback) {
-      fetchCallback(requestQueue);
-    }
+    fetchHelper.addRequest([axisA, axisB]);
 
     return false;
-  };
-
-  publicAPI.onHistogram2DReady = callback => {
-    const idx = readyListeners.length;
-    const unsubscribe = () => { readyListeners[idx] = null; };
-    readyListeners.push(callback);
-    return { unsubscribe };
   };
 
   publicAPI.getHistogram2D = (axisA, axisB) => {
@@ -112,15 +86,7 @@ function histogram2DProvider(publicAPI, model) {
     model.histogram2DData[axisA][axisB] = data;
     model.histogram2DData[axisB][axisA] = flipHistogram(data);
 
-    setImmediate(() => {
-      readyListeners.filter(ready => !!ready).forEach(ready => {
-        try {
-          ready(axisA, axisB, data);
-        } catch (err) {
-          console.log('Fail notifying ready callback', err);
-        }
-      });
-    });
+    ready(axisA, axisB, data);
   };
 
   publicAPI.getMaxCount = (axisA, axisB) => {
@@ -146,7 +112,7 @@ function histogram2DProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  histogram2DData: null,
+  // histogram2DData: null,
   histogram2DNumberOfBins: 32,
 };
 
@@ -158,8 +124,10 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'Histogram2DProvider');
   CompositeClosureHelper.get(publicAPI, model, ['histogram2DNumberOfBins']);
+  CompositeClosureHelper.event(publicAPI, model, 'Histogram2DReady');
+  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'Histogram2D');
 
-  histogram2DProvider(publicAPI, model);
+  histogram2DProvider(publicAPI, model, fetchHelper);
 }
 
 // ----------------------------------------------------------------------------

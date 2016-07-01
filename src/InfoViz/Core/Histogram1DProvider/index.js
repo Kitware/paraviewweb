@@ -4,48 +4,29 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // Histogram 1D Provider
 // ----------------------------------------------------------------------------
 
-function histogram1DProvider(publicAPI, model) {
+function histogram1DProvider(publicAPI, model, fetchHelper) {
   // Private members
-  let fetchCallback = null;
-  const requestQueue = [];
-  const readyListeners = [];
+  const ready = publicAPI.fireHistogram1DReady;
+  delete publicAPI.fireHistogram1DReady;
 
   // Protected members
   if (!model.histogram1DData) {
     model.histogram1DData = {};
   }
 
-  // Free listeners at delete time
-  function unsubscribeListeners() {
-    let count = readyListeners.length;
-    while (count--) {
-      readyListeners[count] = null;
-    }
-  }
-  model.subscriptions.push({ unsubscribe: unsubscribeListeners });
-
-  // Provide data fetcher
-  publicAPI.setHistogram1DFetchCallback = fetch => {
-    if (requestQueue.length) {
-      fetch(requestQueue);
-    }
-    fetchCallback = fetch;
-  };
-
   // Data access
   publicAPI.setHistogram1DNumberOfBins = bin => {
-    model.histogram1DData = {};
-    model.histogram1DNumberOfBins = bin;
+    if (model.histogram1DNumberOfBins !== bin) {
+      model.histogram1DData = {};
+      model.histogram1DNumberOfBins = bin;
+    }
   };
 
   // Return true if data is available
   publicAPI.loadHistogram1D = field => {
     if (!model.histogram1DData[field]) {
       model.histogram1DData[field] = { pending: true };
-      requestQueue.push(field);
-      if (fetchCallback) {
-        fetchCallback(requestQueue);
-      }
+      fetchHelper.addRequest(field);
       return false;
     }
 
@@ -56,23 +37,10 @@ function histogram1DProvider(publicAPI, model) {
     return true;
   };
 
-  publicAPI.onHistogram1DReady = callback => {
-    const idx = readyListeners.length;
-    const unsubscribe = () => { readyListeners[idx] = null; };
-    readyListeners.push(callback);
-    return { unsubscribe };
-  };
-
   publicAPI.getHistogram1D = field => model.histogram1DData[field];
   publicAPI.setHistogram1D = (field, data) => {
     model.histogram1DData[field] = data;
-    readyListeners.filter(ready => !!ready).forEach(ready => {
-      try {
-        ready(field, data);
-      } catch (err) {
-        console.log('Fail notifying ready callback', err);
-      }
-    });
+    ready(field, data);
   };
 }
 
@@ -81,7 +49,7 @@ function histogram1DProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  histogram1DData: null,
+  // histogram1DData: null,
   histogram1DNumberOfBins: 32,
 };
 
@@ -93,8 +61,10 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'Histogram1DProvider');
   CompositeClosureHelper.get(publicAPI, model, ['histogram1DNumberOfBins']);
+  CompositeClosureHelper.event(publicAPI, model, 'histogram1DReady');
+  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'Histogram1D');
 
-  histogram1DProvider(publicAPI, model);
+  histogram1DProvider(publicAPI, model, fetchHelper);
 }
 
 // ----------------------------------------------------------------------------
