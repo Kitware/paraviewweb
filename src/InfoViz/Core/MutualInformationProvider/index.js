@@ -10,28 +10,10 @@ const SEPARATOR = '--|+|--';
 // Mutual Information Provider
 // ----------------------------------------------------------------------------
 
-function mutualInformationProvider(publicAPI, model) {
+function mutualInformationProvider(publicAPI, model, fetchHelper) {
   // Private members
-  let fetchCallback = null;
-  const readyListeners = [];
-
-  // Free listeners at delete time
-  function unsubscribeListeners() {
-    let count = readyListeners.length;
-    while (count--) {
-      readyListeners[count] = null;
-    }
-  }
-  model.subscriptions.push({ unsubscribe: unsubscribeListeners });
-
-  // Provide data fetcher
-  publicAPI.setMutualInformationFetchCallback = fetch => {
-    if (model.mutualInformationParameterNames.length) {
-      fetch(model.mutualInformationParameterNames);
-    }
-    fetchCallback = fetch;
-  };
-
+  const ready = publicAPI.fireMutualInformationReady;
+  delete publicAPI.fireMutualInformationReady;
 
   // Return true if data is available
   publicAPI.loadMutualInformation = names => {
@@ -46,19 +28,9 @@ function mutualInformationProvider(publicAPI, model) {
     model.mutualInformationParameterNames = [].concat(names);
     model.mutualInformationData = null;
 
-    // Request data if possible
-    if (fetchCallback) {
-      fetchCallback(model.mutualInformationParameterNames);
-    }
+    fetchHelper.addRequest(model.mutualInformationParameterNames);
 
     return false;
-  };
-
-  publicAPI.onMutualInformationReady = callback => {
-    const idx = readyListeners.length;
-    const unsubscribe = () => { readyListeners[idx] = null; };
-    readyListeners.push(callback);
-    return { unsubscribe };
   };
 
   publicAPI.getMutualInformation = names => {
@@ -74,16 +46,7 @@ function mutualInformationProvider(publicAPI, model) {
   publicAPI.setMutualInformation = data => {
     // FIXME (params can be out of synch)
     model.mutualInformationData = data;
-
-    setImmediate(() => {
-      readyListeners.filter(ready => !!ready).forEach(ready => {
-        try {
-          ready(data);
-        } catch (err) {
-          console.log('Fail notifying ready callback', err);
-        }
-      });
-    });
+    ready(data);
   };
 }
 
@@ -92,7 +55,7 @@ function mutualInformationProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  mutualInformationData: null,
+  // mutualInformationData: null,
   mutualInformationParameterNames: [],
 };
 
@@ -104,8 +67,10 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'MutualInformationProvider');
   CompositeClosureHelper.get(publicAPI, model, ['mutualInformationParameterNames']);
+  CompositeClosureHelper.event(publicAPI, model, 'MutualInformationReady');
+  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'MutualInformation');
 
-  mutualInformationProvider(publicAPI, model);
+  mutualInformationProvider(publicAPI, model, fetchHelper);
 }
 
 // ----------------------------------------------------------------------------
