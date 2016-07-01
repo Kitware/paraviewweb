@@ -14,7 +14,7 @@ container.style.width = "50%";
 ReactDOM.render(
     React.createElement(
       PieceWiseFunctionEditorWidget,
-      { rangeMin: 0, rangeMax: 100, onChange }),
+      { rangeMin: 0, rangeMax: 100, onChange, visible: true }),
     container);
 
 document.body.style.margin = '10px';

@@ -36,6 +36,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       height: 200,
+      visible: false,
     };
   },
 
@@ -50,7 +51,7 @@ export default React.createClass({
       );
     }
     return {
-      activePoint: 0,
+      activePoint: -1,
       width: -1,
       height: this.props.height,
       points: controlPoints,
@@ -74,6 +75,21 @@ export default React.createClass({
 
     if (this.sizeHelper) {
       sizeHelper.triggerChange();
+    }
+  },
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.initialPoints) {
+      const controlPoints = newProps.initialPoints.map(pt =>
+        makeESLintHappy({
+          x: (pt.x - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin),
+          y: pt.y,
+        })
+      );
+      if (!equals(this.state.points, controlPoints) &&
+          !equals(newProps.initialPoints, this.props.initialPoints)) {
+        this.setState({ points: controlPoints });
+      }
     }
   },
 

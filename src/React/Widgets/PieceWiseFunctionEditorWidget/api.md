@@ -18,6 +18,10 @@ The initial points in the piecewise function.  This property should be an array 
 
 This function will be called with the list of control points for the piecewise function whenever they change.  This includes changes to the range since internally the [rangeMin, rangeMax] is mapped to [0, 1] and changing the range changes the external interpretation of the points.  The function should take a list of the form described above in the initialPoints section.
 
+### height
+
+The height of the canvas to draw the transfer function on.  Not that this widget also has some controls below the canvas so it will be taller than the given height.  Default: 200
+
 ### visible
 
-True if the widget should be displayed.  False if the widget should be hidden with `display: none`.  Useful when you want the widget to keep listening for range updates even when not shown.
+True if the widget should be displayed.  False if the widget should be hidden with `display: none`.  Useful when you want the widget to keep listening for range updates even when not shown. Default: false.

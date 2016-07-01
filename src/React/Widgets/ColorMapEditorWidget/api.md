@@ -49,3 +49,7 @@ This function will be called when the user presses the *Scale Range to Dataset* 
 ### onScaleRangeOverTime
 
 This function will be called when the user presses the *Scale Range to Data Over Time* button.  Should update *rangeMin* and *rangeMax*.
+
+### pieceWiseHeight
+
+The height of the piecewise function (opacity map) editor's canvas.
