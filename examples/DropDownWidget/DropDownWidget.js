@@ -3850,7 +3850,7 @@
 
 
 	// module
-	exports.push([module.id, ".DropDownWidget_container_2nohy {\n    position: relative;\n    user-select: none;\n    cursor: pointer;\n}\n\n.DropDownWidget_list_2o8jh {\n    list-style-type: none;\n    background-color: white;\n    border: 1px solid black;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 10;\n    padding: 10px 14px;\n    top: 6px;\n    right: -11px;\n    opacity: 1;\n}\n\n.DropDownWidget_hidden_2TfeO {\n    display: none;\n}\n\n.DropDownWidget_item_1ViM_ {\nuser-select: none;\n    cursor: pointer;\n    text-align: left;\n    padding: 5px 0;\n}\n\n.DropDownWidget_selectedItem_GmheI {\n    font-weight: bold;\n}\n", ""]);
+	exports.push([module.id, ".DropDownWidget_container_2nohy {\n    position: relative;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n}\n\n.DropDownWidget_list_2o8jh {\n    list-style-type: none;\n    background-color: white;\n    border: 1px solid black;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 10;\n    padding: 10px 14px;\n    top: 6px;\n    right: -11px;\n    opacity: 1;\n}\n\n.DropDownWidget_hidden_2TfeO {\n    display: none;\n}\n\n.DropDownWidget_item_1ViM_ {\n-webkit-user-select: none;\n   -moz-user-select: none;\n    -ms-user-select: none;\n        user-select: none;\n    cursor: pointer;\n    text-align: left;\n    padding: 5px 0;\n}\n\n.DropDownWidget_selectedItem_GmheI {\n    font-weight: bold;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/architecture/PVWeb-old.png">
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/architecture/PVWeb-singleuser.png">
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/architecture/PVWeb-multiusers.png">
-<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta property="og:updated_time" content="2016-07-01T17:23:18.031Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="ParaViewWeb architectureIntroductionParaViewWeb is a framework used to leverage the power of VTK and ParaView on the Web in an interactive manner. ParaViewWeb allows the user to perform heavy 3D visua">
@@ -114,7 +114,7 @@
 
 <p>In this case, ParaViewWeb is a single Python script that could be executed by the provided python interpreter. The script will be responsible for starting a web server and listening to a given port.</p>
 <p>The following command line illustrates how to trigger such a server:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ./bin/pvpython lib/paraview-4.1/site-packages/paraview/web/pv_web_visualizer.py  \</span><br><span class="line">            --content ./share/paraview-4.1/www                                     \</span><br><span class="line">            --data-dir /path-to-share/                                             \</span><br><span class="line">            --port 8080 &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ ./bin/pvpython lib/paraview-4.1/site-packages/paraview/web/pv_web_visualizer.py  \</div><div class="line">            --content ./share/paraview-4.1/www                                     \</div><div class="line">            --data-dir /path-to-share/                                             \</div><div class="line">            --port 8080 &amp;</div></pre></td></tr></table></figure>
 <p>This setup does not allow several users to connect to a remote server and build their own visualizations independently from each other. To support such deployment, a multi-user setup is needed.</p>
 <h3 id="Multi-user-setup" class="article-heading"><a href="#Multi-user-setup" class="headerlink" title="Multi-user setup"></a>Multi-user setup<a class="article-anchor" href="#Multi-user-setup" aria-hidden="true"></a></h3><p>In order to support in a transparent manner the connection of several users on different visualization sessions, the server must provide a single entry point to establish a connection, as well as a mechanism to start a new visualization session on demand.</p>
 <p>The figure below illustrates such a setup where Apache is used as a front-end application to deliver the static content, as well as to forward the WebSocket communication to the appropriate back-end visualization session. Moreover, a <strong>launcher</strong> process is used to dynamically start the pvpython process for the visualization session.</p>
@@ -125,7 +125,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <time class="article-footer-updated" datetime="2016-07-01T17:23:18.031Z" itemprop="dateModified">Last updated: 2016-07-01</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

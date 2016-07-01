@@ -47,7 +47,7 @@ Being designed for multi-tier de">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="Ansible playbookAnsible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration.
 Being designed for multi-tier de">
-<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta property="og:updated_time" content="2016-07-01T17:23:18.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="Ansible playbookAnsible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration.
@@ -107,9 +107,9 @@ Being designed for multi-tier de">
 <p>On the target machine:</p>
 <p>1) SSH configured so the source machine can connect without authentication<br>2) The used used for SSH should be a <strong>password less sudoer</strong></p>
 <h2 id="Provisioning" class="article-heading"><a href="#Provisioning" class="headerlink" title="Provisioning"></a>Provisioning<a class="article-anchor" href="#Provisioning" aria-hidden="true"></a></h2><p>Create an inventory file with the following content:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[all]</span><br><span class="line">target_Hostname_or_IP</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">[all]</div><div class="line">target_Hostname_or_IP</div></pre></td></tr></table></figure>
 <p>Run the following command line:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/Kitware/paraviewweb.git</span><br><span class="line">$ ansible-playbook                       \</span><br><span class="line">   -i /path/to/your/myInventory_file.txt \</span><br><span class="line">   paraviewweb/tools/ansible/site.yml    \</span><br><span class="line">   -u &lt;your passwordless ssh user here&gt;  \</span><br><span class="line">   <span class="_">-e</span> hostname=&lt;the hostname to use to connect to apache&gt; \</span><br><span class="line">   <span class="_">-e</span> gpu=&lt;yes|no&gt; \</span><br><span class="line">   <span class="_">-e</span> install_nvidia_driver=&lt;yes|no&gt; \</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/Kitware/paraviewweb.git</div><div class="line">$ ansible-playbook                       \</div><div class="line">   -i /path/to/your/myInventory_file.txt \</div><div class="line">   paraviewweb/tools/ansible/site.yml    \</div><div class="line">   -u &lt;your passwordless ssh user here&gt;  \</div><div class="line">   <span class="_">-e</span> hostname=&lt;the hostname to use to connect to apache&gt; \</div><div class="line">   <span class="_">-e</span> gpu=&lt;yes|no&gt; \</div><div class="line">   <span class="_">-e</span> install_nvidia_driver=&lt;yes|no&gt; \</div></pre></td></tr></table></figure>
 <ul>
 <li>If gpu is set to ‘no’ the Mesa LLVM pipeline will be used for rendering.</li>
 </ul>
@@ -131,11 +131,11 @@ Being designed for multi-tier de">
 <li><code>/var/www/html</code> - Root of ParaViewWeb site</li>
 </ul>
 <h2 id="Testing" class="article-heading"><a href="#Testing" class="headerlink" title="Testing"></a>Testing<a class="article-anchor" href="#Testing" aria-hidden="true"></a></h2><p>To validate the setup, you can connect to the following URL</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http://&lt;the hostname to use to connect to apache&gt;/apps/Visualizer</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">http://&lt;the hostname to use to connect to apache&gt;/apps/Visualizer</div></pre></td></tr></table></figure>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <time class="article-footer-updated" datetime="2016-07-01T17:23:18.027Z" itemprop="dateModified">Last updated: 2016-07-01</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

@@ -20279,7 +20279,7 @@
 
 
 	// module
-	exports.push([module.id, ".ButtonSelectorWidget_container_vu2Nh {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n}\n\n.ButtonSelectorWidget_button_1tHzx {\n    margin: 5px;\n    padding: 5px;\n    width: 80%;\n    font-size: 200%;\n    border: 1px solid grey;\n    border-radius: 5px;\n    background-color: lightgray;\n    transition: all .12s ease;\n    box-sizing: border-box;\n}\n\n.ButtonSelectorWidget_button_1tHzx:focus, .ButtonSelectorWidget_button_1tHzx:active {\n  box-shadow: 0 0 1px 1px grey;\n  outline: none;\n}\n\n.ButtonSelectorWidget_button_1tHzx:active {\n    background-color: #a8a8a8;\n}\n", ""]);
+	exports.push([module.id, ".ButtonSelectorWidget_container_vu2Nh {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    -ms-flex-pack: center;\n        justify-content: center;\n    -ms-flex-align: center;\n        align-items: center;\n    height: 100vh;\n}\n\n.ButtonSelectorWidget_button_1tHzx {\n    margin: 5px;\n    padding: 5px;\n    width: 80%;\n    font-size: 200%;\n    border: 1px solid grey;\n    border-radius: 5px;\n    background-color: lightgray;\n    transition: all .12s ease;\n    box-sizing: border-box;\n}\n\n.ButtonSelectorWidget_button_1tHzx:focus, .ButtonSelectorWidget_button_1tHzx:active {\n  box-shadow: 0 0 1px 1px grey;\n  outline: none;\n}\n\n.ButtonSelectorWidget_button_1tHzx:active {\n    background-color: #a8a8a8;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

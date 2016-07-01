@@ -46,7 +46,7 @@
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="ParaViewWeb Setup GuideIntroductionThe Quick start guide has information about the fastest way to get ParaViewWeb and try it out.  This guide, however, contains pointers to other guides describing all">
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/pvw_setup/PVW_Logo_128_txt.png">
-<meta property="og:updated_time" content="2016-06-27T22:22:41.000Z">
+<meta property="og:updated_time" content="2016-07-01T17:23:18.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="ParaViewWeb Setup GuideIntroductionThe Quick start guide has information about the fastest way to get ParaViewWeb and try it out.  This guide, however, contains pointers to other guides describing all">
@@ -99,7 +99,7 @@
 <h3 id="Get-the-source" class="article-heading"><a href="#Get-the-source" class="headerlink" title="Get the source"></a>Get the source<a class="article-anchor" href="#Get-the-source" aria-hidden="true"></a></h3><p>There are several ways of obtaining the source code, you can either download it from the downloads page, or you can check it out using <code>git</code>.</p>
 <h4 id="Source-code-from-download-site" class="article-heading"><a href="#Source-code-from-download-site" class="headerlink" title="Source code from download site"></a>Source code from download site<a class="article-anchor" href="#Source-code-from-download-site" aria-hidden="true"></a></h4><p>Go to the downloads page, linked above, and choose “ParaView Source Files” as the download type.</p>
 <h4 id="Source-code-directly-from-repository" class="article-heading"><a href="#Source-code-directly-from-repository" class="headerlink" title="Source code directly from repository"></a>Source code directly from repository<a class="article-anchor" href="#Source-code-directly-from-repository" aria-hidden="true"></a></h4><p>If you have <code>git</code> installed on your system, you can simply type:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ mkdir -p ~/projects/ParaView</span><br><span class="line">$ <span class="built_in">cd</span> ~/projects/ParaView</span><br><span class="line">$ git <span class="built_in">clone</span> http://paraview.org/ParaView.git src</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ mkdir -p ~/projects/ParaView</div><div class="line">$ <span class="built_in">cd</span> ~/projects/ParaView</div><div class="line">$ git <span class="built_in">clone</span> http://paraview.org/ParaView.git src</div></pre></td></tr></table></figure>
 <p>This will clone the source tree into a subfolder called <code>src</code>.</p>
 <h2 id="Configuring-and-building-ParaViewWeb" class="article-heading"><a href="#Configuring-and-building-ParaViewWeb" class="headerlink" title="Configuring and building ParaViewWeb"></a>Configuring and building ParaViewWeb<a class="article-anchor" href="#Configuring-and-building-ParaViewWeb" aria-hidden="true"></a></h2><p>If you chose to obtain ParaView source code, then you will want to build it yourself.  <strong>Please Note:</strong> If you are compiling ParaView because you want to run ParaViewWeb, you must compile with the CMake variable <code>PARAVIEW_ENABLE_PYTHON</code> turned <code>ON</code>.  Otherwise, you will not be able to run any ParaViewWeb servers.</p>
 <p>There is a wealth of information regarding compiling ParaView available on the <a href="http://www.paraview.org/Wiki/ParaView" target="_blank" rel="external">ParaView Wiki</a>, as well as in the <a href="index.html#!/guide/configure_and_build">Configure and build ParaView</a> and <a href="index.html#!/guide/os_mesa">Offscreen OSMesa ParaViewWeb</a> guides.</p>
@@ -108,7 +108,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-06-27T22:22:41.000Z" itemprop="dateModified">Last updated: 2016-06-27</time>
+                <time class="article-footer-updated" datetime="2016-07-01T17:23:18.035Z" itemprop="dateModified">Last updated: 2016-07-01</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

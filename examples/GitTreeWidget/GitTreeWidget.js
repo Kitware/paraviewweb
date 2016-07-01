@@ -41110,7 +41110,7 @@
 
 
 	// module
-	exports.push([module.id, ".GitTreeWidget_cursor_2wAsZ {\n  cursor: pointer;\n}\n\n.GitTreeWidget_regularText_168Mu {\n    font-family: sans-serif;\n}\n\n.GitTreeWidget_regularText_168Mu::selection {\n  background-color: transparent;\n}\n\n.GitTreeWidget_iconText_1IakK {\n    font-family: FontAwesome;\n    cursor: pointer;\n}\n\n\n", ""]);
+	exports.push([module.id, ".GitTreeWidget_cursor_2wAsZ {\n  cursor: pointer;\n}\n\n.GitTreeWidget_regularText_168Mu {\n    font-family: sans-serif;\n}\n\n.GitTreeWidget_regularText_168Mu::-moz-selection {\n  background-color: transparent;\n}\n\n.GitTreeWidget_regularText_168Mu::selection {\n  background-color: transparent;\n}\n\n.GitTreeWidget_iconText_1IakK {\n    font-family: FontAwesome;\n    cursor: pointer;\n}\n\n\n", ""]);
 
 	// exports
 	exports.locals = {
