@@ -86,9 +86,7 @@ function histogram2DProvider(publicAPI, model, fetchHelper) {
     model.histogram2DData[axisA][axisB] = data;
     model.histogram2DData[axisB][axisA] = flipHistogram(data);
 
-    setImmediate(() => {
-      ready(axisA, axisB, data);
-    });
+    ready(axisA, axisB, data);
   };
 
   publicAPI.getMaxCount = (axisA, axisB) => {

@@ -87,9 +87,7 @@ function selectionProvider(publicAPI, model, fetchHelper) {
     model.histogram2DSelectionData[axisA][axisB] = data;
     model.histogram2DSelectionData[axisB][axisA] = flipHistogram(data);
 
-    setImmediate(() => {
-      ready(axisA, axisB, data);
-    });
+    ready(axisA, axisB, data);
   };
 
   publicAPI.getSelectionMaxCount = (axisA, axisB) => {

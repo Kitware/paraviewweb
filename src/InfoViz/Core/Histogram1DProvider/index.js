@@ -40,9 +40,7 @@ function histogram1DProvider(publicAPI, model, fetchHelper) {
   publicAPI.getHistogram1D = field => model.histogram1DData[field];
   publicAPI.setHistogram1D = (field, data) => {
     model.histogram1DData[field] = data;
-    setImmediate(() => {
-      ready(field, data);
-    });
+    ready(field, data);
   };
 }
 
