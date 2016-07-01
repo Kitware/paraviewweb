@@ -51,7 +51,7 @@ export default React.createClass({
       );
     }
     return {
-      activePoint: 0,
+      activePoint: -1,
       width: -1,
       height: this.props.height,
       points: controlPoints,
