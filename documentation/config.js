@@ -25,6 +25,9 @@ module.exports = {
         PVWStyle: path.resolve('./style'),
       },
     },
+    postcss: [
+      require('autoprefixer')({ browsers: ['last 2 versions'] }),
+    ],
   },
   copy: [],
 };
