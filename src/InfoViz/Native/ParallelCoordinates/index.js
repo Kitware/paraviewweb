@@ -88,11 +88,10 @@ function parallelCoordinate(publicAPI, model) {
 
   function fetchSelectionData() {
     if (model.provider && model.provider.isA('SelectionProvider')) {
-      model.provider.resetSelectionHistogram2D();
+      model.provider.resetSelectionHistogram2D(model.axes.getSelections());
       model.axes.getAxesPairs().forEach(pair => {
         model.provider.loadSelectionHistogram2D(...pair);
       });
-      model.provider.setSelection(model.axes.getSelections());
     }
   }
 
@@ -124,11 +123,6 @@ function parallelCoordinate(publicAPI, model) {
           dataToLoadCount -= model.provider.loadHistogram2D(fieldNames[i - 1], fieldNames[i])
             ? 1 : 0;
         }
-      }
-
-      // Fetch Selection
-      if (model.provider.isA('SelectionProvider')) {
-        fetchSelectionData();
       }
 
       // Check if we can render or not
@@ -571,20 +565,29 @@ function parallelCoordinate(publicAPI, model) {
 
     // If there is a selection, draw that (the "focus") on top of the polygons
     if (model.axes.hasSelection() && model.provider.isA('SelectionProvider')) {
-      model.maxBinCountForOpacityCalculation = model.provider.getSelectionMaxOfMaxCounts(model.axes.getAxesPairs());
-      for (let k = 0; k < nbPolyDraw; ++k) {
-        drawPolygons(
+      // Extract selection histogram2d
+      const polygonsQueue = [];
+      let missingData = false;
+      for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
+        const histo = model.provider.getSelectionHistogram2D(model.axes.getAxis(k).name, model.axes.getAxis(k + 1).name);
+        missingData = histo ? histo.pending : true;
+        polygonsQueue.push([
           axesCenters,
           model.fgCtx,
           k, k + 1,
-          model.provider.getSelectionHistogram2D(model.axes.getAxis(k).name, model.axes.getAxis(k + 1).name),
-          model.selectionColors);
+          histo,
+          model.selectionColors,
+        ]);
       }
 
-      model.ctx.globalAlpha = model.selectionOpacityAdjustment;
-      model.ctx.drawImage(model.fgCanvas,
-        0, 0, model.canvasArea.width, model.canvasArea.height,
-        0, 0, model.canvasArea.width, model.canvasArea.height);
+      if (!missingData) {
+        model.maxBinCountForOpacityCalculation = model.provider.getSelectionMaxOfMaxCounts(model.axes.getAxesPairs());
+        polygonsQueue.forEach(req => drawPolygons(...req));
+        model.ctx.globalAlpha = model.selectionOpacityAdjustment;
+        model.ctx.drawImage(model.fgCanvas,
+          0, 0, model.canvasArea.width, model.canvasArea.height,
+          0, 0, model.canvasArea.width, model.canvasArea.height);
+      }
     }
 
     model.ctx.globalAlpha = 1.0;
@@ -835,6 +838,10 @@ function parallelCoordinate(publicAPI, model) {
 
   if (model.provider.isA('SelectionProvider')) {
     model.subscriptions.push(model.axes.onSelectionChange(() => {
+      fetchSelectionData();
+      publicAPI.render();
+    }));
+    model.subscriptions.push(model.axes.onAxisListChange(() => {
       fetchSelectionData();
       publicAPI.render();
     }));

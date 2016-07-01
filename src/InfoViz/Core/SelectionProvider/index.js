@@ -4,14 +4,6 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // Global
 // ----------------------------------------------------------------------------
 
-const EMPTY_HISTOGRAM = {
-  bins: [],
-  x: { delta: 1, extent: 2 },
-  y: { delta: 1, extent: 2 },
-  empty: true,
-  pending: true,
-};
-
 function flipHistogram(histo2d) {
   const newHisto2d = {
     bins: histo2d.bins.map(bin => {
@@ -32,51 +24,34 @@ function flipHistogram(histo2d) {
 // Selection Provider
 // ----------------------------------------------------------------------------
 
-function selectionProvider(publicAPI, model) {
+function selectionProvider(publicAPI, model, fetchHelper) {
   // Private members
-  let fetchCallback = null;
-  const requestQueue = [];
-  const readyListeners = [];
+  const ready = publicAPI.fireSelectionHistogram2DReady;
+  delete publicAPI.fireSelectionHistogram2DReady;
 
   // Protected members
   if (!model.histogram2DSelectionData) {
     model.histogram2DSelectionData = {};
   }
 
-  // Free listeners at delete time
-  function unsubscribeListeners() {
-    let count = readyListeners.length;
-    while (count--) {
-      readyListeners[count] = null;
-    }
-  }
-  model.subscriptions.push({ unsubscribe: unsubscribeListeners });
-
-  // Provide data fetcher
-  publicAPI.setSelectionHistogram2DFetchCallback = fetch => {
-    if (requestQueue.length) {
-      fetch(requestQueue);
-    }
-    fetchCallback = fetch;
-  };
-
   // Data access
   publicAPI.setSelectionHistogram2DNumberOfBins = bin => {
-    model.histogram2DSelectionData = {};
-    model.selectionHistogram2DNumberOfBins = bin;
+    if (model.selectionHistogram2DNumberOfBins !== bin) {
+      model.histogram2DSelectionData = {};
+      model.selectionHistogram2DNumberOfBins = bin;
+    }
   };
 
   // Return true if data is available
   publicAPI.loadSelectionHistogram2D = (axisA, axisB) => {
-    requestQueue.push([axisA, axisB]);
-
     if (model.histogram2DSelectionData[axisA] && model.histogram2DSelectionData[axisA][axisB]) {
       if (model.histogram2DSelectionData[axisA][axisB].pending) {
         return false;
       }
       return true;
     }
-    if (model.histogram2DSelectionData[axisB] && model.histogram2DSelectionData[axisB][axisA]) {
+    if (model.histogram2DSelectionData[axisB] && model.histogram2DSelectionData[axisB][axisA]
+      && !model.histogram2DSelectionData[axisB][axisA].pending) {
       if (!model.histogram2DSelectionData[axisA]) {
         model.histogram2DSelectionData[axisA] = {};
       }
@@ -87,29 +62,19 @@ function selectionProvider(publicAPI, model) {
     if (!model.histogram2DSelectionData[axisA]) {
       model.histogram2DSelectionData[axisA] = {};
     }
-    model.histogram2DSelectionData[axisA][axisB] = EMPTY_HISTOGRAM;
+    model.histogram2DSelectionData[axisA][axisB] = { pending: true };
 
     // Request data if possible
-    if (fetchCallback) {
-      fetchCallback(requestQueue);
-    }
+    fetchHelper.addRequest([axisA, axisB]);
 
     return false;
   };
-
-  publicAPI.onSelectionHistogram2DReady = callback => {
-    const idx = readyListeners.length;
-    const unsubscribe = () => { readyListeners[idx] = null; };
-    readyListeners.push(callback);
-    return { unsubscribe };
-  };
-
 
   publicAPI.getSelectionHistogram2D = (axisA, axisB) => {
     if (model.histogram2DSelectionData[axisA] && model.histogram2DSelectionData[axisA][axisB]) {
       return model.histogram2DSelectionData[axisA][axisB];
     }
-    return EMPTY_HISTOGRAM;
+    return null;
   };
 
   publicAPI.setSelectionHistogram2D = (axisA, axisB, data) => {
@@ -123,18 +88,14 @@ function selectionProvider(publicAPI, model) {
     model.histogram2DSelectionData[axisB][axisA] = flipHistogram(data);
 
     setImmediate(() => {
-      readyListeners.filter(ready => !!ready).forEach(ready => {
-        try {
-          ready(axisA, axisB, data);
-        } catch (err) {
-          console.log('Fail notifying ready callback', err);
-        }
-      });
+      ready(axisA, axisB, data);
     });
   };
 
   publicAPI.getSelectionMaxCount = (axisA, axisB) => {
-    if (model.histogram2DSelectionData[axisA] && model.histogram2DSelectionData[axisA][axisB] && model.histogram2DSelectionData[axisA][axisB].bins) {
+    if (model.histogram2DSelectionData[axisA] &&
+      model.histogram2DSelectionData[axisA][axisB] &&
+      model.histogram2DSelectionData[axisA][axisB].bins) {
       if (!model.histogram2DSelectionData[axisA][axisB].maxCount) {
         let count = 0;
         model.histogram2DSelectionData[axisA][axisB].bins.forEach(item => {
@@ -152,13 +113,9 @@ function selectionProvider(publicAPI, model) {
 
   // --------------------------------
 
-  publicAPI.resetSelectionHistogram2D = () => {
-    while (requestQueue.length) {
-      requestQueue.pop();
-    }
-  };
-
-  publicAPI.setSelection = selection => {
+  publicAPI.resetSelectionHistogram2D = (selection) => {
+    fetchHelper.clearRequests();
+    model.histogram2DSelectionData = {};
     model.selection = selection;
     publicAPI.fireSelectionChange(selection);
   };
@@ -169,8 +126,8 @@ function selectionProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  selection: null,
-  histogram2DSelectionData: null,
+  // selection: null,
+  // histogram2DSelectionData: null,
   selectionHistogram2DNumberOfBins: 32,
 };
 
@@ -183,8 +140,10 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.isA(publicAPI, model, 'SelectionProvider');
   CompositeClosureHelper.get(publicAPI, model, ['selectionHistogram2DNumberOfBins', 'selection']);
   CompositeClosureHelper.event(publicAPI, model, 'selectionChange');
+  CompositeClosureHelper.event(publicAPI, model, 'SelectionHistogram2DReady');
+  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'SelectionHistogram2D');
 
-  selectionProvider(publicAPI, model);
+  selectionProvider(publicAPI, model, fetchHelper);
 }
 
 // ----------------------------------------------------------------------------

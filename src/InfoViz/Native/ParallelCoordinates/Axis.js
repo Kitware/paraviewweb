@@ -1,8 +1,8 @@
 const to5clause = (axis, range) => [
   range[0],
-  '<',
+  '<=',
   axis.name,
-  '<',
+  '<=',
   range[1],
   { type: '5C' },
 ];

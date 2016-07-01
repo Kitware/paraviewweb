@@ -77,7 +77,7 @@ export function destroy(publicAPI, model = {}) {
 // Event handling: onXXX(callback), fireXXX(args...)
 // ----------------------------------------------------------------------------
 
-export function event(publicAPI, model, eventName) {
+export function event(publicAPI, model, eventName, asynchrounous = true) {
   const callbacks = [];
   const previousDestroy = publicAPI.destroy;
 
@@ -98,15 +98,23 @@ export function event(publicAPI, model, eventName) {
       return;
     }
 
-    callbacks.forEach(callback => {
-      if (callback) {
-        try {
-          callback.apply(publicAPI, args);
-        } catch (errObj) {
-          console.log('Error event:', eventName, errObj);
+    function processCallbacks() {
+      callbacks.forEach(callback => {
+        if (callback) {
+          try {
+            callback.apply(publicAPI, args);
+          } catch (errObj) {
+            console.log('Error event:', eventName, errObj);
+          }
         }
-      }
-    });
+      });
+    }
+
+    if (asynchrounous) {
+      setImmediate(processCallbacks);
+    } else {
+      processCallbacks();
+    }
   };
 
   publicAPI[`on${capitalize(eventName)}`] = callback => {
@@ -145,6 +153,11 @@ export function fetch(publicAPI, model, name) {
       requestQueue.push(request);
       if (fetchCallback) {
         fetchCallback(requestQueue);
+      }
+    },
+    clearRequests() {
+      while (requestQueue.length) {
+        requestQueue.pop();
       }
     },
   };

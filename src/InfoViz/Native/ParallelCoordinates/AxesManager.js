@@ -7,10 +7,14 @@ export default class AxesManager {
   constructor() {
     this.axes = [];
     this.listeners = [];
+    this.axisListChangeListeners = [];
   }
 
   clearAxes() {
-    this.axes = [];
+    if (this.axes.length) {
+      this.axes = [];
+      this.triggerAxisListChange();
+    }
   }
 
   updateAxes(axisList) {
@@ -36,7 +40,11 @@ export default class AxesManager {
       });
 
       // Remove unwanted axis while keeping the previous order
+      const previousSize = this.axes.length;
       this.axes = this.axes.filter(axis => targetList.indexOf(axis.name) !== -1).concat(toAdd);
+      if (toAdd.length || this.axes.length !== previousSize) {
+        this.triggerAxisListChange();
+      }
     }
     // Update index
     this.axes.forEach((item, idx) => {
@@ -47,6 +55,7 @@ export default class AxesManager {
   addAxis(axis) {
     axis.idx = this.axes.length;
     this.axes.push(axis);
+    this.triggerAxisListChange();
   }
 
   getAxis(index) {
@@ -98,12 +107,16 @@ export default class AxesManager {
   }
 
   addSelection(axisIdx, start, end) {
-    this.axes[axisIdx].addSelection(start, end);
+    this.axes[axisIdx].addSelection(
+      start < end ? start : end,
+      end < start ? start : end);
     this.triggerSelectionChange();
   }
 
-  updateSelection(axisIdx, selectionIdx, min, max) {
-    this.axes[axisIdx].updateSelection(selectionIdx, min, max);
+  updateSelection(axisIdx, selectionIdx, start, end) {
+    this.axes[axisIdx].updateSelection(selectionIdx,
+      start < end ? start : end,
+      end < start ? start : end);
     this.triggerSelectionChange();
   }
 
@@ -130,6 +143,7 @@ export default class AxesManager {
     this.axes[bIdx] = a;
     a.idx = bIdx;
     b.idx = aIdx;
+    this.triggerAxisListChange();
   }
 
   hasSelection() {
@@ -153,24 +167,59 @@ export default class AxesManager {
   }
 
   triggerSelectionChange() {
-    const selection = {};
-    if (this.hasSelection) {
-      selection.type = 'range';
-      selection.ranges = {};
-      this.axes.forEach(axis => {
-        if (axis.hasSelection()) {
-          selection.ranges[axis.name] = [].concat(axis.selections);
+    setImmediate(() => {
+      const selection = {};
+      if (this.hasSelection) {
+        selection.type = 'range';
+        selection.ranges = {};
+        this.axes.forEach(axis => {
+          if (axis.hasSelection()) {
+            selection.ranges[axis.name] = [].concat(axis.selections);
+          }
+        });
+      } else {
+        selection.type = 'empty';
+      }
+
+      // Notify listeners
+      this.listeners.forEach(listener => {
+        if (listener) {
+          listener(selection);
         }
       });
-    } else {
-      selection.type = 'empty';
-    }
+    });
+  }
 
-    // Notify listeners
-    this.listeners.forEach(listener => {
-      if (listener) {
-        listener(selection);
+  onAxisListChange(callback) {
+    const listenerId = this.axisListChangeListeners.length;
+    const unsubscribe = () => {
+      this.axisListChangeListeners[listenerId] = null;
+    };
+    this.axisListChangeListeners.push(callback);
+    return { unsubscribe };
+  }
+
+  triggerAxisListChange() {
+    setImmediate(() => {
+      const selection = {};
+      if (this.hasSelection) {
+        selection.type = 'range';
+        selection.ranges = {};
+        this.axes.forEach(axis => {
+          if (axis.hasSelection()) {
+            selection.ranges[axis.name] = [].concat(axis.selections);
+          }
+        });
+      } else {
+        selection.type = 'empty';
       }
+
+      // Notify listeners
+      this.axisListChangeListeners.forEach(listener => {
+        if (listener) {
+          listener(selection);
+        }
+      });
     });
   }
 
