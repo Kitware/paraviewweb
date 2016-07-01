@@ -78,6 +78,21 @@ export default React.createClass({
     }
   },
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.initialPoints) {
+      const controlPoints = newProps.initialPoints.map(pt =>
+        makeESLintHappy({
+          x: (pt.x - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin),
+          y: pt.y,
+        })
+      );
+      if (!equals(this.state.points, controlPoints) &&
+          !equals(newProps.initialPoints, this.props.initialPoints)) {
+        this.setState({ points: controlPoints });
+      }
+    }
+  },
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.visible && !prevProps.visible && this.state.width === -1) {
       this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
