@@ -20,6 +20,9 @@
 .jsLegendRow,
 .jsScore,
 .jsOverlay,
+.jsScoreChoice,
+.jsScoreLabel,
+.jsScorePopup,
 .jsSparkline,
 .jsTr2,
 .jsTr3 {
@@ -54,6 +57,8 @@
 .baseLegend {
   text-align: center;
   border-bottom: 1px solid #fff !important;
+  width: 19px;
+  user-select: none;
 }
 .legend {
   composes: jsLegend;
@@ -66,12 +71,16 @@
 }
 
 .baseFieldName {
-  width: 100%;
+  width: 99%;
   white-space: nowrap;
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;
   border-bottom: 1px solid #fff !important;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .fieldName {
   composes: jsFieldName;
@@ -82,6 +91,7 @@
 .row {
   position: absolute;
   background: #999;
+  width: 100%;
 }
 
 .baseLegendRow {
@@ -129,6 +139,7 @@
   border-style: solid;
   background-color: #fff;
   float: left;
+  table-layout: fixed;
 }
 .unselectedBox {
   composes: box;
@@ -159,10 +170,12 @@
 .hmax {
   composes: histogramSelectorCell;
   text-align: right;
+  user-select: none;
 }
 .hmin {
   composes: histogramSelectorCell;
   text-align: left;
+  user-select: none;
 }
 
 .axis {
@@ -192,4 +205,31 @@
 
 .jsBox:hover .scoreRegion {
   opacity: 0.2;
+}
+
+.scorePopup {
+  composes: jsScorePopup;
+  position: absolute;
+  background-color: #fff;
+  border: 1px #ccc solid;
+  border-radius: 6px;
+  padding: 3px;
+  font-size: 8pt;
+}
+
+.scoreChoice {
+  composes: jsScoreChoice;
+  float: left;
+  display: none;
+}
+
+.scoreLabel {
+  composes: jsScoreLabel;
+  display: block;
+  border-radius: 3px;
+}
+
+.scoreButton {
+  border: none;
+  padding: 0px;
 }
