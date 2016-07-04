@@ -481,6 +481,10 @@
 	exports.newInstance = undefined;
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	/* eslint-disable import/no-unresolved */
+
+	/* eslint-enable import/no-unresolved */
+
 
 	exports.extend = extend;
 
@@ -620,8 +624,8 @@
 	    // hard coded because I did not figure out how to
 	    // properly query this value from our container.
 	    var borderSize = 3;
-	    // 10 for linux/firefox, 14 for win7/chrome
-	    var scrollbarWidth = 14;
+	    // 8? for linux/firefox, 10 for win10/chrome
+	    var scrollbarWidth = 10;
 	    var boxOutline = 2;
 
 	    // Get the client area size
@@ -686,6 +690,97 @@
 	    var hitIndex = _d3.default.bisectLeft(def.dividers, val);
 	    // if (hobj.hmin === def.dividers[0]) hitIndex = hitIndex - 1;
 	    return hitIndex;
+	  }
+	  function finishDivider(def, hobj) {
+	    var val = def.dragDivider.value;
+	    // if val is defined, we moved an existing divider inside
+	    // its region, and we just need to render. Otherwise...
+	    if (val !== undefined) {
+	      // drag 30 pixels out of the hist to delete.
+	      var dragOut = def.xScale.invert(30) - hobj.min;
+	      if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
+	        if (def.dragDivider.index >= 0) {
+	          // delete a region.
+	          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+	            def.regions.splice(def.dragDivider.index, 1);
+	          } else {
+	            def.regions.splice(def.dragDivider.index + 1, 1);
+	          }
+	          // console.log('del reg ', def.regions);
+	          // delete the divider.
+	          def.dividers.splice(def.dragDivider.index, 1);
+	          // console.log('del div ', def.dividers);
+	        }
+	      } else {
+	        // if we moved a divider, delete the old region
+	        if (def.dragDivider.index >= 0) {
+	          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+	            def.regions.splice(def.dragDivider.index, 1);
+	          } else {
+	            def.regions.splice(def.dragDivider.index + 1, 1);
+	          }
+	          // console.log('del reg ', def.regions);
+	          // delete the old divider
+	          def.dividers.splice(def.dragDivider.index, 1);
+	          // console.log('del div ', def.dividers);
+	        }
+	        // add a new divider
+	        val = Math.min(hobj.max, Math.max(hobj.min, val));
+	        // TODO - careful when we attach uncertainty to dividers.
+	        var index = _d3.default.bisectLeft(def.dividers, val);
+	        def.dividers.splice(index, 0, val);
+	        // console.log('add div ', index, def.dividers);
+	        // add a new region, copies the score of existing region.
+	        def.regions.splice(index, 0, def.regions[index]);
+	        // console.log('add reg ', index, def.regions);
+	      }
+	    }
+	    def.dragDivider = undefined;
+	  }
+
+	  function showScorePopup(scorePopupDiv, coord, selRow) {
+	    // it seemed like a good idea to use getBoundingClientRect() to determine row height
+	    // but it returns all zeros when the popup has been invisible...
+	    var topMargin = 4;
+	    var rowHeight = 13;
+
+	    scorePopupDiv.style('display', 'initial').style('left', coord[0] - topMargin - 0.5 * rowHeight + 'px').style('top', coord[1] - topMargin - (0.7 + selRow) * rowHeight + 'px');
+	    scorePopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
+	      var interp = _d3.default.interpolateRgb('#fff', d.color);
+	      return interp(i === selRow ? 0.4 : 0.2);
+	    });
+	  }
+
+	  function createScorePopup() {
+	    var scorePopupDiv = _d3.default.select(model.container).append('div').classed(_HistogramSelector2.default.scorePopup, true).style('display', 'none').on('mouseleave', function () {
+	      scorePopupDiv.style('display', 'none');
+	      model.selectedDef.dragDivider = undefined;
+	    });
+	    // create radio-buttons that allow choosing the score for the selected region
+	    var scoreChoices = scorePopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
+	    scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
+	      return d.name;
+	    }).append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
+	      return d.name;
+	    }).property('checked', function (d, i) {
+	      return i === model.defaultScore;
+	    }).on('click', function (d, i) {
+	      // use click, not change, so we get notified even when current value is chosen.
+	      var def = model.selectedDef;
+	      def.regions[def.hitRegionIndex] = i;
+	      def.dragDivider = undefined;
+	      scorePopupDiv.style('display', 'none');
+	      publicAPI.render();
+	    });
+	    // create a button for creating a new divider, so we don't require
+	    // the invisible alt/ctrl click to create one.
+	    scorePopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New |').on('click', function () {
+	      var hobj = model.provider.getHistogram1D(model.selectedDef.name);
+	      if (hobj !== null) finishDivider(model.selectedDef, hobj);
+	      scorePopupDiv.style('display', 'none');
+	      publicAPI.render();
+	    });
+	    return scorePopupDiv;
 	  }
 
 	  publicAPI.resize = function () {
@@ -807,6 +902,15 @@
 
 	    // free up any extra boxes
 	    boxes.exit().remove();
+
+	    // create a floating control to set scores, when needed.
+	    var scorePopupDiv = null;
+	    if (typeof model.scores !== 'undefined') {
+	      scorePopupDiv = _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsScorePopup);
+	      if (scorePopupDiv.empty()) {
+	        scorePopupDiv = createScorePopup();
+	      }
+	    }
 
 	    // for every item that has data, create all the sub-elements
 	    // and size them correctly based on our data
@@ -1018,7 +1122,7 @@
 	                  }
 	                }).on('drag', function (d) {
 	                  var overCoords = getMouseCoords();
-	                  if (typeof def.dragDivider === 'undefined') return;
+	                  if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
 	                  var val = def.xScale.invert(overCoords[0]);
 	                  if (def.dragDivider.index >= 0) {
 	                    // if we drag outside our bounds, make this a 'temporary' extra divider.
@@ -1037,51 +1141,8 @@
 	                  }
 	                  publicAPI.render();
 	                }).on('dragend', function (d) {
-	                  if (typeof def.dragDivider === 'undefined') return;
-	                  var val = def.dragDivider.value;
-	                  // if val is defined, we moved an existing divider inside
-	                  // its region, and we just need to render. Otherwise...
-	                  if (val !== undefined) {
-	                    // drag 30 pixels out of the hist to delete.
-	                    var dragOut = def.xScale.invert(30) - hobj.min;
-	                    if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
-	                      if (def.dragDivider.index >= 0) {
-	                        // delete a region.
-	                        if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
-	                          def.regions.splice(def.dragDivider.index, 1);
-	                        } else {
-	                          def.regions.splice(def.dragDivider.index + 1, 1);
-	                        }
-	                        // console.log('del reg ', def.regions);
-	                        // delete the divider.
-	                        def.dividers.splice(def.dragDivider.index, 1);
-	                        // console.log('del div ', def.dividers);
-	                      }
-	                    } else {
-	                      // if we moved a divider, delete the old region
-	                      if (def.dragDivider.index >= 0) {
-	                        if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
-	                          def.regions.splice(def.dragDivider.index, 1);
-	                        } else {
-	                          def.regions.splice(def.dragDivider.index + 1, 1);
-	                        }
-	                        // console.log('del reg ', def.regions);
-	                        // delete the old divider
-	                        def.dividers.splice(def.dragDivider.index, 1);
-	                        // console.log('del div ', def.dividers);
-	                      }
-	                      // add a new divider
-	                      val = Math.min(hobj.max, Math.max(hobj.min, val));
-	                      // TODO - careful when we attach uncertainty to dividers.
-	                      var index = _d3.default.bisectLeft(def.dividers, val);
-	                      def.dividers.splice(index, 0, val);
-	                      // console.log('add div ', index, def.dividers);
-	                      // add a new region, copies the score of existing region.
-	                      def.regions.splice(index, 0, def.regions[index]);
-	                      // console.log('add reg ', index, def.regions);
-	                    }
-	                    def.dragDivider = undefined;
-	                  }
+	                  if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
+	                  finishDivider(def, hobj);
 	                  publicAPI.render();
 	                });
 	              } else {
@@ -1115,29 +1176,61 @@
 	                var overCoords = getMouseCoords();
 	                if (overCoords[1] > model.histHeight) {
 	                  def.editScore = !def.editScore;
+	                  svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
 	                  publicAPI.render();
 	                  return;
 	                }
 	                if (def.editScore) {
 	                  // if we didn't create or pick a divider, pick a region
 	                  var hitRegionIndex = scoreRegionPick(overCoords, def, hobj);
-	                  def.regions[hitRegionIndex] = (def.regions[hitRegionIndex] + 1) % model.scores.length;
-	                  publicAPI.render();
+	                  // select a def, show popup.
+	                  def.hitRegionIndex = hitRegionIndex;
+	                  // create a temp divider in case we choose 'new |' from the popup.
+	                  /* eslint-disable array-bracket-spacing */
+
+	                  var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	                  var _dividerPick4 = _slicedToArray(_dividerPick3, 2);
+
+	                  var val = _dividerPick4[0];
+	                  /* eslint-enable array-bracket-spacing */
+
+	                  if (typeof def.dragDivider === 'undefined') {
+	                    def.dragDivider = { index: -1,
+	                      value: val,
+	                      low: hobj.min,
+	                      high: hobj.max
+	                    };
+	                  } else {
+	                    def.dragDivider.value = val;
+	                  }
+	                  model.selectedDef = def;
+	                  var coord = _d3.default.mouse(model.parameterList.node());
+
+	                  var selRow = def.regions[def.hitRegionIndex];
+	                  showScorePopup(scorePopupDiv, coord, selRow);
 	                }
 	              }).on('mousemove', function () {
 	                var overCoords = getMouseCoords();
 	                if (def.editScore) {
-	                  var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+	                  var _dividerPick5 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
 
-	                  var _dividerPick4 = _slicedToArray(_dividerPick3, 3);
+	                  var _dividerPick6 = _slicedToArray(_dividerPick5, 3);
 
-	                  var hitIndex = _dividerPick4[2];
+	                  var hitIndex = _dividerPick6[2];
 
-	                  var moveIt = def.dragIndex >= 0 || hitIndex >= 0;
-	                  svgOverlay.style('cursor', moveIt ? 'ew-resize' : 'crosshair');
+	                  var cursor = 'pointer';
+	                  // if we're over the bottom, indicate a click will shrink regions
+	                  if (overCoords[1] > model.histHeight) cursor = 's-resize';
+	                  // if we're over a divider, indicate drag-to-move
+	                  else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
+	                    // if modifiers are held down, we'll create a divider
+	                    else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
+	                  svgOverlay.style('cursor', cursor);
 	                } else {
+	                  // over the bottom, indicate we can start editing regions
 	                  var pickIt = overCoords[1] > model.histHeight;
-	                  svgOverlay.style('cursor', pickIt ? 'crosshair' : 'default');
+	                  svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
 	                }
 	              });
 	              if (def.editScore) {
@@ -1216,7 +1309,8 @@
 	  // scoring interface activated by passing in 'scores' array externally.
 	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
 	  defaultScore: 0,
-	  dragMargin: 8
+	  dragMargin: 8,
+	  selectedDef: null
 	};
 
 	// ----------------------------------------------------------------------------
@@ -11275,7 +11369,7 @@
 	exports.i(__webpack_require__(12), undefined);
 
 	// module
-	exports.push([module.id, ".HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  top: 0px;\n  position: absolute;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm,\n.HistogramSelector_jsTr3_3tfy_ {\n\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff !important;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 2px 2px 1px 2px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff !important;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #999;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 0 auto;\n  border-width: 2px;\n  border-spacing: 0px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #999;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n", ""]);
+	exports.push([module.id, ".HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  top: 0px;\n  position: absolute;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm,\n.HistogramSelector_jsTr3_3tfy_ {\n\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff !important;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 2px 2px 1px 2px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff !important;\n  user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -webkit-user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #999;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 0 auto;\n  border-width: 2px;\n  border-spacing: 0px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #999;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scorePopup_1LiN9 {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: none;\n  padding: 0px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -11291,6 +11385,9 @@
 		"jsLegendRow": "HistogramSelector_jsLegendRow_38X9b",
 		"jsScore": "HistogramSelector_jsScore_1gbB8",
 		"jsOverlay": "HistogramSelector_jsOverlay_352at",
+		"jsScoreChoice": "HistogramSelector_jsScoreChoice_2vuVI",
+		"jsScoreLabel": "HistogramSelector_jsScoreLabel_A3Ijp",
+		"jsScorePopup": "HistogramSelector_jsScorePopup_3i0QG",
 		"jsSparkline": "HistogramSelector_jsSparkline_1zBX0",
 		"jsTr2": "HistogramSelector_jsTr2_hFTsm",
 		"jsTr3": "HistogramSelector_jsTr3_3tfy_",
@@ -11324,7 +11421,11 @@
 		"axisText": "HistogramSelector_axisText_36DE2",
 		"overlay": "HistogramSelector_overlay_23S6L HistogramSelector_jsOverlay_352at",
 		"score": "HistogramSelector_score_1UBQx HistogramSelector_jsScore_1gbB8",
-		"scoreRegion": "HistogramSelector_scoreRegion_26Y3L"
+		"scoreRegion": "HistogramSelector_scoreRegion_26Y3L",
+		"scorePopup": "HistogramSelector_scorePopup_1LiN9 HistogramSelector_jsScorePopup_3i0QG",
+		"scoreChoice": "HistogramSelector_scoreChoice_2GMeV HistogramSelector_jsScoreChoice_2vuVI",
+		"scoreLabel": "HistogramSelector_scoreLabel_2z-Hg HistogramSelector_jsScoreLabel_A3Ijp",
+		"scoreButton": "HistogramSelector_scoreButton_2GtBV"
 	};
 
 /***/ },
