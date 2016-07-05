@@ -1,5 +1,10 @@
 /*empty styles allow for d3 selection in javascript*/
-.jsLegend, .jsFieldName {
+.jsFieldName,
+.jsHistMax,
+.jsHistMin,
+.jsHistRect,
+.jsLegend,
+.jsSparkline {
 
 }
 
@@ -23,7 +28,10 @@
 .legend {
   composes: jsLegend;
   text-align: center;
-  padding: 5px 5px 0 5px;
+  padding: 5px;
+}
+.legendSvg {
+  vertical-align: middle;
 }
 
 .fieldName {
@@ -37,7 +45,6 @@
 .row {
   user-select: none;
   cursor: pointer;
-  line-height: 25px;
 }
 
 .unselectedRow {
@@ -61,4 +68,20 @@
 }
 
 .tbody {
+}
+
+.sparkline {
+  composes: jsSparkline;
+  padding: 2px;
+}
+
+.sparklineSvg {
+  vertical-align: middle;
+}
+
+.histRect {
+  composes: jsHistRect;
+  fill: #999;
+  stroke: #999;
+  stroke-width: 0.25px;
 }

@@ -22,10 +22,10 @@ bodyElt.appendChild(histogramSelectorContainer);
 
 const fieldSelectorContainer = document.createElement('div');
 fieldSelectorContainer.style.position = 'relative';
-fieldSelectorContainer.style.width = '32%';
+fieldSelectorContainer.style.width = '42%';
 fieldSelectorContainer.style.height = defaultHeight;
 fieldSelectorContainer.style.float = 'left';
-fieldSelectorContainer.style.overflow = 'auto';
+// fieldSelectorContainer.style.overflow = 'auto';
 fieldSelectorContainer.style['font-size'] = '10pt';
 bodyElt.appendChild(fieldSelectorContainer);
 
@@ -35,6 +35,12 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   Histogram1DProvider.extend(publicAPI, model, initialValues);
   LegendProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
+
+// set provider behaviors
+provider.setFieldsSorted(true);
+provider.getFieldNames().forEach(name => {
+  provider.addLegendEntry(name);
+});
 
 // Create histogram selector
 const histogramSelector = HistogramSelector.newInstance({

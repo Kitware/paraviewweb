@@ -78,9 +78,6 @@
   text-overflow: ellipsis;
   border-bottom: 1px solid #fff !important;
   user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
 }
 .fieldName {
   composes: jsFieldName;

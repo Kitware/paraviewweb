@@ -13,9 +13,19 @@ function fieldProvider(publicAPI, model) {
     model.fields = {};
   }
 
-  publicAPI.getFieldNames = () => Object.keys(model.fields);
+  publicAPI.setFieldsSorted = (doSort) => (model.doSort = doSort);
 
-  publicAPI.getActiveFieldNames = () => Object.keys(model.fields).filter(name => model.fields[name].active);
+  publicAPI.getFieldNames = () => {
+    const val = Object.keys(model.fields);
+    if (model.doSort) val.sort();
+    return val;
+  };
+
+  publicAPI.getActiveFieldNames = () => {
+    const val = Object.keys(model.fields).filter(name => model.fields[name].active);
+    if (model.doSort) val.sort();
+    return val;
+  };
 
   publicAPI.addField = (name, initialState = {}) => {
     const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name });
@@ -24,7 +34,7 @@ function fieldProvider(publicAPI, model) {
     publicAPI.fireFieldChange(field);
   };
 
-  publicAPI.getField = (name) => model.fields[name];
+  publicAPI.getField = (name) => (model.fields[name]);
 
   publicAPI.updateField = (name, changeSet = {}) => {
     const field = model.fields[name] || {};
@@ -43,7 +53,7 @@ function fieldProvider(publicAPI, model) {
     }
   };
 
-  publicAPI.toggleFieldSelection = name => {
+  publicAPI.toggleFieldSelection = (name) => {
     model.fields[name].active = !model.fields[name].active;
     publicAPI.fireFieldChange(model.fields[name]);
   };
@@ -60,6 +70,7 @@ function fieldProvider(publicAPI, model) {
 
 const DEFAULT_VALUES = {
   fields: null,
+  doSort: false,
 };
 
 // ----------------------------------------------------------------------------
