@@ -28,11 +28,13 @@ export default React.createClass({
     onScaleRangeToCurrent: React.PropTypes.func,
     onScaleRangeOverTime: React.PropTypes.func,
     pieceWiseHeight: React.PropTypes.number,
+    pieceWiseWidth: React.PropTypes.number,
   },
 
   getDefaultProps() {
     return {
       pieceWiseHeight: 200,
+      pieceWiseWidth: -1,
     };
   },
 
@@ -139,15 +141,17 @@ export default React.createClass({
             onChange={this.rangeMaxChanged}
           />
         </div>
-        <PieceWiseFunctionEditorWidget
-          initialPoints={this.props.currentOpacityPoints}
-          ref="pieceWiseEditor"
-          rangeMin={this.props.rangeMin}
-          rangeMax={this.props.rangeMax}
-          onChange={this.onOpacityTransferFunctionChanged}
-          visible={this.state.showOpacityControls}
-          height={this.props.pieceWiseHeight}
-        />
+        <div className={this.state.showOpacityControls ? style.pieceWiseEditor : style.hidden}>
+          <PieceWiseFunctionEditorWidget
+            points={this.props.currentOpacityPoints}
+            ref="pieceWiseEditor"
+            rangeMin={this.state.showOpacityControls ? this.props.rangeMin : 1}
+            rangeMax={this.state.showOpacityControls ? this.props.rangeMax : 0}
+            onChange={this.onOpacityTransferFunctionChanged}
+            height={this.props.pieceWiseHeight}
+            width={this.props.pieceWiseWidth}
+          />
+        </div>
         <div className={style.presetList}>
           <PresetListWidget
             presets={presets}

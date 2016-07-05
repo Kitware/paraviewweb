@@ -173,6 +173,13 @@ export default class LinearPieceWiseEditor {
     } else {
       this.activeIndex = -1;
     }
+    if (this.activeControlPoint) {
+      this.controlPoints.forEach((pt, index) => {
+        if (pt.x === this.activeControlPoint.x && pt.y === this.activeControlPoint.y && index === this.activeIndex) {
+          this.activeControlPoint = pt;
+        }
+      });
+    }
     this.render();
   }
 

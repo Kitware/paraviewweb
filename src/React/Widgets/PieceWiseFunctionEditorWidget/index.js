@@ -3,7 +3,6 @@ import SvgIconWidget from '../SvgIconWidget';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import equals from 'mout/src/lang/deepEquals';
-import clone from 'mout/src/lang/deepClone';
 
 import style from 'PVWStyle/ReactWidgets/PieceWiseFunctionEditorWidget.mcss';
 
@@ -25,95 +24,69 @@ export default React.createClass({
   displayName: 'PieceWiseFunctionEditorWidget',
 
   propTypes: {
-    initialPoints: React.PropTypes.array,
+    points: React.PropTypes.array,
     rangeMin: React.PropTypes.number,
     rangeMax: React.PropTypes.number,
     onChange: React.PropTypes.func,
-    visible: React.PropTypes.bool,
     height: React.PropTypes.number,
+    width: React.PropTypes.number,
   },
 
   getDefaultProps() {
     return {
       height: 200,
-      visible: false,
+      width: -1,
+      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
     };
   },
 
   getInitialState() {
-    let controlPoints = [{ x: 0, y: 0 }, { x: 1, y: 1 }];
-    if (this.props.initialPoints) {
-      controlPoints = this.props.initialPoints.map(pt =>
-        makeESLintHappy({
-          x: (pt.x - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin),
-          y: pt.y,
-        })
-      );
-    }
     return {
-      activePoint: -1,
-      width: -1,
       height: this.props.height,
-      points: controlPoints,
+      width: this.props.width,
+      activePoint: -1,
     };
-  },
-
-  componentWillMount() {
-    if (this.props.visible) {
-      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-      sizeHelper.startListening();
-    }
   },
 
   componentDidMount() {
     const canvas = this.refs.canvas;
     this.editor = new LinearPieceWiseEditor(canvas);
 
-    this.editor.setControlPoints(this.state.points);
+    this.editor.setControlPoints(this.props.points);
     this.editor.render();
     this.editor.onChange(this.updatePoints);
 
-    if (this.sizeHelper) {
-      sizeHelper.triggerChange();
+    if (this.props.width === -1 || this.props.height === -1) {
+      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+      sizeHelper.startListening();
+      this.updateDimensions();
     }
   },
 
   componentWillReceiveProps(newProps) {
-    if (newProps.initialPoints) {
-      const controlPoints = newProps.initialPoints.map(pt =>
-        makeESLintHappy({
-          x: (pt.x - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin),
-          y: pt.y,
-        })
-      );
-      if (!equals(this.state.points, controlPoints) &&
-          !equals(newProps.initialPoints, this.props.initialPoints)) {
-        this.setState({ points: controlPoints });
+    const newState = {};
+    if (!equals(newProps.points, this.props.points)) {
+      this.editor.setControlPoints(newProps.points, this.editor.activeIndex);
+      if (this.state.activeIndex >= newProps.points.length) {
+        newState.activePoint = -1;
       }
     }
+    if (newProps.width !== this.props.width) {
+      newState.width = newProps.width;
+    }
+    if (newProps.height !== this.props.height) {
+      newState.height = newProps.height;
+    }
+    if (this.props.width === -1 || this.props.height === -1) {
+      this.updateDimensions();
+    }
+    this.setState(newState);
   },
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.visible && !prevProps.visible && this.state.width === -1) {
-      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-      sizeHelper.startListening();
-      sizeHelper.triggerChange();
-    }
     if (this.state.width !== prevState.width ||
-        (this.props.visible && !prevProps.visible)) {
+        this.state.height !== prevState.height) {
       this.editor.render();
-    }
-    // We get some duplicate events from the editor, filter them out
-    if (!equals(this.state.points, prevState.points) ||
-        this.props.rangeMin !== prevProps.rangeMin ||
-        this.props.rangeMax !== prevProps.rangeMax) {
-      const dataPoints = this.state.points.map(pt => makeESLintHappy({
-        x: pt.x * (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin,
-        y: pt.y,
-      }));
-      if (this.props.onChange) {
-        this.props.onChange(dataPoints);
-      }
     }
   },
 
@@ -126,14 +99,31 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    const { clientWidth } =
-      sizeHelper.getSize(ReactDOM.findDOMNode(this));
-    this.setState({ width: clientWidth });
+    const { clientWidth, clientHeight } =
+      sizeHelper.getSize(ReactDOM.findDOMNode(this), true);
+    if (this.props.width === -1) {
+      this.setState({ width: clientWidth });
+    }
+    if (this.props.height === -1) {
+      this.setState({ height: clientHeight });
+    }
   },
 
   updatePoints(newPoints, envelope) {
     const activePoint = this.editor.activeIndex;
-    this.setState({ points: clone(newPoints), activePoint });
+    this.setState({ activePoint });
+    const dataPoints = this.props.points.map(pt => makeESLintHappy({
+      x: pt.x,
+      y: pt.y,
+    }));
+    const newDataPoints = newPoints.map(pt => makeESLintHappy({
+      x: pt.x,
+      y: pt.y,
+    }));
+    this.oldPoints = dataPoints;
+    if (this.props.onChange) {
+      this.props.onChange(newDataPoints);
+    }
   },
 
   updateActivePointDataValue(e) {
@@ -141,7 +131,7 @@ export default React.createClass({
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.state.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
     points[this.state.activePoint].x =
       (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
     this.editor.setControlPoints(points, this.state.activePoint);
@@ -152,13 +142,13 @@ export default React.createClass({
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.state.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
     points[this.state.activePoint].y = value;
     this.editor.setControlPoints(points, this.state.activePoint);
   },
 
   addPoint(e) {
-    const points = this.state.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
     points.push({ x: 0.5, y: 0.5 });
     this.editor.setControlPoints(points, points.length - 1);
   },
@@ -167,7 +157,7 @@ export default React.createClass({
     if (this.state.activePoint === -1) {
       return;
     }
-    const points = this.state.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => makeESLintHappy({ x: pt.x, y: pt.y }));
     points.splice(this.state.activePoint, 1);
     this.editor.setActivePoint(-1);
     this.editor.setControlPoints(points);
@@ -175,12 +165,12 @@ export default React.createClass({
 
   render() {
     const activePointDataValue = (this.state.activePoint !== -1 ?
-      this.state.points[this.state.activePoint].x : 0.5) *
+      this.props.points[this.state.activePoint].x : 0.5) *
       (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin;
     const activePointOpacity = this.state.activePoint !== -1 ?
-      this.state.points[this.state.activePoint].y : 0.5;
+      this.props.points[this.state.activePoint].y : 0.5;
     return (
-      <div className={this.props.visible ? style.pieceWiseFunctionEditorWidget : style.hidden}>
+      <div className={style.pieceWiseFunctionEditorWidget}>
         <canvas
           className={style.canvas}
           width={this.state.width}

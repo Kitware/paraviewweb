@@ -25,9 +25,9 @@ function updateSize(domElement, cacheObj) {
 
 // ------ New API ------
 
-export function getSize(domElement) {
+export function getSize(domElement, clearCache = false) {
   var cachedSize = domSizes.get(domElement);
-  if (!cachedSize) {
+  if (!cachedSize || clearCache) {
     cachedSize = { timestamp: -1 };
     domSizes.set(domElement, cachedSize);
   }
