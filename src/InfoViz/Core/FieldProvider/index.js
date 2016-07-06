@@ -13,17 +13,15 @@ function fieldProvider(publicAPI, model) {
     model.fields = {};
   }
 
-  publicAPI.setFieldsSorted = (doSort) => (model.doSort = doSort);
-
   publicAPI.getFieldNames = () => {
     const val = Object.keys(model.fields);
-    if (model.doSort) val.sort();
+    if (model.fieldsSorted) val.sort();
     return val;
   };
 
   publicAPI.getActiveFieldNames = () => {
     const val = Object.keys(model.fields).filter(name => model.fields[name].active);
-    if (model.doSort) val.sort();
+    if (model.fieldsSorted) val.sort();
     return val;
   };
 
@@ -70,7 +68,7 @@ function fieldProvider(publicAPI, model) {
 
 const DEFAULT_VALUES = {
   fields: null,
-  doSort: false,
+  fieldsSorted: false,
 };
 
 // ----------------------------------------------------------------------------
@@ -81,6 +79,8 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'FieldProvider');
   CompositeClosureHelper.event(publicAPI, model, 'FieldChange');
+  CompositeClosureHelper.get(publicAPI, model, ['fieldsSorted']);
+  CompositeClosureHelper.set(publicAPI, model, ['fieldsSorted']);
 
   fieldProvider(publicAPI, model);
 }
