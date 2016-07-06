@@ -1,7 +1,6 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
 /* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 /* eslint-enable import/no-unresolved */
@@ -829,11 +828,6 @@ function histogramSelector(publicAPI, model) {
       while (model.container.firstChild) {
         model.container.removeChild(model.container.firstChild);
       }
-      // Remove window listener
-      if (model.sizeSubscription) {
-        model.sizeSubscription.unsubscribe();
-        model.sizeSubscription = null;
-      }
       model.container = null;
     }
 
@@ -847,10 +841,6 @@ function histogramSelector(publicAPI, model) {
         .style('overflow-y', 'auto')
         .style('overflow-x', 'hidden')
         .on('scroll', () => { publicAPI.render(); });
-      // Listen to window resize
-      model.sizeSubscription = sizeHelper.onSizeChange(publicAPI.resize);
-      // Make sure we monitor window size if it is not already the case
-      sizeHelper.startListening();
 
       publicAPI.resize();
     }

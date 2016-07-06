@@ -1,5 +1,7 @@
 import 'normalize.css';
 
+import sizeHelper   from '../../../../Common/Misc/SizeHelper';
+
 import HistogramSelector from '../../../Native/HistogramSelector';
 import FieldSelector from '../../../Native/FieldSelector';
 
@@ -25,7 +27,6 @@ fieldSelectorContainer.style.position = 'relative';
 fieldSelectorContainer.style.width = '42%';
 fieldSelectorContainer.style.height = defaultHeight;
 fieldSelectorContainer.style.float = 'left';
-// fieldSelectorContainer.style.overflow = 'auto';
 fieldSelectorContainer.style['font-size'] = '10pt';
 bodyElt.appendChild(fieldSelectorContainer);
 
@@ -41,6 +42,7 @@ provider.setFieldsSorted(true);
 provider.getFieldNames().forEach(name => {
   provider.addLegendEntry(name);
 });
+provider.assignLegend(['colors', 'shapes']);
 
 // Create histogram selector
 const histogramSelector = HistogramSelector.newInstance({
@@ -53,9 +55,15 @@ const histogramSelector = HistogramSelector.newInstance({
           ],
   defaultScore: 1,
 });
-histogramSelector.resize();
 
 // Create field selector
 const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });
-fieldSelector.resize();
-fieldSelector.render();
+
+// Listen to window resize
+sizeHelper.onSizeChange(() => {
+  histogramSelector.resize();
+  fieldSelector.resize();
+});
+sizeHelper.startListening();
+
+sizeHelper.triggerChange();

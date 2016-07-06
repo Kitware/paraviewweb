@@ -1,7 +1,6 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
 import template from './template.html';
 
@@ -30,11 +29,6 @@ function fieldSelector(publicAPI, model) {
   publicAPI.setContainer = el => {
     if (model.container) {
       d3.select(model.container).select('div.fieldSelector').remove();
-      // Remove window listener
-      if (model.sizeSubscription) {
-        model.sizeSubscription.unsubscribe();
-        model.sizeSubscription = null;
-      }
     }
 
     model.container = el;
@@ -52,10 +46,6 @@ function fieldSelector(publicAPI, model) {
         header.append('th').text('Histogram').classed(style.jsSparkline, true);
         header.append('th').text('Max').classed(style.jsHistMax, true);
       }
-      // Listen to window resize
-      model.sizeSubscription = sizeHelper.onSizeChange(publicAPI.resize);
-      // Make sure we monitor window size if it is not already the case
-      sizeHelper.startListening();
       publicAPI.render();
     }
   };
@@ -95,7 +85,7 @@ function fieldSelector(publicAPI, model) {
         hideField.minMax = true;
         hideField.minMaxWidth = model.container.scrollWidth;
         // if we hide min/max, we may also need to hide hist, so trigger another resize
-        setTimeout(sizeHelper.triggerChange, 0);
+        setTimeout(publicAPI.resize, 0);
       } else if (!hideField.hist) {
         hideField.hist = true;
         hideField.histWidth = model.container.scrollWidth;
@@ -107,7 +97,7 @@ function fieldSelector(publicAPI, model) {
           hideField.hist = false;
           hideField.histWidth = 0;
           // if we show hist, we may also need to show min/max, so trigger another resize
-          setTimeout(sizeHelper.triggerChange, 0);
+          setTimeout(publicAPI.resize, 0);
         }
       } else if (hideField.minMax) {
         if (model.container.scrollWidth - hideField.minMaxWidth > 0) {
