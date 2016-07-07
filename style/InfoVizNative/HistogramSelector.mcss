@@ -1,32 +1,46 @@
-.histogramSelector {
-  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
-  font-size: 8pt;
-  top: 0px;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-}
-
 /*empty styles allow for d3 selection in javascript*/
 .jsAxis,
 .jsBox,
 .jsBrush,
 .jsFieldName,
+.jsFieldsIcon,
 .jsGHist,
 .jsGRect,
+.jsHeaderLabel,
 .jsHistRect,
 .jsLegend,
 .jsLegendRow,
-.jsScore,
 .jsOverlay,
+.jsScore,
+.jsScoreBackground,
 .jsScoreChoice,
+.jsScoreDivLabel,
+.jsScoredIcon,
+.jsScoredHeader,
 .jsScoreLabel,
 .jsScorePopup,
 .jsSparkline,
 .jsTr2,
 .jsTr3 {
 
+}
+
+.histogramSelector {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 8pt;
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.header {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  font-size: 10pt;
+  font-weight: bold;
+  user-select: none;
+  cursor: pointer;
 }
 
 .hidden {
@@ -38,16 +52,34 @@
   composes: fa-fw from 'font-awesome/css/font-awesome.css';
   user-select: none;
   cursor: pointer;
+  padding: 1px 5px;
 }
 
-.selectedFieldsIcon {
+.selectedIcon {
   composes: icon;
   composes: fa-check-square-o from 'font-awesome/css/font-awesome.css';
 }
 
-.allFieldsIcon {
+.allIcon {
   composes: icon;
   composes: fa-square-o from 'font-awesome/css/font-awesome.css';
+}
+
+.selectedFieldsIcon {
+  composes: jsFieldsIcon;
+  composes: selectedIcon;
+}
+.allFieldsIcon {
+  composes: jsFieldsIcon;
+  composes: allIcon;
+}
+.onlyScoredIcon {
+  composes: jsScoredIcon;
+  composes: selectedIcon;
+}
+.allScoredIcon {
+  composes: jsScoredIcon;
+  composes: allIcon;
 }
 
 .histogramSelectorCell {
@@ -160,9 +192,9 @@
 
 .histRect {
   composes: jsHistRect;
-  fill: #999;
-  stroke: #999;
-  stroke-width: 0.25px;
+  fill: #7D86B3;
+  stroke: #ccc;
+  stroke-width: 1px;
 }
 .hmax {
   composes: histogramSelectorCell;
@@ -200,6 +232,10 @@
   shape-rendering: crispEdges;
 }
 
+.scoreRegionBg {
+
+}
+
 .jsBox:hover .scoreRegion {
   opacity: 0.2;
 }
@@ -229,4 +265,5 @@
 .scoreButton {
   border: none;
   padding: 0px;
+  width: 100%;
 }

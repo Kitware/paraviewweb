@@ -13,7 +13,8 @@ import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProv
 import dataModel from './state.json';
 
 const bodyElt = document.querySelector('body');
-const defaultHeight = '500px';
+// '100vh' is 100% of the current screen height
+const defaultHeight = '100vh';
 
 const histogramSelectorContainer = document.createElement('div');
 histogramSelectorContainer.style.position = 'relative';

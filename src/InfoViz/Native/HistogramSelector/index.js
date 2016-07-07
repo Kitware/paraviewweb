@@ -39,7 +39,7 @@ const transformCSSProp = (function tcssp(property) {
   const prefixes = ['webkit', 'ms', 'Moz', 'O'];
   let i = -1;
   const n = prefixes.length;
-  const s = document.body.style;
+  const s = document.head.style;
 
   if (property.toLowerCase() in s) {
     return property.toLowerCase();
@@ -78,6 +78,11 @@ function histogramSelector(publicAPI, model) {
   // to before more histograms are created to fill the container's width
   const maxBoxSize = 240;
   const legendSize = 15;
+  const headerSize = 20;
+  let displayOnlySelected = false;
+  let displayOnlyScored = false;
+
+  let lastNumFields = 0;
 
   function svgWidth() {
     return model.histWidth + model.histMargin.left + model.histMargin.right;
@@ -124,7 +129,7 @@ function histogramSelector(publicAPI, model) {
 
   function updateSizeInformation(singleMode) {
     let updateBoxPerRow = false;
-    const clientRect = model.container.getBoundingClientRect();
+    const clientRect = model.listContainer.getBoundingClientRect();
 
     // hard coded because I did not figure out how to
     // properly query this value from our container.
@@ -169,6 +174,49 @@ function histogramSelector(publicAPI, model) {
       return prev;
     }, 0);
     return foundRow;
+  }
+
+  const fieldHeaderClick = (d) => {
+    displayOnlySelected = !displayOnlySelected;
+    publicAPI.render();
+  };
+  const scoredHeaderClick = (d) => {
+    displayOnlyScored = !displayOnlyScored;
+    publicAPI.render();
+  };
+
+  function createHeader(divSel) {
+    const header = divSel.append('div')
+      .classed(style.header, true)
+      .style('height', `${headerSize}px`);
+    header.append('span')
+      .on('click', fieldHeaderClick)
+      .append('i')
+      .classed(style.jsFieldsIcon, true);
+    header.append('span')
+      .classed(style.jsHeaderLabel, true)
+      .on('click', fieldHeaderClick);
+    header.append('span')
+      .on('click', scoredHeaderClick)
+      .append('i')
+      .classed(style.jsScoredIcon, true);
+    header.append('span')
+      .classed(style.jsScoredHeader, true)
+      .text('Only Scored')
+      .on('click', scoredHeaderClick);
+  }
+
+  function updateHeader(dataLength) {
+    d3.select(`.${style.jsFieldsIcon}`)
+      // apply class - 'false' should come first to not remove common base class.
+      .classed(displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
+      .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
+    d3.select(`.${style.jsHeaderLabel}`)
+      .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
+    d3.select(`.${style.jsScoredIcon}`)
+      // apply class - 'false' should come first to not remove common base class.
+      .classed(displayOnlyScored ? style.allScoredIcon : style.onlyScoredIcon, false)
+      .classed(!displayOnlyScored ? style.allScoredIcon : style.onlyScoredIcon, true);
   }
 
   // --- scoring interface ---
@@ -268,16 +316,16 @@ function histogramSelector(publicAPI, model) {
     scorePopupDiv
       .style('display', 'initial')
       .style('left', `${coord[0] - topMargin - 0.5 * rowHeight}px`)
-      .style('top', `${coord[1] - topMargin - (0.7 + selRow) * rowHeight}px`);
+      .style('top', `${coord[1] + headerSize - topMargin - (0.7 + selRow) * rowHeight}px`);
     scorePopupDiv.selectAll(`.${style.jsScoreLabel}`)
       .style('background-color', (d, i) => {
         const interp = d3.interpolateRgb('#fff', d.color);
-        return interp((i === selRow) ? 0.4 : 0.2);
+        return interp((i === selRow) ? 0.7 : 0.2);
       });
   }
 
   function createScorePopup() {
-    const scorePopupDiv = d3.select(model.container).append('div')
+    const scorePopupDiv = d3.select(model.listContainer).append('div')
       .classed(style.scorePopup, true)
       .style('display', 'none')
       .on('mouseleave', () => {
@@ -324,12 +372,20 @@ function histogramSelector(publicAPI, model) {
     return scorePopupDiv;
   }
 
+  function showScore(def) {
+    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+    return (def.editScore || (typeof def.regions !== 'undefined' &&
+                              ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
+  }
+
   publicAPI.resize = () => {
     if (model.container === null) return;
 
     const clientRect = model.container.getBoundingClientRect();
     if (clientRect.width !== 0 && clientRect.height !== 0) {
       model.containerHidden = false;
+      d3.select(model.listContainer)
+        .style('height', `${clientRect.height - headerSize}px`);
       publicAPI.render();
     } else {
       model.containerHidden = true;
@@ -344,14 +400,23 @@ function histogramSelector(publicAPI, model) {
     if (model.container === null) return;
 
     const updateBoxPerRow = updateSizeInformation(model.singleMode);
-    if (updateBoxPerRow) {
+
+    let fieldNames = [];
+    // Initialize fields
+    if (model.provider.isA('FieldProvider')) {
+      fieldNames = (!displayOnlySelected ? model.provider.getFieldNames() :
+         model.provider.getActiveFieldNames());
+    }
+    if (displayOnlyScored) {
+      // filter for fields that have scores
+      fieldNames = fieldNames.filter((name) => (showScore(model.provider.getField(name))));
+    }
+    updateHeader(fieldNames.length);
+    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
+      lastNumFields = fieldNames.length;
+
       // get the data and put it into the nest based on the
       // number of boxesPerRow
-      let fieldNames = [];
-      // Initialize fields
-      if (model.provider.isA('FieldProvider')) {
-        fieldNames = model.provider.getFieldNames();
-      }
       const mungedData = fieldNames.map(name => {
         const d = model.provider.getField(name);
         if (typeof d.selectedGen === 'undefined') {
@@ -393,12 +458,12 @@ function histogramSelector(publicAPI, model) {
     // we need to re-scroll.
     if (model.scrollToName !== null) {
       const topRow = getFieldRow(model.scrollToName);
-      model.container.scrollTop = topRow * model.boxHeight;
+      model.listContainer.scrollTop = topRow * model.boxHeight;
       model.scrollToName = null;
     }
 
      // scroll distance, in pixels.
-    const scrollY = model.container.scrollTop;
+    const scrollY = model.listContainer.scrollTop;
     // convert scroll from pixels to rows, get one row above (-1)
     const offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
 
@@ -448,7 +513,7 @@ function histogramSelector(publicAPI, model) {
     // create a floating control to set scores, when needed.
     let scorePopupDiv = null;
     if (typeof model.scores !== 'undefined') {
-      scorePopupDiv = d3.select(model.container).select(`.${style.jsScorePopup}`);
+      scorePopupDiv = d3.select(model.listContainer).select(`.${style.jsScorePopup}`);
       if (scorePopupDiv.empty()) {
         scorePopupDiv = createScorePopup();
       }
@@ -485,7 +550,7 @@ function histogramSelector(publicAPI, model) {
         trow1 = ttab.append('tr').classed(style.legendRow, true)
           .on('click', multiClicker([
             function singleClick(d, i) { // single click handler
-              // const overCoords = d3.mouse(model.container);
+              // const overCoords = d3.mouse(model.listContainer);
               updateData(d);
             },
             function doubleClick(d, i) { // double click handler
@@ -514,6 +579,8 @@ function histogramSelector(publicAPI, model) {
             .attr('transform', `translate( ${model.histMargin.left}, ${model.histMargin.top} )`);
         // nested groups inside main group
         svgGr.append('g')
+          .classed(style.jsScoreBackground, true);
+        svgGr.append('g')
           .classed(style.axis, true);
         svgGr.append('g')
           .classed(style.jsGRect, true);
@@ -525,7 +592,7 @@ function histogramSelector(publicAPI, model) {
           .classed(style.overlay, true)
           .style('cursor', 'default');
       }
-      const dataActive = model.provider.getField(def.name).active;
+      const dataActive = def.active;
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(def.name);
@@ -605,7 +672,7 @@ function histogramSelector(publicAPI, model) {
           def.xScale = d3.scale.linear();
         }
         def.xScale
-          .range([0, model.histWidth])
+          .rangeRound([0, model.histWidth])
           .domain([hobj.min, hobj.max]);
 
         if (typeof def.xAxis === 'undefined') {
@@ -618,9 +685,13 @@ function histogramSelector(publicAPI, model) {
           .scale(def.xScale);
         let numTicks = model.singleMode ? 5 : 2;
         if (model.singleMode) {
+          // using .ticks() results in skipping min/max values,
+          // if they aren't 'nice'. Make exactly 5 ticks.
+          const myTicks = d3.range(numTicks).map((d) => (
+            hobj.min + (d / (numTicks - 1)) * (hobj.max - hobj.min))
+          );
           def.xAxis
-            .tickValues(null)
-            .ticks(numTicks);
+            .tickValues(myTicks);
         } else {
           def.xAxis
             .tickValues(def.xScale.domain());
@@ -671,6 +742,29 @@ function histogramSelector(publicAPI, model) {
               .attr('stroke-width', 1)
               .attr('stroke', 'black');
             dividers.exit().remove();
+
+            let dragDivLabel = gScore.select(`.${style.jsScoreDivLabel}`);
+            if (typeof def.dragDivider !== 'undefined') {
+              if (dragDivLabel.empty()) {
+                dragDivLabel = gScore.append('text')
+                  .classed(style.jsScoreDivLabel, true)
+                  .attr('text-anchor', 'middle')
+                  .attr('stroke', 'none')
+                  .attr('background-color', '#fff')
+                  .attr('dy', '.71em');
+              }
+              const formatter = d3.format('.3s');
+              const divVal = (def.dragDivider.newDivider.value !== undefined ?
+                              def.dragDivider.newDivider.value :
+                              def.dividers[def.dragDivider.index].value);
+              dragDivLabel
+                .text(formatter(divVal))
+                .attr('x', `${def.xScale(divVal)}`)
+                .attr('y', `${model.histHeight + 2}`);
+            } else if (!dragDivLabel.empty()) {
+              dragDivLabel.remove();
+            }
+
             // divider interaction events.
             // Drag flow: drag a divider inside its current neighbors.
             // A divider outside its neighbors or a new divider is a temp divider,
@@ -697,6 +791,7 @@ function histogramSelector(publicAPI, model) {
                                         high: (hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value),
                                       };
                     // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
+                    publicAPI.render();
                   }
                 }
               })
@@ -735,20 +830,23 @@ function histogramSelector(publicAPI, model) {
           const regionBounds = [hobj.min].concat(def.dividers.map((div) => (div.value)), hobj.max);
           const scoreRegions = gScore.selectAll('rect')
             .data(def.regions);
-
-          // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-          const showScore = def.editScore || (def.regions.length > 1) || (def.regions[0] !== model.defaultScore);
-          scoreRegions.enter().append('rect')
-            .classed(style.scoreRegion, true);
-          scoreRegions
-            .attr('x', (d, i) => def.xScale(regionBounds[i]))
-            .attr('y', def.editScore ? 0 : model.histHeight)
-            // width might be zero if a divider is dragged all the way to min/max.
-            .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
-            .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
-            .attr('fill', (d) => (model.scores[d].color))
-            .attr('opacity', showScore ? '0.2' : '0');
-          scoreRegions.exit().remove();
+          // duplicate background regions are opaque, for a solid bright color.
+          const scoreBgRegions = svgGr.select(`.${style.jsScoreBackground}`).selectAll('rect')
+            .data(def.regions);
+          [{ sel: scoreRegions, opacity: 0.2, class: style.scoreRegion },
+            { sel: scoreBgRegions, opacity: 1.0, class: style.scoreRegionBg }].forEach((reg) => {
+              reg.sel.enter().append('rect')
+                .classed(reg.class, true);
+              reg.sel
+                .attr('x', (d, i) => def.xScale(regionBounds[i]))
+                .attr('y', def.editScore ? 0 : model.histHeight)
+                // width might be zero if a divider is dragged all the way to min/max.
+                .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
+                .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
+                .attr('fill', (d) => (model.scores[d].color))
+                .attr('opacity', showScore(def) ? reg.opacity : '0');
+              reg.sel.exit().remove();
+            });
 
           // invisible overlay to catch mouse events.
           svgOverlay
@@ -783,7 +881,7 @@ function histogramSelector(publicAPI, model) {
                   def.dragDivider.newDivider.value = val;
                 }
                 model.selectedDef = def;
-                const coord = d3.mouse(model.parameterList.node());
+                const coord = d3.mouse(model.listContainer);
 
                 const selRow = def.regions[def.hitRegionIndex];
                 showScorePopup(scorePopupDiv, coord, selRow);
@@ -834,13 +932,19 @@ function histogramSelector(publicAPI, model) {
     model.container = element;
 
     if (model.container !== null) {
-      model.parameterList = d3.select(model.container)
-        .append('div')
-        .classed(style.histogramSelector, true);
-      d3.select(model.container)
+      const cSel = d3.select(model.container)
+        .style('overflow-y', 'hidden');
+      createHeader(cSel);
+      // wrapper height is set insize resize()
+      const wrapper = cSel.append('div')
         .style('overflow-y', 'auto')
         .style('overflow-x', 'hidden')
         .on('scroll', () => { publicAPI.render(); });
+
+      model.listContainer = wrapper.node();
+      model.parameterList = wrapper
+        .append('div')
+        .classed(style.histogramSelector, true);
 
       publicAPI.resize();
     }
@@ -864,10 +968,10 @@ function histogramSelector(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   provider: null,
+  listContainer: null,
   needData: true,
   containerHidden: false,
 
-  displayUnselected: true,
   parameterList: null,
   nest: null, // nested aray of data nest[rows][boxes]
   boxesPerRow: 0,

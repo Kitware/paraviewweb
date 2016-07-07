@@ -28,7 +28,10 @@ function fieldSelector(publicAPI, model) {
 
   publicAPI.setContainer = el => {
     if (model.container) {
-      d3.select(model.container).select('div.fieldSelector').remove();
+      while (model.container.firstChild) {
+        model.container.removeChild(model.container.firstChild);
+      }
+      model.container = null;
     }
 
     model.container = el;
@@ -38,6 +41,8 @@ function fieldSelector(publicAPI, model) {
         .style('overflow-y', 'auto')
         .style('overflow-x', 'hidden');
       d3.select(model.container).html(template);
+      d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
+
       model.fieldShowHistogram = model.fieldShowHistogram && (model.provider.isA('Histogram1DProvider'));
       // append headers for histogram columns
       if (model.fieldShowHistogram) {
