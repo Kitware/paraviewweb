@@ -67,7 +67,7 @@ export default React.createClass({
     const newState = {};
     if (!equals(newProps.points, this.props.points)) {
       this.editor.setControlPoints(newProps.points, this.editor.activeIndex);
-      if (this.state.activeIndex >= newProps.points.length) {
+      if (this.state.activePoint >= newProps.points.length) {
         newState.activePoint = -1;
       }
     }
