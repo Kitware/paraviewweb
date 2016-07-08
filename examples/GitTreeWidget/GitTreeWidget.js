@@ -20740,8 +20740,10 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
+	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 	  var cachedSize = domSizes.get(domElement);
-	  if (!cachedSize) {
+	  if (!cachedSize || clearCache) {
 	    cachedSize = { timestamp: -1 };
 	    domSizes.set(domElement, cachedSize);
 	  }

@@ -271,6 +271,8 @@
 	  }, {
 	    key: 'setControlPoints',
 	    value: function setControlPoints(points) {
+	      var _this2 = this;
+
 	      var activeIndex = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
 
 	      this.controlPoints = points.map(function (pt) {
@@ -289,6 +291,13 @@
 	        }
 	      } else {
 	        this.activeIndex = -1;
+	      }
+	      if (this.activeControlPoint) {
+	        this.controlPoints.forEach(function (pt, index) {
+	          if (pt.x === _this2.activeControlPoint.x && pt.y === _this2.activeControlPoint.y && index === _this2.activeIndex) {
+	            _this2.activeControlPoint = pt;
+	          }
+	        });
 	      }
 	      this.render();
 	    }
@@ -353,7 +362,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius);
 
@@ -367,7 +376,7 @@
 
 	      var linearPath = [];
 	      this.controlPoints.forEach(function (point) {
-	        linearPath.push(getCanvasCoordinates(_this2.ctx, point, _this2.radius));
+	        linearPath.push(getCanvasCoordinates(_this3.ctx, point, _this3.radius));
 	      });
 
 	      // Draw path
@@ -375,16 +384,16 @@
 	      this.ctx.lineWidth = this.stroke;
 	      linearPath.forEach(function (point, idx) {
 	        if (idx === 0) {
-	          _this2.ctx.moveTo(point.x, point.y);
+	          _this3.ctx.moveTo(point.x, point.y);
 	        } else {
-	          _this2.ctx.lineTo(point.x, point.y);
+	          _this3.ctx.lineTo(point.x, point.y);
 	        }
 	      });
 	      this.ctx.stroke();
 
 	      // Draw control points
 	      linearPath.forEach(function (point, index) {
-	        drawControlPoint(_this2.ctx, point, _this2.radius, _this2.activeIndex === index ? _this2.activePointColor : _this2.color);
+	        drawControlPoint(_this3.ctx, point, _this3.radius, _this3.activeIndex === index ? _this3.activePointColor : _this3.color);
 	      });
 
 	      // Notify control points

@@ -62,14 +62,33 @@
 
 	var container = document.querySelector('.content');
 
-	function onChange(list) {
-	  console.log(list);
-	}
-
 	container.style.height = "50%";
 	container.style.width = "50%";
 
-	_reactDom2.default.render(_react2.default.createElement(_2.default, { rangeMin: 0, rangeMax: 100, onChange: onChange, visible: true }), container);
+	var PieceWiseTestWidget = _react2.default.createClass({
+	  displayName: 'PieceWiseTestWidget',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }]
+	    };
+	  },
+	  updatePoints: function updatePoints(points) {
+	    this.setState({ points: points });
+	    console.log(points);
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(_2.default, {
+	      points: this.state.points,
+	      rangeMin: 0,
+	      rangeMax: 100,
+	      onChange: this.updatePoints,
+	      visible: true
+	    });
+	  }
+	});
+
+	_reactDom2.default.render(_react2.default.createElement(PieceWiseTestWidget, {}), container);
 
 	document.body.style.margin = '10px';
 
@@ -20214,23 +20233,19 @@
 
 	var _deepEquals2 = _interopRequireDefault(_deepEquals);
 
-	var _deepClone = __webpack_require__(197);
-
-	var _deepClone2 = _interopRequireDefault(_deepClone);
-
-	var _PieceWiseFunctionEditorWidget = __webpack_require__(201);
+	var _PieceWiseFunctionEditorWidget = __webpack_require__(197);
 
 	var _PieceWiseFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseFunctionEditorWidget);
 
-	var _SizeHelper = __webpack_require__(205);
+	var _SizeHelper = __webpack_require__(201);
 
 	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
-	var _Plus = __webpack_require__(208);
+	var _Plus = __webpack_require__(204);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
-	var _Trash = __webpack_require__(209);
+	var _Trash = __webpack_require__(205);
 
 	var _Trash2 = _interopRequireDefault(_Trash);
 
@@ -20250,94 +20265,64 @@
 	  displayName: 'PieceWiseFunctionEditorWidget',
 
 	  propTypes: {
-	    initialPoints: _react2.default.PropTypes.array,
+	    points: _react2.default.PropTypes.array,
 	    rangeMin: _react2.default.PropTypes.number,
 	    rangeMax: _react2.default.PropTypes.number,
 	    onChange: _react2.default.PropTypes.func,
-	    visible: _react2.default.PropTypes.bool,
-	    height: _react2.default.PropTypes.number
+	    height: _react2.default.PropTypes.number,
+	    width: _react2.default.PropTypes.number
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      height: 200,
-	      visible: false
+	      width: -1,
+	      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }]
 	    };
 	  },
 	  getInitialState: function getInitialState() {
-	    var _this = this;
-
-	    var controlPoints = [{ x: 0, y: 0 }, { x: 1, y: 1 }];
-	    if (this.props.initialPoints) {
-	      controlPoints = this.props.initialPoints.map(function (pt) {
-	        return makeESLintHappy({
-	          x: (pt.x - _this.props.rangeMin) / (_this.props.rangeMax - _this.props.rangeMin),
-	          y: pt.y
-	        });
-	      });
-	    }
 	    return {
-	      activePoint: -1,
-	      width: -1,
 	      height: this.props.height,
-	      points: controlPoints
+	      width: this.props.width,
+	      activePoint: -1
 	    };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    if (this.props.visible) {
-	      this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
-	      _SizeHelper2.default.startListening();
-	    }
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var canvas = this.refs.canvas;
 	    this.editor = new _LinearPieceWiseEditor2.default(canvas);
 
-	    this.editor.setControlPoints(this.state.points);
+	    this.editor.setControlPoints(this.props.points);
 	    this.editor.render();
 	    this.editor.onChange(this.updatePoints);
 
-	    if (this.sizeHelper) {
-	      _SizeHelper2.default.triggerChange();
+	    if (this.props.width === -1 || this.props.height === -1) {
+	      this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
+	      _SizeHelper2.default.startListening();
+	      this.updateDimensions();
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	    var _this2 = this;
-
-	    if (newProps.initialPoints) {
-	      var controlPoints = newProps.initialPoints.map(function (pt) {
-	        return makeESLintHappy({
-	          x: (pt.x - _this2.props.rangeMin) / (_this2.props.rangeMax - _this2.props.rangeMin),
-	          y: pt.y
-	        });
-	      });
-	      if (!(0, _deepEquals2.default)(this.state.points, controlPoints) && !(0, _deepEquals2.default)(newProps.initialPoints, this.props.initialPoints)) {
-	        this.setState({ points: controlPoints });
+	    var newState = {};
+	    if (!(0, _deepEquals2.default)(newProps.points, this.props.points)) {
+	      this.editor.setControlPoints(newProps.points, this.editor.activeIndex);
+	      if (this.state.activeIndex >= newProps.points.length) {
+	        newState.activePoint = -1;
 	      }
 	    }
+	    if (newProps.width !== this.props.width) {
+	      newState.width = newProps.width;
+	    }
+	    if (newProps.height !== this.props.height) {
+	      newState.height = newProps.height;
+	    }
+	    if (this.props.width === -1 || this.props.height === -1) {
+	      this.updateDimensions();
+	    }
+	    this.setState(newState);
 	  },
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    var _this3 = this;
-
-	    if (this.props.visible && !prevProps.visible && this.state.width === -1) {
-	      this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
-	      _SizeHelper2.default.startListening();
-	      _SizeHelper2.default.triggerChange();
-	    }
-	    if (this.state.width !== prevState.width || this.props.visible && !prevProps.visible) {
+	    if (this.state.width !== prevState.width || this.state.height !== prevState.height) {
 	      this.editor.render();
-	    }
-	    // We get some duplicate events from the editor, filter them out
-	    if (!(0, _deepEquals2.default)(this.state.points, prevState.points) || this.props.rangeMin !== prevProps.rangeMin || this.props.rangeMax !== prevProps.rangeMax) {
-	      var dataPoints = this.state.points.map(function (pt) {
-	        return makeESLintHappy({
-	          x: pt.x * (_this3.props.rangeMax - _this3.props.rangeMin) + _this3.props.rangeMin,
-	          y: pt.y
-	        });
-	      });
-	      if (this.props.onChange) {
-	        this.props.onChange(dataPoints);
-	      }
 	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
@@ -20348,22 +20333,44 @@
 	    }
 	  },
 	  updateDimensions: function updateDimensions() {
-	    var _sizeHelper$getSize = _SizeHelper2.default.getSize(_reactDom2.default.findDOMNode(this));
+	    var _sizeHelper$getSize = _SizeHelper2.default.getSize(_reactDom2.default.findDOMNode(this), true);
 
 	    var clientWidth = _sizeHelper$getSize.clientWidth;
+	    var clientHeight = _sizeHelper$getSize.clientHeight;
 
-	    this.setState({ width: clientWidth });
+	    if (this.props.width === -1) {
+	      this.setState({ width: clientWidth });
+	    }
+	    if (this.props.height === -1) {
+	      this.setState({ height: clientHeight });
+	    }
 	  },
 	  updatePoints: function updatePoints(newPoints, envelope) {
 	    var activePoint = this.editor.activeIndex;
-	    this.setState({ points: (0, _deepClone2.default)(newPoints), activePoint: activePoint });
+	    this.setState({ activePoint: activePoint });
+	    var dataPoints = this.props.points.map(function (pt) {
+	      return makeESLintHappy({
+	        x: pt.x,
+	        y: pt.y
+	      });
+	    });
+	    var newDataPoints = newPoints.map(function (pt) {
+	      return makeESLintHappy({
+	        x: pt.x,
+	        y: pt.y
+	      });
+	    });
+	    this.oldPoints = dataPoints;
+	    if (this.props.onChange) {
+	      this.props.onChange(newDataPoints);
+	    }
 	  },
 	  updateActivePointDataValue: function updateActivePointDataValue(e) {
 	    if (this.state.activePoint === -1) {
 	      return;
 	    }
 	    var value = parseFloat(e.target.value);
-	    var points = this.state.points.map(function (pt) {
+	    var points = this.props.points.map(function (pt) {
 	      return makeESLintHappy({ x: pt.x, y: pt.y });
 	    });
 	    points[this.state.activePoint].x = (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
@@ -20374,14 +20381,14 @@
 	      return;
 	    }
 	    var value = parseFloat(e.target.value);
-	    var points = this.state.points.map(function (pt) {
+	    var points = this.props.points.map(function (pt) {
 	      return makeESLintHappy({ x: pt.x, y: pt.y });
 	    });
 	    points[this.state.activePoint].y = value;
 	    this.editor.setControlPoints(points, this.state.activePoint);
 	  },
 	  addPoint: function addPoint(e) {
-	    var points = this.state.points.map(function (pt) {
+	    var points = this.props.points.map(function (pt) {
 	      return makeESLintHappy({ x: pt.x, y: pt.y });
 	    });
 	    points.push({ x: 0.5, y: 0.5 });
@@ -20391,7 +20398,7 @@
 	    if (this.state.activePoint === -1) {
 	      return;
 	    }
-	    var points = this.state.points.map(function (pt) {
+	    var points = this.props.points.map(function (pt) {
 	      return makeESLintHappy({ x: pt.x, y: pt.y });
 	    });
 	    points.splice(this.state.activePoint, 1);
@@ -20399,11 +20406,11 @@
 	    this.editor.setControlPoints(points);
 	  },
 	  render: function render() {
-	    var activePointDataValue = (this.state.activePoint !== -1 ? this.state.points[this.state.activePoint].x : 0.5) * (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin;
-	    var activePointOpacity = this.state.activePoint !== -1 ? this.state.points[this.state.activePoint].y : 0.5;
+	    var activePointDataValue = (this.state.activePoint !== -1 ? this.props.points[this.state.activePoint].x : 0.5) * (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin;
+	    var activePointOpacity = this.state.activePoint !== -1 ? this.props.points[this.state.activePoint].y : 0.5;
 	    return _react2.default.createElement(
 	      'div',
-	      { className: this.props.visible ? _PieceWiseFunctionEditorWidget2.default.pieceWiseFunctionEditorWidget : _PieceWiseFunctionEditorWidget2.default.hidden },
+	      { className: _PieceWiseFunctionEditorWidget2.default.pieceWiseFunctionEditorWidget },
 	      _react2.default.createElement('canvas', {
 	        className: _PieceWiseFunctionEditorWidget2.default.canvas,
 	        width: this.state.width,
@@ -20665,6 +20672,8 @@
 	  }, {
 	    key: 'setControlPoints',
 	    value: function setControlPoints(points) {
+	      var _this2 = this;
+
 	      var activeIndex = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
 
 	      this.controlPoints = points.map(function (pt) {
@@ -20683,6 +20692,13 @@
 	        }
 	      } else {
 	        this.activeIndex = -1;
+	      }
+	      if (this.activeControlPoint) {
+	        this.controlPoints.forEach(function (pt, index) {
+	          if (pt.x === _this2.activeControlPoint.x && pt.y === _this2.activeControlPoint.y && index === _this2.activeIndex) {
+	            _this2.activeControlPoint = pt;
+	          }
+	        });
 	      }
 	      this.render();
 	    }
@@ -20747,7 +20763,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius);
 
@@ -20761,7 +20777,7 @@
 
 	      var linearPath = [];
 	      this.controlPoints.forEach(function (point) {
-	        linearPath.push(getCanvasCoordinates(_this2.ctx, point, _this2.radius));
+	        linearPath.push(getCanvasCoordinates(_this3.ctx, point, _this3.radius));
 	      });
 
 	      // Draw path
@@ -20769,16 +20785,16 @@
 	      this.ctx.lineWidth = this.stroke;
 	      linearPath.forEach(function (point, idx) {
 	        if (idx === 0) {
-	          _this2.ctx.moveTo(point.x, point.y);
+	          _this3.ctx.moveTo(point.x, point.y);
 	        } else {
-	          _this2.ctx.lineTo(point.x, point.y);
+	          _this3.ctx.lineTo(point.x, point.y);
 	        }
 	      });
 	      this.ctx.stroke();
 
 	      // Draw control points
 	      linearPath.forEach(function (point, index) {
-	        drawControlPoint(_this2.ctx, point, _this2.radius, _this2.activeIndex === index ? _this2.activePointColor : _this2.color);
+	        drawControlPoint(_this3.ctx, point, _this3.radius, _this3.activeIndex === index ? _this3.activePointColor : _this3.color);
 	      });
 
 	      // Notify control points
@@ -41994,170 +42010,13 @@
 /* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(198), __webpack_require__(189), __webpack_require__(184), __webpack_require__(199)], __WEBPACK_AMD_DEFINE_RESULT__ = function (clone, forOwn, kindOf, isPlainObject) {
-
-	    /**
-	     * Recursively clone native types.
-	     */
-	    function deepClone(val, instanceClone) {
-	        switch ( kindOf(val) ) {
-	            case 'Object':
-	                return cloneObject(val, instanceClone);
-	            case 'Array':
-	                return cloneArray(val, instanceClone);
-	            default:
-	                return clone(val);
-	        }
-	    }
-
-	    function cloneObject(source, instanceClone) {
-	        if (isPlainObject(source)) {
-	            var out = {};
-	            forOwn(source, function(val, key) {
-	                this[key] = deepClone(val, instanceClone);
-	            }, out);
-	            return out;
-	        } else if (instanceClone) {
-	            return instanceClone(source);
-	        } else {
-	            return source;
-	        }
-	    }
-
-	    function cloneArray(arr, instanceClone) {
-	        var out = [],
-	            i = -1,
-	            n = arr.length,
-	            val;
-	        while (++i < n) {
-	            out[i] = deepClone(arr[i], instanceClone);
-	        }
-	        return out;
-	    }
-
-	    return deepClone;
-
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(184), __webpack_require__(199), __webpack_require__(200)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf, isPlainObject, mixIn) {
-
-	    /**
-	     * Clone native types.
-	     */
-	    function clone(val){
-	        switch (kindOf(val)) {
-	            case 'Object':
-	                return cloneObject(val);
-	            case 'Array':
-	                return cloneArray(val);
-	            case 'RegExp':
-	                return cloneRegExp(val);
-	            case 'Date':
-	                return cloneDate(val);
-	            default:
-	                return val;
-	        }
-	    }
-
-	    function cloneObject(source) {
-	        if (isPlainObject(source)) {
-	            return mixIn({}, source);
-	        } else {
-	            return source;
-	        }
-	    }
-
-	    function cloneRegExp(r) {
-	        var flags = '';
-	        flags += r.multiline ? 'm' : '';
-	        flags += r.global ? 'g' : '';
-	        flags += r.ignoreCase ? 'i' : '';
-	        return new RegExp(r.source, flags);
-	    }
-
-	    function cloneDate(date) {
-	        return new Date(+date);
-	    }
-
-	    function cloneArray(arr) {
-	        return arr.slice();
-	    }
-
-	    return clone;
-
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-
-	    /**
-	     * Checks if the value is created by the `Object` constructor.
-	     */
-	    function isPlainObject(value) {
-	        return (!!value && typeof value === 'object' &&
-	            value.constructor === Object);
-	    }
-
-	    return isPlainObject;
-
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(189)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn){
-
-	    /**
-	    * Combine properties from all the objects into first one.
-	    * - This method affects target object in place, if you want to create a new Object pass an empty object as first param.
-	    * @param {object} target    Target Object
-	    * @param {...object} objects    Objects to be combined (0...n objects).
-	    * @return {object} Target Object.
-	    */
-	    function mixIn(target, objects){
-	        var i = 0,
-	            n = arguments.length,
-	            obj;
-	        while(++i < n){
-	            obj = arguments[i];
-	            if (obj != null) {
-	                forOwn(obj, copyProp, target);
-	            }
-	        }
-	        return target;
-	    }
-
-	    function copyProp(val, key){
-	        this[key] = val;
-	    }
-
-	    return mixIn;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(202);
+	var content = __webpack_require__(198);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(204)(content, {});
+	var update = __webpack_require__(200)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -42174,15 +42033,15 @@
 	}
 
 /***/ },
-/* 202 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(203)();
+	exports = module.exports = __webpack_require__(199)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".PieceWiseFunctionEditorWidget_pieceWiseFunctionEditorWidget_X-BMG {\n}\n\n.PieceWiseFunctionEditorWidget_canvas_1yrBh {\n}\n\n.PieceWiseFunctionEditorWidget_line_-J-uW {\n  -ms-flex: 1;\n      flex: 1;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: justify;\n      justify-content: space-between\n}\n\n.PieceWiseFunctionEditorWidget_input_c5vpv {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 40%;\n}\n\n.PieceWiseFunctionEditorWidget_svgIcon_HdFv2 {\n  width: 1.5em;\n  height: 1.5em;\n  padding: 0 3px;\n  cursor: pointer;\n}\n\n.PieceWiseFunctionEditorWidget_pointControls_3mtoO {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.PieceWiseFunctionEditorWidget_pointInfo_2rypX {\n  -ms-flex: 1;\n      flex: 1;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.PieceWiseFunctionEditorWidget_line_-J-uW > label {\n  -ms-flex: none;\n      flex: none;\n  width: 75px;\n  font-weight: bold;\n  text-align: right;\n  padding-right: 5px;\n}\n\n.PieceWiseFunctionEditorWidget_hidden_31O6T {\n  display: none;\n}\n", ""]);
+	exports.push([module.id, ".PieceWiseFunctionEditorWidget_pieceWiseFunctionEditorWidget_X-BMG {\n}\n\n.PieceWiseFunctionEditorWidget_canvas_1yrBh {\n}\n\n.PieceWiseFunctionEditorWidget_line_-J-uW {\n  -ms-flex: 1;\n      flex: 1;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  padding: 1px 0;\n}\n\n.PieceWiseFunctionEditorWidget_input_c5vpv {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 40%;\n}\n\n.PieceWiseFunctionEditorWidget_svgIcon_HdFv2 {\n  width: 1.5em;\n  height: 1.5em;\n  padding: 0 3px;\n  cursor: pointer;\n  -ms-flex: none;\n      flex: none;\n}\n\n.PieceWiseFunctionEditorWidget_pointControls_3mtoO {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.PieceWiseFunctionEditorWidget_pointInfo_2rypX {\n  -ms-flex: 1;\n      flex: 1;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  min-width: 10px;\n}\n\n.PieceWiseFunctionEditorWidget_line_-J-uW > label {\n  -ms-flex: none;\n      flex: none;\n  width: 75px;\n  font-weight: bold;\n  text-align: right;\n  padding-right: 5px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -42192,12 +42051,11 @@
 		"input": "PieceWiseFunctionEditorWidget_input_c5vpv",
 		"svgIcon": "PieceWiseFunctionEditorWidget_svgIcon_HdFv2",
 		"pointControls": "PieceWiseFunctionEditorWidget_pointControls_3mtoO",
-		"pointInfo": "PieceWiseFunctionEditorWidget_pointInfo_2rypX",
-		"hidden": "PieceWiseFunctionEditorWidget_hidden_31O6T"
+		"pointInfo": "PieceWiseFunctionEditorWidget_pointInfo_2rypX"
 	};
 
 /***/ },
-/* 203 */
+/* 199 */
 /***/ function(module, exports) {
 
 	/*
@@ -42253,7 +42111,7 @@
 
 
 /***/ },
-/* 204 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -42505,7 +42363,7 @@
 
 
 /***/ },
-/* 205 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42520,11 +42378,11 @@
 	exports.startListening = startListening;
 	exports.stopListening = stopListening;
 
-	var _Observable = __webpack_require__(206);
+	var _Observable = __webpack_require__(202);
 
 	var _Observable2 = _interopRequireDefault(_Observable);
 
-	var _Debounce = __webpack_require__(207);
+	var _Debounce = __webpack_require__(203);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42553,8 +42411,10 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
+	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 	  var cachedSize = domSizes.get(domElement);
-	  if (!cachedSize) {
+	  if (!cachedSize || clearCache) {
 	    cachedSize = { timestamp: -1 };
 	    domSizes.set(domElement, cachedSize);
 	  }
@@ -42607,7 +42467,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42648,7 +42508,7 @@
 	_monologue2.default.mixInto(Observable);
 
 /***/ },
-/* 207 */
+/* 203 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42692,7 +42552,7 @@
 	};
 
 /***/ },
-/* 208 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
@@ -42701,7 +42561,7 @@
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 209 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
