@@ -21000,7 +21000,7 @@
 	    var newState = {};
 	    if (!(0, _deepEquals2.default)(newProps.points, this.props.points)) {
 	      this.editor.setControlPoints(newProps.points, this.editor.activeIndex);
-	      if (this.state.activeIndex >= newProps.points.length) {
+	      if (this.state.activePoint >= newProps.points.length) {
 	        newState.activePoint = -1;
 	      }
 	    }

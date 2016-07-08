@@ -5,7 +5,7 @@
   <link href="/paraviewweb/atom.xml" rel="self"/>
   
   <link href="https://kitware.github.io/paraviewweb/"/>
-  <updated>2016-07-08T19:51:44.310Z</updated>
+  <updated>2016-07-08T21:19:35.499Z</updated>
   <id>https://kitware.github.io/paraviewweb/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://kitware.github.io/paraviewweb/2016/04/29/kw-doc/"/>
     <id>https://kitware.github.io/paraviewweb/2016/04/29/kw-doc/</id>
     <published>2016-04-29T00:00:00.000Z</published>
-    <updated>2016-07-08T19:51:44.310Z</updated>
+    <updated>2016-07-08T21:19:35.499Z</updated>
     
     <content type="html">&lt;p&gt;Thanks for using kw-doc which is based on Hexo and its template from its own documentation.&lt;/p&gt;
 </content>
