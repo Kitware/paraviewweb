@@ -55,3 +55,10 @@
 .presetList {
   max-height: 85px;
 }
+
+.pieceWiseEditor {
+}
+
+.hidden {
+  display: none;
+}

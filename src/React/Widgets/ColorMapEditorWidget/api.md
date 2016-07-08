@@ -4,7 +4,7 @@ A widget for modifying colormaps.  Allows control of opacity transfer function, 
 
 ### currentOpacityPoints
 
-This property is the current point values of the opacity transfer function.  It should be a list of objects of the form `{ x: dataValue, y: opacity}` where dataValue is a valid point in the data range and opacity is in the interval [0, 1].  To properly update the widget it should be set by the function *onOpacityTransferFunctionChanged*.
+This property is the current point values of the opacity transfer function.  It should be a list of objects of the form `{ x: dataValue, y: opacity}` where dataValue and opacity are in the interval [0, 1].  The dataValue is mapped into the interval [rangeMin, rangeMax] for display, but in this property should always be in the interal [0, 1]  To properly update the widget it should be set by the function *onOpacityTransferFunctionChanged*.
 
 ### currentPreset
 
@@ -52,4 +52,8 @@ This function will be called when the user presses the *Scale Range to Data Over
 
 ### pieceWiseHeight
 
-The height of the piecewise function (opacity map) editor's canvas.
+The height of the piecewise function (opacity map) editor's canvas.  See the height property of the PieceWiseFunctionEditorWidget.
+
+### pieceWiseWidth
+
+The width of the piecewise function (opacity map) editor's canvas.  See the width property of the PieceWiseFunctionEditorWidget.
