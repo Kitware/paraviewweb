@@ -2,6 +2,9 @@
 .jsAxis,
 .jsBox,
 .jsBrush,
+.jsDividerPopup,
+.jsDividerUncertaintyInput,
+.jsDividerValueInput,
 .jsFieldName,
 .jsFieldsIcon,
 .jsGHist,
@@ -19,6 +22,8 @@
 .jsScoredHeader,
 .jsScoreLabel,
 .jsScorePopup,
+.jsScoreRect,
+.jsScoreUncertainty,
 .jsSparkline,
 .jsTr2,
 .jsTr3 {
@@ -240,14 +245,26 @@
   opacity: 0.2;
 }
 
-.scorePopup {
-  composes: jsScorePopup;
+.scoreRegionFg {
+  composes: jsScoreRect;
+  composes: scoreRegion;
+}
+
+.popup {
   position: absolute;
   background-color: #fff;
   border: 1px #ccc solid;
   border-radius: 6px;
   padding: 3px;
   font-size: 8pt;
+}
+.scorePopup {
+  composes: jsScorePopup;
+  composes: popup;
+}
+.dividerPopup {
+  composes: jsDividerPopup;
+  composes: popup;
 }
 
 .scoreChoice {
