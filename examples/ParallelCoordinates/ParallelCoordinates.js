@@ -11954,6 +11954,15 @@
 	// ----------------------------------------------------------------------------
 
 	function fieldSelector(publicAPI, model) {
+	  // private variables
+	  var hideField = {
+	    minMax: false,
+	    hist: false,
+	    minMaxWidth: 0,
+	    histWidth: 0
+	  };
+
+	  // public API
 	  publicAPI.resize = function () {
 	    publicAPI.render();
 	  };
@@ -11966,7 +11975,16 @@
 	    model.container = el;
 
 	    if (el) {
+	      _d2.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden');
 	      _d2.default.select(model.container).html(_template2.default);
+	      model.fieldShowHistogram = model.fieldShowHistogram && model.provider.isA('Histogram1DProvider');
+	      // append headers for histogram columns
+	      if (model.fieldShowHistogram) {
+	        var header = _d2.default.select(model.container).select('thead').select('tr');
+	        header.append('th').text('Min').classed(_FieldSelector2.default.jsHistMin, true);
+	        header.append('th').text('Histogram').classed(_FieldSelector2.default.jsSparkline, true);
+	        header.append('th').text('Max').classed(_FieldSelector2.default.jsHistMax, true);
+	      }
 	      publicAPI.render();
 	    }
 	  };
@@ -11984,22 +12002,55 @@
 	    // apply class - 'false' should come first to not remove common base class.
 	    .classed(!model.displayUnselected ? _FieldSelector2.default.allFieldsIcon : _FieldSelector2.default.selectedFieldsIcon, false).classed(model.displayUnselected ? _FieldSelector2.default.allFieldsIcon : _FieldSelector2.default.selectedFieldsIcon, true);
 
+	    var data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
 	    // Update header label
-	    _d2.default.select(model.container).select('th.label').text(model.displayUnselected ? 'All Variables' : 'Selected Variables').on('click', function (d) {
+	    _d2.default.select(model.container).select('th.label').text(model.displayUnselected ? 'All Variables (' + data.length + ')' : 'Selected Variables (' + data.length + ')').on('click', function (d) {
 	      model.displayUnselected = !model.displayUnselected;
 	      publicAPI.render();
 	    });
 
+	    // test for too-long rows
+	    var hideMore = model.container.scrollWidth > model.container.clientWidth;
+	    if (hideMore) {
+	      if (!hideField.minMax) {
+	        hideField.minMax = true;
+	        hideField.minMaxWidth = model.container.scrollWidth;
+	        // if we hide min/max, we may also need to hide hist, so trigger another resize
+	        setTimeout(publicAPI.resize, 0);
+	      } else if (!hideField.hist) {
+	        hideField.hist = true;
+	        hideField.histWidth = model.container.scrollWidth;
+	      }
+	    } else if (hideField.minMax) {
+	      // if we've hidden something, see if we can re-show it.
+	      if (hideField.hist) {
+	        if (model.container.scrollWidth - hideField.histWidth > 0) {
+	          hideField.hist = false;
+	          hideField.histWidth = 0;
+	          // if we show hist, we may also need to show min/max, so trigger another resize
+	          setTimeout(publicAPI.resize, 0);
+	        }
+	      } else if (hideField.minMax) {
+	        if (model.container.scrollWidth - hideField.minMaxWidth > 0) {
+	          hideField.minMax = false;
+	          hideField.minMaxWidth = 0;
+	        }
+	      }
+	    }
+	    var header = _d2.default.select(model.container).select('thead').select('tr');
+	    header.selectAll('.' + _FieldSelector2.default.jsHistMin).style('display', hideField.minMax ? 'none' : null);
+	    header.selectAll('.' + _FieldSelector2.default.jsSparkline).style('display', hideField.hist ? 'none' : null);
+	    header.selectAll('.' + _FieldSelector2.default.jsHistMax).style('display', hideField.minMax ? 'none' : null);
+
 	    // Handle variables
-	    var data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
 	    var variablesContainer = _d2.default.select(model.container).select('tbody.fields').selectAll('tr').data(data);
 
 	    variablesContainer.enter().append('tr');
 	    variablesContainer.exit().remove();
 
 	    // Apply on each data item
-	    function renderField(d, i) {
-	      var field = model.provider.getField(d);
+	    function renderField(fieldName, index) {
+	      var field = model.provider.getField(fieldName);
 	      var fieldContainer = _d2.default.select(this);
 	      var legendCell = fieldContainer.select('.' + _FieldSelector2.default.jsLegend);
 	      var fieldCell = fieldContainer.select('.' + _FieldSelector2.default.jsFieldName);
@@ -12018,18 +12069,63 @@
 
 	      // Apply legend
 	      if (model.provider.isA('LegendProvider')) {
-	        var _model$provider$getLe = model.provider.getLegend(d);
+	        var _model$provider$getLe = model.provider.getLegend(fieldName);
 
 	        var color = _model$provider$getLe.color;
 	        var shape = _model$provider$getLe.shape;
 
-	        legendCell.html('<svg width="' + legendSize + '" height="' + legendSize + '" fill="' + color + '" stroke="black"><use xlink:href="' + shape + '"/></svg>');
+	        legendCell.html('<svg class=\'' + _FieldSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                  fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
 	      } else {
 	        legendCell.html('<i></i>').select('i').classed(!field.active ? _FieldSelector2.default.selectedRow : _FieldSelector2.default.unselectedRow, false).classed(field.active ? _FieldSelector2.default.selectedRow : _FieldSelector2.default.unselectedRow, true);
 	      }
 
 	      // Apply field name
-	      fieldCell.text(d);
+	      fieldCell.text(fieldName);
+
+	      if (model.fieldShowHistogram) {
+	        var minCell = fieldContainer.select('.' + _FieldSelector2.default.jsHistMin);
+	        var histCell = fieldContainer.select('.' + _FieldSelector2.default.jsSparkline);
+	        var maxCell = fieldContainer.select('.' + _FieldSelector2.default.jsHistMax);
+
+	        if (histCell.empty()) {
+	          minCell = fieldContainer.append('td').classed(_FieldSelector2.default.jsHistMin, true);
+	          histCell = fieldContainer.append('td').classed(_FieldSelector2.default.sparkline, true);
+	          maxCell = fieldContainer.append('td').classed(_FieldSelector2.default.jsHistMax, true);
+	          histCell.append('svg').classed(_FieldSelector2.default.sparklineSvg, true).attr('width', model.fieldHistWidth).attr('height', model.fieldHistHeight);
+	        }
+
+	        // make sure our data is ready. If not, render will be called when loaded.
+	        if (model.provider.loadHistogram1D(fieldName)) {
+	          var hobj = model.provider.getHistogram1D(fieldName);
+	          if (hobj !== null) {
+	            histCell.style('display', hideField.hist ? 'none' : null);
+	            // only do work if histogram is displayed.
+	            if (!hideField.hist) {
+	              (function () {
+	                var cmax = 1.0 * _d2.default.max(hobj.counts);
+	                var hsize = hobj.counts.length;
+	                var hdata = histCell.select('svg').selectAll('.' + _FieldSelector2.default.jsHistRect).data(hobj.counts);
+
+	                hdata.enter().append('rect');
+	                // changes apply to both enter and update data join:
+	                hdata.classed(_FieldSelector2.default.histRect, true).attr('pname', fieldName).attr('y', function (d) {
+	                  return model.fieldHistHeight * (1.0 - d / cmax);
+	                }).attr('x', function (d, i) {
+	                  return model.fieldHistWidth / hsize * i;
+	                }).attr('height', function (d) {
+	                  return model.fieldHistHeight * d / cmax;
+	                }).attr('width', model.fieldHistWidth / hsize);
+
+	                hdata.exit().remove();
+	              })();
+	            }
+
+	            var formatter = _d2.default.format('.3s');
+	            minCell.text(formatter(hobj.min)).style('display', hideField.minMax ? 'none' : null);
+	            maxCell.text(formatter(hobj.max)).style('display', hideField.minMax ? 'none' : null);
+	          }
+	        }
+	      }
 	    }
 
 	    // Render all fields
@@ -12041,6 +12137,10 @@
 
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 	  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
+	  if (model.fieldShowHistogram) {
+	    // event from Histogram Provider
+	    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	  }
 	}
 
 	// ----------------------------------------------------------------------------
@@ -12050,7 +12150,10 @@
 	var DEFAULT_VALUES = {
 	  container: null,
 	  provider: null,
-	  displayUnselected: true
+	  displayUnselected: true,
+	  fieldShowHistogram: true,
+	  fieldHistWidth: 120,
+	  fieldHistHeight: 15
 	};
 
 	// ----------------------------------------------------------------------------
@@ -12062,7 +12165,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldShowHistogram']);
 
 	  fieldSelector(publicAPI, model);
 	}
@@ -12110,22 +12214,30 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsLegend_2QXvQ, .FieldSelector_jsFieldName_1QN_H {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px 5px 0 5px;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  line-height: 25px;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
-		"jsLegend": "FieldSelector_jsLegend_2QXvQ",
 		"jsFieldName": "FieldSelector_jsFieldName_1QN_H",
+		"jsHistMax": "FieldSelector_jsHistMax_sb-L8",
+		"jsHistMin": "FieldSelector_jsHistMin_1Cf9q",
+		"jsHistRect": "FieldSelector_jsHistRect_27Pen",
+		"jsLegend": "FieldSelector_jsLegend_2QXvQ",
+		"jsSparkline": "FieldSelector_jsSparkline_2Vxgk",
 		"icon": "FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
 		"selectedFieldsIcon": "FieldSelector_selectedFieldsIcon_1jfaz FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
 		"allFieldsIcon": "FieldSelector_allFieldsIcon_2DXP5 FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
 		"legend": "FieldSelector_legend_1amq_ FieldSelector_jsLegend_2QXvQ",
+		"legendSvg": "FieldSelector_legendSvg_1OrnU",
 		"fieldName": "FieldSelector_fieldName_3FImR FieldSelector_jsFieldName_1QN_H",
 		"row": "FieldSelector_row_3cxiD",
 		"unselectedRow": "FieldSelector_unselectedRow_1Y5Dk FieldSelector_row_3cxiD",
 		"selectedRow": "FieldSelector_selectedRow_31J6g FieldSelector_row_3cxiD",
 		"thead": "FieldSelector_thead_1Yf4t",
-		"tbody": "FieldSelector_tbody_XjkGZ"
+		"tbody": "FieldSelector_tbody_XjkGZ",
+		"sparkline": "FieldSelector_sparkline_3ZOf0 FieldSelector_jsSparkline_2Vxgk",
+		"sparklineSvg": "FieldSelector_sparklineSvg_38FC2",
+		"histRect": "FieldSelector_histRect_1D8Az FieldSelector_jsHistRect_27Pen"
 	};
 
 /***/ },
@@ -12936,13 +13048,17 @@
 	  }
 
 	  publicAPI.getFieldNames = function () {
-	    return Object.keys(model.fields);
+	    var val = Object.keys(model.fields);
+	    if (model.fieldsSorted) val.sort();
+	    return val;
 	  };
 
 	  publicAPI.getActiveFieldNames = function () {
-	    return Object.keys(model.fields).filter(function (name) {
+	    var val = Object.keys(model.fields).filter(function (name) {
 	      return model.fields[name].active;
 	    });
+	    if (model.fieldsSorted) val.sort();
+	    return val;
 	  };
 
 	  publicAPI.addField = function (name) {
@@ -12993,7 +13109,8 @@
 	// ----------------------------------------------------------------------------
 
 	var DEFAULT_VALUES = {
-	  fields: null
+	  fields: null,
+	  fieldsSorted: false
 	};
 
 	// ----------------------------------------------------------------------------
@@ -13006,6 +13123,8 @@
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'FieldProvider');
 	  _CompositeClosureHelper2.default.event(publicAPI, model, 'FieldChange');
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['fieldsSorted']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldsSorted']);
 
 	  fieldProvider(publicAPI, model);
 	}
