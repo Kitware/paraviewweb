@@ -171,34 +171,49 @@ function histogramSelector(publicAPI, model) {
     return foundRow;
   }
 
-  // scoring interface, where are we (to the left of) in the divider list?
+  // --- scoring interface ---
+  function createDefaultDivider(val) {
+    return {
+      value: val,
+      uncertainty: 0,
+    };
+  }
+
+  // create a sorting helper method, to sort dividers based on div.value
+  // D3 bug: just an accessor didn't work - must use comparator function
+  const bisectDividers = d3.bisector((a, b) => (a.value - b.value)).left;
+
+  // where are we (to the left of) in the divider list?
   // Did we hit one?
   function dividerPick(overCoords, def, marginPx, minVal) {
     const val = def.xScale.invert(overCoords[0]);
-    // TODO - careful when we attach uncertainty to dividers.
-    const index = d3.bisectLeft(def.dividers, val);
-    let hitIndex = index;
-    if (index === 0 || index === def.dividers.length) {
-      if (index === def.dividers.length) hitIndex = index - 1;
-    } else {
-      hitIndex = (def.dividers[index] - val < val - def.dividers[index - 1] ? index : index - 1);
-    }
-    const margin = def.xScale.invert(marginPx) - minVal;
-    if (Math.abs(def.dividers[hitIndex] - val) > margin) {
-      // we weren't close enough...
-      hitIndex = -1;
+    const index = bisectDividers(def.dividers, createDefaultDivider(val));
+    let hitIndex = -1;
+    if (def.dividers.length > 0) {
+      if (index === 0) {
+        hitIndex = 0;
+      } else if (index === def.dividers.length) {
+        hitIndex = index - 1;
+      } else {
+        hitIndex = (def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1);
+      }
+      const margin = def.xScale.invert(marginPx) - minVal;
+      if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
+        // we weren't close enough...
+        hitIndex = -1;
+      }
     }
     return [val, index, hitIndex];
   }
   function scoreRegionPick(overCoords, def, hobj) {
     if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
     const val = def.xScale.invert(overCoords[0]);
-    const hitIndex = d3.bisectLeft(def.dividers, val);
-    // if (hobj.hmin === def.dividers[0]) hitIndex = hitIndex - 1;
+    const hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
     return hitIndex;
   }
+
   function finishDivider(def, hobj) {
-    let val = def.dragDivider.value;
+    const val = def.dragDivider.newDivider.value;
     // if val is defined, we moved an existing divider inside
     // its region, and we just need to render. Otherwise...
     if (val !== undefined) {
@@ -207,7 +222,7 @@ function histogramSelector(publicAPI, model) {
       if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
         if (def.dragDivider.index >= 0) {
           // delete a region.
-          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
             def.regions.splice(def.dragDivider.index, 1);
           } else {
             def.regions.splice(def.dragDivider.index + 1, 1);
@@ -220,7 +235,7 @@ function histogramSelector(publicAPI, model) {
       } else {
         // if we moved a divider, delete the old region
         if (def.dragDivider.index >= 0) {
-          if (def.dividers[def.dragDivider.index] === def.dragDivider.low) {
+          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
             def.regions.splice(def.dragDivider.index, 1);
           } else {
             def.regions.splice(def.dragDivider.index + 1, 1);
@@ -231,10 +246,10 @@ function histogramSelector(publicAPI, model) {
           // console.log('del div ', def.dividers);
         }
         // add a new divider
-        val = Math.min(hobj.max, Math.max(hobj.min, val));
-        // TODO - careful when we attach uncertainty to dividers.
-        const index = d3.bisectLeft(def.dividers, val);
-        def.dividers.splice(index, 0, val);
+        def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
+        // find the index based on dividers sorted by divider.value
+        const index = bisectDividers(def.dividers, def.dragDivider.newDivider);
+        def.dividers.splice(index, 0, def.dragDivider.newDivider);
         // console.log('add div ', index, def.dividers);
         // add a new region, copies the score of existing region.
         def.regions.splice(index, 0, def.regions[index]);
@@ -600,18 +615,27 @@ function histogramSelector(publicAPI, model) {
           .orient('bottom');
         }
         def.xAxis
-          .scale(def.xScale)
-          .tickValues(def.xScale.domain());
-
+          .scale(def.xScale);
+        let numTicks = model.singleMode ? 5 : 2;
+        if (model.singleMode) {
+          def.xAxis
+            .tickValues(null)
+            .ticks(numTicks);
+        } else {
+          def.xAxis
+            .tickValues(def.xScale.domain());
+        }
         // nested group for the x-axis min/max display.
         const gAxis = svgGr.select(`.${style.jsAxis}`);
         gAxis
           .attr('transform', `translate(0, ${model.histHeight})`)
-          .call(def.xAxis)
-          .selectAll('text')
-            .classed(style.axisText, true)
+          .call(def.xAxis);
+        const tickLabels = gAxis.selectAll('text')
+            .classed(style.axisText, true);
+        numTicks = tickLabels.size();
+        tickLabels
             .style('text-anchor', (d, i) => (
-              i === 0 ? 'start' : 'end'
+              i === 0 ? 'start' : (i === numTicks - 1 ? 'end' : 'middle')
             ));
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);
@@ -634,15 +658,15 @@ function histogramSelector(publicAPI, model) {
           let drag = null;
           if (def.editScore) {
             // add temp dragged divider, if needed.
-            const dividerData = ((typeof def.dragDivider !== 'undefined') && def.dragDivider.value !== undefined) ?
-                                  def.dividers.concat(def.dragDivider.value) : def.dividers;
+            const dividerData = ((typeof def.dragDivider !== 'undefined') && def.dragDivider.newDivider.value !== undefined) ?
+                                  def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
             const dividers = gScore.selectAll('line')
               .data(dividerData);
             dividers.enter().append('line');
             dividers
-              .attr('x1', d => def.xScale(d))
+              .attr('x1', d => def.xScale(d.value))
               .attr('y1', 0)
-              .attr('x2', d => def.xScale(d))
+              .attr('x2', d => def.xScale(d.value))
               .attr('y2', () => model.histHeight)
               .attr('stroke-width', 1)
               .attr('stroke', 'black');
@@ -652,13 +676,13 @@ function histogramSelector(publicAPI, model) {
             // A divider outside its neighbors or a new divider is a temp divider,
             // added to the end of the list when rendering. Doesn't affect regions that way.
             drag = d3.behavior.drag()
-              .on('dragstart', (d) => {
+              .on('dragstart', () => {
                 const overCoords = getMouseCoords();
                 const [val, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
                 if (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey) {
                   // create a temp divider to render.
                   def.dragDivider = { index: -1,
-                                      value: val,
+                                      newDivider: createDefaultDivider(val),
                                       low: hobj.min,
                                       high: hobj.max,
                                     };
@@ -668,36 +692,36 @@ function histogramSelector(publicAPI, model) {
                     // start dragging existing divider
                     // it becomes a temporary copy if we go outside our bounds
                     def.dragDivider = { index: hitIndex,
-                                        value: undefined,
-                                        low: (hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1]),
-                                        high: (hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1]),
+                                        newDivider: createDefaultDivider(),
+                                        low: (hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value),
+                                        high: (hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value),
                                       };
                     // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
                   }
                 }
               })
-              .on('drag', (d) => {
+              .on('drag', () => {
                 const overCoords = getMouseCoords();
                 if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
                 const val = def.xScale.invert(overCoords[0]);
                 if (def.dragDivider.index >= 0) {
                   // if we drag outside our bounds, make this a 'temporary' extra divider.
                   if (val < def.dragDivider.low) {
-                    def.dragDivider.value = val;
-                    def.dividers[def.dragDivider.index] = def.dragDivider.low;
+                    def.dragDivider.newDivider.value = val;
+                    def.dividers[def.dragDivider.index].value = def.dragDivider.low;
                   } else if (val > def.dragDivider.high) {
-                    def.dragDivider.value = val;
-                    def.dividers[def.dragDivider.index] = def.dragDivider.high;
+                    def.dragDivider.newDivider.value = val;
+                    def.dividers[def.dragDivider.index].value = def.dragDivider.high;
                   } else {
-                    def.dividers[def.dragDivider.index] = val;
-                    def.dragDivider.value = undefined;
+                    def.dividers[def.dragDivider.index].value = val;
+                    def.dragDivider.newDivider.value = undefined;
                   }
                 } else {
-                  def.dragDivider.value = val;
+                  def.dragDivider.newDivider.value = val;
                 }
                 publicAPI.render();
               })
-              .on('dragend', (d) => {
+              .on('dragend', () => {
                 if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
                 finishDivider(def, hobj);
                 publicAPI.render();
@@ -708,7 +732,7 @@ function histogramSelector(publicAPI, model) {
 
           // score regions
           // there are implicit bounds at the min and max.
-          const regionBounds = [hobj.min].concat(def.dividers, hobj.max);
+          const regionBounds = [hobj.min].concat(def.dividers.map((div) => (div.value)), hobj.max);
           const scoreRegions = gScore.selectAll('rect')
             .data(def.regions);
 
@@ -751,12 +775,12 @@ function histogramSelector(publicAPI, model) {
                 /* eslint-enable array-bracket-spacing */
                 if (typeof def.dragDivider === 'undefined') {
                   def.dragDivider = { index: -1,
-                                      value: val,
+                                      newDivider: createDefaultDivider(val),
                                       low: hobj.min,
                                       high: hobj.max,
                                     };
                 } else {
-                  def.dragDivider.value = val;
+                  def.dragDivider.newDivider.value = val;
                 }
                 model.selectedDef = def;
                 const coord = d3.mouse(model.parameterList.node());
@@ -817,6 +841,7 @@ function histogramSelector(publicAPI, model) {
         .style('overflow-y', 'auto')
         .style('overflow-x', 'hidden')
         .on('scroll', () => { publicAPI.render(); });
+
       publicAPI.resize();
     }
   };

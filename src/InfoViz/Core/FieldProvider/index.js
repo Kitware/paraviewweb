@@ -13,9 +13,17 @@ function fieldProvider(publicAPI, model) {
     model.fields = {};
   }
 
-  publicAPI.getFieldNames = () => Object.keys(model.fields);
+  publicAPI.getFieldNames = () => {
+    const val = Object.keys(model.fields);
+    if (model.fieldsSorted) val.sort();
+    return val;
+  };
 
-  publicAPI.getActiveFieldNames = () => Object.keys(model.fields).filter(name => model.fields[name].active);
+  publicAPI.getActiveFieldNames = () => {
+    const val = Object.keys(model.fields).filter(name => model.fields[name].active);
+    if (model.fieldsSorted) val.sort();
+    return val;
+  };
 
   publicAPI.addField = (name, initialState = {}) => {
     const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name });
@@ -24,7 +32,7 @@ function fieldProvider(publicAPI, model) {
     publicAPI.fireFieldChange(field);
   };
 
-  publicAPI.getField = (name) => model.fields[name];
+  publicAPI.getField = (name) => (model.fields[name]);
 
   publicAPI.updateField = (name, changeSet = {}) => {
     const field = model.fields[name] || {};
@@ -43,7 +51,7 @@ function fieldProvider(publicAPI, model) {
     }
   };
 
-  publicAPI.toggleFieldSelection = name => {
+  publicAPI.toggleFieldSelection = (name) => {
     model.fields[name].active = !model.fields[name].active;
     publicAPI.fireFieldChange(model.fields[name]);
   };
@@ -60,6 +68,7 @@ function fieldProvider(publicAPI, model) {
 
 const DEFAULT_VALUES = {
   fields: null,
+  fieldsSorted: false,
 };
 
 // ----------------------------------------------------------------------------
@@ -70,6 +79,8 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'FieldProvider');
   CompositeClosureHelper.event(publicAPI, model, 'FieldChange');
+  CompositeClosureHelper.get(publicAPI, model, ['fieldsSorted']);
+  CompositeClosureHelper.set(publicAPI, model, ['fieldsSorted']);
 
   fieldProvider(publicAPI, model);
 }
