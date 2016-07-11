@@ -263,39 +263,24 @@ function informationDiagram(publicAPI, model) {
     }
 
     function unHoverBin(param) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   const state = {};
-      //   state[param] = [-1];
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state,
-      //   });
-      // }
+      if (model.provider.isA('HistogramBinHoverProvider')) {
+        const state = {};
+        state[param] = [-1];
+        model.provider.setHoverState({
+          source: 'MutualInformationDiagram',
+          state,
+        });
+      }
     }
 
     function hoverBins(binMap) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state: binMap,
-      //   });
-      // }
+      if (model.provider.isA('HistogramBinHoverProvider')) {
+        model.provider.setHoverState({
+          source: 'MutualInformationDiagram',
+          state: binMap,
+        });
+      }
     }
-
-    // function hoverBin(param, bin) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   const state = {};
-      //   state[param] = [bin];
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state,
-      //   });
-      // }
-    // }
-
 
     function updateActiveSelection(binMap) {
       // FIXME no annotation service (!!! might should be named differently/split !!!)
@@ -881,12 +866,29 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
+  function handleHoverUpdate(data) {
+    const svg = d3.select(model.container);
+    Object.keys(data.state).forEach(pName => {
+      const binList = data.state[pName];
+      svg.selectAll(`g.group[param-name='${pName}'] > path.htile`).
+        /* eslint-disable prefer-arrow-callback */
+        classed('hilite', function inner(d, i) {
+          return binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0;
+        });
+        /* eslint-enable prefer-arrow-callback */
+    });
+  }
+
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   model.subscriptions.push(model.provider.onFieldChange(fetchData));
   model.subscriptions.push(model.provider.onMutualInformationReady(publicAPI.render));
+
+  if (model.provider.isA('HistogramBinHoverProvider')) {
+    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+  }
 }
 
 // ----------------------------------------------------------------------------
