@@ -396,24 +396,6 @@ function informationDiagram(publicAPI, model) {
 
     // Chord handling ---------------------------------------------------------
 
-    // Add the chords. Color only chords that show self-mutual-information.
-    const chord = svg.select('g.mutualInfoChords')
-      .selectAll('.chord')
-      .data(layout.chords)
-      .enter()
-      .append('path')
-      .classed('chord', true)
-      .classed(style.chord, true)
-      .classed('selfchord', d => (d.source.index === d.target.index))
-      .attr('d', path)
-      .on('click', drawPMIAllBinsTwoVars)
-      .on('mouseover', function inner(d, i) {
-        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-      })
-      .on('mouseout', () => {
-        publicAPI.updateStatusBarText('');
-      });
-
     function updateChordVisibility(options) {
       if (options.mi && options.mi.show === true) {
         if (options.mi.index !== undefined) {
@@ -758,6 +740,24 @@ function informationDiagram(publicAPI, model) {
             return `p(${gname} ∈ [${formatVal(binRange[0])}, ${formatVal(binRange[1])}]) = ${formatPercent(d.value)}`;
           })
           .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
+      });
+
+    // Add the chords. Color only chords that show self-mutual-information.
+    const chord = svg.select('g.mutualInfoChords')
+      .selectAll('.chord')
+      .data(layout.chords)
+      .enter()
+      .append('path')
+      .classed('chord', true)
+      .classed(style.chord, true)
+      .classed('selfchord', d => (d.source.index === d.target.index))
+      .attr('d', path)
+      .on('click', drawPMIAllBinsTwoVars)
+      .on('mouseover', function inner(d, i) {
+        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+      })
+      .on('mouseout', () => {
+        publicAPI.updateStatusBarText('');
       });
 
     svg
