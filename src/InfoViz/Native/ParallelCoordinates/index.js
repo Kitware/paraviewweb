@@ -88,7 +88,7 @@ function parallelCoordinate(publicAPI, model) {
 
   function fetchSelectionData() {
     if (model.provider && model.provider.isA('SelectionProvider')) {
-      model.provider.resetSelectionHistogram2D(model.axes.getSelections());
+      model.provider.setSelection(model.axes.getSelections(), [] /* reset axis pairs to be empty */);
       model.axes.getAxesPairs().forEach(pair => {
         model.provider.loadSelectionHistogram2D(...pair);
       });
@@ -721,7 +721,7 @@ function parallelCoordinate(publicAPI, model) {
       .attr('width', model.hoverIndicatorWidth)
       .attr('transform', (d, i) => {
         const axis = model.axes.getAxisByName(d.name);
-        const screenOffset = binNumberToScreenOffset(d.bin, axis.isUpsideDown());
+        const screenOffset = binNumberToScreenOffset(d.bin, !axis.isUpsideDown());
         return `translate(${axesCenters[axis.idx] - (model.hoverIndicatorWidth / 2)}, ${screenOffset})`;
       });
   }
@@ -774,6 +774,10 @@ function parallelCoordinate(publicAPI, model) {
   });
 
   if (model.provider.isA('SelectionProvider')) {
+    model.subscriptions.push(model.provider.onSelectionChange(sel => {
+      model.axes.resetSelections(sel, false);
+      publicAPI.render();
+    }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       fetchSelectionData();
       publicAPI.render();

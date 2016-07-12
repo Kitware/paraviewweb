@@ -283,35 +283,31 @@ function informationDiagram(publicAPI, model) {
     }
 
     function updateActiveSelection(binMap) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
+      if (!model.provider.isA('SelectionProvider') || !model.provider.isA('FieldProvider')) {
+        return;
+      }
 
-      // if (!self.annotationService) {
-      //   return;
-      // }
+      const ranges = {};
+      let proceed = false;
 
-      // const ranges = {};
-      // let proceed = false;
+      Object.keys(binMap).forEach(pName => {
+        const paramRange = model.provider.getField(pName).range;
+        const binList = binMap[pName];
+        const rangeList = [];
+        for (let i = 0; i < binList.length; ++i) {
+          if (binList[i] !== -1) {
+            rangeList.push(getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]));
+          }
+        }
+        if (rangeList.length > 0) {
+          proceed = true;
+          ranges[pName] = rangeList;
+        }
+      });
 
-      // Object.keys(binMap).forEach(pName => {
-      //   const paramRange = self.dataProvider.getParameterRange(pName)[0];
-      //   const binList = binMap[pName];
-      //   const rangeList = [];
-      //   for (let i = 0; i < binList.length; ++i) {
-      //     if (binList[i] !== -1) {
-      //       rangeList.push(getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]));
-      //     }
-      //   }
-      //   if (rangeList.length > 0) {
-      //     proceed = true;
-      //     ranges[pName] = rangeList;
-      //   }
-      // });
-
-      // if (proceed) {
-      //   const rangeSel = selection().fromRanges(ranges);
-      //   self.selnGen = rangeSel.gen;
-      //   self.annotationService.setActiveSelection(rangeSel);
-      // }
+      if (proceed) {
+        model.provider.setSelection(ranges);
+      }
     }
 
     function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {

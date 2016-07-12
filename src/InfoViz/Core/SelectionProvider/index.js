@@ -111,8 +111,15 @@ function selectionProvider(publicAPI, model, fetchHelper) {
 
   // --------------------------------
 
-  publicAPI.resetSelectionHistogram2D = (selection) => {
-    fetchHelper.clearRequests();
+  // Effects of axisPairList:
+  //   undefined/null:   Do not touch the axis list
+  //   [] (empty list):  Reset axis list to empty
+  //   list of pairs:    Reset axis list to given list of pairs
+  publicAPI.setSelection = (selection, axisPairList) => {
+    if (axisPairList) {
+      fetchHelper.resetRequests(axisPairList);
+    }
+
     model.histogram2DSelectionData = {};
     model.selection = selection;
     publicAPI.fireSelectionChange(selection);

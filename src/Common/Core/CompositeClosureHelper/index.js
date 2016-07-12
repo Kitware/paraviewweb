@@ -155,9 +155,19 @@ export function fetch(publicAPI, model, name) {
         fetchCallback(requestQueue);
       }
     },
-    clearRequests() {
+    resetRequests(requestList) {
       while (requestQueue.length) {
         requestQueue.pop();
+      }
+      if (requestList) {
+        // Rebuild request list
+        requestList.forEach(req => {
+          requestQueue.push(req);
+        });
+        // Also trigger a request
+        if (fetchCallback) {
+          fetchCallback(requestQueue);
+        }
       }
     },
   };

@@ -90,8 +90,8 @@ export default class AxesManager {
     return axesPairs;
   }
 
-  resetSelections(selections = {}) {
-    this.clearSelection(true);
+  resetSelections(selections = {}, triggerEvent = true) {
+    this.clearAllSelections(true);
 
     // index axes
     const nameToAxisMap = {};
@@ -103,7 +103,9 @@ export default class AxesManager {
     Object.keys(selections).forEach(axisName => {
       nameToAxisMap[axisName].selections = selections[axisName];
     });
-    this.triggerSelectionChange();
+    if (triggerEvent) {
+      this.triggerSelectionChange();
+    }
   }
 
   addSelection(axisIdx, start, end) {
