@@ -25,8 +25,7 @@
 .jsScoreRect,
 .jsScoreUncertainty,
 .jsSparkline,
-.jsTr2,
-.jsTr3 {
+.jsTr2 {
 
 }
 
@@ -277,10 +276,12 @@
   composes: jsScoreLabel;
   display: block;
   border-radius: 3px;
+  padding: 1px;
 }
 
 .scoreButton {
-  border: none;
-  padding: 0px;
+  border: 1px #4C4CA3 solid;
+  border-radius: 3px;
+  padding: 1px;
   width: 100%;
 }
