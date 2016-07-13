@@ -394,127 +394,6 @@ function informationDiagram(publicAPI, model) {
       return binMap;
     }
 
-    // Chord handling ---------------------------------------------------------
-
-    // Add the chords. Color only chords that show self-mutual-information.
-    const chord = svg.select('g.mutualInfoChords')
-      .selectAll('.chord')
-      .data(layout.chords)
-      .enter()
-      .append('path')
-      .classed('chord', true)
-      .classed(style.chord, true)
-      .classed('selfchord', d => (d.source.index === d.target.index))
-      .attr('d', path)
-      .on('click', drawPMIAllBinsTwoVars)
-      .on('mouseover', function inner(d, i) {
-        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-      })
-      .on('mouseout', () => {
-        publicAPI.updateStatusBarText('');
-      });
-
-    function updateChordVisibility(options) {
-      if (options.mi && options.mi.show === true) {
-        if (options.mi.index !== undefined) {
-          chord.classed('fade', p => p.source.index !== options.mi.index && p.target.index !== options.mi.index);
-        } else {
-          chord.classed('fade', false);
-        }
-        svg.selectAll('g.pmiChords path.pmiChord').classed('fade', true);
-      } else if (options.pmi && options.pmi.show === true) {
-        // Currently drawing pmi chords fades all mi chords, so we
-        // don't have to do anything here to keep things consistent.
-      }
-    }
-
-    function drawPMIAllBinsTwoVars(d, i) {
-      if (d.source.index === d.target.index) {
-        console.log('Cannot render self-PMI', mutualInformationData.vmap[d.source.index].name);
-        return;
-      }
-
-      pmiChordMode.mode = PMI_CHORD_MODE_ALL_BINS_TWO_VARS;
-      pmiChordMode.srcParam = null;
-      pmiChordMode.srcBin = null;
-
-      // Turn off MI rendering
-      chord.classed('fade', true);
-      // Turn on PMI rendering
-      let va = mutualInformationData.vmap[d.source.index].name;
-      let vb = mutualInformationData.vmap[d.target.index].name;
-      let swap = false;
-      if (vb < va) {
-        const tmp = vb;
-        vb = va;
-        va = tmp;
-        swap = true;
-      }
-
-      const cAB = downsample(mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
-      const probDict = freqToProb(cAB);
-      const linksToDraw = topPmi(probDict, 0.95);
-
-      // Make mutual info chords invisible.
-      d3.selectAll('g.group path.chord')
-        .classed('fade', true);
-
-      const linkData = d3.select('g.pmiChords')
-        .selectAll('path.pmiChord')
-        .data(d3.zip(linksToDraw.idx, linksToDraw.pmi,
-          new Array(linksToDraw.idx.length).fill([va, vb])));
-
-      linkData
-        .enter()
-        .append('path')
-        .classed('pmiChord', true)
-        .classed(style.pmiChord, true);
-      linkData.exit().remove();
-
-      const vaGroup = layout.groups()[d.source.index];
-      const vbGroup = layout.groups()[d.target.index];
-      const vaRange = [vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle), (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
-      const vbRange = [vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle), (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
-
-      d3.select('g.pmiChords')
-        .selectAll('path.pmiChord')
-        .classed('fade', false)
-        .attr('d', (data, index) =>
-          path({
-            source: {
-              startAngle: (vaRange[0] + data[0][0] * vaRange[2]),
-              endAngle: (vaRange[0] + (data[0][0] + 1) * vaRange[2]),
-            },
-            target: {
-              startAngle: (vbRange[0] + data[0][1] * vbRange[2]),
-              endAngle: (vbRange[0] + (data[0][1] + 1) * vbRange[2]),
-            },
-          })
-        )
-        .attr('data-source-name', swap ? vb : va)
-        .attr('data-source-bin', (data, index) => `${data[0][0]}`)
-        .attr('data-target-name', swap ? va : vb)
-        .attr('data-target-bin', (data, iindex) => `${data[0][1]}`)
-        .classed('highlight-pmi', false)
-        .classed('positive', (data, index) => data[1] >= 0.0)
-        .classed('negative', (data, index) => data[1] < 0.0)
-        .attr('data-details', (data, index) => {
-          var sIdx = swap ? 1 : 0;
-          var tIdx = swap ? 0 : 1;
-          const sourceBinRange = getParamBinRange(data[0][sIdx], histogram1DnumberOfBins, data[2][0]);
-          const targetBinRange = getParamBinRange(data[0][tIdx], histogram1DnumberOfBins, data[2][1]);
-          return 'PMI: '
-            + `${data[2][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
-            + `${data[2][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
-        })
-        .on('mouseover', function mouseOver() {
-          publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-        })
-        .on('mouseout', () => {
-          publicAPI.updateStatusBarText('');
-        });
-    }
-
     // Mouse move hanlding ----------------------------------------------------
 
     d3.select(model.container).select('svg')
@@ -759,6 +638,128 @@ function informationDiagram(publicAPI, model) {
           })
           .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
       });
+
+    // Chord handling ---------------------------------------------------------
+
+    // Add the chords. Color only chords that show self-mutual-information.
+    const chord = svg.select('g.mutualInfoChords')
+      .selectAll('.chord')
+      .data(layout.chords)
+      .enter()
+      .append('path')
+      .classed('chord', true)
+      .classed(style.chord, true)
+      .classed('selfchord', d => (d.source.index === d.target.index))
+      .attr('d', path)
+      .on('click', drawPMIAllBinsTwoVars)
+      .on('mouseover', function inner(d, i) {
+        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+      })
+      .on('mouseout', () => {
+        publicAPI.updateStatusBarText('');
+      });
+
+    function updateChordVisibility(options) {
+      if (options.mi && options.mi.show === true) {
+        if (options.mi.index !== undefined) {
+          chord.classed('fade', p => p.source.index !== options.mi.index && p.target.index !== options.mi.index);
+        } else {
+          chord.classed('fade', false);
+        }
+        svg.selectAll('g.pmiChords path.pmiChord').classed('fade', true);
+      } else if (options.pmi && options.pmi.show === true) {
+        // Currently drawing pmi chords fades all mi chords, so we
+        // don't have to do anything here to keep things consistent.
+      }
+    }
+
+    function drawPMIAllBinsTwoVars(d, i) {
+      if (d.source.index === d.target.index) {
+        console.log('Cannot render self-PMI', mutualInformationData.vmap[d.source.index].name);
+        return;
+      }
+
+      pmiChordMode.mode = PMI_CHORD_MODE_ALL_BINS_TWO_VARS;
+      pmiChordMode.srcParam = null;
+      pmiChordMode.srcBin = null;
+
+      // Turn off MI rendering
+      chord.classed('fade', true);
+      // Turn on PMI rendering
+      let va = mutualInformationData.vmap[d.source.index].name;
+      let vb = mutualInformationData.vmap[d.target.index].name;
+      let swap = false;
+      if (vb < va) {
+        const tmp = vb;
+        vb = va;
+        va = tmp;
+        swap = true;
+      }
+
+      const cAB = downsample(mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
+      const probDict = freqToProb(cAB);
+      const linksToDraw = topPmi(probDict, 0.95);
+
+      // Make mutual info chords invisible.
+      d3.selectAll('g.group path.chord')
+        .classed('fade', true);
+
+      const linkData = d3.select('g.pmiChords')
+        .selectAll('path.pmiChord')
+        .data(d3.zip(linksToDraw.idx, linksToDraw.pmi,
+          new Array(linksToDraw.idx.length).fill([va, vb])));
+
+      linkData
+        .enter()
+        .append('path')
+        .classed('pmiChord', true)
+        .classed(style.pmiChord, true);
+      linkData.exit().remove();
+
+      const vaGroup = layout.groups()[d.source.index];
+      const vbGroup = layout.groups()[d.target.index];
+      const vaRange = [vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle), (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
+      const vbRange = [vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle), (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
+
+      d3.select('g.pmiChords')
+        .selectAll('path.pmiChord')
+        .classed('fade', false)
+        .attr('d', (data, index) =>
+          path({
+            source: {
+              startAngle: (vaRange[0] + data[0][0] * vaRange[2]),
+              endAngle: (vaRange[0] + (data[0][0] + 1) * vaRange[2]),
+            },
+            target: {
+              startAngle: (vbRange[0] + data[0][1] * vbRange[2]),
+              endAngle: (vbRange[0] + (data[0][1] + 1) * vbRange[2]),
+            },
+          })
+        )
+        .attr('data-source-name', swap ? vb : va)
+        .attr('data-source-bin', (data, index) => `${data[0][0]}`)
+        .attr('data-target-name', swap ? va : vb)
+        .attr('data-target-bin', (data, iindex) => `${data[0][1]}`)
+        .classed('highlight-pmi', false)
+        .classed('positive', (data, index) => data[1] >= 0.0)
+        .classed('negative', (data, index) => data[1] < 0.0)
+        .attr('data-details', (data, index) => {
+          var sIdx = swap ? 1 : 0;
+          var tIdx = swap ? 0 : 1;
+          const sourceBinRange = getParamBinRange(data[0][sIdx], histogram1DnumberOfBins, data[2][0]);
+          const targetBinRange = getParamBinRange(data[0][tIdx], histogram1DnumberOfBins, data[2][1]);
+          return 'PMI: '
+            + `${data[2][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
+            + `${data[2][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
+        })
+        .on('mouseover', function mouseOver() {
+          publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+        })
+        .on('mouseout', () => {
+          publicAPI.updateStatusBarText('');
+        });
+    }
+
 
     svg
       .select('g.mutualInfoChords')
