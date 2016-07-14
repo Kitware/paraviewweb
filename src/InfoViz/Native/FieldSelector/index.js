@@ -206,6 +206,22 @@ function fieldSelector(publicAPI, model) {
                 .attr('width', model.fieldHistWidth / hsize);
 
               hdata.exit().remove();
+
+              if (model.provider.isA('HistogramBinHoverProvider')) {
+                histCell.select('svg').
+                  on('mousemove', function inner(d, i) {
+                    const mCoords = d3.mouse(this);
+                    const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
+                    const state = {};
+                    state[fieldName] = [binNum];
+                    model.provider.setHoverState({ state });
+                  }).
+                  on('mouseout', (d, i) => {
+                    const state = {};
+                    state[fieldName] = [-1];
+                    model.provider.setHoverState({ state });
+                  });
+              }
             }
 
             const formatter = d3.format('.3s');
@@ -223,6 +239,16 @@ function fieldSelector(publicAPI, model) {
       .each(renderField);
   };
 
+  function handleHoverUpdate(data) {
+    const svg = d3.select(model.container);
+    Object.keys(data.state).forEach(pName => {
+      const binList = data.state[pName];
+      svg.selectAll(`rect[pname='${pName}']`).
+            classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
+            classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
+    });
+  }
+
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
 
@@ -231,6 +257,10 @@ function fieldSelector(publicAPI, model) {
   if (model.fieldShowHistogram) {
     // event from Histogram Provider
     model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+  }
+
+  if (model.provider.isA('HistogramBinHoverProvider')) {
+    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
 }
 

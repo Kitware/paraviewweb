@@ -85,3 +85,12 @@
   stroke: #999;
   stroke-width: 0.25px;
 }
+
+.histoHilite {
+  fill: #999;
+  stroke: #000;
+}
+
+.binHilite {
+  fill: blue !important;
+}
