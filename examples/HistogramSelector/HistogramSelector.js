@@ -21964,9 +21964,19 @@
 	        fetchCallback(requestQueue);
 	      }
 	    },
-	    clearRequests: function clearRequests() {
+	    resetRequests: function resetRequests(requestList) {
 	      while (requestQueue.length) {
 	        requestQueue.pop();
+	      }
+	      if (requestList) {
+	        // Rebuild request list
+	        requestList.forEach(function (req) {
+	          requestQueue.push(req);
+	        });
+	        // Also trigger a request
+	        if (fetchCallback) {
+	          fetchCallback(requestQueue);
+	        }
 	      }
 	    }
 	  };
@@ -32892,6 +32902,20 @@
 	                }).attr('width', model.fieldHistWidth / hsize);
 
 	                hdata.exit().remove();
+
+	                if (model.provider.isA('HistogramBinHoverProvider')) {
+	                  histCell.select('svg').on('mousemove', function inner(d, i) {
+	                    var mCoords = _d2.default.mouse(this);
+	                    var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
+	                    var state = {};
+	                    state[fieldName] = [binNum];
+	                    model.provider.setHoverState({ state: state });
+	                  }).on('mouseout', function (d, i) {
+	                    var state = {};
+	                    state[fieldName] = [-1];
+	                    model.provider.setHoverState({ state: state });
+	                  });
+	                }
 	              })();
 	            }
 
@@ -32907,6 +32931,18 @@
 	    variablesContainer.each(renderField);
 	  };
 
+	  function handleHoverUpdate(data) {
+	    var svg = _d2.default.select(model.container);
+	    Object.keys(data.state).forEach(function (pName) {
+	      var binList = data.state[pName];
+	      svg.selectAll('rect[pname=\'' + pName + '\']').classed(_FieldSelector2.default.histoHilite, function (d, i) {
+	        return binList.indexOf(-1) === -1;
+	      }).classed(_FieldSelector2.default.binHilite, function (d, i) {
+	        return binList.indexOf(i) >= 0;
+	      });
+	    });
+	  }
+
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
 
@@ -32915,6 +32951,10 @@
 	  if (model.fieldShowHistogram) {
 	    // event from Histogram Provider
 	    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	  }
+
+	  if (model.provider.isA('HistogramBinHoverProvider')) {
+	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
 	  }
 	}
 
@@ -32989,7 +33029,7 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -33012,7 +33052,9 @@
 		"tbody": "FieldSelector_tbody_XjkGZ",
 		"sparkline": "FieldSelector_sparkline_3ZOf0 FieldSelector_jsSparkline_2Vxgk",
 		"sparklineSvg": "FieldSelector_sparklineSvg_38FC2",
-		"histRect": "FieldSelector_histRect_1D8Az FieldSelector_jsHistRect_27Pen"
+		"histRect": "FieldSelector_histRect_1D8Az FieldSelector_jsHistRect_27Pen",
+		"histoHilite": "FieldSelector_histoHilite_3fkOQ",
+		"binHilite": "FieldSelector_binHilite_3wiKB"
 	};
 
 /***/ },

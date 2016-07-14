@@ -576,7 +576,7 @@
 
 	  function fetchSelectionData() {
 	    if (model.provider && model.provider.isA('SelectionProvider')) {
-	      model.provider.resetSelectionHistogram2D(model.axes.getSelections());
+	      model.provider.setSelection(model.axes.getSelections(), [] /* reset axis pairs to be empty */);
 	      model.axes.getAxesPairs().forEach(function (pair) {
 	        var _model$provider;
 
@@ -607,6 +607,7 @@
 
 	      // Fetch 2D Histogram
 	      if (model.provider.isA('Histogram2DProvider')) {
+	        model.numberOfBins = model.provider.getHistogram2DNumberOfBins();
 	        dataToLoadCount += fieldNames.length - 1;
 	        for (var i = 1; i < fieldNames.length; i++) {
 	          // Return true if the data is already loaded
@@ -747,12 +748,14 @@
 	        glyphGroup.attr('transform', function (d, i) {
 	          return 'translate(' + (d.centerX - glyphSize * 0.5) + ', ' + glyphPadding + ')';
 	        }).on('click', function (d, i) {
-	          model.axes.clearSelection(i);
+	          if (d.annotated) {
+	            model.axes.clearSelection(i);
+	          }
 	        });
 
 	        glyphGroup.each(function applyLegendStyle(d, i) {
 	          _d2.default.select(this).select('svg').attr('fill', d.legend.color).attr('stroke', 'black').attr('width', glyphSize).attr('height', glyphSize).style('color', d.legend.color) // Firefox SVG use color bug workaround fix
-	          .select('use').classed(_ParallelCoordinates2.default.colorToFill, true) // Firefox SVG use color bug workaround fix
+	          .classed(_ParallelCoordinates2.default.clickable, d.annotated).select('use').classed(_ParallelCoordinates2.default.colorToFill, true) // Firefox SVG use color bug workaround fix
 	          .classed(_ParallelCoordinates2.default.blackStroke, true).attr('xlink:href', d.legend.shape);
 	        });
 
@@ -943,6 +946,8 @@
 	    // Update canvas area and drawable info
 	    updateSizeInformation();
 
+	    model.hoverIndicatorHeight = model.drawableArea.height / model.numberOfBins;
+
 	    model.fgCanvas.width = model.canvas.width;
 	    model.fgCanvas.height = model.canvas.height;
 	    model.bgCanvas.width = model.canvas.width;
@@ -1009,7 +1014,7 @@
 	    drawAxisControls(model.axes.extractAxesControl(model));
 	  };
 
-	  // -------------- Is needed? ----------------
+	  // -------------- Used to speed up action of opacity sliders ----------------
 	  // function fastRender() {
 	  //   model.ctx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
 
@@ -1031,77 +1036,6 @@
 	  //   drawSelectionBars(model.axes.extractSelections(model));
 	  //   drawAxisLabels(model.axes.extractLabels(model));
 	  //   drawAxisControls(model.axes.extractAxesControl(model));
-	  // }
-
-	  // function receivedHistogram(histIdx, histogram) {
-	  //   histogramCount += 1;
-	  //   histogramList[histIdx] = histogram;
-
-	  //   if (histogram.y.delta === 0) {
-	  //     histogram.y.delta = 1;
-	  //     histogram.y.extent[1] = histogram.y.extent[0] + 1;
-	  //   }
-
-	  //   if (histogram.x.delta === 0) {
-	  //     histogram.x.delta = 1;
-	  //     histogram.x.extent[1] = histogram.x.extent[0] + 1;
-	  //   }
-
-	  //   axesDataRanges[histIdx] = histogram.y.extent.slice();
-
-	  //   if (histIdx === axisList.length - 2) {
-	  //     axesDataRanges[histIdx + 1] = histogram.x.extent.slice();
-	  //   }
-
-	  //   if (histogramCount === axisList.length - 1) { // We have received all histograms
-	  //     maxBinCountOverAllHistograms = getMaxHistogramBinCount(histogramList);
-	  //     render();
-	  //   }
-	  // }
-
-	  // function retrieve2DHistogram(idx1, idx2) {
-	  //   dataProvider.fetchHistogram2d(axisList[idx2], axisList[idx1], hist => {
-	  //     receivedHistogram(idx1, hist);
-	  //   }, numberOfBins);
-	  // }
-
-	  // function fetchHistograms() {
-	  //   histogramList = [];
-	  //   axesDataRanges = [];
-	  //   histogramCount = 0;
-	  //   maxBinCountOverAllHistograms = 0;
-
-	  //   // Now fetch all the histograms
-	  //   for (let k = 0; k < axisList.length - 1; ++k) {
-	  //     retrieve2DHistogram(k, k + 1);
-	  //   }
-	  // }
-
-	  // function fetchSelection() {
-	  //   const histograms = [];
-
-	  //   if (currentSelection !== null && dataProvider && dataProvider.querySelection) {
-	  //     selectionResult = null;
-	  //     maxBinCountOverAllSelections = 0;
-
-	  //     for (let j = 0; j < axisList.length - 1; ++j) {
-	  //       histograms.push([axisList[j + 1], axisList[j]]);
-	  //     }
-	  //     const query = {
-	  //       ranges: currentSelection,
-	  //       histograms,
-	  //     };
-	  //     dataProvider.querySelection(query, queryResult => {
-	  //       maxBinCountOverAllSelections = getMaxHistogramBinCount(queryResult.counts[0]);
-	  //       selectionResult = queryResult;
-	  //       render();
-	  //     });
-	  //   }
-	  // }
-
-	  // function fetchData() {
-	  //   fetchHistograms();
-	  //   fetchSelection();
 	  // }
 
 	  publicAPI.resize = function () {
@@ -1136,65 +1070,51 @@
 	    }
 	  };
 
-	  // function handleHoverBinUpdate(data) {
-	  //   if (!model.axes.canRender() || model.containerHidden === true) {
-	  //     // let's not do anything if we don't have enough axes for rendering.
-	  //     return;
-	  //   }
+	  function binNumberToScreenOffset(binNumber, rightSideUp) {
+	    var screenY = affine(0, binNumber, model.numberOfBins, model.canvasArea.height - model.borderOffsetBottom, model.borderOffsetTop);
+	    screenY -= model.hoverIndicatorHeight;
 
-	  //   // First update our internal data model
-	  //   model.hoverBinData = [];
-	  //   Object.keys(data.state).forEach(pName => {
-	  //     const binList = data.state[pName];
-	  //     if (binList.indexOf(-1) === -1) {
-	  //       for (let i = 0; i < binList.length; ++i) {
-	  //         model.hoverBinData.push({
-	  //           name: pName,
-	  //           bin: binList[i],
-	  //         });
-	  //       }
-	  //     }
-	  //   });
+	    if (rightSideUp === false) {
+	      screenY = affine(0, binNumber, model.numberOfBins, model.borderOffsetTop, model.canvasArea.height - model.borderOffsetBottom);
+	    }
 
-	  //   // Now manage the svg dom
-	  //   const hoverBinNodes = d3
-	  //     .select(model.container)
-	  //     .select('svg')
-	  //     .select('g.hover-bins')
-	  //     .selectAll('rect.hover-bin-indicator')
-	  //     .data(model.hoverBinData);
+	    return perfRound(screenY);
+	  }
 
-	  //   hoverBinNodes
-	  //     .enter()
-	  //     .append('rect')
-	  //     .classed('hover-bin-indicator', true);
+	  function handleHoverBinUpdate(data) {
+	    if (!model.axes.canRender() || model.containerHidden === true) {
+	      // let's not do anything if we don't have enough axes for rendering.
+	      return;
+	    }
 
-	  //   hoverBinNodes.exit().remove();
+	    // First update our internal data model
+	    model.hoverBinData = [];
+	    Object.keys(data.state).forEach(function (pName) {
+	      var binList = data.state[pName];
+	      if (model.axes.getAxisByName(pName) && binList.indexOf(-1) === -1) {
+	        for (var i = 0; i < binList.length; ++i) {
+	          model.hoverBinData.push({
+	            name: pName,
+	            bin: binList[i]
+	          });
+	        }
+	      }
+	    });
 
-	  //   const axesCenters = model.axes.extractAxesCenters(model);
-	  //   d3.select(model.container)
-	  //     .select('svg')
-	  //     .select('g.hover-bins')
-	  //     .selectAll('rect.hover-bin-indicator')
-	  //     .attr('height', model.hoverIndicatorHeight)
-	  //     .attr('width', model.hoverIndicatorWidth)
-	  //     .attr('transform', (d, i) => {
-	  //       const axis = model.axes.getAxisByName(d.name);
-	  //       const screenOffset = binNumberToScreenOffset(d.bin, axis.isUpsideDown());
-	  //       return `translate(${axesCenters[axis.idx] - (model.hoverIndicatorWidth / 2)}, ${screenOffset})`;
-	  //     });
-	  // }
+	    // Now manage the svg dom
+	    var hoverBinNodes = _d2.default.select(model.container).select('svg').select('g.hover-bins').selectAll('rect.hover-bin-indicator').data(model.hoverBinData);
 
-	  // function handleSelectionChanged(sel) {
-	  //   if (sel.type === 'range') {
-	  //     const rangeMap = sel.ranges;
-	  //     setSelection(rangeMap);
-	  //     replaceAxisAnnotations(rangeMap);
-	  //     fetchSelection();
-	  //   } else if (sel.type === 'empty') {
-	  //     clearSelection();
-	  //   }
-	  // }
+	    hoverBinNodes.enter().append('rect').classed(_ParallelCoordinates2.default.hoverBinIndicator, true).classed('hover-bin-indicator', true);
+
+	    hoverBinNodes.exit().remove();
+
+	    var axesCenters = model.axes.extractAxesCenters(model);
+	    _d2.default.select(model.container).select('svg').select('g.hover-bins').selectAll('rect.hover-bin-indicator').attr('height', model.hoverIndicatorHeight).attr('width', model.hoverIndicatorWidth).attr('transform', function (d, i) {
+	      var axis = model.axes.getAxisByName(d.name);
+	      var screenOffset = binNumberToScreenOffset(d.bin, !axis.isUpsideDown());
+	      return 'translate(' + (axesCenters[axis.idx] - model.hoverIndicatorWidth / 2) + ', ' + screenOffset + ')';
+	    });
+	  }
 
 	  // function addSubscriptions() {
 	  //   topicSubscriptions.push(dataProvider.onParameterValueChanged(event => {
@@ -1237,8 +1157,17 @@
 	      model.subscriptions.push(model.provider[method](fetchData));
 	    }
 	  });
+	  ['onHoverBinChange'].forEach(function (method) {
+	    if (model.provider[method]) {
+	      model.subscriptions.push(model.provider[method](handleHoverBinUpdate));
+	    }
+	  });
 
 	  if (model.provider.isA('SelectionProvider')) {
+	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
+	      model.axes.resetSelections(sel, false);
+	      publicAPI.render();
+	    }));
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
 	      fetchSelectionData();
 	      publicAPI.render();
@@ -1282,7 +1211,12 @@
 	  maxBinCountForOpacityCalculation: 0,
 
 	  selectionOpacityAdjustment: 1,
-	  polygonOpacityAdjustment: 1
+	  polygonOpacityAdjustment: 1,
+
+	  hoverIndicatorHeight: 10,
+	  hoverIndicatorWidth: 7,
+
+	  numberOfBins: 128
 	};
 
 	// ----------------------------------------------------------------------------
@@ -1506,9 +1440,19 @@
 	        fetchCallback(requestQueue);
 	      }
 	    },
-	    clearRequests: function clearRequests() {
+	    resetRequests: function resetRequests(requestList) {
 	      while (requestQueue.length) {
 	        requestQueue.pop();
+	      }
+	      if (requestList) {
+	        // Rebuild request list
+	        requestList.forEach(function (req) {
+	          requestQueue.push(req);
+	        });
+	        // Also trigger a request
+	        if (fetchCallback) {
+	          fetchCallback(requestQueue);
+	        }
 	      }
 	    }
 	  };
@@ -11341,7 +11285,7 @@
 
 
 	// module
-	exports.push([module.id, ".ParallelCoordinates_hidden_2JlhD {\n  display: none;\n}\n\n.ParallelCoordinates_selectionBars_n1pl- {\n  stroke: white;\n  stroke-width: 2;\n  fill: rgb(105, 195, 255);\n}\n\n.ParallelCoordinates_controlItem_1uD5e {\n  cursor: pointer;\n}\n\n.ParallelCoordinates_axisControlElements_hlaHe {\n  cursor: pointer;\n  pointer-events: all;\n}\n\n.ParallelCoordinates_upsideDown_1wqdU polygon.top {\n  stroke: rgb(151, 151, 151);\n  fill: rgb(216, 216, 216);\n}\n\n.ParallelCoordinates_upsideDown_1wqdU polygon.bottom {\n  stroke: rgb(151, 151, 151);\n  fill: black;\n}\n\n.ParallelCoordinates_rightsideUp_34HID polygon.bottom {\n  stroke: rgb(151, 151, 151);\n  fill: rgb(216, 216, 216);\n}\n\n.ParallelCoordinates_rightsideUp_34HID polygon.top {\n  stroke: rgb(151, 151, 151);\n  fill: black;\n}\n\n.ParallelCoordinates_axisAnnotationIndicators_2Y_Ih {\n  fill: none;\n  stroke-width: 2;\n  stroke: rgb(105, 195, 255);\n  display: none;\n}\n\n.ParallelCoordinates_axisAnnotated_2dK7n {\n  display: block;\n}\n\n.ParallelCoordinates_axisLabels_fuqQI {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 12px;\n  fill: black;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ParallelCoordinates_axisTicks_21fua {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 9px;\n  fill: black;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ParallelCoordinates_annotatedAxisText_3j3K9 {\n  font-size: 13px;\n  fill: rgb(105, 195, 255);\n  pointer-events: all;\n  cursor: pointer;\n}\n\n.ParallelCoordinates_axisLines_yrjlm {\n  fill: grey;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 3;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR polygon {\n  stroke: #979797;\n  fill: #D8D8D8;\n}\n\n.ParallelCoordinates_axisControlsGroupContainer_2IBOx {\n  stroke: none;\n  stroke-width: 1;\n  fill: none;\n  fill-rule: evenodd;\n}\n\n.ParallelCoordinates_hoverBinIndicator_3cjFF {\n  fill: blue;\n  position: relative;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.left-rect:hover ~ polygon.left {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.right-rect:hover ~ polygon.right {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.center-rect:hover ~ polygon.top {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.center-rect:hover ~ polygon.bottom {\n  stroke: black;\n  fill: darkgray;\n}\n\nspan.pc-placeholder-title, span.pc-placeholder-info {\n    font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n    text-align: center;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\ndiv.parallel-coords-placeholder span.pc-placeholder-title {\n    font-size: 45px;\n}\n\ndiv.parallel-coords-placeholder {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 30%;\n}\n\ndiv.pc-placeholder-row {\n  text-align: center;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR g.axis-controls-group polygon {\n  pointer-events: none;\n}\n\nuse.ParallelCoordinates_colorToFill_Fq87K * {\n  fill: currentColor;\n}\n\nuse.ParallelCoordinates_blackStroke_jJWHa * {\n  stroke: black;\n}\n", ""]);
+	exports.push([module.id, ".ParallelCoordinates_hidden_2JlhD {\n  display: none;\n}\n\n.ParallelCoordinates_selectionBars_n1pl- {\n  stroke: white;\n  stroke-width: 2;\n  fill: rgb(105, 195, 255);\n}\n\n.ParallelCoordinates_controlItem_1uD5e {\n  cursor: pointer;\n}\n\n.ParallelCoordinates_axisControlElements_hlaHe {\n  cursor: pointer;\n  pointer-events: all;\n}\n\n.ParallelCoordinates_upsideDown_1wqdU polygon.top {\n  stroke: rgb(151, 151, 151);\n  fill: rgb(216, 216, 216);\n}\n\n.ParallelCoordinates_upsideDown_1wqdU polygon.bottom {\n  stroke: rgb(151, 151, 151);\n  fill: black;\n}\n\n.ParallelCoordinates_rightsideUp_34HID polygon.bottom {\n  stroke: rgb(151, 151, 151);\n  fill: rgb(216, 216, 216);\n}\n\n.ParallelCoordinates_rightsideUp_34HID polygon.top {\n  stroke: rgb(151, 151, 151);\n  fill: black;\n}\n\n.ParallelCoordinates_axisAnnotationIndicators_2Y_Ih {\n  fill: none;\n  stroke-width: 2;\n  stroke: rgb(105, 195, 255);\n  display: none;\n}\n\n.ParallelCoordinates_axisAnnotated_2dK7n {\n  display: block;\n}\n\n.ParallelCoordinates_axisLabels_fuqQI {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 12px;\n  fill: black;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ParallelCoordinates_axisTicks_21fua {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 9px;\n  fill: black;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ParallelCoordinates_annotatedAxisText_3j3K9 {\n  font-size: 13px;\n  fill: rgb(105, 195, 255);\n  pointer-events: all;\n  cursor: pointer;\n}\n\n.ParallelCoordinates_axisLines_yrjlm {\n  fill: grey;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 3;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR polygon {\n  stroke: #979797;\n  fill: #D8D8D8;\n}\n\n.ParallelCoordinates_axisControlsGroupContainer_2IBOx {\n  stroke: none;\n  stroke-width: 1;\n  fill: none;\n  fill-rule: evenodd;\n}\n\n.ParallelCoordinates_hoverBinIndicator_3cjFF {\n  fill: blue;\n  position: relative;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.left-rect:hover ~ polygon.left {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.right-rect:hover ~ polygon.right {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.center-rect:hover ~ polygon.top {\n  stroke: black;\n  fill: darkgray;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR rect.center-rect:hover ~ polygon.bottom {\n  stroke: black;\n  fill: darkgray;\n}\n\nspan.pc-placeholder-title, span.pc-placeholder-info {\n    font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n    text-align: center;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\ndiv.parallel-coords-placeholder span.pc-placeholder-title {\n    font-size: 45px;\n}\n\ndiv.parallel-coords-placeholder {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 30%;\n}\n\ndiv.pc-placeholder-row {\n  text-align: center;\n}\n\n.ParallelCoordinates_parallelCoordsOverlay_1wwZR g.axis-controls-group polygon {\n  pointer-events: none;\n}\n\nuse.ParallelCoordinates_colorToFill_Fq87K * {\n  fill: currentColor;\n}\n\nuse.ParallelCoordinates_blackStroke_jJWHa * {\n  stroke: black;\n}\n\n.ParallelCoordinates_clickable_3iRLA {\n  pointer-events: bounding-box;\n  cursor: pointer;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -11361,7 +11305,8 @@
 		"axisControlsGroupContainer": "ParallelCoordinates_axisControlsGroupContainer_2IBOx",
 		"hoverBinIndicator": "ParallelCoordinates_hoverBinIndicator_3cjFF",
 		"colorToFill": "ParallelCoordinates_colorToFill_Fq87K",
-		"blackStroke": "ParallelCoordinates_blackStroke_jJWHa"
+		"blackStroke": "ParallelCoordinates_blackStroke_jJWHa",
+		"clickable": "ParallelCoordinates_clickable_3iRLA"
 	};
 
 /***/ },
@@ -11519,8 +11464,9 @@
 	    key: 'resetSelections',
 	    value: function resetSelections() {
 	      var selections = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var triggerEvent = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
-	      this.clearSelection(true);
+	      this.clearAllSelections(true);
 
 	      // index axes
 	      var nameToAxisMap = {};
@@ -11532,7 +11478,9 @@
 	      Object.keys(selections).forEach(function (axisName) {
 	        nameToAxisMap[axisName].selections = selections[axisName];
 	      });
-	      this.triggerSelectionChange();
+	      if (triggerEvent) {
+	        this.triggerSelectionChange();
+	      }
 	    }
 	  }, {
 	    key: 'addSelection',
@@ -12117,6 +12065,20 @@
 	                }).attr('width', model.fieldHistWidth / hsize);
 
 	                hdata.exit().remove();
+
+	                if (model.provider.isA('HistogramBinHoverProvider')) {
+	                  histCell.select('svg').on('mousemove', function inner(d, i) {
+	                    var mCoords = _d2.default.mouse(this);
+	                    var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
+	                    var state = {};
+	                    state[fieldName] = [binNum];
+	                    model.provider.setHoverState({ state: state });
+	                  }).on('mouseout', function (d, i) {
+	                    var state = {};
+	                    state[fieldName] = [-1];
+	                    model.provider.setHoverState({ state: state });
+	                  });
+	                }
 	              })();
 	            }
 
@@ -12132,6 +12094,18 @@
 	    variablesContainer.each(renderField);
 	  };
 
+	  function handleHoverUpdate(data) {
+	    var svg = _d2.default.select(model.container);
+	    Object.keys(data.state).forEach(function (pName) {
+	      var binList = data.state[pName];
+	      svg.selectAll('rect[pname=\'' + pName + '\']').classed(_FieldSelector2.default.histoHilite, function (d, i) {
+	        return binList.indexOf(-1) === -1;
+	      }).classed(_FieldSelector2.default.binHilite, function (d, i) {
+	        return binList.indexOf(i) >= 0;
+	      });
+	    });
+	  }
+
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
 
@@ -12140,6 +12114,10 @@
 	  if (model.fieldShowHistogram) {
 	    // event from Histogram Provider
 	    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	  }
+
+	  if (model.provider.isA('HistogramBinHoverProvider')) {
+	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
 	  }
 	}
 
@@ -12214,7 +12192,7 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -12237,7 +12215,9 @@
 		"tbody": "FieldSelector_tbody_XjkGZ",
 		"sparkline": "FieldSelector_sparkline_3ZOf0 FieldSelector_jsSparkline_2Vxgk",
 		"sparklineSvg": "FieldSelector_sparklineSvg_38FC2",
-		"histRect": "FieldSelector_histRect_1D8Az FieldSelector_jsHistRect_27Pen"
+		"histRect": "FieldSelector_histRect_1D8Az FieldSelector_jsHistRect_27Pen",
+		"histoHilite": "FieldSelector_histoHilite_3fkOQ",
+		"binHilite": "FieldSelector_binHilite_3wiKB"
 	};
 
 /***/ },

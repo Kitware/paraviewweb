@@ -20656,9 +20656,19 @@
 	        fetchCallback(requestQueue);
 	      }
 	    },
-	    clearRequests: function clearRequests() {
+	    resetRequests: function resetRequests(requestList) {
 	      while (requestQueue.length) {
 	        requestQueue.pop();
+	      }
+	      if (requestList) {
+	        // Rebuild request list
+	        requestList.forEach(function (req) {
+	          requestQueue.push(req);
+	        });
+	        // Also trigger a request
+	        if (fetchCallback) {
+	          fetchCallback(requestQueue);
+	        }
 	      }
 	    }
 	  };
