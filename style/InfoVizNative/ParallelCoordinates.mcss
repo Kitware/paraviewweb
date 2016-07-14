@@ -151,3 +151,8 @@ use.colorToFill * {
 use.blackStroke * {
   stroke: black;
 }
+
+.clickable {
+  pointer-events: bounding-box;
+  cursor: pointer;
+}

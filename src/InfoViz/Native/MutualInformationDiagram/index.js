@@ -263,70 +263,51 @@ function informationDiagram(publicAPI, model) {
     }
 
     function unHoverBin(param) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   const state = {};
-      //   state[param] = [-1];
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state,
-      //   });
-      // }
+      if (model.provider.isA('HistogramBinHoverProvider')) {
+        const state = {};
+        state[param] = [-1];
+        model.provider.setHoverState({
+          source: 'MutualInformationDiagram',
+          state,
+        });
+      }
     }
 
     function hoverBins(binMap) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state: binMap,
-      //   });
-      // }
+      if (model.provider.isA('HistogramBinHoverProvider')) {
+        model.provider.setHoverState({
+          source: 'MutualInformationDiagram',
+          state: binMap,
+        });
+      }
     }
 
-    // function hoverBin(param, bin) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
-      // if (self.annotationService) {
-      //   const state = {};
-      //   state[param] = [bin];
-      //   self.annotationService.setCurrentHover({
-      //     source: self.componentId,
-      //     state,
-      //   });
-      // }
-    // }
-
-
     function updateActiveSelection(binMap) {
-      // FIXME no annotation service (!!! might should be named differently/split !!!)
+      if (!model.provider.isA('SelectionProvider') || !model.provider.isA('FieldProvider')) {
+        return;
+      }
 
-      // if (!self.annotationService) {
-      //   return;
-      // }
+      const ranges = {};
+      let proceed = false;
 
-      // const ranges = {};
-      // let proceed = false;
+      Object.keys(binMap).forEach(pName => {
+        const paramRange = model.provider.getField(pName).range;
+        const binList = binMap[pName];
+        const rangeList = [];
+        for (let i = 0; i < binList.length; ++i) {
+          if (binList[i] !== -1) {
+            rangeList.push(getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]));
+          }
+        }
+        if (rangeList.length > 0) {
+          proceed = true;
+          ranges[pName] = rangeList;
+        }
+      });
 
-      // Object.keys(binMap).forEach(pName => {
-      //   const paramRange = self.dataProvider.getParameterRange(pName)[0];
-      //   const binList = binMap[pName];
-      //   const rangeList = [];
-      //   for (let i = 0; i < binList.length; ++i) {
-      //     if (binList[i] !== -1) {
-      //       rangeList.push(getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]));
-      //     }
-      //   }
-      //   if (rangeList.length > 0) {
-      //     proceed = true;
-      //     ranges[pName] = rangeList;
-      //   }
-      // });
-
-      // if (proceed) {
-      //   const rangeSel = selection().fromRanges(ranges);
-      //   self.selnGen = rangeSel.gen;
-      //   self.annotationService.setActiveSelection(rangeSel);
-      // }
+      if (proceed) {
+        model.provider.setSelection(ranges);
+      }
     }
 
     function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
@@ -395,24 +376,6 @@ function informationDiagram(publicAPI, model) {
     }
 
     // Chord handling ---------------------------------------------------------
-
-    // Add the chords. Color only chords that show self-mutual-information.
-    const chord = svg.select('g.mutualInfoChords')
-      .selectAll('.chord')
-      .data(layout.chords)
-      .enter()
-      .append('path')
-      .classed('chord', true)
-      .classed(style.chord, true)
-      .classed('selfchord', d => (d.source.index === d.target.index))
-      .attr('d', path)
-      .on('click', drawPMIAllBinsTwoVars)
-      .on('mouseover', function inner(d, i) {
-        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-      })
-      .on('mouseout', () => {
-        publicAPI.updateStatusBarText('');
-      });
 
     function updateChordVisibility(options) {
       if (options.mi && options.mi.show === true) {
@@ -760,6 +723,24 @@ function informationDiagram(publicAPI, model) {
           .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
       });
 
+    // Add the chords. Color only chords that show self-mutual-information.
+    const chord = svg.select('g.mutualInfoChords')
+      .selectAll('.chord')
+      .data(layout.chords)
+      .enter()
+      .append('path')
+      .classed('chord', true)
+      .classed(style.chord, true)
+      .classed('selfchord', d => (d.source.index === d.target.index))
+      .attr('d', path)
+      .on('click', drawPMIAllBinsTwoVars)
+      .on('mouseover', function inner(d, i) {
+        publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+      })
+      .on('mouseout', () => {
+        publicAPI.updateStatusBarText('');
+      });
+
     svg
       .select('g.mutualInfoChords')
       .selectAll('.selfchord')
@@ -881,12 +862,29 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
+  function handleHoverUpdate(data) {
+    const svg = d3.select(model.container);
+    Object.keys(data.state).forEach(pName => {
+      const binList = data.state[pName];
+      svg.selectAll(`g.group[param-name='${pName}'] > path.htile`).
+        /* eslint-disable prefer-arrow-callback */
+        classed('hilite', function inner(d, i) {
+          return binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0;
+        });
+        /* eslint-enable prefer-arrow-callback */
+    });
+  }
+
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   model.subscriptions.push(model.provider.onFieldChange(fetchData));
   model.subscriptions.push(model.provider.onMutualInformationReady(publicAPI.render));
+
+  if (model.provider.isA('HistogramBinHoverProvider')) {
+    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+  }
 }
 
 // ----------------------------------------------------------------------------

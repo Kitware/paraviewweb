@@ -88,7 +88,7 @@ function parallelCoordinate(publicAPI, model) {
 
   function fetchSelectionData() {
     if (model.provider && model.provider.isA('SelectionProvider')) {
-      model.provider.resetSelectionHistogram2D(model.axes.getSelections());
+      model.provider.setSelection(model.axes.getSelections(), [] /* reset axis pairs to be empty */);
       model.axes.getAxesPairs().forEach(pair => {
         model.provider.loadSelectionHistogram2D(...pair);
       });
@@ -117,6 +117,7 @@ function parallelCoordinate(publicAPI, model) {
 
       // Fetch 2D Histogram
       if (model.provider.isA('Histogram2DProvider')) {
+        model.numberOfBins = model.provider.getHistogram2DNumberOfBins();
         dataToLoadCount += fieldNames.length - 1;
         for (let i = 1; i < fieldNames.length; i++) {
           // Return true if the data is already loaded
@@ -283,7 +284,9 @@ function parallelCoordinate(publicAPI, model) {
       glyphGroup
         .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5)}, ${glyphPadding})`)
         .on('click', (d, i) => {
-          model.axes.clearSelection(i);
+          if (d.annotated) {
+            model.axes.clearSelection(i);
+          }
         });
 
       glyphGroup.each(function applyLegendStyle(d, i) {
@@ -294,6 +297,7 @@ function parallelCoordinate(publicAPI, model) {
           .attr('width', glyphSize)
           .attr('height', glyphSize)
           .style('color', d.legend.color) // Firefox SVG use color bug workaround fix
+          .classed(style.clickable, d.annotated)
           .select('use')
           .classed(style.colorToFill, true) // Firefox SVG use color bug workaround fix
           .classed(style.blackStroke, true)
@@ -517,6 +521,8 @@ function parallelCoordinate(publicAPI, model) {
     // Update canvas area and drawable info
     updateSizeInformation();
 
+    model.hoverIndicatorHeight = model.drawableArea.height / model.numberOfBins;
+
     model.fgCanvas.width = model.canvas.width;
     model.fgCanvas.height = model.canvas.height;
     model.bgCanvas.width = model.canvas.width;
@@ -600,7 +606,7 @@ function parallelCoordinate(publicAPI, model) {
     drawAxisControls(model.axes.extractAxesControl(model));
   };
 
-  // -------------- Is needed? ----------------
+  // -------------- Used to speed up action of opacity sliders ----------------
   // function fastRender() {
   //   model.ctx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
 
@@ -623,78 +629,6 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisLabels(model.axes.extractLabels(model));
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
-
-  // function receivedHistogram(histIdx, histogram) {
-  //   histogramCount += 1;
-  //   histogramList[histIdx] = histogram;
-
-  //   if (histogram.y.delta === 0) {
-  //     histogram.y.delta = 1;
-  //     histogram.y.extent[1] = histogram.y.extent[0] + 1;
-  //   }
-
-  //   if (histogram.x.delta === 0) {
-  //     histogram.x.delta = 1;
-  //     histogram.x.extent[1] = histogram.x.extent[0] + 1;
-  //   }
-
-  //   axesDataRanges[histIdx] = histogram.y.extent.slice();
-
-  //   if (histIdx === axisList.length - 2) {
-  //     axesDataRanges[histIdx + 1] = histogram.x.extent.slice();
-  //   }
-
-  //   if (histogramCount === axisList.length - 1) { // We have received all histograms
-  //     maxBinCountOverAllHistograms = getMaxHistogramBinCount(histogramList);
-  //     render();
-  //   }
-  // }
-
-  // function retrieve2DHistogram(idx1, idx2) {
-  //   dataProvider.fetchHistogram2d(axisList[idx2], axisList[idx1], hist => {
-  //     receivedHistogram(idx1, hist);
-  //   }, numberOfBins);
-  // }
-
-  // function fetchHistograms() {
-  //   histogramList = [];
-  //   axesDataRanges = [];
-  //   histogramCount = 0;
-  //   maxBinCountOverAllHistograms = 0;
-
-  //   // Now fetch all the histograms
-  //   for (let k = 0; k < axisList.length - 1; ++k) {
-  //     retrieve2DHistogram(k, k + 1);
-  //   }
-  // }
-
-  // function fetchSelection() {
-  //   const histograms = [];
-
-  //   if (currentSelection !== null && dataProvider && dataProvider.querySelection) {
-  //     selectionResult = null;
-  //     maxBinCountOverAllSelections = 0;
-
-  //     for (let j = 0; j < axisList.length - 1; ++j) {
-  //       histograms.push([axisList[j + 1], axisList[j]]);
-  //     }
-  //     const query = {
-  //       ranges: currentSelection,
-  //       histograms,
-  //     };
-  //     dataProvider.querySelection(query, queryResult => {
-  //       maxBinCountOverAllSelections = getMaxHistogramBinCount(queryResult.counts[0]);
-  //       selectionResult = queryResult;
-  //       render();
-  //     });
-  //   }
-  // }
-
-  // function fetchData() {
-  //   fetchHistograms();
-  //   fetchSelection();
-  // }
-
 
   publicAPI.resize = () => {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
@@ -734,65 +668,66 @@ function parallelCoordinate(publicAPI, model) {
     }
   };
 
-  // function handleHoverBinUpdate(data) {
-  //   if (!model.axes.canRender() || model.containerHidden === true) {
-  //     // let's not do anything if we don't have enough axes for rendering.
-  //     return;
-  //   }
+  function binNumberToScreenOffset(binNumber, rightSideUp) {
+    let screenY = affine(0, binNumber, model.numberOfBins, model.canvasArea.height - model.borderOffsetBottom, model.borderOffsetTop);
+    screenY -= model.hoverIndicatorHeight;
 
-  //   // First update our internal data model
-  //   model.hoverBinData = [];
-  //   Object.keys(data.state).forEach(pName => {
-  //     const binList = data.state[pName];
-  //     if (binList.indexOf(-1) === -1) {
-  //       for (let i = 0; i < binList.length; ++i) {
-  //         model.hoverBinData.push({
-  //           name: pName,
-  //           bin: binList[i],
-  //         });
-  //       }
-  //     }
-  //   });
+    if (rightSideUp === false) {
+      screenY = affine(0, binNumber, model.numberOfBins, model.borderOffsetTop, model.canvasArea.height - model.borderOffsetBottom);
+    }
 
-  //   // Now manage the svg dom
-  //   const hoverBinNodes = d3
-  //     .select(model.container)
-  //     .select('svg')
-  //     .select('g.hover-bins')
-  //     .selectAll('rect.hover-bin-indicator')
-  //     .data(model.hoverBinData);
+    return perfRound(screenY);
+  }
 
-  //   hoverBinNodes
-  //     .enter()
-  //     .append('rect')
-  //     .classed('hover-bin-indicator', true);
+  function handleHoverBinUpdate(data) {
+    if (!model.axes.canRender() || model.containerHidden === true) {
+      // let's not do anything if we don't have enough axes for rendering.
+      return;
+    }
 
-  //   hoverBinNodes.exit().remove();
+    // First update our internal data model
+    model.hoverBinData = [];
+    Object.keys(data.state).forEach(pName => {
+      const binList = data.state[pName];
+      if (model.axes.getAxisByName(pName) && binList.indexOf(-1) === -1) {
+        for (let i = 0; i < binList.length; ++i) {
+          model.hoverBinData.push({
+            name: pName,
+            bin: binList[i],
+          });
+        }
+      }
+    });
 
-  //   const axesCenters = model.axes.extractAxesCenters(model);
-  //   d3.select(model.container)
-  //     .select('svg')
-  //     .select('g.hover-bins')
-  //     .selectAll('rect.hover-bin-indicator')
-  //     .attr('height', model.hoverIndicatorHeight)
-  //     .attr('width', model.hoverIndicatorWidth)
-  //     .attr('transform', (d, i) => {
-  //       const axis = model.axes.getAxisByName(d.name);
-  //       const screenOffset = binNumberToScreenOffset(d.bin, axis.isUpsideDown());
-  //       return `translate(${axesCenters[axis.idx] - (model.hoverIndicatorWidth / 2)}, ${screenOffset})`;
-  //     });
-  // }
+    // Now manage the svg dom
+    const hoverBinNodes = d3
+      .select(model.container)
+      .select('svg')
+      .select('g.hover-bins')
+      .selectAll('rect.hover-bin-indicator')
+      .data(model.hoverBinData);
 
-  // function handleSelectionChanged(sel) {
-  //   if (sel.type === 'range') {
-  //     const rangeMap = sel.ranges;
-  //     setSelection(rangeMap);
-  //     replaceAxisAnnotations(rangeMap);
-  //     fetchSelection();
-  //   } else if (sel.type === 'empty') {
-  //     clearSelection();
-  //   }
-  // }
+    hoverBinNodes
+      .enter()
+      .append('rect')
+      .classed(style.hoverBinIndicator, true)
+      .classed('hover-bin-indicator', true);
+
+    hoverBinNodes.exit().remove();
+
+    const axesCenters = model.axes.extractAxesCenters(model);
+    d3.select(model.container)
+      .select('svg')
+      .select('g.hover-bins')
+      .selectAll('rect.hover-bin-indicator')
+      .attr('height', model.hoverIndicatorHeight)
+      .attr('width', model.hoverIndicatorWidth)
+      .attr('transform', (d, i) => {
+        const axis = model.axes.getAxisByName(d.name);
+        const screenOffset = binNumberToScreenOffset(d.bin, !axis.isUpsideDown());
+        return `translate(${axesCenters[axis.idx] - (model.hoverIndicatorWidth / 2)}, ${screenOffset})`;
+      });
+  }
 
   // function addSubscriptions() {
   //   topicSubscriptions.push(dataProvider.onParameterValueChanged(event => {
@@ -835,8 +770,17 @@ function parallelCoordinate(publicAPI, model) {
       model.subscriptions.push(model.provider[method](fetchData));
     }
   });
+  ['onHoverBinChange'].forEach(method => {
+    if (model.provider[method]) {
+      model.subscriptions.push(model.provider[method](handleHoverBinUpdate));
+    }
+  });
 
   if (model.provider.isA('SelectionProvider')) {
+    model.subscriptions.push(model.provider.onSelectionChange(sel => {
+      model.axes.resetSelections(sel, false);
+      publicAPI.render();
+    }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       fetchSelectionData();
       publicAPI.render();
@@ -881,6 +825,11 @@ const DEFAULT_VALUES = {
 
   selectionOpacityAdjustment: 1,
   polygonOpacityAdjustment: 1,
+
+  hoverIndicatorHeight: 10,
+  hoverIndicatorWidth: 7,
+
+  numberOfBins: 128,
 };
 
 // ----------------------------------------------------------------------------
