@@ -284,7 +284,9 @@ function parallelCoordinate(publicAPI, model) {
       glyphGroup
         .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5)}, ${glyphPadding})`)
         .on('click', (d, i) => {
-          model.axes.clearSelection(i);
+          if (d.annotated) {
+            model.axes.clearSelection(i);
+          }
         });
 
       glyphGroup.each(function applyLegendStyle(d, i) {
@@ -295,6 +297,7 @@ function parallelCoordinate(publicAPI, model) {
           .attr('width', glyphSize)
           .attr('height', glyphSize)
           .style('color', d.legend.color) // Firefox SVG use color bug workaround fix
+          .classed(style.clickable, (data, idx) => d.annotated)
           .select('use')
           .classed(style.colorToFill, true) // Firefox SVG use color bug workaround fix
           .classed(style.blackStroke, true)
