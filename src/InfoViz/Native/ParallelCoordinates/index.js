@@ -297,7 +297,7 @@ function parallelCoordinate(publicAPI, model) {
           .attr('width', glyphSize)
           .attr('height', glyphSize)
           .style('color', d.legend.color) // Firefox SVG use color bug workaround fix
-          .classed(style.clickable, (data, idx) => d.annotated)
+          .classed(style.clickable, d.annotated)
           .select('use')
           .classed(style.colorToFill, true) // Firefox SVG use color bug workaround fix
           .classed(style.blackStroke, true)
@@ -689,7 +689,7 @@ function parallelCoordinate(publicAPI, model) {
     model.hoverBinData = [];
     Object.keys(data.state).forEach(pName => {
       const binList = data.state[pName];
-      if (binList.indexOf(-1) === -1) {
+      if (model.axes.getAxisByName(pName) && binList.indexOf(-1) === -1) {
         for (let i = 0; i < binList.length; ++i) {
           model.hoverBinData.push({
             name: pName,

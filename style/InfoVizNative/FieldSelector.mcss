@@ -92,5 +92,5 @@
 }
 
 .binHilite {
-  fill: blue !important;
+  fill: blue;
 }
