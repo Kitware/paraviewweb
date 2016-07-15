@@ -11917,7 +11917,10 @@
 
 	  publicAPI.setContainer = function (el) {
 	    if (model.container) {
-	      _d2.default.select(model.container).select('div.fieldSelector').remove();
+	      while (model.container.firstChild) {
+	        model.container.removeChild(model.container.firstChild);
+	      }
+	      model.container = null;
 	    }
 
 	    model.container = el;
@@ -11925,6 +11928,8 @@
 	    if (el) {
 	      _d2.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden');
 	      _d2.default.select(model.container).html(_template2.default);
+	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
+
 	      model.fieldShowHistogram = model.fieldShowHistogram && model.provider.isA('Histogram1DProvider');
 	      // append headers for histogram columns
 	      if (model.fieldShowHistogram) {
@@ -12192,7 +12197,7 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_fieldSelector_RsKhz {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #7D86B3;\n  stroke: #7D86B3;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -12202,6 +12207,7 @@
 		"jsHistRect": "FieldSelector_jsHistRect_27Pen",
 		"jsLegend": "FieldSelector_jsLegend_2QXvQ",
 		"jsSparkline": "FieldSelector_jsSparkline_2Vxgk",
+		"fieldSelector": "FieldSelector_fieldSelector_RsKhz",
 		"icon": "FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
 		"selectedFieldsIcon": "FieldSelector_selectedFieldsIcon_1jfaz FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
 		"allFieldsIcon": "FieldSelector_allFieldsIcon_2DXP5 FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",

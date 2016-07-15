@@ -56,7 +56,7 @@
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _FieldSelector = __webpack_require__(28);
+	var _FieldSelector = __webpack_require__(29);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -64,26 +64,27 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _FieldProvider = __webpack_require__(32);
+	var _FieldProvider = __webpack_require__(33);
 
 	var _FieldProvider2 = _interopRequireDefault(_FieldProvider);
 
-	var _LegendProvider = __webpack_require__(33);
+	var _LegendProvider = __webpack_require__(34);
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _Histogram1DProvider = __webpack_require__(47);
+	var _Histogram1DProvider = __webpack_require__(48);
 
 	var _Histogram1DProvider2 = _interopRequireDefault(_Histogram1DProvider);
 
-	var _state = __webpack_require__(48);
+	var _state = __webpack_require__(49);
 
 	var _state2 = _interopRequireDefault(_state);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var bodyElt = document.querySelector('body');
-	var defaultHeight = '500px';
+	// '100vh' is 100% of the current screen height
+	var defaultHeight = '100vh';
 
 	var histogramSelectorContainer = document.createElement('div');
 	histogramSelectorContainer.style.position = 'relative';
@@ -20881,22 +20882,15 @@
 	  value: true
 	});
 	exports.newInstance = undefined;
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	/* eslint-disable import/no-unresolved */
-
-	/* eslint-enable import/no-unresolved */
-
-
 	exports.extend = extend;
 
 	var _CompositeClosureHelper = __webpack_require__(14);
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _d2 = __webpack_require__(17);
+	var _d = __webpack_require__(17);
 
-	var _d3 = _interopRequireDefault(_d2);
+	var _d2 = _interopRequireDefault(_d);
 
 	var _HistogramSelector = __webpack_require__(18);
 
@@ -20906,9 +20900,11 @@
 
 	var _D3MultiClick2 = _interopRequireDefault(_D3MultiClick);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _Score = __webpack_require__(28);
 
-	// import template from './template.html';
+	var _Score2 = _interopRequireDefault(_Score);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// ----------------------------------------------------------------------------
 	// Histogram Selector
@@ -20935,47 +20931,54 @@
 	// provides an integral number of histograms across the container's width.
 	//
 
-	// This function modifies the Transform property
-	// of the rows of the grid. Instead of creating new
-	// rows filled with DOM elements.
-	var transformCSSProp = function tcssp(property) {
-	  var prefixes = ['webkit', 'ms', 'Moz', 'O'];
-	  var i = -1;
-	  var n = prefixes.length;
-	  var s = document.body.style;
-
-	  if (property.toLowerCase() in s) {
-	    return property.toLowerCase();
-	  }
-
-	  while (++i < n) {
-	    if (prefixes[i] + property in s) {
-	      return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
-	    }
-	  }
-
-	  return false;
-	}('Transform');
-
-	// Apply our desired attributes to the grid rows
-	function styleRows(selection, self) {
-	  selection.classed(_HistogramSelector2.default.row, true).style('height', self.boxHeight + 'px').style(transformCSSProp, function (d, i) {
-	    return 'translate3d(0,' + d.key * self.boxHeight + 'px,0)';
-	  });
-	}
-
-	// apply our desired attributes to the boxes of a row
-	function styleBoxes(selection, self) {
-	  selection.style('width', self.boxWidth + 'px').style('height', self.boxHeight + 'px')
-	  // .style('margin', `${self.boxMargin / 2}px`)
-	  ;
-	}
-
+	/* eslint-enable import/no-unresolved */
 	function histogramSelector(publicAPI, model) {
 	  // in contact-sheet mode, specify the largest width a histogram can grow
 	  // to before more histograms are created to fill the container's width
 	  var maxBoxSize = 240;
 	  var legendSize = 15;
+	  var displayOnlySelected = false;
+
+	  var lastNumFields = 0;
+
+	  _Score2.default.init(publicAPI, model);
+
+	  // This function modifies the Transform property
+	  // of the rows of the grid. Instead of creating new
+	  // rows filled with DOM elements. Inside histogramSelector()
+	  // to make sure document.head/body exists.
+	  var transformCSSProp = function tcssp(property) {
+	    var prefixes = ['webkit', 'ms', 'Moz', 'O'];
+	    var i = -1;
+	    var n = prefixes.length;
+	    var s = document.head ? document.head.style : document.body ? document.body.style : null;
+
+	    if (s === null || property.toLowerCase() in s) {
+	      return property.toLowerCase();
+	    }
+
+	    while (++i < n) {
+	      if (prefixes[i] + property in s) {
+	        return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
+	      }
+	    }
+
+	    return false;
+	  }('Transform');
+
+	  // Apply our desired attributes to the grid rows
+	  function styleRows(selection, self) {
+	    selection.classed(_HistogramSelector2.default.row, true).style('height', self.boxHeight + 'px').style(transformCSSProp, function (d, i) {
+	      return 'translate3d(0,' + d.key * self.boxHeight + 'px,0)';
+	    });
+	  }
+
+	  // apply our desired attributes to the boxes of a row
+	  function styleBoxes(selection, self) {
+	    selection.style('width', self.boxWidth + 'px').style('height', self.boxHeight + 'px')
+	    // .style('margin', `${self.boxMargin / 2}px`)
+	    ;
+	  }
 
 	  function svgWidth() {
 	    return model.histWidth + model.histMargin.left + model.histMargin.right;
@@ -21021,7 +21024,7 @@
 
 	  function updateSizeInformation(singleMode) {
 	    var updateBoxPerRow = false;
-	    var clientRect = model.container.getBoundingClientRect();
+	    var clientRect = model.listContainer.getBoundingClientRect();
 
 	    // hard coded because I did not figure out how to
 	    // properly query this value from our container.
@@ -21067,139 +21070,24 @@
 	    return foundRow;
 	  }
 
-	  // --- scoring interface ---
-	  function createDefaultDivider(val) {
-	    return {
-	      value: val,
-	      uncertainty: 0
-	    };
+	  var fieldHeaderClick = function fieldHeaderClick(d) {
+	    displayOnlySelected = !displayOnlySelected;
+	    publicAPI.render();
+	  };
+
+	  function createHeader(divSel) {
+	    var header = divSel.append('div').classed(_HistogramSelector2.default.header, true).style('height', model.headerSize + 'px');
+	    header.append('span').on('click', fieldHeaderClick).append('i').classed(_HistogramSelector2.default.jsFieldsIcon, true);
+	    header.append('span').classed(_HistogramSelector2.default.jsHeaderLabel, true).on('click', fieldHeaderClick);
+	    _Score2.default.createHeader(header);
 	  }
 
-	  // create a sorting helper method, to sort dividers based on div.value
-	  // D3 bug: just an accessor didn't work - must use comparator function
-	  var bisectDividers = _d3.default.bisector(function (a, b) {
-	    return a.value - b.value;
-	  }).left;
-
-	  // where are we (to the left of) in the divider list?
-	  // Did we hit one?
-	  function dividerPick(overCoords, def, marginPx, minVal) {
-	    var val = def.xScale.invert(overCoords[0]);
-	    var index = bisectDividers(def.dividers, createDefaultDivider(val));
-	    var hitIndex = -1;
-	    if (def.dividers.length > 0) {
-	      if (index === 0) {
-	        hitIndex = 0;
-	      } else if (index === def.dividers.length) {
-	        hitIndex = index - 1;
-	      } else {
-	        hitIndex = def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1;
-	      }
-	      var margin = def.xScale.invert(marginPx) - minVal;
-	      if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
-	        // we weren't close enough...
-	        hitIndex = -1;
-	      }
-	    }
-	    return [val, index, hitIndex];
-	  }
-	  function scoreRegionPick(overCoords, def, hobj) {
-	    if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
-	    var val = def.xScale.invert(overCoords[0]);
-	    var hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
-	    return hitIndex;
-	  }
-
-	  function finishDivider(def, hobj) {
-	    var val = def.dragDivider.newDivider.value;
-	    // if val is defined, we moved an existing divider inside
-	    // its region, and we just need to render. Otherwise...
-	    if (val !== undefined) {
-	      // drag 30 pixels out of the hist to delete.
-	      var dragOut = def.xScale.invert(30) - hobj.min;
-	      if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
-	        if (def.dragDivider.index >= 0) {
-	          // delete a region.
-	          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
-	            def.regions.splice(def.dragDivider.index, 1);
-	          } else {
-	            def.regions.splice(def.dragDivider.index + 1, 1);
-	          }
-	          // console.log('del reg ', def.regions);
-	          // delete the divider.
-	          def.dividers.splice(def.dragDivider.index, 1);
-	          // console.log('del div ', def.dividers);
-	        }
-	      } else {
-	        // if we moved a divider, delete the old region
-	        if (def.dragDivider.index >= 0) {
-	          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
-	            def.regions.splice(def.dragDivider.index, 1);
-	          } else {
-	            def.regions.splice(def.dragDivider.index + 1, 1);
-	          }
-	          // console.log('del reg ', def.regions);
-	          // delete the old divider
-	          def.dividers.splice(def.dragDivider.index, 1);
-	          // console.log('del div ', def.dividers);
-	        }
-	        // add a new divider
-	        def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
-	        // find the index based on dividers sorted by divider.value
-	        var index = bisectDividers(def.dividers, def.dragDivider.newDivider);
-	        def.dividers.splice(index, 0, def.dragDivider.newDivider);
-	        // console.log('add div ', index, def.dividers);
-	        // add a new region, copies the score of existing region.
-	        def.regions.splice(index, 0, def.regions[index]);
-	        // console.log('add reg ', index, def.regions);
-	      }
-	    }
-	    def.dragDivider = undefined;
-	  }
-
-	  function showScorePopup(scorePopupDiv, coord, selRow) {
-	    // it seemed like a good idea to use getBoundingClientRect() to determine row height
-	    // but it returns all zeros when the popup has been invisible...
-	    var topMargin = 4;
-	    var rowHeight = 13;
-
-	    scorePopupDiv.style('display', 'initial').style('left', coord[0] - topMargin - 0.5 * rowHeight + 'px').style('top', coord[1] - topMargin - (0.7 + selRow) * rowHeight + 'px');
-	    scorePopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
-	      var interp = _d3.default.interpolateRgb('#fff', d.color);
-	      return interp(i === selRow ? 0.4 : 0.2);
-	    });
-	  }
-
-	  function createScorePopup() {
-	    var scorePopupDiv = _d3.default.select(model.container).append('div').classed(_HistogramSelector2.default.scorePopup, true).style('display', 'none').on('mouseleave', function () {
-	      scorePopupDiv.style('display', 'none');
-	      model.selectedDef.dragDivider = undefined;
-	    });
-	    // create radio-buttons that allow choosing the score for the selected region
-	    var scoreChoices = scorePopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
-	    scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
-	      return d.name;
-	    }).append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
-	      return d.name;
-	    }).property('checked', function (d, i) {
-	      return i === model.defaultScore;
-	    }).on('click', function (d, i) {
-	      // use click, not change, so we get notified even when current value is chosen.
-	      var def = model.selectedDef;
-	      def.regions[def.hitRegionIndex] = i;
-	      def.dragDivider = undefined;
-	      scorePopupDiv.style('display', 'none');
-	      publicAPI.render();
-	    });
-	    // create a button for creating a new divider, so we don't require
-	    // the invisible alt/ctrl click to create one.
-	    scorePopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New |').on('click', function () {
-	      var hobj = model.provider.getHistogram1D(model.selectedDef.name);
-	      if (hobj !== null) finishDivider(model.selectedDef, hobj);
-	      scorePopupDiv.style('display', 'none');
-	      publicAPI.render();
-	    });
-	    return scorePopupDiv;
+	  function updateHeader(dataLength) {
+	    _d2.default.select('.' + _HistogramSelector2.default.jsFieldsIcon)
+	    // apply class - 'false' should come first to not remove common base class.
+	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
+	    _Score2.default.updateHeader();
 	  }
 
 	  publicAPI.resize = function () {
@@ -21208,6 +21096,7 @@
 	    var clientRect = model.container.getBoundingClientRect();
 	    if (clientRect.width !== 0 && clientRect.height !== 0) {
 	      model.containerHidden = false;
+	      _d2.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
 	      publicAPI.render();
 	    } else {
 	      model.containerHidden = true;
@@ -21215,6 +21104,8 @@
 	  };
 
 	  publicAPI.render = function () {
+	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
 	    if (model.needData) {
 	      fetchData();
 	      return;
@@ -21222,14 +21113,20 @@
 	    if (model.container === null) return;
 
 	    var updateBoxPerRow = updateSizeInformation(model.singleMode);
-	    if (updateBoxPerRow) {
+
+	    var fieldNames = [];
+	    // Initialize fields
+	    if (model.provider.isA('FieldProvider')) {
+	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
+	    }
+	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
+
+	    updateHeader(fieldNames.length);
+	    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
+	      lastNumFields = fieldNames.length;
+
 	      // get the data and put it into the nest based on the
 	      // number of boxesPerRow
-	      var fieldNames = [];
-	      // Initialize fields
-	      if (model.provider.isA('FieldProvider')) {
-	        fieldNames = model.provider.getFieldNames();
-	      }
 	      var mungedData = fieldNames.map(function (name) {
 	        var d = model.provider.getField(name);
 	        if (typeof d.selectedGen === 'undefined') {
@@ -21257,26 +21154,18 @@
 	    var newHeight = Math.ceil(model.nest.length * model.boxHeight) + 'px';
 	    model.parameterList.style('height', newHeight);
 
-	    // if we went from less than a page to something that has to scroll
-	    // then resize again, no clue why
-	    // if (newHeight > clientHeight && model.lastHeight < clientHeight) {
-	    //   model.lastHeight = newHeight;
-	    //   publicAPI.render();
-	    //   return;
-	    // }
-
 	    if (!model.nest) return;
 
 	    // if we've changed view modes, single <==> contact sheet,
 	    // we need to re-scroll.
 	    if (model.scrollToName !== null) {
 	      var topRow = getFieldRow(model.scrollToName);
-	      model.container.scrollTop = topRow * model.boxHeight;
+	      model.listContainer.scrollTop = topRow * model.boxHeight;
 	      model.scrollToName = null;
 	    }
 
 	    // scroll distance, in pixels.
-	    var scrollY = model.container.scrollTop;
+	    var scrollY = model.listContainer.scrollTop;
 	    // convert scroll from pixels to rows, get one row above (-1)
 	    var offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
 
@@ -21301,7 +21190,7 @@
 	        reusableNode = exitNodes[0][i];
 	        if (reusableNode) {
 	          exitNodes[0][i] = undefined;
-	          _d3.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
+	          _d2.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
 	          return reusableNode;
 	        }
 	      }
@@ -21322,14 +21211,8 @@
 	    // free up any extra boxes
 	    boxes.exit().remove();
 
-	    // create a floating control to set scores, when needed.
-	    var scorePopupDiv = null;
-	    if (typeof model.scores !== 'undefined') {
-	      scorePopupDiv = _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsScorePopup);
-	      if (scorePopupDiv.empty()) {
-	        scorePopupDiv = createScorePopup();
-	      }
-	    }
+	    // scoring interface - create floating controls to set scores, values, when needed.
+	    _Score2.default.createPopups();
 
 	    // for every item that has data, create all the sub-elements
 	    // and size them correctly based on our data
@@ -21348,20 +21231,20 @@
 	      }
 
 	      // get existing sub elements
-	      var ttab = _d3.default.select(this);
+	      var ttab = _d2.default.select(this);
 	      var trow1 = ttab.select('tr.' + _HistogramSelector2.default.jsLegendRow);
 	      var trow2 = ttab.select('tr.' + _HistogramSelector2.default.jsTr2);
 	      var tdsl = trow2.select('td.' + _HistogramSelector2.default.jsSparkline);
 	      var legendCell = trow1.select('.' + _HistogramSelector2.default.jsLegend);
 	      var fieldCell = trow1.select('.' + _HistogramSelector2.default.jsFieldName);
 	      var svgGr = tdsl.select('svg').select('.' + _HistogramSelector2.default.jsGHist);
-	      var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
+	      // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
 	      // if they are not created yet then create them
 	      if (trow1.empty()) {
 	        trow1 = ttab.append('tr').classed(_HistogramSelector2.default.legendRow, true).on('click', (0, _D3MultiClick2.default)([function singleClick(d, i) {
 	          // single click handler
-	          // const overCoords = d3.mouse(model.container);
+	          // const overCoords = d3.mouse(model.listContainer);
 	          updateData(d);
 	        }, function doubleClick(d, i) {
 	          // double click handler
@@ -21369,7 +21252,7 @@
 	          model.scrollToName = d.name;
 	          publicAPI.render();
 
-	          _d3.default.event.stopPropagation();
+	          _d2.default.event.stopPropagation();
 	        }]));
 	        trow2 = ttab.append('tr').classed(_HistogramSelector2.default.jsTr2, true);
 	        tdsl = trow2.append('td').classed(_HistogramSelector2.default.sparkline, true).attr('colspan', '2');
@@ -21382,12 +21265,10 @@
 	        // nested groups inside main group
 	        svgGr.append('g').classed(_HistogramSelector2.default.axis, true);
 	        svgGr.append('g').classed(_HistogramSelector2.default.jsGRect, true);
-	        // svgGr.append('g')
-	        //   .classed(style.brush, true);
-	        svgGr.append('g').classed(_HistogramSelector2.default.score, true);
-	        svgOverlay = svgGr.append('rect').classed(_HistogramSelector2.default.overlay, true).style('cursor', 'default');
+	        // scoring interface
+	        _Score2.default.createGroups(svgGr);
 	      }
-	      var dataActive = model.provider.getField(def.name).active;
+	      var dataActive = def.active;
 	      // Apply legend
 	      if (model.provider.isA('LegendProvider')) {
 	        var _model$provider$getLe = model.provider.getLegend(def.name);
@@ -21413,7 +21294,7 @@
 	      var hobj = model.provider.getHistogram1D(def.name);
 	      if (hobj !== null) {
 	        (function () {
-	          var cmax = 1.0 * _d3.default.max(hobj.counts);
+	          var cmax = 1.0 * _d2.default.max(hobj.counts);
 	          var hsize = hobj.counts.length;
 	          var hdata = svgGr.select('.' + _HistogramSelector2.default.jsGRect).selectAll('.' + _HistogramSelector2.default.jsHistRect).data(hobj.counts);
 
@@ -21454,21 +21335,26 @@
 	          // });
 
 	          // Show an x-axis with just min/max displayed.
-	          // Attach scale, axis and brush objects to this box's
+	          // Attach scale, axis objects to this box's
 	          // data (the 'def' object) to allow persistence when scrolled.
 	          if (typeof def.xScale === 'undefined') {
-	            def.xScale = _d3.default.scale.linear();
+	            def.xScale = _d2.default.scale.linear();
 	          }
-	          def.xScale.range([0, model.histWidth]).domain([hobj.min, hobj.max]);
+	          def.xScale.rangeRound([0, model.histWidth]).domain([hobj.min, hobj.max]);
 
 	          if (typeof def.xAxis === 'undefined') {
-	            var formatter = _d3.default.format('.3s');
-	            def.xAxis = _d3.default.svg.axis().tickFormat(formatter).orient('bottom');
+	            var formatter = _d2.default.format('.3s');
+	            def.xAxis = _d2.default.svg.axis().tickFormat(formatter).orient('bottom');
 	          }
 	          def.xAxis.scale(def.xScale);
 	          var numTicks = model.singleMode ? 5 : 2;
 	          if (model.singleMode) {
-	            def.xAxis.tickValues(null).ticks(numTicks);
+	            // using .ticks() results in skipping min/max values,
+	            // if they aren't 'nice'. Make exactly 5 ticks.
+	            var myTicks = _d2.default.range(numTicks).map(function (d) {
+	              return hobj.min + d / (numTicks - 1) * (hobj.max - hobj.min);
+	            });
+	            def.xAxis.tickValues(myTicks);
 	          } else {
 	            def.xAxis.tickValues(def.xScale.domain());
 	          }
@@ -21483,200 +21369,21 @@
 	          gAxis.selectAll('line').classed(_HistogramSelector2.default.axisLine, true);
 	          gAxis.selectAll('path').classed(_HistogramSelector2.default.axisPath, true);
 
-	          var getMouseCoords = function getMouseCoords() {
-	            // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
-	            var coord = _d3.default.mouse(tdsl.node());
-	            return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
-	          };
-
-	          // scoring interface
-	          if (typeof model.scores !== 'undefined') {
-	            (function () {
-	              if (typeof def.dividers === 'undefined') {
-	                def.dividers = [];
-	                def.regions = [model.defaultScore];
-	                def.editScore = false;
-	              }
-
-	              var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
-	              var drag = null;
-	              if (def.editScore) {
-	                // add temp dragged divider, if needed.
-	                var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
-	                var dividers = gScore.selectAll('line').data(dividerData);
-	                dividers.enter().append('line');
-	                dividers.attr('x1', function (d) {
-	                  return def.xScale(d.value);
-	                }).attr('y1', 0).attr('x2', function (d) {
-	                  return def.xScale(d.value);
-	                }).attr('y2', function () {
-	                  return model.histHeight;
-	                }).attr('stroke-width', 1).attr('stroke', 'black');
-	                dividers.exit().remove();
-	                // divider interaction events.
-	                // Drag flow: drag a divider inside its current neighbors.
-	                // A divider outside its neighbors or a new divider is a temp divider,
-	                // added to the end of the list when rendering. Doesn't affect regions that way.
-	                drag = _d3.default.behavior.drag().on('dragstart', function () {
-	                  var overCoords = getMouseCoords();
-
-	                  var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-
-	                  var _dividerPick2 = _slicedToArray(_dividerPick, 3);
-
-	                  var val = _dividerPick2[0];
-	                  var hitIndex = _dividerPick2[2];
-
-	                  if (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey) {
-	                    // create a temp divider to render.
-	                    def.dragDivider = { index: -1,
-	                      newDivider: createDefaultDivider(val),
-	                      low: hobj.min,
-	                      high: hobj.max
-	                    };
-	                    publicAPI.render();
-	                  } else {
-	                    if (hitIndex >= 0) {
-	                      // start dragging existing divider
-	                      // it becomes a temporary copy if we go outside our bounds
-	                      def.dragDivider = { index: hitIndex,
-	                        newDivider: createDefaultDivider(),
-	                        low: hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value,
-	                        high: hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value
-	                      };
-	                      // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
-	                    }
-	                  }
-	                }).on('drag', function () {
-	                  var overCoords = getMouseCoords();
-	                  if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
-	                  var val = def.xScale.invert(overCoords[0]);
-	                  if (def.dragDivider.index >= 0) {
-	                    // if we drag outside our bounds, make this a 'temporary' extra divider.
-	                    if (val < def.dragDivider.low) {
-	                      def.dragDivider.newDivider.value = val;
-	                      def.dividers[def.dragDivider.index].value = def.dragDivider.low;
-	                    } else if (val > def.dragDivider.high) {
-	                      def.dragDivider.newDivider.value = val;
-	                      def.dividers[def.dragDivider.index].value = def.dragDivider.high;
-	                    } else {
-	                      def.dividers[def.dragDivider.index].value = val;
-	                      def.dragDivider.newDivider.value = undefined;
-	                    }
-	                  } else {
-	                    def.dragDivider.newDivider.value = val;
-	                  }
-	                  publicAPI.render();
-	                }).on('dragend', function () {
-	                  if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
-	                  finishDivider(def, hobj);
-	                  publicAPI.render();
-	                });
-	              } else {
-	                gScore.selectAll('line').remove();
-	              }
-
-	              // score regions
-	              // there are implicit bounds at the min and max.
-	              var regionBounds = [hobj.min].concat(def.dividers.map(function (div) {
-	                return div.value;
-	              }), hobj.max);
-	              var scoreRegions = gScore.selectAll('rect').data(def.regions);
-
-	              // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-	              var showScore = def.editScore || def.regions.length > 1 || def.regions[0] !== model.defaultScore;
-	              scoreRegions.enter().append('rect').classed(_HistogramSelector2.default.scoreRegion, true);
-	              scoreRegions.attr('x', function (d, i) {
-	                return def.xScale(regionBounds[i]);
-	              }).attr('y', def.editScore ? 0 : model.histHeight)
-	              // width might be zero if a divider is dragged all the way to min/max.
-	              .attr('width', function (d, i) {
-	                return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]);
-	              }).attr('height', def.editScore ? model.histHeight : model.histMargin.bottom).attr('fill', function (d) {
-	                return model.scores[d].color;
-	              }).attr('opacity', showScore ? '0.2' : '0');
-	              scoreRegions.exit().remove();
-
-	              // invisible overlay to catch mouse events.
-	              svgOverlay.attr('width', model.histWidth).attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
-	              .on('click', function () {
-	                // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
-	                if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
-	                var overCoords = getMouseCoords();
-	                if (overCoords[1] > model.histHeight) {
-	                  def.editScore = !def.editScore;
-	                  svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
-	                  publicAPI.render();
-	                  return;
-	                }
-	                if (def.editScore) {
-	                  // if we didn't create or pick a divider, pick a region
-	                  var hitRegionIndex = scoreRegionPick(overCoords, def, hobj);
-	                  // select a def, show popup.
-	                  def.hitRegionIndex = hitRegionIndex;
-	                  // create a temp divider in case we choose 'new |' from the popup.
-	                  /* eslint-disable array-bracket-spacing */
-
-	                  var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-
-	                  var _dividerPick4 = _slicedToArray(_dividerPick3, 2);
-
-	                  var val = _dividerPick4[0];
-	                  /* eslint-enable array-bracket-spacing */
-
-	                  if (typeof def.dragDivider === 'undefined') {
-	                    def.dragDivider = { index: -1,
-	                      newDivider: createDefaultDivider(val),
-	                      low: hobj.min,
-	                      high: hobj.max
-	                    };
-	                  } else {
-	                    def.dragDivider.newDivider.value = val;
-	                  }
-	                  model.selectedDef = def;
-	                  var coord = _d3.default.mouse(model.parameterList.node());
-
-	                  var selRow = def.regions[def.hitRegionIndex];
-	                  showScorePopup(scorePopupDiv, coord, selRow);
-	                }
-	              }).on('mousemove', function () {
-	                var overCoords = getMouseCoords();
-	                if (def.editScore) {
-	                  var _dividerPick5 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-
-	                  var _dividerPick6 = _slicedToArray(_dividerPick5, 3);
-
-	                  var hitIndex = _dividerPick6[2];
-
-	                  var cursor = 'pointer';
-	                  // if we're over the bottom, indicate a click will shrink regions
-	                  if (overCoords[1] > model.histHeight) cursor = 's-resize';
-	                  // if we're over a divider, indicate drag-to-move
-	                  else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
-	                    // if modifiers are held down, we'll create a divider
-	                    else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
-	                  svgOverlay.style('cursor', cursor);
-	                } else {
-	                  // over the bottom, indicate we can start editing regions
-	                  var pickIt = overCoords[1] > model.histHeight;
-	                  svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
-	                }
-	              });
-	              if (def.editScore) {
-	                svgOverlay.call(drag);
-	              } else {
-	                svgOverlay.on('.drag', null);
-	              }
-	            })();
-	          }
+	          _Score2.default.prepareItem(def, idx, svgGr, hobj, tdsl);
 	        })();
 	      }
 	    }
 
 	    // make sure all the elements are created
 	    // and updated
-	    boxes.each(prepareItem);
-	    boxes.call(styleBoxes, model);
+	    if (onlyFieldName === null) {
+	      boxes.each(prepareItem);
+	      boxes.call(styleBoxes, model);
+	    } else {
+	      boxes.filter(function (def) {
+	        return def.name === onlyFieldName;
+	      }).each(prepareItem);
+	    }
 	  };
 
 	  publicAPI.setContainer = function (element) {
@@ -21690,10 +21397,15 @@
 	    model.container = element;
 
 	    if (model.container !== null) {
-	      model.parameterList = _d3.default.select(model.container).append('div').classed(_HistogramSelector2.default.histogramSelector, true);
-	      _d3.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {
+	      var cSel = _d2.default.select(model.container).style('overflow-y', 'hidden');
+	      createHeader(cSel);
+	      // wrapper height is set insize resize()
+	      var wrapper = cSel.append('div').style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {
 	        publicAPI.render();
 	      });
+
+	      model.listContainer = wrapper.node();
+	      model.parameterList = wrapper.append('div').classed(_HistogramSelector2.default.histogramSelector, true);
 
 	      publicAPI.resize();
 	    }
@@ -21714,13 +21426,16 @@
 	// Object factory
 	// ----------------------------------------------------------------------------
 
+	// import template from './template.html';
+
+	/* eslint-disable import/no-unresolved */
 	var DEFAULT_VALUES = {
 	  container: null,
 	  provider: null,
+	  listContainer: null,
 	  needData: true,
 	  containerHidden: false,
 
-	  displayUnselected: true,
 	  parameterList: null,
 	  nest: null, // nested aray of data nest[rows][boxes]
 	  boxesPerRow: 0,
@@ -21734,8 +21449,8 @@
 	  histMargin: { top: 3, right: 3, bottom: 18, left: 3 },
 	  histWidth: 90,
 	  histHeight: 70,
-	  lastHeight: 0,
 	  lastOffset: -1,
+	  headerSize: 20,
 	  // scoring interface activated by passing in 'scores' array externally.
 	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
 	  defaultScore: 0,
@@ -31809,32 +31524,47 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, ".HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  top: 0px;\n  position: absolute;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm,\n.HistogramSelector_jsTr3_3tfy_ {\n\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff !important;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 2px 2px 1px 2px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff !important;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #999;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 0 auto;\n  border-width: 2px;\n  border-spacing: 0px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #999;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scorePopup_1LiN9 {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: none;\n  padding: 0px;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredIcon_3z54w,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff !important;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 2px 2px 1px 2px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff !important;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #999;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 0 auto;\n  border-width: 2px;\n  border-spacing: 0px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #999;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  fill: #7D86B3;\n  stroke: #ccc;\n  stroke-width: 1px;\n}\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 3px;\n  padding: 1px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 3px;\n  padding: 1px;\n  width: 100%;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
-		"histogramSelector": "HistogramSelector_histogramSelector_1OZH8",
 		"jsAxis": "HistogramSelector_jsAxis_3kY6B",
 		"jsBox": "HistogramSelector_jsBox_3Lo_R",
 		"jsBrush": "HistogramSelector_jsBrush_1IvpA",
+		"jsDividerPopup": "HistogramSelector_jsDividerPopup_2t15b",
+		"jsDividerUncertaintyInput": "HistogramSelector_jsDividerUncertaintyInput_2b0at",
+		"jsDividerValueInput": "HistogramSelector_jsDividerValueInput_2O_Nf",
 		"jsFieldName": "HistogramSelector_jsFieldName_1yNQB",
+		"jsFieldsIcon": "HistogramSelector_jsFieldsIcon_lhO9n",
 		"jsGHist": "HistogramSelector_jsGHist_ZQa9E",
 		"jsGRect": "HistogramSelector_jsGRect_2e6-V",
+		"jsHeaderLabel": "HistogramSelector_jsHeaderLabel_3vSys",
 		"jsHistRect": "HistogramSelector_jsHistRect_2uU6Y",
 		"jsLegend": "HistogramSelector_jsLegend_2mIDN",
 		"jsLegendRow": "HistogramSelector_jsLegendRow_38X9b",
-		"jsScore": "HistogramSelector_jsScore_1gbB8",
 		"jsOverlay": "HistogramSelector_jsOverlay_352at",
+		"jsScore": "HistogramSelector_jsScore_1gbB8",
+		"jsScoreBackground": "HistogramSelector_jsScoreBackground_2-WfA",
 		"jsScoreChoice": "HistogramSelector_jsScoreChoice_2vuVI",
+		"jsScoreDivLabel": "HistogramSelector_jsScoreDivLabel_1luPi",
+		"jsScoredIcon": "HistogramSelector_jsScoredIcon_3z54w",
+		"jsScoredHeader": "HistogramSelector_jsScoredHeader_2xv_q",
 		"jsScoreLabel": "HistogramSelector_jsScoreLabel_A3Ijp",
 		"jsScorePopup": "HistogramSelector_jsScorePopup_3i0QG",
+		"jsScoreRect": "HistogramSelector_jsScoreRect_24LOm",
+		"jsScoreUncertainty": "HistogramSelector_jsScoreUncertainty_3Q1FA",
 		"jsSparkline": "HistogramSelector_jsSparkline_1zBX0",
 		"jsTr2": "HistogramSelector_jsTr2_hFTsm",
-		"jsTr3": "HistogramSelector_jsTr3_3tfy_",
+		"histogramSelector": "HistogramSelector_histogramSelector_1OZH8",
+		"header": "HistogramSelector_header_Pm09R",
 		"hidden": "HistogramSelector_hidden_2YiXo",
 		"icon": "HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
-		"selectedFieldsIcon": "HistogramSelector_selectedFieldsIcon_kN5eK HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
-		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
+		"selectedIcon": "HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
+		"allIcon": "HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
+		"selectedFieldsIcon": "HistogramSelector_selectedFieldsIcon_kN5eK HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
+		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
+		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsScoredIcon_3z54w HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
+		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsScoredIcon_3z54w HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
 		"histogramSelectorCell": "HistogramSelector_histogramSelectorCell_21EUK",
 		"baseLegend": "HistogramSelector_baseLegend_259om",
 		"legend": "HistogramSelector_legend_2EcSH HistogramSelector_jsLegend_2mIDN HistogramSelector_histogramSelectorCell_21EUK HistogramSelector_baseLegend_259om",
@@ -31861,8 +31591,12 @@
 		"axisText": "HistogramSelector_axisText_36DE2",
 		"overlay": "HistogramSelector_overlay_23S6L HistogramSelector_jsOverlay_352at",
 		"score": "HistogramSelector_score_1UBQx HistogramSelector_jsScore_1gbB8",
+		"scoreRegionBg": "HistogramSelector_scoreRegionBg_telOG",
 		"scoreRegion": "HistogramSelector_scoreRegion_26Y3L",
-		"scorePopup": "HistogramSelector_scorePopup_1LiN9 HistogramSelector_jsScorePopup_3i0QG",
+		"scoreRegionFg": "HistogramSelector_scoreRegionFg_14uUs HistogramSelector_jsScoreRect_24LOm HistogramSelector_scoreRegion_26Y3L",
+		"popup": "HistogramSelector_popup_1VCrN",
+		"scorePopup": "HistogramSelector_scorePopup_1LiN9 HistogramSelector_jsScorePopup_3i0QG HistogramSelector_popup_1VCrN",
+		"dividerPopup": "HistogramSelector_dividerPopup_kMlSD HistogramSelector_jsDividerPopup_2t15b HistogramSelector_popup_1VCrN",
 		"scoreChoice": "HistogramSelector_scoreChoice_2GMeV HistogramSelector_jsScoreChoice_2vuVI",
 		"scoreLabel": "HistogramSelector_scoreLabel_2z-Hg HistogramSelector_jsScoreLabel_A3Ijp",
 		"scoreButton": "HistogramSelector_scoreButton_2GtBV"
@@ -32709,6 +32443,642 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	/* eslint-disable import/no-unresolved */
+
+
+	exports.init = init;
+	exports.getDisplayOnlyScored = getDisplayOnlyScored;
+	exports.createGroups = createGroups;
+	exports.createHeader = createHeader;
+	exports.updateHeader = updateHeader;
+	exports.createDefaultDivider = createDefaultDivider;
+	exports.createDragDivider = createDragDivider;
+	exports.moveDragDivider = moveDragDivider;
+	exports.dividerPick = dividerPick;
+	exports.regionPick = regionPick;
+	exports.finishDivider = finishDivider;
+	exports.positionPopup = positionPopup;
+	exports.validateDividerVal = validateDividerVal;
+	exports.showDividerPopup = showDividerPopup;
+	exports.createDividerPopup = createDividerPopup;
+	exports.showScorePopup = showScorePopup;
+	exports.createScorePopup = createScorePopup;
+	exports.createPopups = createPopups;
+	exports.showScore = showScore;
+	exports.filterFieldNames = filterFieldNames;
+	exports.prepareItem = prepareItem;
+
+	var _d2 = __webpack_require__(17);
+
+	var _d3 = _interopRequireDefault(_d2);
+
+	var _HistogramSelector = __webpack_require__(18);
+
+	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/* eslint-enable import/no-unresolved */
+
+	var publicAPI = null;
+	var model = null;
+	var displayOnlyScored = false;
+	var scorePopupDiv = null;
+	var dividerPopupDiv = null;
+
+	function init(inPublicAPI, inModel) {
+	  publicAPI = inPublicAPI;
+	  model = inModel;
+	}
+
+	var scoredHeaderClick = function scoredHeaderClick(d) {
+	  displayOnlyScored = !displayOnlyScored;
+	  publicAPI.render();
+	};
+
+	function getDisplayOnlyScored() {
+	  return displayOnlyScored;
+	}
+
+	function createGroups(svgGr) {
+	  // scoring interface background group, must be behind.
+	  svgGr.insert('g', ':first-child').classed(_HistogramSelector2.default.jsScoreBackground, true);
+	  svgGr.append('g').classed(_HistogramSelector2.default.score, true);
+	  svgGr.append('rect').classed(_HistogramSelector2.default.overlay, true).style('cursor', 'default');
+	}
+
+	function createHeader(header) {
+	  if (typeof model.scores !== 'undefined') {
+	    header.append('span').on('click', scoredHeaderClick).append('i').classed(_HistogramSelector2.default.jsScoredIcon, true);
+	    header.append('span').classed(_HistogramSelector2.default.jsScoredHeader, true).text('Only Scored').on('click', scoredHeaderClick);
+	  }
+	}
+
+	function updateHeader() {
+	  if (typeof model.scores !== 'undefined') {
+	    _d3.default.select('.' + _HistogramSelector2.default.jsScoredIcon)
+	    // apply class - 'false' should come first to not remove common base class.
+	    .classed(getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, false).classed(!getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, true);
+	  }
+	}
+
+	function createDefaultDivider(val, uncert) {
+	  return {
+	    value: val,
+	    uncertainty: uncert
+	  };
+	}
+
+	function createDragDivider(hitIndex, val, def, hobj) {
+	  var dragD = null;
+	  if (hitIndex >= 0) {
+	    // start modifying existing divider
+	    // it becomes a temporary copy if we go outside our bounds
+	    dragD = { index: hitIndex,
+	      newDivider: createDefaultDivider(undefined, def.dividers[hitIndex].uncertainty),
+	      low: hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value,
+	      high: hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value
+	    };
+	  } else {
+	    // create a temp divider to render.
+	    dragD = { index: -1,
+	      newDivider: createDefaultDivider(val, 0),
+	      low: hobj.min,
+	      high: hobj.max
+	    };
+	  }
+	  return dragD;
+	}
+
+	function moveDragDivider(val, def) {
+	  if (def.dragDivider.index >= 0) {
+	    // if we drag outside our bounds, make this a 'temporary' extra divider.
+	    if (val < def.dragDivider.low) {
+	      def.dragDivider.newDivider.value = val;
+	      def.dividers[def.dragDivider.index].value = def.dragDivider.low;
+	      def.dividers[def.dragDivider.index].uncertainty = 0;
+	    } else if (val > def.dragDivider.high) {
+	      def.dragDivider.newDivider.value = val;
+	      def.dividers[def.dragDivider.index].value = def.dragDivider.high;
+	      def.dividers[def.dragDivider.index].uncertainty = 0;
+	    } else {
+	      def.dividers[def.dragDivider.index].value = val;
+	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
+	      def.dragDivider.newDivider.value = undefined;
+	    }
+	  } else {
+	    def.dragDivider.newDivider.value = val;
+	  }
+	}
+
+	// create a sorting helper method, to sort dividers based on div.value
+	// D3 bug: just an accessor didn't work - must use comparator function
+	var bisectDividers = _d3.default.bisector(function (a, b) {
+	  return a.value - b.value;
+	}).left;
+
+	// where are we (to the left of) in the divider list?
+	// Did we hit one?
+	function dividerPick(overCoords, def, marginPx, minVal) {
+	  var val = def.xScale.invert(overCoords[0]);
+	  var index = bisectDividers(def.dividers, createDefaultDivider(val));
+	  var hitIndex = -1;
+	  if (def.dividers.length > 0) {
+	    if (index === 0) {
+	      hitIndex = 0;
+	    } else if (index === def.dividers.length) {
+	      hitIndex = index - 1;
+	    } else {
+	      hitIndex = def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1;
+	    }
+	    var margin = def.xScale.invert(marginPx) - minVal;
+	    if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
+	      // we weren't close enough...
+	      hitIndex = -1;
+	    }
+	  }
+	  return [val, index, hitIndex];
+	}
+
+	function regionPick(overCoords, def, hobj) {
+	  if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
+	  var val = def.xScale.invert(overCoords[0]);
+	  var hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
+	  return hitIndex;
+	}
+
+	function finishDivider(def, hobj) {
+	  var forceDelete = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+	  var val = def.dragDivider.newDivider.value;
+	  // if val is defined, we moved an existing divider inside
+	  // its region, and we just need to render. Otherwise...
+	  if (val !== undefined || forceDelete) {
+	    // drag 30 pixels out of the hist to delete.
+	    var dragOut = def.xScale.invert(30) - hobj.min;
+	    if (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut) {
+	      if (def.dragDivider.index >= 0) {
+	        // delete a region.
+	        if (forceDelete || def.dividers[def.dragDivider.index].value === def.dragDivider.high) {
+	          def.regions.splice(def.dragDivider.index + 1, 1);
+	        } else {
+	          def.regions.splice(def.dragDivider.index, 1);
+	        }
+	        // console.log('del reg ', def.regions);
+	        // delete the divider.
+	        def.dividers.splice(def.dragDivider.index, 1);
+	        // console.log('del div ', def.dividers);
+	      }
+	    } else {
+	      // if we moved a divider, delete the old region
+	      if (def.dragDivider.index >= 0) {
+	        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
+	          def.regions.splice(def.dragDivider.index, 1);
+	        } else {
+	          def.regions.splice(def.dragDivider.index + 1, 1);
+	        }
+	        // console.log('del reg ', def.regions);
+	        // delete the old divider
+	        def.dividers.splice(def.dragDivider.index, 1);
+	        // console.log('del div ', def.dividers);
+	      }
+	      // add a new divider
+	      def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
+	      // find the index based on dividers sorted by divider.value
+	      var index = bisectDividers(def.dividers, def.dragDivider.newDivider);
+	      def.dividers.splice(index, 0, def.dragDivider.newDivider);
+	      // console.log('add div ', index, def.dividers);
+	      // add a new region, copies the score of existing region.
+	      def.regions.splice(index, 0, def.regions[index]);
+	      // console.log('add reg ', index, def.regions);
+	    }
+	  } else {
+	    if (def.dragDivider.index >= 0) {
+	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
+	    }
+	  }
+	  def.dragDivider = undefined;
+	}
+
+	function positionPopup(popupDiv, left, top) {
+	  var clientRect = model.listContainer.getBoundingClientRect();
+	  var popupRect = popupDiv.node().getBoundingClientRect();
+	  if (popupRect.width + left > clientRect.width) {
+	    popupDiv.style('left', 'auto');
+	    popupDiv.style('right', 0);
+	  } else {
+	    popupDiv.style('right', null);
+	    popupDiv.style('left', left + 'px');
+	  }
+
+	  if (popupRect.height + top > clientRect.height) {
+	    popupDiv.style('top', 'auto');
+	    popupDiv.style('bottom', 0);
+	  } else {
+	    popupDiv.style('bottom', null);
+	    popupDiv.style('top', top + 'px');
+	  }
+	}
+
+	function validateDividerVal(n) {
+	  // is it a finite float number?
+	  return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
+	function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
+	  var topMargin = 4;
+	  var rowHeight = 13;
+	  // 's' SI unit label won't work for a number entry field.
+	  var formatter = _d3.default.format('.4g');
+
+	  dPopupDiv.style('display', 'initial');
+	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - 1.7 * rowHeight);
+
+	  var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
+	  var savedVal = selDivider.value;
+	  var savedUncert = selDivider.uncertainty;
+	  dPopupDiv.on('mouseleave', function () {
+	    if (selectedDef.dragDivider) {
+	      moveDragDivider(savedVal, selectedDef);
+	      finishDivider(selectedDef, hobj);
+	    }
+	    dPopupDiv.style('display', 'none');
+	    selectedDef.dragDivider = undefined;
+	    publicAPI.render();
+	  });
+	  var valInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerValueInput).attr('value', formatter(selDivider.value)).property('value', formatter(selDivider.value)).on('input', function () {
+	    // typing values, show feedback.
+	    var val = _d3.default.event.target.value;
+	    if (!validateDividerVal(val)) val = savedVal;
+	    moveDragDivider(val, selectedDef);
+	    publicAPI.render(selectedDef.name);
+	  }).on('change', function () {
+	    // committed to a value, show feedback.
+	    var val = _d3.default.event.target.value;
+	    if (!validateDividerVal(val)) val = savedVal;else {
+	      val = Math.min(hobj.max, Math.max(hobj.min, val));
+	      _d3.default.event.target.value = val;
+	      savedVal = val;
+	    }
+	    moveDragDivider(val, selectedDef);
+	    publicAPI.render(selectedDef.name);
+	  }).on('keyup', function () {
+	    // revert to last committed value
+	    if (_d3.default.event.key === 'Escape') {
+	      moveDragDivider(savedVal, selectedDef);
+	      dPopupDiv.on('mouseleave')();
+	    } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	      // commit current value
+	      dPopupDiv.on('mouseleave')();
+	    }
+	  });
+	  // initial select/focus so use can immediately change the value.
+	  valInput.node().select();
+	  valInput.node().focus();
+
+	  dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerUncertaintyInput).attr('value', formatter(selDivider.uncertainty)).property('value', formatter(selDivider.uncertainty)).on('input', function () {
+	    // typing values, show feedback.
+	    var uncert = _d3.default.event.target.value;
+	    if (!validateDividerVal(uncert)) uncert = savedUncert;
+	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	    if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+	    publicAPI.render(selectedDef.name);
+	  }).on('change', function () {
+	    // committed to a value, show feedback.
+	    var uncert = _d3.default.event.target.value;
+	    if (!validateDividerVal(uncert)) uncert = savedUncert;else {
+	      // uncertainty is a %
+	      uncert = Math.min(100, Math.max(0, uncert));
+	      _d3.default.event.target.value = uncert;
+	      savedUncert = uncert;
+	    }
+	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	    if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+	    publicAPI.render(selectedDef.name);
+	  }).on('keyup', function () {
+	    if (_d3.default.event.key === 'Escape') {
+	      selectedDef.dragDivider.newDivider.uncertainty = savedUncert;
+	      dPopupDiv.on('mouseleave')();
+	    } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	      dPopupDiv.on('mouseleave')();
+	    }
+	  });
+	}
+	// Divider editing popup allows changing its value or uncertainty, or deleting it.
+	function createDividerPopup() {
+	  var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerPopup, true).style('display', 'none');
+	  var table = dPopupDiv.append('table');
+	  var tr1 = table.append('tr');
+	  tr1.append('td').text('Value:');
+	  tr1.append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	  var tr2 = table.append('tr');
+	  tr2.append('td').text('% Uncertainty:');
+	  tr2.append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	  var tr3 = table.append('tr');
+	  tr3.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'Delete |').on('click', function () {
+	    var hobj = model.provider.getHistogram1D(model.selectedDef.name);
+	    if (hobj !== null) finishDivider(model.selectedDef, hobj, true);
+	    dPopupDiv.style('display', 'none');
+	    publicAPI.render();
+	  });
+	  return dPopupDiv;
+	}
+
+	function showScorePopup(sPopupDiv, coord, selRow) {
+	  // it seemed like a good idea to use getBoundingClientRect() to determine row height
+	  // but it returns all zeros when the popup has been invisible...
+	  var topMargin = 4;
+	  var rowHeight = 13;
+
+	  sPopupDiv.style('display', 'initial');
+	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - (0.7 + selRow) * rowHeight);
+
+	  sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
+	    // use mostly-solid for selected, mostly-transparent when not selected.
+	    var interp = _d3.default.interpolateRgb('#fff', d.color);
+	    return interp(i === selRow ? 0.7 : 0.2);
+	  });
+	}
+
+	function createScorePopup() {
+	  var sPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.scorePopup, true).style('display', 'none').on('mouseleave', function () {
+	    sPopupDiv.style('display', 'none');
+	    model.selectedDef.dragDivider = undefined;
+	  });
+	  // create radio-buttons that allow choosing the score for the selected region
+	  var scoreChoices = sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
+	  scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
+	    return d.name;
+	  }).append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
+	    return d.name;
+	  }).property('checked', function (d, i) {
+	    return i === model.defaultScore;
+	  }).on('click', function (d, i) {
+	    // use click, not change, so we get notified even when current value is chosen.
+	    var def = model.selectedDef;
+	    def.regions[def.hitRegionIndex] = i;
+	    def.dragDivider = undefined;
+	    sPopupDiv.style('display', 'none');
+	    publicAPI.render();
+	  });
+	  // create a button for creating a new divider, so we don't require
+	  // the invisible alt/ctrl click to create one.
+	  sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New |').on('click', function () {
+	    var hobj = model.provider.getHistogram1D(model.selectedDef.name);
+	    if (hobj !== null) finishDivider(model.selectedDef, hobj);
+	    sPopupDiv.style('display', 'none');
+	    publicAPI.render();
+	  });
+	  return sPopupDiv;
+	}
+
+	function createPopups() {
+	  if (typeof model.scores !== 'undefined') {
+	    scorePopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsScorePopup);
+	    if (scorePopupDiv.empty()) {
+	      scorePopupDiv = createScorePopup();
+	    }
+	    dividerPopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsDividerPopup);
+	    if (dividerPopupDiv.empty()) {
+	      dividerPopupDiv = createDividerPopup();
+	    }
+	  }
+	}
+
+	function showScore(def) {
+	  // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+	  return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
+	}
+
+	function filterFieldNames(fieldNames) {
+	  if (getDisplayOnlyScored()) {
+	    // filter for fields that have scores
+	    return fieldNames.filter(function (name) {
+	      return showScore(model.provider.getField(name));
+	    });
+	  }
+	  return fieldNames;
+	}
+
+	var getMouseCoords = function getMouseCoords(tdsl) {
+	  // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
+	  var coord = _d3.default.mouse(tdsl.node());
+	  return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
+	};
+
+	function prepareItem(def, idx, svgGr, hobj, tdsl) {
+	  if (typeof model.scores === 'undefined') return;
+	  if (typeof def.dividers === 'undefined') {
+	    def.dividers = [];
+	    def.regions = [model.defaultScore];
+	    def.editScore = false;
+	  }
+
+	  var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
+	  var drag = null;
+	  if (def.editScore) {
+	    // add temp dragged divider, if needed.
+	    var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
+	    var dividers = gScore.selectAll('line').data(dividerData);
+	    dividers.enter().append('line');
+	    dividers.attr('x1', function (d) {
+	      return def.xScale(d.value);
+	    }).attr('y1', 0).attr('x2', function (d) {
+	      return def.xScale(d.value);
+	    }).attr('y2', function () {
+	      return model.histHeight;
+	    }).attr('stroke-width', 1).attr('stroke', 'black');
+	    dividers.exit().remove();
+
+	    var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
+	    uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
+	    uncertRegions.attr('x', function (d) {
+	      return def.xScale(d.value - 0.005 * d.uncertainty * (hobj.max - hobj.min));
+	    }).attr('y', 0)
+	    // to get a width, need to start from 'zero' of this scale, which is hobj.min
+	    .attr('width', function (d, i) {
+	      return def.xScale(hobj.min + 0.01 * d.uncertainty * (hobj.max - hobj.min));
+	    }).attr('height', function () {
+	      return model.histHeight;
+	    }).attr('fill', '#000').attr('opacity', function (d) {
+	      return d.uncertainty > 0 ? '0.2' : '0';
+	    });
+	    uncertRegions.exit().remove();
+
+	    var dragDivLabel = gScore.select('.' + _HistogramSelector2.default.jsScoreDivLabel);
+	    if (typeof def.dragDivider !== 'undefined') {
+	      if (dragDivLabel.empty()) {
+	        dragDivLabel = gScore.append('text').classed(_HistogramSelector2.default.jsScoreDivLabel, true).attr('text-anchor', 'middle').attr('stroke', 'none').attr('background-color', '#fff').attr('dy', '.71em');
+	      }
+	      var formatter = _d3.default.format('.3s');
+	      var divVal = def.dragDivider.newDivider.value !== undefined ? def.dragDivider.newDivider.value : def.dividers[def.dragDivider.index].value;
+	      dragDivLabel.text(formatter(divVal)).attr('x', '' + def.xScale(divVal)).attr('y', '' + (model.histHeight + 2));
+	    } else if (!dragDivLabel.empty()) {
+	      dragDivLabel.remove();
+	    }
+
+	    // divider interaction events.
+	    // Drag flow: drag a divider inside its current neighbors.
+	    // A divider outside its neighbors or a new divider is a temp divider,
+	    // added to the end of the list when rendering. Doesn't affect regions that way.
+	    drag = _d3.default.behavior.drag().on('dragstart', function () {
+	      var overCoords = getMouseCoords(tdsl);
+
+	      var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	      var _dividerPick2 = _slicedToArray(_dividerPick, 3);
+
+	      var val = _dividerPick2[0];
+	      var hitIndex = _dividerPick2[2];
+
+	      if (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey) {
+	        // create a temp divider to render.
+	        def.dragDivider = createDragDivider(-1, val, def, hobj);
+	        publicAPI.render();
+	      } else {
+	        if (hitIndex >= 0) {
+	          // start dragging existing divider
+	          // it becomes a temporary copy if we go outside our bounds
+	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	          // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
+	          publicAPI.render();
+	        }
+	      }
+	    }).on('drag', function () {
+	      var overCoords = getMouseCoords(tdsl);
+	      if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	      var val = def.xScale.invert(overCoords[0]);
+	      moveDragDivider(val, def);
+	      publicAPI.render(def.name);
+	    }).on('dragend', function () {
+	      if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	      finishDivider(def, hobj);
+	      publicAPI.render();
+	    });
+	  } else {
+	    gScore.selectAll('line').remove();
+	    gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).remove();
+	  }
+
+	  // score regions
+	  // there are implicit bounds at the min and max.
+	  var regionBounds = [hobj.min].concat(def.dividers.map(function (div) {
+	    return div.value;
+	  }), hobj.max);
+	  var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
+	  // duplicate background regions are opaque, for a solid bright color.
+	  var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
+	  [{ sel: scoreRegions, opacity: 0.2, class: _HistogramSelector2.default.scoreRegionFg }, { sel: scoreBgRegions, opacity: 1.0, class: _HistogramSelector2.default.scoreRegionBg }].forEach(function (reg) {
+	    reg.sel.enter().append('rect').classed(reg.class, true);
+	    reg.sel.attr('x', function (d, i) {
+	      return def.xScale(regionBounds[i]);
+	    }).attr('y', def.editScore ? 0 : model.histHeight)
+	    // width might be zero if a divider is dragged all the way to min/max.
+	    .attr('width', function (d, i) {
+	      return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]);
+	    }).attr('height', def.editScore ? model.histHeight : model.histMargin.bottom).attr('fill', function (d) {
+	      return model.scores[d].color;
+	    }).attr('opacity', showScore(def) ? reg.opacity : '0');
+	    reg.sel.exit().remove();
+	  });
+
+	  // invisible overlay to catch mouse events.
+	  var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
+	  svgOverlay.attr('width', model.histWidth).attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
+	  .on('click', function () {
+	    // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
+	    if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
+	    var overCoords = getMouseCoords(tdsl);
+	    if (overCoords[1] > model.histHeight) {
+	      def.editScore = !def.editScore;
+	      svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
+	      publicAPI.render();
+	      return;
+	    }
+	    if (def.editScore) {
+	      // if we didn't create or drag a divider, pick a region or divider
+	      var hitRegionIndex = regionPick(overCoords, def, hobj);
+	      // select a def, show popup.
+	      def.hitRegionIndex = hitRegionIndex;
+	      // create a temp divider in case we choose 'new |' from the popup.
+
+	      var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	      var _dividerPick4 = _slicedToArray(_dividerPick3, 3);
+
+	      var val = _dividerPick4[0];
+	      var hitIndex = _dividerPick4[2];
+
+	      var coord = _d3.default.mouse(model.listContainer);
+	      model.selectedDef = def;
+	      if (hitIndex >= 0) {
+	        // pick an existing divider, popup to edit value, uncertainty, or delete.
+	        def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	        showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
+	      } else {
+	        if (typeof def.dragDivider === 'undefined') {
+	          def.dragDivider = createDragDivider(-1, val, def, hobj);
+	        } else {
+	          console.log('DBG unexpected existing divider');
+	          def.dragDivider.newDivider.value = val;
+	        }
+
+	        var selRow = def.regions[def.hitRegionIndex];
+	        showScorePopup(scorePopupDiv, coord, selRow);
+	      }
+	    }
+	  }).on('mousemove', function () {
+	    var overCoords = getMouseCoords(tdsl);
+	    if (def.editScore) {
+	      var _dividerPick5 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	      var _dividerPick6 = _slicedToArray(_dividerPick5, 3);
+
+	      var hitIndex = _dividerPick6[2];
+
+	      var cursor = 'pointer';
+	      // if we're over the bottom, indicate a click will shrink regions
+	      if (overCoords[1] > model.histHeight) cursor = 's-resize';
+	      // if we're over a divider, indicate drag-to-move
+	      else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
+	        // if modifiers are held down, we'll create a divider
+	        else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
+	      svgOverlay.style('cursor', cursor);
+	    } else {
+	      // over the bottom, indicate we can start editing regions
+	      var pickIt = overCoords[1] > model.histHeight;
+	      svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
+	    }
+	  });
+	  if (def.editScore) {
+	    svgOverlay.call(drag);
+	  } else {
+	    svgOverlay.on('.drag', null);
+	  }
+	}
+
+	exports.default = {
+	  createGroups: createGroups,
+	  createHeader: createHeader,
+	  createPopups: createPopups,
+	  filterFieldNames: filterFieldNames,
+	  init: init,
+	  prepareItem: prepareItem,
+	  // showScore,
+	  updateHeader: updateHeader
+	};
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
@@ -32720,11 +33090,11 @@
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(29);
+	var _FieldSelector = __webpack_require__(30);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
-	var _template = __webpack_require__(31);
+	var _template = __webpack_require__(32);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -32754,7 +33124,10 @@
 
 	  publicAPI.setContainer = function (el) {
 	    if (model.container) {
-	      _d2.default.select(model.container).select('div.fieldSelector').remove();
+	      while (model.container.firstChild) {
+	        model.container.removeChild(model.container.firstChild);
+	      }
+	      model.container = null;
 	    }
 
 	    model.container = el;
@@ -32762,6 +33135,8 @@
 	    if (el) {
 	      _d2.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden');
 	      _d2.default.select(model.container).html(_template2.default);
+	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
+
 	      model.fieldShowHistogram = model.fieldShowHistogram && model.provider.isA('Histogram1DProvider');
 	      // append headers for histogram columns
 	      if (model.fieldShowHistogram) {
@@ -32995,13 +33370,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(30);
+	var content = __webpack_require__(31);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -33021,7 +33396,7 @@
 	}
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -33029,7 +33404,7 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  border-bottom: solid 2px #aaa;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #999;\n  stroke: #999;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_fieldSelector_RsKhz {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  fill: #7D86B3;\n  stroke: #7D86B3;\n  stroke-width: 0.25px;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n  stroke: #000;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -33039,6 +33414,7 @@
 		"jsHistRect": "FieldSelector_jsHistRect_27Pen",
 		"jsLegend": "FieldSelector_jsLegend_2QXvQ",
 		"jsSparkline": "FieldSelector_jsSparkline_2Vxgk",
+		"fieldSelector": "FieldSelector_fieldSelector_RsKhz",
 		"icon": "FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
 		"selectedFieldsIcon": "FieldSelector_selectedFieldsIcon_1jfaz FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
 		"allFieldsIcon": "FieldSelector_allFieldsIcon_2DXP5 FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
@@ -33058,13 +33434,13 @@
 	};
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"mode\"><i></i></th><th class=\"label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33185,7 +33561,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33201,7 +33577,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _shapes = __webpack_require__(34);
+	var _shapes = __webpack_require__(35);
 
 	var _shapes2 = _interopRequireDefault(_shapes);
 
@@ -33426,7 +33802,7 @@
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33435,39 +33811,39 @@
 	  value: true
 	});
 
-	var _Circle = __webpack_require__(35);
+	var _Circle = __webpack_require__(36);
 
 	var _Circle2 = _interopRequireDefault(_Circle);
 
-	var _Square = __webpack_require__(39);
+	var _Square = __webpack_require__(40);
 
 	var _Square2 = _interopRequireDefault(_Square);
 
-	var _Triangle = __webpack_require__(40);
+	var _Triangle = __webpack_require__(41);
 
 	var _Triangle2 = _interopRequireDefault(_Triangle);
 
-	var _Diamond = __webpack_require__(41);
+	var _Diamond = __webpack_require__(42);
 
 	var _Diamond2 = _interopRequireDefault(_Diamond);
 
-	var _X = __webpack_require__(42);
+	var _X = __webpack_require__(43);
 
 	var _X2 = _interopRequireDefault(_X);
 
-	var _Pentagon = __webpack_require__(43);
+	var _Pentagon = __webpack_require__(44);
 
 	var _Pentagon2 = _interopRequireDefault(_Pentagon);
 
-	var _InvertedTriangle = __webpack_require__(44);
+	var _InvertedTriangle = __webpack_require__(45);
 
 	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
 
-	var _Star = __webpack_require__(45);
+	var _Star = __webpack_require__(46);
 
 	var _Star2 = _interopRequireDefault(_Star);
 
-	var _Plus = __webpack_require__(46);
+	var _Plus = __webpack_require__(47);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
@@ -33486,19 +33862,19 @@
 	};
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
+	var sprite = __webpack_require__(37);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Circle");
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(37);
+	var Sprite = __webpack_require__(38);
 	var globalSprite = new Sprite();
 
 	if (document.body) {
@@ -33513,10 +33889,10 @@
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sniffr = __webpack_require__(38);
+	var Sniffr = __webpack_require__(39);
 
 	/**
 	 * List of SVG attributes to fix url target in them
@@ -33768,7 +34144,7 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 	(function(host) {
@@ -33892,79 +34268,79 @@
 
 
 /***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
-
-/***/ },
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
 
 /***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
 
 /***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
 
 /***/ },
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
 
 /***/ },
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
 
 /***/ },
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(36);;
+	var sprite = __webpack_require__(37);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(37);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34061,7 +34437,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	module.exports = {
