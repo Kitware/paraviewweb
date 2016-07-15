@@ -6,6 +6,7 @@ import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 /* eslint-enable import/no-unresolved */
 import multiClicker from '../../Core/D3MultiClick';
 // import template from './template.html';
+import Score from './Score';
 
 // ----------------------------------------------------------------------------
 // Histogram Selector
@@ -32,52 +33,58 @@ import multiClicker from '../../Core/D3MultiClick';
 // provides an integral number of histograms across the container's width.
 //
 
-// This function modifies the Transform property
-// of the rows of the grid. Instead of creating new
-// rows filled with DOM elements.
-const transformCSSProp = (function tcssp(property) {
-  const prefixes = ['webkit', 'ms', 'Moz', 'O'];
-  let i = -1;
-  const n = prefixes.length;
-  const s = document.body.style;
-
-  if (property.toLowerCase() in s) {
-    return property.toLowerCase();
-  }
-
-  while (++i < n) {
-    if (prefixes[i] + property in s) {
-      return `-${prefixes[i].toLowerCase()}${property.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-    }
-  }
-
-  return false;
-}('Transform'));
-
-// Apply our desired attributes to the grid rows
-function styleRows(selection, self) {
-  selection
-    .classed(style.row, true)
-    .style('height', `${self.boxHeight}px`)
-    .style(transformCSSProp, (d, i) =>
-      `translate3d(0,${d.key * self.boxHeight}px,0)`
-    );
-}
-
-// apply our desired attributes to the boxes of a row
-function styleBoxes(selection, self) {
-  selection
-    .style('width', `${self.boxWidth}px`)
-    .style('height', `${self.boxHeight}px`)
-    // .style('margin', `${self.boxMargin / 2}px`)
-  ;
-}
-
 function histogramSelector(publicAPI, model) {
   // in contact-sheet mode, specify the largest width a histogram can grow
   // to before more histograms are created to fill the container's width
   const maxBoxSize = 240;
   const legendSize = 15;
+  let displayOnlySelected = false;
+
+  let lastNumFields = 0;
+
+  Score.init(publicAPI, model);
+
+  // This function modifies the Transform property
+  // of the rows of the grid. Instead of creating new
+  // rows filled with DOM elements. Inside histogramSelector()
+  // to make sure document.head/body exists.
+  const transformCSSProp = (function tcssp(property) {
+    const prefixes = ['webkit', 'ms', 'Moz', 'O'];
+    let i = -1;
+    const n = prefixes.length;
+    const s = (document.head ? document.head.style : (document.body ? document.body.style : null));
+
+    if (s === null || property.toLowerCase() in s) {
+      return property.toLowerCase();
+    }
+
+    while (++i < n) {
+      if (prefixes[i] + property in s) {
+        return `-${prefixes[i].toLowerCase()}${property.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+      }
+    }
+
+    return false;
+  }('Transform'));
+
+  // Apply our desired attributes to the grid rows
+  function styleRows(selection, self) {
+    selection
+      .classed(style.row, true)
+      .style('height', `${self.boxHeight}px`)
+      .style(transformCSSProp, (d, i) =>
+        `translate3d(0,${d.key * self.boxHeight}px,0)`
+      );
+  }
+
+  // apply our desired attributes to the boxes of a row
+  function styleBoxes(selection, self) {
+    selection
+      .style('width', `${self.boxWidth}px`)
+      .style('height', `${self.boxHeight}px`)
+      // .style('margin', `${self.boxMargin / 2}px`)
+    ;
+  }
 
   function svgWidth() {
     return model.histWidth + model.histMargin.left + model.histMargin.right;
@@ -124,7 +131,7 @@ function histogramSelector(publicAPI, model) {
 
   function updateSizeInformation(singleMode) {
     let updateBoxPerRow = false;
-    const clientRect = model.container.getBoundingClientRect();
+    const clientRect = model.listContainer.getBoundingClientRect();
 
     // hard coded because I did not figure out how to
     // properly query this value from our container.
@@ -171,157 +178,33 @@ function histogramSelector(publicAPI, model) {
     return foundRow;
   }
 
-  // --- scoring interface ---
-  function createDefaultDivider(val) {
-    return {
-      value: val,
-      uncertainty: 0,
-    };
+  const fieldHeaderClick = (d) => {
+    displayOnlySelected = !displayOnlySelected;
+    publicAPI.render();
+  };
+
+  function createHeader(divSel) {
+    const header = divSel.append('div')
+      .classed(style.header, true)
+      .style('height', `${model.headerSize}px`);
+    header.append('span')
+      .on('click', fieldHeaderClick)
+      .append('i')
+      .classed(style.jsFieldsIcon, true);
+    header.append('span')
+      .classed(style.jsHeaderLabel, true)
+      .on('click', fieldHeaderClick);
+    Score.createHeader(header);
   }
 
-  // create a sorting helper method, to sort dividers based on div.value
-  // D3 bug: just an accessor didn't work - must use comparator function
-  const bisectDividers = d3.bisector((a, b) => (a.value - b.value)).left;
-
-  // where are we (to the left of) in the divider list?
-  // Did we hit one?
-  function dividerPick(overCoords, def, marginPx, minVal) {
-    const val = def.xScale.invert(overCoords[0]);
-    const index = bisectDividers(def.dividers, createDefaultDivider(val));
-    let hitIndex = -1;
-    if (def.dividers.length > 0) {
-      if (index === 0) {
-        hitIndex = 0;
-      } else if (index === def.dividers.length) {
-        hitIndex = index - 1;
-      } else {
-        hitIndex = (def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1);
-      }
-      const margin = def.xScale.invert(marginPx) - minVal;
-      if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
-        // we weren't close enough...
-        hitIndex = -1;
-      }
-    }
-    return [val, index, hitIndex];
-  }
-  function scoreRegionPick(overCoords, def, hobj) {
-    if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
-    const val = def.xScale.invert(overCoords[0]);
-    const hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
-    return hitIndex;
-  }
-
-  function finishDivider(def, hobj) {
-    const val = def.dragDivider.newDivider.value;
-    // if val is defined, we moved an existing divider inside
-    // its region, and we just need to render. Otherwise...
-    if (val !== undefined) {
-      // drag 30 pixels out of the hist to delete.
-      const dragOut = def.xScale.invert(30) - hobj.min;
-      if (val < hobj.min - dragOut || val > hobj.max + dragOut) {
-        if (def.dragDivider.index >= 0) {
-          // delete a region.
-          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
-            def.regions.splice(def.dragDivider.index, 1);
-          } else {
-            def.regions.splice(def.dragDivider.index + 1, 1);
-          }
-          // console.log('del reg ', def.regions);
-          // delete the divider.
-          def.dividers.splice(def.dragDivider.index, 1);
-          // console.log('del div ', def.dividers);
-        }
-      } else {
-        // if we moved a divider, delete the old region
-        if (def.dragDivider.index >= 0) {
-          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
-            def.regions.splice(def.dragDivider.index, 1);
-          } else {
-            def.regions.splice(def.dragDivider.index + 1, 1);
-          }
-          // console.log('del reg ', def.regions);
-          // delete the old divider
-          def.dividers.splice(def.dragDivider.index, 1);
-          // console.log('del div ', def.dividers);
-        }
-        // add a new divider
-        def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
-        // find the index based on dividers sorted by divider.value
-        const index = bisectDividers(def.dividers, def.dragDivider.newDivider);
-        def.dividers.splice(index, 0, def.dragDivider.newDivider);
-        // console.log('add div ', index, def.dividers);
-        // add a new region, copies the score of existing region.
-        def.regions.splice(index, 0, def.regions[index]);
-        // console.log('add reg ', index, def.regions);
-      }
-    }
-    def.dragDivider = undefined;
-  }
-
-  function showScorePopup(scorePopupDiv, coord, selRow) {
-    // it seemed like a good idea to use getBoundingClientRect() to determine row height
-    // but it returns all zeros when the popup has been invisible...
-    const topMargin = 4;
-    const rowHeight = 13;
-
-    scorePopupDiv
-      .style('display', 'initial')
-      .style('left', `${coord[0] - topMargin - 0.5 * rowHeight}px`)
-      .style('top', `${coord[1] - topMargin - (0.7 + selRow) * rowHeight}px`);
-    scorePopupDiv.selectAll(`.${style.jsScoreLabel}`)
-      .style('background-color', (d, i) => {
-        const interp = d3.interpolateRgb('#fff', d.color);
-        return interp((i === selRow) ? 0.4 : 0.2);
-      });
-  }
-
-  function createScorePopup() {
-    const scorePopupDiv = d3.select(model.container).append('div')
-      .classed(style.scorePopup, true)
-      .style('display', 'none')
-      .on('mouseleave', () => {
-        scorePopupDiv
-          .style('display', 'none');
-        model.selectedDef.dragDivider = undefined;
-      });
-    // create radio-buttons that allow choosing the score for the selected region
-    const scoreChoices = scorePopupDiv.selectAll(`.${style.jsScoreChoice}`)
-      .data(model.scores);
-    scoreChoices.enter()
-      .append('label')
-        .classed(style.scoreLabel, true)
-        .text((d) => d.name)
-      .append('input')
-        .classed(style.scoreChoice, true)
-        .attr('name', 'score_choice_rb')
-        .attr('type', 'radio')
-        .attr('value', (d) => (d.name))
-        .property('checked', (d, i) => (i === model.defaultScore))
-        .on('click', (d, i) => {
-          // use click, not change, so we get notified even when current value is chosen.
-          const def = model.selectedDef;
-          def.regions[def.hitRegionIndex] = i;
-          def.dragDivider = undefined;
-          scorePopupDiv
-            .style('display', 'none');
-          publicAPI.render();
-        });
-    // create a button for creating a new divider, so we don't require
-    // the invisible alt/ctrl click to create one.
-    scorePopupDiv
-      .append('input')
-        .classed(style.scoreButton, true)
-        .attr('type', 'button')
-        .attr('value', 'New |')
-        .on('click', () => {
-          const hobj = model.provider.getHistogram1D(model.selectedDef.name);
-          if (hobj !== null) finishDivider(model.selectedDef, hobj);
-          scorePopupDiv
-            .style('display', 'none');
-          publicAPI.render();
-        });
-    return scorePopupDiv;
+  function updateHeader(dataLength) {
+    d3.select(`.${style.jsFieldsIcon}`)
+      // apply class - 'false' should come first to not remove common base class.
+      .classed(displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
+      .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
+    d3.select(`.${style.jsHeaderLabel}`)
+      .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
+    Score.updateHeader();
   }
 
   publicAPI.resize = () => {
@@ -330,13 +213,15 @@ function histogramSelector(publicAPI, model) {
     const clientRect = model.container.getBoundingClientRect();
     if (clientRect.width !== 0 && clientRect.height !== 0) {
       model.containerHidden = false;
+      d3.select(model.listContainer)
+        .style('height', `${clientRect.height - model.headerSize}px`);
       publicAPI.render();
     } else {
       model.containerHidden = true;
     }
   };
 
-  publicAPI.render = () => {
+  publicAPI.render = (onlyFieldName = null) => {
     if (model.needData) {
       fetchData();
       return;
@@ -344,14 +229,21 @@ function histogramSelector(publicAPI, model) {
     if (model.container === null) return;
 
     const updateBoxPerRow = updateSizeInformation(model.singleMode);
-    if (updateBoxPerRow) {
+
+    let fieldNames = [];
+    // Initialize fields
+    if (model.provider.isA('FieldProvider')) {
+      fieldNames = (!displayOnlySelected ? model.provider.getFieldNames() :
+         model.provider.getActiveFieldNames());
+    }
+    fieldNames = Score.filterFieldNames(fieldNames);
+
+    updateHeader(fieldNames.length);
+    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
+      lastNumFields = fieldNames.length;
+
       // get the data and put it into the nest based on the
       // number of boxesPerRow
-      let fieldNames = [];
-      // Initialize fields
-      if (model.provider.isA('FieldProvider')) {
-        fieldNames = model.provider.getFieldNames();
-      }
       const mungedData = fieldNames.map(name => {
         const d = model.provider.getField(name);
         if (typeof d.selectedGen === 'undefined') {
@@ -379,26 +271,18 @@ function histogramSelector(publicAPI, model) {
     const newHeight = `${Math.ceil(model.nest.length * model.boxHeight)}px`;
     model.parameterList.style('height', newHeight);
 
-    // if we went from less than a page to something that has to scroll
-    // then resize again, no clue why
-    // if (newHeight > clientHeight && model.lastHeight < clientHeight) {
-    //   model.lastHeight = newHeight;
-    //   publicAPI.render();
-    //   return;
-    // }
-
     if (!model.nest) return;
 
     // if we've changed view modes, single <==> contact sheet,
     // we need to re-scroll.
     if (model.scrollToName !== null) {
       const topRow = getFieldRow(model.scrollToName);
-      model.container.scrollTop = topRow * model.boxHeight;
+      model.listContainer.scrollTop = topRow * model.boxHeight;
       model.scrollToName = null;
     }
 
      // scroll distance, in pixels.
-    const scrollY = model.container.scrollTop;
+    const scrollY = model.listContainer.scrollTop;
     // convert scroll from pixels to rows, get one row above (-1)
     const offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
 
@@ -445,14 +329,8 @@ function histogramSelector(publicAPI, model) {
     // free up any extra boxes
     boxes.exit().remove();
 
-    // create a floating control to set scores, when needed.
-    let scorePopupDiv = null;
-    if (typeof model.scores !== 'undefined') {
-      scorePopupDiv = d3.select(model.container).select(`.${style.jsScorePopup}`);
-      if (scorePopupDiv.empty()) {
-        scorePopupDiv = createScorePopup();
-      }
-    }
+    // scoring interface - create floating controls to set scores, values, when needed.
+    Score.createPopups();
 
     // for every item that has data, create all the sub-elements
     // and size them correctly based on our data
@@ -478,14 +356,14 @@ function histogramSelector(publicAPI, model) {
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
-      let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
+      // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
       // if they are not created yet then create them
       if (trow1.empty()) {
         trow1 = ttab.append('tr').classed(style.legendRow, true)
           .on('click', multiClicker([
             function singleClick(d, i) { // single click handler
-              // const overCoords = d3.mouse(model.container);
+              // const overCoords = d3.mouse(model.listContainer);
               updateData(d);
             },
             function doubleClick(d, i) { // double click handler
@@ -517,15 +395,10 @@ function histogramSelector(publicAPI, model) {
           .classed(style.axis, true);
         svgGr.append('g')
           .classed(style.jsGRect, true);
-        // svgGr.append('g')
-        //   .classed(style.brush, true);
-        svgGr.append('g')
-          .classed(style.score, true);
-        svgOverlay = svgGr.append('rect')
-          .classed(style.overlay, true)
-          .style('cursor', 'default');
+        // scoring interface
+        Score.createGroups(svgGr);
       }
-      const dataActive = model.provider.getField(def.name).active;
+      const dataActive = def.active;
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(def.name);
@@ -599,13 +472,13 @@ function histogramSelector(publicAPI, model) {
         // });
 
         // Show an x-axis with just min/max displayed.
-        // Attach scale, axis and brush objects to this box's
+        // Attach scale, axis objects to this box's
         // data (the 'def' object) to allow persistence when scrolled.
         if (typeof def.xScale === 'undefined') {
           def.xScale = d3.scale.linear();
         }
         def.xScale
-          .range([0, model.histWidth])
+          .rangeRound([0, model.histWidth])
           .domain([hobj.min, hobj.max]);
 
         if (typeof def.xAxis === 'undefined') {
@@ -618,9 +491,13 @@ function histogramSelector(publicAPI, model) {
           .scale(def.xScale);
         let numTicks = model.singleMode ? 5 : 2;
         if (model.singleMode) {
+          // using .ticks() results in skipping min/max values,
+          // if they aren't 'nice'. Make exactly 5 ticks.
+          const myTicks = d3.range(numTicks).map((d) => (
+            hobj.min + (d / (numTicks - 1)) * (hobj.max - hobj.min))
+          );
           def.xAxis
-            .tickValues(null)
-            .ticks(numTicks);
+            .tickValues(myTicks);
         } else {
           def.xAxis
             .tickValues(def.xScale.domain());
@@ -640,187 +517,19 @@ function histogramSelector(publicAPI, model) {
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);
 
-        const getMouseCoords = () => {
-          // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
-          const coord = d3.mouse(tdsl.node());
-          return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
-        };
-
-        // scoring interface
-        if (typeof model.scores !== 'undefined') {
-          if (typeof def.dividers === 'undefined') {
-            def.dividers = [];
-            def.regions = [model.defaultScore];
-            def.editScore = false;
-          }
-
-          const gScore = svgGr.select(`.${style.jsScore}`);
-          let drag = null;
-          if (def.editScore) {
-            // add temp dragged divider, if needed.
-            const dividerData = ((typeof def.dragDivider !== 'undefined') && def.dragDivider.newDivider.value !== undefined) ?
-                                  def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
-            const dividers = gScore.selectAll('line')
-              .data(dividerData);
-            dividers.enter().append('line');
-            dividers
-              .attr('x1', d => def.xScale(d.value))
-              .attr('y1', 0)
-              .attr('x2', d => def.xScale(d.value))
-              .attr('y2', () => model.histHeight)
-              .attr('stroke-width', 1)
-              .attr('stroke', 'black');
-            dividers.exit().remove();
-            // divider interaction events.
-            // Drag flow: drag a divider inside its current neighbors.
-            // A divider outside its neighbors or a new divider is a temp divider,
-            // added to the end of the list when rendering. Doesn't affect regions that way.
-            drag = d3.behavior.drag()
-              .on('dragstart', () => {
-                const overCoords = getMouseCoords();
-                const [val, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-                if (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey) {
-                  // create a temp divider to render.
-                  def.dragDivider = { index: -1,
-                                      newDivider: createDefaultDivider(val),
-                                      low: hobj.min,
-                                      high: hobj.max,
-                                    };
-                  publicAPI.render();
-                } else {
-                  if (hitIndex >= 0) {
-                    // start dragging existing divider
-                    // it becomes a temporary copy if we go outside our bounds
-                    def.dragDivider = { index: hitIndex,
-                                        newDivider: createDefaultDivider(),
-                                        low: (hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value),
-                                        high: (hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value),
-                                      };
-                    // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
-                  }
-                }
-              })
-              .on('drag', () => {
-                const overCoords = getMouseCoords();
-                if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
-                const val = def.xScale.invert(overCoords[0]);
-                if (def.dragDivider.index >= 0) {
-                  // if we drag outside our bounds, make this a 'temporary' extra divider.
-                  if (val < def.dragDivider.low) {
-                    def.dragDivider.newDivider.value = val;
-                    def.dividers[def.dragDivider.index].value = def.dragDivider.low;
-                  } else if (val > def.dragDivider.high) {
-                    def.dragDivider.newDivider.value = val;
-                    def.dividers[def.dragDivider.index].value = def.dragDivider.high;
-                  } else {
-                    def.dividers[def.dragDivider.index].value = val;
-                    def.dragDivider.newDivider.value = undefined;
-                  }
-                } else {
-                  def.dragDivider.newDivider.value = val;
-                }
-                publicAPI.render();
-              })
-              .on('dragend', () => {
-                if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none') return;
-                finishDivider(def, hobj);
-                publicAPI.render();
-              });
-          } else {
-            gScore.selectAll('line').remove();
-          }
-
-          // score regions
-          // there are implicit bounds at the min and max.
-          const regionBounds = [hobj.min].concat(def.dividers.map((div) => (div.value)), hobj.max);
-          const scoreRegions = gScore.selectAll('rect')
-            .data(def.regions);
-
-          // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-          const showScore = def.editScore || (def.regions.length > 1) || (def.regions[0] !== model.defaultScore);
-          scoreRegions.enter().append('rect')
-            .classed(style.scoreRegion, true);
-          scoreRegions
-            .attr('x', (d, i) => def.xScale(regionBounds[i]))
-            .attr('y', def.editScore ? 0 : model.histHeight)
-            // width might be zero if a divider is dragged all the way to min/max.
-            .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
-            .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
-            .attr('fill', (d) => (model.scores[d].color))
-            .attr('opacity', showScore ? '0.2' : '0');
-          scoreRegions.exit().remove();
-
-          // invisible overlay to catch mouse events.
-          svgOverlay
-            .attr('width', model.histWidth)
-            .attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
-            .on('click', () => {
-              // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
-              if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
-              const overCoords = getMouseCoords();
-              if (overCoords[1] > model.histHeight) {
-                def.editScore = !def.editScore;
-                svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
-                publicAPI.render();
-                return;
-              }
-              if (def.editScore) {
-                // if we didn't create or pick a divider, pick a region
-                const hitRegionIndex = scoreRegionPick(overCoords, def, hobj);
-                // select a def, show popup.
-                def.hitRegionIndex = hitRegionIndex;
-                // create a temp divider in case we choose 'new |' from the popup.
-                /* eslint-disable array-bracket-spacing */
-                const [val, , ] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-                /* eslint-enable array-bracket-spacing */
-                if (typeof def.dragDivider === 'undefined') {
-                  def.dragDivider = { index: -1,
-                                      newDivider: createDefaultDivider(val),
-                                      low: hobj.min,
-                                      high: hobj.max,
-                                    };
-                } else {
-                  def.dragDivider.newDivider.value = val;
-                }
-                model.selectedDef = def;
-                const coord = d3.mouse(model.parameterList.node());
-
-                const selRow = def.regions[def.hitRegionIndex];
-                showScorePopup(scorePopupDiv, coord, selRow);
-              }
-            })
-            .on('mousemove', () => {
-              const overCoords = getMouseCoords();
-              if (def.editScore) {
-                const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-                let cursor = 'pointer';
-                // if we're over the bottom, indicate a click will shrink regions
-                if (overCoords[1] > model.histHeight) cursor = 's-resize';
-                // if we're over a divider, indicate drag-to-move
-                else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
-                // if modifiers are held down, we'll create a divider
-                else if (d3.event.altKey || d3.event.ctrlKey) cursor = 'crosshair';
-                svgOverlay.style('cursor', cursor);
-              } else {
-                // over the bottom, indicate we can start editing regions
-                const pickIt = overCoords[1] > model.histHeight;
-                svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
-              }
-            });
-          if (def.editScore) {
-            svgOverlay.call(drag);
-          } else {
-            svgOverlay.on('.drag', null);
-          }
-        }
+        Score.prepareItem(def, idx, svgGr, hobj, tdsl);
       }
     }
 
     // make sure all the elements are created
     // and updated
-    boxes.each(prepareItem);
-    boxes
-      .call(styleBoxes, model);
+    if (onlyFieldName === null) {
+      boxes.each(prepareItem);
+      boxes
+        .call(styleBoxes, model);
+    } else {
+      boxes.filter((def) => (def.name === onlyFieldName)).each(prepareItem);
+    }
   };
 
   publicAPI.setContainer = (element) => {
@@ -834,13 +543,19 @@ function histogramSelector(publicAPI, model) {
     model.container = element;
 
     if (model.container !== null) {
-      model.parameterList = d3.select(model.container)
-        .append('div')
-        .classed(style.histogramSelector, true);
-      d3.select(model.container)
+      const cSel = d3.select(model.container)
+        .style('overflow-y', 'hidden');
+      createHeader(cSel);
+      // wrapper height is set insize resize()
+      const wrapper = cSel.append('div')
         .style('overflow-y', 'auto')
         .style('overflow-x', 'hidden')
         .on('scroll', () => { publicAPI.render(); });
+
+      model.listContainer = wrapper.node();
+      model.parameterList = wrapper
+        .append('div')
+        .classed(style.histogramSelector, true);
 
       publicAPI.resize();
     }
@@ -864,10 +579,10 @@ function histogramSelector(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   provider: null,
+  listContainer: null,
   needData: true,
   containerHidden: false,
 
-  displayUnselected: true,
   parameterList: null,
   nest: null, // nested aray of data nest[rows][boxes]
   boxesPerRow: 0,
@@ -881,8 +596,8 @@ const DEFAULT_VALUES = {
   histMargin: { top: 3, right: 3, bottom: 18, left: 3 },
   histWidth: 90,
   histHeight: 70,
-  lastHeight: 0,
   lastOffset: -1,
+  headerSize: 20,
   // scoring interface activated by passing in 'scores' array externally.
   // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
   defaultScore: 0,
