@@ -10,8 +10,92 @@ let scorePopupDiv = null;
 let dividerPopupDiv = null;
 
 export function init(inPublicAPI, inModel) {
+  // TODO make sure model.scores has the right format
   publicAPI = inPublicAPI;
   model = inModel;
+}
+
+
+export function createDefaultDivider(val, uncert) {
+  return {
+    value: val,
+    uncertainty: uncert,
+  };
+}
+
+// add implicit bounds for the histogram min/max to dividers list
+function getRegionBounds(dividers, hobj) {
+  return [hobj.min].concat(dividers.map((div) => (div.value)), hobj.max);
+}
+
+// Translate our dividers and regions into a piecewise-linear partition (2D array)
+// suitable for scoring this histogram.
+function dividersToPartition(dividers, regions, hobj, scores) {
+  if (!regions || !dividers || !scores) return null;
+  if (regions.length !== dividers.length + 1) return null;
+  const regionBounds = getRegionBounds(dividers, hobj);
+  const uncertScale = 0.005 * (hobj.max - hobj.min);
+  const scoreData = [];
+  for (let i = 0; i < regions.length; i++) {
+    const x0 = (i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i]);
+    const x1 = (i !== regions.length - 1 ? regionBounds[i + 1] - dividers[i].uncertainty * uncertScale : regionBounds[i + 1]);
+    const yVal = scores[regions[i]].value;
+    scoreData.push([x0, yVal], [x1, yVal]);
+  }
+  return scoreData;
+}
+
+// retrieve partition, and re-create dividers and regions
+function partitionToDividers(scoreData, def, hobj, scores) {
+  if (scoreData.length % 2 !== 0) console.error('partition expected paired points, length', scoreData.length);
+  const regions = [];
+  const dividers = [];
+  for (let i = 0; i < scoreData.length; i += 2) {
+    const lower = scoreData[i];
+    const upper = scoreData[i + 1];
+    if (lower[1] !== upper[1]) console.error('partition mismatch', lower[1], upper[1]);
+    const regionVal = scores.findIndex((el) => (el.value === lower[1]));
+    regions.push(regionVal);
+    if (i < scoreData.length - 2) {
+      const nextLower = scoreData[i + 2];
+      const divVal = 0.5 * (upper[0] + nextLower[0]);
+      const uncert = (upper[0] === nextLower[0] ? 0 : 100 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min));
+      dividers.push(createDefaultDivider(divVal, uncert));
+    }
+  }
+  // don't replace the default region with an empty region, so UI can display the default region.
+  if (regions.length > 0 && regions[0] !== model.defaultScore) {
+    def.regions = regions;
+    def.dividers = dividers;
+  }
+}
+
+// communicate with the server which regions/dividers have changed.
+function sendScores(def, hobj) {
+  const scoreData = dividersToPartition(def.dividers, def.regions, def.hobj, model.scores);
+  if (scoreData === null) {
+    console.error('Cannot translate scores to send to provider');
+    return;
+  }
+  if (model.provider.isA('PartitionProvider')) {
+    model.provider.changePartition(def.name, scoreData);
+    def.scoreDirty = true;
+    // set def.scoreDirty, to trigger a load of data. We'll use the current data
+    // until the server returns new data - see addSubscriptions() ..
+    // model.provider.onPartitionReady() below, which sets scoreDirty again to
+    // begin using the new data.
+  }
+}
+
+// retrieve regions/dividers from the server.
+function getScores(def) {
+  if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
+    if (model.provider.loadPartition(def.name)) {
+      const scoreData = model.provider.getPartition(def.name);
+      partitionToDividers(scoreData, def, def.hobj, model.scores);
+      def.scoreDirty = false;
+    }
+  }
 }
 
 const scoredHeaderClick = (d) => {
@@ -54,13 +138,6 @@ export function updateHeader() {
       .classed(getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, false)
       .classed(!getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, true);
   }
-}
-
-export function createDefaultDivider(val, uncert) {
-  return {
-    value: val,
-    uncertainty: uncert,
-  };
 }
 
 export function createDragDivider(hitIndex, val, def, hobj) {
@@ -124,7 +201,9 @@ export function dividerPick(overCoords, def, marginPx, minVal) {
       hitIndex = (def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1);
     }
     const margin = def.xScale.invert(marginPx) - minVal;
-    if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
+    // don't pick a divider outside the bounds of the histogram - pick the last region.
+    if (Math.abs(def.dividers[hitIndex].value - val) > margin ||
+        val < def.hobj.min || val > def.hobj.max) {
       // we weren't close enough...
       hitIndex = -1;
     }
@@ -154,39 +233,43 @@ export function finishDivider(def, hobj, forceDelete = false) {
         } else {
           def.regions.splice(def.dragDivider.index, 1);
         }
-        // console.log('del reg ', def.regions);
         // delete the divider.
         def.dividers.splice(def.dragDivider.index, 1);
-        // console.log('del div ', def.dividers);
       }
     } else {
-      // if we moved a divider, delete the old region
+      // adding a divider, we make a new region.
+      let replaceRegion = true;
+      // if we moved a divider, delete the old region, unless it's one of the edge regions - those persist.
       if (def.dragDivider.index >= 0) {
-        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
+        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low &&
+            def.dragDivider.low !== hobj.min) {
           def.regions.splice(def.dragDivider.index, 1);
-        } else {
+        } else if (def.dividers[def.dragDivider.index].value === def.dragDivider.high &&
+            def.dragDivider.high !== hobj.max) {
           def.regions.splice(def.dragDivider.index + 1, 1);
+        } else {
+          replaceRegion = false;
         }
-        // console.log('del reg ', def.regions);
         // delete the old divider
         def.dividers.splice(def.dragDivider.index, 1);
-        // console.log('del div ', def.dividers);
       }
       // add a new divider
       def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
       // find the index based on dividers sorted by divider.value
       const index = bisectDividers(def.dividers, def.dragDivider.newDivider);
       def.dividers.splice(index, 0, def.dragDivider.newDivider);
-      // console.log('add div ', index, def.dividers);
-      // add a new region, copies the score of existing region.
-      def.regions.splice(index, 0, def.regions[index]);
-      // console.log('add reg ', index, def.regions);
+      // add a new region if needed, copies the score of existing region.
+      if (replaceRegion) {
+        def.regions.splice(index, 0, def.regions[index]);
+      }
     }
   } else {
-    if (def.dragDivider.index >= 0) {
+    if (def.dragDivider.index >= 0 &&
+        def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
       def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
     }
   }
+  sendScores(def, hobj);
   def.dragDivider = undefined;
 }
 
@@ -284,7 +367,10 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
       let uncert = d3.event.target.value;
       if (!validateDividerVal(uncert)) uncert = savedUncert;
       selectedDef.dragDivider.newDivider.uncertainty = uncert;
-      if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+      if (selectedDef.dragDivider.newDivider.value === undefined) {
+        // don't use selDivider, might be out-of-date if the server sent us dividers.
+        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+      }
       publicAPI.render(selectedDef.name);
     })
     .on('change', () => {
@@ -298,7 +384,9 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
         savedUncert = uncert;
       }
       selectedDef.dragDivider.newDivider.uncertainty = uncert;
-      if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+      if (selectedDef.dragDivider.newDivider.value === undefined) {
+        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+      }
       publicAPI.render(selectedDef.name);
     })
     .on('keyup', () => {
@@ -338,8 +426,7 @@ export function createDividerPopup() {
     .attr('type', 'button')
     .attr('value', 'Delete |')
     .on('click', () => {
-      const hobj = model.provider.getHistogram1D(model.selectedDef.name);
-      if (hobj !== null) finishDivider(model.selectedDef, hobj, true);
+      finishDivider(model.selectedDef, model.selectedDef.hobj, true);
       dPopupDiv
         .style('display', 'none');
       publicAPI.render();
@@ -395,6 +482,7 @@ export function createScorePopup() {
         def.dragDivider = undefined;
         sPopupDiv
           .style('display', 'none');
+        sendScores(def, def.hobj);
         publicAPI.render();
       });
   // create a button for creating a new divider, so we don't require
@@ -405,8 +493,7 @@ export function createScorePopup() {
       .attr('type', 'button')
       .attr('value', 'New |')
       .on('click', () => {
-        const hobj = model.provider.getHistogram1D(model.selectedDef.name);
-        if (hobj !== null) finishDivider(model.selectedDef, hobj);
+        finishDivider(model.selectedDef, model.selectedDef.hobj);
         sPopupDiv
           .style('display', 'none');
         publicAPI.render();
@@ -447,13 +534,18 @@ const getMouseCoords = (tdsl) => {
   return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
 };
 
-export function prepareItem(def, idx, svgGr, hobj, tdsl) {
+export function prepareItem(def, idx, svgGr, tdsl) {
   if (typeof model.scores === 'undefined') return;
   if (typeof def.dividers === 'undefined') {
     def.dividers = [];
     def.regions = [model.defaultScore];
     def.editScore = false;
+    def.scoreDirty = true;
   }
+  const hobj = def.hobj;
+
+  // retrieve scores from the server, if available.
+  getScores(def, hobj);
 
   const gScore = svgGr.select(`.${style.jsScore}`);
   let drag = null;
@@ -528,7 +620,6 @@ export function prepareItem(def, idx, svgGr, hobj, tdsl) {
             // start dragging existing divider
             // it becomes a temporary copy if we go outside our bounds
             def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-            // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
             publicAPI.render();
           }
         }
@@ -556,7 +647,7 @@ export function prepareItem(def, idx, svgGr, hobj, tdsl) {
 
   // score regions
   // there are implicit bounds at the min and max.
-  const regionBounds = [hobj.min].concat(def.dividers.map((div) => (div.value)), hobj.max);
+  const regionBounds = getRegionBounds(def.dividers, hobj);
   const scoreRegions = gScore.selectAll(`.${style.jsScoreRect}`)
     .data(def.regions);
   // duplicate background regions are opaque, for a solid bright color.
@@ -580,8 +671,10 @@ export function prepareItem(def, idx, svgGr, hobj, tdsl) {
   // invisible overlay to catch mouse events.
   const svgOverlay = svgGr.select(`.${style.jsOverlay}`);
   svgOverlay
-    .attr('width', model.histWidth)
-    .attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
+    .attr('x', -model.histMargin.left)
+    .attr('y', -model.histMargin.top)
+    .attr('width', publicAPI.svgWidth())
+    .attr('height', publicAPI.svgHeight()) // allow clicks inside x-axis.
     .on('click', () => {
       // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
       if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
@@ -609,7 +702,7 @@ export function prepareItem(def, idx, svgGr, hobj, tdsl) {
           if (typeof def.dragDivider === 'undefined') {
             def.dragDivider = createDragDivider(-1, val, def, hobj);
           } else {
-            console.log('DBG unexpected existing divider');
+            console.log('Internal: unexpected existing divider');
             def.dragDivider.newDivider.value = val;
           }
 
@@ -643,14 +736,20 @@ export function prepareItem(def, idx, svgGr, hobj, tdsl) {
   }
 }
 
+export function addSubscriptions() {
+  model.subscriptions.push(model.provider.onPartitionReady((field) => {
+    model.provider.getField(field).scoreDirty = true;
+    publicAPI.render(field);
+  }));
+}
 
 export default {
+  addSubscriptions,
   createGroups,
   createHeader,
   createPopups,
   filterFieldNames,
   init,
   prepareItem,
-  // showScore,
   updateHeader,
 };

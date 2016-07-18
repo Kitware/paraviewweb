@@ -86,12 +86,8 @@ function histogramSelector(publicAPI, model) {
     ;
   }
 
-  function svgWidth() {
-    return model.histWidth + model.histMargin.left + model.histMargin.right;
-  }
-  function svgHeight() {
-    return model.histHeight + model.histMargin.top + model.histMargin.bottom;
-  }
+  publicAPI.svgWidth = () => (model.histWidth + model.histMargin.left + model.histMargin.right);
+  publicAPI.svgHeight = () => (model.histHeight + model.histMargin.top + model.histMargin.bottom);
 
   function fetchData() {
     model.needData = true;
@@ -246,9 +242,6 @@ function histogramSelector(publicAPI, model) {
       // number of boxesPerRow
       const mungedData = fieldNames.map(name => {
         const d = model.provider.getField(name);
-        if (typeof d.selectedGen === 'undefined') {
-          d.selectedGen = 0;
-        }
         return d;
       });
 
@@ -342,8 +335,7 @@ function histogramSelector(publicAPI, model) {
       // d3's listener method cannot guarantee the index passed to
       // updateData will be correct:
       function updateData(data) {
-        // data.selected = this.checked;
-        data.selectedGen++;
+        // data.selectedGen++;
         // model.provider.updateField(data.name, { active: data.selected });
         model.provider.toggleFieldSelection(data.name);
       }
@@ -424,11 +416,12 @@ function histogramSelector(publicAPI, model) {
 
       // adjust some settings based on current size
       tdsl.select('svg')
-        .attr('width', svgWidth())
-        .attr('height', svgHeight());
+        .attr('width', publicAPI.svgWidth())
+        .attr('height', publicAPI.svgHeight());
 
       // get the histogram data and rebuild the histogram based on the results
       const hobj = model.provider.getHistogram1D(def.name);
+      def.hobj = hobj;
       if (hobj !== null) {
         const cmax = 1.0 * d3.max(hobj.counts);
         const hsize = hobj.counts.length;
@@ -517,7 +510,7 @@ function histogramSelector(publicAPI, model) {
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);
 
-        Score.prepareItem(def, idx, svgGr, hobj, tdsl);
+        Score.prepareItem(def, idx, svgGr, tdsl);
       }
     }
 
@@ -567,6 +560,8 @@ function histogramSelector(publicAPI, model) {
   model.subscriptions.push(model.provider.onFieldChange(fetchData));
   // event from Histogram Provider
   model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+  // scoring interface
+  Score.addSubscriptions();
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
@@ -593,7 +588,7 @@ const DEFAULT_VALUES = {
   singleMode: false,
   scrollToName: null,
   // margins inside the SVG element.
-  histMargin: { top: 3, right: 3, bottom: 18, left: 3 },
+  histMargin: { top: 8, right: 8, bottom: 23, left: 8 },
   histWidth: 90,
   histHeight: 70,
   lastOffset: -1,
