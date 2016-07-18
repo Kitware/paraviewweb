@@ -1,0 +1,45 @@
+/* User styles that can be overridden */
+
+.mainContainerStyle {
+  background-color: grey;
+  border-radius: 5px;
+}
+
+.contentStyle {
+  overflow: hidden;
+  background-color: white;
+}
+
+.titleBarStyle {
+  user-select: none;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Do not change styles below or the behavior may be broken */
+
+.eventContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 1.0;
+  overflow: hidden;
+}
+
+.mainContainer {
+  position: absolute;
+  composes: mainContainerStyle;
+}
+
+.content {
+  position: absolute;
+  composes: contentStyle;
+}
+
+.titleBar {
+  position: absolute;
+  pointer-events: none;
+  composes: titleBarStyle;
+}

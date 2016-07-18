@@ -26,9 +26,13 @@ export default React.createClass({
 
     this.dataSubscription = this.props.chartBuilder.onDataReady(data => {
       const container = ReactDOM.findDOMNode(this.refs.chartRenderer);
-      if (!data.forceNewPlot &&
-        container.data &&
-        container.data[0].type === data.traces[0].type) {
+      if (!container) {
+        return;
+      }
+      if (!data.forceNewPlot
+        && container.data
+        && container.data.length > 0
+        && container.data[0].type === data.traces[0].type) {
         container.data = data.traces;
         Plotly.redraw(container);
       } else {
@@ -47,6 +51,10 @@ export default React.createClass({
         };
 
         Plotly.newPlot(container, data.traces, layout, config);
+      }
+
+      if (data.hover && data.hover.enable === true) {
+        Plotly.Fx.hover(container, data.hover.hoverList);
       }
     });
   },

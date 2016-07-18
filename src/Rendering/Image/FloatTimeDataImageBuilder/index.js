@@ -11,9 +11,6 @@ function buildListenerWrapper(floatTimeDataImageBuilder) {
 
   ['drag'].forEach(name => {
     myListener[name] = e => {
-      if (floatTimeDataImageBuilder.getActiveView() === 1) {
-        return true;
-      }
       if (!probeManager[name](e)) {
         return listener[name] ? listener[name](e) : false;
       }
@@ -37,18 +34,27 @@ function updateRange(rangeToUpdate, range) {
   rangeToUpdate[1] = rangeToUpdate[1] > range[1] ? rangeToUpdate[1] : range[1];
 }
 
+function findProbeColor(probe, chartFields) {
+  for (let i = 0; i < chartFields.length; ++i) {
+    if (chartFields[i].name === probe.name && chartFields[i].color) {
+      return chartFields[i].color;
+    }
+  }
+  return 'black';
+}
+
 export default class FloatTimeDataImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  constructor(floatDataImageBuilder, timeProbeManager) {
+  constructor(floatDataImageBuilder, timeProbeManager, painter) {
     this.imageBuilder = floatDataImageBuilder;
     this.probeManager = timeProbeManager;
     this.queryDataModel = floatDataImageBuilder.queryDataModel;
     this.listeners = buildListenerWrapper(this);
     this.activeView = 0;
     this.subscriptions = [];
-    this.painter = new LineChartPainter('');
+    this.painter = painter || new LineChartPainter('');
     this.painter.setBackgroundColor('#ffffff');
     this.chartData = { fields: [], xRange: [0, 10] };
 
@@ -57,19 +63,16 @@ export default class FloatTimeDataImageBuilder {
 
     // Image ready interceptor
     this.subscriptions.push(this.imageBuilder.onImageReady((data, envelope) => {
-      if (this.activeView === 1) {
-        return;
-      }
-
       const { canvas, outputSize } = data;
       const ctx = canvas.getContext('2d');
 
       this.probeManager.setSize(outputSize[0], outputSize[1]);
       this.probeManager.getProbes().forEach(probe => {
+        const rgbStr = findProbeColor(probe, this.chartData.fields);
         const ext = probe.getExtent();
         ctx.beginPath();
         ctx.lineWidth = '2';
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = rgbStr;
         ctx.rect(ext[0], ext[2], ext[1] - ext[0], ext[3] - ext[2]);
         ctx.stroke();
       });
@@ -97,31 +100,7 @@ export default class FloatTimeDataImageBuilder {
   // ------------------------------------------------------------------------
 
   render() {
-    switch (this.activeView) {
-      case 0:
-        this.imageBuilder.render();
-        break;
-      case 1:
-        if (this.renderer && this.renderer.getRenderingCanvas && this.painter.isReady()) {
-          const canvas = this.renderer.getRenderingCanvas();
-          const { width, height } = canvas;
-          const ctx = canvas.getContext('2d');
-          const offset = 5;
-          const location = { x: offset, y: offset, width: Number(width) - (2 * offset), height: Number(height) - (2 * offset) };
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, width, height);
-          this.painter.paint(ctx, location);
-          ctx.strokeStyle = '#ccc';
-          ctx.rect(location.x, location.y, location.width, location.height);
-          ctx.stroke();
-        }
-        break;
-      case 2:
-        this.imageBuilder.render();
-        break;
-      default:
-        break;
-    }
+    this.imageBuilder.render();
   }
 
   update() {
@@ -134,7 +113,6 @@ export default class FloatTimeDataImageBuilder {
     let arrayType = '';
     let field = '';
     let layerName = '';
-
 
     this.imageBuilder.layers.forEach((layer) => {
       if (layer.active) {
@@ -199,9 +177,6 @@ export default class FloatTimeDataImageBuilder {
 
   setActiveView(index) {
     this.activeView = index;
-    if (this.renderer) {
-      this.renderer.enableLocalRendering(this.activeView !== 1);
-    }
     this.emit(CHANGE_TOPIC, this);
     if (index !== 0) {
       this.imageBuilder.fetchTimeData();
@@ -237,30 +212,18 @@ export default class FloatTimeDataImageBuilder {
   getControlWidgets() {
     var model = this,
       { lookupTableManager, queryDataModel } = this.getControlModels();
-
-    switch (this.activeView) {
-      case 1:
-        return [
-          {
-            name: 'TimeFloatImageControl',
-            model,
-          }];
-      case 0:
-      case 2:
-      default:
-        return [
-          {
-            name: 'TimeFloatImageControl',
-            model,
-          }, {
-            name: 'LookupTableManagerWidget',
-            lookupTableManager,
-          }, {
-            name: 'QueryDataModelWidget',
-            queryDataModel,
-          },
-        ];
-    }
+    return [
+      {
+        name: 'TimeFloatImageControl',
+        model,
+      }, {
+        name: 'LookupTableManagerWidget',
+        lookupTableManager,
+      }, {
+        name: 'QueryDataModelWidget',
+        queryDataModel,
+      },
+    ];
   }
 
   // ------------------------------------------------------------------------
@@ -281,7 +244,7 @@ export default class FloatTimeDataImageBuilder {
     this.renderer = renderer;
 
     this.subscriptions.push(renderer.onDrawDone(rComponent => {
-      if (this.activeView === 2) {
+      if (this.activeView > 0) {
         if (rComponent && rComponent.getRenderingCanvas && this.painter.isReady()) {
           const canvasRenderer = rComponent.getRenderingCanvas();
           const { width, height } = canvasRenderer;
