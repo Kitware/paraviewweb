@@ -11,6 +11,7 @@ export default React.createClass({
     children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
     onApply: React.PropTypes.func,
     sections: React.PropTypes.array.isRequired,
+    onCollapseChange: React.PropTypes.func,
   },
 
   getDefaultProps() {
@@ -80,6 +81,7 @@ export default React.createClass({
               collapsed={section.collapsed}
               advanced={this.state.advanced}
               onChange={this.updateChangeSet}
+              onCollapseChange={this.props.onCollapseChange}
             />
           )}
         </div>
