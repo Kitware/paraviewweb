@@ -14,6 +14,7 @@ export default React.createClass({
     collapsed: React.PropTypes.bool,
     filter: React.PropTypes.string,
     onChange: React.PropTypes.func,
+    onCollapseChange: React.PropTypes.func,
     proxy: React.PropTypes.object,
   },
 
@@ -46,6 +47,9 @@ export default React.createClass({
 
   toggleCollapsedMode() {
     const collapsed = !this.state.collapsed;
+    if (this.props.onCollapseChange) {
+      this.props.onCollapseChange(this.props.proxy.name, collapsed);
+    }
     this.setState({ collapsed });
   },
 
