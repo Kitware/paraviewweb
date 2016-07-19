@@ -2,1423 +2,1423 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/QueryDataModelWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ProxyEditorWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://kitware.github.io/paraviewweb/examples/TogglePanelWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.218Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/ToggleIconButtonWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.218Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/TextInputWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/QueryDataModelWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/SvgIconWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/LookupTableWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/LayoutsWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/NumberInputWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/LookupTableWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/TextInputWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/LayoutsWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/InlineToggleButtonWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/NumberSliderWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/SvgIconWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/PieceWiseFunctionEditorWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ColorPickerWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/CompositePipelineWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/MultiLayoutViewer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ContentEditableWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/Coordinate2DWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/DoubleSliderWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ActionListWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ButtonSelectorWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/DropDownWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/CollapsibleWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ColorByWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/Probe3DViewer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/EqualizerWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ColorMapEditorWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/FileBrowserWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/GitTreeWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.390Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/QueryDataModelControl.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/FileBrowserWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/FloatImageControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ImageBuilderViewer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/EqualizerWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/LookupTableManagerControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ImageRenderer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/ProxyEditorWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/ProbeControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/VolumeControl.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/DoubleSliderWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/PixelOperatorControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/MultiViewControl.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/DropDownWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.214Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/RemoteRenderer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/ColorByWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/AbstractViewerMenu.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/LightControl.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/ContentEditableWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/MultiLayoutRenderer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/CompositePipelineWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ColorPickerWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ImageBuilderViewer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ColorMapEditorWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ImageRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/Coordinate2DWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/CollapsibleWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ButtonSelectorWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ActionListWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/MultiLayoutViewer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/LineChartViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/MapProperty.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/MultiLayoutRenderer.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.386Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/LegendProvider.html</loc>
-    
-    <lastmod>2016-07-15T20:12:19.382Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/examples/HistogramSelector.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/Probe3DViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.382Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.210Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/ParallelCoordinates.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.382Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/PixelOperatorControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/LegendProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/FloatImageControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/RemoteRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/MultiViewControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/HistogramSelector.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/LightControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/ProbeControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/VolumeControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/LinearPieceWiseEditor.html</loc>
     
-    <lastmod>2016-07-15T20:12:19.382Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LineChartPainter.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/MapProperty.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.870Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/SortedCompositeImageBuilder.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.870Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/MultiColorBySortedCompositeImageBuilder.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/examples/QueryDataModelControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.866Z</lastmod>
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/examples/LookupTableManagerControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:52.206Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PixelOperatorImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.866Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.754Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/QueryDataModelImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.866Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.754Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/MagicLensImageBuilder.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/LineChartPainter.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.862Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/FloatTimeDataImageBuilder.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.862Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.754Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/FloatDataImageBuilder.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/SortedCompositeImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.862Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.754Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/DepthImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.862Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.750Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/DataProberImageBuilder.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/FloatTimeDataImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.858Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.750Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/DepthCompositeImageBuilder.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/FloatDataImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.858Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.750Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/MagicLensImageBuilder.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.750Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/MultiColorBySortedCompositeImageBuilder.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.750Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/AbstractImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.854Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.746Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/DepthCompositeImageBuilder.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.746Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/DataProberImageBuilder.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.746Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CompositeImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.854Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.746Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/BinaryDataProberImageBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.854Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.746Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PlotlyChartBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.850Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ThreeGeometryBuilder.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.850Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/TogglePanelWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.846Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.738Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ToggleIconButtonWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.846Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.738Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/TextInputWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/ThreeGeometryBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.846Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/SvgIconWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.842Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.738Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ResplendentWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/TogglePanelWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.842Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.738Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ScalarRangeWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.842Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.734Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ResplendentWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.734Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/SvgIconWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.734Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/TextInputWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.734Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/QueryDataModelWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.842Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.734Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PresetListWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.838Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/NumberSliderWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.838Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ProxyPropertyGroupWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.838Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ProxyEditorWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.838Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/PieceWiseFunctionEditorWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.838Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/NumberInputWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.834Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LayoutsWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/NumberSliderWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.834Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LookupTableWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/ProxyPropertyGroupWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.834Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/PieceWiseFunctionEditorWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.730Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/InlineToggleButtonWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.830Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.726Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/FileBrowserWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.830Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.726Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/EqualizerWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/LayoutsWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.830Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.726Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/GitTreeWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.830Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.726Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/DropDownWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/LookupTableWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.830Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/CompositePipelineWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.826Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ContentEditableWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.826Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Coordinate2DWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.826Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.726Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/DoubleSliderWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.826Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.722Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ColorByWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/EqualizerWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.822Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.722Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ColorPickerWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/Coordinate2DWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.822Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.722Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/DropDownWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.722Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ContentEditableWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.722Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ColorMapEditorWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.822Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.718Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ButtonSelectorWidget.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/CompositePipelineWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.818Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ActionListWidget.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.818Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.718Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CollapsibleWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.818Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.718Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ColorPickerWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.718Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ColorByWidget.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.718Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/Probe3DViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.814Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ImageBuilderViewer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.810Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/GeometryViewer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.810Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.714Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/MultiLayoutViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.810Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.714Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LineChartViewer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/ActionListWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.810Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/MultiLayoutRenderer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.806Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.714Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/AbstractViewerMenu.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/ButtonSelectorWidget.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.806Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/VtkRenderer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.806Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/PlotlyRenderer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.806Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.714Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ChartViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.806Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.710Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/SliderProperty.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/LineChartViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.802Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.710Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/GeometryRenderer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/GeometryViewer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.802Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.710Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ImageBuilderViewer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.710Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/MultiLayoutRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.706Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ImageRenderer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.802Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.706Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/PropertyPanel.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/AbstractViewerMenu.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.798Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/MapProperty.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.798Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.706Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/EnumProperty.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/VtkRenderer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.798Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.706Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/PlotlyRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.706Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/SliderProperty.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.702Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PropertyFactory.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.798Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.702Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/MapProperty.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.702Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/PropertyPanel.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.702Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/GeometryRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.702Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/EnumProperty.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.698Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CellProperty.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.794Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.698Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/VolumeControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.794Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.698Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CheckboxProperty.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.794Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/QueryDataModelControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.790Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ProbeControl.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.790Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.698Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/TimeFloatImageControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.790Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.694Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/QueryDataModelControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.694Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ProbeControl.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.694Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PlotlyChartControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.790Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.694Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PixelOperatorControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.786Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.690Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/LightControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.782Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CollapsibleControlFactory.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.782Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/FloatImageControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.782Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/LookupTableManagerControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.782Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/MultiViewControl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.782Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/GaussianPieceWiseEditor.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.778Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LinearPieceWiseEditor.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.778Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/RemoteRenderer.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.778Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/NativeImageRenderer.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.778Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.686Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/MouseHandler.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/LinearPieceWiseEditor.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.774Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/VtkWebMouseListener.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.774Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/RemoteRenderer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/MouseHandler.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ParallelCoordinates.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.774Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/GaussianPieceWiseEditor.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.682Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/MutualInformationDiagram.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.770Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.678Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/FieldSelector.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.766Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/HistogramSelector.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.766Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Histogram1DProvider.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Histogram2DProvider.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.674Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/MutualInformationProvider.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.674Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/HistogramBinHoverProvider.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/HistogramSelector.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.674Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/SelectionProvider.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LegendProvider.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.762Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/FieldProvider.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.758Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/SmartConnect.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.758Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.674Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/D3MultiClick.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.758Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/HistogramBinHoverProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/Histogram1DProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/Histogram2DProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/FieldProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/LegendProvider.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.670Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ParaViewWebClient.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.754Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.666Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/SmartConnect.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.666Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CoreEndpoints.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.750Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.662Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/BinaryImageStream.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.750Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.662Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/AutobahnConnection.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.750Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.662Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/GirderClientBuilder.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.750Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.662Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/QueryDataModel.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.746Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/DataManager.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.742Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.658Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ProcessLauncher.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.742Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.658Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/GeometryDataModel.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.742Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.658Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/PipelineState.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.738Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.654Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/CSVReader.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/DataManager.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.738Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.654Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ToggleState.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.738Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.654Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/CSVReader.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.654Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/WebGl.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.734Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.650Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/Validate.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.734Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.650Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/TimeProbeManager.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.734Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.650Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/EqualizerState.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.734Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Observable.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.730Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Loop.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.730Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/PingPong.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.730Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.650Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/SizeHelper.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.730Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Debounce.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.726Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/Convert.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.726Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/api/ConvertProxyProperty.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.726Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.650Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/ImageExporter.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.726Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/CanvasOffscreenBuffer.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/Debounce.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.722Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://kitware.github.io/paraviewweb/api/LookupTableManager.html</loc>
+    <loc>https://kitware.github.io/paraviewweb/api/Observable.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.722Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/PingPong.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/Loop.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/ConvertProxyProperty.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.646Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/LookupTable.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.722Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.642Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/CanvasOffscreenBuffer.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.642Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/Convert.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.642Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/api/LookupTableManager.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.642Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/CompositeClosureHelper.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.718Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.638Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/index.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.666Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.590Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/ubuntu_14_04.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/import.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/index.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/setup.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/tools.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/troubleshooting.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/webtest_setup.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/virtualgl_turbovnc_howto.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/examples/index.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/vagrant.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/python_launcher.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/pvw_setup.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/paraviewweb_on_aws_ec2.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/os_mesa.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/nvidia_redhat.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.662Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_pvweb.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_vtkweb.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/getting_started.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/graphics_on_ec2_g2.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/ipython.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/launcher_api.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/launching_examples.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.586Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/multi_user_setup.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/developer_howto.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitware.github.io/paraviewweb/docs/guides/architecture.html</loc>
-    
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/apache_front_end.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.658Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_pvweb.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/configure_and_build_vtkweb.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/developer_howto.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/getting_started.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/graphics_on_ec2_g2.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/ipython.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/launcher_api.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/launching_examples.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/architecture.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/nvidia_redhat.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/os_mesa.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitware.github.io/paraviewweb/docs/guides/paraviewweb_on_aws_ec2.html</loc>
+    
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/ansible.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.654Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/guides/ami.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.654Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/docs/contributing.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.654Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.582Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/applications/index.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.654Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.578Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/api/index.html</loc>
     
-    <lastmod>2016-07-15T20:12:18.654Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.578Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://kitware.github.io/paraviewweb/paraviewweb/2016/04/29/kw-doc/</loc>
     
-    <lastmod>2016-07-15T20:12:18.646Z</lastmod>
+    <lastmod>2016-07-19T21:41:51.570Z</lastmod>
     
   </url>
   

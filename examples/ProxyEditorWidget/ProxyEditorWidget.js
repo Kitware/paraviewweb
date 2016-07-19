@@ -20225,7 +20225,8 @@
 	    advanced: _react2.default.PropTypes.bool,
 	    children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.array]),
 	    onApply: _react2.default.PropTypes.func,
-	    sections: _react2.default.PropTypes.array.isRequired
+	    sections: _react2.default.PropTypes.array.isRequired,
+	    onCollapseChange: _react2.default.PropTypes.func
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -20295,7 +20296,8 @@
 	            filter: _this.state.filter,
 	            collapsed: section.collapsed,
 	            advanced: _this.state.advanced,
-	            onChange: _this.updateChangeSet
+	            onChange: _this.updateChangeSet,
+	            onCollapseChange: _this.props.onCollapseChange
 	          });
 	        })
 	      )
@@ -20342,6 +20344,7 @@
 	    collapsed: _react2.default.PropTypes.bool,
 	    filter: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
+	    onCollapseChange: _react2.default.PropTypes.func,
 	    proxy: _react2.default.PropTypes.object
 	  },
 
@@ -20371,6 +20374,9 @@
 	  },
 	  toggleCollapsedMode: function toggleCollapsedMode() {
 	    var collapsed = !this.state.collapsed;
+	    if (this.props.onCollapseChange) {
+	      this.props.onCollapseChange(this.props.proxy.name, collapsed);
+	    }
 	    this.setState({ collapsed: collapsed });
 	  },
 	  valueChange: function valueChange(change) {
