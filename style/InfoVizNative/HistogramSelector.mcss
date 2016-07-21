@@ -199,10 +199,17 @@
 
 .histRect {
   composes: jsHistRect;
-  fill: #7D86B3;
-  stroke: #ccc;
-  stroke-width: 1px;
+  stroke: none;
 }
+.histRectEven {
+  composes: histRect;
+  fill: #8089B8;
+}
+.histRectOdd {
+  composes: histRect;
+  fill: #7780AB;
+}
+
 .hmax {
   composes: histogramSelectorCell;
   text-align: right;

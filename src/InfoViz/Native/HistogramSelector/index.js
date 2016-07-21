@@ -435,12 +435,12 @@ function histogramSelector(publicAPI, model) {
         hdata.enter().append('rect');
         // changes apply to both enter and update data join:
         hdata
-          .classed(style.histRect, true)
+          .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
           .attr('pname', def.name)
           .attr('y', d => model.histHeight * (1.0 - d / cmax))
           .attr('x', (d, i) => (model.histWidth / hsize) * i)
           .attr('height', d => model.histHeight * d / cmax)
-          .attr('width', model.histWidth / hsize);
+          .attr('width', Math.ceil(model.histWidth / hsize));
 
         hdata.exit().remove();
         // svgGr.

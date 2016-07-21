@@ -653,15 +653,19 @@ export function prepareItem(def, idx, svgGr, tdsl) {
   // duplicate background regions are opaque, for a solid bright color.
   const scoreBgRegions = svgGr.select(`.${style.jsScoreBackground}`).selectAll('rect')
     .data(def.regions);
+  const numRegions = def.regions.length;
   [{ sel: scoreRegions, opacity: 0.2, class: style.scoreRegionFg },
     { sel: scoreBgRegions, opacity: 1.0, class: style.scoreRegionBg }].forEach((reg) => {
       reg.sel.enter().append('rect')
         .classed(reg.class, true);
+      // first and last region should hang 6 pixels over the start/end of the axis.
+      const overhang = 6;
       reg.sel
-        .attr('x', (d, i) => def.xScale(regionBounds[i]))
+        .attr('x', (d, i) => (def.xScale(regionBounds[i]) - (i === 0 ? overhang : 0)))
         .attr('y', def.editScore ? 0 : model.histHeight)
-        // width might be zero if a divider is dragged all the way to min/max.
-        .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
+        // width might be === overhang if a divider is dragged all the way to min/max.
+        .attr('width', (d, i) => (def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i])) +
+                                  (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
         .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
         .attr('fill', (d) => (model.scores[d].color))
         .attr('opacity', showScore(def) ? reg.opacity : '0');
