@@ -45,6 +45,7 @@
   font-weight: bold;
   user-select: none;
   cursor: pointer;
+  line-height:
 }
 
 .hidden {
@@ -92,7 +93,7 @@
 
 .baseLegend {
   text-align: center;
-  border-bottom: 1px solid #fff !important;
+  border-bottom: 1px solid #fff;
   width: 19px;
   user-select: none;
 }
@@ -102,7 +103,7 @@
   composes: baseLegend;
 }
 .legendSvg {
-  padding: 2px 2px 1px 2px;
+  padding: 3px 3px 2px 3px;
   vertical-align: middle;
 }
 
@@ -112,7 +113,8 @@
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;
-  border-bottom: 1px solid #fff !important;
+  border-bottom: 1px solid #fff;
+  padding: 2px;
   user-select: none;
 }
 .fieldName {
@@ -123,7 +125,7 @@
 
 .row {
   position: absolute;
-  background: #999;
+  background: #fff;
   width: 100%;
 }
 
@@ -150,7 +152,7 @@
   background-color: #ccd;
 }
 .baseLegendRow:hover .baseLegend, .baseLegendRow:hover .baseFieldName {
-  border-bottom: 1px solid #000 !important;
+  border-bottom: 1px solid #000;
 }
 
 .sparkline {
@@ -166,9 +168,10 @@
   user-select: none;
   /*cursor: crosshair;*/
   padding: 0px;
-  margin: 0 auto;
+  margin: 3px;
   border-width: 2px;
-  border-spacing: 0px;
+  border-spacing: 0;
+  border-radius: 6px;
   border-style: solid;
   background-color: #fff;
   float: left;
@@ -176,7 +179,7 @@
 }
 .unselectedBox {
   composes: box;
-  border-color: #999;
+  border-color: #bbb;
 }
 .selectedBox {
   composes: box;
@@ -191,7 +194,7 @@
   background-color: #ccd;
 }
 .jsBox:hover .baseLegend, .jsBox:hover .baseFieldName {
-  border-bottom: 1px solid #000 !important;
+  border-bottom: 1px solid #000;
 }
 
 .histRect {

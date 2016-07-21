@@ -71,9 +71,9 @@ function histogramSelector(publicAPI, model) {
   function styleRows(selection, self) {
     selection
       .classed(style.row, true)
-      .style('height', `${self.boxHeight}px`)
+      .style('height', `${self.rowHeight}px`)
       .style(transformCSSProp, (d, i) =>
-        `translate3d(0,${d.key * self.boxHeight}px,0)`
+        `translate3d(0,${d.key * self.rowHeight}px,0)`
       );
   }
 
@@ -131,31 +131,34 @@ function histogramSelector(publicAPI, model) {
 
     // hard coded because I did not figure out how to
     // properly query this value from our container.
-    const borderSize = 3;
+    const borderSize = 6;
     // 8? for linux/firefox, 10 for win10/chrome
     const scrollbarWidth = 10;
-    const boxOutline = 2;
+    const boxMargin = 3; // outside the box dimensions
+    const boxBorder = 2; // included in the box dimensions, visible border
 
     // Get the client area size
-    const dimensions = [clientRect.width - 2 * borderSize - scrollbarWidth,
-                        clientRect.height - 2 * borderSize];
+    const dimensions = [clientRect.width - borderSize - scrollbarWidth,
+                        clientRect.height - borderSize];
 
     // compute key values based on our new size
     const boxesPerRow = (singleMode ? 1 : Math.ceil(dimensions[0] / maxBoxSize));
-    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow);
-    model.boxHeight = (singleMode ? Math.floor(model.boxWidth * 5 / 8) : model.boxWidth);
-    model.rowsPerPage = Math.ceil(dimensions[1] / model.boxHeight);
+    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
+    model.boxHeight = (singleMode ? Math.floor((model.boxWidth + 2 * boxMargin) * 5 / 8 - 2 * boxMargin)
+                                  : model.boxWidth);
+    model.rowHeight = model.boxHeight + 2 * boxMargin;
+    model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
 
     if (boxesPerRow !== model.boxesPerRow) {
       updateBoxPerRow = true;
       model.boxesPerRow = boxesPerRow;
     }
 
-    model.histWidth = model.boxWidth - boxOutline * 2 -
+    model.histWidth = model.boxWidth - boxBorder * 2 -
                       model.histMargin.left - model.histMargin.right;
     // other row size, probably a way to query for this
-    const otherRowHeight = 19;
-    model.histHeight = model.boxHeight - boxOutline * 2 - otherRowHeight -
+    const otherRowHeight = 21;
+    model.histHeight = model.boxHeight - boxBorder * 2 - otherRowHeight -
                        model.histMargin.top - model.histMargin.bottom;
 
     return updateBoxPerRow;
@@ -182,7 +185,8 @@ function histogramSelector(publicAPI, model) {
   function createHeader(divSel) {
     const header = divSel.append('div')
       .classed(style.header, true)
-      .style('height', `${model.headerSize}px`);
+      .style('height', `${model.headerSize}px`)
+      .style('line-height', `${model.headerSize}px`);
     header.append('span')
       .on('click', fieldHeaderClick)
       .append('i')
@@ -261,7 +265,7 @@ function histogramSelector(publicAPI, model) {
 
     // resize the div area to be tall enough to hold all our
     // boxes even though most are 'virtual' and lack DOM
-    const newHeight = `${Math.ceil(model.nest.length * model.boxHeight)}px`;
+    const newHeight = `${Math.ceil(model.nest.length * model.rowHeight)}px`;
     model.parameterList.style('height', newHeight);
 
     if (!model.nest) return;
@@ -270,14 +274,14 @@ function histogramSelector(publicAPI, model) {
     // we need to re-scroll.
     if (model.scrollToName !== null) {
       const topRow = getFieldRow(model.scrollToName);
-      model.listContainer.scrollTop = topRow * model.boxHeight;
+      model.listContainer.scrollTop = topRow * model.rowHeight;
       model.scrollToName = null;
     }
 
      // scroll distance, in pixels.
     const scrollY = model.listContainer.scrollTop;
     // convert scroll from pixels to rows, get one row above (-1)
-    const offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
+    const offset = Math.max(0, Math.floor(scrollY / model.rowHeight) - 1);
 
     // extract the visible graphs from the data based on how many rows
     // we have scrolled down plus one above and one below (+2)
@@ -588,7 +592,7 @@ const DEFAULT_VALUES = {
   singleMode: false,
   scrollToName: null,
   // margins inside the SVG element.
-  histMargin: { top: 8, right: 8, bottom: 23, left: 8 },
+  histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
   histWidth: 90,
   histHeight: 70,
   lastOffset: -1,
