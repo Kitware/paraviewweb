@@ -20946,15 +20946,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// In javascript, you can't return an object from an => function like this:
-	// x => { property: x }.  But ESLint doesn't allow this:
-	// x => { return { property: x }; } since it says all one line returning =>
-	// functions should not include the outer {} or return keyword.  This is
-	// a function to allow this syntax: x => makeESLintHappy({ property: x })
-	function makeESLintHappy(x) {
-	  return x;
-	}
-
 	exports.default = _react2.default.createClass({
 
 	  displayName: 'PieceWiseFunctionEditorWidget',
@@ -21044,16 +21035,16 @@
 	    var activePoint = this.editor.activeIndex;
 	    this.setState({ activePoint: activePoint });
 	    var dataPoints = this.props.points.map(function (pt) {
-	      return makeESLintHappy({
+	      return {
 	        x: pt.x,
 	        y: pt.y
-	      });
+	      };
 	    });
 	    var newDataPoints = newPoints.map(function (pt) {
-	      return makeESLintHappy({
+	      return {
 	        x: pt.x,
 	        y: pt.y
-	      });
+	      };
 	    });
 	    this.oldPoints = dataPoints;
 	    if (this.props.onChange) {
@@ -21066,7 +21057,7 @@
 	    }
 	    var value = parseFloat(e.target.value);
 	    var points = this.props.points.map(function (pt) {
-	      return makeESLintHappy({ x: pt.x, y: pt.y });
+	      return { x: pt.x, y: pt.y };
 	    });
 	    points[this.state.activePoint].x = (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
 	    this.editor.setControlPoints(points, this.state.activePoint);
@@ -21077,14 +21068,14 @@
 	    }
 	    var value = parseFloat(e.target.value);
 	    var points = this.props.points.map(function (pt) {
-	      return makeESLintHappy({ x: pt.x, y: pt.y });
+	      return { x: pt.x, y: pt.y };
 	    });
 	    points[this.state.activePoint].y = value;
 	    this.editor.setControlPoints(points, this.state.activePoint);
 	  },
 	  addPoint: function addPoint(e) {
 	    var points = this.props.points.map(function (pt) {
-	      return makeESLintHappy({ x: pt.x, y: pt.y });
+	      return { x: pt.x, y: pt.y };
 	    });
 	    points.push({ x: 0.5, y: 0.5 });
 	    this.editor.setControlPoints(points, points.length - 1);
@@ -21094,7 +21085,7 @@
 	      return;
 	    }
 	    var points = this.props.points.map(function (pt) {
-	      return makeESLintHappy({ x: pt.x, y: pt.y });
+	      return { x: pt.x, y: pt.y };
 	    });
 	    points.splice(this.state.activePoint, 1);
 	    this.editor.setActivePoint(-1);
