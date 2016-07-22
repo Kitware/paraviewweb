@@ -8,6 +8,7 @@ import FieldSelector from '../../../Native/FieldSelector';
 import CompositeClosureHelper from '../../../../../src/Common/Core/CompositeClosureHelper';
 import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
 import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
+import PartitionProvider from '../../../../../src/InfoViz/Core/PartitionProvider';
 import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
 
 import dataModel from './state.json';
@@ -36,6 +37,7 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   FieldProvider.extend(publicAPI, model, initialValues);
   Histogram1DProvider.extend(publicAPI, model, initialValues);
   LegendProvider.extend(publicAPI, model, initialValues);
+  PartitionProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
 // set provider behaviors
@@ -50,9 +52,9 @@ const histogramSelector = HistogramSelector.newInstance({
   provider,
   container: histogramSelectorContainer,
   // activate scoring gui
-  scores: [{ name: 'Yes', color: '#00C900' },
-           { name: 'Maybe', color: '#FFFF00' },
-           { name: 'No', color: '#C90000' },
+  scores: [{ name: 'Yes', color: '#00C900', value: 1 },
+           { name: 'Maybe', color: '#FFFF00', value: 0 },
+           { name: 'No', color: '#C90000', value: -1 },
           ],
   defaultScore: 1,
 });
