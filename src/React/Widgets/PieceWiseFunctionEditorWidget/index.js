@@ -20,8 +20,10 @@ export default React.createClass({
     rangeMin: React.PropTypes.number,
     rangeMax: React.PropTypes.number,
     onChange: React.PropTypes.func,
+    onEditModeChange: React.PropTypes.func,
     height: React.PropTypes.number,
     width: React.PropTypes.number,
+    hidePointControl: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -47,6 +49,7 @@ export default React.createClass({
     this.editor.setControlPoints(this.props.points);
     this.editor.render();
     this.editor.onChange(this.updatePoints);
+    this.editor.onEditModeChange(this.props.onEditModeChange);
 
     if (this.props.width === -1 || this.props.height === -1) {
       this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
@@ -86,6 +89,7 @@ export default React.createClass({
     if (this.sizeSubscription) {
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
+      this.editor.destroy(); // Remove subscriptions
       this.editor = null;
     }
   },
@@ -107,10 +111,14 @@ export default React.createClass({
     const dataPoints = this.props.points.map(pt => ({
       x: pt.x,
       y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
     }));
     const newDataPoints = newPoints.map(pt => ({
       x: pt.x,
       y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
     }));
     this.oldPoints = dataPoints;
     if (this.props.onChange) {
@@ -123,7 +131,12 @@ export default React.createClass({
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.props.points.map(pt => ({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => ({
+      x: pt.x,
+      y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
+    }));
     points[this.state.activePoint].x =
       (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
     this.editor.setControlPoints(points, this.state.activePoint);
@@ -134,14 +147,29 @@ export default React.createClass({
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.props.points.map(pt => ({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => ({
+      x: pt.x,
+      y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
+    }));
     points[this.state.activePoint].y = value;
     this.editor.setControlPoints(points, this.state.activePoint);
   },
 
   addPoint(e) {
-    const points = this.props.points.map(pt => ({ x: pt.x, y: pt.y }));
-    points.push({ x: 0.5, y: 0.5 });
+    const points = this.props.points.map(pt => ({
+      x: pt.x,
+      y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
+    }));
+    points.push({
+      x: 0.5,
+      y: 0.5,
+      x2: 0.5,
+      y2: 0.5,
+    });
     this.editor.setControlPoints(points, points.length - 1);
   },
 
@@ -149,7 +177,12 @@ export default React.createClass({
     if (this.state.activePoint === -1) {
       return;
     }
-    const points = this.props.points.map(pt => ({ x: pt.x, y: pt.y }));
+    const points = this.props.points.map(pt => ({
+      x: pt.x,
+      y: pt.y,
+      x2: pt.x2 || 0.5,
+      y2: pt.y2 || 0.5,
+    }));
     points.splice(this.state.activePoint, 1);
     this.editor.setActivePoint(-1);
     this.editor.setControlPoints(points);
@@ -169,36 +202,38 @@ export default React.createClass({
           height={this.state.height}
           ref="canvas"
         />
-        <div className={style.pointControls}>
-          <div className={style.pointInfo}>
-            <div className={style.line}>
-              <label>Data</label>
-              <input
-                className={style.input}
-                type="number"
-                step="any"
-                min={this.props.rangeMin}
-                max={this.props.rangeMax}
-                value={activePointDataValue}
-                onChange={this.updateActivePointDataValue}
-              />
+        {this.props.hidePointControl ? null :
+          <div className={style.pointControls}>
+            <div className={style.pointInfo}>
+              <div className={style.line}>
+                <label>Data</label>
+                <input
+                  className={style.input}
+                  type="number"
+                  step="any"
+                  min={this.props.rangeMin}
+                  max={this.props.rangeMax}
+                  value={activePointDataValue}
+                  onChange={this.updateActivePointDataValue}
+                />
+              </div>
+              <div className={style.line}>
+                <label>Opacity</label>
+                <input
+                  className={style.input}
+                  type="number"
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  value={Math.floor(100 * activePointOpacity) / 100}
+                  onChange={this.updateActivePointOpacity}
+                />
+              </div>
             </div>
-            <div className={style.line}>
-              <label>Opacity</label>
-              <input
-                className={style.input}
-                type="number"
-                step={0.01}
-                min={0}
-                max={1}
-                value={Math.floor(100 * activePointOpacity) / 100}
-                onChange={this.updateActivePointOpacity}
-              />
-            </div>
+            <SvgIconWidget className={style.svgIcon} icon={plusIcon} onClick={this.addPoint} />
+            <SvgIconWidget className={style.svgIcon} icon={trashIcon} onClick={this.removePoint} />
           </div>
-          <SvgIconWidget className={style.svgIcon} icon={plusIcon} onClick={this.addPoint} />
-          <SvgIconWidget className={style.svgIcon} icon={trashIcon} onClick={this.removePoint} />
-        </div>
+        }
       </div>
     );
   },

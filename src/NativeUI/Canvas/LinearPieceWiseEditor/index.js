@@ -74,6 +74,7 @@ function findPoint(position, pointList) {
 // ----------------------------------------------------------------------------
 
 const CHANGE_TOPIC = 'LinearPieceWiseEditor.change';
+const EDIT_MODE_TOPIC = 'LinearPieceWiseEditor.edit.mode';
 
 export default class LinearPieceWiseEditor {
 
@@ -90,6 +91,7 @@ export default class LinearPieceWiseEditor {
         this.render();
       }
       this.canvas.addEventListener('mousemove', this.onMouseMove);
+      this.emit(EDIT_MODE_TOPIC, true);
     };
 
     this.onMouseMove = (event) => {
@@ -110,6 +112,7 @@ export default class LinearPieceWiseEditor {
       if (this.canvas) {
         this.canvas.removeEventListener('mousemove', this.onMouseMove);
       }
+      this.emit(EDIT_MODE_TOPIC, false);
     };
 
     this.onMouseLeave = this.onMouseUp;
@@ -257,7 +260,11 @@ export default class LinearPieceWiseEditor {
   }
 
   onChange(callback) {
-    return this.on(CHANGE_TOPIC, callback);
+    return callback ? this.on(CHANGE_TOPIC, callback) : null;
+  }
+
+  onEditModeChange(callback) {
+    return callback ? this.on(EDIT_MODE_TOPIC, callback) : null;
   }
 
   destroy() {
