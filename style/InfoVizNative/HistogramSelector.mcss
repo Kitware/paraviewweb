@@ -276,6 +276,10 @@
   composes: popup;
 }
 
+.popupCell {
+  padding: 2px;
+}
+
 .scoreChoice {
   composes: jsScoreChoice;
   float: left;
@@ -285,13 +289,31 @@
 .scoreLabel {
   composes: jsScoreLabel;
   display: block;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 2px;
+  line-height: 16px;
+}
+
+.scoreSwatch {
+  float: left;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 1px #707070 solid;
   border-radius: 3px;
-  padding: 1px;
 }
 
 .scoreButton {
   border: 1px #4C4CA3 solid;
-  border-radius: 3px;
-  padding: 1px;
-  width: 100%;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 2px;
+}
+
+.scoreDashSpacer {
+  border-bottom: 1px #bbb solid;
+  width: 95%;
+  height: 1px;
+  margin: 2px auto 3px auto;
 }
