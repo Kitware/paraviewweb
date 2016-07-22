@@ -72,11 +72,15 @@
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _Histogram1DProvider = __webpack_require__(48);
+	var _PartitionProvider = __webpack_require__(48);
+
+	var _PartitionProvider2 = _interopRequireDefault(_PartitionProvider);
+
+	var _Histogram1DProvider = __webpack_require__(49);
 
 	var _Histogram1DProvider2 = _interopRequireDefault(_Histogram1DProvider);
 
-	var _state = __webpack_require__(49);
+	var _state = __webpack_require__(50);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -108,6 +112,7 @@
 	  _FieldProvider2.default.extend(publicAPI, model, initialValues);
 	  _Histogram1DProvider2.default.extend(publicAPI, model, initialValues);
 	  _LegendProvider2.default.extend(publicAPI, model, initialValues);
+	  _PartitionProvider2.default.extend(publicAPI, model, initialValues);
 	})(_state2.default);
 
 	// set provider behaviors
@@ -122,7 +127,7 @@
 	  provider: provider,
 	  container: histogramSelectorContainer,
 	  // activate scoring gui
-	  scores: [{ name: 'Yes', color: '#00C900' }, { name: 'Maybe', color: '#FFFF00' }, { name: 'No', color: '#C90000' }],
+	  scores: [{ name: 'Yes', color: '#00C900', value: 1 }, { name: 'Maybe', color: '#FFFF00', value: 0 }, { name: 'No', color: '#C90000', value: -1 }],
 	  defaultScore: 1
 	});
 
@@ -20980,12 +20985,12 @@
 	    ;
 	  }
 
-	  function svgWidth() {
+	  publicAPI.svgWidth = function () {
 	    return model.histWidth + model.histMargin.left + model.histMargin.right;
-	  }
-	  function svgHeight() {
+	  };
+	  publicAPI.svgHeight = function () {
 	    return model.histHeight + model.histMargin.top + model.histMargin.bottom;
-	  }
+	  };
 
 	  function fetchData() {
 	    model.needData = true;
@@ -21129,9 +21134,6 @@
 	      // number of boxesPerRow
 	      var mungedData = fieldNames.map(function (name) {
 	        var d = model.provider.getField(name);
-	        if (typeof d.selectedGen === 'undefined') {
-	          d.selectedGen = 0;
-	        }
 	        return d;
 	      });
 
@@ -21224,8 +21226,7 @@
 	      // d3's listener method cannot guarantee the index passed to
 	      // updateData will be correct:
 	      function updateData(data) {
-	        // data.selected = this.checked;
-	        data.selectedGen++;
+	        // data.selectedGen++;
 	        // model.provider.updateField(data.name, { active: data.selected });
 	        model.provider.toggleFieldSelection(data.name);
 	      }
@@ -21288,10 +21289,11 @@
 	      fieldCell.text(def.name);
 
 	      // adjust some settings based on current size
-	      tdsl.select('svg').attr('width', svgWidth()).attr('height', svgHeight());
+	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
 
 	      // get the histogram data and rebuild the histogram based on the results
 	      var hobj = model.provider.getHistogram1D(def.name);
+	      def.hobj = hobj;
 	      if (hobj !== null) {
 	        (function () {
 	          var cmax = 1.0 * _d2.default.max(hobj.counts);
@@ -21369,7 +21371,7 @@
 	          gAxis.selectAll('line').classed(_HistogramSelector2.default.axisLine, true);
 	          gAxis.selectAll('path').classed(_HistogramSelector2.default.axisPath, true);
 
-	          _Score2.default.prepareItem(def, idx, svgGr, hobj, tdsl);
+	          _Score2.default.prepareItem(def, idx, svgGr, tdsl);
 	        })();
 	      }
 	    }
@@ -21417,6 +21419,8 @@
 	  model.subscriptions.push(model.provider.onFieldChange(fetchData));
 	  // event from Histogram Provider
 	  model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	  // scoring interface
+	  _Score2.default.addSubscriptions();
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
@@ -21446,7 +21450,7 @@
 	  singleMode: false,
 	  scrollToName: null,
 	  // margins inside the SVG element.
-	  histMargin: { top: 3, right: 3, bottom: 18, left: 3 },
+	  histMargin: { top: 8, right: 8, bottom: 23, left: 8 },
 	  histWidth: 90,
 	  histHeight: 70,
 	  lastOffset: -1,
@@ -32449,11 +32453,11 @@
 
 
 	exports.init = init;
+	exports.createDefaultDivider = createDefaultDivider;
 	exports.getDisplayOnlyScored = getDisplayOnlyScored;
 	exports.createGroups = createGroups;
 	exports.createHeader = createHeader;
 	exports.updateHeader = updateHeader;
-	exports.createDefaultDivider = createDefaultDivider;
 	exports.createDragDivider = createDragDivider;
 	exports.moveDragDivider = moveDragDivider;
 	exports.dividerPick = dividerPick;
@@ -32469,6 +32473,7 @@
 	exports.showScore = showScore;
 	exports.filterFieldNames = filterFieldNames;
 	exports.prepareItem = prepareItem;
+	exports.addSubscriptions = addSubscriptions;
 
 	var _d2 = __webpack_require__(17);
 
@@ -32489,8 +32494,100 @@
 	var dividerPopupDiv = null;
 
 	function init(inPublicAPI, inModel) {
+	  // TODO make sure model.scores has the right format
 	  publicAPI = inPublicAPI;
 	  model = inModel;
+	}
+
+	function createDefaultDivider(val, uncert) {
+	  return {
+	    value: val,
+	    uncertainty: uncert
+	  };
+	}
+
+	// add implicit bounds for the histogram min/max to dividers list
+	function getRegionBounds(dividers, hobj) {
+	  return [hobj.min].concat(dividers.map(function (div) {
+	    return div.value;
+	  }), hobj.max);
+	}
+
+	// Translate our dividers and regions into a piecewise-linear partition (2D array)
+	// suitable for scoring this histogram.
+	function dividersToPartition(dividers, regions, hobj, scores) {
+	  if (!regions || !dividers || !scores) return null;
+	  if (regions.length !== dividers.length + 1) return null;
+	  var regionBounds = getRegionBounds(dividers, hobj);
+	  var uncertScale = 0.005 * (hobj.max - hobj.min);
+	  var scoreData = [];
+	  for (var i = 0; i < regions.length; i++) {
+	    var x0 = i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i];
+	    var x1 = i !== regions.length - 1 ? regionBounds[i + 1] - dividers[i].uncertainty * uncertScale : regionBounds[i + 1];
+	    var yVal = scores[regions[i]].value;
+	    scoreData.push([x0, yVal], [x1, yVal]);
+	  }
+	  return scoreData;
+	}
+
+	// retrieve partition, and re-create dividers and regions
+	function partitionToDividers(scoreData, def, hobj, scores) {
+	  if (scoreData.length % 2 !== 0) console.error('partition expected paired points, length', scoreData.length);
+	  var regions = [];
+	  var dividers = [];
+
+	  var _loop = function _loop(i) {
+	    var lower = scoreData[i];
+	    var upper = scoreData[i + 1];
+	    if (lower[1] !== upper[1]) console.error('partition mismatch', lower[1], upper[1]);
+	    var regionVal = scores.findIndex(function (el) {
+	      return el.value === lower[1];
+	    });
+	    regions.push(regionVal);
+	    if (i < scoreData.length - 2) {
+	      var nextLower = scoreData[i + 2];
+	      var divVal = 0.5 * (upper[0] + nextLower[0]);
+	      var uncert = upper[0] === nextLower[0] ? 0 : 100 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min);
+	      dividers.push(createDefaultDivider(divVal, uncert));
+	    }
+	  };
+
+	  for (var i = 0; i < scoreData.length; i += 2) {
+	    _loop(i);
+	  }
+	  // don't replace the default region with an empty region, so UI can display the default region.
+	  if (regions.length > 0 && regions[0] !== model.defaultScore) {
+	    def.regions = regions;
+	    def.dividers = dividers;
+	  }
+	}
+
+	// communicate with the server which regions/dividers have changed.
+	function sendScores(def, hobj) {
+	  var scoreData = dividersToPartition(def.dividers, def.regions, def.hobj, model.scores);
+	  if (scoreData === null) {
+	    console.error('Cannot translate scores to send to provider');
+	    return;
+	  }
+	  if (model.provider.isA('PartitionProvider')) {
+	    model.provider.changePartition(def.name, scoreData);
+	    def.scoreDirty = true;
+	    // set def.scoreDirty, to trigger a load of data. We'll use the current data
+	    // until the server returns new data - see addSubscriptions() ..
+	    // model.provider.onPartitionReady() below, which sets scoreDirty again to
+	    // begin using the new data.
+	  }
+	}
+
+	// retrieve regions/dividers from the server.
+	function getScores(def) {
+	  if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
+	    if (model.provider.loadPartition(def.name)) {
+	      var scoreData = model.provider.getPartition(def.name);
+	      partitionToDividers(scoreData, def, def.hobj, model.scores);
+	      def.scoreDirty = false;
+	    }
+	  }
 	}
 
 	var scoredHeaderClick = function scoredHeaderClick(d) {
@@ -32522,13 +32619,6 @@
 	    // apply class - 'false' should come first to not remove common base class.
 	    .classed(getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, false).classed(!getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, true);
 	  }
-	}
-
-	function createDefaultDivider(val, uncert) {
-	  return {
-	    value: val,
-	    uncertainty: uncert
-	  };
 	}
 
 	function createDragDivider(hitIndex, val, def, hobj) {
@@ -32594,7 +32684,8 @@
 	      hitIndex = def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1;
 	    }
 	    var margin = def.xScale.invert(marginPx) - minVal;
-	    if (Math.abs(def.dividers[hitIndex].value - val) > margin) {
+	    // don't pick a divider outside the bounds of the histogram - pick the last region.
+	    if (Math.abs(def.dividers[hitIndex].value - val) > margin || val < def.hobj.min || val > def.hobj.max) {
 	      // we weren't close enough...
 	      hitIndex = -1;
 	    }
@@ -32626,39 +32717,40 @@
 	        } else {
 	          def.regions.splice(def.dragDivider.index, 1);
 	        }
-	        // console.log('del reg ', def.regions);
 	        // delete the divider.
 	        def.dividers.splice(def.dragDivider.index, 1);
-	        // console.log('del div ', def.dividers);
 	      }
 	    } else {
-	      // if we moved a divider, delete the old region
+	      // adding a divider, we make a new region.
+	      var replaceRegion = true;
+	      // if we moved a divider, delete the old region, unless it's one of the edge regions - those persist.
 	      if (def.dragDivider.index >= 0) {
-	        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low) {
+	        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low && def.dragDivider.low !== hobj.min) {
 	          def.regions.splice(def.dragDivider.index, 1);
-	        } else {
+	        } else if (def.dividers[def.dragDivider.index].value === def.dragDivider.high && def.dragDivider.high !== hobj.max) {
 	          def.regions.splice(def.dragDivider.index + 1, 1);
+	        } else {
+	          replaceRegion = false;
 	        }
-	        // console.log('del reg ', def.regions);
 	        // delete the old divider
 	        def.dividers.splice(def.dragDivider.index, 1);
-	        // console.log('del div ', def.dividers);
 	      }
 	      // add a new divider
 	      def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
 	      // find the index based on dividers sorted by divider.value
 	      var index = bisectDividers(def.dividers, def.dragDivider.newDivider);
 	      def.dividers.splice(index, 0, def.dragDivider.newDivider);
-	      // console.log('add div ', index, def.dividers);
-	      // add a new region, copies the score of existing region.
-	      def.regions.splice(index, 0, def.regions[index]);
-	      // console.log('add reg ', index, def.regions);
+	      // add a new region if needed, copies the score of existing region.
+	      if (replaceRegion) {
+	        def.regions.splice(index, 0, def.regions[index]);
+	      }
 	    }
 	  } else {
-	    if (def.dragDivider.index >= 0) {
+	    if (def.dragDivider.index >= 0 && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
 	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 	    }
 	  }
+	  sendScores(def, hobj);
 	  def.dragDivider = undefined;
 	}
 
@@ -32743,7 +32835,10 @@
 	    var uncert = _d3.default.event.target.value;
 	    if (!validateDividerVal(uncert)) uncert = savedUncert;
 	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	    if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+	    if (selectedDef.dragDivider.newDivider.value === undefined) {
+	      // don't use selDivider, might be out-of-date if the server sent us dividers.
+	      selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	    }
 	    publicAPI.render(selectedDef.name);
 	  }).on('change', function () {
 	    // committed to a value, show feedback.
@@ -32755,7 +32850,9 @@
 	      savedUncert = uncert;
 	    }
 	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	    if (selectedDef.dragDivider.newDivider.value === undefined) selDivider.uncertainty = uncert;
+	    if (selectedDef.dragDivider.newDivider.value === undefined) {
+	      selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	    }
 	    publicAPI.render(selectedDef.name);
 	  }).on('keyup', function () {
 	    if (_d3.default.event.key === 'Escape') {
@@ -32778,8 +32875,7 @@
 	  tr2.append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
 	  var tr3 = table.append('tr');
 	  tr3.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'Delete |').on('click', function () {
-	    var hobj = model.provider.getHistogram1D(model.selectedDef.name);
-	    if (hobj !== null) finishDivider(model.selectedDef, hobj, true);
+	    finishDivider(model.selectedDef, model.selectedDef.hobj, true);
 	    dPopupDiv.style('display', 'none');
 	    publicAPI.render();
 	  });
@@ -32821,13 +32917,13 @@
 	    def.regions[def.hitRegionIndex] = i;
 	    def.dragDivider = undefined;
 	    sPopupDiv.style('display', 'none');
+	    sendScores(def, def.hobj);
 	    publicAPI.render();
 	  });
 	  // create a button for creating a new divider, so we don't require
 	  // the invisible alt/ctrl click to create one.
 	  sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New |').on('click', function () {
-	    var hobj = model.provider.getHistogram1D(model.selectedDef.name);
-	    if (hobj !== null) finishDivider(model.selectedDef, hobj);
+	    finishDivider(model.selectedDef, model.selectedDef.hobj);
 	    sPopupDiv.style('display', 'none');
 	    publicAPI.render();
 	  });
@@ -32868,13 +32964,18 @@
 	  return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
 	};
 
-	function prepareItem(def, idx, svgGr, hobj, tdsl) {
+	function prepareItem(def, idx, svgGr, tdsl) {
 	  if (typeof model.scores === 'undefined') return;
 	  if (typeof def.dividers === 'undefined') {
 	    def.dividers = [];
 	    def.regions = [model.defaultScore];
 	    def.editScore = false;
+	    def.scoreDirty = true;
 	  }
+	  var hobj = def.hobj;
+
+	  // retrieve scores from the server, if available.
+	  getScores(def, hobj);
 
 	  var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
 	  var drag = null;
@@ -32942,7 +33043,6 @@
 	          // start dragging existing divider
 	          // it becomes a temporary copy if we go outside our bounds
 	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	          // console.log('drag start ', hitIndex, def.dragDivider.low, def.dragDivider.high);
 	          publicAPI.render();
 	        }
 	      }
@@ -32964,9 +33064,7 @@
 
 	  // score regions
 	  // there are implicit bounds at the min and max.
-	  var regionBounds = [hobj.min].concat(def.dividers.map(function (div) {
-	    return div.value;
-	  }), hobj.max);
+	  var regionBounds = getRegionBounds(def.dividers, hobj);
 	  var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
 	  // duplicate background regions are opaque, for a solid bright color.
 	  var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
@@ -32986,7 +33084,7 @@
 
 	  // invisible overlay to catch mouse events.
 	  var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
-	  svgOverlay.attr('width', model.histWidth).attr('height', model.histHeight + model.histMargin.bottom) // allow clicks inside x-axis.
+	  svgOverlay.attr('x', -model.histMargin.left).attr('y', -model.histMargin.top).attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight()) // allow clicks inside x-axis.
 	  .on('click', function () {
 	    // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
 	    if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
@@ -33021,7 +33119,7 @@
 	        if (typeof def.dragDivider === 'undefined') {
 	          def.dragDivider = createDragDivider(-1, val, def, hobj);
 	        } else {
-	          console.log('DBG unexpected existing divider');
+	          console.log('Internal: unexpected existing divider');
 	          def.dragDivider.newDivider.value = val;
 	        }
 
@@ -33059,14 +33157,21 @@
 	  }
 	}
 
+	function addSubscriptions() {
+	  model.subscriptions.push(model.provider.onPartitionReady(function (field) {
+	    model.provider.getField(field).scoreDirty = true;
+	    publicAPI.render(field);
+	  }));
+	}
+
 	exports.default = {
+	  addSubscriptions: addSubscriptions,
 	  createGroups: createGroups,
 	  createHeader: createHeader,
 	  createPopups: createPopups,
 	  filterFieldNames: filterFieldNames,
 	  init: init,
 	  prepareItem: prepareItem,
-	  // showScore,
 	  updateHeader: updateHeader
 	};
 
@@ -34358,6 +34463,111 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// ----------------------------------------------------------------------------
+	// Partition Provider
+	// ----------------------------------------------------------------------------
+
+	function partitionProvider(publicAPI, model, fetchHelper) {
+	  // Private members
+	  var ready = publicAPI.firePartitionReady;
+	  delete publicAPI.firePartitionReady;
+
+	  // Protected members
+	  if (!model.partitionData) {
+	    model.partitionData = {};
+	  }
+
+	  // Return true if data is available
+	  publicAPI.loadPartition = function (field) {
+	    if (!model.partitionData[field]) {
+	      model.partitionData[field] = { pending: true };
+	      fetchHelper.addRequest(field);
+	      return false;
+	    }
+
+	    if (model.partitionData[field].pending) {
+	      return false;
+	    }
+
+	    if (model.partitionData[field].stale) {
+	      // stale means the client sent some data to the server,
+	      // and we need the server to return 'ground truth', even
+	      // though we have our version of the data right now.
+	      delete model.partitionData[field].stale;
+	      fetchHelper.addRequest(field);
+	      return true;
+	    }
+
+	    return true;
+	  };
+
+	  publicAPI.getPartition = function (field) {
+	    return model.partitionData[field];
+	  };
+	  // server sent us some data
+	  publicAPI.setPartition = function (field, data) {
+	    model.partitionData[field] = data;
+	    ready(field, data);
+	  };
+	  // client generated new data
+	  publicAPI.changePartition = function (field, data) {
+	    model.partitionData[field] = data;
+	    model.partitionData[field].stale = true;
+	    publicAPI.firePartitionChange(field, data);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  // partitionData: null,
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'PartitionProvider');
+	  // Change asynchronous default - immediate event tiggers data send to server, and server reply is async.
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionChange', false);
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionReady');
+	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Partition');
+
+	  partitionProvider(publicAPI, model, fetchHelper);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(14);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
 	// Histogram 1D Provider
 	// ----------------------------------------------------------------------------
 
@@ -34437,7 +34647,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = {
