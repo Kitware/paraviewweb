@@ -20260,8 +20260,10 @@
 	    rangeMin: _react2.default.PropTypes.number,
 	    rangeMax: _react2.default.PropTypes.number,
 	    onChange: _react2.default.PropTypes.func,
+	    onEditModeChange: _react2.default.PropTypes.func,
 	    height: _react2.default.PropTypes.number,
-	    width: _react2.default.PropTypes.number
+	    width: _react2.default.PropTypes.number,
+	    hidePointControl: _react2.default.PropTypes.bool
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -20285,6 +20287,7 @@
 	    this.editor.setControlPoints(this.props.points);
 	    this.editor.render();
 	    this.editor.onChange(this.updatePoints);
+	    this.editor.onEditModeChange(this.props.onEditModeChange);
 
 	    if (this.props.width === -1 || this.props.height === -1) {
 	      this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
@@ -20320,6 +20323,7 @@
 	    if (this.sizeSubscription) {
 	      this.sizeSubscription.unsubscribe();
 	      this.sizeSubscription = null;
+	      this.editor.destroy(); // Remove subscriptions
 	      this.editor = null;
 	    }
 	  },
@@ -20342,13 +20346,17 @@
 	    var dataPoints = this.props.points.map(function (pt) {
 	      return {
 	        x: pt.x,
-	        y: pt.y
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
 	      };
 	    });
 	    var newDataPoints = newPoints.map(function (pt) {
 	      return {
 	        x: pt.x,
-	        y: pt.y
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
 	      };
 	    });
 	    this.oldPoints = dataPoints;
@@ -20362,7 +20370,12 @@
 	    }
 	    var value = parseFloat(e.target.value);
 	    var points = this.props.points.map(function (pt) {
-	      return { x: pt.x, y: pt.y };
+	      return {
+	        x: pt.x,
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
+	      };
 	    });
 	    points[this.state.activePoint].x = (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
 	    this.editor.setControlPoints(points, this.state.activePoint);
@@ -20373,16 +20386,31 @@
 	    }
 	    var value = parseFloat(e.target.value);
 	    var points = this.props.points.map(function (pt) {
-	      return { x: pt.x, y: pt.y };
+	      return {
+	        x: pt.x,
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
+	      };
 	    });
 	    points[this.state.activePoint].y = value;
 	    this.editor.setControlPoints(points, this.state.activePoint);
 	  },
 	  addPoint: function addPoint(e) {
 	    var points = this.props.points.map(function (pt) {
-	      return { x: pt.x, y: pt.y };
+	      return {
+	        x: pt.x,
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
+	      };
 	    });
-	    points.push({ x: 0.5, y: 0.5 });
+	    points.push({
+	      x: 0.5,
+	      y: 0.5,
+	      x2: 0.5,
+	      y2: 0.5
+	    });
 	    this.editor.setControlPoints(points, points.length - 1);
 	  },
 	  removePoint: function removePoint(e) {
@@ -20390,7 +20418,12 @@
 	      return;
 	    }
 	    var points = this.props.points.map(function (pt) {
-	      return { x: pt.x, y: pt.y };
+	      return {
+	        x: pt.x,
+	        y: pt.y,
+	        x2: pt.x2 || 0.5,
+	        y2: pt.y2 || 0.5
+	      };
 	    });
 	    points.splice(this.state.activePoint, 1);
 	    this.editor.setActivePoint(-1);
@@ -20408,7 +20441,7 @@
 	        height: this.state.height,
 	        ref: 'canvas'
 	      }),
-	      _react2.default.createElement(
+	      this.props.hidePointControl ? null : _react2.default.createElement(
 	        'div',
 	        { className: _PieceWiseFunctionEditorWidget2.default.pointControls },
 	        _react2.default.createElement(
@@ -20571,6 +20604,7 @@
 	// ----------------------------------------------------------------------------
 
 	var CHANGE_TOPIC = 'LinearPieceWiseEditor.change';
+	var EDIT_MODE_TOPIC = 'LinearPieceWiseEditor.edit.mode';
 
 	var LinearPieceWiseEditor = function () {
 	  function LinearPieceWiseEditor(canvas, style) {
@@ -20590,6 +20624,7 @@
 	        _this.render();
 	      }
 	      _this.canvas.addEventListener('mousemove', _this.onMouseMove);
+	      _this.emit(EDIT_MODE_TOPIC, true);
 	    };
 
 	    this.onMouseMove = function (event) {
@@ -20610,6 +20645,7 @@
 	      if (_this.canvas) {
 	        _this.canvas.removeEventListener('mousemove', _this.onMouseMove);
 	      }
+	      _this.emit(EDIT_MODE_TOPIC, false);
 	    };
 
 	    this.onMouseLeave = this.onMouseUp;
@@ -20794,7 +20830,12 @@
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(callback) {
-	      return this.on(CHANGE_TOPIC, callback);
+	      return callback ? this.on(CHANGE_TOPIC, callback) : null;
+	    }
+	  }, {
+	    key: 'onEditModeChange',
+	    value: function onEditModeChange(callback) {
+	      return callback ? this.on(EDIT_MODE_TOPIC, callback) : null;
 	    }
 	  }, {
 	    key: 'destroy',

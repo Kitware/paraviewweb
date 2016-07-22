@@ -39467,6 +39467,9 @@
 	    setOpacityFunctionPoints: function setOpacityFunctionPoints(arrayName, pointArray) {
 	      return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray]);
 	    },
+	    getOpacityFunctionPoints: function getOpacityFunctionPoints(arrayName) {
+	      return session.call('pv.color.manager.opacity.points.get', [arrayName]);
+	    },
 	    getRgbPoints: function getRgbPoints(arrayName) {
 	      return session.call('pv.color.manager.rgb.points.get', [arrayName]);
 	    },

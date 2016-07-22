@@ -179,6 +179,7 @@
 	// ----------------------------------------------------------------------------
 
 	var CHANGE_TOPIC = 'LinearPieceWiseEditor.change';
+	var EDIT_MODE_TOPIC = 'LinearPieceWiseEditor.edit.mode';
 
 	var LinearPieceWiseEditor = function () {
 	  function LinearPieceWiseEditor(canvas, style) {
@@ -198,6 +199,7 @@
 	        _this.render();
 	      }
 	      _this.canvas.addEventListener('mousemove', _this.onMouseMove);
+	      _this.emit(EDIT_MODE_TOPIC, true);
 	    };
 
 	    this.onMouseMove = function (event) {
@@ -218,6 +220,7 @@
 	      if (_this.canvas) {
 	        _this.canvas.removeEventListener('mousemove', _this.onMouseMove);
 	      }
+	      _this.emit(EDIT_MODE_TOPIC, false);
 	    };
 
 	    this.onMouseLeave = this.onMouseUp;
@@ -402,7 +405,12 @@
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(callback) {
-	      return this.on(CHANGE_TOPIC, callback);
+	      return callback ? this.on(CHANGE_TOPIC, callback) : null;
+	    }
+	  }, {
+	    key: 'onEditModeChange',
+	    value: function onEditModeChange(callback) {
+	      return callback ? this.on(EDIT_MODE_TOPIC, callback) : null;
 	    }
 	  }, {
 	    key: 'destroy',
