@@ -19,6 +19,9 @@ export default function createMethods(session) {
     setOpacityFunctionPoints: (arrayName, pointArray) => {
       return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray]);
     },
+    getOpacityFunctionPoints: (arrayName) => {
+      return session.call('pv.color.manager.opacity.points.get', [arrayName]);
+    },
     getRgbPoints: (arrayName) => {
       return session.call('pv.color.manager.rgb.points.get', [arrayName]);
     },

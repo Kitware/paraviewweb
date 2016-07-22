@@ -25,6 +25,9 @@ export default React.createClass({
     representation: React.PropTypes.object,
     scalarBar: React.PropTypes.string,
     source: React.PropTypes.object,
+    opacityPoints: React.PropTypes.array,
+    onOpacityPointsChange: React.PropTypes.func,
+    opacityEditorSize: React.PropTypes.array,
   },
 
   getDefaultProps() {
