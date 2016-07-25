@@ -27,17 +27,25 @@ import Score from './Score';
 // http://bl.ocks.org/gmaclennan/11130600 among other examples.
 // Reuse happens at the row level.
 //
-// The maxBoxSize variable controls the largest width that a box
+// The minBoxSize variable controls the smallest width that a box
 // (histogram) will use. This code will fill its container with the
-// largest size histogram it can that does not exceed this limit and
+// smallest size histogram it can that does not exceed this limit and
 // provides an integral number of histograms across the container's width.
 //
 
 function histogramSelector(publicAPI, model) {
-  // in contact-sheet mode, specify the largest width a histogram can grow
-  // to before more histograms are created to fill the container's width
-  const maxBoxSize = 240;
+  // in contact-sheet mode, specify the smallest width a histogram can shrink
+  // to before fewer histograms are created to fill the container's width
+  let minBoxSize = 200;
+  // smallest we'll let it go. Limits boxesPerRow in header GUI.
+  const minBoxSizeLimit = 100;
   const legendSize = 15;
+  // hard coded because I did not figure out how to
+  // properly query this value from our container.
+  const borderSize = 6;
+  // 8? for linux/firefox, 10 for win10/chrome
+  const scrollbarWidth = 12;
+
   let displayOnlySelected = false;
 
   let lastNumFields = 0;
@@ -125,27 +133,31 @@ function histogramSelector(publicAPI, model) {
     }
   }
 
+  function getClientArea() {
+    const clientRect = model.listContainer.getBoundingClientRect();
+    return [clientRect.width - borderSize - scrollbarWidth,
+                        clientRect.height - borderSize];
+  }
+
   function updateSizeInformation(singleMode) {
     let updateBoxPerRow = false;
-    const clientRect = model.listContainer.getBoundingClientRect();
 
-    // hard coded because I did not figure out how to
-    // properly query this value from our container.
-    const borderSize = 6;
-    // 8? for linux/firefox, 10 for win10/chrome
-    const scrollbarWidth = 10;
     const boxMargin = 3; // outside the box dimensions
     const boxBorder = 2; // included in the box dimensions, visible border
 
     // Get the client area size
-    const dimensions = [clientRect.width - borderSize - scrollbarWidth,
-                        clientRect.height - borderSize];
+    const dimensions = getClientArea();
 
     // compute key values based on our new size
-    const boxesPerRow = (singleMode ? 1 : Math.ceil(dimensions[0] / maxBoxSize));
+    const boxesPerRow = (singleMode ? 1 : Math.max(1, Math.floor(dimensions[0] / minBoxSize)));
     model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
-    model.boxHeight = (singleMode ? Math.floor((model.boxWidth + 2 * boxMargin) * 5 / 8 - 2 * boxMargin)
-                                  : model.boxWidth);
+    if (boxesPerRow === 1) {
+      // use 3 / 4 to make a single hist wider than it is tall.
+      model.boxHeight = Math.min(Math.floor((model.boxWidth + 2 * boxMargin) * (3 / 4) - 2 * boxMargin),
+                                 Math.floor(dimensions[1] - 2 * boxMargin));
+    } else {
+      model.boxHeight = model.boxWidth;
+    }
     model.rowHeight = model.boxHeight + 2 * boxMargin;
     model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
 
@@ -177,10 +189,51 @@ function histogramSelector(publicAPI, model) {
     return foundRow;
   }
 
+  function getCurrentFieldNames() {
+    let fieldNames = [];
+    // Initialize fields
+    if (model.provider.isA('FieldProvider')) {
+      fieldNames = (!displayOnlySelected ? model.provider.getFieldNames() :
+         model.provider.getActiveFieldNames());
+    }
+    fieldNames = Score.filterFieldNames(fieldNames);
+    return fieldNames;
+  }
+
   const fieldHeaderClick = (d) => {
     displayOnlySelected = !displayOnlySelected;
     publicAPI.render();
   };
+
+  function incrNumBoxes(amount) {
+    if (model.singleModeName !== null) return;
+    // Get the client area size
+    const dimensions = getClientArea();
+    let newBoxesPerRow = Math.max(1, model.boxesPerRow + amount);
+    // compute a reasonable new maximum for box size based on the current container dimensions. 10 px padding.
+    const newMinBoxSize = Math.max(minBoxSizeLimit, Math.floor(dimensions[0] / newBoxesPerRow) - 10);
+    newBoxesPerRow = Math.floor(dimensions[0] / newMinBoxSize);
+    // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
+    if (newBoxesPerRow !== model.boxesPerRow) {
+      minBoxSize = newMinBoxSize;
+      publicAPI.render();
+    }
+  }
+
+  function changeSingleField(direction) {
+    if (model.singleModeName === null) return;
+    const fieldNames = getCurrentFieldNames();
+    if (fieldNames.length === 0) return;
+
+    let index = fieldNames.indexOf(model.singleModeName);
+    if (index === -1) index = 0;
+    else index = (index + direction) % fieldNames.length;
+    if (index < 0) index = fieldNames.length - 1;
+
+    model.singleModeName = fieldNames[index];
+    lastNumFields = 0;
+    publicAPI.render();
+  }
 
   function createHeader(divSel) {
     const header = divSel.append('div')
@@ -194,7 +247,32 @@ function histogramSelector(publicAPI, model) {
     header.append('span')
       .classed(style.jsHeaderLabel, true)
       .on('click', fieldHeaderClick);
+
     Score.createHeader(header);
+
+    const numBoxesSpan = header.append('span')
+      .classed(style.headerBoxes, true);
+    numBoxesSpan.append('i')
+      .classed(style.headerBoxesPlus, true)
+      .on('click', () => incrNumBoxes(1));
+    numBoxesSpan.append('span')
+      .classed(style.jsHeaderBoxesNum, true)
+      .text(model.boxesPerRow);
+    numBoxesSpan.append('i')
+      .classed(style.headerBoxesMinus, true)
+      .on('click', () => incrNumBoxes(-1));
+
+    const singleSpan = header.append('span')
+      .classed(style.headerSingle, true);
+    singleSpan.append('i')
+      .classed(style.headerSinglePrev, true)
+      .on('click', () => changeSingleField(-1));
+    singleSpan.append('span')
+      .classed(style.jsHeaderSingleField, true)
+      .text('');
+    singleSpan.append('i')
+      .classed(style.headerSingleNext, true)
+      .on('click', () => changeSingleField(1));
   }
 
   function updateHeader(dataLength) {
@@ -205,6 +283,31 @@ function histogramSelector(publicAPI, model) {
     d3.select(`.${style.jsHeaderLabel}`)
       .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
     Score.updateHeader();
+
+    d3.select(`.${style.jsHeaderBoxes}`)
+      .style('display', model.singleModeName === null ? 'initial' : 'none');
+    d3.select(`.${style.jsHeaderBoxesNum}`)
+      .text(`${model.boxesPerRow} /row`);
+
+    d3.select(`.${style.jsHeaderSingle}`)
+      .style('display', model.singleModeName === null ? 'none' : 'initial');
+
+    if (model.provider.isA('LegendProvider') && model.singleModeName) {
+      const { color, shape } = model.provider.getLegend(model.singleModeName);
+      d3.select(`.${style.jsHeaderSingleField}`)
+        .html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}'
+                fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
+    } else {
+      d3.select(`.${style.jsHeaderSingleField}`)
+        .text(() => {
+          let name = model.singleModeName;
+          if (!name) return '';
+          if (name.length > 10) {
+            name = `${name.substring(0, 9)}...`;
+          }
+          return name;
+        });
+    }
   }
 
   publicAPI.resize = () => {
@@ -228,17 +331,16 @@ function histogramSelector(publicAPI, model) {
     }
     if (model.container === null) return;
 
-    const updateBoxPerRow = updateSizeInformation(model.singleMode);
+    const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
-    let fieldNames = [];
-    // Initialize fields
-    if (model.provider.isA('FieldProvider')) {
-      fieldNames = (!displayOnlySelected ? model.provider.getFieldNames() :
-         model.provider.getActiveFieldNames());
-    }
-    fieldNames = Score.filterFieldNames(fieldNames);
+    let fieldNames = getCurrentFieldNames();
 
     updateHeader(fieldNames.length);
+    if (model.singleModeName !== null) {
+      // display only one histogram at a time.
+      fieldNames = [model.singleModeName];
+    }
+
     if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
       lastNumFields = fieldNames.length;
 
@@ -363,7 +465,11 @@ function histogramSelector(publicAPI, model) {
               updateData(d);
             },
             function doubleClick(d, i) { // double click handler
-              model.singleMode = !model.singleMode;
+              if (model.singleModeName === null) {
+                model.singleModeName = d.name;
+              } else {
+                model.singleModeName = null;
+              }
               model.scrollToName = d.name;
               publicAPI.render();
 
@@ -486,8 +592,9 @@ function histogramSelector(publicAPI, model) {
         }
         def.xAxis
           .scale(def.xScale);
-        let numTicks = model.singleMode ? 5 : 2;
-        if (model.singleMode) {
+        let numTicks = 2;
+        if (model.histWidth >= model.moreTicksSize) {
+          numTicks = 5;
           // using .ticks() results in skipping min/max values,
           // if they aren't 'nice'. Make exactly 5 ticks.
           const myTicks = d3.range(numTicks).map((d) => (
@@ -589,14 +696,16 @@ const DEFAULT_VALUES = {
   boxWidth: 120,
   boxHeight: 120,
   // show 1 per row?
-  singleMode: false,
+  singleModeName: null,
   scrollToName: null,
   // margins inside the SVG element.
   histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
   histWidth: 90,
   histHeight: 70,
+  // what's the smallest histogram size that shows 5 ticks, instead of min/max? in pixels
+  moreTicksSize: 300,
   lastOffset: -1,
-  headerSize: 20,
+  headerSize: 25,
   // scoring interface activated by passing in 'scores' array externally.
   // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
   defaultScore: 0,

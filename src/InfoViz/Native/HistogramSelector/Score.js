@@ -2,6 +2,7 @@ import d3 from 'd3';
 /* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 /* eslint-enable import/no-unresolved */
+import downArrowImage from './down_arrow.png';
 
 let publicAPI = null;
 let model = null;
@@ -26,7 +27,6 @@ export function init(inPublicAPI, inModel) {
     });
   }
 }
-
 
 export function createDefaultDivider(val, uncert) {
   return {
@@ -695,7 +695,8 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         // width might be === overhang if a divider is dragged all the way to min/max.
         .attr('width', (d, i) => (def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i])) +
                                   (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
-        .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
+        // extend over the x-axis when editing.
+        .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3)
         .attr('fill', (d) => (model.scores[d].color))
         .attr('opacity', showScore(def) ? reg.opacity : '0');
       reg.sel.exit().remove();
@@ -714,7 +715,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
       const overCoords = getMouseCoords(tdsl);
       if (overCoords[1] > model.histHeight) {
         def.editScore = !def.editScore;
-        svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
+        svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
         publicAPI.render();
         return;
       }
@@ -750,7 +751,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
         let cursor = 'pointer';
         // if we're over the bottom, indicate a click will shrink regions
-        if (overCoords[1] > model.histHeight) cursor = 's-resize';
+        if (overCoords[1] > model.histHeight) cursor = `url(${downArrowImage}) 12 22, auto`;
         // if we're over a divider, indicate drag-to-move
         else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
         // if modifiers are held down, we'll create a divider
