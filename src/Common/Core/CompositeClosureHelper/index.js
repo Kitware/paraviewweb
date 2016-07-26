@@ -174,6 +174,14 @@ export function fetch(publicAPI, model, name) {
 }
 
 // ----------------------------------------------------------------------------
+// Chain function calls
+// ----------------------------------------------------------------------------
+
+export function chain(...fn) {
+  return (...args) => fn.filter(i => !!i).forEach(i => i(...args));
+}
+
+// ----------------------------------------------------------------------------
 // newInstance
 // ----------------------------------------------------------------------------
 
@@ -187,11 +195,12 @@ export function newInstance(extend) {
 }
 
 export default {
-  newInstance,
+  chain,
   destroy,
-  fetch,
-  isA,
   event,
-  set,
+  fetch,
   get,
+  isA,
+  newInstance,
+  set,
 };
