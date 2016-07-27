@@ -32656,7 +32656,7 @@
 	  if (!regions || !dividers || !scores) return null;
 	  if (regions.length !== dividers.length + 1) return null;
 	  var regionBounds = getRegionBounds(dividers, hobj);
-	  var uncertScale = 0.005 * (hobj.max - hobj.min);
+	  var uncertScale = hobj.max - hobj.min;
 	  var scoreData = [];
 	  for (var i = 0; i < regions.length; i++) {
 	    var x0 = i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i];
@@ -32684,7 +32684,7 @@
 	    if (i < scoreData.length - 2) {
 	      var nextLower = scoreData[i + 2];
 	      var divVal = 0.5 * (upper[0] + nextLower[0]);
-	      var uncert = upper[0] === nextLower[0] ? 0 : 100 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min);
+	      var uncert = upper[0] === nextLower[0] ? 0 : 0.5 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min);
 	      dividers.push(createDefaultDivider(divVal, uncert));
 	    }
 	  };
@@ -32765,6 +32765,7 @@
 	    // it becomes a temporary copy if we go outside our bounds
 	    dragD = { index: hitIndex,
 	      newDivider: createDefaultDivider(undefined, def.dividers[hitIndex].uncertainty),
+	      savedUncert: def.dividers[hitIndex].uncertainty,
 	      low: hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value,
 	      high: hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value
 	    };
@@ -32772,11 +32773,41 @@
 	    // create a temp divider to render.
 	    dragD = { index: -1,
 	      newDivider: createDefaultDivider(val, 0),
+	      savedUncert: 0,
 	      low: hobj.min,
 	      high: hobj.max
 	    };
 	  }
 	  return dragD;
+	}
+
+	// enforce that divider uncertainties can't overlap.
+	// Look at neighboring dividers for boundaries on this divider's uncertainty.
+	function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
+	  if (hitIndex < 0) return currentUncertainty;
+	  var maxUncertainty = 0.5;
+	  var uncertScale = def.hobj.max - def.hobj.min;
+	  // Note comparison with low/high divider is signed. If val indicates divider has been
+	  // moved _past_ the neighboring divider, low/high will be negative.
+	  if (hitIndex > 0) {
+	    var low = def.dividers[hitIndex - 1].value + def.dividers[hitIndex - 1].uncertainty * uncertScale;
+	    maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
+	  }
+	  if (hitIndex < def.dividers.length - 1) {
+	    var high = def.dividers[hitIndex + 1].value - def.dividers[hitIndex + 1].uncertainty * uncertScale;
+	    maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
+	  }
+	  // make sure uncertainty is zero when val has passed a neighbor.
+	  maxUncertainty = Math.max(maxUncertainty, 0);
+	  return Math.min(maxUncertainty, currentUncertainty);
+	}
+
+	// clamp the drag divider specifically
+	function clampDragDividerUncertainty(val, def) {
+	  if (def.dragDivider.index < 0) return;
+
+	  def.dragDivider.newDivider.uncertainty = clampDividerUncertainty(val, def, def.dragDivider.index, def.dragDivider.savedUncert);
+	  def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 	}
 
 	function moveDragDivider(val, def) {
@@ -32785,14 +32816,16 @@
 	    if (val < def.dragDivider.low) {
 	      def.dragDivider.newDivider.value = val;
 	      def.dividers[def.dragDivider.index].value = def.dragDivider.low;
+	      clampDragDividerUncertainty(val, def);
 	      def.dividers[def.dragDivider.index].uncertainty = 0;
 	    } else if (val > def.dragDivider.high) {
 	      def.dragDivider.newDivider.value = val;
 	      def.dividers[def.dragDivider.index].value = def.dragDivider.high;
+	      clampDragDividerUncertainty(val, def);
 	      def.dividers[def.dragDivider.index].uncertainty = 0;
 	    } else {
 	      def.dividers[def.dragDivider.index].value = val;
-	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
+	      clampDragDividerUncertainty(val, def);
 	      def.dragDivider.newDivider.value = undefined;
 	    }
 	  } else {
@@ -32887,6 +32920,10 @@
 	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 	    }
 	  }
+	  // make sure uncertainties don't overlap.
+	  def.dividers.forEach(function (divider, index) {
+	    divider.uncertainty = clampDividerUncertainty(divider.value, def, index, divider.uncertainty);
+	  });
 	  sendScores(def, hobj);
 	  def.dragDivider = undefined;
 	}
@@ -32927,7 +32964,7 @@
 
 	  var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
 	  var savedVal = selDivider.value;
-	  var savedUncert = selDivider.uncertainty;
+	  selectedDef.dragDivider.savedUncert = selDivider.uncertainty;
 	  dPopupDiv.on('mouseleave', function () {
 	    if (selectedDef.dragDivider) {
 	      moveDragDivider(savedVal, selectedDef);
@@ -32937,11 +32974,13 @@
 	    selectedDef.dragDivider = undefined;
 	    publicAPI.render();
 	  });
+	  var uncertInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerUncertaintyInput);
 	  var valInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerValueInput).attr('value', formatter(selDivider.value)).property('value', formatter(selDivider.value)).on('input', function () {
 	    // typing values, show feedback.
 	    var val = _d3.default.event.target.value;
 	    if (!validateDividerVal(val)) val = savedVal;
 	    moveDragDivider(val, selectedDef);
+	    uncertInput.property('value', formatter(100 * selectedDef.dragDivider.newDivider.uncertainty));
 	    publicAPI.render(selectedDef.name);
 	  }).on('change', function () {
 	    // committed to a value, show feedback.
@@ -32967,10 +33006,10 @@
 	  valInput.node().select();
 	  valInput.node().focus();
 
-	  dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerUncertaintyInput).attr('value', formatter(selDivider.uncertainty)).property('value', formatter(selDivider.uncertainty)).on('input', function () {
+	  uncertInput.attr('value', formatter(100 * selDivider.uncertainty)).property('value', formatter(100 * selDivider.uncertainty)).on('input', function () {
 	    // typing values, show feedback.
 	    var uncert = _d3.default.event.target.value;
-	    if (!validateDividerVal(uncert)) uncert = savedUncert;
+	    if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else uncert = 0.01 * uncert;
 	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
 	    if (selectedDef.dragDivider.newDivider.value === undefined) {
 	      // don't use selDivider, might be out-of-date if the server sent us dividers.
@@ -32980,11 +33019,11 @@
 	  }).on('change', function () {
 	    // committed to a value, show feedback.
 	    var uncert = _d3.default.event.target.value;
-	    if (!validateDividerVal(uncert)) uncert = savedUncert;else {
-	      // uncertainty is a %
-	      uncert = Math.min(100, Math.max(0, uncert));
-	      _d3.default.event.target.value = uncert;
-	      savedUncert = uncert;
+	    if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
+	      // uncertainty is a % between 0 and 0.5
+	      uncert = Math.min(0.5, Math.max(0, 0.01 * uncert));
+	      _d3.default.event.target.value = formatter(100 * uncert);
+	      selectedDef.dragDivider.savedUncert = uncert;
 	    }
 	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
 	    if (selectedDef.dragDivider.newDivider.value === undefined) {
@@ -32993,11 +33032,16 @@
 	    publicAPI.render(selectedDef.name);
 	  }).on('keyup', function () {
 	    if (_d3.default.event.key === 'Escape') {
-	      selectedDef.dragDivider.newDivider.uncertainty = savedUncert;
+	      selectedDef.dragDivider.newDivider.uncertainty = selectedDef.dragDivider.savedUncert;
 	      dPopupDiv.on('mouseleave')();
 	    } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
 	      dPopupDiv.on('mouseleave')();
 	    }
+	  }).on('blur', function () {
+	    var val = selectedDef.dragDivider.newDivider.value === undefined ? selectedDef.dividers[selectedDef.dragDivider.index].value : selectedDef.dragDivider.newDivider.value;
+	    clampDragDividerUncertainty(val, selectedDef);
+	    _d3.default.event.target.value = formatter(100 * selectedDef.dragDivider.newDivider.uncertainty);
+	    publicAPI.render(selectedDef.name);
 	  });
 	}
 	// Divider editing popup allows changing its value or uncertainty, or deleting it.
@@ -33140,11 +33184,11 @@
 	    var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
 	    uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
 	    uncertRegions.attr('x', function (d) {
-	      return def.xScale(d.value - 0.005 * d.uncertainty * (hobj.max - hobj.min));
+	      return def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min));
 	    }).attr('y', 0)
 	    // to get a width, need to start from 'zero' of this scale, which is hobj.min
 	    .attr('width', function (d, i) {
-	      return def.xScale(hobj.min + 0.01 * d.uncertainty * (hobj.max - hobj.min));
+	      return def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min));
 	    }).attr('height', function () {
 	      return model.histHeight;
 	    }).attr('fill', '#000').attr('opacity', function (d) {
