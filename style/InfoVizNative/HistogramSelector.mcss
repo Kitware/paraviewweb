@@ -9,7 +9,11 @@
 .jsFieldsIcon,
 .jsGHist,
 .jsGRect,
+.jsHeaderBoxes,
+.jsHeaderBoxesNum,
 .jsHeaderLabel,
+.jsHeaderSingle,
+.jsHeaderSingleField,
 .jsHistRect,
 .jsLegend,
 .jsLegendRow,
@@ -86,13 +90,55 @@
   composes: allIcon;
 }
 
+.headerIcon {
+  composes: icon;
+  composes: fa-lg from 'font-awesome/css/font-awesome.css';
+  vertical-align: middle;
+}
+
+.headerBoxesPlus {
+  composes: headerIcon;
+  composes: fa-plus-square-o from 'font-awesome/css/font-awesome.css';
+  padding-right: 2px;
+}
+.headerBoxesMinus {
+  composes: headerIcon;
+  composes: fa-minus-square-o from 'font-awesome/css/font-awesome.css';
+  padding-left: 2px;
+}
+
+.headerBoxes {
+  composes: jsHeaderBoxes;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.headerSingleIcon {
+  composes: headerIcon;
+}
+.headerSingleNext {
+  composes: headerSingleIcon;
+  composes: fa-caret-right from 'font-awesome/css/font-awesome.css';
+}
+.headerSinglePrev {
+  composes: headerSingleIcon;
+  composes: fa-caret-left from 'font-awesome/css/font-awesome.css';
+}
+.headerSingle {
+  composes: jsHeaderSingle;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+
 .histogramSelectorCell {
   padding: 0px;
 }
 
 .baseLegend {
   text-align: center;
-  border-bottom: 1px solid #fff !important;
+  border-bottom: 1px solid #fff;
   width: 19px;
   user-select: none;
 }
@@ -102,7 +148,7 @@
   composes: baseLegend;
 }
 .legendSvg {
-  padding: 2px 2px 1px 2px;
+  padding: 3px 3px 2px 3px;
   vertical-align: middle;
 }
 
@@ -112,7 +158,8 @@
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;
-  border-bottom: 1px solid #fff !important;
+  border-bottom: 1px solid #fff;
+  padding: 2px;
   user-select: none;
 }
 .fieldName {
@@ -123,7 +170,7 @@
 
 .row {
   position: absolute;
-  background: #999;
+  background: #fff;
   width: 100%;
 }
 
@@ -150,7 +197,7 @@
   background-color: #ccd;
 }
 .baseLegendRow:hover .baseLegend, .baseLegendRow:hover .baseFieldName {
-  border-bottom: 1px solid #000 !important;
+  border-bottom: 1px solid #000;
 }
 
 .sparkline {
@@ -166,9 +213,10 @@
   user-select: none;
   /*cursor: crosshair;*/
   padding: 0px;
-  margin: 0 auto;
+  margin: 3px;
   border-width: 2px;
-  border-spacing: 0px;
+  border-spacing: 0;
+  border-radius: 6px;
   border-style: solid;
   background-color: #fff;
   float: left;
@@ -176,7 +224,7 @@
 }
 .unselectedBox {
   composes: box;
-  border-color: #999;
+  border-color: #bbb;
 }
 .selectedBox {
   composes: box;
@@ -191,15 +239,23 @@
   background-color: #ccd;
 }
 .jsBox:hover .baseLegend, .jsBox:hover .baseFieldName {
-  border-bottom: 1px solid #000 !important;
+  border-bottom: 1px solid #000;
 }
 
 .histRect {
   composes: jsHistRect;
-  fill: #7D86B3;
-  stroke: #ccc;
-  stroke-width: 1px;
+  stroke: none;
+  shape-rendering: crispEdges;
 }
+.histRectEven {
+  composes: histRect;
+  fill: #8089B8;
+}
+.histRectOdd {
+  composes: histRect;
+  fill: #7780AB;
+}
+
 .hmax {
   composes: histogramSelectorCell;
   text-align: right;
@@ -266,6 +322,10 @@
   composes: popup;
 }
 
+.popupCell {
+  padding: 2px;
+}
+
 .scoreChoice {
   composes: jsScoreChoice;
   float: left;
@@ -275,13 +335,31 @@
 .scoreLabel {
   composes: jsScoreLabel;
   display: block;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 2px;
+  line-height: 16px;
+}
+
+.scoreSwatch {
+  float: left;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 1px #707070 solid;
   border-radius: 3px;
-  padding: 1px;
 }
 
 .scoreButton {
   border: 1px #4C4CA3 solid;
-  border-radius: 3px;
-  padding: 1px;
-  width: 100%;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 2px;
+}
+
+.scoreDashSpacer {
+  border-bottom: 1px #bbb solid;
+  width: 95%;
+  height: 1px;
+  margin: 2px auto 3px auto;
 }

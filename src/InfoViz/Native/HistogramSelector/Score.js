@@ -2,6 +2,7 @@ import d3 from 'd3';
 /* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 /* eslint-enable import/no-unresolved */
+import downArrowImage from './down_arrow.png';
 
 let publicAPI = null;
 let model = null;
@@ -10,11 +11,22 @@ let scorePopupDiv = null;
 let dividerPopupDiv = null;
 
 export function init(inPublicAPI, inModel) {
-  // TODO make sure model.scores has the right format
   publicAPI = inPublicAPI;
   model = inModel;
+  // TODO make sure model.scores has the right format
+  if (typeof model.scores !== 'undefined') {
+    // setup a bgColor
+    model.scores.forEach((score, i) => {
+      if (typeof score.bgColor === 'undefined') {
+        const lightness = d3.hsl(score.color).l;
+        // make bg darker for light colors.
+        const blend = (lightness >= 0.45 ? 0.4 : 0.2);
+        const interp = d3.interpolateRgb('#fff', score.color);
+        score.bgColor = interp(blend);
+      }
+    });
+  }
 }
-
 
 export function createDefaultDivider(val, uncert) {
   return {
@@ -300,14 +312,14 @@ export function validateDividerVal(n) {
 
 export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
   const topMargin = 4;
-  const rowHeight = 13;
+  const rowHeight = 28;
   // 's' SI unit label won't work for a number entry field.
   const formatter = d3.format('.4g');
 
   dPopupDiv
     .style('display', 'initial');
   positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight,
-                coord[1] + model.headerSize - topMargin - 1.7 * rowHeight);
+                coord[1] + model.headerSize - topMargin - 2 * rowHeight);
 
   const selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
   let savedVal = selDivider.value;
@@ -406,31 +418,42 @@ export function createDividerPopup() {
   const table = dPopupDiv.append('table');
   const tr1 = table.append('tr');
   tr1.append('td')
+    .classed(style.popupCell, true)
     .text('Value:');
-  tr1.append('input')
+  tr1.append('td')
+    .classed(style.popupCell, true)
+    .append('input')
     .classed(style.jsDividerValueInput, true)
     .attr('type', 'number')
     .attr('step', 'any')
     .style('width', '6em');
   const tr2 = table.append('tr');
   tr2.append('td')
+    .classed(style.popupCell, true)
     .text('% Uncertainty:');
-  tr2.append('input')
+  tr2.append('td')
+    .classed(style.popupCell, true)
+    .append('input')
     .classed(style.jsDividerUncertaintyInput, true)
     .attr('type', 'number')
     .attr('step', 'any')
     .style('width', '6em');
-  const tr3 = table.append('tr');
-  tr3.append('input')
-    .classed(style.scoreButton, true)
-    .attr('type', 'button')
-    .attr('value', 'Delete |')
-    .on('click', () => {
-      finishDivider(model.selectedDef, model.selectedDef.hobj, true);
-      dPopupDiv
-        .style('display', 'none');
-      publicAPI.render();
-    });
+  dPopupDiv
+    .append('div').classed(style.scoreDashSpacer, true);
+  dPopupDiv
+    .append('div')
+      .style('text-align', 'center')
+    .append('input')
+      .classed(style.scoreButton, true)
+      .style('align', 'center')
+      .attr('type', 'button')
+      .attr('value', 'Delete Divider')
+      .on('click', () => {
+        finishDivider(model.selectedDef, model.selectedDef.hobj, true);
+        dPopupDiv
+          .style('display', 'none');
+        publicAPI.render();
+      });
   return dPopupDiv;
 }
 
@@ -438,19 +461,15 @@ export function showScorePopup(sPopupDiv, coord, selRow) {
   // it seemed like a good idea to use getBoundingClientRect() to determine row height
   // but it returns all zeros when the popup has been invisible...
   const topMargin = 4;
-  const rowHeight = 13;
+  const rowHeight = 26;
 
   sPopupDiv
     .style('display', 'initial');
-  positionPopup(sPopupDiv, coord[0] - topMargin - 0.5 * rowHeight,
-                coord[1] + model.headerSize - topMargin - (0.7 + selRow) * rowHeight);
+  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight,
+                coord[1] + model.headerSize - topMargin - (0.6 + selRow) * rowHeight);
 
   sPopupDiv.selectAll(`.${style.jsScoreLabel}`)
-    .style('background-color', (d, i) => {
-      // use mostly-solid for selected, mostly-transparent when not selected.
-      const interp = d3.interpolateRgb('#fff', d.color);
-      return interp((i === selRow) ? 0.7 : 0.2);
-    });
+    .style('background-color', (d, i) => ((i === selRow) ? d.bgColor : '#fff'));
 }
 
 export function createScorePopup() {
@@ -469,29 +488,39 @@ export function createScorePopup() {
     .append('label')
       .classed(style.scoreLabel, true)
       .text((d) => d.name)
-    .append('input')
-      .classed(style.scoreChoice, true)
-      .attr('name', 'score_choice_rb')
-      .attr('type', 'radio')
-      .attr('value', (d) => (d.name))
-      .property('checked', (d, i) => (i === model.defaultScore))
-      .on('click', (d, i) => {
-        // use click, not change, so we get notified even when current value is chosen.
-        const def = model.selectedDef;
-        def.regions[def.hitRegionIndex] = i;
-        def.dragDivider = undefined;
-        sPopupDiv
-          .style('display', 'none');
-        sendScores(def, def.hobj);
-        publicAPI.render();
+      .each(function myLabel(data, index) {
+        // because we use 'each' and re-select the label, need to use parent 'index'
+        // instead of 'i' in the (d, i) => functions below - i is always zero.
+        const label = d3.select(this);
+        label.append('span')
+          .classed(style.scoreSwatch, true)
+          .style('background-color', (d) => (d.color));
+        label.append('input')
+          .classed(style.scoreChoice, true)
+          .attr('name', 'score_choice_rb')
+          .attr('type', 'radio')
+          .attr('value', (d) => (d.name))
+          .property('checked', (d) => (index === model.defaultScore))
+          .on('click', (d) => {
+            // use click, not change, so we get notified even when current value is chosen.
+            const def = model.selectedDef;
+            def.regions[def.hitRegionIndex] = index;
+            def.dragDivider = undefined;
+            sPopupDiv
+              .style('display', 'none');
+            sendScores(def, def.hobj);
+            publicAPI.render();
+          });
       });
+  sPopupDiv
+    .append('div').classed(style.scoreDashSpacer, true);
   // create a button for creating a new divider, so we don't require
   // the invisible alt/ctrl click to create one.
   sPopupDiv
     .append('input')
       .classed(style.scoreButton, true)
       .attr('type', 'button')
-      .attr('value', 'New |')
+      .attr('value', 'New Divider')
       .on('click', () => {
         finishDivider(model.selectedDef, model.selectedDef.hobj);
         sPopupDiv
@@ -653,16 +682,21 @@ export function prepareItem(def, idx, svgGr, tdsl) {
   // duplicate background regions are opaque, for a solid bright color.
   const scoreBgRegions = svgGr.select(`.${style.jsScoreBackground}`).selectAll('rect')
     .data(def.regions);
+  const numRegions = def.regions.length;
   [{ sel: scoreRegions, opacity: 0.2, class: style.scoreRegionFg },
     { sel: scoreBgRegions, opacity: 1.0, class: style.scoreRegionBg }].forEach((reg) => {
       reg.sel.enter().append('rect')
         .classed(reg.class, true);
+      // first and last region should hang 6 pixels over the start/end of the axis.
+      const overhang = 6;
       reg.sel
-        .attr('x', (d, i) => def.xScale(regionBounds[i]))
+        .attr('x', (d, i) => (def.xScale(regionBounds[i]) - (i === 0 ? overhang : 0)))
         .attr('y', def.editScore ? 0 : model.histHeight)
-        // width might be zero if a divider is dragged all the way to min/max.
-        .attr('width', (d, i) => def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]))
-        .attr('height', def.editScore ? model.histHeight : model.histMargin.bottom)
+        // width might be === overhang if a divider is dragged all the way to min/max.
+        .attr('width', (d, i) => (def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i])) +
+                                  (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
+        // extend over the x-axis when editing.
+        .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3)
         .attr('fill', (d) => (model.scores[d].color))
         .attr('opacity', showScore(def) ? reg.opacity : '0');
       reg.sel.exit().remove();
@@ -681,7 +715,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
       const overCoords = getMouseCoords(tdsl);
       if (overCoords[1] > model.histHeight) {
         def.editScore = !def.editScore;
-        svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
+        svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
         publicAPI.render();
         return;
       }
@@ -717,7 +751,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
         let cursor = 'pointer';
         // if we're over the bottom, indicate a click will shrink regions
-        if (overCoords[1] > model.histHeight) cursor = 's-resize';
+        if (overCoords[1] > model.histHeight) cursor = `url(${downArrowImage}) 12 22, auto`;
         // if we're over a divider, indicate drag-to-move
         else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
         // if modifiers are held down, we'll create a divider
