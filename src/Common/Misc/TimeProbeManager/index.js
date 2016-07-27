@@ -194,6 +194,7 @@ export class TimeProbeManager {
       this.activeProbe = this.probes.length;
       this.probes.push(probe);
       this.probeSubscriptions.push(probe.onChange(this._probeChange));
+      this._probeChange(probe);
     } else {
       const width = this.lastSize ? this.lastSize[0] : 200;
       const height = this.lastSize ? this.lastSize[1] : 200;
@@ -207,6 +208,7 @@ export class TimeProbeManager {
     while (this.probeSubscriptions.length) {
       this.probeSubscriptions.pop().unsubscribe();
     }
+    this._probeChange(null);
   }
 
   removeProbe(name) {
@@ -221,6 +223,7 @@ export class TimeProbeManager {
     });
 
     idxToRemove.forEach(idx => this.probeSubscriptions.splice(idx, 1));
+    this._probeChange(null);
   }
 
   getProbe(name) {

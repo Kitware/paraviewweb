@@ -26,17 +26,19 @@ export default class PlotlyChartBuilder {
     };
 
     // Handle data fetching
-    this.queryDataModel.onDataChange((data, envelope) => {
-      if (data.chart) {
-        if (this.csvReader === null) {
-          this.csvReader = new CSVReader(data.chart.data);
-        } else {
-          this.csvReader.setData(data.chart.data);
-        }
+    if (this.queryDataModel) {
+      this.queryDataModel.onDataChange((data, envelope) => {
+        if (data.chart) {
+          if (this.csvReader === null) {
+            this.csvReader = new CSVReader(data.chart.data);
+          } else {
+            this.csvReader.setData(data.chart.data);
+          }
 
-        this.updateState();
-      }
-    });
+          this.updateState();
+        }
+      });
+    }
 
     this.controlWidgets = [];
     if (this.queryDataModel) {
@@ -87,6 +89,15 @@ export default class PlotlyChartBuilder {
 
   getState() {
     return this.chartState;
+  }
+
+  // ------------------------------------------------------------------------
+
+  setChartData(chartData) {
+    this.dataReady({
+      forceNewPlot: false,
+      traces: chartData,
+    });
   }
 
   // ------------------------------------------------------------------------

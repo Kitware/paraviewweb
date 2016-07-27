@@ -176,14 +176,12 @@
   composes: fa        from 'font-awesome/css/font-awesome.css';
   composes: fa-fw     from 'font-awesome/css/font-awesome.css';
   composes: fa-square from 'font-awesome/css/font-awesome.css';
-  cursor: pointer;
 }
 
 .disableLegendIcon {
   composes: fa        from 'font-awesome/css/font-awesome.css';
   composes: fa-fw     from 'font-awesome/css/font-awesome.css';
   composes: fa-square-o from 'font-awesome/css/font-awesome.css';
-  cursor: pointer;
 }
 
 .sortProbeIcon {
