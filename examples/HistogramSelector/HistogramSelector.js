@@ -56,7 +56,7 @@
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _FieldSelector = __webpack_require__(29);
+	var _FieldSelector = __webpack_require__(30);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -64,23 +64,23 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _FieldProvider = __webpack_require__(33);
+	var _FieldProvider = __webpack_require__(34);
 
 	var _FieldProvider2 = _interopRequireDefault(_FieldProvider);
 
-	var _LegendProvider = __webpack_require__(34);
+	var _LegendProvider = __webpack_require__(35);
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _PartitionProvider = __webpack_require__(49);
+	var _PartitionProvider = __webpack_require__(50);
 
 	var _PartitionProvider2 = _interopRequireDefault(_PartitionProvider);
 
-	var _Histogram1DProvider = __webpack_require__(50);
+	var _Histogram1DProvider = __webpack_require__(51);
 
 	var _Histogram1DProvider2 = _interopRequireDefault(_Histogram1DProvider);
 
-	var _state = __webpack_require__(51);
+	var _state = __webpack_require__(52);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -20930,18 +20930,26 @@
 	// http://bl.ocks.org/gmaclennan/11130600 among other examples.
 	// Reuse happens at the row level.
 	//
-	// The maxBoxSize variable controls the largest width that a box
+	// The minBoxSize variable controls the smallest width that a box
 	// (histogram) will use. This code will fill its container with the
-	// largest size histogram it can that does not exceed this limit and
+	// smallest size histogram it can that does not exceed this limit and
 	// provides an integral number of histograms across the container's width.
 	//
 
 	/* eslint-enable import/no-unresolved */
 	function histogramSelector(publicAPI, model) {
-	  // in contact-sheet mode, specify the largest width a histogram can grow
-	  // to before more histograms are created to fill the container's width
-	  var maxBoxSize = 240;
+	  // in contact-sheet mode, specify the smallest width a histogram can shrink
+	  // to before fewer histograms are created to fill the container's width
+	  var minBoxSize = 200;
+	  // smallest we'll let it go. Limits boxesPerRow in header GUI.
+	  var minBoxSizeLimit = 100;
 	  var legendSize = 15;
+	  // hard coded because I did not figure out how to
+	  // properly query this value from our container.
+	  var borderSize = 6;
+	  // 8? for linux/firefox, 10 for win10/chrome
+	  var scrollbarWidth = 12;
+
 	  var displayOnlySelected = false;
 
 	  var lastNumFields = 0;
@@ -20973,8 +20981,8 @@
 
 	  // Apply our desired attributes to the grid rows
 	  function styleRows(selection, self) {
-	    selection.classed(_HistogramSelector2.default.row, true).style('height', self.boxHeight + 'px').style(transformCSSProp, function (d, i) {
-	      return 'translate3d(0,' + d.key * self.boxHeight + 'px,0)';
+	    selection.classed(_HistogramSelector2.default.row, true).style('height', self.rowHeight + 'px').style(transformCSSProp, function (d, i) {
+	      return 'translate3d(0,' + d.key * self.rowHeight + 'px,0)';
 	    });
 	  }
 
@@ -21027,35 +21035,41 @@
 	    }
 	  }
 
+	  function getClientArea() {
+	    var clientRect = model.listContainer.getBoundingClientRect();
+	    return [clientRect.width - borderSize - scrollbarWidth, clientRect.height - borderSize];
+	  }
+
 	  function updateSizeInformation(singleMode) {
 	    var updateBoxPerRow = false;
-	    var clientRect = model.listContainer.getBoundingClientRect();
 
-	    // hard coded because I did not figure out how to
-	    // properly query this value from our container.
-	    var borderSize = 3;
-	    // 8? for linux/firefox, 10 for win10/chrome
-	    var scrollbarWidth = 10;
-	    var boxOutline = 2;
+	    var boxMargin = 3; // outside the box dimensions
+	    var boxBorder = 2; // included in the box dimensions, visible border
 
 	    // Get the client area size
-	    var dimensions = [clientRect.width - 2 * borderSize - scrollbarWidth, clientRect.height - 2 * borderSize];
+	    var dimensions = getClientArea();
 
 	    // compute key values based on our new size
-	    var boxesPerRow = singleMode ? 1 : Math.ceil(dimensions[0] / maxBoxSize);
-	    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow);
-	    model.boxHeight = singleMode ? Math.floor(model.boxWidth * 5 / 8) : model.boxWidth;
-	    model.rowsPerPage = Math.ceil(dimensions[1] / model.boxHeight);
+	    var boxesPerRow = singleMode ? 1 : Math.max(1, Math.floor(dimensions[0] / minBoxSize));
+	    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
+	    if (boxesPerRow === 1) {
+	      // use 3 / 4 to make a single hist wider than it is tall.
+	      model.boxHeight = Math.min(Math.floor((model.boxWidth + 2 * boxMargin) * (3 / 4) - 2 * boxMargin), Math.floor(dimensions[1] - 2 * boxMargin));
+	    } else {
+	      model.boxHeight = model.boxWidth;
+	    }
+	    model.rowHeight = model.boxHeight + 2 * boxMargin;
+	    model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
 
 	    if (boxesPerRow !== model.boxesPerRow) {
 	      updateBoxPerRow = true;
 	      model.boxesPerRow = boxesPerRow;
 	    }
 
-	    model.histWidth = model.boxWidth - boxOutline * 2 - model.histMargin.left - model.histMargin.right;
+	    model.histWidth = model.boxWidth - boxBorder * 2 - model.histMargin.left - model.histMargin.right;
 	    // other row size, probably a way to query for this
-	    var otherRowHeight = 19;
-	    model.histHeight = model.boxHeight - boxOutline * 2 - otherRowHeight - model.histMargin.top - model.histMargin.bottom;
+	    var otherRowHeight = 21;
+	    model.histHeight = model.boxHeight - boxBorder * 2 - otherRowHeight - model.histMargin.top - model.histMargin.bottom;
 
 	    return updateBoxPerRow;
 	  }
@@ -21075,16 +21089,74 @@
 	    return foundRow;
 	  }
 
+	  function getCurrentFieldNames() {
+	    var fieldNames = [];
+	    // Initialize fields
+	    if (model.provider.isA('FieldProvider')) {
+	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
+	    }
+	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
+	    return fieldNames;
+	  }
+
 	  var fieldHeaderClick = function fieldHeaderClick(d) {
 	    displayOnlySelected = !displayOnlySelected;
 	    publicAPI.render();
 	  };
 
+	  function incrNumBoxes(amount) {
+	    if (model.singleModeName !== null) return;
+	    // Get the client area size
+	    var dimensions = getClientArea();
+	    var newBoxesPerRow = Math.max(1, model.boxesPerRow + amount);
+	    // compute a reasonable new maximum for box size based on the current container dimensions. 10 px padding.
+	    var newMinBoxSize = Math.max(minBoxSizeLimit, Math.floor(dimensions[0] / newBoxesPerRow) - 10);
+	    newBoxesPerRow = Math.floor(dimensions[0] / newMinBoxSize);
+	    // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
+	    if (newBoxesPerRow !== model.boxesPerRow) {
+	      minBoxSize = newMinBoxSize;
+	      publicAPI.render();
+	    }
+	  }
+
+	  function changeSingleField(direction) {
+	    if (model.singleModeName === null) return;
+	    var fieldNames = getCurrentFieldNames();
+	    if (fieldNames.length === 0) return;
+
+	    var index = fieldNames.indexOf(model.singleModeName);
+	    if (index === -1) index = 0;else index = (index + direction) % fieldNames.length;
+	    if (index < 0) index = fieldNames.length - 1;
+
+	    model.singleModeName = fieldNames[index];
+	    lastNumFields = 0;
+	    publicAPI.render();
+	  }
+
 	  function createHeader(divSel) {
-	    var header = divSel.append('div').classed(_HistogramSelector2.default.header, true).style('height', model.headerSize + 'px');
+	    var header = divSel.append('div').classed(_HistogramSelector2.default.header, true).style('height', model.headerSize + 'px').style('line-height', model.headerSize + 'px');
 	    header.append('span').on('click', fieldHeaderClick).append('i').classed(_HistogramSelector2.default.jsFieldsIcon, true);
 	    header.append('span').classed(_HistogramSelector2.default.jsHeaderLabel, true).on('click', fieldHeaderClick);
+
 	    _Score2.default.createHeader(header);
+
+	    var numBoxesSpan = header.append('span').classed(_HistogramSelector2.default.headerBoxes, true);
+	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
+	      return incrNumBoxes(1);
+	    });
+	    numBoxesSpan.append('span').classed(_HistogramSelector2.default.jsHeaderBoxesNum, true).text(model.boxesPerRow);
+	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesMinus, true).on('click', function () {
+	      return incrNumBoxes(-1);
+	    });
+
+	    var singleSpan = header.append('span').classed(_HistogramSelector2.default.headerSingle, true);
+	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSinglePrev, true).on('click', function () {
+	      return changeSingleField(-1);
+	    });
+	    singleSpan.append('span').classed(_HistogramSelector2.default.jsHeaderSingleField, true).text('');
+	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSingleNext, true).on('click', function () {
+	      return changeSingleField(1);
+	    });
 	  }
 
 	  function updateHeader(dataLength) {
@@ -21093,6 +21165,29 @@
 	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
 	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
 	    _Score2.default.updateHeader();
+
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
+
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
+
+	    if (model.provider.isA('LegendProvider') && model.singleModeName) {
+	      var _model$provider$getLe = model.provider.getLegend(model.singleModeName);
+
+	      var color = _model$provider$getLe.color;
+	      var shape = _model$provider$getLe.shape;
+
+	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
+	    } else {
+	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
+	        var name = model.singleModeName;
+	        if (!name) return '';
+	        if (name.length > 10) {
+	          name = name.substring(0, 9) + '...';
+	        }
+	        return name;
+	      });
+	    }
 	  }
 
 	  publicAPI.resize = function () {
@@ -21117,16 +21212,16 @@
 	    }
 	    if (model.container === null) return;
 
-	    var updateBoxPerRow = updateSizeInformation(model.singleMode);
+	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
-	    var fieldNames = [];
-	    // Initialize fields
-	    if (model.provider.isA('FieldProvider')) {
-	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
-	    }
-	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
+	    var fieldNames = getCurrentFieldNames();
 
 	    updateHeader(fieldNames.length);
+	    if (model.singleModeName !== null) {
+	      // display only one histogram at a time.
+	      fieldNames = [model.singleModeName];
+	    }
+
 	    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
 	      lastNumFields = fieldNames.length;
 
@@ -21153,7 +21248,7 @@
 
 	    // resize the div area to be tall enough to hold all our
 	    // boxes even though most are 'virtual' and lack DOM
-	    var newHeight = Math.ceil(model.nest.length * model.boxHeight) + 'px';
+	    var newHeight = Math.ceil(model.nest.length * model.rowHeight) + 'px';
 	    model.parameterList.style('height', newHeight);
 
 	    if (!model.nest) return;
@@ -21162,14 +21257,14 @@
 	    // we need to re-scroll.
 	    if (model.scrollToName !== null) {
 	      var topRow = getFieldRow(model.scrollToName);
-	      model.listContainer.scrollTop = topRow * model.boxHeight;
+	      model.listContainer.scrollTop = topRow * model.rowHeight;
 	      model.scrollToName = null;
 	    }
 
 	    // scroll distance, in pixels.
 	    var scrollY = model.listContainer.scrollTop;
 	    // convert scroll from pixels to rows, get one row above (-1)
-	    var offset = Math.max(0, Math.floor(scrollY / model.boxHeight) - 1);
+	    var offset = Math.max(0, Math.floor(scrollY / model.rowHeight) - 1);
 
 	    // extract the visible graphs from the data based on how many rows
 	    // we have scrolled down plus one above and one below (+2)
@@ -21249,7 +21344,11 @@
 	          updateData(d);
 	        }, function doubleClick(d, i) {
 	          // double click handler
-	          model.singleMode = !model.singleMode;
+	          if (model.singleModeName === null) {
+	            model.singleModeName = d.name;
+	          } else {
+	            model.singleModeName = null;
+	          }
 	          model.scrollToName = d.name;
 	          publicAPI.render();
 
@@ -21272,10 +21371,10 @@
 	      var dataActive = def.active;
 	      // Apply legend
 	      if (model.provider.isA('LegendProvider')) {
-	        var _model$provider$getLe = model.provider.getLegend(def.name);
+	        var _model$provider$getLe2 = model.provider.getLegend(def.name);
 
-	        var color = _model$provider$getLe.color;
-	        var shape = _model$provider$getLe.shape;
+	        var color = _model$provider$getLe2.color;
+	        var shape = _model$provider$getLe2.shape;
 
 	        legendCell.html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                  fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
 	      } else {
@@ -21302,13 +21401,15 @@
 
 	          hdata.enter().append('rect');
 	          // changes apply to both enter and update data join:
-	          hdata.classed(_HistogramSelector2.default.histRect, true).attr('pname', def.name).attr('y', function (d) {
+	          hdata.attr('class', function (d, i) {
+	            return i % 2 === 0 ? _HistogramSelector2.default.histRectEven : _HistogramSelector2.default.histRectOdd;
+	          }).attr('pname', def.name).attr('y', function (d) {
 	            return model.histHeight * (1.0 - d / cmax);
 	          }).attr('x', function (d, i) {
 	            return model.histWidth / hsize * i;
 	          }).attr('height', function (d) {
 	            return model.histHeight * d / cmax;
-	          }).attr('width', model.histWidth / hsize);
+	          }).attr('width', Math.ceil(model.histWidth / hsize));
 
 	          hdata.exit().remove();
 	          // svgGr.
@@ -21349,8 +21450,9 @@
 	            def.xAxis = _d2.default.svg.axis().tickFormat(formatter).orient('bottom');
 	          }
 	          def.xAxis.scale(def.xScale);
-	          var numTicks = model.singleMode ? 5 : 2;
-	          if (model.singleMode) {
+	          var numTicks = 2;
+	          if (model.histWidth >= model.moreTicksSize) {
+	            numTicks = 5;
 	            // using .ticks() results in skipping min/max values,
 	            // if they aren't 'nice'. Make exactly 5 ticks.
 	            var myTicks = _d2.default.range(numTicks).map(function (d) {
@@ -21447,14 +21549,16 @@
 	  boxWidth: 120,
 	  boxHeight: 120,
 	  // show 1 per row?
-	  singleMode: false,
+	  singleModeName: null,
 	  scrollToName: null,
 	  // margins inside the SVG element.
-	  histMargin: { top: 8, right: 8, bottom: 23, left: 8 },
+	  histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
 	  histWidth: 90,
 	  histHeight: 70,
+	  // what's the smallest histogram size that shows 5 ticks, instead of min/max? in pixels
+	  moreTicksSize: 300,
 	  lastOffset: -1,
-	  headerSize: 20,
+	  headerSize: 25,
 	  // scoring interface activated by passing in 'scores' array externally.
 	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
 	  defaultScore: 0,
@@ -31528,7 +31632,7 @@
 	exports.i(__webpack_require__(20), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredIcon_3z54w,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff !important;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 2px 2px 1px 2px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff !important;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #999;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 0 auto;\n  border-width: 2px;\n  border-spacing: 0px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #999;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000 !important;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  fill: #7D86B3;\n  stroke: #ccc;\n  stroke-width: 1px;\n}\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 3px;\n  padding: 1px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 3px;\n  padding: 1px;\n  width: 100%;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredIcon_3z54w,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 2px;\n  border-spacing: 0;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -31542,7 +31646,11 @@
 		"jsFieldsIcon": "HistogramSelector_jsFieldsIcon_lhO9n",
 		"jsGHist": "HistogramSelector_jsGHist_ZQa9E",
 		"jsGRect": "HistogramSelector_jsGRect_2e6-V",
+		"jsHeaderBoxes": "HistogramSelector_jsHeaderBoxes_oN8YB",
+		"jsHeaderBoxesNum": "HistogramSelector_jsHeaderBoxesNum_2ceRh",
 		"jsHeaderLabel": "HistogramSelector_jsHeaderLabel_3vSys",
+		"jsHeaderSingle": "HistogramSelector_jsHeaderSingle_2vVqV",
+		"jsHeaderSingleField": "HistogramSelector_jsHeaderSingleField_hXcin",
 		"jsHistRect": "HistogramSelector_jsHistRect_2uU6Y",
 		"jsLegend": "HistogramSelector_jsLegend_2mIDN",
 		"jsLegendRow": "HistogramSelector_jsLegendRow_38X9b",
@@ -31569,6 +31677,14 @@
 		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
 		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsScoredIcon_3z54w HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
 		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsScoredIcon_3z54w HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
+		"headerIcon": "HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + "",
+		"headerBoxesPlus": "HistogramSelector_headerBoxesPlus_QvfiZ HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-plus-square-o"] + "",
+		"headerBoxesMinus": "HistogramSelector_headerBoxesMinus_3OpiA HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-minus-square-o"] + "",
+		"headerBoxes": "HistogramSelector_headerBoxes_2SlD3 HistogramSelector_jsHeaderBoxes_oN8YB",
+		"headerSingleIcon": "HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + "",
+		"headerSingleNext": "HistogramSelector_headerSingleNext_3AS8U HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-caret-right"] + "",
+		"headerSinglePrev": "HistogramSelector_headerSinglePrev_LqQ5h HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-caret-left"] + "",
+		"headerSingle": "HistogramSelector_headerSingle_9NqJf HistogramSelector_jsHeaderSingle_2vVqV",
 		"histogramSelectorCell": "HistogramSelector_histogramSelectorCell_21EUK",
 		"baseLegend": "HistogramSelector_baseLegend_259om",
 		"legend": "HistogramSelector_legend_2EcSH HistogramSelector_jsLegend_2mIDN HistogramSelector_histogramSelectorCell_21EUK HistogramSelector_baseLegend_259om",
@@ -31587,6 +31703,8 @@
 		"selectedBox": "HistogramSelector_selectedBox_3cFIE HistogramSelector_box_1PC6n HistogramSelector_jsBox_3Lo_R",
 		"hiddenBox": "HistogramSelector_hiddenBox_3qZYG HistogramSelector_box_1PC6n HistogramSelector_jsBox_3Lo_R HistogramSelector_hidden_2YiXo",
 		"histRect": "HistogramSelector_histRect_3JG0Y HistogramSelector_jsHistRect_2uU6Y",
+		"histRectEven": "HistogramSelector_histRectEven_1GX7B HistogramSelector_histRect_3JG0Y HistogramSelector_jsHistRect_2uU6Y",
+		"histRectOdd": "HistogramSelector_histRectOdd_29_FO HistogramSelector_histRect_3JG0Y HistogramSelector_jsHistRect_2uU6Y",
 		"hmax": "HistogramSelector_hmax_1DC0C HistogramSelector_histogramSelectorCell_21EUK",
 		"hmin": "HistogramSelector_hmin_HkUIc HistogramSelector_histogramSelectorCell_21EUK",
 		"axis": "HistogramSelector_axis_d5IqH HistogramSelector_jsAxis_3kY6B",
@@ -31601,9 +31719,12 @@
 		"popup": "HistogramSelector_popup_1VCrN",
 		"scorePopup": "HistogramSelector_scorePopup_1LiN9 HistogramSelector_jsScorePopup_3i0QG HistogramSelector_popup_1VCrN",
 		"dividerPopup": "HistogramSelector_dividerPopup_kMlSD HistogramSelector_jsDividerPopup_2t15b HistogramSelector_popup_1VCrN",
+		"popupCell": "HistogramSelector_popupCell_19GVJ",
 		"scoreChoice": "HistogramSelector_scoreChoice_2GMeV HistogramSelector_jsScoreChoice_2vuVI",
 		"scoreLabel": "HistogramSelector_scoreLabel_2z-Hg HistogramSelector_jsScoreLabel_A3Ijp",
-		"scoreButton": "HistogramSelector_scoreButton_2GtBV"
+		"scoreSwatch": "HistogramSelector_scoreSwatch_LFSSQ",
+		"scoreButton": "HistogramSelector_scoreButton_2GtBV",
+		"scoreDashSpacer": "HistogramSelector_scoreDashSpacer_3JUvi"
 	};
 
 /***/ },
@@ -32451,6 +32572,8 @@
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	/* eslint-disable import/no-unresolved */
 
+	/* eslint-enable import/no-unresolved */
+
 
 	exports.init = init;
 	exports.createDefaultDivider = createDefaultDivider;
@@ -32483,9 +32606,11 @@
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _down_arrow = __webpack_require__(29);
 
-	/* eslint-enable import/no-unresolved */
+	var _down_arrow2 = _interopRequireDefault(_down_arrow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var publicAPI = null;
 	var model = null;
@@ -32494,9 +32619,21 @@
 	var dividerPopupDiv = null;
 
 	function init(inPublicAPI, inModel) {
-	  // TODO make sure model.scores has the right format
 	  publicAPI = inPublicAPI;
 	  model = inModel;
+	  // TODO make sure model.scores has the right format
+	  if (typeof model.scores !== 'undefined') {
+	    // setup a bgColor
+	    model.scores.forEach(function (score, i) {
+	      if (typeof score.bgColor === 'undefined') {
+	        var lightness = _d3.default.hsl(score.color).l;
+	        // make bg darker for light colors.
+	        var blend = lightness >= 0.45 ? 0.4 : 0.2;
+	        var interp = _d3.default.interpolateRgb('#fff', score.color);
+	        score.bgColor = interp(blend);
+	      }
+	    });
+	  }
 	}
 
 	function createDefaultDivider(val, uncert) {
@@ -32781,12 +32918,12 @@
 
 	function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
 	  var topMargin = 4;
-	  var rowHeight = 13;
+	  var rowHeight = 28;
 	  // 's' SI unit label won't work for a number entry field.
 	  var formatter = _d3.default.format('.4g');
 
 	  dPopupDiv.style('display', 'initial');
-	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - 1.7 * rowHeight);
+	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - 2 * rowHeight);
 
 	  var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
 	  var savedVal = selDivider.value;
@@ -32868,13 +33005,13 @@
 	  var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerPopup, true).style('display', 'none');
 	  var table = dPopupDiv.append('table');
 	  var tr1 = table.append('tr');
-	  tr1.append('td').text('Value:');
-	  tr1.append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	  tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Value:');
+	  tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
 	  var tr2 = table.append('tr');
-	  tr2.append('td').text('% Uncertainty:');
-	  tr2.append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
-	  var tr3 = table.append('tr');
-	  tr3.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'Delete |').on('click', function () {
+	  tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('% Uncertainty:');
+	  tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	  dPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
+	  dPopupDiv.append('div').style('text-align', 'center').append('input').classed(_HistogramSelector2.default.scoreButton, true).style('align', 'center').attr('type', 'button').attr('value', 'Delete Divider').on('click', function () {
 	    finishDivider(model.selectedDef, model.selectedDef.hobj, true);
 	    dPopupDiv.style('display', 'none');
 	    publicAPI.render();
@@ -32886,15 +33023,13 @@
 	  // it seemed like a good idea to use getBoundingClientRect() to determine row height
 	  // but it returns all zeros when the popup has been invisible...
 	  var topMargin = 4;
-	  var rowHeight = 13;
+	  var rowHeight = 26;
 
 	  sPopupDiv.style('display', 'initial');
-	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - (0.7 + selRow) * rowHeight);
+	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - topMargin - (0.6 + selRow) * rowHeight);
 
 	  sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
-	    // use mostly-solid for selected, mostly-transparent when not selected.
-	    var interp = _d3.default.interpolateRgb('#fff', d.color);
-	    return interp(i === selRow ? 0.7 : 0.2);
+	    return i === selRow ? d.bgColor : '#fff';
 	  });
 	}
 
@@ -32907,22 +33042,31 @@
 	  var scoreChoices = sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
 	  scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
 	    return d.name;
-	  }).append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
-	    return d.name;
-	  }).property('checked', function (d, i) {
-	    return i === model.defaultScore;
-	  }).on('click', function (d, i) {
-	    // use click, not change, so we get notified even when current value is chosen.
-	    var def = model.selectedDef;
-	    def.regions[def.hitRegionIndex] = i;
-	    def.dragDivider = undefined;
-	    sPopupDiv.style('display', 'none');
-	    sendScores(def, def.hobj);
-	    publicAPI.render();
+	  }).each(function myLabel(data, index) {
+	    // because we use 'each' and re-select the label, need to use parent 'index'
+	    // instead of 'i' in the (d, i) => functions below - i is always zero.
+	    var label = _d3.default.select(this);
+	    label.append('span').classed(_HistogramSelector2.default.scoreSwatch, true).style('background-color', function (d) {
+	      return d.color;
+	    });
+	    label.append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
+	      return d.name;
+	    }).property('checked', function (d) {
+	      return index === model.defaultScore;
+	    }).on('click', function (d) {
+	      // use click, not change, so we get notified even when current value is chosen.
+	      var def = model.selectedDef;
+	      def.regions[def.hitRegionIndex] = index;
+	      def.dragDivider = undefined;
+	      sPopupDiv.style('display', 'none');
+	      sendScores(def, def.hobj);
+	      publicAPI.render();
+	    });
 	  });
+	  sPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
 	  // create a button for creating a new divider, so we don't require
 	  // the invisible alt/ctrl click to create one.
-	  sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New |').on('click', function () {
+	  sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New Divider').on('click', function () {
 	    finishDivider(model.selectedDef, model.selectedDef.hobj);
 	    sPopupDiv.style('display', 'none');
 	    publicAPI.render();
@@ -33068,15 +33212,20 @@
 	  var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
 	  // duplicate background regions are opaque, for a solid bright color.
 	  var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
+	  var numRegions = def.regions.length;
 	  [{ sel: scoreRegions, opacity: 0.2, class: _HistogramSelector2.default.scoreRegionFg }, { sel: scoreBgRegions, opacity: 1.0, class: _HistogramSelector2.default.scoreRegionBg }].forEach(function (reg) {
 	    reg.sel.enter().append('rect').classed(reg.class, true);
+	    // first and last region should hang 6 pixels over the start/end of the axis.
+	    var overhang = 6;
 	    reg.sel.attr('x', function (d, i) {
-	      return def.xScale(regionBounds[i]);
+	      return def.xScale(regionBounds[i]) - (i === 0 ? overhang : 0);
 	    }).attr('y', def.editScore ? 0 : model.histHeight)
-	    // width might be zero if a divider is dragged all the way to min/max.
+	    // width might be === overhang if a divider is dragged all the way to min/max.
 	    .attr('width', function (d, i) {
-	      return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]);
-	    }).attr('height', def.editScore ? model.histHeight : model.histMargin.bottom).attr('fill', function (d) {
+	      return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]) + (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0);
+	    })
+	    // extend over the x-axis when editing.
+	    .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3).attr('fill', function (d) {
 	      return model.scores[d].color;
 	    }).attr('opacity', showScore(def) ? reg.opacity : '0');
 	    reg.sel.exit().remove();
@@ -33091,7 +33240,7 @@
 	    var overCoords = getMouseCoords(tdsl);
 	    if (overCoords[1] > model.histHeight) {
 	      def.editScore = !def.editScore;
-	      svgOverlay.style('cursor', def.editScore ? 's-resize' : 'pointer');
+	      svgOverlay.style('cursor', def.editScore ? 'url(' + _down_arrow2.default + ') 12 22, auto' : 'pointer');
 	      publicAPI.render();
 	      return;
 	    }
@@ -33138,7 +33287,7 @@
 
 	      var cursor = 'pointer';
 	      // if we're over the bottom, indicate a click will shrink regions
-	      if (overCoords[1] > model.histHeight) cursor = 's-resize';
+	      if (overCoords[1] > model.histHeight) cursor = 'url(' + _down_arrow2.default + ') 12 22, auto';
 	      // if we're over a divider, indicate drag-to-move
 	      else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
 	        // if modifiers are held down, we'll create a divider
@@ -33177,6 +33326,12 @@
 
 /***/ },
 /* 29 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAAB3RJTUUH4AcZEBUusuQ9jAAAAPpJREFUSMft1L1KQ0EQhuHHH7RSG1GDhbWd4A2IifES7PVOchcBGxHE1j69raV/lYgoNtqrsdkjEnYPe3KOjfrBsDCz37yzsAx/TYs4wyOecIceppqE9DCMxGaOeTITspzIzzUJqaXfC5nFKhbG7NcK/okUZAMPuMcL9is0n8HxN/8A86OX1vAa+aIHod5PfOGtADiN1AZF8+lwdmNkHAZDmY6wF8m3RxPreEtMOwyNYvmTEs9FbKJtvJeYqsQlllJPb+OjJuCqZEN8qVMDdJ0DqAOqBCi0UwF0g5VxN0I3A3BbB5ADagRQaDcBaDW9TDt4DoDznwD8C3wCdHedNCg8u2UAAAAASUVORK5CYII="
+
+/***/ },
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33195,11 +33350,11 @@
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(30);
+	var _FieldSelector = __webpack_require__(31);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
-	var _template = __webpack_require__(32);
+	var _template = __webpack_require__(33);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -33475,13 +33630,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(31);
+	var content = __webpack_require__(32);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -33501,7 +33656,7 @@
 	}
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -33539,13 +33694,13 @@
 	};
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"mode\"><i></i></th><th class=\"label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33666,7 +33821,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33682,11 +33837,11 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _shapes = __webpack_require__(35);
+	var _shapes = __webpack_require__(36);
 
 	var _shapes2 = _interopRequireDefault(_shapes);
 
-	var _ColorPalettes = __webpack_require__(48);
+	var _ColorPalettes = __webpack_require__(49);
 
 	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
 
@@ -33873,7 +34028,7 @@
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33882,39 +34037,39 @@
 	  value: true
 	});
 
-	var _Circle = __webpack_require__(36);
+	var _Circle = __webpack_require__(37);
 
 	var _Circle2 = _interopRequireDefault(_Circle);
 
-	var _Square = __webpack_require__(40);
+	var _Square = __webpack_require__(41);
 
 	var _Square2 = _interopRequireDefault(_Square);
 
-	var _Triangle = __webpack_require__(41);
+	var _Triangle = __webpack_require__(42);
 
 	var _Triangle2 = _interopRequireDefault(_Triangle);
 
-	var _Diamond = __webpack_require__(42);
+	var _Diamond = __webpack_require__(43);
 
 	var _Diamond2 = _interopRequireDefault(_Diamond);
 
-	var _X = __webpack_require__(43);
+	var _X = __webpack_require__(44);
 
 	var _X2 = _interopRequireDefault(_X);
 
-	var _Pentagon = __webpack_require__(44);
+	var _Pentagon = __webpack_require__(45);
 
 	var _Pentagon2 = _interopRequireDefault(_Pentagon);
 
-	var _InvertedTriangle = __webpack_require__(45);
+	var _InvertedTriangle = __webpack_require__(46);
 
 	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
 
-	var _Star = __webpack_require__(46);
+	var _Star = __webpack_require__(47);
 
 	var _Star2 = _interopRequireDefault(_Star);
 
-	var _Plus = __webpack_require__(47);
+	var _Plus = __webpack_require__(48);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
@@ -33933,19 +34088,19 @@
 	};
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
+	var sprite = __webpack_require__(38);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Circle");
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(38);
+	var Sprite = __webpack_require__(39);
 	var globalSprite = new Sprite();
 
 	if (document.body) {
@@ -33960,10 +34115,10 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sniffr = __webpack_require__(39);
+	var Sniffr = __webpack_require__(40);
 
 	/**
 	 * List of SVG attributes to fix url target in them
@@ -34215,7 +34370,7 @@
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	(function(host) {
@@ -34339,79 +34494,79 @@
 
 
 /***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
-
-/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
 
 /***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
 
 /***/ },
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
 
 /***/ },
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
 
 /***/ },
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
 
 /***/ },
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(37);;
+	var sprite = __webpack_require__(38);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(38);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34528,7 +34683,7 @@
 	};
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34633,7 +34788,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34730,7 +34885,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -35746,34 +35901,7 @@
 				"min": 0
 			}
 		},
-		"legendShapes": {
-			"Circle": "#Circle",
-			"Square": "#Square",
-			"Triangle": "#Triangle",
-			"Diamond": "#Diamond",
-			"X": "#X",
-			"Pentagon": "#Pentagon",
-			"InvertedTriangle": "#InvertedTriangle",
-			"Star": "#Star",
-			"Plus": "#Plus"
-		},
-		"legendColors": [
-			"rgb(166, 206, 227)",
-			"rgb(31, 120, 180)",
-			"rgb(178, 223, 138)",
-			"rgb(51, 160, 44)",
-			"rgb(251, 154, 153)",
-			"rgb(227, 26, 28)",
-			"rgb(253, 191, 111)",
-			"rgb(255, 127, 0)",
-			"rgb(202, 178, 214)",
-			"rgb(106, 61, 154)",
-			"rgb(255, 255, 153)",
-			"rgb(177, 89, 40)"
-		],
-		"legendPriorities": [],
-		"dirty": true,
-		"legendDirty": true
+		"dirty": true
 	};
 
 /***/ }
