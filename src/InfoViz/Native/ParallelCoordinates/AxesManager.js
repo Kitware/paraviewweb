@@ -1,5 +1,6 @@
 import { dataToScreen } from '.';
 import Axis from './Axis';
+import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 
 // ----------------------------------------------------------------------------
 
@@ -90,7 +91,7 @@ export default class AxesManager {
     return axesPairs;
   }
 
-  resetSelections(selections = {}, triggerEvent = true) {
+  resetSelections(selection = {}, triggerEvent = true) {
     this.clearAllSelections(true);
 
     // index axes
@@ -100,18 +101,24 @@ export default class AxesManager {
     });
 
     // Update selections
-    Object.keys(selections).forEach(axisName => {
-      nameToAxisMap[axisName].selections = selections[axisName];
-    });
+    if (selection.type === 'range') {
+      this.selection = selection;
+      Object.keys(selection.range.variables).forEach(axisName => {
+        nameToAxisMap[axisName].selections = selection.range.variables[axisName];
+      });
+    } else {
+      console.error('Parallel coordinate does not understand a selection that is not range based');
+    }
     if (triggerEvent) {
-      this.triggerSelectionChange();
+      this.triggerSelectionChange(false);
     }
   }
 
-  addSelection(axisIdx, start, end) {
+  addSelection(axisIdx, start, end, endpoints, uncertainty) {
     this.axes[axisIdx].addSelection(
       start < end ? start : end,
-      end < start ? start : end);
+      end < start ? start : end,
+      endpoints, uncertainty);
     this.triggerSelectionChange();
   }
 
@@ -168,21 +175,12 @@ export default class AxesManager {
     return { unsubscribe };
   }
 
-  triggerSelectionChange() {
+  triggerSelectionChange(reset = true) {
     setImmediate(() => {
-      const selection = {};
-      if (this.hasSelection) {
-        selection.type = 'range';
-        selection.ranges = {};
-        this.axes.forEach(axis => {
-          if (axis.hasSelection()) {
-            selection.ranges[axis.name] = [].concat(axis.selections);
-          }
-        });
-      } else {
-        selection.type = 'empty';
+      if (reset) {
+        this.selection = null;
       }
-
+      const selection = this.getSelection();
       // Notify listeners
       this.listeners.forEach(listener => {
         if (listener) {
@@ -203,51 +201,29 @@ export default class AxesManager {
 
   triggerAxisListChange() {
     setImmediate(() => {
-      const selection = {};
-      if (this.hasSelection) {
-        selection.type = 'range';
-        selection.ranges = {};
-        this.axes.forEach(axis => {
-          if (axis.hasSelection()) {
-            selection.ranges[axis.name] = [].concat(axis.selections);
-          }
-        });
-      } else {
-        selection.type = 'empty';
-      }
-
       // Notify listeners
       this.axisListChangeListeners.forEach(listener => {
         if (listener) {
-          listener(selection);
+          listener(this.getAxesPairs());
         }
       });
     });
   }
 
-  getPredicates() {
-    let count = this.axes.length;
-    const predicates = [];
-    while (count--) {
-      const axisPredicates = this.axis[count].getPredicates();
-      if (axisPredicates) {
-        predicates.push('&&');
-        predicates.push(axisPredicates);
-      }
+  getSelection() {
+    if (!this.selection) {
+      const vars = {};
+      let selectionCount = 0;
+      this.axes.forEach(axis => {
+        if (axis.hasSelection()) {
+          vars[axis.name] = [].concat(axis.selections);
+          selectionCount++;
+        }
+      });
+      this.selection = selectionCount ? SelectionBuilder.range(vars) : SelectionBuilder.empty();
     }
-    predicates[0] = { type: 'L&' };
-    // Flip array to have the proper order
-    return predicates.reverse();
-  }
 
-  getSelections() {
-    const selections = {};
-    this.axes.forEach(axis => {
-      if (axis.hasSelection()) {
-        selections[axis.name] = [].concat(axis.selections);
-      }
-    });
-    return selections;
+    return this.selection;
   }
 
   extractSelections(model) {
@@ -261,8 +237,8 @@ export default class AxesManager {
             selectionIndex,
             screenX,
             screenRangeY: [
-              dataToScreen(model, selection[0], axis),
-              dataToScreen(model, selection[1], axis),
+              dataToScreen(model, selection.interval[0], axis),
+              dataToScreen(model, selection.interval[1], axis),
             ],
           });
         });

@@ -1,13 +1,3 @@
-const to5clause = (axis, range) => [
-  range[0],
-  '<=',
-  axis.name,
-  '<=',
-  range[1],
-  { type: '5C' },
-];
-
-
 export default class Axis {
   constructor(name, range = [0, 1]) {
     this.name = name;
@@ -28,30 +18,10 @@ export default class Axis {
     return (this.selections.length > 0);
   }
 
-  getPredicates() {
-    switch (this.selections.length) {
-      case 0:
-        return null;
-      case 1:
-        return to5clause(this, this.selections[0]);
-      default: {
-        let count = this.selections.length;
-        const predicates = [{ type: 'L|' }];
-        while (count--) {
-          predicates.push(to5clause(this, this.selections[count]));
-          if (count) {
-            predicates.push('||');
-          }
-        }
-        // Flip array to have the proper order
-        return predicates.reverse();
-      }
-    }
-  }
-
   updateSelection(selectionIndex, start, end) {
-    const entry = this.selections[selectionIndex] = [start, end];
+    const entry = this.selections[selectionIndex].interval = [start, end];
 
+    // Clamp to axis range
     if (start < this.range[0]) {
       entry[0] = this.range[0];
     }
@@ -63,12 +33,12 @@ export default class Axis {
     // FIXME trigger notification
   }
 
-  addSelection(start, end) {
-    const entry = [
+  addSelection(start, end, endpoints = 'oo', uncertainty) {
+    const interval = [
       start < this.range[0] ? this.range[0] : start,
       end < this.range[1] ? end : this.range[1],
     ];
-    this.selections.push(entry);
+    this.selections.push({ interval, endpoints, uncertainty });
   }
 
   clearSelection() {
