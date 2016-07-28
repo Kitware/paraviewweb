@@ -286,6 +286,11 @@
   pointer-events: all;
 }
 
+.binHilite {
+  fill: #001EB8;
+}
+
+/* Scoring gui */
 .score {
   composes: jsScore;
   stroke: #fff;

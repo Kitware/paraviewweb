@@ -125,9 +125,6 @@ export function createGroups(svgGr) {
     .classed(style.jsScoreBackground, true);
   svgGr.append('g')
     .classed(style.score, true);
-  svgGr.append('rect')
-    .classed(style.overlay, true)
-    .style('cursor', 'default');
 }
 
 export function createHeader(header) {
@@ -597,6 +594,10 @@ export function showScore(def) {
                             ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
 }
 
+export function editingScore(def) {
+  return def.editScore;
+}
+
 export function filterFieldNames(fieldNames) {
   if (getDisplayOnlyScored()) {
     // filter for fields that have scores
@@ -604,12 +605,6 @@ export function filterFieldNames(fieldNames) {
   }
   return fieldNames;
 }
-
-const getMouseCoords = (tdsl) => {
-  // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
-  const coord = d3.mouse(tdsl.node());
-  return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
-};
 
 export function prepareItem(def, idx, svgGr, tdsl) {
   if (typeof model.scores === 'undefined') return;
@@ -686,7 +681,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
     // added to the end of the list when rendering. Doesn't affect regions that way.
     drag = d3.behavior.drag()
       .on('dragstart', () => {
-        const overCoords = getMouseCoords(tdsl);
+        const overCoords = publicAPI.getMouseCoords(tdsl);
         const [val, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
         if (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey) {
           // create a temp divider to render.
@@ -702,7 +697,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         }
       })
       .on('drag', () => {
-        const overCoords = getMouseCoords(tdsl);
+        const overCoords = publicAPI.getMouseCoords(tdsl);
         if (typeof def.dragDivider === 'undefined' ||
             scorePopupDiv.style('display') !== 'none' ||
             dividerPopupDiv.style('display') !== 'none') return;
@@ -757,13 +752,18 @@ export function prepareItem(def, idx, svgGr, tdsl) {
     .attr('y', -model.histMargin.top)
     .attr('width', publicAPI.svgWidth())
     .attr('height', publicAPI.svgHeight()) // allow clicks inside x-axis.
-    .on('click', () => {
+    .on('click.score', () => {
       // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
       if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
-      const overCoords = getMouseCoords(tdsl);
+      const overCoords = publicAPI.getMouseCoords(tdsl);
       if (overCoords[1] > model.histHeight) {
         def.editScore = !def.editScore;
         svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
+        if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
+          const state = {};
+          state[def.name] = [-1];
+          model.provider.setHoverState({ state });
+        }
         publicAPI.render();
         return;
       }
@@ -793,8 +793,8 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         }
       }
     })
-    .on('mousemove', () => {
-      const overCoords = getMouseCoords(tdsl);
+    .on('mousemove.score', () => {
+      const overCoords = publicAPI.getMouseCoords(tdsl);
       if (def.editScore) {
         const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
         let cursor = 'pointer';
@@ -830,6 +830,7 @@ export default {
   createGroups,
   createHeader,
   createPopups,
+  editingScore,
   filterFieldNames,
   init,
   prepareItem,

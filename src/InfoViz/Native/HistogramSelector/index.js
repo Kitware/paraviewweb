@@ -310,6 +310,12 @@ function histogramSelector(publicAPI, model) {
     }
   }
 
+  publicAPI.getMouseCoords = (tdsl) => {
+    // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
+    const coord = d3.mouse(tdsl.node());
+    return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
+  };
+
   publicAPI.resize = () => {
     if (model.container === null) return;
 
@@ -499,6 +505,9 @@ function histogramSelector(publicAPI, model) {
           .classed(style.jsGRect, true);
         // scoring interface
         Score.createGroups(svgGr);
+        svgGr.append('rect')
+          .classed(style.overlay, true)
+          .style('cursor', 'default');
       }
       const dataActive = def.active;
       // Apply legend
@@ -549,30 +558,29 @@ function histogramSelector(publicAPI, model) {
           .attr('width', Math.ceil(model.histWidth / hsize));
 
         hdata.exit().remove();
-        // svgGr.
-        // on('mousemove', (d, i) => {
-        //   // console.log('MouseMove!');
-        //   if (model.annotationService) {
-        //     const mCoords = d3.mouse(svgGr[0][0]);
-        //     const binNum = Math.floor((mCoords[0] / model.histWidth) * hsize);
-        //     const state = {};
-        //     state[def.name] = [binNum];
-        //     model.annotationService.setCurrentHover({
-        //       source: model.componentId,
-        //       state,
-        //     });
-        //   }
-        // }).
-        // on('mouseout', (d, i) => {
-        //   if (model.annotationService) {
-        //     const state = {};
-        //     state[def.name] = [-1];
-        //     model.annotationService.setCurrentHover({
-        //       source: self.componentId,
-        //       state,
-        //     });
-        //   }
-        // });
+
+        if (model.provider.isA('HistogramBinHoverProvider')) {
+          if (!Score.editingScore(def)) {
+            svgGr.select(`.${style.jsOverlay}`)
+              .on('mousemove.hs', (d, i) => {
+                const mCoords = publicAPI.getMouseCoords(tdsl);
+                const binNum = Math.floor((mCoords[0] / model.histWidth) * hsize);
+                const state = {};
+                state[def.name] = [binNum];
+                model.provider.setHoverState({ state });
+              })
+              .on('mouseout.hs', (d, i) => {
+                const state = {};
+                state[def.name] = [-1];
+                model.provider.setHoverState({ state });
+              });
+          } else {
+            // disable when score editing is happening - it's distracting.
+            // Note we still respond to hovers over other components.
+            svgGr.select(`.${style.jsOverlay}`)
+              .on('.hs', null);
+          }
+        }
 
         // Show an x-axis with just min/max displayed.
         // Attach scale, axis objects to this box's
@@ -665,12 +673,27 @@ function histogramSelector(publicAPI, model) {
     }
   };
 
+  function handleHoverUpdate(data) {
+    const everything = d3.select(model.container);
+    Object.keys(data.state).forEach(pName => {
+      const binList = data.state[pName];
+      everything.selectAll(`rect[pname='${pName}']`).
+            // classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
+            classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
+    });
+  }
+
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   // event from the FieldProvider
   // TODO overkill if one field's 'active' flag changes.
   model.subscriptions.push(model.provider.onFieldChange(fetchData));
   // event from Histogram Provider
   model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+
+  if (model.provider.isA('HistogramBinHoverProvider')) {
+    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+  }
+
   // scoring interface
   Score.addSubscriptions();
 
