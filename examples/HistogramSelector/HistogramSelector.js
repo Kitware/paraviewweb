@@ -21604,6 +21604,7 @@
 	exports.destroy = destroy;
 	exports.event = event;
 	exports.fetch = fetch;
+	exports.chain = chain;
 	exports.newInstance = newInstance;
 	// ----------------------------------------------------------------------------
 	// capitilze provided string
@@ -21806,6 +21807,28 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Chain function calls
+	// ----------------------------------------------------------------------------
+
+	function chain() {
+	  for (var _len2 = arguments.length, fn = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	    fn[_key2] = arguments[_key2];
+	  }
+
+	  return function () {
+	    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	      args[_key3] = arguments[_key3];
+	    }
+
+	    return fn.filter(function (i) {
+	      return !!i;
+	    }).forEach(function (i) {
+	      return i.apply(undefined, args);
+	    });
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
 	// newInstance
 	// ----------------------------------------------------------------------------
 
@@ -21821,13 +21844,14 @@
 	}
 
 	exports.default = {
-	  newInstance: newInstance,
+	  chain: chain,
 	  destroy: destroy,
-	  fetch: fetch,
-	  isA: isA,
 	  event: event,
-	  set: set,
-	  get: get
+	  fetch: fetch,
+	  get: get,
+	  isA: isA,
+	  newInstance: newInstance,
+	  set: set
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15).setImmediate))
 
