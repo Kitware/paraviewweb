@@ -10,6 +10,7 @@ import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
 import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
 import PartitionProvider from '../../../../../src/InfoViz/Core/PartitionProvider';
 import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
+import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
 
 import dataModel from './state.json';
 
@@ -36,6 +37,7 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   Object.assign(model, initialValues);
   FieldProvider.extend(publicAPI, model, initialValues);
   Histogram1DProvider.extend(publicAPI, model, initialValues);
+  HistogramBinHoverProvider.extend(publicAPI, model);
   LegendProvider.extend(publicAPI, model, initialValues);
   PartitionProvider.extend(publicAPI, model, initialValues);
 })(dataModel);

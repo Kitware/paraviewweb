@@ -84,16 +84,22 @@
 
 .histRect {
   composes: jsHistRect;
-  fill: #7D86B3;
-  stroke: #7D86B3;
-  stroke-width: 0.25px;
+  stroke: none;
+  shape-rendering: crispEdges;
+}
+.histRectEven {
+  composes: histRect;
+  fill: #8089B8;
+}
+.histRectOdd {
+  composes: histRect;
+  fill: #7780AB;
 }
 
 .histoHilite {
   fill: #999;
-  stroke: #000;
 }
 
 .binHilite {
-  fill: blue;
+  fill: #001EB8;
 }
