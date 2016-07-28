@@ -1,6 +1,5 @@
 import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import React                    from 'react';
-import TimeSlider               from '../../Widgets/QueryDataModelWidget/Number';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
 import ToggleIconButtonWidget   from '../../Widgets/ToggleIconButtonWidget';
 import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';

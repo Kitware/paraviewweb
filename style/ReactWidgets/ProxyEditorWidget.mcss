@@ -10,7 +10,7 @@
 .contentContainer {
   padding-top: 5px;
   padding-bottom: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: calc(100% - 30px);
 
   background: linear-gradient(#eee 10px, hsla(0,0%,100%,0)) 0 0 / 100% 40px,

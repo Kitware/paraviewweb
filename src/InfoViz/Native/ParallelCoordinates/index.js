@@ -86,14 +86,8 @@ function parallelCoordinate(publicAPI, model) {
 
   model.axes = new AxesManager();
 
-  function fetchSelectionData() {
-    if (model.provider && model.provider.isA('SelectionProvider')) {
-      model.provider.setSelection(model.axes.getSelections(), [] /* reset axis pairs to be empty */);
-      model.axes.getAxesPairs().forEach(pair => {
-        model.provider.loadSelectionHistogram2D(...pair);
-      });
-    }
-  }
+  // Local cache of the selection data
+  model.selectionData = null;
 
   function fetchData() {
     model.needData = true;
@@ -570,13 +564,19 @@ function parallelCoordinate(publicAPI, model) {
       0, 0, model.canvasArea.width, model.canvasArea.height);
 
     // If there is a selection, draw that (the "focus") on top of the polygons
-    if (model.axes.hasSelection() && model.provider.isA('SelectionProvider')) {
+    if (model.axes.hasSelection()) {
       // Extract selection histogram2d
       const polygonsQueue = [];
+      let maxCount = 0;
       let missingData = false;
       for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
-        const histo = model.provider.getSelectionHistogram2D(model.axes.getAxis(k).name, model.axes.getAxis(k + 1).name);
-        missingData = histo ? histo.pending : true;
+        const histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name]
+          ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name]
+          : null;
+        missingData = !histo;
+        if (histo) {
+          maxCount = maxCount > histo.maxCount ? maxCount : histo.maxCount;
+        }
         polygonsQueue.push([
           axesCenters,
           model.fgCtx,
@@ -587,7 +587,7 @@ function parallelCoordinate(publicAPI, model) {
       }
 
       if (!missingData) {
-        model.maxBinCountForOpacityCalculation = model.provider.getSelectionMaxOfMaxCounts(model.axes.getAxesPairs());
+        model.maxBinCountForOpacityCalculation = maxCount;
         polygonsQueue.forEach(req => drawPolygons(...req));
         model.ctx.globalAlpha = model.selectionOpacityAdjustment;
         model.ctx.drawImage(model.fgCanvas,
@@ -760,7 +760,7 @@ function parallelCoordinate(publicAPI, model) {
 
   // Attach listener to provider
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  ['onHistogram2DReady', 'onSelectionHistogram2DReady'].forEach(method => {
+  ['onHistogram2DReady'].forEach(method => {
     if (model.provider[method]) {
       model.subscriptions.push(model.provider[method](publicAPI.render));
     }
@@ -777,16 +777,24 @@ function parallelCoordinate(publicAPI, model) {
   });
 
   if (model.provider.isA('SelectionProvider')) {
+    model.dataSubscription = model.provider.subscribeToDataSelection(
+      'histogram2d',
+      data => {
+        model.selectionData = data;
+        publicAPI.render();
+      },
+      model.axes.getAxesPairs());
+
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       model.axes.resetSelections(sel, false);
       publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
-      fetchSelectionData();
+      model.provider.setSelection(model.axes.getSelection());
       publicAPI.render();
     }));
-    model.subscriptions.push(model.axes.onAxisListChange(() => {
-      fetchSelectionData();
+    model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
+      model.dataSubscription.update(axisPairs);
       publicAPI.render();
     }));
   } else {

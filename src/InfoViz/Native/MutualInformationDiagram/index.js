@@ -3,6 +3,7 @@ import d3 from 'd3';
 import htmlContent from './body.html';
 import iconImage from './InfoDiagramIconSmall.png';
 import multiClicker from '../../Core/D3MultiClick';
+import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
 
 import {
@@ -287,7 +288,7 @@ function informationDiagram(publicAPI, model) {
         return;
       }
 
-      const ranges = {};
+      const vars = {};
       let proceed = false;
 
       Object.keys(binMap).forEach(pName => {
@@ -296,17 +297,19 @@ function informationDiagram(publicAPI, model) {
         const rangeList = [];
         for (let i = 0; i < binList.length; ++i) {
           if (binList[i] !== -1) {
-            rangeList.push(getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]));
+            rangeList.push({
+              interval: getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]),
+            });
           }
         }
         if (rangeList.length > 0) {
           proceed = true;
-          ranges[pName] = rangeList;
+          vars[pName] = rangeList;
         }
       });
 
       if (proceed) {
-        model.provider.setSelection(ranges);
+        model.provider.setSelection(SelectionBuilder.range(vars));
       }
     }
 
