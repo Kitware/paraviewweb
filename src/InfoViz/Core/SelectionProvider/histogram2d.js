@@ -17,21 +17,23 @@
 //  }
 // ----------------------------------------------------------------------------
 
-function flipHistogram(histo2d) {
-  const newHisto2d = {
-    bins: histo2d.bins.map(bin => {
-      const { x, y, count } = bin;
-      return {
-        x: y,
-        y: x,
-        count,
-      };
-    }),
-    x: histo2d.y,
-    y: histo2d.x };
+// function flipHistogram(histo2d) {
+//   const newHisto2d = {
+//     bins: histo2d.bins.map(bin => {
+//       const { x, y, count } = bin;
+//       return {
+//         x: y,
+//         y: x,
+//         count,
+//       };
+//     }),
+//     x: histo2d.y,
+//     y: histo2d.x };
 
-  return newHisto2d;
-}
+//   return newHisto2d;
+// }
+
+// ----------------------------------------------------------------------------
 
 export function set(model, payload) {
   if (!model.histogram2d) {
@@ -54,14 +56,18 @@ export function set(model, payload) {
   // FIXME
 }
 
-export function get(model, query) {
+// ----------------------------------------------------------------------------
+
+function get(model, query) {
   if (model.histogram2d && model.histogram2d[query.axes[0]] && model.histogram2d[query.axes[0]][query.axes[1]]) {
     return model.histogram2d[query.axes[0]][query.axes[1]];
   }
   return undefined;
 }
 
-export function getNotificationData(model, request) {
+// ----------------------------------------------------------------------------
+
+function getNotificationData(model, request) {
   const result = {};
   let missingData = false;
 

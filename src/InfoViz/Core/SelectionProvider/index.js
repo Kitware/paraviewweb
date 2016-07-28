@@ -1,129 +1,84 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-
-// ----------------------------------------------------------------------------
-// Global
-// ----------------------------------------------------------------------------
-
-function flipHistogram(histo2d) {
-  const newHisto2d = {
-    bins: histo2d.bins.map(bin => {
-      const { x, y, count } = bin;
-      return {
-        x: y,
-        y: x,
-        count,
-      };
-    }),
-    x: histo2d.y,
-    y: histo2d.x };
-
-  return newHisto2d;
-}
+import dataHelper from './dataHelper';
 
 // ----------------------------------------------------------------------------
 // Selection Provider
 // ----------------------------------------------------------------------------
 
-function selectionProvider(publicAPI, model, fetchHelper) {
-  // Private members
-  const ready = publicAPI.fireSelectionHistogram2DReady;
-  delete publicAPI.fireSelectionHistogram2DReady;
+function selectionProvider(publicAPI, model) {
+  const dataSubscriptions = [];
 
-  // Protected members
-  if (!model.histogram2DSelectionData) {
-    model.histogram2DSelectionData = {};
+  if (!model.selectionData) {
+    model.selectionData = {};
+  }
+  if (!model.selectionMetaData) {
+    model.selectionMetaData = {};
   }
 
-  // Data access
-  publicAPI.setSelectionHistogram2DNumberOfBins = bin => {
-    if (model.selectionHistogram2DNumberOfBins !== bin) {
-      model.histogram2DSelectionData = {};
-      model.selectionHistogram2DNumberOfBins = bin;
+  function off() {
+    let count = dataSubscriptions.length;
+    while (count--) {
+      dataSubscriptions[count] = null;
     }
-  };
+  }
 
-  // Return true if data is available
-  publicAPI.loadSelectionHistogram2D = (axisA, axisB) => {
-    if (model.histogram2DSelectionData[axisA] && model.histogram2DSelectionData[axisA][axisB]) {
-      if (model.histogram2DSelectionData[axisA][axisB].pending) {
-        return false;
+  function flushDataToListener(dataListener) {
+    if (dataListener) {
+      const event = dataHelper.getNotificationData(model.selectionData, dataListener.request);
+      if (event) {
+        dataListener.onDataReady(event);
       }
-      return true;
     }
-    if (model.histogram2DSelectionData[axisB] && model.histogram2DSelectionData[axisB][axisA]
-      && !model.histogram2DSelectionData[axisB][axisA].pending) {
-      if (!model.histogram2DSelectionData[axisA]) {
-        model.histogram2DSelectionData[axisA] = {};
-      }
-      model.histogram2DSelectionData[axisA][axisB] = flipHistogram(model.histogram2DSelectionData[axisB][axisA]);
-      return true;
-    }
+  }
 
-    if (!model.histogram2DSelectionData[axisA]) {
-      model.histogram2DSelectionData[axisA] = {};
-    }
-    model.histogram2DSelectionData[axisA][axisB] = { pending: true };
+  // Method use to store received data
+  publicAPI.setSelectionData = data => {
+    dataHelper.set(model.selectionData, data);
 
-    // Request data if possible
-    fetchHelper.addRequest([axisA, axisB]);
-
-    return false;
+    // Process all subscription to see if we can trigger a notification
+    dataSubscriptions.forEach(flushDataToListener);
   };
 
-  publicAPI.getSelectionHistogram2D = (axisA, axisB) => {
-    if (model.histogram2DSelectionData[axisA] && model.histogram2DSelectionData[axisA][axisB]) {
-      return model.histogram2DSelectionData[axisA][axisB];
-    }
-    return null;
+  // Method use to access cached data. Will return undefined if not available
+  publicAPI.getSelectionData = query => dataHelper.get(model.selectionData, query);
+
+  // Use to extend data subscription
+  publicAPI.updateSelectionMetadata = addon => {
+    model.selectionMetaData[addon.type] = Object.assign({}, model.selectionMetaData[addon.type], addon.metadata);
   };
 
-  publicAPI.setSelectionHistogram2D = (axisA, axisB, data) => {
-    if (!model.histogram2DSelectionData[axisA]) {
-      model.histogram2DSelectionData[axisA] = {};
-    }
-    if (!model.histogram2DSelectionData[axisB]) {
-      model.histogram2DSelectionData[axisB] = {};
-    }
-    model.histogram2DSelectionData[axisA][axisB] = data;
-    model.histogram2DSelectionData[axisB][axisA] = flipHistogram(data);
-
-    ready(axisA, axisB, data);
-  };
-
-  publicAPI.getSelectionMaxCount = (axisA, axisB) => {
-    if (model.histogram2DSelectionData[axisA] &&
-      model.histogram2DSelectionData[axisA][axisB] &&
-      model.histogram2DSelectionData[axisA][axisB].bins) {
-      if (!model.histogram2DSelectionData[axisA][axisB].maxCount) {
-        let count = 0;
-        model.histogram2DSelectionData[axisA][axisB].bins.forEach(item => {
-          count = count < item.count ? item.count : count;
-        });
-        model.histogram2DSelectionData[axisA][axisB].maxCount = count;
-      }
-      return model.histogram2DSelectionData[axisA][axisB].maxCount;
-    }
-    return 0;
-  };
-
-  publicAPI.getSelectionMaxCounts = listOfAxisPair => listOfAxisPair.map(args => publicAPI.getSelectionMaxCount(args[0], args[1]));
-  publicAPI.getSelectionMaxOfMaxCounts = listOfAxisPair => Math.max.apply(null, publicAPI.getSelectionMaxCounts(listOfAxisPair));
+  // Get metadata for a given data type
+  publicAPI.getSelectionMetadata = type => model.selectionMetaData[type];
 
   // --------------------------------
 
-  // Effects of axisPairList:
-  //   undefined/null:   Do not touch the axis list
-  //   [] (empty list):  Reset axis list to empty
-  //   list of pairs:    Reset axis list to given list of pairs
-  publicAPI.setSelection = (selection, axisPairList) => {
-    if (axisPairList) {
-      fetchHelper.resetRequests(axisPairList);
-    }
-
-    model.histogram2DSelectionData = {};
+  publicAPI.setSelection = (selection) => {
     model.selection = selection;
     publicAPI.fireSelectionChange(selection);
   };
+
+  // --------------------------------
+
+  publicAPI.subscribeToDataSelection = (type, onDataReady, variables = []) => {
+    const id = dataSubscriptions.length;
+    const request = { id, type, variables };
+    const dataListener = { onDataReady, request };
+    dataSubscriptions.push(dataListener);
+    publicAPI.fireDataSubscriptionChange(request);
+    flushDataToListener(dataListener);
+    return {
+      unsubscribe() {
+        dataSubscriptions[id] = null;
+      },
+      update(newVars) {
+        request.variables = [].concat(newVars);
+        publicAPI.fireDataSubscriptionChange(request);
+        flushDataToListener(dataListener);
+      },
+    };
+  };
+
+  publicAPI.destroy = CompositeClosureHelper.chain(off, publicAPI.destroy);
 }
 
 // ----------------------------------------------------------------------------
@@ -132,8 +87,8 @@ function selectionProvider(publicAPI, model, fetchHelper) {
 
 const DEFAULT_VALUES = {
   // selection: null,
-  // histogram2DSelectionData: null,
-  selectionHistogram2DNumberOfBins: 32,
+  // selectionData: null,
+  // selectionMetaData: null,
 };
 
 // ----------------------------------------------------------------------------
@@ -143,12 +98,11 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'SelectionProvider');
-  CompositeClosureHelper.get(publicAPI, model, ['selectionHistogram2DNumberOfBins', 'selection']);
+  CompositeClosureHelper.get(publicAPI, model, ['selection']);
   CompositeClosureHelper.event(publicAPI, model, 'selectionChange');
-  CompositeClosureHelper.event(publicAPI, model, 'SelectionHistogram2DReady');
-  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'SelectionHistogram2D');
+  CompositeClosureHelper.event(publicAPI, model, 'dataSubscriptionChange');
 
-  selectionProvider(publicAPI, model, fetchHelper);
+  selectionProvider(publicAPI, model);
 }
 
 // ----------------------------------------------------------------------------
