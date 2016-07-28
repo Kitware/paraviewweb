@@ -4,7 +4,7 @@
     justify-content: flex-start;
     align-items: stretch;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     border: solid 1px black;
     box-sizing: border-box;
 }
