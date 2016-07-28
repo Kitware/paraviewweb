@@ -1,4 +1,5 @@
 import Common       from './Common';
+import Component    from './Component';
 import InfoViz      from './InfoViz';
 import Interaction  from './Interaction';
 import IO           from './IO';
@@ -8,6 +9,7 @@ import Rendering    from './Rendering';
 
 export {
   Common,
+  Component,
   InfoViz,
   Interaction,
   IO,
