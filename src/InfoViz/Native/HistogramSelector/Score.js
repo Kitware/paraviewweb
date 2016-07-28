@@ -1,3 +1,5 @@
+import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
+
 import d3 from 'd3';
 /* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
@@ -42,41 +44,34 @@ function getRegionBounds(dividers, hobj) {
 
 // Translate our dividers and regions into a piecewise-linear partition (2D array)
 // suitable for scoring this histogram.
-function dividersToPartition(dividers, regions, hobj, scores) {
+function dividersToPartition(fieldName, dividers, regions, hobj, scores) {
   if (!regions || !dividers || !scores) return null;
   if (regions.length !== dividers.length + 1) return null;
-  const regionBounds = getRegionBounds(dividers, hobj);
   const uncertScale = (hobj.max - hobj.min);
-  const scoreData = [];
-  for (let i = 0; i < regions.length; i++) {
-    const x0 = (i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i]);
-    const x1 = (i !== regions.length - 1 ? regionBounds[i + 1] - dividers[i].uncertainty * uncertScale : regionBounds[i + 1]);
-    const yVal = scores[regions[i]].value;
-    scoreData.push([x0, yVal], [x1, yVal]);
-  }
-  return scoreData;
+
+  const partitionSelection = SelectionBuilder.partition(fieldName, dividers);
+  partitionSelection.partition.dividers.forEach((div, index) => { div.uncertainty *= uncertScale; });
+  // console.log('DBG partitionSelection', JSON.stringify(partitionSelection, 2));
+
+  // FIXME: initial design for a partition annotation:
+  return {
+    selection: partitionSelection,
+    score: regions,
+    weight: 1,
+    rationale: '',
+  };
 }
 
 // retrieve partition, and re-create dividers and regions
 function partitionToDividers(scoreData, def, hobj, scores) {
-  if (scoreData.length % 2 !== 0) console.error('partition expected paired points, length', scoreData.length);
-  const regions = [];
-  const dividers = [];
-  for (let i = 0; i < scoreData.length; i += 2) {
-    const lower = scoreData[i];
-    const upper = scoreData[i + 1];
-    if (lower[1] !== upper[1]) console.error('partition mismatch', lower[1], upper[1]);
-    const regionVal = scores.findIndex((el) => (el.value === lower[1]));
-    regions.push(regionVal);
-    if (i < scoreData.length - 2) {
-      const nextLower = scoreData[i + 2];
-      const divVal = 0.5 * (upper[0] + nextLower[0]);
-      const uncert = (upper[0] === nextLower[0] ? 0 : 0.5 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min));
-      dividers.push(createDefaultDivider(divVal, uncert));
-    }
-  }
+  // console.log('DBG return', JSON.stringify(scoreData, null, 2));
+  const uncertScale = (hobj.max - hobj.min);
+  const regions = scoreData.score;
+  const dividers = scoreData.selection.partition.dividers;
+  dividers.forEach((div, index) => { div.uncertainty *= 1 / uncertScale; });
+
   // don't replace the default region with an empty region, so UI can display the default region.
-  if (regions.length > 0 && regions[0] !== model.defaultScore) {
+  if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
     def.regions = regions;
     def.dividers = dividers;
   }
@@ -84,7 +79,7 @@ function partitionToDividers(scoreData, def, hobj, scores) {
 
 // communicate with the server which regions/dividers have changed.
 function sendScores(def, hobj) {
-  const scoreData = dividersToPartition(def.dividers, def.regions, def.hobj, model.scores);
+  const scoreData = dividersToPartition(def.name, def.dividers, def.regions, def.hobj, model.scores);
   if (scoreData === null) {
     console.error('Cannot translate scores to send to provider');
     return;
