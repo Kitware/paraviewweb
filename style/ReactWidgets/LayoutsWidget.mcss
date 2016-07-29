@@ -11,8 +11,17 @@
   float: left;
 }
 
+.activeTable {
+  composes: table;
+  border: solid 1px red;
+}
+
 .td {
   background-color: #333;
+}
+
+.activeTd {
+  background-color: red;
 }
 
 @media screen and (max-width: 400px),

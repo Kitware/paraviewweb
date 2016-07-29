@@ -1,112 +1,35 @@
 import React from 'react';
-import style from 'PVWStyle/ReactWidgets/LayoutsWidget.mcss';
+import TwoByTwo from './TwoByTwo';
+import OneByTwo from './OneByTwo';
+import TwoByOne from './TwoByOne';
+import OneByOne from './OneByOne';
+import TwoLeft from './TwoLeft';
+import TwoTop from './TwoTop';
+import TwoRight from './TwoRight';
+import TwoBottom from './TwoBottom';
 
-export default React.createClass({
+export default function layoutsWidget(props) {
+  const onLayoutChange = event => props.onChange(event.currentTarget.getAttribute('name'));
 
-  displayName: 'LayoutsWidget',
+  return (
+    <section className={props.className}>
+      <TwoByTwo active={props.active} onClick={onLayoutChange} />
+      <OneByTwo active={props.active} onClick={onLayoutChange} />
+      <TwoByOne active={props.active} onClick={onLayoutChange} />
+      <OneByOne active={props.active} onClick={onLayoutChange} />
+      <TwoLeft active={props.active} onClick={onLayoutChange} />
+      <TwoTop active={props.active} onClick={onLayoutChange} />
+      <TwoRight active={props.active} onClick={onLayoutChange} />
+      <TwoBottom active={props.active} onClick={onLayoutChange} />
+    </section>);
+}
 
-  propTypes: {
-    onChange: React.PropTypes.func,
-  },
+layoutsWidget.propTypes = {
+  onChange: React.PropTypes.func,
+  active: React.PropTypes.string,
+  className: React.PropTypes.string,
+};
 
-  onLayoutChange(event) {
-    var layout = event.currentTarget.getAttribute('name');
-    if (this.props.onChange) {
-      this.props.onChange(layout);
-    }
-  },
-
-  render() {
-    return (
-      <section>
-        <table className={style.table} name="2x2" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-            <tr>
-              <td className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="1x2" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-            </tr>
-            <tr>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="2x1" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="1x1" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="3xL" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td rowSpan="2" className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-            <tr>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="3xT" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td colSpan="2" className={style.td}></td>
-            </tr>
-            <tr>
-              <td className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="3xR" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-              <td rowSpan="2" className={style.td}></td>
-            </tr>
-            <tr>
-              <td className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table className={style.table} name="3xB" onClick={this.onLayoutChange}>
-          <tbody>
-            <tr>
-              <td className={style.td}></td>
-              <td className={style.td}></td>
-            </tr>
-            <tr>
-              <td colSpan="2" className={style.td}></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>);
-  },
-});
+layoutsWidget.defaultProps = {
+  onChange: () => {},
+};

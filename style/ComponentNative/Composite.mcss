@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.viewport {
+  flex: 1;
+  position: relative;
+}
+
+.fixViewport {
+  flex: none;
+  position: relative;
+}
