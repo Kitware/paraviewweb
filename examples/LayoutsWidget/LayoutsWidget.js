@@ -20182,191 +20182,141 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = layoutsWidget;
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _LayoutsWidget = __webpack_require__(169);
+	var _TwoByTwo = __webpack_require__(169);
 
-	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+	var _TwoByTwo2 = _interopRequireDefault(_TwoByTwo);
+
+	var _OneByTwo = __webpack_require__(174);
+
+	var _OneByTwo2 = _interopRequireDefault(_OneByTwo);
+
+	var _TwoByOne = __webpack_require__(175);
+
+	var _TwoByOne2 = _interopRequireDefault(_TwoByOne);
+
+	var _OneByOne = __webpack_require__(176);
+
+	var _OneByOne2 = _interopRequireDefault(_OneByOne);
+
+	var _TwoLeft = __webpack_require__(177);
+
+	var _TwoLeft2 = _interopRequireDefault(_TwoLeft);
+
+	var _TwoTop = __webpack_require__(178);
+
+	var _TwoTop2 = _interopRequireDefault(_TwoTop);
+
+	var _TwoRight = __webpack_require__(179);
+
+	var _TwoRight2 = _interopRequireDefault(_TwoRight);
+
+	var _TwoBottom = __webpack_require__(180);
+
+	var _TwoBottom2 = _interopRequireDefault(_TwoBottom);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _react2.default.createClass({
+	function layoutsWidget(props) {
+	  var onLayoutChange = function onLayoutChange(event) {
+	    return props.onChange(event.currentTarget.getAttribute('name'));
+	  };
 
-	  displayName: 'LayoutsWidget',
+	  return _react2.default.createElement(
+	    'section',
+	    { className: props.className },
+	    _react2.default.createElement(_TwoByTwo2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_OneByTwo2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_TwoByOne2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_OneByOne2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_TwoLeft2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_TwoTop2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_TwoRight2.default, { active: props.active, onClick: onLayoutChange }),
+	    _react2.default.createElement(_TwoBottom2.default, { active: props.active, onClick: onLayoutChange })
+	  );
+	}
 
-	  propTypes: {
-	    onChange: _react2.default.PropTypes.func
-	  },
+	layoutsWidget.propTypes = {
+	  onChange: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  className: _react2.default.PropTypes.string
+	};
 
-	  onLayoutChange: function onLayoutChange(event) {
-	    var layout = event.currentTarget.getAttribute('name');
-	    if (this.props.onChange) {
-	      this.props.onChange(layout);
-	    }
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'section',
-	      null,
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '2x2', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '1x2', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '2x1', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '1x1', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '3xL', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { rowSpan: '2', className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '3xT', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { colSpan: '2', className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '3xR', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { rowSpan: '2', className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'table',
-	        { className: _LayoutsWidget2.default.table, name: '3xB', onClick: this.onLayoutChange },
-	        _react2.default.createElement(
-	          'tbody',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td }),
-	            _react2.default.createElement('td', { className: _LayoutsWidget2.default.td })
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement('td', { colSpan: '2', className: _LayoutsWidget2.default.td })
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
+	layoutsWidget.defaultProps = {
+	  onChange: function onChange() {}
+	};
 
 /***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoByTwo;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoByTwo(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '2x2' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '2x2', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 2 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 3 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoByTwo.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoByTwo.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(170);
+	var content = __webpack_require__(171);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(172)(content, {});
+	var update = __webpack_require__(173)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20383,24 +20333,26 @@
 	}
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(171)();
+	exports = module.exports = __webpack_require__(172)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".LayoutsWidget_table_14cBV {\n  cursor: pointer;\n  margin: 5px;\n  border: solid 1px #333;\n  border-spacing: 2px;\n  border-collapse: separate;\n  line-height: 5px;\n  border-radius: 2px;\n  width: 22px;\n  height: 22px;\n  float: left;\n}\n\n.LayoutsWidget_td_m8JJp {\n  background-color: #333;\n}\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px)  {\n  .LayoutsWidget_table_14cBV {\n    width: 55px;\n    height: 55px;\n    border-spacing: 4px;\n    border: 2px solid #333;\n  }\n}\n\n.is-ios-device .LayoutsWidget_table_14cBV {\n    width: 55px;\n    height: 55px;\n    border-spacing: 4px;\n    border: 2px solid #333;\n}\n", ""]);
+	exports.push([module.id, ".LayoutsWidget_table_14cBV {\n  cursor: pointer;\n  margin: 5px;\n  border: solid 1px #333;\n  border-spacing: 2px;\n  border-collapse: separate;\n  line-height: 5px;\n  border-radius: 2px;\n  width: 22px;\n  height: 22px;\n  float: left;\n}\n\n.LayoutsWidget_activeTable_1KDAE {\n  border: solid 1px red;\n}\n\n.LayoutsWidget_td_m8JJp {\n  background-color: #333;\n}\n\n.LayoutsWidget_activeTd_1_L1T {\n  background-color: red;\n}\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px)  {\n  .LayoutsWidget_table_14cBV {\n    width: 55px;\n    height: 55px;\n    border-spacing: 4px;\n    border: 2px solid #333;\n  }\n}\n\n.is-ios-device .LayoutsWidget_table_14cBV {\n    width: 55px;\n    height: 55px;\n    border-spacing: 4px;\n    border: 2px solid #333;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
 		"table": "LayoutsWidget_table_14cBV",
-		"td": "LayoutsWidget_td_m8JJp"
+		"activeTable": "LayoutsWidget_activeTable_1KDAE LayoutsWidget_table_14cBV",
+		"td": "LayoutsWidget_td_m8JJp",
+		"activeTd": "LayoutsWidget_activeTd_1_L1T"
 	};
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports) {
 
 	/*
@@ -20456,7 +20408,7 @@
 
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -20706,6 +20658,372 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = oneByTwo;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function oneByTwo(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '1x2' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '1x2', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	oneByTwo.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	oneByTwo.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoByOne;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoByOne(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '2x1' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '2x1', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoByOne.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoByOne.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = oneByOne;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function oneByOne(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '1x1' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '1x1', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	oneByOne.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	oneByOne.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoLeft;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoLeft(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '3xL' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xL', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { rowSpan: '2', className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 2 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoLeft.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoLeft.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoTop;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoTop(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '3xT' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xT', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { colSpan: '2', className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 2 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoTop.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoTop.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoRight;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoRight(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '3xR' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xR', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { rowSpan: '2', className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 2 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoRight.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoRight.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = twoBottom;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutsWidget = __webpack_require__(170);
+
+	var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function twoBottom(props) {
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.active === '3xB' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xB', onClick: props.onClick },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { className: props.activeRegion === 0 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td }),
+	        _react2.default.createElement('td', { className: props.activeRegion === 1 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      ),
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement('td', { colSpan: '2', className: props.activeRegion === 2 ? _LayoutsWidget2.default.activeTd : _LayoutsWidget2.default.td })
+	      )
+	    )
+	  );
+	}
+
+	twoBottom.propTypes = {
+	  onClick: _react2.default.PropTypes.func,
+	  active: _react2.default.PropTypes.string,
+	  activeRegion: _react2.default.PropTypes.number
+	};
+
+	twoBottom.defaultProps = {
+	  onClick: function onClick() {},
+	  activeRegion: -1
+	};
 
 /***/ }
 /******/ ]);
