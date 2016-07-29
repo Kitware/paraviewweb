@@ -20,6 +20,8 @@ sidebar:
   docs:
     getting_started: Getting Started
     basic_usage: Basic Usage
+    roadmap: Roadmap
+    releases: Releases
     import: Import
     tools: Developer guide
     overview: Overview
