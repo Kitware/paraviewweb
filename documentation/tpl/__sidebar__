@@ -2,6 +2,8 @@ docs:
   getting_started:
     overview: /paraviewweb/docs/index.html
     setup: /paraviewweb/docs/setup.html
+    roadmap: /paraviewweb/docs/roadmap.html
+    releases: https://github.com/Kitware/paraviewweb/releases
   basic_usage:
     import: /paraviewweb/docs/import.html
   miscellaneous:
