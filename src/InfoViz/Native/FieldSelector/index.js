@@ -56,6 +56,10 @@ function fieldSelector(publicAPI, model) {
   };
 
   publicAPI.render = () => {
+    if (!model.container) {
+      return;
+    }
+
     const legendSize = 15;
 
     // Apply style
