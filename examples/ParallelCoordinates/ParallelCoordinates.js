@@ -32545,6 +32545,10 @@
 	  };
 
 	  publicAPI.render = function () {
+	    if (!model.container) {
+	      return;
+	    }
+
 	    var legendSize = 15;
 
 	    // Apply style
