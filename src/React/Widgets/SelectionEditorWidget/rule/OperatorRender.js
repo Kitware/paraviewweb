@@ -1,9 +1,9 @@
 import React from 'react';
 import RenderFactory from './RenderFactory';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
-import SvgIconWidget from '../SvgIconWidget';
-import And from '../../../../svg/Operations/And.svg';
-import Or from '../../../../svg/Operations/Or.svg';
+import SvgIconWidget from '../../SvgIconWidget';
+import And from '../../../../../svg/Operations/And.svg';
+import Or from '../../../../../svg/Operations/Or.svg';
 
 const OPERATOR_LABEL = {
   or: Or,
@@ -28,7 +28,7 @@ export default function OperatorRender(props) {
               {subRules.map((r, idx) =>
                 <tr key={idx}>
                   <td className={style.tableCell}>
-                  {RenderFactory.render(r, props, [].concat(props.path, idx + 1), props.depth + 1, props.maxDepth)}
+                  {RenderFactory.renderRule(r, props, [].concat(props.path, idx + 1), props.depth + 1, props.maxDepth)}
                   </td>
                 </tr>
               )}

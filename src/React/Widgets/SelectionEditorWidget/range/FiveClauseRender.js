@@ -1,25 +1,35 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
-import NumberFormatter from '../../../Common/Misc/NumberFormatter';
-// import ReactShape from '../ReactShape';
-import SvgIconWidget from '../SvgIconWidget';
-import Ineq from '../../../../svg/Operations/Ineq.svg';
-import Ineqq from '../../../../svg/Operations/Ineqq.svg';
+import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
+import LegendIcon from '../LegendIcon';
+import SvgIconWidget from '../../SvgIconWidget';
+import Ineq from '../../../../../svg/Operations/Ineq.svg';
+import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
 
 const CHOICE_LABELS = {
-  '<': Ineq,
-  '<=': Ineqq,
+  o: Ineq,
+  '*': Ineqq,
 };
 
 const NEXT_VALUE = {
-  '<': '<=',
-  '<=': '<',
+  o: '*',
+  '*': 'o',
 };
+
+// typical interval we are rendering as 5 clauses:
+// {
+//   "interval": [
+//     233,
+//     1.7976931348623157e+308
+//   ],
+//   "endpoints": "oo",
+//   "uncertainty": 15
+// }
 
 /* eslint-disable react/jsx-no-bind */
 export default function FiveClauseRender(props) {
-  const { rule } = props;
-  const terms = rule.terms;
+  const { interval, fieldName } = props;
+  const terms = [interval.interval[0], interval.endpoints.substr(0, 1), fieldName, interval.endpoints.substr(1, 1), interval.interval[1]];
   const formatter = new NumberFormatter(3, [Number(terms[0]), Number(terms[4])]);
 
   function onChange(e, force = false) {
@@ -30,10 +40,8 @@ export default function FiveClauseRender(props) {
     const value = e.target.value;
     const shouldBeNumber = e.target.nodeName === 'INPUT';
     const path = [].concat(props.path, Number(e.target.dataset.path));
-    // let editionInProgress = false;
 
     if (shouldBeNumber) {
-      // editionInProgress = (value.indexOf('.') === value.length - 1);
       path.push(!force ? value : Number(formatter.eval(Number(value))));
     } else {
       path.push(value);
@@ -62,7 +70,7 @@ export default function FiveClauseRender(props) {
 
   /* eslint-disable react/jsx-curly-spacing */
   return (
-    <section className={ style.fiveClauseContainer}>
+    <section className={ style.fiveClauseContainer }>
       <input
         className={ style.numberInput }
         type="text"
@@ -76,12 +84,12 @@ export default function FiveClauseRender(props) {
         <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={ CHOICE_LABELS[terms[1]] } />
       </div>
       <div className={ style.inequality } title={ terms[2] }>
-        { /* TODO: <ReactShape style={{ width: '20px', height: '20px' }} legendService={ props.legendService } name={ terms[2] } /> */ }
-        <SvgIconWidget
+        <LegendIcon width="20px" height="20px" provider={ props.legendService } name={ terms[2] } />
+        { /* <SvgIconWidget
           style={{ fill: props.legendService.getLegend(terms[2]).color }}
           width="20px" height="20px"
           icon={props.legendService.getLegend(terms[2]).shape}
-        />
+        /> */ }
       </div>
       <div className={ style.activeInequality } data-path="3" onClick={ toggleIneq }>
         <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={ CHOICE_LABELS[terms[3]] } />
@@ -102,9 +110,8 @@ export default function FiveClauseRender(props) {
 
 FiveClauseRender.propTypes = {
   legendService: React.PropTypes.object,
-  // annotationService: React.PropTypes.object,
-  rule: React.PropTypes.object,
-  depth: React.PropTypes.number,
+  fieldName: React.PropTypes.string,
+  interval: React.PropTypes.object,
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,
   onDelete: React.PropTypes.func,
