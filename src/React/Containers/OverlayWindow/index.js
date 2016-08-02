@@ -160,36 +160,37 @@ export default React.createClass({
   displayName: 'OverlayWindow',
 
   propTypes: {
-    title: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element, React.PropTypes.array, React.PropTypes.object]),
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
-    marginSize: React.PropTypes.number,
-    titleBarHeight: React.PropTypes.number,
-    hotCornerExtra: React.PropTypes.number,  // FIXME: Constrain to (positive) integer?
-    minContentWidth: React.PropTypes.number,
-    minContentHeight: React.PropTypes.number,
-    visible: React.PropTypes.bool,
-    // resizable: React.PropTypes.bool,
-    // closable: React.PropTypes.bool,
-    // hideTitle: React.PropTypes.bool,
-    onResize: React.PropTypes.func,
     children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
     cloneChildren: React.PropTypes.bool,
+    height: React.PropTypes.number,
+    hotCornerExtra: React.PropTypes.number,  // FIXME: Constrain to (positive) integer?
+    marginSize: React.PropTypes.number,
+    minContentHeight: React.PropTypes.number,
+    minContentWidth: React.PropTypes.number,
+    onResize: React.PropTypes.func,
+    title: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element, React.PropTypes.array, React.PropTypes.object]),
+    titleBarHeight: React.PropTypes.number,
+    visible: React.PropTypes.bool,
+    width: React.PropTypes.number,
+    x: React.PropTypes.number,
+    y: React.PropTypes.number,
   },
 
   getDefaultProps() {
     return {
-      resizable: true,
-      visible: true,
-      closable: true,
-      hideTitle: false,
-      minContentWidth: 2,
-      minContentHeight: 2,
+      cloneChildren: false,
+      height: 100,
       hotCornerExtra: 2,
       marginSize: 5,
+      minContentHeight: 2,
+      minContentWidth: 2,
+      resizable: true,
+      title: null,
       titleBarHeight: 25,
+      visible: true,
+      width: 200,
+      x: 10,
+      y: 10,
     };
   },
 
@@ -296,8 +297,10 @@ export default React.createClass({
 
   mouseDown(evt) {
     const actionStruct = this.computeActionRegion(evt);
-    this.dragHandler = actionStruct.dragAction;
-    this.setState({ cursor: actionStruct.cursor, dragging: true });
+    if (actionStruct.dragAction !== null) {
+      this.dragHandler = actionStruct.dragAction;
+      this.setState({ cursor: actionStruct.cursor, dragging: true });
+    }
   },
 
   mouseUp(evt) {
@@ -361,6 +364,11 @@ export default React.createClass({
         left: this.props.marginSize,
       },
     };
+
+    if (this.state.dragging === true) {
+      contentDivProps.style.opacity = 0.5;
+      contentDivProps.style.pointerEvents = 'none';
+    }
 
     // Configure the title bar props and style overrides
     const titleBarProps = {
