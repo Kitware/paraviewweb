@@ -188,6 +188,8 @@ export default React.createClass({
       minContentWidth: 2,
       minContentHeight: 2,
       hotCornerExtra: 2,
+      marginSize: 5,
+      titleBarHeight: 25,
     };
   },
 
