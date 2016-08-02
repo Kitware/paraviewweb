@@ -569,21 +569,37 @@ function parallelCoordinate(publicAPI, model) {
       const polygonsQueue = [];
       let maxCount = 0;
       let missingData = false;
+      const scoreToColor = {};
+      model.scores.forEach(score => {
+        scoreToColor[score.value] = [
+          Number.parseInt(score.color.slice(1, 3), 16),
+          Number.parseInt(score.color.slice(3, 5), 16),
+          Number.parseInt(score.color.slice(5, 7), 16),
+        ];
+      });
+
+      const processHistogram = (h, k) => {
+        maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
+        // Add in queue
+        console.log(h, h.maxCount, maxCount);
+        polygonsQueue.push([
+          axesCenters,
+          model.fgCtx,
+          k, k + 1,
+          h,
+          scoreToColor[h.score] || model.selectionColors,
+        ]);
+      };
+
       for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
         const histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name]
           ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name]
           : null;
         missingData = !histo;
+
         if (histo) {
-          maxCount = maxCount > histo.maxCount ? maxCount : histo.maxCount;
+          histo.forEach(h => processHistogram(h, k));
         }
-        polygonsQueue.push([
-          axesCenters,
-          model.fgCtx,
-          k, k + 1,
-          histo,
-          model.selectionColors,
-        ]);
       }
 
       if (!missingData) {
@@ -629,6 +645,10 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisLabels(model.axes.extractLabels(model));
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
+
+  publicAPI.setScores = scores => {
+    model.scores = scores;
+  };
 
   publicAPI.resize = () => {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
@@ -838,6 +858,8 @@ const DEFAULT_VALUES = {
   hoverIndicatorWidth: 7,
 
   numberOfBins: 128,
+
+  // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };
 
 // ----------------------------------------------------------------------------
