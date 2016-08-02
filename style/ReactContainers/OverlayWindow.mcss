@@ -26,6 +26,7 @@
   left: 0;
   opacity: 1.0;
   overflow: hidden;
+  z-index: 10;
 }
 
 .mainContainer {
