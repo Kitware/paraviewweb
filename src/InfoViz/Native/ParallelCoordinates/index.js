@@ -64,6 +64,9 @@ export function toColorArray(colorString) {
 // ----------------------------------------------------------------------------
 
 function parallelCoordinate(publicAPI, model) {
+  // Private internal
+  const scoreToColor = {};
+
   function updateSizeInformation() {
     if (!model.canvas) {
       return;
@@ -96,6 +99,13 @@ function parallelCoordinate(publicAPI, model) {
 
   // Local cache of the selection data
   model.selectionData = null;
+
+  function drawSelectionData(score) {
+    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
+      return model.partitionScore.indexOf(score) !== -1;
+    }
+    return true;
+  }
 
   function fetchData() {
     model.needData = true;
@@ -157,6 +167,7 @@ function parallelCoordinate(publicAPI, model) {
     selBarGroup
       .selectAll('rect.selection-bars')
       .classed(style.controlItem, true)
+      .style('fill', (d, i) => d.color)
       .attr('width', model.selectionBarWidth)
       .attr('height', (d, i) => {
         let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
@@ -577,22 +588,19 @@ function parallelCoordinate(publicAPI, model) {
       const polygonsQueue = [];
       let maxCount = 0;
       let missingData = false;
-      const scoreToColor = {};
-      model.scores.forEach(score => {
-        scoreToColor[score.value] = toColorArray(score.color);
-      });
 
       const processHistogram = (h, k) => {
-        maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
-        // Add in queue
-        console.log(h, h.maxCount, maxCount);
-        polygonsQueue.push([
-          axesCenters,
-          model.fgCtx,
-          k, k + 1,
-          h,
-          scoreToColor[h.score] || model.selectionColors,
-        ]);
+        if (drawSelectionData(h.score)) {
+          maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
+          // Add in queue
+          polygonsQueue.push([
+            axesCenters,
+            model.fgCtx,
+            k, k + 1,
+            h,
+            scoreToColor[h.score] || model.selectionColors,
+          ]);
+        }
       };
 
       for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
@@ -622,7 +630,7 @@ function parallelCoordinate(publicAPI, model) {
     drawAxisLabels(model.axes.extractLabels(model));
     drawAxisTicks(model.axes.extractAxisTicks(model));
     drawAxes(axesCenters);
-    drawSelectionBars(model.axes.extractSelections(model));
+    drawSelectionBars(model.axes.extractSelections(model, drawSelectionData));
     drawAxisControls(model.axes.extractAxesControl(model));
   };
 
@@ -650,8 +658,24 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
 
+  publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
+    model.partitionScore = scoreList;
+    if (model.dataSubscription && model.partitionScore) {
+      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScore);
+    }
+  };
+
   publicAPI.setScores = scores => {
     model.scores = scores;
+    if (!model.partitionScore && scores) {
+      publicAPI.setVisibleScoresForPartitionSelection(scores.map(score => score.value));
+    }
+    if (model.scores) {
+      Object.keys(scoreToColor).forEach(name => delete scoreToColor[name]);
+      model.scores.forEach(score => {
+        scoreToColor[score.value] = toColorArray(score.color);
+      });
+    }
   };
 
   if (model.provider && model.provider.isA('ScoresProvider')) {
@@ -812,10 +836,14 @@ function parallelCoordinate(publicAPI, model) {
         model.selectionData = data;
         publicAPI.render();
       },
-      model.axes.getAxesPairs());
+      model.axes.getAxesPairs(), { partitionScore: model.partitionScore });
 
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       model.axes.resetSelections(sel, false);
+      publicAPI.render();
+    }));
+    model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+      model.axes.resetSelections(annotation.sel, false, annotation.score, scoreToColor);
       publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
