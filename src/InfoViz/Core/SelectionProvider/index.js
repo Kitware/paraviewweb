@@ -59,9 +59,28 @@ function selectionProvider(publicAPI, model) {
 
   // --------------------------------
 
-  publicAPI.subscribeToDataSelection = (type, onDataReady, variables = []) => {
+  // annotation = {
+  //    selection: {...},
+  //    score: [0],
+  //    weight: 1,
+  //    rationale: 'why not...',
+  // }
+
+  publicAPI.setAnnotation = (annotation) => {
+    model.annotation = annotation;
+    if (annotation.selection) {
+      publicAPI.setSelection(annotation.selection);
+    } else {
+      annotation.selection = model.selection;
+    }
+    publicAPI.fireAnnotationChange(annotation);
+  };
+
+  // --------------------------------
+
+  publicAPI.subscribeToDataSelection = (type, onDataReady, variables = [], metadata = {}) => {
     const id = dataSubscriptions.length;
-    const request = { id, type, variables };
+    const request = { id, type, variables, metadata };
     const dataListener = { onDataReady, request };
     dataSubscriptions.push(dataListener);
     publicAPI.fireDataSubscriptionChange(request);
@@ -70,8 +89,9 @@ function selectionProvider(publicAPI, model) {
       unsubscribe() {
         dataSubscriptions[id] = null;
       },
-      update(newVars) {
-        request.variables = [].concat(newVars);
+      update(vars, meta) {
+        request.variables = [].concat(vars);
+        request.metadata = Object.assign({}, request.metadata, meta);
         publicAPI.fireDataSubscriptionChange(request);
         flushDataToListener(dataListener);
       },
@@ -98,8 +118,9 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'SelectionProvider');
-  CompositeClosureHelper.get(publicAPI, model, ['selection']);
+  CompositeClosureHelper.get(publicAPI, model, ['selection', 'annotation']);
   CompositeClosureHelper.event(publicAPI, model, 'selectionChange');
+  CompositeClosureHelper.event(publicAPI, model, 'annotationChange');
   CompositeClosureHelper.event(publicAPI, model, 'dataSubscriptionChange');
 
   selectionProvider(publicAPI, model);

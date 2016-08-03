@@ -121,12 +121,13 @@ function variableToRule(name, ranges) {
       ],
     });
   });
+  if (terms.length === 2) {
+    // one range, don't need the logical 'or'
+    return terms[1];
+  }
   return {
-    type: 'rule',
-    rule: {
-      type: 'logical',
-      terms,
-    },
+    type: 'logical',
+    terms,
   };
 }
 

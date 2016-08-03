@@ -51,11 +51,22 @@ export function screenToData(model, screenY, axis) {
         axis.range[1]);
 }
 
+export function toColorArray(colorString) {
+  return [
+    Number.parseInt(colorString.slice(1, 3), 16),
+    Number.parseInt(colorString.slice(3, 5), 16),
+    Number.parseInt(colorString.slice(5, 7), 16),
+  ];
+}
+
 // ----------------------------------------------------------------------------
 // Parallel Coordinate
 // ----------------------------------------------------------------------------
 
 function parallelCoordinate(publicAPI, model) {
+  // Private internal
+  const scoreToColor = {};
+
   function updateSizeInformation() {
     if (!model.canvas) {
       return;
@@ -88,6 +99,13 @@ function parallelCoordinate(publicAPI, model) {
 
   // Local cache of the selection data
   model.selectionData = null;
+
+  function drawSelectionData(score) {
+    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
+      return model.partitionScore.indexOf(score) !== -1;
+    }
+    return true;
+  }
 
   function fetchData() {
     model.needData = true;
@@ -149,6 +167,7 @@ function parallelCoordinate(publicAPI, model) {
     selBarGroup
       .selectAll('rect.selection-bars')
       .classed(style.controlItem, true)
+      .style('fill', (d, i) => d.color)
       .attr('width', model.selectionBarWidth)
       .attr('height', (d, i) => {
         let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
@@ -569,21 +588,30 @@ function parallelCoordinate(publicAPI, model) {
       const polygonsQueue = [];
       let maxCount = 0;
       let missingData = false;
+
+      const processHistogram = (h, k) => {
+        if (drawSelectionData(h.score)) {
+          maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
+          // Add in queue
+          polygonsQueue.push([
+            axesCenters,
+            model.fgCtx,
+            k, k + 1,
+            h,
+            scoreToColor[h.score] || model.selectionColors,
+          ]);
+        }
+      };
+
       for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
         const histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name]
           ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name]
           : null;
         missingData = !histo;
+
         if (histo) {
-          maxCount = maxCount > histo.maxCount ? maxCount : histo.maxCount;
+          histo.forEach(h => processHistogram(h, k));
         }
-        polygonsQueue.push([
-          axesCenters,
-          model.fgCtx,
-          k, k + 1,
-          histo,
-          model.selectionColors,
-        ]);
       }
 
       if (!missingData) {
@@ -602,7 +630,7 @@ function parallelCoordinate(publicAPI, model) {
     drawAxisLabels(model.axes.extractLabels(model));
     drawAxisTicks(model.axes.extractAxisTicks(model));
     drawAxes(axesCenters);
-    drawSelectionBars(model.axes.extractSelections(model));
+    drawSelectionBars(model.axes.extractSelections(model, drawSelectionData));
     drawAxisControls(model.axes.extractAxesControl(model));
   };
 
@@ -629,6 +657,31 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisLabels(model.axes.extractLabels(model));
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
+
+  publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
+    model.partitionScore = scoreList;
+    if (model.dataSubscription && model.partitionScore) {
+      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScore);
+    }
+  };
+
+  publicAPI.setScores = scores => {
+    model.scores = scores;
+    if (!model.partitionScore && scores) {
+      publicAPI.setVisibleScoresForPartitionSelection(scores.map(score => score.value));
+    }
+    if (model.scores) {
+      Object.keys(scoreToColor).forEach(name => delete scoreToColor[name]);
+      model.scores.forEach(score => {
+        scoreToColor[score.value] = toColorArray(score.color);
+      });
+    }
+  };
+
+  if (model.provider && model.provider.isA('ScoresProvider')) {
+    publicAPI.setScores(model.provider.getScores());
+    model.subscriptions.push(model.provider.onScoresChange(publicAPI.setScores));
+  }
 
   publicAPI.resize = () => {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
@@ -783,10 +836,14 @@ function parallelCoordinate(publicAPI, model) {
         model.selectionData = data;
         publicAPI.render();
       },
-      model.axes.getAxesPairs());
+      model.axes.getAxesPairs(), { partitionScore: model.partitionScore });
 
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       model.axes.resetSelections(sel, false);
+      publicAPI.render();
+    }));
+    model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+      model.axes.resetSelections(annotation.sel, false, annotation.score, scoreToColor);
       publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
@@ -838,6 +895,8 @@ const DEFAULT_VALUES = {
   hoverIndicatorWidth: 7,
 
   numberOfBins: 128,
+
+  // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };
 
 // ----------------------------------------------------------------------------

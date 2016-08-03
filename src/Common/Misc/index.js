@@ -1,3 +1,4 @@
+import AnnotationBuilder from './AnnotationBuilder';
 import CanvasOffscreenBuffer from './CanvasOffscreenBuffer';
 import Convert from './Convert';
 import ConvertProxyProperty from './ConvertProxyProperty';
@@ -12,6 +13,7 @@ import Validate from './Validate';
 import WebGl from './WebGl';
 
 export default {
+  AnnotationBuilder,
   CanvasOffscreenBuffer,
   Convert,
   ConvertProxyProperty,

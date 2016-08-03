@@ -2,6 +2,13 @@ import { dataToScreen } from '.';
 import Axis from './Axis';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 
+function toEndpoint(closeLeft, closeRight) {
+  const result = [];
+  result.push(closeLeft ? '*' : 'o');
+  result.push(closeRight ? '*' : 'o');
+  return result.join('');
+}
+
 // ----------------------------------------------------------------------------
 
 export default class AxesManager {
@@ -91,7 +98,7 @@ export default class AxesManager {
     return axesPairs;
   }
 
-  resetSelections(selection = {}, triggerEvent = true) {
+  resetSelections(selection = {}, triggerEvent = true, scoreMapping = [], scoreColorMap = {}) {
     this.clearAllSelections(true);
 
     // index axes
@@ -101,14 +108,54 @@ export default class AxesManager {
     });
 
     // Update selections
-    if (selection.type === 'range') {
-      this.selection = selection;
-      Object.keys(selection.range.variables).forEach(axisName => {
-        nameToAxisMap[axisName].selections = selection.range.variables[axisName];
-      });
-    } else {
-      console.error('Parallel coordinate does not understand a selection that is not range based');
+    if (selection) {
+      if (selection.type === 'range') {
+        this.selection = selection;
+        Object.keys(selection.range.variables).forEach(axisName => {
+          nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
+          if (scoreMapping && scoreMapping.length === 1) {
+            nameToAxisMap[axisName].selections.score = scoreMapping[0];
+            nameToAxisMap[axisName].selections.color = `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` || 'rgb(105, 195, 255)';
+          }
+        });
+      } else if (selection.type === 'partition') {
+        this.selection = selection;
+        const axis = nameToAxisMap[selection.partition.variable];
+        axis.selections = [];
+        selection.partition.dividers.forEach((divider, idx, array) => {
+          if (idx === 0) {
+            axis.selections.push({
+              interval: [axis.range[0], divider.value],
+              endpoints: toEndpoint(true, !divider.closeToLeft),
+              uncertainty: divider.uncertainty, // FIXME that is wrong...
+              color: scoreColorMap[scoreMapping[idx]] || 'rgb(105, 195, 255)',
+              score: scoreMapping[idx],
+            });
+          }
+
+          axis.selections.push({
+            interval: [array[idx - 1].value, divider.value],
+            endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+            uncertainty: divider.uncertainty, // FIXME that is wrong...
+            color: scoreColorMap[scoreMapping[idx + 1]] || 'rgb(105, 195, 255)',
+            score: scoreMapping[idx + 1],
+          });
+
+          if (idx + 1 === array.length) {
+            axis.selections.push({
+              interval: [divider.value, axis.range[1]],
+              endpoints: toEndpoint(divider.closeToLeft, true),
+              uncertainty: divider.uncertainty, // FIXME that is wrong...
+              color: scoreColorMap[scoreMapping[idx + 2]] || 'rgb(105, 195, 255)',
+              score: scoreMapping[idx + 2],
+            });
+          }
+        });
+      } else {
+        console.error('Parallel coordinate does not understand a selection that is not range based');
+      }
     }
+
     if (triggerEvent) {
       this.triggerSelectionChange(false);
     }
@@ -226,12 +273,17 @@ export default class AxesManager {
     return this.selection;
   }
 
-  extractSelections(model) {
+  extractSelections(model, drawScore) {
     const selections = [];
     if (this.hasSelection()) {
       this.axes.forEach((axis, index) => {
         const screenX = this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
         axis.selections.forEach((selection, selectionIndex) => {
+          if (drawScore && selection.score) {
+            if (!drawScore(selection.score)) {
+              return; // Skip unwanted score
+            }
+          }
           selections.push({
             index,
             selectionIndex,
@@ -240,6 +292,7 @@ export default class AxesManager {
               dataToScreen(model, selection.interval[0], axis),
               dataToScreen(model, selection.interval[1], axis),
             ],
+            color: selection.color ? selection.color : 'rgb(105, 195, 255)',
           });
         });
       });
