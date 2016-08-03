@@ -51,6 +51,14 @@ export function screenToData(model, screenY, axis) {
         axis.range[1]);
 }
 
+export function toColorArray(colorString) {
+  return [
+    Number.parseInt(colorString.slice(1, 3), 16),
+    Number.parseInt(colorString.slice(3, 5), 16),
+    Number.parseInt(colorString.slice(5, 7), 16),
+  ];
+}
+
 // ----------------------------------------------------------------------------
 // Parallel Coordinate
 // ----------------------------------------------------------------------------
@@ -571,11 +579,7 @@ function parallelCoordinate(publicAPI, model) {
       let missingData = false;
       const scoreToColor = {};
       model.scores.forEach(score => {
-        scoreToColor[score.value] = [
-          Number.parseInt(score.color.slice(1, 3), 16),
-          Number.parseInt(score.color.slice(3, 5), 16),
-          Number.parseInt(score.color.slice(5, 7), 16),
-        ];
+        scoreToColor[score.value] = toColorArray(score.color);
       });
 
       const processHistogram = (h, k) => {
@@ -649,6 +653,11 @@ function parallelCoordinate(publicAPI, model) {
   publicAPI.setScores = scores => {
     model.scores = scores;
   };
+
+  if (model.provider && model.provider.isA('ScoresProvider')) {
+    publicAPI.setScores(model.provider.getScores());
+    model.subscriptions.push(model.provider.onScoresChange(publicAPI.setScores));
+  }
 
   publicAPI.resize = () => {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
