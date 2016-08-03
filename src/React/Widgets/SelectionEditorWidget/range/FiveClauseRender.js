@@ -16,7 +16,7 @@ const NEXT_VALUE = {
   '*': 'o',
 };
 
-// typical interval we are rendering as 5 clauses:
+// typical intervalSpec we are rendering as 5 clauses:
 // {
 //   "interval": [
 //     233,
@@ -28,8 +28,8 @@ const NEXT_VALUE = {
 
 /* eslint-disable react/jsx-no-bind */
 export default function FiveClauseRender(props) {
-  const { interval, fieldName } = props;
-  const terms = [interval.interval[0], interval.endpoints.substr(0, 1), fieldName, interval.endpoints.substr(1, 1), interval.interval[1]];
+  const { intervalSpec, fieldName } = props;
+  const terms = [intervalSpec.interval[0], intervalSpec.endpoints.slice(0, 1), fieldName, intervalSpec.endpoints.slice(1, 2), intervalSpec.interval[1]];
   const formatter = new NumberFormatter(3, [Number(terms[0]), Number(terms[4])]);
 
   function onChange(e, force = false) {
@@ -111,7 +111,7 @@ export default function FiveClauseRender(props) {
 FiveClauseRender.propTypes = {
   legendService: React.PropTypes.object,
   fieldName: React.PropTypes.string,
-  interval: React.PropTypes.object,
+  intervalSpec: React.PropTypes.object,
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,
   onDelete: React.PropTypes.func,

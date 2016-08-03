@@ -3,17 +3,17 @@ import SvgIconWidget from '../SvgIconWidget';
 
 export default function LegendIcon(props) {
   if (!props.provider || !props.provider.isA('LegendProvider')) {
-    return <span>{ props.name }</span>;
+    return <span>{props.name}</span>;
   }
   const style = { fill: props.provider.getLegend(props.name).color };
   const newStyle = Object.assign({ stroke: 'black', strokeWidth: 1 }, style, props.style);
 
   return (<SvgIconWidget
-          style={newStyle}
-          width={props.width} height={props.height}
-          icon={props.provider.getLegend(props.name).shape}
-          onClick={props.onClick}
-        />);
+    style={newStyle}
+    width={props.width} height={props.height}
+    icon={props.provider.getLegend(props.name).shape}
+    onClick={props.onClick}
+  />);
 }
 
 LegendIcon.propTypes = {

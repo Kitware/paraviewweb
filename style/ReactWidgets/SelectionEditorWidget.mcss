@@ -19,8 +19,8 @@
 }
 
 .rootTable {
-  margin: 10px auto;
   composes: table;
+  margin: 10px auto;
   position: relative;
 }
 

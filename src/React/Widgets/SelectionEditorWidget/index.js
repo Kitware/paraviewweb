@@ -1,5 +1,6 @@
 import React from 'react';
 import EmptyRenderFactory from './empty/RenderFactory';
+import PartitionRenderFactory from './partition/RenderFactory';
 import RuleRenderFactory from './rule/RenderFactory';
 import RangeRenderFactory from './range/RenderFactory';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
@@ -84,6 +85,7 @@ export default React.createClass({
   subscriptions: [],
   renderFactory: {
     empty: EmptyRenderFactory,
+    partition: PartitionRenderFactory,
     rule: RuleRenderFactory,
     range: RangeRenderFactory,
   },

@@ -26,12 +26,13 @@ const rangeSelection = SelectionBuilder.range({
   ],
 });
 const partitionSelection = SelectionBuilder.partition('pressure', [
+  { value: 90, uncertainty: 0 },
   { value: 101.3, uncertainty: 20 },
   { value: 200, uncertainty: 40, closeToLeft: true },
 ]);
 
 const jsonData = [rangeSelection, SelectionBuilder.convertToRuleSelection(rangeSelection), partitionSelection];
-console.log('partitionSelection', JSON.stringify(partitionSelection, null, 2));
+// console.log('partitionSelection', JSON.stringify(partitionSelection, null, 2));
 
 const dataModel = {
   legendEntries,
@@ -44,40 +45,29 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   SelectionProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
-provider.setSelection(jsonData[0]);
+let currSel = 0;
+// provider.setSelection(JSON.parse(JSON.stringify(jsonData[currSel])));
+provider.setSelection(jsonData[currSel]);
 
-// console.log('to rule: rangeSelection', JSON.stringify(jsonData[0], null, 2));
-/*
-partitionSelection {
-  "type": "partition",
-  "generation": 2,
-  "partition": {
-    "variable": "pressure",
-    "dividers": [
-      {
-        "value": 101.3,
-        "uncertainty": 20,
-        "closeToLeft": false
-      },
-      {
-        "value": 200,
-        "uncertainty": 40,
-        "closeToLeft": true
-      }
-    ]
+// Demo - reset if we delete the selection
+provider.onSelectionChange(sel => {
+  if (sel.type === 'empty') {
+    window.setTimeout(() => {
+      currSel = (currSel + 1) % jsonData.length;
+      provider.setSelection(jsonData[currSel]);
+    }, 2000);
   }
-}
+});
 
-*/
 // Get react component
 
 document.body.style.padding = '10px';
 
 ReactDOM.render(
-    React.createElement(
-        SelectionEditorWidget,
-        { selections: jsonData,
-          provider,
-        }),
-    document.querySelector('.content')
+  React.createElement(
+    SelectionEditorWidget,
+    {
+      provider,
+    }),
+  document.querySelector('.content')
 );

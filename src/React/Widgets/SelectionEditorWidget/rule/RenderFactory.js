@@ -69,9 +69,8 @@ export function formatNumbers(rule) {
 
 // Callback methods
 export function onChangeSelection(currSelection, changedPath, editing = false) {
-  const terms = [].concat(currSelection.rule.terms);
-  const selection = Object.assign({}, currSelection);
-  selection.rule.terms = terms;
+  const selection = JSON.parse(JSON.stringify(currSelection));
+  const terms = selection.rule.terms;
   let currentSelection = terms;
 
   while (changedPath.length > 2) {
@@ -81,23 +80,16 @@ export function onChangeSelection(currSelection, changedPath, editing = false) {
   }
   currentSelection[changedPath[0]] = changedPath[1];
 
-  // this.setState({
-  //   selection,
-  // });
-
   // Notify the change to other components (only if not in progress editing)
   if (!editing) {
     ensureRuleNumbers(selection.rule);
-    // const newSelection = AnnotationService.selection(selection).fromRule(rule);
-    // this.props.annotationService.setActiveSelection(newSelection);
   }
   return { selection, propagate: !editing };
 }
 
 export function onDeleteSelection(currSelection, pathToDelete) {
-  const terms = [].concat(currSelection.rule.terms);
-  const selection = Object.assign({}, currSelection);
-  selection.rule.terms = terms;
+  const selection = JSON.parse(JSON.stringify(currSelection));
+  const terms = selection.rule.terms;
   let currentSelection = terms;
   let lastIdx = pathToDelete[0];
   let previousSelection = currentSelection;
@@ -109,8 +101,6 @@ export function onDeleteSelection(currSelection, pathToDelete) {
       previousSelection = currentSelection;
       currentSelection = currentSelection[lastIdx].terms;
     }
-    // const otherIdxToRemove = pathToDelete[1] > 0 ? (pathToDelete[1] - 1) : 1;
-    // const condition = (i, idx) => !(idx === pathToDelete[1] || idx === otherIdxToRemove);
 
     // do we have more that 2 terms in this clause? If so, we can just remove one.
     if (currentSelection[pathToDelete[0]].terms.length > 3) {
@@ -126,13 +116,8 @@ export function onDeleteSelection(currSelection, pathToDelete) {
   }
 
   if (selection.rule.terms.length > 1) {
-    // this.setState({
-    //   selection,
-    // });
     // Notify the change to other components
     ensureRuleNumbers(selection.rule);
-    // const newSelection = AnnotationService.selection(selection).fromRule(rule);
-    // this.props.annotationService.setActiveSelection(newSelection);
     return { selection, propagate: true };
   }
   return { selection: SelectionBuilder.empty(), propagate: true };
@@ -144,7 +129,7 @@ export function renderRule(rule, props, path, depth, maxDepth = 2, onChange = nu
   }
 
   const ruleSelector = rule.type;
-  const subProps = Object.assign({ onChange, onDelete }, props, { rule, depth, maxDepth, path });
+  const subProps = Object.assign({ onChange, onDelete }, props, { rule, depth, maxDepth, path, legendService: props.provider });
 
   if (ruleSelector === 'logical') {
     return <OperatorRender {...subProps} />;
