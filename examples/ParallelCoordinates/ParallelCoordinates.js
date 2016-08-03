@@ -20885,6 +20885,7 @@
 	exports.perfRound = perfRound;
 	exports.dataToScreen = dataToScreen;
 	exports.screenToData = screenToData;
+	exports.toColorArray = toColorArray;
 	exports.extend = extend;
 
 	var _CompositeClosureHelper = __webpack_require__(14);
@@ -20939,11 +20940,18 @@
 	  return !axis.isUpsideDown() ? affine(model.canvasArea.height - model.borderOffsetBottom, screenY, model.borderOffsetTop, axis.range[0], axis.range[1]) : affine(model.borderOffsetTop, screenY, model.canvasArea.height - model.borderOffsetBottom, axis.range[0], axis.range[1]);
 	}
 
+	function toColorArray(colorString) {
+	  return [Number.parseInt(colorString.slice(1, 3), 16), Number.parseInt(colorString.slice(3, 5), 16), Number.parseInt(colorString.slice(5, 7), 16)];
+	}
+
 	// ----------------------------------------------------------------------------
 	// Parallel Coordinate
 	// ----------------------------------------------------------------------------
 
 	function parallelCoordinate(publicAPI, model) {
+	  // Private internal
+	  var scoreToColor = {};
+
 	  function updateSizeInformation() {
 	    if (!model.canvas) {
 	      return;
@@ -20976,6 +20984,13 @@
 
 	  // Local cache of the selection data
 	  model.selectionData = null;
+
+	  function drawSelectionData(score) {
+	    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
+	      return model.partitionScore.indexOf(score) !== -1;
+	    }
+	    return true;
+	  }
 
 	  function fetchData() {
 	    model.needData = true;
@@ -21027,7 +21042,9 @@
 
 	    selectionBarNodes.exit().remove();
 
-	    selBarGroup.selectAll('rect.selection-bars').classed(_ParallelCoordinates2.default.controlItem, true).attr('width', model.selectionBarWidth).attr('height', function (d, i) {
+	    selBarGroup.selectAll('rect.selection-bars').classed(_ParallelCoordinates2.default.controlItem, true).style('fill', function (d, i) {
+	      return d.color;
+	    }).attr('width', model.selectionBarWidth).attr('height', function (d, i) {
 	      var barHeight = d.screenRangeY[1] - d.screenRangeY[0];
 	      if (barHeight < 0) {
 	        barHeight = d.screenRangeY[0] - d.screenRangeY[1];
@@ -21377,27 +21394,44 @@
 
 	    // If there is a selection, draw that (the "focus") on top of the polygons
 	    if (model.axes.hasSelection()) {
-	      // Extract selection histogram2d
-	      var polygonsQueue = [];
-	      var maxCount = 0;
-	      var missingData = false;
-	      for (var k = 0; k < nbPolyDraw && !missingData; ++k) {
-	        var histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name] ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name] : null;
-	        missingData = !histo;
-	        if (histo) {
-	          maxCount = maxCount > histo.maxCount ? maxCount : histo.maxCount;
-	        }
-	        polygonsQueue.push([axesCenters, model.fgCtx, k, k + 1, histo, model.selectionColors]);
-	      }
+	      (function () {
+	        // Extract selection histogram2d
+	        var polygonsQueue = [];
+	        var maxCount = 0;
+	        var missingData = false;
 
-	      if (!missingData) {
-	        model.maxBinCountForOpacityCalculation = maxCount;
-	        polygonsQueue.forEach(function (req) {
-	          return drawPolygons.apply(undefined, _toConsumableArray(req));
-	        });
-	        model.ctx.globalAlpha = model.selectionOpacityAdjustment;
-	        model.ctx.drawImage(model.fgCanvas, 0, 0, model.canvasArea.width, model.canvasArea.height, 0, 0, model.canvasArea.width, model.canvasArea.height);
-	      }
+	        var processHistogram = function processHistogram(h, k) {
+	          if (drawSelectionData(h.score)) {
+	            maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
+	            // Add in queue
+	            polygonsQueue.push([axesCenters, model.fgCtx, k, k + 1, h, scoreToColor[h.score] || model.selectionColors]);
+	          }
+	        };
+
+	        var _loop = function _loop(k) {
+	          var histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name] ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name] : null;
+	          missingData = !histo;
+
+	          if (histo) {
+	            histo.forEach(function (h) {
+	              return processHistogram(h, k);
+	            });
+	          }
+	        };
+
+	        for (var k = 0; k < nbPolyDraw && !missingData; ++k) {
+	          _loop(k);
+	        }
+
+	        if (!missingData) {
+	          model.maxBinCountForOpacityCalculation = maxCount;
+	          polygonsQueue.forEach(function (req) {
+	            return drawPolygons.apply(undefined, _toConsumableArray(req));
+	          });
+	          model.ctx.globalAlpha = model.selectionOpacityAdjustment;
+	          model.ctx.drawImage(model.fgCanvas, 0, 0, model.canvasArea.width, model.canvasArea.height, 0, 0, model.canvasArea.width, model.canvasArea.height);
+	        }
+	      })();
 	    }
 
 	    model.ctx.globalAlpha = 1.0;
@@ -21406,7 +21440,7 @@
 	    drawAxisLabels(model.axes.extractLabels(model));
 	    drawAxisTicks(model.axes.extractAxisTicks(model));
 	    drawAxes(axesCenters);
-	    drawSelectionBars(model.axes.extractSelections(model));
+	    drawSelectionBars(model.axes.extractSelections(model, drawSelectionData));
 	    drawAxisControls(model.axes.extractAxesControl(model));
 	  };
 
@@ -21433,6 +21467,35 @@
 	  //   drawAxisLabels(model.axes.extractLabels(model));
 	  //   drawAxisControls(model.axes.extractAxesControl(model));
 	  // }
+
+	  publicAPI.setVisibleScoresForPartitionSelection = function (scoreList) {
+	    model.partitionScore = scoreList;
+	    if (model.dataSubscription && model.partitionScore) {
+	      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScore);
+	    }
+	  };
+
+	  publicAPI.setScores = function (scores) {
+	    model.scores = scores;
+	    if (!model.partitionScore && scores) {
+	      publicAPI.setVisibleScoresForPartitionSelection(scores.map(function (score) {
+	        return score.value;
+	      }));
+	    }
+	    if (model.scores) {
+	      Object.keys(scoreToColor).forEach(function (name) {
+	        return delete scoreToColor[name];
+	      });
+	      model.scores.forEach(function (score) {
+	        scoreToColor[score.value] = toColorArray(score.color);
+	      });
+	    }
+	  };
+
+	  if (model.provider && model.provider.isA('ScoresProvider')) {
+	    publicAPI.setScores(model.provider.getScores());
+	    model.subscriptions.push(model.provider.onScoresChange(publicAPI.setScores));
+	  }
 
 	  publicAPI.resize = function () {
 	    var clientRect = model.canvas.parentElement.getBoundingClientRect();
@@ -21563,10 +21626,14 @@
 	    model.dataSubscription = model.provider.subscribeToDataSelection('histogram2d', function (data) {
 	      model.selectionData = data;
 	      publicAPI.render();
-	    }, model.axes.getAxesPairs());
+	    }, model.axes.getAxesPairs(), { partitionScore: model.partitionScore });
 
 	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
 	      model.axes.resetSelections(sel, false);
+	      publicAPI.render();
+	    }));
+	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
+	      model.axes.resetSelections(annotation.sel, false, annotation.score, scoreToColor);
 	      publicAPI.render();
 	    }));
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
@@ -21618,6 +21685,7 @@
 	  hoverIndicatorWidth: 7,
 
 	  numberOfBins: 128
+
 	};
 
 	// ----------------------------------------------------------------------------
@@ -31778,6 +31846,13 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	function toEndpoint(closeLeft, closeRight) {
+	  var result = [];
+	  result.push(closeLeft ? '*' : 'o');
+	  result.push(closeRight ? '*' : 'o');
+	  return result.join('');
+	}
+
 	// ----------------------------------------------------------------------------
 
 	var AxesManager = function () {
@@ -31895,6 +31970,11 @@
 	      var selection = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	      var triggerEvent = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
+	      var _this2 = this;
+
+	      var scoreMapping = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	      var scoreColorMap = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
 	      this.clearAllSelections(true);
 
 	      // index axes
@@ -31904,14 +31984,58 @@
 	      });
 
 	      // Update selections
-	      if (selection.type === 'range') {
-	        this.selection = selection;
-	        Object.keys(selection.range.variables).forEach(function (axisName) {
-	          nameToAxisMap[axisName].selections = selection.range.variables[axisName];
-	        });
-	      } else {
-	        console.error('Parallel coordinate does not understand a selection that is not range based');
+	      if (selection) {
+	        if (selection.type === 'range') {
+	          this.selection = selection;
+	          Object.keys(selection.range.variables).forEach(function (axisName) {
+	            nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(function (i) {
+	              return Object.assign({}, i);
+	            });
+	            if (scoreMapping && scoreMapping.length === 1) {
+	              nameToAxisMap[axisName].selections.score = scoreMapping[0];
+	              nameToAxisMap[axisName].selections.color = 'rgb(' + scoreColorMap[scoreMapping[0]].join(',') + ')' || 'rgb(105, 195, 255)';
+	            }
+	          });
+	        } else if (selection.type === 'partition') {
+	          (function () {
+	            _this2.selection = selection;
+	            var axis = nameToAxisMap[selection.partition.variable];
+	            axis.selections = [];
+	            selection.partition.dividers.forEach(function (divider, idx, array) {
+	              if (idx === 0) {
+	                axis.selections.push({
+	                  interval: [axis.range[0], divider.value],
+	                  endpoints: toEndpoint(true, !divider.closeToLeft),
+	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                  color: scoreColorMap[scoreMapping[idx]] || 'rgb(105, 195, 255)',
+	                  score: scoreMapping[idx]
+	                });
+	              }
+
+	              axis.selections.push({
+	                interval: [array[idx - 1].value, divider.value],
+	                endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+	                uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                color: scoreColorMap[scoreMapping[idx + 1]] || 'rgb(105, 195, 255)',
+	                score: scoreMapping[idx + 1]
+	              });
+
+	              if (idx + 1 === array.length) {
+	                axis.selections.push({
+	                  interval: [divider.value, axis.range[1]],
+	                  endpoints: toEndpoint(divider.closeToLeft, true),
+	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                  color: scoreColorMap[scoreMapping[idx + 2]] || 'rgb(105, 195, 255)',
+	                  score: scoreMapping[idx + 2]
+	                });
+	              }
+	            });
+	          })();
+	        } else {
+	          console.error('Parallel coordinate does not understand a selection that is not range based');
+	        }
 	      }
+
 	      if (triggerEvent) {
 	        this.triggerSelectionChange(false);
 	      }
@@ -31978,11 +32102,11 @@
 	  }, {
 	    key: 'onSelectionChange',
 	    value: function onSelectionChange(callback) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var listenerId = this.listeners.length;
 	      var unsubscribe = function unsubscribe() {
-	        _this2.listeners[listenerId] = null;
+	        _this3.listeners[listenerId] = null;
 	      };
 	      this.listeners.push(callback);
 	      return { unsubscribe: unsubscribe };
@@ -31990,17 +32114,17 @@
 	  }, {
 	    key: 'triggerSelectionChange',
 	    value: function triggerSelectionChange() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      var reset = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
 	      setImmediate(function () {
 	        if (reset) {
-	          _this3.selection = null;
+	          _this4.selection = null;
 	        }
-	        var selection = _this3.getSelection();
+	        var selection = _this4.getSelection();
 	        // Notify listeners
-	        _this3.listeners.forEach(function (listener) {
+	        _this4.listeners.forEach(function (listener) {
 	          if (listener) {
 	            listener(selection);
 	          }
@@ -32010,11 +32134,11 @@
 	  }, {
 	    key: 'onAxisListChange',
 	    value: function onAxisListChange(callback) {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var listenerId = this.axisListChangeListeners.length;
 	      var unsubscribe = function unsubscribe() {
-	        _this4.axisListChangeListeners[listenerId] = null;
+	        _this5.axisListChangeListeners[listenerId] = null;
 	      };
 	      this.axisListChangeListeners.push(callback);
 	      return { unsubscribe: unsubscribe };
@@ -32022,13 +32146,13 @@
 	  }, {
 	    key: 'triggerAxisListChange',
 	    value: function triggerAxisListChange() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      setImmediate(function () {
 	        // Notify listeners
-	        _this5.axisListChangeListeners.forEach(function (listener) {
+	        _this6.axisListChangeListeners.forEach(function (listener) {
 	          if (listener) {
-	            listener(_this5.getAxesPairs());
+	            listener(_this6.getAxesPairs());
 	          }
 	        });
 	      });
@@ -32036,19 +32160,19 @@
 	  }, {
 	    key: 'getSelection',
 	    value: function getSelection() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      if (!this.selection) {
 	        (function () {
 	          var vars = {};
 	          var selectionCount = 0;
-	          _this6.axes.forEach(function (axis) {
+	          _this7.axes.forEach(function (axis) {
 	            if (axis.hasSelection()) {
 	              vars[axis.name] = [].concat(axis.selections);
 	              selectionCount++;
 	            }
 	          });
-	          _this6.selection = selectionCount ? _SelectionBuilder2.default.range(vars) : _SelectionBuilder2.default.empty();
+	          _this7.selection = selectionCount ? _SelectionBuilder2.default.range(vars) : _SelectionBuilder2.default.empty();
 	        })();
 	      }
 
@@ -32056,19 +32180,25 @@
 	    }
 	  }, {
 	    key: 'extractSelections',
-	    value: function extractSelections(model) {
-	      var _this7 = this;
+	    value: function extractSelections(model, drawScore) {
+	      var _this8 = this;
 
 	      var selections = [];
 	      if (this.hasSelection()) {
 	        this.axes.forEach(function (axis, index) {
-	          var screenX = _this7.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
+	          var screenX = _this8.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
 	          axis.selections.forEach(function (selection, selectionIndex) {
+	            if (drawScore && selection.score) {
+	              if (!drawScore(selection.score)) {
+	                return; // Skip unwanted score
+	              }
+	            }
 	            selections.push({
 	              index: index,
 	              selectionIndex: selectionIndex,
 	              screenX: screenX,
-	              screenRangeY: [(0, _.dataToScreen)(model, selection.interval[0], axis), (0, _.dataToScreen)(model, selection.interval[1], axis)]
+	              screenRangeY: [(0, _.dataToScreen)(model, selection.interval[0], axis), (0, _.dataToScreen)(model, selection.interval[1], axis)],
+	              color: selection.color ? selection.color : 'rgb(105, 195, 255)'
 	            });
 	          });
 	        });
@@ -32078,13 +32208,13 @@
 	  }, {
 	    key: 'extractAxesControl',
 	    value: function extractAxesControl(model) {
-	      var _this8 = this;
+	      var _this9 = this;
 
 	      var controlsDataModel = [];
 	      this.axes.forEach(function (axis, index) {
 	        controlsDataModel.push({
 	          orient: !axis.isUpsideDown(),
-	          centerX: _this8.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+	          centerX: _this9.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
 	          centerY: model.canvasArea.height - model.borderOffsetBottom + 30 });
 	      });
 
@@ -32097,14 +32227,14 @@
 	  }, {
 	    key: 'extractLabels',
 	    value: function extractLabels(model) {
-	      var _this9 = this;
+	      var _this10 = this;
 
 	      var labelModel = [];
 
 	      this.axes.forEach(function (axis, index) {
 	        labelModel.push({
 	          name: axis.name,
-	          centerX: _this9.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+	          centerX: _this10.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
 	          annotated: axis.hasSelection(),
 	          align: 'middle'
 	        });
@@ -32119,20 +32249,20 @@
 	  }, {
 	    key: 'extractAxisTicks',
 	    value: function extractAxisTicks(model) {
-	      var _this10 = this;
+	      var _this11 = this;
 
 	      var tickModel = [];
 
 	      this.axes.forEach(function (axis, index) {
 	        tickModel.push({
 	          value: !axis.upsideDown ? axis.range[1] : axis.range[0],
-	          xpos: _this10.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+	          xpos: _this11.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
 	          ypos: model.borderOffsetTop - 4,
 	          align: 'middle'
 	        });
 	        tickModel.push({
 	          value: !axis.upsideDown ? axis.range[0] : axis.range[1],
-	          xpos: _this10.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+	          xpos: _this11.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
 	          ypos: model.borderOffsetTop + model.drawableArea.height + 13,
 	          align: 'middle'
 	        });
@@ -32154,11 +32284,11 @@
 	  }, {
 	    key: 'extractAxesCenters',
 	    value: function extractAxesCenters(model) {
-	      var _this11 = this;
+	      var _this12 = this;
 
 	      var axesCenters = [];
 	      this.axes.forEach(function (axis, index) {
-	        axesCenters.push(_this11.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft);
+	        axesCenters.push(_this12.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft);
 	      });
 	      return axesCenters;
 	    }
@@ -32383,12 +32513,13 @@
 	      terms: [clause.interval[0], endpointToRuleOperator[clause.endpoints[0]], name, endpointToRuleOperator[clause.endpoints[1]], clause.interval[1]]
 	    });
 	  });
+	  if (terms.length === 2) {
+	    // one range, don't need the logical 'or'
+	    return terms[1];
+	  }
 	  return {
-	    type: 'rule',
-	    rule: {
-	      type: 'logical',
-	      terms: terms
-	    }
+	    type: 'logical',
+	    terms: terms
 	  };
 	}
 
