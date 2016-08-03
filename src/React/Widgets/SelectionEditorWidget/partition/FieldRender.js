@@ -2,13 +2,13 @@ import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 import LegendIcon from '../LegendIcon';
 
-export default function FieldRender(props) {
+export default function fieldRender(props) {
   return (
     <table className={props.depth ? style.table : style.rootTable}>
       <tbody>
         <tr>
           <td className={style.operationCell} title={props.fieldName}>
-            <LegendIcon width="25px" height="25px" provider={props.legendService} name={props.fieldName} />
+            <LegendIcon width="25px" height="25px" getLegend={props.getLegend} name={props.fieldName} />
           </td>
           <td className={style.groupTableCell}>
           </td>
@@ -30,9 +30,9 @@ export default function FieldRender(props) {
     </table>);
 }
 
-FieldRender.propTypes = {
+fieldRender.propTypes = {
   children: React.PropTypes.array,
-  legendService: React.PropTypes.object,
+  getLegend: React.PropTypes.func,
   fieldName: React.PropTypes.string,
   depth: React.PropTypes.number,
 };

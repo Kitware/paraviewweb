@@ -7,10 +7,8 @@
 .emptySelection {
   font-size: 250%;
   text-align: center;
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 50%;
-  transform: translate(0, -50%);
 }
 
 .table {

@@ -1,18 +1,18 @@
-import React from 'react';
-// import RenderFactory from './RenderFactory';
-import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
-import SvgIconWidget from '../../SvgIconWidget';
-import And from '../../../../../svg/Operations/And.svg';
-import Or from '../../../../../svg/Operations/Or.svg';
+import React          from 'react';
+
+import And            from '../../../../../svg/Operations/And.svg';
+import Or             from '../../../../../svg/Operations/Or.svg';
+import SvgIconWidget  from '../../SvgIconWidget';
+
+import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 const OPERATOR_LABEL = {
   or: Or,
   and: And,
 };
 
-export default function OperatorRender(props) {
+export default function operatorRender(props) {
   const operator = props.operator;
-  // const subRules = props.rule.terms.filter((r, idx) => (idx > 0));
   return (
     <table className={props.depth ? style.table : style.rootTable}>
       <tbody>
@@ -40,9 +40,8 @@ export default function OperatorRender(props) {
     </table>);
 }
 
-OperatorRender.propTypes = {
+operatorRender.propTypes = {
   children: React.PropTypes.array,
-  // annotationService: React.PropTypes.object,
   operator: React.PropTypes.string,
   depth: React.PropTypes.number,
 };

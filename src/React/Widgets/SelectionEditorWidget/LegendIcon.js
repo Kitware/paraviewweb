@@ -1,26 +1,32 @@
 import React from 'react';
 import SvgIconWidget from '../SvgIconWidget';
 
-export default function LegendIcon(props) {
-  if (!props.provider || !props.provider.isA('LegendProvider')) {
+export default function legendIcon(props) {
+  if (!props.getLegend) {
     return <span>{props.name}</span>;
   }
-  const style = { fill: props.provider.getLegend(props.name).color };
+  const style = { fill: props.getLegend(props.name).color };
   const newStyle = Object.assign({ stroke: 'black', strokeWidth: 1 }, style, props.style);
 
-  return (<SvgIconWidget
-    style={newStyle}
-    width={props.width} height={props.height}
-    icon={props.provider.getLegend(props.name).shape}
-    onClick={props.onClick}
-  />);
+  return (
+    <SvgIconWidget
+      icon={props.getLegend(props.name).shape}
+
+      width={props.width}
+      height={props.height}
+      style={newStyle}
+
+      onClick={props.onClick}
+    />);
 }
 
-LegendIcon.propTypes = {
-  provider: React.PropTypes.object,
-  style: React.PropTypes.object,
+legendIcon.propTypes = {
   name: React.PropTypes.string,
-  height: React.PropTypes.string,
+  getLegend: React.PropTypes.func,
+
   width: React.PropTypes.string,
+  height: React.PropTypes.string,
+  style: React.PropTypes.object,
+
   onClick: React.PropTypes.func,
 };

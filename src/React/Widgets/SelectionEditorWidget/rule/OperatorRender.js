@@ -1,16 +1,18 @@
 import React from 'react';
-import RenderFactory from './RenderFactory';
-import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+
+import And           from '../../../../../svg/Operations/And.svg';
+import Or            from '../../../../../svg/Operations/Or.svg';
+import RuleRender    from './RuleRender';
 import SvgIconWidget from '../../SvgIconWidget';
-import And from '../../../../../svg/Operations/And.svg';
-import Or from '../../../../../svg/Operations/Or.svg';
+
+import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 const OPERATOR_LABEL = {
   or: Or,
   and: And,
 };
 
-export default function OperatorRender(props) {
+export default function operatorRender(props) {
   const operator = props.rule.terms[0];
   const subRules = props.rule.terms.filter((r, idx) => (idx > 0));
   return (
@@ -28,7 +30,15 @@ export default function OperatorRender(props) {
               {subRules.map((r, idx) =>
                 <tr key={idx}>
                   <td className={style.tableCell}>
-                  {RenderFactory.renderRule(r, props, [].concat(props.path, idx + 1), props.depth + 1, props.maxDepth)}
+                    <RuleRender
+                      rule={r}
+                      path={[].concat(props.path, idx + 1)}
+                      depth={props.depth + 1}
+                      maxDepth={props.maxDepth}
+                      onChange={props.onChange}
+                      onDelete={props.onDelete}
+                      getLegend={props.getLegend}
+                    />
                   </td>
                 </tr>
               )}
@@ -40,9 +50,8 @@ export default function OperatorRender(props) {
     </table>);
 }
 
-OperatorRender.propTypes = {
-  legendService: React.PropTypes.object,
-  // annotationService: React.PropTypes.object,
+operatorRender.propTypes = {
+  getLegend: React.PropTypes.func,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,
   maxDepth: React.PropTypes.number,

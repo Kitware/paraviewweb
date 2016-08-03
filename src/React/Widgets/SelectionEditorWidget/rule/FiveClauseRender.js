@@ -1,10 +1,12 @@
 import React from 'react';
+
+import Ineq             from '../../../../../svg/Operations/Ineq.svg';
+import Ineqq            from '../../../../../svg/Operations/Ineqq.svg';
+import LegendIcon       from '../LegendIcon';
+import NumberFormatter  from '../../../../Common/Misc/NumberFormatter';
+import SvgIconWidget    from '../../SvgIconWidget';
+
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
-import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
-import LegendIcon from '../LegendIcon';
-import SvgIconWidget from '../../SvgIconWidget';
-import Ineq from '../../../../../svg/Operations/Ineq.svg';
-import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
 
 const CHOICE_LABELS = {
   '<': Ineq,
@@ -16,7 +18,7 @@ const NEXT_VALUE = {
   '<=': '<',
 };
 
-export default function FiveClauseRender(props) {
+export default function fiveClauseRender(props) {
   const { rule } = props;
   const terms = rule.terms;
   const formatter = new NumberFormatter(3, [Number(terms[0]), Number(terms[4])]);
@@ -57,43 +59,41 @@ export default function FiveClauseRender(props) {
     props.onChange(path);
   }
 
-  /* eslint-disable react/jsx-curly-spacing */
   return (
-    <section className={ style.fiveClauseContainer }>
+    <section className={style.fiveClauseContainer}>
       <input
-        className={ style.numberInput }
+        className={style.numberInput}
         type="text"
         pattern="[0-9]*[.]*[0-9]*"
         data-path="0"
-        value={ terms[0] }
-        onChange={ onChange }
-        onBlur={ onBlur }
+        value={terms[0]}
+        onChange={onChange}
+        onBlur={onBlur}
       />
-      <div className={ style.activeInequality } data-path="1" onClick={ toggleIneq }>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={ CHOICE_LABELS[terms[1]] } />
+      <div className={style.activeInequality} data-path="1" onClick={toggleIneq}>
+        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[terms[1]]} />
       </div>
-      <div className={ style.inequality } title={ terms[2] }>
-        <LegendIcon width="20px" height="20px" provider={ props.legendService } name={ terms[2] } />
+      <div className={style.inequality} title={terms[2]}>
+        <LegendIcon width="20px" height="20px" getLegend={props.getLegend} name={terms[2]} />
       </div>
-      <div className={ style.activeInequality } data-path="3" onClick={ toggleIneq }>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={ CHOICE_LABELS[terms[3]] } />
+      <div className={style.activeInequality} data-path="3" onClick={toggleIneq}>
+        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[terms[3]]} />
       </div>
       <input
-        className={ style.numberInput }
+        className={style.numberInput}
         type="text"
         pattern="[0-9]*[.]*[0-9]*"
         data-path="4"
-        value={ terms[4] } // formatter.eval(terms[1])
-        onChange={ onChange }
-        onBlur={ onBlur }
+        value={terms[4]} // formatter.eval(terms[1])
+        onChange={onChange}
+        onBlur={onBlur}
       />
-      <i className={ style.deleteButton } onClick={ onDelete }></i>
+      <i className={style.deleteButton} onClick={onDelete}></i>
     </section>);
-  /* eslint-enable react/jsx-curly-spacing */
 }
 
-FiveClauseRender.propTypes = {
-  legendService: React.PropTypes.object,
+fiveClauseRender.propTypes = {
+  getLegend: React.PropTypes.func,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,
   path: React.PropTypes.array,
