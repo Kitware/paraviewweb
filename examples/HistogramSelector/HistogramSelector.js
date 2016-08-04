@@ -52,39 +52,47 @@
 
 	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
-	var _HistogramSelector = __webpack_require__(13);
-
-	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
-
-	var _FieldSelector = __webpack_require__(30);
-
-	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
-
-	var _CompositeClosureHelper = __webpack_require__(14);
+	var _CompositeClosureHelper = __webpack_require__(13);
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _FieldProvider = __webpack_require__(34);
+	var _FieldProvider = __webpack_require__(16);
 
 	var _FieldProvider2 = _interopRequireDefault(_FieldProvider);
 
-	var _LegendProvider = __webpack_require__(35);
+	var _LegendProvider = __webpack_require__(17);
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _PartitionProvider = __webpack_require__(50);
-
-	var _PartitionProvider2 = _interopRequireDefault(_PartitionProvider);
-
-	var _Histogram1DProvider = __webpack_require__(51);
+	var _Histogram1DProvider = __webpack_require__(32);
 
 	var _Histogram1DProvider2 = _interopRequireDefault(_Histogram1DProvider);
 
-	var _HistogramBinHoverProvider = __webpack_require__(52);
+	var _HistogramBinHoverProvider = __webpack_require__(33);
 
 	var _HistogramBinHoverProvider2 = _interopRequireDefault(_HistogramBinHoverProvider);
 
-	var _state = __webpack_require__(53);
+	var _PartitionProvider = __webpack_require__(34);
+
+	var _PartitionProvider2 = _interopRequireDefault(_PartitionProvider);
+
+	var _ScoresProvider = __webpack_require__(35);
+
+	var _ScoresProvider2 = _interopRequireDefault(_ScoresProvider);
+
+	var _SelectionProvider = __webpack_require__(36);
+
+	var _SelectionProvider2 = _interopRequireDefault(_SelectionProvider);
+
+	var _HistogramSelector = __webpack_require__(39);
+
+	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
+
+	var _FieldSelector = __webpack_require__(55);
+
+	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
+
+	var _state = __webpack_require__(59);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -118,6 +126,8 @@
 	  _HistogramBinHoverProvider2.default.extend(publicAPI, model);
 	  _LegendProvider2.default.extend(publicAPI, model, initialValues);
 	  _PartitionProvider2.default.extend(publicAPI, model, initialValues);
+	  _ScoresProvider2.default.extend(publicAPI, model, initialValues);
+	  _SelectionProvider2.default.extend(publicAPI, model, initialValues);
 	})(_state2.default);
 
 	// set provider behaviors
@@ -127,13 +137,15 @@
 	});
 	provider.assignLegend(['colors', 'shapes']);
 
+	// activate scoring gui
+	var scores = [{ name: 'Yes', color: '#00C900', value: 1 }, { name: 'Maybe', color: '#FFFF00', value: 0 }, { name: 'No', color: '#C90000', value: -1 }];
+	provider.setScores(scores);
+	provider.setDefaultScore(1);
+
 	// Create histogram selector
 	var histogramSelector = _HistogramSelector2.default.newInstance({
 	  provider: provider,
-	  container: histogramSelectorContainer,
-	  // activate scoring gui
-	  scores: [{ name: 'Yes', color: '#00C900', value: 1 }, { name: 'Maybe', color: '#FFFF00', value: 0 }, { name: 'No', color: '#C90000', value: -1 }],
-	  defaultScore: 1
+	  container: histogramSelectorContainer
 	});
 
 	// Create field selector
@@ -20886,737 +20898,6 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	var _d = __webpack_require__(17);
-
-	var _d2 = _interopRequireDefault(_d);
-
-	var _HistogramSelector = __webpack_require__(18);
-
-	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
-
-	var _D3MultiClick = __webpack_require__(27);
-
-	var _D3MultiClick2 = _interopRequireDefault(_D3MultiClick);
-
-	var _Score = __webpack_require__(28);
-
-	var _Score2 = _interopRequireDefault(_Score);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Histogram Selector
-	// ----------------------------------------------------------------------------
-	//
-	// This component is designed to display histograms in a grid and support
-	// user selection of histograms. The idea being to allow the user to view
-	// histograms for a large number of parameters and then select some of
-	// those parameters to use in further visualizations.
-	//
-	// Due to the large number of DOM elements a histogram can have, we modify
-	// the standard D3 graph approach to reuse DOM elements as the histograms
-	// scroll offscreen.  This way we can support thousands of histograms
-	// while only creating enough DOM elements to fill the screen.
-	//
-	// A Transform is used to reposition existing DOM elements as they
-	// are reused. Supposedly this is a fast operation. The idea comes from
-	// http://bl.ocks.org/gmaclennan/11130600 among other examples.
-	// Reuse happens at the row level.
-	//
-	// The minBoxSize variable controls the smallest width that a box
-	// (histogram) will use. This code will fill its container with the
-	// smallest size histogram it can that does not exceed this limit and
-	// provides an integral number of histograms across the container's width.
-	//
-
-	/* eslint-enable import/no-unresolved */
-	function histogramSelector(publicAPI, model) {
-	  // in contact-sheet mode, specify the smallest width a histogram can shrink
-	  // to before fewer histograms are created to fill the container's width
-	  var minBoxSize = 200;
-	  // smallest we'll let it go. Limits boxesPerRow in header GUI.
-	  var minBoxSizeLimit = 100;
-	  var legendSize = 15;
-	  // hard coded because I did not figure out how to
-	  // properly query this value from our container.
-	  var borderSize = 6;
-	  // 8? for linux/firefox, 10 for win10/chrome
-	  var scrollbarWidth = 12;
-
-	  var displayOnlySelected = false;
-
-	  var lastNumFields = 0;
-
-	  _Score2.default.init(publicAPI, model);
-
-	  // This function modifies the Transform property
-	  // of the rows of the grid. Instead of creating new
-	  // rows filled with DOM elements. Inside histogramSelector()
-	  // to make sure document.head/body exists.
-	  var transformCSSProp = function tcssp(property) {
-	    var prefixes = ['webkit', 'ms', 'Moz', 'O'];
-	    var i = -1;
-	    var n = prefixes.length;
-	    var s = document.head ? document.head.style : document.body ? document.body.style : null;
-
-	    if (s === null || property.toLowerCase() in s) {
-	      return property.toLowerCase();
-	    }
-
-	    while (++i < n) {
-	      if (prefixes[i] + property in s) {
-	        return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
-	      }
-	    }
-
-	    return false;
-	  }('Transform');
-
-	  // Apply our desired attributes to the grid rows
-	  function styleRows(selection, self) {
-	    selection.classed(_HistogramSelector2.default.row, true).style('height', self.rowHeight + 'px').style(transformCSSProp, function (d, i) {
-	      return 'translate3d(0,' + d.key * self.rowHeight + 'px,0)';
-	    });
-	  }
-
-	  // apply our desired attributes to the boxes of a row
-	  function styleBoxes(selection, self) {
-	    selection.style('width', self.boxWidth + 'px').style('height', self.boxHeight + 'px')
-	    // .style('margin', `${self.boxMargin / 2}px`)
-	    ;
-	  }
-
-	  publicAPI.svgWidth = function () {
-	    return model.histWidth + model.histMargin.left + model.histMargin.right;
-	  };
-	  publicAPI.svgHeight = function () {
-	    return model.histHeight + model.histMargin.top + model.histMargin.bottom;
-	  };
-
-	  function fetchData() {
-	    model.needData = true;
-
-	    if (model.provider) {
-	      var dataToLoadCount = 0;
-
-	      var fieldNames = [];
-	      // Initialize fields
-	      if (model.provider.isA('FieldProvider')) {
-	        fieldNames = model.provider.getFieldNames();
-	      }
-
-	      // Fetch 1D Histogram
-	      if (model.provider.isA('Histogram1DProvider')) {
-	        dataToLoadCount += fieldNames.length;
-	        for (var i = 0; i < fieldNames.length; i++) {
-	          // Return true if the data is already loaded
-	          dataToLoadCount -= model.provider.loadHistogram1D(fieldNames[i]) ? 1 : 0;
-	        }
-	      }
-
-	      // Fetch Selection
-	      if (model.provider.isA('SelectionProvider')) {}
-	      // fetchSelectionData();
-
-
-	      // Check if we can render or not
-	      model.needData = !!dataToLoadCount;
-
-	      if (!model.needData) {
-	        publicAPI.render();
-	      }
-	    }
-	  }
-
-	  function getClientArea() {
-	    var clientRect = model.listContainer.getBoundingClientRect();
-	    return [clientRect.width - borderSize - scrollbarWidth, clientRect.height - borderSize];
-	  }
-
-	  function updateSizeInformation(singleMode) {
-	    var updateBoxPerRow = false;
-
-	    var boxMargin = 3; // outside the box dimensions
-	    var boxBorder = 2; // included in the box dimensions, visible border
-
-	    // Get the client area size
-	    var dimensions = getClientArea();
-
-	    // compute key values based on our new size
-	    var boxesPerRow = singleMode ? 1 : Math.max(1, Math.floor(dimensions[0] / minBoxSize));
-	    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
-	    if (boxesPerRow === 1) {
-	      // use 3 / 4 to make a single hist wider than it is tall.
-	      model.boxHeight = Math.min(Math.floor((model.boxWidth + 2 * boxMargin) * (3 / 4) - 2 * boxMargin), Math.floor(dimensions[1] - 2 * boxMargin));
-	    } else {
-	      model.boxHeight = model.boxWidth;
-	    }
-	    model.rowHeight = model.boxHeight + 2 * boxMargin;
-	    model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
-
-	    if (boxesPerRow !== model.boxesPerRow) {
-	      updateBoxPerRow = true;
-	      model.boxesPerRow = boxesPerRow;
-	    }
-
-	    model.histWidth = model.boxWidth - boxBorder * 2 - model.histMargin.left - model.histMargin.right;
-	    // other row size, probably a way to query for this
-	    var otherRowHeight = 21;
-	    model.histHeight = model.boxHeight - boxBorder * 2 - otherRowHeight - model.histMargin.top - model.histMargin.bottom;
-
-	    return updateBoxPerRow;
-	  }
-
-	  // which row of model.nest does this field name reside in?
-	  function getFieldRow(name) {
-	    if (model.nest === null) return 0;
-	    var foundRow = model.nest.reduce(function (prev, item, i) {
-	      var val = item.value.filter(function (def) {
-	        return def.name === name;
-	      });
-	      if (val.length > 0) {
-	        return item.key;
-	      }
-	      return prev;
-	    }, 0);
-	    return foundRow;
-	  }
-
-	  function getCurrentFieldNames() {
-	    var fieldNames = [];
-	    // Initialize fields
-	    if (model.provider.isA('FieldProvider')) {
-	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
-	    }
-	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
-	    return fieldNames;
-	  }
-
-	  var fieldHeaderClick = function fieldHeaderClick(d) {
-	    displayOnlySelected = !displayOnlySelected;
-	    publicAPI.render();
-	  };
-
-	  function incrNumBoxes(amount) {
-	    if (model.singleModeName !== null) return;
-	    // Get the client area size
-	    var dimensions = getClientArea();
-	    var newBoxesPerRow = Math.max(1, model.boxesPerRow + amount);
-	    // compute a reasonable new maximum for box size based on the current container dimensions. 10 px padding.
-	    var newMinBoxSize = Math.max(minBoxSizeLimit, Math.floor(dimensions[0] / newBoxesPerRow) - 10);
-	    newBoxesPerRow = Math.floor(dimensions[0] / newMinBoxSize);
-	    // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
-	    if (newBoxesPerRow !== model.boxesPerRow) {
-	      minBoxSize = newMinBoxSize;
-	      publicAPI.render();
-	    }
-	  }
-
-	  function changeSingleField(direction) {
-	    if (model.singleModeName === null) return;
-	    var fieldNames = getCurrentFieldNames();
-	    if (fieldNames.length === 0) return;
-
-	    var index = fieldNames.indexOf(model.singleModeName);
-	    if (index === -1) index = 0;else index = (index + direction) % fieldNames.length;
-	    if (index < 0) index = fieldNames.length - 1;
-
-	    model.singleModeName = fieldNames[index];
-	    lastNumFields = 0;
-	    publicAPI.render();
-	  }
-
-	  function createHeader(divSel) {
-	    var header = divSel.append('div').classed(_HistogramSelector2.default.header, true).style('height', model.headerSize + 'px').style('line-height', model.headerSize + 'px');
-	    header.append('span').on('click', fieldHeaderClick).append('i').classed(_HistogramSelector2.default.jsFieldsIcon, true);
-	    header.append('span').classed(_HistogramSelector2.default.jsHeaderLabel, true).on('click', fieldHeaderClick);
-
-	    _Score2.default.createHeader(header);
-
-	    var numBoxesSpan = header.append('span').classed(_HistogramSelector2.default.headerBoxes, true);
-	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
-	      return incrNumBoxes(1);
-	    });
-	    numBoxesSpan.append('span').classed(_HistogramSelector2.default.jsHeaderBoxesNum, true).text(model.boxesPerRow);
-	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesMinus, true).on('click', function () {
-	      return incrNumBoxes(-1);
-	    });
-
-	    var singleSpan = header.append('span').classed(_HistogramSelector2.default.headerSingle, true);
-	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSinglePrev, true).on('click', function () {
-	      return changeSingleField(-1);
-	    });
-	    singleSpan.append('span').classed(_HistogramSelector2.default.jsHeaderSingleField, true).text('');
-	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSingleNext, true).on('click', function () {
-	      return changeSingleField(1);
-	    });
-	  }
-
-	  function updateHeader(dataLength) {
-	    _d2.default.select('.' + _HistogramSelector2.default.jsFieldsIcon)
-	    // apply class - 'false' should come first to not remove common base class.
-	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
-	    _Score2.default.updateHeader();
-
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
-
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
-
-	    if (model.provider.isA('LegendProvider') && model.singleModeName) {
-	      var _model$provider$getLe = model.provider.getLegend(model.singleModeName);
-
-	      var color = _model$provider$getLe.color;
-	      var shape = _model$provider$getLe.shape;
-
-	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
-	    } else {
-	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
-	        var name = model.singleModeName;
-	        if (!name) return '';
-	        if (name.length > 10) {
-	          name = name.substring(0, 9) + '...';
-	        }
-	        return name;
-	      });
-	    }
-	  }
-
-	  publicAPI.getMouseCoords = function (tdsl) {
-	    // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
-	    var coord = _d2.default.mouse(tdsl.node());
-	    return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
-	  };
-
-	  publicAPI.resize = function () {
-	    if (model.container === null) return;
-
-	    var clientRect = model.container.getBoundingClientRect();
-	    if (clientRect.width !== 0 && clientRect.height !== 0) {
-	      model.containerHidden = false;
-	      _d2.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
-	      publicAPI.render();
-	    } else {
-	      model.containerHidden = true;
-	    }
-	  };
-
-	  publicAPI.render = function () {
-	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
-
-	    if (model.needData) {
-	      fetchData();
-	      return;
-	    }
-	    if (model.container === null) return;
-
-	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
-
-	    var fieldNames = getCurrentFieldNames();
-
-	    updateHeader(fieldNames.length);
-	    if (model.singleModeName !== null) {
-	      // display only one histogram at a time.
-	      fieldNames = [model.singleModeName];
-	    }
-
-	    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
-	      lastNumFields = fieldNames.length;
-
-	      // get the data and put it into the nest based on the
-	      // number of boxesPerRow
-	      var mungedData = fieldNames.map(function (name) {
-	        var d = model.provider.getField(name);
-	        return d;
-	      });
-
-	      model.nest = mungedData.reduce(function (prev, item, i) {
-	        var group = Math.floor(i / model.boxesPerRow);
-	        if (prev[group]) {
-	          prev[group].value.push(item);
-	        } else {
-	          prev.push({
-	            key: group,
-	            value: [item]
-	          });
-	        }
-	        return prev;
-	      }, []);
-	    }
-
-	    // resize the div area to be tall enough to hold all our
-	    // boxes even though most are 'virtual' and lack DOM
-	    var newHeight = Math.ceil(model.nest.length * model.rowHeight) + 'px';
-	    model.parameterList.style('height', newHeight);
-
-	    if (!model.nest) return;
-
-	    // if we've changed view modes, single <==> contact sheet,
-	    // we need to re-scroll.
-	    if (model.scrollToName !== null) {
-	      var topRow = getFieldRow(model.scrollToName);
-	      model.listContainer.scrollTop = topRow * model.rowHeight;
-	      model.scrollToName = null;
-	    }
-
-	    // scroll distance, in pixels.
-	    var scrollY = model.listContainer.scrollTop;
-	    // convert scroll from pixels to rows, get one row above (-1)
-	    var offset = Math.max(0, Math.floor(scrollY / model.rowHeight) - 1);
-
-	    // extract the visible graphs from the data based on how many rows
-	    // we have scrolled down plus one above and one below (+2)
-	    var count = model.rowsPerPage + 2;
-	    var dataSlice = model.nest.slice(offset, offset + count);
-
-	    // attach our slice of data to the rows
-	    var rows = model.parameterList.selectAll('div').data(dataSlice, function (d) {
-	      return d.key;
-	    });
-
-	    // here is the code that reuses the exit nodes to fill entry
-	    // nodes. If there are not enough exit nodes then additional ones
-	    // will be created as needed. The boxes start off as hidden and
-	    // later have the class removed when their data is ready
-	    var exitNodes = rows.exit();
-	    rows.enter().append(function () {
-	      var reusableNode = 0;
-	      for (var i = 0; i < exitNodes[0].length; i++) {
-	        reusableNode = exitNodes[0][i];
-	        if (reusableNode) {
-	          exitNodes[0][i] = undefined;
-	          _d2.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
-	          return reusableNode;
-	        }
-	      }
-	      return document.createElement('div');
-	    });
-	    rows.call(styleRows, model);
-
-	    // if there are exit rows remaining that we
-	    // do not need we can delete them
-	    rows.exit().remove();
-
-	    // now put the data into the boxes
-	    var boxes = rows.selectAll('table').data(function (d) {
-	      return d.value;
-	    });
-	    boxes.enter().append('table').classed(_HistogramSelector2.default.hiddenBox, true);
-
-	    // free up any extra boxes
-	    boxes.exit().remove();
-
-	    // scoring interface - create floating controls to set scores, values, when needed.
-	    _Score2.default.createPopups();
-
-	    // for every item that has data, create all the sub-elements
-	    // and size them correctly based on our data
-	    function prepareItem(def, idx) {
-	      // updateData is called in response to UI events; it tells
-	      // the dataProvider to update the data to match the UI.
-	      //
-	      // updateData must be inside prepareItem() since it uses idx;
-	      // d3's listener method cannot guarantee the index passed to
-	      // updateData will be correct:
-	      function updateData(data) {
-	        // data.selectedGen++;
-	        // model.provider.updateField(data.name, { active: data.selected });
-	        model.provider.toggleFieldSelection(data.name);
-	      }
-
-	      // get existing sub elements
-	      var ttab = _d2.default.select(this);
-	      var trow1 = ttab.select('tr.' + _HistogramSelector2.default.jsLegendRow);
-	      var trow2 = ttab.select('tr.' + _HistogramSelector2.default.jsTr2);
-	      var tdsl = trow2.select('td.' + _HistogramSelector2.default.jsSparkline);
-	      var legendCell = trow1.select('.' + _HistogramSelector2.default.jsLegend);
-	      var fieldCell = trow1.select('.' + _HistogramSelector2.default.jsFieldName);
-	      var svgGr = tdsl.select('svg').select('.' + _HistogramSelector2.default.jsGHist);
-	      // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
-
-	      // if they are not created yet then create them
-	      if (trow1.empty()) {
-	        trow1 = ttab.append('tr').classed(_HistogramSelector2.default.legendRow, true).on('click', (0, _D3MultiClick2.default)([function singleClick(d, i) {
-	          // single click handler
-	          // const overCoords = d3.mouse(model.listContainer);
-	          updateData(d);
-	        }, function doubleClick(d, i) {
-	          // double click handler
-	          if (model.singleModeName === null) {
-	            model.singleModeName = d.name;
-	          } else {
-	            model.singleModeName = null;
-	          }
-	          model.scrollToName = d.name;
-	          publicAPI.render();
-
-	          _d2.default.event.stopPropagation();
-	        }]));
-	        trow2 = ttab.append('tr').classed(_HistogramSelector2.default.jsTr2, true);
-	        tdsl = trow2.append('td').classed(_HistogramSelector2.default.sparkline, true).attr('colspan', '2');
-	        legendCell = trow1.append('td').classed(_HistogramSelector2.default.legend, true);
-
-	        fieldCell = trow1.append('td').classed(_HistogramSelector2.default.fieldName, true);
-
-	        // Create SVG, and main group created inside the margins for use by axes, title, etc.
-	        svgGr = tdsl.append('svg').classed(_HistogramSelector2.default.sparklineSvg, true).append('g').classed(_HistogramSelector2.default.jsGHist, true).attr('transform', 'translate( ' + model.histMargin.left + ', ' + model.histMargin.top + ' )');
-	        // nested groups inside main group
-	        svgGr.append('g').classed(_HistogramSelector2.default.axis, true);
-	        svgGr.append('g').classed(_HistogramSelector2.default.jsGRect, true);
-	        // scoring interface
-	        _Score2.default.createGroups(svgGr);
-	        svgGr.append('rect').classed(_HistogramSelector2.default.overlay, true).style('cursor', 'default');
-	      }
-	      var dataActive = def.active;
-	      // Apply legend
-	      if (model.provider.isA('LegendProvider')) {
-	        var _model$provider$getLe2 = model.provider.getLegend(def.name);
-
-	        var color = _model$provider$getLe2.color;
-	        var shape = _model$provider$getLe2.shape;
-
-	        legendCell.html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                  fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
-	      } else {
-	        legendCell.html('<i></i>').select('i');
-	      }
-	      trow1.classed(!dataActive ? _HistogramSelector2.default.selectedLegendRow : _HistogramSelector2.default.unselectedLegendRow, false).classed(dataActive ? _HistogramSelector2.default.selectedLegendRow : _HistogramSelector2.default.unselectedLegendRow, true);
-	      // selection outline
-	      ttab.classed(_HistogramSelector2.default.hiddenBox, false).classed(!dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, false).classed(dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, true);
-
-	      // Apply field name
-	      fieldCell.text(def.name);
-
-	      // adjust some settings based on current size
-	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
-
-	      // get the histogram data and rebuild the histogram based on the results
-	      var hobj = model.provider.getHistogram1D(def.name);
-	      def.hobj = hobj;
-	      if (hobj !== null) {
-	        (function () {
-	          var cmax = 1.0 * _d2.default.max(hobj.counts);
-	          var hsize = hobj.counts.length;
-	          var hdata = svgGr.select('.' + _HistogramSelector2.default.jsGRect).selectAll('.' + _HistogramSelector2.default.jsHistRect).data(hobj.counts);
-
-	          hdata.enter().append('rect');
-	          // changes apply to both enter and update data join:
-	          hdata.attr('class', function (d, i) {
-	            return i % 2 === 0 ? _HistogramSelector2.default.histRectEven : _HistogramSelector2.default.histRectOdd;
-	          }).attr('pname', def.name).attr('y', function (d) {
-	            return model.histHeight * (1.0 - d / cmax);
-	          }).attr('x', function (d, i) {
-	            return model.histWidth / hsize * i;
-	          }).attr('height', function (d) {
-	            return model.histHeight * d / cmax;
-	          }).attr('width', Math.ceil(model.histWidth / hsize));
-
-	          hdata.exit().remove();
-
-	          if (model.provider.isA('HistogramBinHoverProvider')) {
-	            if (!_Score2.default.editingScore(def)) {
-	              svgGr.select('.' + _HistogramSelector2.default.jsOverlay).on('mousemove.hs', function (d, i) {
-	                var mCoords = publicAPI.getMouseCoords(tdsl);
-	                var binNum = Math.floor(mCoords[0] / model.histWidth * hsize);
-	                var state = {};
-	                state[def.name] = [binNum];
-	                model.provider.setHoverState({ state: state });
-	              }).on('mouseout.hs', function (d, i) {
-	                var state = {};
-	                state[def.name] = [-1];
-	                model.provider.setHoverState({ state: state });
-	              });
-	            } else {
-	              // disable when score editing is happening - it's distracting.
-	              // Note we still respond to hovers over other components.
-	              svgGr.select('.' + _HistogramSelector2.default.jsOverlay).on('.hs', null);
-	            }
-	          }
-
-	          // Show an x-axis with just min/max displayed.
-	          // Attach scale, axis objects to this box's
-	          // data (the 'def' object) to allow persistence when scrolled.
-	          if (typeof def.xScale === 'undefined') {
-	            def.xScale = _d2.default.scale.linear();
-	          }
-	          def.xScale.rangeRound([0, model.histWidth]).domain([hobj.min, hobj.max]);
-
-	          if (typeof def.xAxis === 'undefined') {
-	            var formatter = _d2.default.format('.3s');
-	            def.xAxis = _d2.default.svg.axis().tickFormat(formatter).orient('bottom');
-	          }
-	          def.xAxis.scale(def.xScale);
-	          var numTicks = 2;
-	          if (model.histWidth >= model.moreTicksSize) {
-	            numTicks = 5;
-	            // using .ticks() results in skipping min/max values,
-	            // if they aren't 'nice'. Make exactly 5 ticks.
-	            var myTicks = _d2.default.range(numTicks).map(function (d) {
-	              return hobj.min + d / (numTicks - 1) * (hobj.max - hobj.min);
-	            });
-	            def.xAxis.tickValues(myTicks);
-	          } else {
-	            def.xAxis.tickValues(def.xScale.domain());
-	          }
-	          // nested group for the x-axis min/max display.
-	          var gAxis = svgGr.select('.' + _HistogramSelector2.default.jsAxis);
-	          gAxis.attr('transform', 'translate(0, ' + model.histHeight + ')').call(def.xAxis);
-	          var tickLabels = gAxis.selectAll('text').classed(_HistogramSelector2.default.axisText, true);
-	          numTicks = tickLabels.size();
-	          tickLabels.style('text-anchor', function (d, i) {
-	            return i === 0 ? 'start' : i === numTicks - 1 ? 'end' : 'middle';
-	          });
-	          gAxis.selectAll('line').classed(_HistogramSelector2.default.axisLine, true);
-	          gAxis.selectAll('path').classed(_HistogramSelector2.default.axisPath, true);
-
-	          _Score2.default.prepareItem(def, idx, svgGr, tdsl);
-	        })();
-	      }
-	    }
-
-	    // make sure all the elements are created
-	    // and updated
-	    if (onlyFieldName === null) {
-	      boxes.each(prepareItem);
-	      boxes.call(styleBoxes, model);
-	    } else {
-	      boxes.filter(function (def) {
-	        return def.name === onlyFieldName;
-	      }).each(prepareItem);
-	    }
-	  };
-
-	  publicAPI.setContainer = function (element) {
-	    if (model.container) {
-	      while (model.container.firstChild) {
-	        model.container.removeChild(model.container.firstChild);
-	      }
-	      model.container = null;
-	    }
-
-	    model.container = element;
-
-	    if (model.container !== null) {
-	      var cSel = _d2.default.select(model.container).style('overflow-y', 'hidden');
-	      createHeader(cSel);
-	      // wrapper height is set insize resize()
-	      var wrapper = cSel.append('div').style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {
-	        publicAPI.render();
-	      });
-
-	      model.listContainer = wrapper.node();
-	      model.parameterList = wrapper.append('div').classed(_HistogramSelector2.default.histogramSelector, true);
-
-	      publicAPI.resize();
-	    }
-	  };
-
-	  function handleHoverUpdate(data) {
-	    var everything = _d2.default.select(model.container);
-	    Object.keys(data.state).forEach(function (pName) {
-	      var binList = data.state[pName];
-	      everything.selectAll('rect[pname=\'' + pName + '\']').
-	      // classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
-	      classed(_HistogramSelector2.default.binHilite, function (d, i) {
-	        return binList.indexOf(i) >= 0;
-	      });
-	    });
-	  }
-
-	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-	  // event from the FieldProvider
-	  // TODO overkill if one field's 'active' flag changes.
-	  model.subscriptions.push(model.provider.onFieldChange(fetchData));
-	  // event from Histogram Provider
-	  model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
-
-	  if (model.provider.isA('HistogramBinHoverProvider')) {
-	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
-	  }
-
-	  // scoring interface
-	  _Score2.default.addSubscriptions();
-
-	  // Make sure default values get applied
-	  publicAPI.setContainer(model.container);
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	// import template from './template.html';
-
-	/* eslint-disable import/no-unresolved */
-	var DEFAULT_VALUES = {
-	  container: null,
-	  provider: null,
-	  listContainer: null,
-	  needData: true,
-	  containerHidden: false,
-
-	  parameterList: null,
-	  nest: null, // nested aray of data nest[rows][boxes]
-	  boxesPerRow: 0,
-	  rowsPerPage: 0,
-	  boxWidth: 120,
-	  boxHeight: 120,
-	  // show 1 per row?
-	  singleModeName: null,
-	  scrollToName: null,
-	  // margins inside the SVG element.
-	  histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
-	  histWidth: 90,
-	  histHeight: 70,
-	  // what's the smallest histogram size that shows 5 ticks, instead of min/max? in pixels
-	  moreTicksSize: 300,
-	  lastOffset: -1,
-	  headerSize: 25,
-	  // scoring interface activated by passing in 'scores' array externally.
-	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
-	  defaultScore: 0,
-	  dragMargin: 8,
-	  selectedDef: null
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container']);
-
-	  histogramSelector(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -21878,13 +21159,13 @@
 	  newInstance: newInstance,
 	  set: set
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).setImmediate))
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(16).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(15).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -21960,10 +21241,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15).setImmediate, __webpack_require__(15).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).setImmediate, __webpack_require__(14).clearImmediate))
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -22088,7 +21369,2520 @@
 
 
 /***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DEFAULT_FIELD_STATE = {
+	  range: [0, 1],
+	  active: false
+	};
+	// ----------------------------------------------------------------------------
+	// Field Provider
+	// ----------------------------------------------------------------------------
+
+	function fieldProvider(publicAPI, model) {
+	  if (!model.fields) {
+	    model.fields = {};
+	  }
+
+	  publicAPI.getFieldNames = function () {
+	    var val = Object.keys(model.fields);
+	    if (model.fieldsSorted) val.sort();
+	    return val;
+	  };
+
+	  publicAPI.getActiveFieldNames = function () {
+	    var val = Object.keys(model.fields).filter(function (name) {
+	      return model.fields[name].active;
+	    });
+	    if (model.fieldsSorted) val.sort();
+	    return val;
+	  };
+
+	  publicAPI.addField = function (name) {
+	    var initialState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    var field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name: name });
+	    field.range = [].concat(field.range); // Make sure we copy the array
+	    model.fields[name] = field;
+	    publicAPI.fireFieldChange(field);
+	  };
+
+	  publicAPI.getField = function (name) {
+	    return model.fields[name];
+	  };
+
+	  publicAPI.updateField = function (name) {
+	    var changeSet = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    var field = model.fields[name] || {};
+	    var hasChange = false;
+
+	    Object.keys(changeSet).forEach(function (key) {
+	      hasChange = hasChange || field[key] !== changeSet[key];
+	      // Set changes
+	      field[key] = changeSet[key];
+	    });
+
+	    if (hasChange) {
+	      field.name = name; // Just in case
+	      model.fields[name] = field;
+	      publicAPI.fireFieldChange(field);
+	    }
+	  };
+
+	  publicAPI.toggleFieldSelection = function (name) {
+	    model.fields[name].active = !model.fields[name].active;
+	    publicAPI.fireFieldChange(model.fields[name]);
+	  };
+
+	  publicAPI.removeAllFields = function () {
+	    model.fields = {};
+	    publicAPI.fireFieldChange();
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  fields: null,
+	  fieldsSorted: false
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'FieldProvider');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'FieldChange');
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['fieldsSorted']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldsSorted']);
+
+	  fieldProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
 /* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = exports.STATIC = undefined;
+	exports.createSortedIterator = createSortedIterator;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	var _shapes = __webpack_require__(18);
+
+	var _shapes2 = _interopRequireDefault(_shapes);
+
+	var _ColorPalettes = __webpack_require__(31);
+
+	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Global
+	// ----------------------------------------------------------------------------
+
+	function convert(item, model) {
+	  var result = { color: item.colors };
+	  result.shape = model.legendShapes[item.shapes];
+	  return result;
+	}
+
+	function createSortedIterator(priorityOrder, propertyChoices, defaultValues) {
+	  var propertyKeys = Object.keys(propertyChoices);
+
+	  var prioritySizes = priorityOrder.map(function (name) {
+	    return propertyChoices[name].length;
+	  });
+	  var priorityIndex = prioritySizes.map(function (i) {
+	    return 0;
+	  });
+
+	  var get = function get() {
+	    var item = {};
+	    propertyKeys.forEach(function (name) {
+	      var idx = priorityOrder.indexOf(name);
+	      if (idx === -1) {
+	        item[name] = defaultValues[name];
+	      } else {
+	        item[name] = propertyChoices[name][priorityIndex[idx]];
+	      }
+	    });
+	    return item;
+	  };
+
+	  var next = function next() {
+	    var overflowIdx = 0;
+	    priorityIndex[overflowIdx]++;
+	    while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
+	      // Handle overflow
+	      priorityIndex[overflowIdx] = 0;
+	      if (overflowIdx < priorityIndex.length) {
+	        priorityIndex[++overflowIdx]++;
+	      }
+	    }
+	  };
+
+	  return { get: get, next: next };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Static API
+	// ----------------------------------------------------------------------------
+
+	var STATIC = exports.STATIC = {
+	  shapes: _shapes2.default,
+	  palettes: _ColorPalettes2.default
+	};
+
+	// ----------------------------------------------------------------------------
+	// Legend Provider
+	// ----------------------------------------------------------------------------
+
+	function legendProvider(publicAPI, model) {
+	  publicAPI.addLegendEntry = function (name) {
+	    if (model.legendEntries.indexOf(name) === -1 && name) {
+	      model.legendEntries.push(name);
+	      model.legendDirty = true;
+	    }
+	  };
+
+	  publicAPI.removeLegendEntry = function (name) {
+	    if (model.legendEntries.indexOf(name) !== -1 && name) {
+	      model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
+	      model.legendDirty = true;
+	    }
+	  };
+	  publicAPI.removeAllLegendEntry = function () {
+	    model.legendEntries = [];
+	    model.legendDirty = true;
+	  };
+
+	  publicAPI.assignLegend = function () {
+	    var newPriority = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+	    if (newPriority) {
+	      model.legendPriorities = newPriority;
+	      model.legendDirty = true;
+	    }
+	    if (model.legendDirty) {
+	      (function () {
+	        var shapesArray = Object.keys(model.legendShapes);
+	        model.legendDirty = false;
+	        model.legendMapping = {};
+
+	        if (model.legendPriorities && model.legendPriorities.length) {
+	          (function () {
+	            var defaultColor = model.legendColors[0];
+	            var defaultShape = shapesArray[0];
+
+	            var iterator = createSortedIterator(model.legendPriorities, { colors: model.legendColors, shapes: shapesArray }, { colors: defaultColor, shapes: defaultShape });
+
+	            model.legendEntries.forEach(function (name) {
+	              model.legendMapping[name] = convert(iterator.get(), model);
+	              iterator.next();
+	            });
+	          })();
+	        } else {
+	          model.legendEntries.forEach(function (name, idx) {
+	            model.legendMapping[name] = {
+	              color: model.legendColors[idx % model.legendColors.length],
+	              shape: model.legendShapes[shapesArray[idx % shapesArray.length]]
+	            };
+	          });
+	        }
+	      })();
+	    }
+	  };
+
+	  publicAPI.useLegendPalette = function (name) {
+	    var colorSet = _ColorPalettes2.default[name];
+	    if (colorSet) {
+	      model.legendColors = [].concat(colorSet);
+	      model.legendDirty = true;
+	    }
+	  };
+
+	  publicAPI.updateLegendSettings = function (settings) {
+	    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(function (key) {
+	      if (settings[key]) {
+	        model[key] = [].concat(settings.key);
+	        model.legendDirty = true;
+	      }
+	    });
+	  };
+
+	  publicAPI.listLegendColorPalettes = function () {
+	    return Object.keys(_ColorPalettes2.default);
+	  };
+
+	  publicAPI.getLegend = function (name) {
+	    if (model.legendDirty) {
+	      publicAPI.assignLegend();
+	    }
+	    return model.legendMapping[name];
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  legendShapes: _shapes2.default,
+	  legendColors: [].concat(_ColorPalettes2.default.Paired),
+	  legendEntries: [],
+	  legendPriorities: ['shapes', 'colors'],
+	  legendMapping: {},
+	  legendDirty: true
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'LegendProvider');
+
+	  legendProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Circle = __webpack_require__(19);
+
+	var _Circle2 = _interopRequireDefault(_Circle);
+
+	var _Square = __webpack_require__(23);
+
+	var _Square2 = _interopRequireDefault(_Square);
+
+	var _Triangle = __webpack_require__(24);
+
+	var _Triangle2 = _interopRequireDefault(_Triangle);
+
+	var _Diamond = __webpack_require__(25);
+
+	var _Diamond2 = _interopRequireDefault(_Diamond);
+
+	var _X = __webpack_require__(26);
+
+	var _X2 = _interopRequireDefault(_X);
+
+	var _Pentagon = __webpack_require__(27);
+
+	var _Pentagon2 = _interopRequireDefault(_Pentagon);
+
+	var _InvertedTriangle = __webpack_require__(28);
+
+	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
+
+	var _Star = __webpack_require__(29);
+
+	var _Star2 = _interopRequireDefault(_Star);
+
+	var _Plus = __webpack_require__(30);
+
+	var _Plus2 = _interopRequireDefault(_Plus);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	  Circle: _Circle2.default,
+	  Square: _Square2.default,
+	  Triangle: _Triangle2.default,
+	  Diamond: _Diamond2.default,
+	  X: _X2.default,
+	  Pentagon: _Pentagon2.default,
+	  InvertedTriangle: _InvertedTriangle2.default,
+	  Star: _Star2.default,
+	  Plus: _Plus2.default
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Circle");
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite = __webpack_require__(21);
+	var globalSprite = new Sprite();
+
+	if (document.body) {
+	  globalSprite.elem = globalSprite.render(document.body);
+	} else {
+	  document.addEventListener('DOMContentLoaded', function () {
+	    globalSprite.elem = globalSprite.render(document.body);
+	  }, false);
+	}
+
+	module.exports = globalSprite;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sniffr = __webpack_require__(22);
+
+	/**
+	 * List of SVG attributes to fix url target in them
+	 * @type {string[]}
+	 */
+	var fixAttributes = [
+	  'clipPath',
+	  'colorProfile',
+	  'src',
+	  'cursor',
+	  'fill',
+	  'filter',
+	  'marker',
+	  'markerStart',
+	  'markerMid',
+	  'markerEnd',
+	  'mask',
+	  'stroke'
+	];
+
+	/**
+	 * Query to find'em
+	 * @type {string}
+	 */
+	var fixAttributesQuery = '[' + fixAttributes.join('],[') + ']';
+	/**
+	 * @type {RegExp}
+	 */
+	var URI_FUNC_REGEX = /^url\((.*)\)$/;
+
+	/**
+	 * Convert array-like to array
+	 * @param {Object} arrayLike
+	 * @returns {Array.<*>}
+	 */
+	function arrayFrom(arrayLike) {
+	  return Array.prototype.slice.call(arrayLike, 0);
+	}
+
+	/**
+	 * Handles forbidden symbols which cannot be directly used inside attributes with url(...) content.
+	 * Adds leading slash for the brackets
+	 * @param {string} url
+	 * @return {string} encoded url
+	 */
+	function encodeUrlForEmbedding(url) {
+	  return url.replace(/\(|\)/g, "\\$&");
+	}
+
+	/**
+	 * Replaces prefix in `url()` functions
+	 * @param {Element} svg
+	 * @param {string} currentUrlPrefix
+	 * @param {string} newUrlPrefix
+	 */
+	function baseUrlWorkAround(svg, currentUrlPrefix, newUrlPrefix) {
+	  var nodes = svg.querySelectorAll(fixAttributesQuery);
+
+	  if (!nodes) {
+	    return;
+	  }
+
+	  arrayFrom(nodes).forEach(function (node) {
+	    if (!node.attributes) {
+	      return;
+	    }
+
+	    arrayFrom(node.attributes).forEach(function (attribute) {
+	      var attributeName = attribute.localName.toLowerCase();
+
+	      if (fixAttributes.indexOf(attributeName) !== -1) {
+	        var match = URI_FUNC_REGEX.exec(node.getAttribute(attributeName));
+
+	        // Do not touch urls with unexpected prefix
+	        if (match && match[1].indexOf(currentUrlPrefix) === 0) {
+	          var referenceUrl = encodeUrlForEmbedding(newUrlPrefix + match[1].split(currentUrlPrefix)[1]);
+	          node.setAttribute(attributeName, 'url(' + referenceUrl + ')');
+	        }
+	      }
+	    });
+	  });
+	}
+
+	/**
+	 * Because of Firefox bug #353575 gradients and patterns don't work if they are within a symbol.
+	 * To workaround this we move the gradient definition outside the symbol element
+	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=353575
+	 * @param {Element} svg
+	 */
+	var FirefoxSymbolBugWorkaround = function (svg) {
+	  var defs = svg.querySelector('defs');
+
+	  var moveToDefsElems = svg.querySelectorAll('symbol linearGradient, symbol radialGradient, symbol pattern');
+	  for (var i = 0, len = moveToDefsElems.length; i < len; i++) {
+	    defs.appendChild(moveToDefsElems[i]);
+	  }
+	};
+
+	/**
+	 * @type {string}
+	 */
+	var DEFAULT_URI_PREFIX = '#';
+
+	/**
+	 * @type {string}
+	 */
+	var xLinkHref = 'xlink:href';
+	/**
+	 * @type {string}
+	 */
+	var xLinkNS = 'http://www.w3.org/1999/xlink';
+	/**
+	 * @type {string}
+	 */
+	var svgOpening = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="' + xLinkNS + '"';
+	/**
+	 * @type {string}
+	 */
+	var svgClosing = '</svg>';
+	/**
+	 * @type {string}
+	 */
+	var contentPlaceHolder = '{content}';
+
+	/**
+	 * Representation of SVG sprite
+	 * @constructor
+	 */
+	function Sprite() {
+	  var baseElement = document.getElementsByTagName('base')[0];
+	  var currentUrl = window.location.href.split('#')[0];
+	  var baseUrl = baseElement && baseElement.href;
+	  this.urlPrefix = baseUrl && baseUrl !== currentUrl ? currentUrl + DEFAULT_URI_PREFIX : DEFAULT_URI_PREFIX;
+
+	  var sniffr = new Sniffr();
+	  sniffr.sniff();
+	  this.browser = sniffr.browser;
+	  this.content = [];
+
+	  if (this.browser.name !== 'ie' && baseUrl) {
+	    window.addEventListener('spriteLoaderLocationUpdated', function (e) {
+	      var currentPrefix = this.urlPrefix;
+	      var newUrlPrefix = e.detail.newUrl.split(DEFAULT_URI_PREFIX)[0] + DEFAULT_URI_PREFIX;
+	      baseUrlWorkAround(this.svg, currentPrefix, newUrlPrefix);
+	      this.urlPrefix = newUrlPrefix;
+
+	      if (this.browser.name === 'firefox' || this.browser.name === 'edge' || this.browser.name === 'chrome' && this.browser.version[0] >= 49) {
+	        var nodes = arrayFrom(document.querySelectorAll('use[*|href]'));
+	        nodes.forEach(function (node) {
+	          var href = node.getAttribute(xLinkHref);
+	          if (href && href.indexOf(currentPrefix) === 0) {
+	            node.setAttributeNS(xLinkNS, xLinkHref, newUrlPrefix + href.split(DEFAULT_URI_PREFIX)[1]);
+	          }
+	        });
+	      }
+	    }.bind(this));
+	  }
+	}
+
+	Sprite.styles = ['position:absolute', 'width:0', 'height:0', 'visibility:hidden'];
+
+	Sprite.spriteTemplate = svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing;
+	Sprite.symbolTemplate = svgOpening + '>' + contentPlaceHolder + svgClosing;
+
+	/**
+	 * @type {Array<String>}
+	 */
+	Sprite.prototype.content = null;
+
+	/**
+	 * @param {String} content
+	 * @param {String} id
+	 */
+	Sprite.prototype.add = function (content, id) {
+	  if (this.svg) {
+	    this.appendSymbol(content);
+	  }
+
+	  this.content.push(content);
+
+	  return DEFAULT_URI_PREFIX + id;
+	};
+
+	/**
+	 *
+	 * @param content
+	 * @param template
+	 * @returns {Element}
+	 */
+	Sprite.prototype.wrapSVG = function (content, template) {
+	  var svgString = template.replace(contentPlaceHolder, content);
+
+	  var svg = new DOMParser().parseFromString(svgString, 'image/svg+xml').documentElement;
+
+	  if (this.browser.name !== 'ie' && this.urlPrefix) {
+	    baseUrlWorkAround(svg, DEFAULT_URI_PREFIX, this.urlPrefix);
+	  }
+
+	  return svg;
+	};
+
+	Sprite.prototype.appendSymbol = function (content) {
+	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate).childNodes[0];
+
+	  this.svg.querySelector('defs').appendChild(symbol);
+	  if (this.browser.name === 'firefox') {
+	    FirefoxSymbolBugWorkaround(this.svg);
+	  }
+	};
+
+	/**
+	 * @returns {String}
+	 */
+	Sprite.prototype.toString = function () {
+	  var wrapper = document.createElement('div');
+	  wrapper.appendChild(this.render());
+	  return wrapper.innerHTML;
+	};
+
+	/**
+	 * @param {HTMLElement} [target]
+	 * @param {Boolean} [prepend=true]
+	 * @returns {HTMLElement} Rendered sprite node
+	 */
+	Sprite.prototype.render = function (target, prepend) {
+	  target = target || null;
+	  prepend = typeof prepend === 'boolean' ? prepend : true;
+
+	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate);
+
+	  if (this.browser.name === 'firefox') {
+	    FirefoxSymbolBugWorkaround(svg);
+	  }
+
+	  if (target) {
+	    if (prepend && target.childNodes[0]) {
+	      target.insertBefore(svg, target.childNodes[0]);
+	    } else {
+	      target.appendChild(svg);
+	    }
+	  }
+
+	  this.svg = svg;
+
+	  return svg;
+	};
+
+	module.exports = Sprite;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	(function(host) {
+
+	  var properties = {
+	    browser: [
+	      [/msie ([\.\_\d]+)/, "ie"],
+	      [/trident\/.*?rv:([\.\_\d]+)/, "ie"],
+	      [/firefox\/([\.\_\d]+)/, "firefox"],
+	      [/chrome\/([\.\_\d]+)/, "chrome"],
+	      [/version\/([\.\_\d]+).*?safari/, "safari"],
+	      [/mobile safari ([\.\_\d]+)/, "safari"],
+	      [/android.*?version\/([\.\_\d]+).*?safari/, "com.android.browser"],
+	      [/crios\/([\.\_\d]+).*?safari/, "chrome"],
+	      [/opera/, "opera"],
+	      [/opera\/([\.\_\d]+)/, "opera"],
+	      [/opera ([\.\_\d]+)/, "opera"],
+	      [/opera mini.*?version\/([\.\_\d]+)/, "opera.mini"],
+	      [/opios\/([a-z\.\_\d]+)/, "opera"],
+	      [/blackberry/, "blackberry"],
+	      [/blackberry.*?version\/([\.\_\d]+)/, "blackberry"],
+	      [/bb\d+.*?version\/([\.\_\d]+)/, "blackberry"],
+	      [/rim.*?version\/([\.\_\d]+)/, "blackberry"],
+	      [/iceweasel\/([\.\_\d]+)/, "iceweasel"],
+	      [/edge\/([\.\d]+)/, "edge"]
+	    ],
+	    os: [
+	      [/linux ()([a-z\.\_\d]+)/, "linux"],
+	      [/mac os x/, "macos"],
+	      [/mac os x.*?([\.\_\d]+)/, "macos"],
+	      [/os ([\.\_\d]+) like mac os/, "ios"],
+	      [/openbsd ()([a-z\.\_\d]+)/, "openbsd"],
+	      [/android/, "android"],
+	      [/android ([a-z\.\_\d]+);/, "android"],
+	      [/mozilla\/[a-z\.\_\d]+ \((?:mobile)|(?:tablet)/, "firefoxos"],
+	      [/windows\s*(?:nt)?\s*([\.\_\d]+)/, "windows"],
+	      [/windows phone.*?([\.\_\d]+)/, "windows.phone"],
+	      [/windows mobile/, "windows.mobile"],
+	      [/blackberry/, "blackberryos"],
+	      [/bb\d+/, "blackberryos"],
+	      [/rim.*?os\s*([\.\_\d]+)/, "blackberryos"]
+	    ],
+	    device: [
+	      [/ipad/, "ipad"],
+	      [/iphone/, "iphone"],
+	      [/lumia/, "lumia"],
+	      [/htc/, "htc"],
+	      [/nexus/, "nexus"],
+	      [/galaxy nexus/, "galaxy.nexus"],
+	      [/nokia/, "nokia"],
+	      [/ gt\-/, "galaxy"],
+	      [/ sm\-/, "galaxy"],
+	      [/xbox/, "xbox"],
+	      [/(?:bb\d+)|(?:blackberry)|(?: rim )/, "blackberry"]
+	    ]
+	  };
+
+	  var UNKNOWN = "Unknown";
+
+	  var propertyNames = Object.keys(properties);
+
+	  function Sniffr() {
+	    var self = this;
+
+	    propertyNames.forEach(function(propertyName) {
+	      self[propertyName] = {
+	        name: UNKNOWN,
+	        version: [],
+	        versionString: UNKNOWN
+	      };
+	    });
+	  }
+
+	  function determineProperty(self, propertyName, userAgent) {
+	    properties[propertyName].forEach(function(propertyMatcher) {
+	      var propertyRegex = propertyMatcher[0];
+	      var propertyValue = propertyMatcher[1];
+
+	      var match = userAgent.match(propertyRegex);
+
+	      if (match) {
+	        self[propertyName].name = propertyValue;
+
+	        if (match[2]) {
+	          self[propertyName].versionString = match[2];
+	          self[propertyName].version = [];
+	        } else if (match[1]) {
+	          self[propertyName].versionString = match[1].replace(/_/g, ".");
+	          self[propertyName].version = parseVersion(match[1]);
+	        } else {
+	          self[propertyName].versionString = UNKNOWN;
+	          self[propertyName].version = [];
+	        }
+	      }
+	    });
+	  }
+
+	  function parseVersion(versionString) {
+	    return versionString.split(/[\._]/).map(function(versionPart) {
+	      return parseInt(versionPart);
+	    });
+	  }
+
+	  Sniffr.prototype.sniff = function(userAgentString) {
+	    var self = this;
+	    var userAgent = (userAgentString || navigator.userAgent || "").toLowerCase();
+
+	    propertyNames.forEach(function(propertyName) {
+	      determineProperty(self, propertyName, userAgent);
+	    });
+	  };
+
+
+	  if (typeof module !== 'undefined' && module.exports) {
+	    module.exports = Sniffr;
+	  } else {
+	    host.Sniffr = new Sniffr();
+	    host.Sniffr.sniff(navigator.userAgent);
+	  }
+	})(this);
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(20);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Plus");
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var YlGn = exports.YlGn = ['rgb(255, 255, 229)', 'rgb(247, 252, 185)', 'rgb(217, 240, 163)', 'rgb(173, 221, 142)', 'rgb(120, 198, 121)', 'rgb(65, 171, 93)', 'rgb(35, 132, 67)', 'rgb(0, 104, 55)', 'rgb(0, 69, 41)'];
+
+	var YlGnBu = exports.YlGnBu = ['rgb(255, 255, 217)', 'rgb(237, 248, 177)', 'rgb(199, 233, 180)', 'rgb(127, 205, 187)', 'rgb(65, 182, 196)', 'rgb(29, 145, 192)', 'rgb(34, 94, 168)', 'rgb(37, 52, 148)', 'rgb(8, 29, 88)'];
+
+	var GnBu = exports.GnBu = ['rgb(247, 252, 240)', 'rgb(224, 243, 219)', 'rgb(204, 235, 197)', 'rgb(168, 221, 181)', 'rgb(123, 204, 196)', 'rgb(78, 179, 211)', 'rgb(43, 140, 190)', 'rgb(8, 104, 172)', 'rgb(8, 64, 129)'];
+
+	var BuGn = exports.BuGn = ['rgb(247, 252, 253)', 'rgb(229, 245, 249)', 'rgb(204, 236, 230)', 'rgb(153, 216, 201)', 'rgb(102, 194, 164)', 'rgb(65, 174, 118)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
+
+	var PuBuGn = exports.PuBuGn = ['rgb(255, 247, 251)', 'rgb(236, 226, 240)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(103, 169, 207)', 'rgb(54, 144, 192)', 'rgb(2, 129, 138)', 'rgb(1, 108, 89)', 'rgb(1, 70, 54)'];
+
+	var PuBu = exports.PuBu = ['rgb(255, 247, 251)', 'rgb(236, 231, 242)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(116, 169, 207)', 'rgb(54, 144, 192)', 'rgb(5, 112, 176)', 'rgb(4, 90, 141)', 'rgb(2, 56, 88)'];
+
+	var BuPu = exports.BuPu = ['rgb(247, 252, 253)', 'rgb(224, 236, 244)', 'rgb(191, 211, 230)', 'rgb(158, 188, 218)', 'rgb(140, 150, 198)', 'rgb(140, 107, 177)', 'rgb(136, 65, 157)', 'rgb(129, 15, 124)', 'rgb(77, 0, 75)'];
+
+	var RdPu = exports.RdPu = ['rgb(255, 247, 243)', 'rgb(253, 224, 221)', 'rgb(252, 197, 192)', 'rgb(250, 159, 181)', 'rgb(247, 104, 161)', 'rgb(221, 52, 151)', 'rgb(174, 1, 126)', 'rgb(122, 1, 119)', 'rgb(73, 0, 106)'];
+
+	var PuRd = exports.PuRd = ['rgb(247, 244, 249)', 'rgb(231, 225, 239)', 'rgb(212, 185, 218)', 'rgb(201, 148, 199)', 'rgb(223, 101, 176)', 'rgb(231, 41, 138)', 'rgb(206, 18, 86)', 'rgb(152, 0, 67)', 'rgb(103, 0, 31)'];
+
+	var OrRd = exports.OrRd = ['rgb(255, 247, 236)', 'rgb(254, 232, 200)', 'rgb(253, 212, 158)', 'rgb(253, 187, 132)', 'rgb(252, 141, 89)', 'rgb(239, 101, 72)', 'rgb(215, 48, 31)', 'rgb(179, 0, 0)', 'rgb(127, 0, 0)'];
+
+	var YlOrRd = exports.YlOrRd = ['rgb(255, 255, 204)', 'rgb(255, 237, 160)', 'rgb(254, 217, 118)', 'rgb(254, 178, 76)', 'rgb(253, 141, 60)', 'rgb(252, 78, 42)', 'rgb(227, 26, 28)', 'rgb(189, 0, 38)', 'rgb(128, 0, 38)'];
+
+	var YlOrBr = exports.YlOrBr = ['rgb(255, 255, 229)', 'rgb(255, 247, 188)', 'rgb(254, 227, 145)', 'rgb(254, 196, 79)', 'rgb(254, 153, 41)', 'rgb(236, 112, 20)', 'rgb(204, 76, 2)', 'rgb(153, 52, 4)', 'rgb(102, 37, 6)'];
+
+	var Purples = exports.Purples = ['rgb(252, 251, 253)', 'rgb(239, 237, 245)', 'rgb(218, 218, 235)', 'rgb(188, 189, 220)', 'rgb(158, 154, 200)', 'rgb(128, 125, 186)', 'rgb(106, 81, 163)', 'rgb(84, 39, 143)', 'rgb(63, 0, 125)'];
+
+	var Blues = exports.Blues = ['rgb(247, 251, 255)', 'rgb(222, 235, 247)', 'rgb(198, 219, 239)', 'rgb(158, 202, 225)', 'rgb(107, 174, 214)', 'rgb(66, 146, 198)', 'rgb(33, 113, 181)', 'rgb(8, 81, 156)', 'rgb(8, 48, 107)'];
+
+	var Greens = exports.Greens = ['rgb(247, 252, 245)', 'rgb(229, 245, 224)', 'rgb(199, 233, 192)', 'rgb(161, 217, 155)', 'rgb(116, 196, 118)', 'rgb(65, 171, 93)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
+
+	var Oranges = exports.Oranges = ['rgb(255, 245, 235)', 'rgb(254, 230, 206)', 'rgb(253, 208, 162)', 'rgb(253, 174, 107)', 'rgb(253, 141, 60)', 'rgb(241, 105, 19)', 'rgb(217, 72, 1)', 'rgb(166, 54, 3)', 'rgb(127, 39, 4)'];
+
+	var Reds = exports.Reds = ['rgb(255, 245, 240)', 'rgb(254, 224, 210)', 'rgb(252, 187, 161)', 'rgb(252, 146, 114)', 'rgb(251, 106, 74)', 'rgb(239, 59, 44)', 'rgb(203, 24, 29)', 'rgb(165, 15, 21)', 'rgb(103, 0, 13)'];
+
+	var Greys = exports.Greys = ['rgb(255, 255, 255)', 'rgb(240, 240, 240)', 'rgb(217, 217, 217)', 'rgb(189, 189, 189)', 'rgb(150, 150, 150)', 'rgb(115, 115, 115)', 'rgb(82, 82, 82)', 'rgb(37, 37, 37)', 'rgb(0, 0, 0)'];
+
+	var PuOr = exports.PuOr = ['rgb(127, 59, 8)', 'rgb(179, 88, 6)', 'rgb(224, 130, 20)', 'rgb(253, 184, 99)', 'rgb(254, 224, 182)', 'rgb(247, 247, 247)', 'rgb(216, 218, 235)', 'rgb(178, 171, 210)', 'rgb(128, 115, 172)', 'rgb(84, 39, 136)', 'rgb(45, 0, 75)'];
+
+	var BrBG = exports.BrBG = ['rgb(84, 48, 5)', 'rgb(140, 81, 10)', 'rgb(191, 129, 45)', 'rgb(223, 194, 125)', 'rgb(246, 232, 195)', 'rgb(245, 245, 245)', 'rgb(199, 234, 229)', 'rgb(128, 205, 193)', 'rgb(53, 151, 143)', 'rgb(1, 102, 94)', 'rgb(0, 60, 48)'];
+
+	var PRGn = exports.PRGn = ['rgb(64, 0, 75)', 'rgb(118, 42, 131)', 'rgb(153, 112, 171)', 'rgb(194, 165, 207)', 'rgb(231, 212, 232)', 'rgb(247, 247, 247)', 'rgb(217, 240, 211)', 'rgb(166, 219, 160)', 'rgb(90, 174, 97)', 'rgb(27, 120, 55)', 'rgb(0, 68, 27)'];
+
+	var PiYG = exports.PiYG = ['rgb(142, 1, 82)', 'rgb(197, 27, 125)', 'rgb(222, 119, 174)', 'rgb(241, 182, 218)', 'rgb(253, 224, 239)', 'rgb(247, 247, 247)', 'rgb(230, 245, 208)', 'rgb(184, 225, 134)', 'rgb(127, 188, 65)', 'rgb(77, 146, 33)', 'rgb(39, 100, 25)'];
+
+	var RdBu = exports.RdBu = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(247, 247, 247)', 'rgb(209, 229, 240)', 'rgb(146, 197, 222)', 'rgb(67, 147, 195)', 'rgb(33, 102, 172)', 'rgb(5, 48, 97)'];
+
+	var RdGy = exports.RdGy = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(255, 255, 255)', 'rgb(224, 224, 224)', 'rgb(186, 186, 186)', 'rgb(135, 135, 135)', 'rgb(77, 77, 77)', 'rgb(26, 26, 26)'];
+
+	var RdYlBu = exports.RdYlBu = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 144)', 'rgb(255, 255, 191)', 'rgb(224, 243, 248)', 'rgb(171, 217, 233)', 'rgb(116, 173, 209)', 'rgb(69, 117, 180)', 'rgb(49, 54, 149)'];
+
+	var Spectral = exports.Spectral = ['rgb(158, 1, 66)', 'rgb(213, 62, 79)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(230, 245, 152)', 'rgb(171, 221, 164)', 'rgb(102, 194, 165)', 'rgb(50, 136, 189)', 'rgb(94, 79, 162)'];
+
+	var RdYlGn = exports.RdYlGn = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(217, 239, 139)', 'rgb(166, 217, 106)', 'rgb(102, 189, 99)', 'rgb(26, 152, 80)', 'rgb(0, 104, 55)'];
+
+	var Accent = exports.Accent = ['rgb(127, 201, 127)', 'rgb(190, 174, 212)', 'rgb(253, 192, 134)', 'rgb(255, 255, 153)', 'rgb(56, 108, 176)', 'rgb(240, 2, 127)', 'rgb(191, 91, 23)', 'rgb(102, 102, 102)'];
+
+	var Dark2 = exports.Dark2 = ['rgb(27, 158, 119)', 'rgb(217, 95, 2)', 'rgb(117, 112, 179)', 'rgb(231, 41, 138)', 'rgb(102, 166, 30)', 'rgb(230, 171, 2)', 'rgb(166, 118, 29)', 'rgb(102, 102, 102)'];
+
+	var Paired = exports.Paired = ['rgb(166, 206, 227)', 'rgb(31, 120, 180)', 'rgb(178, 223, 138)', 'rgb(51, 160, 44)', 'rgb(251, 154, 153)', 'rgb(227, 26, 28)', 'rgb(253, 191, 111)', 'rgb(255, 127, 0)', 'rgb(202, 178, 214)', 'rgb(106, 61, 154)', 'rgb(255, 255, 153)', 'rgb(177, 89, 40)'];
+
+	var Pastel1 = exports.Pastel1 = ['rgb(251, 180, 174)', 'rgb(179, 205, 227)', 'rgb(204, 235, 197)', 'rgb(222, 203, 228)', 'rgb(254, 217, 166)', 'rgb(255, 255, 204)', 'rgb(229, 216, 189)', 'rgb(253, 218, 236)', 'rgb(242, 242, 242)'];
+
+	var Pastel2 = exports.Pastel2 = ['rgb(179, 226, 205)', 'rgb(253, 205, 172)', 'rgb(203, 213, 232)', 'rgb(244, 202, 228)', 'rgb(230, 245, 201)', 'rgb(255, 242, 174)', 'rgb(241, 226, 204)', 'rgb(204, 204, 204)'];
+
+	var Set1 = exports.Set1 = ['rgb(228, 26, 28)', 'rgb(55, 126, 184)', 'rgb(77, 175, 74)', 'rgb(152, 78, 163)', 'rgb(255, 127, 0)', 'rgb(255, 255, 51)', 'rgb(166, 86, 40)', 'rgb(247, 129, 191)', 'rgb(153, 153, 153)'];
+
+	var Set2 = exports.Set2 = ['rgb(102, 194, 165)', 'rgb(252, 141, 98)', 'rgb(141, 160, 203)', 'rgb(231, 138, 195)', 'rgb(166, 216, 84)', 'rgb(255, 217, 47)', 'rgb(229, 196, 148)', 'rgb(179, 179, 179)'];
+
+	var Set3 = exports.Set3 = ['rgb(141, 211, 199)', 'rgb(255, 255, 179)', 'rgb(190, 186, 218)', 'rgb(251, 128, 114)', 'rgb(128, 177, 211)', 'rgb(253, 180, 98)', 'rgb(179, 222, 105)', 'rgb(252, 205, 229)', 'rgb(217, 217, 217)', 'rgb(188, 128, 189)', 'rgb(204, 235, 197)', 'rgb(255, 237, 111)'];
+
+	exports.default = {
+	  YlGn: YlGn,
+	  YlGnBu: YlGnBu,
+	  GnBu: GnBu,
+	  BuGn: BuGn,
+	  PuBuGn: PuBuGn,
+	  PuBu: PuBu,
+	  BuPu: BuPu,
+	  RdPu: RdPu,
+	  PuRd: PuRd,
+	  OrRd: OrRd,
+	  YlOrRd: YlOrRd,
+	  YlOrBr: YlOrBr,
+	  Purples: Purples,
+	  Blues: Blues,
+	  Greens: Greens,
+	  Oranges: Oranges,
+	  Reds: Reds,
+	  Greys: Greys,
+	  PuOr: PuOr,
+	  BrBG: BrBG,
+	  PRGn: PRGn,
+	  PiYG: PiYG,
+	  RdBu: RdBu,
+	  RdGy: RdGy,
+	  RdYlBu: RdYlBu,
+	  Spectral: Spectral,
+	  RdYlGn: RdYlGn,
+	  Accent: Accent,
+	  Dark2: Dark2,
+	  Paired: Paired,
+	  Pastel1: Pastel1,
+	  Pastel2: Pastel2,
+	  Set1: Set1,
+	  Set2: Set2,
+	  Set3: Set3
+	};
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Histogram 1D Provider
+	// ----------------------------------------------------------------------------
+
+	function histogram1DProvider(publicAPI, model, fetchHelper) {
+	  // Private members
+	  var ready = publicAPI.fireHistogram1DReady;
+	  delete publicAPI.fireHistogram1DReady;
+
+	  // Protected members
+	  if (!model.histogram1DData) {
+	    model.histogram1DData = {};
+	  }
+
+	  // Data access
+	  publicAPI.setHistogram1DNumberOfBins = function (bin) {
+	    if (model.histogram1DNumberOfBins !== bin) {
+	      model.histogram1DData = {};
+	      model.histogram1DNumberOfBins = bin;
+	    }
+	  };
+
+	  // Return true if data is available
+	  publicAPI.loadHistogram1D = function (field) {
+	    if (!model.histogram1DData[field]) {
+	      model.histogram1DData[field] = { pending: true };
+	      fetchHelper.addRequest(field);
+	      return false;
+	    }
+
+	    if (model.histogram1DData[field].pending) {
+	      return false;
+	    }
+
+	    return true;
+	  };
+
+	  publicAPI.getHistogram1D = function (field) {
+	    return model.histogram1DData[field];
+	  };
+	  publicAPI.setHistogram1D = function (field, data) {
+	    model.histogram1DData[field] = data;
+	    ready(field, data);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  // histogram1DData: null,
+	  histogram1DNumberOfBins: 32
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'Histogram1DProvider');
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram1DNumberOfBins']);
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'histogram1DReady');
+	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Histogram1D');
+
+	  histogram1DProvider(publicAPI, model, fetchHelper);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Histogram Bin Hover Provider
+	// ----------------------------------------------------------------------------
+
+	function histogramBinHoverProvider(publicAPI, model) {
+	  if (!model.hoverState) {
+	    model.hoverState = {};
+	  }
+
+	  publicAPI.setHoverState = function (hoverState) {
+	    model.hoverState = hoverState;
+	    publicAPI.fireHoverBinChange(model.hoverState);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'HistogramBinHoverProvider');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'HoverBinChange');
+
+	  histogramBinHoverProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Partition Provider
+	// ----------------------------------------------------------------------------
+
+	function partitionProvider(publicAPI, model, fetchHelper) {
+	  // Private members
+	  var ready = publicAPI.firePartitionReady;
+	  delete publicAPI.firePartitionReady;
+
+	  // Protected members
+	  if (!model.partitionData) {
+	    model.partitionData = {};
+	  }
+
+	  // Return true if data is available
+	  publicAPI.loadPartition = function (field) {
+	    if (!model.partitionData[field]) {
+	      model.partitionData[field] = { pending: true };
+	      fetchHelper.addRequest(field);
+	      return false;
+	    }
+
+	    if (model.partitionData[field].pending) {
+	      return false;
+	    }
+
+	    if (model.partitionData[field].stale) {
+	      // stale means the client sent some data to the server,
+	      // and we need the server to return 'ground truth', even
+	      // though we have our version of the data right now.
+	      delete model.partitionData[field].stale;
+	      fetchHelper.addRequest(field);
+	      return true;
+	    }
+
+	    return true;
+	  };
+
+	  publicAPI.getPartition = function (field) {
+	    return model.partitionData[field];
+	  };
+	  // server sent us some data
+	  publicAPI.setPartition = function (field, data) {
+	    model.partitionData[field] = data;
+	    ready(field, data);
+	  };
+	  // client generated new data
+	  publicAPI.changePartition = function (field, data) {
+	    model.partitionData[field] = data;
+	    model.partitionData[field].stale = true;
+	    publicAPI.firePartitionChange(field, data);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  // partitionData: null,
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'PartitionProvider');
+	  // Change asynchronous default - immediate event tiggers data send to server, and server reply is async.
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionChange', false);
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionReady');
+	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Partition');
+
+	  partitionProvider(publicAPI, model, fetchHelper);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Partition Provider
+	// ----------------------------------------------------------------------------
+
+	function scoresProvider(publicAPI, model) {
+	  publicAPI.setScores = function (scores) {
+	    model.scores = [].concat(scores);
+	    var scoreMapByValue = {};
+	    model.scores.forEach(function (score) {
+	      scoreMapByValue[score.value] = score;
+	    });
+	    model.scoreMapByValue = scoreMapByValue;
+	    publicAPI.fireScoresChange(model.scores);
+	  };
+
+	  publicAPI.getScoreColor = function (value) {
+	    var score = model.scoreMapByValue[value];
+	    return score ? score.color : undefined;
+	  };
+
+	  publicAPI.getScoreName = function (value) {
+	    var score = model.scoreMapByValue[value];
+	    return score ? score.name : undefined;
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  defaultScore: 0
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'ScoresProvider');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'scoresChange', false);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['defaultScore', 'scores']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['defaultScore']);
+
+	  scoresProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	var _dataHelper = __webpack_require__(37);
+
+	var _dataHelper2 = _interopRequireDefault(_dataHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Selection Provider
+	// ----------------------------------------------------------------------------
+
+	function selectionProvider(publicAPI, model) {
+	  var dataSubscriptions = [];
+
+	  if (!model.selectionData) {
+	    model.selectionData = {};
+	  }
+	  if (!model.selectionMetaData) {
+	    model.selectionMetaData = {};
+	  }
+
+	  function off() {
+	    var count = dataSubscriptions.length;
+	    while (count--) {
+	      dataSubscriptions[count] = null;
+	    }
+	  }
+
+	  function flushDataToListener(dataListener) {
+	    if (dataListener) {
+	      var event = _dataHelper2.default.getNotificationData(model.selectionData, dataListener.request);
+	      if (event) {
+	        dataListener.onDataReady(event);
+	      }
+	    }
+	  }
+
+	  // Method use to store received data
+	  publicAPI.setSelectionData = function (data) {
+	    _dataHelper2.default.set(model.selectionData, data);
+
+	    // Process all subscription to see if we can trigger a notification
+	    dataSubscriptions.forEach(flushDataToListener);
+	  };
+
+	  // Method use to access cached data. Will return undefined if not available
+	  publicAPI.getSelectionData = function (query) {
+	    return _dataHelper2.default.get(model.selectionData, query);
+	  };
+
+	  // Use to extend data subscription
+	  publicAPI.updateSelectionMetadata = function (addon) {
+	    model.selectionMetaData[addon.type] = Object.assign({}, model.selectionMetaData[addon.type], addon.metadata);
+	  };
+
+	  // Get metadata for a given data type
+	  publicAPI.getSelectionMetadata = function (type) {
+	    return model.selectionMetaData[type];
+	  };
+
+	  // --------------------------------
+
+	  publicAPI.setSelection = function (selection) {
+	    model.selection = selection;
+	    publicAPI.fireSelectionChange(selection);
+	  };
+
+	  // --------------------------------
+
+	  // annotation = {
+	  //    selection: {...},
+	  //    score: [0],
+	  //    weight: 1,
+	  //    rationale: 'why not...',
+	  // }
+
+	  publicAPI.setAnnotation = function (annotation) {
+	    model.annotation = annotation;
+	    if (annotation.selection) {
+	      publicAPI.setSelection(annotation.selection);
+	    } else {
+	      annotation.selection = model.selection;
+	    }
+	    publicAPI.fireAnnotationChange(annotation);
+	  };
+
+	  // --------------------------------
+
+	  publicAPI.subscribeToDataSelection = function (type, onDataReady) {
+	    var variables = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	    var metadata = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
+	    var id = dataSubscriptions.length;
+	    var request = { id: id, type: type, variables: variables, metadata: metadata };
+	    var dataListener = { onDataReady: onDataReady, request: request };
+	    dataSubscriptions.push(dataListener);
+	    publicAPI.fireDataSubscriptionChange(request);
+	    flushDataToListener(dataListener);
+	    return {
+	      unsubscribe: function unsubscribe() {
+	        dataSubscriptions[id] = null;
+	      },
+	      update: function update(vars, meta) {
+	        request.variables = [].concat(vars);
+	        request.metadata = Object.assign({}, request.metadata, meta);
+	        publicAPI.fireDataSubscriptionChange(request);
+	        flushDataToListener(dataListener);
+	      }
+	    };
+	  };
+
+	  publicAPI.destroy = _CompositeClosureHelper2.default.chain(off, publicAPI.destroy);
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  // selection: null,
+	  // selectionData: null,
+	  // selectionMetaData: null,
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'SelectionProvider');
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['selection', 'annotation']);
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'selectionChange');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'annotationChange');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'dataSubscriptionChange');
+
+	  selectionProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getHandler = getHandler;
+	exports.set = set;
+	exports.get = get;
+	exports.getNotificationData = getNotificationData;
+
+	var _histogram2d = __webpack_require__(38);
+
+	var _histogram2d2 = _interopRequireDefault(_histogram2d);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var dataMapping = {
+	  histogram2d: _histogram2d2.default
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function getHandler(data) {
+	  var handler = dataMapping[data.type];
+	  if (handler) {
+	    return handler;
+	  }
+
+	  throw new Error('No set handler for ' + data.type);
+	}
+
+	function set(model, data) {
+	  return getHandler(data).set(model, data);
+	}
+
+	function get(model, data) {
+	  return getHandler(data).get(model, data);
+	}
+
+	function getNotificationData(model, request) {
+	  return getHandler(request).getNotificationData(model, request);
+	}
+
+	exports.default = {
+	  set: set,
+	  get: get,
+	  getNotificationData: getNotificationData
+	};
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.set = set;
+	// ----------------------------------------------------------------------------
+	// Histogram2d
+	// ----------------------------------------------------------------------------
+	//
+	// ===> SET
+	//
+	//  const payload = {
+	//    type: 'histogram2d',
+	//    data: {
+	//      x: 'temperature',
+	//      y: 'pressure',
+	//      bins: [...],
+	//      score: 0,
+	//      annotationId: 24, // Generation of the annotation
+	//      selectionId: 23, // Generation of the selection
+	//    },
+	//  }
+	//
+	// ===> GET
+	//
+	//  const query = {
+	//    type: 'histogram2d',
+	//    axes: ['temperature', 'pressure'],
+	//    score: [0, 2],
+	//  }
+	//
+	// const response = [
+	//   {
+	//     x: 'temperature',
+	//     y: 'pressure',
+	//     bins: [],
+	//     score: 0,
+	//     annotationId: 24,
+	//     selectionId: 23,
+	//     maxCount: 3534,
+	//   }, {
+	//     x: 'temperature',
+	//     y: 'pressure',
+	//     bins: [],
+	//     score: 2,
+	//     annotationId: 24,
+	//     selectionId: 23,
+	//     maxCount: 3534,
+	//   },
+	// ];
+	//
+	// ===> NOTIFICATION
+	//
+	// request = {
+	//   type: 'histogram2d',
+	//   variables: [
+	//     ['temperature', 'pressure'],
+	//     ['pressure', 'velocity'],
+	//     ['velocity', 'abcd'],
+	//   ],
+	//   metadata: {
+	//     partitionScore: [0, 2],
+	//   },
+	// }
+	//
+	// const notification = {
+	//   temperature: {
+	//     pressure: [
+	//       {
+	//         x: 'temperature',
+	//         y: 'pressure',
+	//         bins: [],
+	//         score: 0,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       }, {
+	//         x: 'temperature',
+	//         y: 'pressure',
+	//         bins: [],
+	//         score: 2,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       },
+	//     ],
+	//   },
+	//   pressure: {
+	//     velocity: [
+	//       {
+	//         x: 'pressure',
+	//         y: 'velocity',
+	//         bins: [],
+	//         score: 0,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       }, {
+	//         x: 'pressure',
+	//         y: 'velocity',
+	//         bins: [],
+	//         score: 2,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       },
+	//     ],
+	//   },
+	//   velocity: {
+	//     abcd: [
+	//       {
+	//         x: 'velocity',
+	//         y: 'abcd',
+	//         bins: [],
+	//         score: 0,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       }, {
+	//         x: 'velocity',
+	//         y: 'abcd',
+	//         bins: [],
+	//         score: 2,
+	//         annotationId: 24,
+	//         selectionId: 23,
+	//         maxCount: 3534,
+	//       },
+	//     ],
+	//   },
+	// };
+	//
+	// ----------------------------------------------------------------------------
+
+	// function flipHistogram(histo2d) {
+	//   const newHisto2d = {
+	//     bins: histo2d.bins.map(bin => {
+	//       const { x, y, count } = bin;
+	//       return {
+	//         x: y,
+	//         y: x,
+	//         count,
+	//       };
+	//     }),
+	//     x: histo2d.y,
+	//     y: histo2d.x };
+
+	//   return newHisto2d;
+	// }
+
+	// ----------------------------------------------------------------------------
+
+	function set(model, payload) {
+	  if (!model.histogram2d) {
+	    model.histogram2d = {};
+	  }
+	  var _payload$data = payload.data;
+	  var x = _payload$data.x;
+	  var y = _payload$data.y;
+	  var annotationId = _payload$data.annotationId;
+	  var score = _payload$data.score;
+
+	  if (!model.histogram2d[x.name]) {
+	    model.histogram2d[x.name] = {};
+	  }
+	  if (!model.histogram2d[x.name][y.name]) {
+	    model.histogram2d[x.name][y.name] = [];
+	  }
+
+	  model.histogram2d[x.name][y.name] = [].concat(payload.data, model.histogram2d[x.name][y.name].filter(function (hist) {
+	    return hist.annotationId === annotationId && hist.score !== score;
+	  }));
+
+	  // Attach max count
+	  var count = 0;
+	  payload.data.bins.forEach(function (item) {
+	    count = count < item.count ? item.count : count;
+	  });
+	  payload.data.maxCount = count;
+
+	  // Create flipped histogram?
+	  // FIXME
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function get(model, query) {
+	  if (model.histogram2d && model.histogram2d[query.axes[0]] && model.histogram2d[query.axes[0]][query.axes[1]]) {
+	    if (query.score) {
+	      return model.histogram2d[query.axes[0]][query.axes[1]].filter(function (hist) {
+	        return query.score.indexOf(hist.score) !== -1;
+	      });
+	    }
+	    return model.histogram2d[query.axes[0]][query.axes[1]];
+	  }
+	  return null;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function getNotificationData(model, request) {
+	  var result = {};
+	  var missingData = false;
+
+	  request.variables.forEach(function (axes) {
+	    var histograms = get(model, { axes: axes });
+	    if (histograms && histograms.length) {
+	      if (!result[axes[0]]) {
+	        result[axes[0]] = {};
+	      }
+	      result[axes[0]][axes[1]] = histograms;
+	    } else {
+	      missingData = true;
+	    }
+	  });
+
+	  return missingData ? null : result;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = {
+	  set: set,
+	  get: get,
+	  getNotificationData: getNotificationData
+	};
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = undefined;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	var _d = __webpack_require__(40);
+
+	var _d2 = _interopRequireDefault(_d);
+
+	var _HistogramSelector = __webpack_require__(41);
+
+	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
+
+	var _D3MultiClick = __webpack_require__(50);
+
+	var _D3MultiClick2 = _interopRequireDefault(_D3MultiClick);
+
+	var _Score = __webpack_require__(51);
+
+	var _Score2 = _interopRequireDefault(_Score);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Histogram Selector
+	// ----------------------------------------------------------------------------
+	//
+	// This component is designed to display histograms in a grid and support
+	// user selection of histograms. The idea being to allow the user to view
+	// histograms for a large number of parameters and then select some of
+	// those parameters to use in further visualizations.
+	//
+	// Due to the large number of DOM elements a histogram can have, we modify
+	// the standard D3 graph approach to reuse DOM elements as the histograms
+	// scroll offscreen.  This way we can support thousands of histograms
+	// while only creating enough DOM elements to fill the screen.
+	//
+	// A Transform is used to reposition existing DOM elements as they
+	// are reused. Supposedly this is a fast operation. The idea comes from
+	// http://bl.ocks.org/gmaclennan/11130600 among other examples.
+	// Reuse happens at the row level.
+	//
+	// The minBoxSize variable controls the smallest width that a box
+	// (histogram) will use. This code will fill its container with the
+	// smallest size histogram it can that does not exceed this limit and
+	// provides an integral number of histograms across the container's width.
+	//
+
+	/* eslint-enable import/no-unresolved */
+	function histogramSelector(publicAPI, model) {
+	  // in contact-sheet mode, specify the smallest width a histogram can shrink
+	  // to before fewer histograms are created to fill the container's width
+	  var minBoxSize = 200;
+	  // smallest we'll let it go. Limits boxesPerRow in header GUI.
+	  var minBoxSizeLimit = 100;
+	  var legendSize = 15;
+	  // hard coded because I did not figure out how to
+	  // properly query this value from our container.
+	  var borderSize = 6;
+	  // 8? for linux/firefox, 10 for win10/chrome
+	  var scrollbarWidth = 12;
+
+	  var displayOnlySelected = false;
+
+	  var lastNumFields = 0;
+
+	  _Score2.default.init(publicAPI, model);
+
+	  // This function modifies the Transform property
+	  // of the rows of the grid. Instead of creating new
+	  // rows filled with DOM elements. Inside histogramSelector()
+	  // to make sure document.head/body exists.
+	  var transformCSSProp = function tcssp(property) {
+	    var prefixes = ['webkit', 'ms', 'Moz', 'O'];
+	    var i = -1;
+	    var n = prefixes.length;
+	    var s = document.head ? document.head.style : document.body ? document.body.style : null;
+
+	    if (s === null || property.toLowerCase() in s) {
+	      return property.toLowerCase();
+	    }
+
+	    while (++i < n) {
+	      if (prefixes[i] + property in s) {
+	        return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
+	      }
+	    }
+
+	    return false;
+	  }('Transform');
+
+	  // Apply our desired attributes to the grid rows
+	  function styleRows(selection, self) {
+	    selection.classed(_HistogramSelector2.default.row, true).style('height', self.rowHeight + 'px').style(transformCSSProp, function (d, i) {
+	      return 'translate3d(0,' + d.key * self.rowHeight + 'px,0)';
+	    });
+	  }
+
+	  // apply our desired attributes to the boxes of a row
+	  function styleBoxes(selection, self) {
+	    selection.style('width', self.boxWidth + 'px').style('height', self.boxHeight + 'px')
+	    // .style('margin', `${self.boxMargin / 2}px`)
+	    ;
+	  }
+
+	  publicAPI.svgWidth = function () {
+	    return model.histWidth + model.histMargin.left + model.histMargin.right;
+	  };
+	  publicAPI.svgHeight = function () {
+	    return model.histHeight + model.histMargin.top + model.histMargin.bottom;
+	  };
+
+	  function fetchData(field) {
+	    model.needData = true;
+
+	    if (model.provider) {
+	      var dataToLoadCount = 0;
+
+	      var fieldNames = [];
+	      // Initialize fields
+	      if (model.provider.isA('FieldProvider')) {
+	        fieldNames = model.provider.getFieldNames();
+	        if (!model.fieldData) {
+	          model.fieldData = {};
+	          fieldNames.forEach(function (name) {
+	            model.fieldData[name] = Object.assign({}, model.provider.getField(name), _Score2.default.defaultFieldData());
+	          });
+	        } else if (field !== undefined) {
+	          // update of a specific field from the field provider, most likely the 'active' flag.
+	          Object.assign(model.fieldData[field.name], field);
+	        }
+	      }
+
+	      // Fetch 1D Histogram
+	      if (model.provider.isA('Histogram1DProvider')) {
+	        dataToLoadCount += fieldNames.length;
+	        for (var i = 0; i < fieldNames.length; i++) {
+	          // Return true if the data is already loaded
+	          dataToLoadCount -= model.provider.loadHistogram1D(fieldNames[i]) ? 1 : 0;
+	        }
+	      }
+
+	      // Fetch Selection
+	      if (model.provider.isA('SelectionProvider')) {}
+	      // fetchSelectionData();
+
+
+	      // Check if we can render or not
+	      model.needData = !!dataToLoadCount;
+
+	      if (!model.needData) {
+	        publicAPI.render();
+	      }
+	    }
+	  }
+
+	  function getClientArea() {
+	    var clientRect = model.listContainer.getBoundingClientRect();
+	    return [clientRect.width - borderSize - scrollbarWidth, clientRect.height - borderSize];
+	  }
+
+	  function updateSizeInformation(singleMode) {
+	    var updateBoxPerRow = false;
+
+	    var boxMargin = 3; // outside the box dimensions
+	    var boxBorder = 2; // included in the box dimensions, visible border
+
+	    // Get the client area size
+	    var dimensions = getClientArea();
+
+	    // compute key values based on our new size
+	    var boxesPerRow = singleMode ? 1 : Math.max(1, Math.floor(dimensions[0] / minBoxSize));
+	    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
+	    if (boxesPerRow === 1) {
+	      // use 3 / 4 to make a single hist wider than it is tall.
+	      model.boxHeight = Math.min(Math.floor((model.boxWidth + 2 * boxMargin) * (3 / 4) - 2 * boxMargin), Math.floor(dimensions[1] - 2 * boxMargin));
+	    } else {
+	      model.boxHeight = model.boxWidth;
+	    }
+	    model.rowHeight = model.boxHeight + 2 * boxMargin;
+	    model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
+
+	    if (boxesPerRow !== model.boxesPerRow) {
+	      updateBoxPerRow = true;
+	      model.boxesPerRow = boxesPerRow;
+	    }
+
+	    model.histWidth = model.boxWidth - boxBorder * 2 - model.histMargin.left - model.histMargin.right;
+	    // other row size, probably a way to query for this
+	    var otherRowHeight = 21;
+	    model.histHeight = model.boxHeight - boxBorder * 2 - otherRowHeight - model.histMargin.top - model.histMargin.bottom;
+
+	    return updateBoxPerRow;
+	  }
+
+	  // which row of model.nest does this field name reside in?
+	  function getFieldRow(name) {
+	    if (model.nest === null) return 0;
+	    var foundRow = model.nest.reduce(function (prev, item, i) {
+	      var val = item.value.filter(function (def) {
+	        return def.name === name;
+	      });
+	      if (val.length > 0) {
+	        return item.key;
+	      }
+	      return prev;
+	    }, 0);
+	    return foundRow;
+	  }
+
+	  function getCurrentFieldNames() {
+	    var fieldNames = [];
+	    // Initialize fields
+	    if (model.provider.isA('FieldProvider')) {
+	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
+	    }
+	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
+	    return fieldNames;
+	  }
+
+	  var fieldHeaderClick = function fieldHeaderClick(d) {
+	    displayOnlySelected = !displayOnlySelected;
+	    publicAPI.render();
+	  };
+
+	  function incrNumBoxes(amount) {
+	    if (model.singleModeName !== null) return;
+	    // Get the client area size
+	    var dimensions = getClientArea();
+	    var newBoxesPerRow = Math.max(1, model.boxesPerRow + amount);
+	    // compute a reasonable new maximum for box size based on the current container dimensions. 10 px padding.
+	    var newMinBoxSize = Math.max(minBoxSizeLimit, Math.floor(dimensions[0] / newBoxesPerRow) - 10);
+	    newBoxesPerRow = Math.floor(dimensions[0] / newMinBoxSize);
+	    // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
+	    if (newBoxesPerRow !== model.boxesPerRow) {
+	      minBoxSize = newMinBoxSize;
+	      publicAPI.render();
+	    }
+	  }
+
+	  function changeSingleField(direction) {
+	    if (model.singleModeName === null) return;
+	    var fieldNames = getCurrentFieldNames();
+	    if (fieldNames.length === 0) return;
+
+	    var index = fieldNames.indexOf(model.singleModeName);
+	    if (index === -1) index = 0;else index = (index + direction) % fieldNames.length;
+	    if (index < 0) index = fieldNames.length - 1;
+
+	    model.singleModeName = fieldNames[index];
+	    lastNumFields = 0;
+	    publicAPI.render();
+	  }
+
+	  function createHeader(divSel) {
+	    var header = divSel.append('div').classed(_HistogramSelector2.default.header, true).style('height', model.headerSize + 'px').style('line-height', model.headerSize + 'px');
+	    header.append('span').on('click', fieldHeaderClick).append('i').classed(_HistogramSelector2.default.jsFieldsIcon, true);
+	    header.append('span').classed(_HistogramSelector2.default.jsHeaderLabel, true).on('click', fieldHeaderClick);
+
+	    _Score2.default.createHeader(header);
+
+	    var numBoxesSpan = header.append('span').classed(_HistogramSelector2.default.headerBoxes, true);
+	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
+	      return incrNumBoxes(1);
+	    });
+	    numBoxesSpan.append('span').classed(_HistogramSelector2.default.jsHeaderBoxesNum, true).text(model.boxesPerRow);
+	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesMinus, true).on('click', function () {
+	      return incrNumBoxes(-1);
+	    });
+
+	    var singleSpan = header.append('span').classed(_HistogramSelector2.default.headerSingle, true);
+	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSinglePrev, true).on('click', function () {
+	      return changeSingleField(-1);
+	    });
+	    singleSpan.append('span').classed(_HistogramSelector2.default.jsHeaderSingleField, true).text('');
+	    singleSpan.append('i').classed(_HistogramSelector2.default.headerSingleNext, true).on('click', function () {
+	      return changeSingleField(1);
+	    });
+	  }
+
+	  function updateHeader(dataLength) {
+	    _d2.default.select('.' + _HistogramSelector2.default.jsFieldsIcon)
+	    // apply class - 'false' should come first to not remove common base class.
+	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
+	    _Score2.default.updateHeader();
+
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
+
+	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
+
+	    if (model.provider.isA('LegendProvider') && model.singleModeName) {
+	      var _model$provider$getLe = model.provider.getLegend(model.singleModeName);
+
+	      var color = _model$provider$getLe.color;
+	      var shape = _model$provider$getLe.shape;
+
+	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
+	    } else {
+	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
+	        var name = model.singleModeName;
+	        if (!name) return '';
+	        if (name.length > 10) {
+	          name = name.slice(0, 9) + '...';
+	        }
+	        return name;
+	      });
+	    }
+	  }
+
+	  publicAPI.getMouseCoords = function (tdsl) {
+	    // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
+	    var coord = _d2.default.mouse(tdsl.node());
+	    return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
+	  };
+
+	  publicAPI.resize = function () {
+	    if (model.container === null) return;
+
+	    var clientRect = model.container.getBoundingClientRect();
+	    if (clientRect.width !== 0 && clientRect.height !== 0) {
+	      model.containerHidden = false;
+	      _d2.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
+	      publicAPI.render();
+	    } else {
+	      model.containerHidden = true;
+	    }
+	  };
+
+	  publicAPI.render = function () {
+	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+	    if (model.needData) {
+	      fetchData();
+	      return;
+	    }
+	    if (model.container === null) return;
+
+	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
+
+	    var fieldNames = getCurrentFieldNames();
+
+	    updateHeader(fieldNames.length);
+	    if (model.singleModeName !== null) {
+	      // display only one histogram at a time.
+	      fieldNames = [model.singleModeName];
+	    }
+
+	    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
+	      lastNumFields = fieldNames.length;
+
+	      // get the data and put it into the nest based on the
+	      // number of boxesPerRow
+	      var mungedData = fieldNames.map(function (name) {
+	        var d = model.fieldData[name];
+	        return d;
+	      });
+
+	      model.nest = mungedData.reduce(function (prev, item, i) {
+	        var group = Math.floor(i / model.boxesPerRow);
+	        if (prev[group]) {
+	          prev[group].value.push(item);
+	        } else {
+	          prev.push({
+	            key: group,
+	            value: [item]
+	          });
+	        }
+	        return prev;
+	      }, []);
+	    }
+
+	    // resize the div area to be tall enough to hold all our
+	    // boxes even though most are 'virtual' and lack DOM
+	    var newHeight = Math.ceil(model.nest.length * model.rowHeight) + 'px';
+	    model.parameterList.style('height', newHeight);
+
+	    if (!model.nest) return;
+
+	    // if we've changed view modes, single <==> contact sheet,
+	    // we need to re-scroll.
+	    if (model.scrollToName !== null) {
+	      var topRow = getFieldRow(model.scrollToName);
+	      model.listContainer.scrollTop = topRow * model.rowHeight;
+	      model.scrollToName = null;
+	    }
+
+	    // scroll distance, in pixels.
+	    var scrollY = model.listContainer.scrollTop;
+	    // convert scroll from pixels to rows, get one row above (-1)
+	    var offset = Math.max(0, Math.floor(scrollY / model.rowHeight) - 1);
+
+	    // extract the visible graphs from the data based on how many rows
+	    // we have scrolled down plus one above and one below (+2)
+	    var count = model.rowsPerPage + 2;
+	    var dataSlice = model.nest.slice(offset, offset + count);
+
+	    // attach our slice of data to the rows
+	    var rows = model.parameterList.selectAll('div').data(dataSlice, function (d) {
+	      return d.key;
+	    });
+
+	    // here is the code that reuses the exit nodes to fill entry
+	    // nodes. If there are not enough exit nodes then additional ones
+	    // will be created as needed. The boxes start off as hidden and
+	    // later have the class removed when their data is ready
+	    var exitNodes = rows.exit();
+	    rows.enter().append(function () {
+	      var reusableNode = 0;
+	      for (var i = 0; i < exitNodes[0].length; i++) {
+	        reusableNode = exitNodes[0][i];
+	        if (reusableNode) {
+	          exitNodes[0][i] = undefined;
+	          _d2.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
+	          return reusableNode;
+	        }
+	      }
+	      return document.createElement('div');
+	    });
+	    rows.call(styleRows, model);
+
+	    // if there are exit rows remaining that we
+	    // do not need we can delete them
+	    rows.exit().remove();
+
+	    // now put the data into the boxes
+	    var boxes = rows.selectAll('table').data(function (d) {
+	      return d.value;
+	    });
+	    boxes.enter().append('table').classed(_HistogramSelector2.default.hiddenBox, true);
+
+	    // free up any extra boxes
+	    boxes.exit().remove();
+
+	    // scoring interface - create floating controls to set scores, values, when needed.
+	    _Score2.default.createPopups();
+
+	    // for every item that has data, create all the sub-elements
+	    // and size them correctly based on our data
+	    function prepareItem(def, idx) {
+	      // updateData is called in response to UI events; it tells
+	      // the dataProvider to update the data to match the UI.
+	      //
+	      // updateData must be inside prepareItem() since it uses idx;
+	      // d3's listener method cannot guarantee the index passed to
+	      // updateData will be correct:
+	      function updateData(data) {
+	        // data.selectedGen++;
+	        // model.provider.updateField(data.name, { active: data.selected });
+	        model.provider.toggleFieldSelection(data.name);
+	      }
+
+	      // get existing sub elements
+	      var ttab = _d2.default.select(this);
+	      var trow1 = ttab.select('tr.' + _HistogramSelector2.default.jsLegendRow);
+	      var trow2 = ttab.select('tr.' + _HistogramSelector2.default.jsTr2);
+	      var tdsl = trow2.select('td.' + _HistogramSelector2.default.jsSparkline);
+	      var legendCell = trow1.select('.' + _HistogramSelector2.default.jsLegend);
+	      var fieldCell = trow1.select('.' + _HistogramSelector2.default.jsFieldName);
+	      var svgGr = tdsl.select('svg').select('.' + _HistogramSelector2.default.jsGHist);
+	      // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
+
+	      // if they are not created yet then create them
+	      if (trow1.empty()) {
+	        trow1 = ttab.append('tr').classed(_HistogramSelector2.default.legendRow, true).on('click', (0, _D3MultiClick2.default)([function singleClick(d, i) {
+	          // single click handler
+	          // const overCoords = d3.mouse(model.listContainer);
+	          updateData(d);
+	        }, function doubleClick(d, i) {
+	          // double click handler
+	          if (model.singleModeName === null) {
+	            model.singleModeName = d.name;
+	          } else {
+	            model.singleModeName = null;
+	          }
+	          model.scrollToName = d.name;
+	          publicAPI.render();
+
+	          _d2.default.event.stopPropagation();
+	        }]));
+	        trow2 = ttab.append('tr').classed(_HistogramSelector2.default.jsTr2, true);
+	        tdsl = trow2.append('td').classed(_HistogramSelector2.default.sparkline, true).attr('colspan', '2');
+	        legendCell = trow1.append('td').classed(_HistogramSelector2.default.legend, true);
+
+	        fieldCell = trow1.append('td').classed(_HistogramSelector2.default.fieldName, true);
+
+	        // Create SVG, and main group created inside the margins for use by axes, title, etc.
+	        svgGr = tdsl.append('svg').classed(_HistogramSelector2.default.sparklineSvg, true).append('g').classed(_HistogramSelector2.default.jsGHist, true).attr('transform', 'translate( ' + model.histMargin.left + ', ' + model.histMargin.top + ' )');
+	        // nested groups inside main group
+	        svgGr.append('g').classed(_HistogramSelector2.default.axis, true);
+	        svgGr.append('g').classed(_HistogramSelector2.default.jsGRect, true);
+	        // scoring interface
+	        _Score2.default.createGroups(svgGr);
+	        svgGr.append('rect').classed(_HistogramSelector2.default.overlay, true).style('cursor', 'default');
+	      }
+	      var dataActive = def.active;
+	      // Apply legend
+	      if (model.provider.isA('LegendProvider')) {
+	        var _model$provider$getLe2 = model.provider.getLegend(def.name);
+
+	        var color = _model$provider$getLe2.color;
+	        var shape = _model$provider$getLe2.shape;
+
+	        legendCell.html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                  fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
+	      } else {
+	        legendCell.html('<i></i>').select('i');
+	      }
+	      trow1.classed(!dataActive ? _HistogramSelector2.default.selectedLegendRow : _HistogramSelector2.default.unselectedLegendRow, false).classed(dataActive ? _HistogramSelector2.default.selectedLegendRow : _HistogramSelector2.default.unselectedLegendRow, true);
+	      // selection outline
+	      ttab.classed(_HistogramSelector2.default.hiddenBox, false).classed(!dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, false).classed(dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, true);
+
+	      // Apply field name
+	      fieldCell.text(def.name);
+
+	      // adjust some settings based on current size
+	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
+
+	      // get the histogram data and rebuild the histogram based on the results
+	      var hobj = model.provider.getHistogram1D(def.name);
+	      def.hobj = hobj;
+	      if (hobj !== null) {
+	        (function () {
+	          var cmax = 1.0 * _d2.default.max(hobj.counts);
+	          var hsize = hobj.counts.length;
+	          var hdata = svgGr.select('.' + _HistogramSelector2.default.jsGRect).selectAll('.' + _HistogramSelector2.default.jsHistRect).data(hobj.counts);
+
+	          hdata.enter().append('rect');
+	          // changes apply to both enter and update data join:
+	          hdata.attr('class', function (d, i) {
+	            return i % 2 === 0 ? _HistogramSelector2.default.histRectEven : _HistogramSelector2.default.histRectOdd;
+	          }).attr('pname', def.name).attr('y', function (d) {
+	            return model.histHeight * (1.0 - d / cmax);
+	          }).attr('x', function (d, i) {
+	            return model.histWidth / hsize * i;
+	          }).attr('height', function (d) {
+	            return model.histHeight * d / cmax;
+	          }).attr('width', Math.ceil(model.histWidth / hsize));
+
+	          hdata.exit().remove();
+
+	          if (model.provider.isA('HistogramBinHoverProvider')) {
+	            var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
+	            svgOverlay.attr('x', -model.histMargin.left).attr('y', -model.histMargin.top).attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
+
+	            if (!_Score2.default.editingScore(def)) {
+	              svgOverlay.on('mousemove.hs', function (d, i) {
+	                var mCoords = publicAPI.getMouseCoords(tdsl);
+	                var binNum = Math.floor(mCoords[0] / model.histWidth * hsize);
+	                var state = {};
+	                state[def.name] = [binNum];
+	                model.provider.setHoverState({ state: state });
+	              }).on('mouseout.hs', function (d, i) {
+	                var state = {};
+	                state[def.name] = [-1];
+	                model.provider.setHoverState({ state: state });
+	              });
+	            } else {
+	              // disable when score editing is happening - it's distracting.
+	              // Note we still respond to hovers over other components.
+	              svgOverlay.on('.hs', null);
+	            }
+	          }
+
+	          // Show an x-axis with just min/max displayed.
+	          // Attach scale, axis objects to this box's
+	          // data (the 'def' object) to allow persistence when scrolled.
+	          if (typeof def.xScale === 'undefined') {
+	            def.xScale = _d2.default.scale.linear();
+	          }
+	          def.xScale.rangeRound([0, model.histWidth]).domain([hobj.min, hobj.max]);
+
+	          if (typeof def.xAxis === 'undefined') {
+	            var formatter = _d2.default.format('.3s');
+	            def.xAxis = _d2.default.svg.axis().tickFormat(formatter).orient('bottom');
+	          }
+	          def.xAxis.scale(def.xScale);
+	          var numTicks = 2;
+	          if (model.histWidth >= model.moreTicksSize) {
+	            numTicks = 5;
+	            // using .ticks() results in skipping min/max values,
+	            // if they aren't 'nice'. Make exactly 5 ticks.
+	            var myTicks = _d2.default.range(numTicks).map(function (d) {
+	              return hobj.min + d / (numTicks - 1) * (hobj.max - hobj.min);
+	            });
+	            def.xAxis.tickValues(myTicks);
+	          } else {
+	            def.xAxis.tickValues(def.xScale.domain());
+	          }
+	          // nested group for the x-axis min/max display.
+	          var gAxis = svgGr.select('.' + _HistogramSelector2.default.jsAxis);
+	          gAxis.attr('transform', 'translate(0, ' + model.histHeight + ')').call(def.xAxis);
+	          var tickLabels = gAxis.selectAll('text').classed(_HistogramSelector2.default.axisText, true);
+	          numTicks = tickLabels.size();
+	          tickLabels.style('text-anchor', function (d, i) {
+	            return i === 0 ? 'start' : i === numTicks - 1 ? 'end' : 'middle';
+	          });
+	          gAxis.selectAll('line').classed(_HistogramSelector2.default.axisLine, true);
+	          gAxis.selectAll('path').classed(_HistogramSelector2.default.axisPath, true);
+
+	          _Score2.default.prepareItem(def, idx, svgGr, tdsl);
+	        })();
+	      }
+	    }
+
+	    // make sure all the elements are created
+	    // and updated
+	    if (onlyFieldName === null) {
+	      boxes.each(prepareItem);
+	      boxes.call(styleBoxes, model);
+	    } else {
+	      boxes.filter(function (def) {
+	        return def.name === onlyFieldName;
+	      }).each(prepareItem);
+	    }
+	  };
+
+	  publicAPI.setContainer = function (element) {
+	    if (model.container) {
+	      while (model.container.firstChild) {
+	        model.container.removeChild(model.container.firstChild);
+	      }
+	      model.container = null;
+	    }
+
+	    model.container = element;
+
+	    if (model.container !== null) {
+	      var cSel = _d2.default.select(model.container).style('overflow-y', 'hidden');
+	      createHeader(cSel);
+	      // wrapper height is set insize resize()
+	      var wrapper = cSel.append('div').style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {
+	        publicAPI.render();
+	      });
+
+	      model.listContainer = wrapper.node();
+	      model.parameterList = wrapper.append('div').classed(_HistogramSelector2.default.histogramSelector, true);
+
+	      publicAPI.resize();
+	    }
+	  };
+
+	  function handleHoverUpdate(data) {
+	    var everything = _d2.default.select(model.container);
+	    Object.keys(data.state).forEach(function (pName) {
+	      var binList = data.state[pName];
+	      everything.selectAll('rect[pname=\'' + pName + '\']').
+	      // classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
+	      classed(_HistogramSelector2.default.binHilite, function (d, i) {
+	        return binList.indexOf(i) >= 0;
+	      });
+	    });
+	  }
+
+	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
+	  // event from the FieldProvider
+	  // TODO overkill if one field's 'active' flag changes.
+	  model.subscriptions.push(model.provider.onFieldChange(fetchData));
+	  // event from Histogram Provider
+	  model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+
+	  if (model.provider.isA('HistogramBinHoverProvider')) {
+	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+	  }
+
+	  // scoring interface
+	  _Score2.default.addSubscriptions();
+
+	  // Make sure default values get applied
+	  publicAPI.setContainer(model.container);
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	// import template from './template.html';
+
+	/* eslint-disable import/no-unresolved */
+	var DEFAULT_VALUES = {
+	  container: null,
+	  provider: null,
+	  listContainer: null,
+	  needData: true,
+	  containerHidden: false,
+
+	  parameterList: null,
+	  nest: null, // nested aray of data nest[rows][boxes]
+	  boxesPerRow: 0,
+	  rowsPerPage: 0,
+	  boxWidth: 120,
+	  boxHeight: 120,
+	  // show 1 per row?
+	  singleModeName: null,
+	  scrollToName: null,
+	  // margins inside the SVG element.
+	  histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
+	  histWidth: 90,
+	  histHeight: 70,
+	  // what's the smallest histogram size that shows 5 ticks, instead of min/max? in pixels
+	  moreTicksSize: 300,
+	  lastOffset: -1,
+	  headerSize: 25,
+	  // scoring interface activated by passing in 'scores' array externally.
+	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
+	  defaultScore: 0,
+	  dragMargin: 8,
+	  selectedDef: null
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container']);
+
+	  histogramSelector(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = { newInstance: newInstance, extend: extend };
+
+/***/ },
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -31647,13 +33441,13 @@
 	}();
 
 /***/ },
-/* 18 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(19);
+	var content = __webpack_require__(42);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -31673,12 +33467,12 @@
 	}
 
 /***/ },
-/* 19 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
 	// imports
-	exports.i(__webpack_require__(20), undefined);
+	exports.i(__webpack_require__(43), undefined);
 
 	// module
 	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredIcon_3z54w,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 2px;\n  border-spacing: 0;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
@@ -31719,20 +33513,20 @@
 		"histogramSelector": "HistogramSelector_histogramSelector_1OZH8",
 		"header": "HistogramSelector_header_Pm09R",
 		"hidden": "HistogramSelector_hidden_2YiXo",
-		"icon": "HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
-		"selectedIcon": "HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
-		"allIcon": "HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
-		"selectedFieldsIcon": "HistogramSelector_selectedFieldsIcon_kN5eK HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
-		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
-		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsScoredIcon_3z54w HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
-		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsScoredIcon_3z54w HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
-		"headerIcon": "HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + "",
-		"headerBoxesPlus": "HistogramSelector_headerBoxesPlus_QvfiZ HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-plus-square-o"] + "",
-		"headerBoxesMinus": "HistogramSelector_headerBoxesMinus_3OpiA HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-minus-square-o"] + "",
+		"icon": "HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + "",
+		"selectedIcon": "HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-check-square-o"] + "",
+		"allIcon": "HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-square-o"] + "",
+		"selectedFieldsIcon": "HistogramSelector_selectedFieldsIcon_kN5eK HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-check-square-o"] + "",
+		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-square-o"] + "",
+		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsScoredIcon_3z54w HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-check-square-o"] + "",
+		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsScoredIcon_3z54w HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-square-o"] + "",
+		"headerIcon": "HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + "",
+		"headerBoxesPlus": "HistogramSelector_headerBoxesPlus_QvfiZ HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + " " + __webpack_require__(43).locals["fa-plus-square-o"] + "",
+		"headerBoxesMinus": "HistogramSelector_headerBoxesMinus_3OpiA HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + " " + __webpack_require__(43).locals["fa-minus-square-o"] + "",
 		"headerBoxes": "HistogramSelector_headerBoxes_2SlD3 HistogramSelector_jsHeaderBoxes_oN8YB",
-		"headerSingleIcon": "HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + "",
-		"headerSingleNext": "HistogramSelector_headerSingleNext_3AS8U HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-caret-right"] + "",
-		"headerSinglePrev": "HistogramSelector_headerSinglePrev_LqQ5h HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-lg"] + " " + __webpack_require__(20).locals["fa-caret-left"] + "",
+		"headerSingleIcon": "HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + "",
+		"headerSingleNext": "HistogramSelector_headerSingleNext_3AS8U HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + " " + __webpack_require__(43).locals["fa-caret-right"] + "",
+		"headerSinglePrev": "HistogramSelector_headerSinglePrev_LqQ5h HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-lg"] + " " + __webpack_require__(43).locals["fa-caret-left"] + "",
 		"headerSingle": "HistogramSelector_headerSingle_9NqJf HistogramSelector_jsHeaderSingle_2vVqV",
 		"histogramSelectorCell": "HistogramSelector_histogramSelectorCell_21EUK",
 		"baseLegend": "HistogramSelector_baseLegend_259om",
@@ -31778,7 +33572,7 @@
 	};
 
 /***/ },
-/* 20 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -31786,7 +33580,7 @@
 
 
 	// module
-	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(21) + ");\n  src: url(" + __webpack_require__(22) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(23) + ") format('woff2'), url(" + __webpack_require__(24) + ") format('woff'), url(" + __webpack_require__(25) + ") format('truetype'), url(" + __webpack_require__(26) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  -webkit-filter: none;\n          filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
+	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(44) + ");\n  src: url(" + __webpack_require__(45) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(46) + ") format('woff2'), url(" + __webpack_require__(47) + ") format('woff'), url(" + __webpack_require__(48) + ") format('truetype'), url(" + __webpack_require__(49) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  -webkit-filter: none;\n          filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -32512,43 +34306,43 @@
 	};
 
 /***/ },
-/* 21 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
 
 /***/ },
-/* 22 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
 
 /***/ },
-/* 23 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "db812d8a70a4e88e888744c1c9a27e89.woff2";
 
 /***/ },
-/* 24 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "a35720c2fed2c7f043bc7e4ffb45e073.woff";
 
 /***/ },
-/* 25 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "a3de2170e4e9df77161ea5d3f31b2668.ttf";
 
 /***/ },
-/* 26 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "f775f9cca88e21d45bebe185b27c0e5b.svg";
 
 /***/ },
-/* 27 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32558,7 +34352,7 @@
 	});
 	exports.default = multiClicker;
 
-	var _d = __webpack_require__(17);
+	var _d = __webpack_require__(40);
 
 	var _d2 = _interopRequireDefault(_d);
 
@@ -32610,7 +34404,7 @@
 	}
 
 /***/ },
-/* 28 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32626,6 +34420,7 @@
 
 
 	exports.init = init;
+	exports.defaultFieldData = defaultFieldData;
 	exports.createDefaultDivider = createDefaultDivider;
 	exports.getDisplayOnlyScored = getDisplayOnlyScored;
 	exports.createGroups = createGroups;
@@ -32649,15 +34444,23 @@
 	exports.prepareItem = prepareItem;
 	exports.addSubscriptions = addSubscriptions;
 
-	var _d2 = __webpack_require__(17);
+	var _SelectionBuilder = __webpack_require__(52);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	var _AnnotationBuilder = __webpack_require__(53);
+
+	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
+
+	var _d2 = __webpack_require__(40);
 
 	var _d3 = _interopRequireDefault(_d2);
 
-	var _HistogramSelector = __webpack_require__(18);
+	var _HistogramSelector = __webpack_require__(41);
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _down_arrow = __webpack_require__(29);
+	var _down_arrow = __webpack_require__(54);
 
 	var _down_arrow2 = _interopRequireDefault(_down_arrow);
 
@@ -32672,19 +34475,33 @@
 	function init(inPublicAPI, inModel) {
 	  publicAPI = inPublicAPI;
 	  model = inModel;
-	  // TODO make sure model.scores has the right format
-	  if (typeof model.scores !== 'undefined') {
-	    // setup a bgColor
-	    model.scores.forEach(function (score, i) {
-	      if (typeof score.bgColor === 'undefined') {
+
+	  publicAPI.setScores = function (scores, defaultScore) {
+	    // TODO make sure model.scores has the right format?
+	    model.scores = scores;
+	    model.defaultScore = defaultScore;
+	    if (model.scores) {
+	      // setup a bgColor
+	      model.scores.forEach(function (score, i) {
 	        var lightness = _d3.default.hsl(score.color).l;
 	        // make bg darker for light colors.
 	        var blend = lightness >= 0.45 ? 0.4 : 0.2;
 	        var interp = _d3.default.interpolateRgb('#fff', score.color);
 	        score.bgColor = interp(blend);
-	      }
-	    });
+	      });
+	    }
+	  };
+
+	  if (model.provider.isA('ScoresProvider')) {
+	    publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
 	  }
+	}
+
+	function defaultFieldData() {
+	  return {
+	    scoreDirty: false,
+	    annotation: null
+	  };
 	}
 
 	function createDefaultDivider(val, uncert) {
@@ -32701,50 +34518,41 @@
 	  }), hobj.max);
 	}
 
-	// Translate our dividers and regions into a piecewise-linear partition (2D array)
+	// Translate our dividers and regions into an annotation
 	// suitable for scoring this histogram.
-	function dividersToPartition(dividers, regions, hobj, scores) {
-	  if (!regions || !dividers || !scores) return null;
-	  if (regions.length !== dividers.length + 1) return null;
-	  var regionBounds = getRegionBounds(dividers, hobj);
-	  var uncertScale = hobj.max - hobj.min;
-	  var scoreData = [];
-	  for (var i = 0; i < regions.length; i++) {
-	    var x0 = i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i];
-	    var x1 = i !== regions.length - 1 ? regionBounds[i + 1] - dividers[i].uncertainty * uncertScale : regionBounds[i + 1];
-	    var yVal = scores[regions[i]].value;
-	    scoreData.push([x0, yVal], [x1, yVal]);
+	function dividersToPartition(def, scores) {
+	  if (!def.regions || !def.dividers || !scores) return null;
+	  if (def.regions.length !== def.dividers.length + 1) return null;
+	  var uncertScale = def.hobj.max - def.hobj.min;
+
+	  var partitionSelection = _SelectionBuilder2.default.partition(def.name, def.dividers);
+	  partitionSelection.partition.dividers.forEach(function (div, index) {
+	    div.uncertainty *= uncertScale;
+	  });
+	  // console.log('DBG partitionSelection', JSON.stringify(partitionSelection, 2));
+
+	  // Construct a partition annotation:
+	  var partitionAnnotation = null;
+	  if (def.annotation) {
+	    partitionAnnotation = _AnnotationBuilder2.default.update(def.annotation, { selection: partitionSelection, score: def.regions });
+	  } else {
+	    partitionAnnotation = _AnnotationBuilder2.default.annotation(partitionSelection, def.regions, 1, '');
 	  }
-	  return scoreData;
+	  return partitionAnnotation;
 	}
 
-	// retrieve partition, and re-create dividers and regions
+	// retrieve annotation, and re-create dividers and regions
 	function partitionToDividers(scoreData, def, hobj, scores) {
-	  if (scoreData.length % 2 !== 0) console.error('partition expected paired points, length', scoreData.length);
-	  var regions = [];
-	  var dividers = [];
+	  // console.log('DBG return', JSON.stringify(scoreData, null, 2));
+	  var uncertScale = hobj.max - hobj.min;
+	  var regions = scoreData.score;
+	  var dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
+	  dividers.forEach(function (div, index) {
+	    div.uncertainty *= 1 / uncertScale;
+	  });
 
-	  var _loop = function _loop(i) {
-	    var lower = scoreData[i];
-	    var upper = scoreData[i + 1];
-	    if (lower[1] !== upper[1]) console.error('partition mismatch', lower[1], upper[1]);
-	    var regionVal = scores.findIndex(function (el) {
-	      return el.value === lower[1];
-	    });
-	    regions.push(regionVal);
-	    if (i < scoreData.length - 2) {
-	      var nextLower = scoreData[i + 2];
-	      var divVal = 0.5 * (upper[0] + nextLower[0]);
-	      var uncert = upper[0] === nextLower[0] ? 0 : 0.5 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min);
-	      dividers.push(createDefaultDivider(divVal, uncert));
-	    }
-	  };
-
-	  for (var i = 0; i < scoreData.length; i += 2) {
-	    _loop(i);
-	  }
 	  // don't replace the default region with an empty region, so UI can display the default region.
-	  if (regions.length > 0 && regions[0] !== model.defaultScore) {
+	  if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
 	    def.regions = regions;
 	    def.dividers = dividers;
 	  }
@@ -32752,7 +34560,7 @@
 
 	// communicate with the server which regions/dividers have changed.
 	function sendScores(def, hobj) {
-	  var scoreData = dividersToPartition(def.dividers, def.regions, def.hobj, model.scores);
+	  var scoreData = dividersToPartition(def, model.scores);
 	  if (scoreData === null) {
 	    console.error('Cannot translate scores to send to provider');
 	    return;
@@ -32764,6 +34572,9 @@
 	    // until the server returns new data - see addSubscriptions() ..
 	    // model.provider.onPartitionReady() below, which sets scoreDirty again to
 	    // begin using the new data.
+	  }
+	  if (model.provider.isA('SelectionProvider')) {
+	    model.provider.setAnnotation(scoreData);
 	  }
 	}
 
@@ -33194,7 +35005,7 @@
 	  if (getDisplayOnlyScored()) {
 	    // filter for fields that have scores
 	    return fieldNames.filter(function (name) {
-	      return showScore(model.provider.getField(name));
+	      return showScore(model.fieldData[name]);
 	    });
 	  }
 	  return fieldNames;
@@ -33323,10 +35134,9 @@
 	    reg.sel.exit().remove();
 	  });
 
-	  // invisible overlay to catch mouse events.
+	  // invisible overlay to catch mouse events. Sized correctly in HistogramSelector
 	  var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
-	  svgOverlay.attr('x', -model.histMargin.left).attr('y', -model.histMargin.top).attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight()) // allow clicks inside x-axis.
-	  .on('click.score', function () {
+	  svgOverlay.on('click.score', function () {
 	    // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
 	    if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
 	    var overCoords = publicAPI.getMouseCoords(tdsl);
@@ -33404,10 +35214,24 @@
 	}
 
 	function addSubscriptions() {
-	  model.subscriptions.push(model.provider.onPartitionReady(function (field) {
-	    model.provider.getField(field).scoreDirty = true;
-	    publicAPI.render(field);
-	  }));
+	  if (model.provider.isA('PartitionProvider')) {
+	    model.subscriptions.push(model.provider.onPartitionReady(function (field) {
+	      model.fieldData[field].scoreDirty = true;
+	      publicAPI.render(field);
+	    }));
+	  }
+	  if (model.provider.isA('SelectionProvider')) {
+	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
+	      if (annotation.selection.type === 'partition') {
+	        var field = annotation.selection.partition.variable;
+	        // respond to annotation.
+	        model.fieldData[field].annotation = annotation;
+	        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+
+	        publicAPI.render(field);
+	      }
+	    }));
+	  }
 	}
 
 	exports.default = {
@@ -33415,6 +35239,7 @@
 	  createGroups: createGroups,
 	  createHeader: createHeader,
 	  createPopups: createPopups,
+	  defaultFieldData: defaultFieldData,
 	  editingScore: editingScore,
 	  filterFieldNames: filterFieldNames,
 	  init: init,
@@ -33423,13 +35248,304 @@
 	};
 
 /***/ },
-/* 29 */
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.empty = empty;
+	exports.partition = partition;
+	exports.range = range;
+	exports.rule = rule;
+	exports.convertToRuleSelection = convertToRuleSelection;
+	exports.markModified = markModified;
+	// ----------------------------------------------------------------------------
+	// Internal helpers
+	// ----------------------------------------------------------------------------
+
+	var generation = 0;
+
+	function clone(obj, fieldList, defaults) {
+	  var clonedObj = {};
+	  fieldList.forEach(function (name) {
+	    if (defaults && obj[name] === undefined && defaults[name] !== undefined) {
+	      clonedObj[name] = defaults[name];
+	    } else {
+	      clonedObj[name] = obj[name];
+	    }
+	    if (Array.isArray(clonedObj[name])) {
+	      clonedObj[name] = clonedObj[name].map(function (i) {
+	        return i;
+	      });
+	    }
+	  });
+	  return clonedObj;
+	}
+
+	var endpointToRuleOperator = {
+	  o: '<',
+	  '*': '<='
+	};
+
+	var ruleTypes = exports.ruleTypes = {
+	  '3L': { terms: 3, operators: { values: [['<', '<=']], index: [1] }, variable: 0, values: [2] },
+	  '3R': { terms: 3, operators: { values: [['>', '>=']], index: [1] }, variable: 2, values: [0] },
+	  '5C': { terms: 5, operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] }, variable: 2, values: [0, 4] },
+	  multi: { terms: -1, operators: null },
+	  logical: { operators: { values: ['not', 'and', 'or', 'xor'], index: [0] } },
+	  row: {}
+	};
+
+	// ----------------------------------------------------------------------------
+	// Public builder method
+	// ----------------------------------------------------------------------------
+
+	function empty() {
+	  generation++;
+	  return {
+	    type: 'empty',
+	    generation: generation
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function partition(variable, dividers) {
+	  generation++;
+	  return {
+	    type: 'partition',
+	    generation: generation,
+	    partition: {
+	      variable: variable,
+	      dividers: dividers.map(function (divider) {
+	        return clone(divider, ['value', 'uncertainty', 'closeToLeft'], { closeToLeft: false });
+	      })
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function range(vars) {
+	  generation++;
+	  var variables = {};
+	  var selection = {
+	    type: 'range',
+	    generation: generation,
+	    range: {
+	      variables: variables
+	    }
+	  };
+
+	  // Fill variables
+	  Object.keys(vars).forEach(function (name) {
+	    variables[name] = vars[name].map(function (interval) {
+	      return clone(interval, ['interval', 'endpoints', 'uncertainty'], { endpoints: '**' });
+	    });
+	    variables[name].sort(function (a, b) {
+	      return a.interval[0] - b.interval[0];
+	    });
+	  });
+
+	  return selection;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function rule() {
+	  var type = arguments.length <= 0 || arguments[0] === undefined ? 'multi' : arguments[0];
+	  var terms = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	  var roles = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+	  generation++;
+	  // FIXME ?? deepClone ??
+	  return {
+	    type: 'rule',
+	    generation: generation,
+	    rule: {
+	      type: type,
+	      terms: terms,
+	      roles: roles
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function variableToRule(name, ranges) {
+	  var terms = ['or'];
+	  ranges.forEach(function (clause) {
+	    terms.push({
+	      type: '5C',
+	      terms: [clause.interval[0], endpointToRuleOperator[clause.endpoints[0]], name, endpointToRuleOperator[clause.endpoints[1]], clause.interval[1]]
+	    });
+	  });
+	  if (terms.length === 2) {
+	    // one range, don't need the logical 'or'
+	    return terms[1];
+	  }
+	  return {
+	    type: 'logical',
+	    terms: terms
+	  };
+	}
+
+	// ----------
+
+	function rangeToRule(selection) {
+	  var terms = ['and'];
+	  var vars = selection.range.variables;
+	  Object.keys(vars).forEach(function (name) {
+	    terms.push(variableToRule(name, vars[name]));
+	  });
+	  return rule('logical', terms);
+	}
+
+	// ----------
+
+	function partitionToRule(selection) {
+	  var roles = [];
+	  var _selection$partition = selection.partition;
+	  var dividers = _selection$partition.dividers;
+	  var variable = _selection$partition.variable;
+
+	  var terms = dividers.map(function (divider, idx, array) {
+	    if (idx === 0) {
+	      return {
+	        type: '3L',
+	        terms: [variable, divider.closeToLeft ? '<' : '<=', divider.value]
+	      };
+	    }
+	    return {
+	      type: '5C',
+	      terms: [array[idx - 1].value, array[idx - 1].closeToLeft ? '<' : '<=', variable, divider.closeToLeft ? '<' : '<=', divider.value]
+	    };
+	  });
+	  var lastDivider = dividers.slice(-1);
+	  terms.push({
+	    type: '3R',
+	    terms: [lastDivider.value, lastDivider.closeToLeft ? '<' : '<=', variable]
+	  });
+
+	  // Fill roles with partition number
+	  while (roles.length < terms.length) {
+	    roles.push({ partition: roles.length });
+	  }
+
+	  return rule('multi', terms, roles);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function convertToRuleSelection(selection) {
+	  if (selection.type === 'range') {
+	    return rangeToRule(selection);
+	  }
+	  if (selection.type === 'partition') {
+	    return partitionToRule(selection);
+	  }
+	  if (selection.type === 'empty') {
+	    return selection;
+	  }
+
+	  throw new Error('Convertion to rule not supported with selection of type ' + selection.type);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function markModified(selection) {
+	  generation++;
+	  return Object.assign({}, selection, { generation: generation });
+	}
+
+	// ----------------------------------------------------------------------------
+	// Exposed object
+	// ----------------------------------------------------------------------------
+
+	exports.default = {
+	  markModified: markModified,
+	  empty: empty,
+	  partition: partition,
+	  range: range,
+	  rule: rule,
+	  convertToRuleSelection: convertToRuleSelection
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.annotation = annotation;
+	exports.update = update;
+	// ----------------------------------------------------------------------------
+	// Internal helpers
+	// ----------------------------------------------------------------------------
+
+	var generation = 0;
+
+	// ----------------------------------------------------------------------------
+	// Public builder method
+	// ----------------------------------------------------------------------------
+
+	function annotation(selection, score) {
+	  var weight = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	  var rationale = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
+
+	  generation++;
+	  return {
+	    generation: generation,
+	    selection: selection,
+	    score: score,
+	    weight: weight,
+	    rationale: rationale
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function update(annotationObject, changeSet) {
+	  var updatedAnnotation = Object.assign({}, annotationObject, changeSet);
+
+	  var changeDetected = false;
+	  Object.keys(updatedAnnotation).forEach(function (key) {
+	    if (updatedAnnotation[key] !== annotationObject[key]) {
+	      changeDetected = true;
+	    }
+	  });
+
+	  if (changeDetected) {
+	    generation++;
+	    updatedAnnotation.generation = generation;
+	  }
+
+	  return updatedAnnotation;
+	}
+
+	// ----------------------------------------------------------------------------
+	// Exposed object
+	// ----------------------------------------------------------------------------
+
+	exports.default = {
+	  annotation: annotation,
+	  update: update
+	};
+
+/***/ },
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAAB3RJTUUH4AcZEBUusuQ9jAAAAPpJREFUSMft1L1KQ0EQhuHHH7RSG1GDhbWd4A2IifES7PVOchcBGxHE1j69raV/lYgoNtqrsdkjEnYPe3KOjfrBsDCz37yzsAx/TYs4wyOecIceppqE9DCMxGaOeTITspzIzzUJqaXfC5nFKhbG7NcK/okUZAMPuMcL9is0n8HxN/8A86OX1vAa+aIHod5PfOGtADiN1AZF8+lwdmNkHAZDmY6wF8m3RxPreEtMOwyNYvmTEs9FbKJtvJeYqsQlllJPb+OjJuCqZEN8qVMDdJ0DqAOqBCi0UwF0g5VxN0I3A3BbB5ADagRQaDcBaDW9TDt4DoDznwD8C3wCdHedNCg8u2UAAAAASUVORK5CYII="
 
 /***/ },
-/* 30 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33440,19 +35556,19 @@
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _CompositeClosureHelper = __webpack_require__(14);
+	var _CompositeClosureHelper = __webpack_require__(13);
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _d = __webpack_require__(17);
+	var _d = __webpack_require__(40);
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(31);
+	var _FieldSelector = __webpack_require__(56);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
-	var _template = __webpack_require__(33);
+	var _template = __webpack_require__(58);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -33734,13 +35850,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 31 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(32);
+	var content = __webpack_require__(57);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -33760,12 +35876,12 @@
 	}
 
 /***/ },
-/* 32 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
 	// imports
-	exports.i(__webpack_require__(20), undefined);
+	exports.i(__webpack_require__(43), undefined);
 
 	// module
 	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.FieldSelector_jsFieldName_1QN_H,\n.FieldSelector_jsHistMax_sb-L8,\n.FieldSelector_jsHistMin_1Cf9q,\n.FieldSelector_jsHistRect_27Pen,\n.FieldSelector_jsLegend_2QXvQ,\n.FieldSelector_jsSparkline_2Vxgk {\n\n}\n\n.FieldSelector_fieldSelector_RsKhz {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n}\n\n.FieldSelector_icon_2Y8cG {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_selectedFieldsIcon_1jfaz {\n}\n\n.FieldSelector_allFieldsIcon_2DXP5 {\n}\n\n.FieldSelector_legend_1amq_ {\n  text-align: center;\n  padding: 5px;\n}\n.FieldSelector_legendSvg_1OrnU {\n  vertical-align: middle;\n}\n\n.FieldSelector_fieldName_3FImR {\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.FieldSelector_row_3cxiD {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_unselectedRow_1Y5Dk {\n  opacity: 0.5;\n}\n\n.FieldSelector_selectedRow_31J6g {\n  opacity: 1;\n}\n\n.FieldSelector_row_3cxiD:hover {\n  background-color: #ccd;\n}\n\n.FieldSelector_thead_1Yf4t {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.FieldSelector_tbody_XjkGZ {\n}\n\n.FieldSelector_sparkline_3ZOf0 {\n  padding: 2px;\n}\n\n.FieldSelector_sparklineSvg_38FC2 {\n  vertical-align: middle;\n}\n\n.FieldSelector_histRect_1D8Az {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.FieldSelector_histRectEven_1OL0t {\n  fill: #8089B8;\n}\n.FieldSelector_histRectOdd_QuYdM {\n  fill: #7780AB;\n}\n\n.FieldSelector_histoHilite_3fkOQ {\n  fill: #999;\n}\n\n.FieldSelector_binHilite_3wiKB {\n  fill: #001EB8;\n}\n", ""]);
@@ -33779,9 +35895,9 @@
 		"jsLegend": "FieldSelector_jsLegend_2QXvQ",
 		"jsSparkline": "FieldSelector_jsSparkline_2Vxgk",
 		"fieldSelector": "FieldSelector_fieldSelector_RsKhz",
-		"icon": "FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + "",
-		"selectedFieldsIcon": "FieldSelector_selectedFieldsIcon_1jfaz FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-check-square-o"] + "",
-		"allFieldsIcon": "FieldSelector_allFieldsIcon_2DXP5 FieldSelector_icon_2Y8cG " + __webpack_require__(20).locals["fa"] + " " + __webpack_require__(20).locals["fa-fw"] + " " + __webpack_require__(20).locals["fa-square-o"] + "",
+		"icon": "FieldSelector_icon_2Y8cG " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + "",
+		"selectedFieldsIcon": "FieldSelector_selectedFieldsIcon_1jfaz FieldSelector_icon_2Y8cG " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-check-square-o"] + "",
+		"allFieldsIcon": "FieldSelector_allFieldsIcon_2DXP5 FieldSelector_icon_2Y8cG " + __webpack_require__(43).locals["fa"] + " " + __webpack_require__(43).locals["fa-fw"] + " " + __webpack_require__(43).locals["fa-square-o"] + "",
 		"legend": "FieldSelector_legend_1amq_ FieldSelector_jsLegend_2QXvQ",
 		"legendSvg": "FieldSelector_legendSvg_1OrnU",
 		"fieldName": "FieldSelector_fieldName_3FImR FieldSelector_jsFieldName_1QN_H",
@@ -33800,1259 +35916,13 @@
 	};
 
 /***/ },
-/* 33 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"field-selector-mode\"><i></i></th><th class=\"field-selector-label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var DEFAULT_FIELD_STATE = {
-	  range: [0, 1],
-	  active: false
-	};
-	// ----------------------------------------------------------------------------
-	// Field Provider
-	// ----------------------------------------------------------------------------
-
-	function fieldProvider(publicAPI, model) {
-	  if (!model.fields) {
-	    model.fields = {};
-	  }
-
-	  publicAPI.getFieldNames = function () {
-	    var val = Object.keys(model.fields);
-	    if (model.fieldsSorted) val.sort();
-	    return val;
-	  };
-
-	  publicAPI.getActiveFieldNames = function () {
-	    var val = Object.keys(model.fields).filter(function (name) {
-	      return model.fields[name].active;
-	    });
-	    if (model.fieldsSorted) val.sort();
-	    return val;
-	  };
-
-	  publicAPI.addField = function (name) {
-	    var initialState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    var field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name: name });
-	    field.range = [].concat(field.range); // Make sure we copy the array
-	    model.fields[name] = field;
-	    publicAPI.fireFieldChange(field);
-	  };
-
-	  publicAPI.getField = function (name) {
-	    return model.fields[name];
-	  };
-
-	  publicAPI.updateField = function (name) {
-	    var changeSet = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    var field = model.fields[name] || {};
-	    var hasChange = false;
-
-	    Object.keys(changeSet).forEach(function (key) {
-	      hasChange = hasChange || field[key] !== changeSet[key];
-	      // Set changes
-	      field[key] = changeSet[key];
-	    });
-
-	    if (hasChange) {
-	      field.name = name; // Just in case
-	      model.fields[name] = field;
-	      publicAPI.fireFieldChange(field);
-	    }
-	  };
-
-	  publicAPI.toggleFieldSelection = function (name) {
-	    model.fields[name].active = !model.fields[name].active;
-	    publicAPI.fireFieldChange(model.fields[name]);
-	  };
-
-	  publicAPI.removeAllFields = function () {
-	    model.fields = {};
-	    publicAPI.fireFieldChange();
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  fields: null,
-	  fieldsSorted: false
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'FieldProvider');
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'FieldChange');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['fieldsSorted']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldsSorted']);
-
-	  fieldProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = exports.STATIC = undefined;
-	exports.createSortedIterator = createSortedIterator;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	var _shapes = __webpack_require__(36);
-
-	var _shapes2 = _interopRequireDefault(_shapes);
-
-	var _ColorPalettes = __webpack_require__(49);
-
-	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Global
-	// ----------------------------------------------------------------------------
-
-	function convert(item, model) {
-	  var result = { color: item.colors };
-	  result.shape = model.legendShapes[item.shapes];
-	  return result;
-	}
-
-	function createSortedIterator(priorityOrder, propertyChoices, defaultValues) {
-	  var propertyKeys = Object.keys(propertyChoices);
-
-	  var prioritySizes = priorityOrder.map(function (name) {
-	    return propertyChoices[name].length;
-	  });
-	  var priorityIndex = prioritySizes.map(function (i) {
-	    return 0;
-	  });
-
-	  var get = function get() {
-	    var item = {};
-	    propertyKeys.forEach(function (name) {
-	      var idx = priorityOrder.indexOf(name);
-	      if (idx === -1) {
-	        item[name] = defaultValues[name];
-	      } else {
-	        item[name] = propertyChoices[name][priorityIndex[idx]];
-	      }
-	    });
-	    return item;
-	  };
-
-	  var next = function next() {
-	    var overflowIdx = 0;
-	    priorityIndex[overflowIdx]++;
-	    while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
-	      // Handle overflow
-	      priorityIndex[overflowIdx] = 0;
-	      if (overflowIdx < priorityIndex.length) {
-	        priorityIndex[++overflowIdx]++;
-	      }
-	    }
-	  };
-
-	  return { get: get, next: next };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Static API
-	// ----------------------------------------------------------------------------
-
-	var STATIC = exports.STATIC = {
-	  shapes: _shapes2.default,
-	  palettes: _ColorPalettes2.default
-	};
-
-	// ----------------------------------------------------------------------------
-	// Legend Provider
-	// ----------------------------------------------------------------------------
-
-	function legendProvider(publicAPI, model) {
-	  publicAPI.addLegendEntry = function (name) {
-	    if (model.legendEntries.indexOf(name) === -1 && name) {
-	      model.legendEntries.push(name);
-	      model.legendDirty = true;
-	    }
-	  };
-
-	  publicAPI.removeLegendEntry = function (name) {
-	    if (model.legendEntries.indexOf(name) !== -1 && name) {
-	      model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
-	      model.legendDirty = true;
-	    }
-	  };
-	  publicAPI.removeAllLegendEntry = function () {
-	    model.legendEntries = [];
-	    model.legendDirty = true;
-	  };
-
-	  publicAPI.assignLegend = function () {
-	    var newPriority = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
-
-	    if (newPriority) {
-	      model.legendPriorities = newPriority;
-	      model.legendDirty = true;
-	    }
-	    if (model.legendDirty) {
-	      (function () {
-	        var shapesArray = Object.keys(model.legendShapes);
-	        model.legendDirty = false;
-	        model.legendMapping = {};
-
-	        if (model.legendPriorities && model.legendPriorities.length) {
-	          (function () {
-	            var defaultColor = model.legendColors[0];
-	            var defaultShape = shapesArray[0];
-
-	            var iterator = createSortedIterator(model.legendPriorities, { colors: model.legendColors, shapes: shapesArray }, { colors: defaultColor, shapes: defaultShape });
-
-	            model.legendEntries.forEach(function (name) {
-	              model.legendMapping[name] = convert(iterator.get(), model);
-	              iterator.next();
-	            });
-	          })();
-	        } else {
-	          model.legendEntries.forEach(function (name, idx) {
-	            model.legendMapping[name] = {
-	              color: model.legendColors[idx % model.legendColors.length],
-	              shape: model.legendShapes[shapesArray[idx % shapesArray.length]]
-	            };
-	          });
-	        }
-	      })();
-	    }
-	  };
-
-	  publicAPI.useLegendPalette = function (name) {
-	    var colorSet = _ColorPalettes2.default[name];
-	    if (colorSet) {
-	      model.legendColors = [].concat(colorSet);
-	      model.legendDirty = true;
-	    }
-	  };
-
-	  publicAPI.updateLegendSettings = function (settings) {
-	    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(function (key) {
-	      if (settings[key]) {
-	        model[key] = [].concat(settings.key);
-	        model.legendDirty = true;
-	      }
-	    });
-	  };
-
-	  publicAPI.listLegendColorPalettes = function () {
-	    return Object.keys(_ColorPalettes2.default);
-	  };
-
-	  publicAPI.getLegend = function (name) {
-	    if (model.legendDirty) {
-	      publicAPI.assignLegend();
-	    }
-	    return model.legendMapping[name];
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  legendShapes: _shapes2.default,
-	  legendColors: [].concat(_ColorPalettes2.default.Paired),
-	  legendEntries: [],
-	  legendPriorities: ['shapes', 'colors'],
-	  legendMapping: {},
-	  legendDirty: true
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'LegendProvider');
-
-	  legendProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _Circle = __webpack_require__(37);
-
-	var _Circle2 = _interopRequireDefault(_Circle);
-
-	var _Square = __webpack_require__(41);
-
-	var _Square2 = _interopRequireDefault(_Square);
-
-	var _Triangle = __webpack_require__(42);
-
-	var _Triangle2 = _interopRequireDefault(_Triangle);
-
-	var _Diamond = __webpack_require__(43);
-
-	var _Diamond2 = _interopRequireDefault(_Diamond);
-
-	var _X = __webpack_require__(44);
-
-	var _X2 = _interopRequireDefault(_X);
-
-	var _Pentagon = __webpack_require__(45);
-
-	var _Pentagon2 = _interopRequireDefault(_Pentagon);
-
-	var _InvertedTriangle = __webpack_require__(46);
-
-	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
-
-	var _Star = __webpack_require__(47);
-
-	var _Star2 = _interopRequireDefault(_Star);
-
-	var _Plus = __webpack_require__(48);
-
-	var _Plus2 = _interopRequireDefault(_Plus);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = {
-	  Circle: _Circle2.default,
-	  Square: _Square2.default,
-	  Triangle: _Triangle2.default,
-	  Diamond: _Diamond2.default,
-	  X: _X2.default,
-	  Pentagon: _Pentagon2.default,
-	  InvertedTriangle: _InvertedTriangle2.default,
-	  Star: _Star2.default,
-	  Plus: _Plus2.default
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Circle");
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Sprite = __webpack_require__(39);
-	var globalSprite = new Sprite();
-
-	if (document.body) {
-	  globalSprite.elem = globalSprite.render(document.body);
-	} else {
-	  document.addEventListener('DOMContentLoaded', function () {
-	    globalSprite.elem = globalSprite.render(document.body);
-	  }, false);
-	}
-
-	module.exports = globalSprite;
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Sniffr = __webpack_require__(40);
-
-	/**
-	 * List of SVG attributes to fix url target in them
-	 * @type {string[]}
-	 */
-	var fixAttributes = [
-	  'clipPath',
-	  'colorProfile',
-	  'src',
-	  'cursor',
-	  'fill',
-	  'filter',
-	  'marker',
-	  'markerStart',
-	  'markerMid',
-	  'markerEnd',
-	  'mask',
-	  'stroke'
-	];
-
-	/**
-	 * Query to find'em
-	 * @type {string}
-	 */
-	var fixAttributesQuery = '[' + fixAttributes.join('],[') + ']';
-	/**
-	 * @type {RegExp}
-	 */
-	var URI_FUNC_REGEX = /^url\((.*)\)$/;
-
-	/**
-	 * Convert array-like to array
-	 * @param {Object} arrayLike
-	 * @returns {Array.<*>}
-	 */
-	function arrayFrom(arrayLike) {
-	  return Array.prototype.slice.call(arrayLike, 0);
-	}
-
-	/**
-	 * Handles forbidden symbols which cannot be directly used inside attributes with url(...) content.
-	 * Adds leading slash for the brackets
-	 * @param {string} url
-	 * @return {string} encoded url
-	 */
-	function encodeUrlForEmbedding(url) {
-	  return url.replace(/\(|\)/g, "\\$&");
-	}
-
-	/**
-	 * Replaces prefix in `url()` functions
-	 * @param {Element} svg
-	 * @param {string} currentUrlPrefix
-	 * @param {string} newUrlPrefix
-	 */
-	function baseUrlWorkAround(svg, currentUrlPrefix, newUrlPrefix) {
-	  var nodes = svg.querySelectorAll(fixAttributesQuery);
-
-	  if (!nodes) {
-	    return;
-	  }
-
-	  arrayFrom(nodes).forEach(function (node) {
-	    if (!node.attributes) {
-	      return;
-	    }
-
-	    arrayFrom(node.attributes).forEach(function (attribute) {
-	      var attributeName = attribute.localName.toLowerCase();
-
-	      if (fixAttributes.indexOf(attributeName) !== -1) {
-	        var match = URI_FUNC_REGEX.exec(node.getAttribute(attributeName));
-
-	        // Do not touch urls with unexpected prefix
-	        if (match && match[1].indexOf(currentUrlPrefix) === 0) {
-	          var referenceUrl = encodeUrlForEmbedding(newUrlPrefix + match[1].split(currentUrlPrefix)[1]);
-	          node.setAttribute(attributeName, 'url(' + referenceUrl + ')');
-	        }
-	      }
-	    });
-	  });
-	}
-
-	/**
-	 * Because of Firefox bug #353575 gradients and patterns don't work if they are within a symbol.
-	 * To workaround this we move the gradient definition outside the symbol element
-	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=353575
-	 * @param {Element} svg
-	 */
-	var FirefoxSymbolBugWorkaround = function (svg) {
-	  var defs = svg.querySelector('defs');
-
-	  var moveToDefsElems = svg.querySelectorAll('symbol linearGradient, symbol radialGradient, symbol pattern');
-	  for (var i = 0, len = moveToDefsElems.length; i < len; i++) {
-	    defs.appendChild(moveToDefsElems[i]);
-	  }
-	};
-
-	/**
-	 * @type {string}
-	 */
-	var DEFAULT_URI_PREFIX = '#';
-
-	/**
-	 * @type {string}
-	 */
-	var xLinkHref = 'xlink:href';
-	/**
-	 * @type {string}
-	 */
-	var xLinkNS = 'http://www.w3.org/1999/xlink';
-	/**
-	 * @type {string}
-	 */
-	var svgOpening = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="' + xLinkNS + '"';
-	/**
-	 * @type {string}
-	 */
-	var svgClosing = '</svg>';
-	/**
-	 * @type {string}
-	 */
-	var contentPlaceHolder = '{content}';
-
-	/**
-	 * Representation of SVG sprite
-	 * @constructor
-	 */
-	function Sprite() {
-	  var baseElement = document.getElementsByTagName('base')[0];
-	  var currentUrl = window.location.href.split('#')[0];
-	  var baseUrl = baseElement && baseElement.href;
-	  this.urlPrefix = baseUrl && baseUrl !== currentUrl ? currentUrl + DEFAULT_URI_PREFIX : DEFAULT_URI_PREFIX;
-
-	  var sniffr = new Sniffr();
-	  sniffr.sniff();
-	  this.browser = sniffr.browser;
-	  this.content = [];
-
-	  if (this.browser.name !== 'ie' && baseUrl) {
-	    window.addEventListener('spriteLoaderLocationUpdated', function (e) {
-	      var currentPrefix = this.urlPrefix;
-	      var newUrlPrefix = e.detail.newUrl.split(DEFAULT_URI_PREFIX)[0] + DEFAULT_URI_PREFIX;
-	      baseUrlWorkAround(this.svg, currentPrefix, newUrlPrefix);
-	      this.urlPrefix = newUrlPrefix;
-
-	      if (this.browser.name === 'firefox' || this.browser.name === 'edge' || this.browser.name === 'chrome' && this.browser.version[0] >= 49) {
-	        var nodes = arrayFrom(document.querySelectorAll('use[*|href]'));
-	        nodes.forEach(function (node) {
-	          var href = node.getAttribute(xLinkHref);
-	          if (href && href.indexOf(currentPrefix) === 0) {
-	            node.setAttributeNS(xLinkNS, xLinkHref, newUrlPrefix + href.split(DEFAULT_URI_PREFIX)[1]);
-	          }
-	        });
-	      }
-	    }.bind(this));
-	  }
-	}
-
-	Sprite.styles = ['position:absolute', 'width:0', 'height:0', 'visibility:hidden'];
-
-	Sprite.spriteTemplate = svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing;
-	Sprite.symbolTemplate = svgOpening + '>' + contentPlaceHolder + svgClosing;
-
-	/**
-	 * @type {Array<String>}
-	 */
-	Sprite.prototype.content = null;
-
-	/**
-	 * @param {String} content
-	 * @param {String} id
-	 */
-	Sprite.prototype.add = function (content, id) {
-	  if (this.svg) {
-	    this.appendSymbol(content);
-	  }
-
-	  this.content.push(content);
-
-	  return DEFAULT_URI_PREFIX + id;
-	};
-
-	/**
-	 *
-	 * @param content
-	 * @param template
-	 * @returns {Element}
-	 */
-	Sprite.prototype.wrapSVG = function (content, template) {
-	  var svgString = template.replace(contentPlaceHolder, content);
-
-	  var svg = new DOMParser().parseFromString(svgString, 'image/svg+xml').documentElement;
-
-	  if (this.browser.name !== 'ie' && this.urlPrefix) {
-	    baseUrlWorkAround(svg, DEFAULT_URI_PREFIX, this.urlPrefix);
-	  }
-
-	  return svg;
-	};
-
-	Sprite.prototype.appendSymbol = function (content) {
-	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate).childNodes[0];
-
-	  this.svg.querySelector('defs').appendChild(symbol);
-	  if (this.browser.name === 'firefox') {
-	    FirefoxSymbolBugWorkaround(this.svg);
-	  }
-	};
-
-	/**
-	 * @returns {String}
-	 */
-	Sprite.prototype.toString = function () {
-	  var wrapper = document.createElement('div');
-	  wrapper.appendChild(this.render());
-	  return wrapper.innerHTML;
-	};
-
-	/**
-	 * @param {HTMLElement} [target]
-	 * @param {Boolean} [prepend=true]
-	 * @returns {HTMLElement} Rendered sprite node
-	 */
-	Sprite.prototype.render = function (target, prepend) {
-	  target = target || null;
-	  prepend = typeof prepend === 'boolean' ? prepend : true;
-
-	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate);
-
-	  if (this.browser.name === 'firefox') {
-	    FirefoxSymbolBugWorkaround(svg);
-	  }
-
-	  if (target) {
-	    if (prepend && target.childNodes[0]) {
-	      target.insertBefore(svg, target.childNodes[0]);
-	    } else {
-	      target.appendChild(svg);
-	    }
-	  }
-
-	  this.svg = svg;
-
-	  return svg;
-	};
-
-	module.exports = Sprite;
-
-
-/***/ },
-/* 40 */
-/***/ function(module, exports) {
-
-	(function(host) {
-
-	  var properties = {
-	    browser: [
-	      [/msie ([\.\_\d]+)/, "ie"],
-	      [/trident\/.*?rv:([\.\_\d]+)/, "ie"],
-	      [/firefox\/([\.\_\d]+)/, "firefox"],
-	      [/chrome\/([\.\_\d]+)/, "chrome"],
-	      [/version\/([\.\_\d]+).*?safari/, "safari"],
-	      [/mobile safari ([\.\_\d]+)/, "safari"],
-	      [/android.*?version\/([\.\_\d]+).*?safari/, "com.android.browser"],
-	      [/crios\/([\.\_\d]+).*?safari/, "chrome"],
-	      [/opera/, "opera"],
-	      [/opera\/([\.\_\d]+)/, "opera"],
-	      [/opera ([\.\_\d]+)/, "opera"],
-	      [/opera mini.*?version\/([\.\_\d]+)/, "opera.mini"],
-	      [/opios\/([a-z\.\_\d]+)/, "opera"],
-	      [/blackberry/, "blackberry"],
-	      [/blackberry.*?version\/([\.\_\d]+)/, "blackberry"],
-	      [/bb\d+.*?version\/([\.\_\d]+)/, "blackberry"],
-	      [/rim.*?version\/([\.\_\d]+)/, "blackberry"],
-	      [/iceweasel\/([\.\_\d]+)/, "iceweasel"],
-	      [/edge\/([\.\d]+)/, "edge"]
-	    ],
-	    os: [
-	      [/linux ()([a-z\.\_\d]+)/, "linux"],
-	      [/mac os x/, "macos"],
-	      [/mac os x.*?([\.\_\d]+)/, "macos"],
-	      [/os ([\.\_\d]+) like mac os/, "ios"],
-	      [/openbsd ()([a-z\.\_\d]+)/, "openbsd"],
-	      [/android/, "android"],
-	      [/android ([a-z\.\_\d]+);/, "android"],
-	      [/mozilla\/[a-z\.\_\d]+ \((?:mobile)|(?:tablet)/, "firefoxos"],
-	      [/windows\s*(?:nt)?\s*([\.\_\d]+)/, "windows"],
-	      [/windows phone.*?([\.\_\d]+)/, "windows.phone"],
-	      [/windows mobile/, "windows.mobile"],
-	      [/blackberry/, "blackberryos"],
-	      [/bb\d+/, "blackberryos"],
-	      [/rim.*?os\s*([\.\_\d]+)/, "blackberryos"]
-	    ],
-	    device: [
-	      [/ipad/, "ipad"],
-	      [/iphone/, "iphone"],
-	      [/lumia/, "lumia"],
-	      [/htc/, "htc"],
-	      [/nexus/, "nexus"],
-	      [/galaxy nexus/, "galaxy.nexus"],
-	      [/nokia/, "nokia"],
-	      [/ gt\-/, "galaxy"],
-	      [/ sm\-/, "galaxy"],
-	      [/xbox/, "xbox"],
-	      [/(?:bb\d+)|(?:blackberry)|(?: rim )/, "blackberry"]
-	    ]
-	  };
-
-	  var UNKNOWN = "Unknown";
-
-	  var propertyNames = Object.keys(properties);
-
-	  function Sniffr() {
-	    var self = this;
-
-	    propertyNames.forEach(function(propertyName) {
-	      self[propertyName] = {
-	        name: UNKNOWN,
-	        version: [],
-	        versionString: UNKNOWN
-	      };
-	    });
-	  }
-
-	  function determineProperty(self, propertyName, userAgent) {
-	    properties[propertyName].forEach(function(propertyMatcher) {
-	      var propertyRegex = propertyMatcher[0];
-	      var propertyValue = propertyMatcher[1];
-
-	      var match = userAgent.match(propertyRegex);
-
-	      if (match) {
-	        self[propertyName].name = propertyValue;
-
-	        if (match[2]) {
-	          self[propertyName].versionString = match[2];
-	          self[propertyName].version = [];
-	        } else if (match[1]) {
-	          self[propertyName].versionString = match[1].replace(/_/g, ".");
-	          self[propertyName].version = parseVersion(match[1]);
-	        } else {
-	          self[propertyName].versionString = UNKNOWN;
-	          self[propertyName].version = [];
-	        }
-	      }
-	    });
-	  }
-
-	  function parseVersion(versionString) {
-	    return versionString.split(/[\._]/).map(function(versionPart) {
-	      return parseInt(versionPart);
-	    });
-	  }
-
-	  Sniffr.prototype.sniff = function(userAgentString) {
-	    var self = this;
-	    var userAgent = (userAgentString || navigator.userAgent || "").toLowerCase();
-
-	    propertyNames.forEach(function(propertyName) {
-	      determineProperty(self, propertyName, userAgent);
-	    });
-	  };
-
-
-	  if (typeof module !== 'undefined' && module.exports) {
-	    module.exports = Sniffr;
-	  } else {
-	    host.Sniffr = new Sniffr();
-	    host.Sniffr.sniff(navigator.userAgent);
-	  }
-	})(this);
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(38);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Plus");
-
-/***/ },
-/* 49 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var YlGn = exports.YlGn = ['rgb(255, 255, 229)', 'rgb(247, 252, 185)', 'rgb(217, 240, 163)', 'rgb(173, 221, 142)', 'rgb(120, 198, 121)', 'rgb(65, 171, 93)', 'rgb(35, 132, 67)', 'rgb(0, 104, 55)', 'rgb(0, 69, 41)'];
-
-	var YlGnBu = exports.YlGnBu = ['rgb(255, 255, 217)', 'rgb(237, 248, 177)', 'rgb(199, 233, 180)', 'rgb(127, 205, 187)', 'rgb(65, 182, 196)', 'rgb(29, 145, 192)', 'rgb(34, 94, 168)', 'rgb(37, 52, 148)', 'rgb(8, 29, 88)'];
-
-	var GnBu = exports.GnBu = ['rgb(247, 252, 240)', 'rgb(224, 243, 219)', 'rgb(204, 235, 197)', 'rgb(168, 221, 181)', 'rgb(123, 204, 196)', 'rgb(78, 179, 211)', 'rgb(43, 140, 190)', 'rgb(8, 104, 172)', 'rgb(8, 64, 129)'];
-
-	var BuGn = exports.BuGn = ['rgb(247, 252, 253)', 'rgb(229, 245, 249)', 'rgb(204, 236, 230)', 'rgb(153, 216, 201)', 'rgb(102, 194, 164)', 'rgb(65, 174, 118)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
-
-	var PuBuGn = exports.PuBuGn = ['rgb(255, 247, 251)', 'rgb(236, 226, 240)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(103, 169, 207)', 'rgb(54, 144, 192)', 'rgb(2, 129, 138)', 'rgb(1, 108, 89)', 'rgb(1, 70, 54)'];
-
-	var PuBu = exports.PuBu = ['rgb(255, 247, 251)', 'rgb(236, 231, 242)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(116, 169, 207)', 'rgb(54, 144, 192)', 'rgb(5, 112, 176)', 'rgb(4, 90, 141)', 'rgb(2, 56, 88)'];
-
-	var BuPu = exports.BuPu = ['rgb(247, 252, 253)', 'rgb(224, 236, 244)', 'rgb(191, 211, 230)', 'rgb(158, 188, 218)', 'rgb(140, 150, 198)', 'rgb(140, 107, 177)', 'rgb(136, 65, 157)', 'rgb(129, 15, 124)', 'rgb(77, 0, 75)'];
-
-	var RdPu = exports.RdPu = ['rgb(255, 247, 243)', 'rgb(253, 224, 221)', 'rgb(252, 197, 192)', 'rgb(250, 159, 181)', 'rgb(247, 104, 161)', 'rgb(221, 52, 151)', 'rgb(174, 1, 126)', 'rgb(122, 1, 119)', 'rgb(73, 0, 106)'];
-
-	var PuRd = exports.PuRd = ['rgb(247, 244, 249)', 'rgb(231, 225, 239)', 'rgb(212, 185, 218)', 'rgb(201, 148, 199)', 'rgb(223, 101, 176)', 'rgb(231, 41, 138)', 'rgb(206, 18, 86)', 'rgb(152, 0, 67)', 'rgb(103, 0, 31)'];
-
-	var OrRd = exports.OrRd = ['rgb(255, 247, 236)', 'rgb(254, 232, 200)', 'rgb(253, 212, 158)', 'rgb(253, 187, 132)', 'rgb(252, 141, 89)', 'rgb(239, 101, 72)', 'rgb(215, 48, 31)', 'rgb(179, 0, 0)', 'rgb(127, 0, 0)'];
-
-	var YlOrRd = exports.YlOrRd = ['rgb(255, 255, 204)', 'rgb(255, 237, 160)', 'rgb(254, 217, 118)', 'rgb(254, 178, 76)', 'rgb(253, 141, 60)', 'rgb(252, 78, 42)', 'rgb(227, 26, 28)', 'rgb(189, 0, 38)', 'rgb(128, 0, 38)'];
-
-	var YlOrBr = exports.YlOrBr = ['rgb(255, 255, 229)', 'rgb(255, 247, 188)', 'rgb(254, 227, 145)', 'rgb(254, 196, 79)', 'rgb(254, 153, 41)', 'rgb(236, 112, 20)', 'rgb(204, 76, 2)', 'rgb(153, 52, 4)', 'rgb(102, 37, 6)'];
-
-	var Purples = exports.Purples = ['rgb(252, 251, 253)', 'rgb(239, 237, 245)', 'rgb(218, 218, 235)', 'rgb(188, 189, 220)', 'rgb(158, 154, 200)', 'rgb(128, 125, 186)', 'rgb(106, 81, 163)', 'rgb(84, 39, 143)', 'rgb(63, 0, 125)'];
-
-	var Blues = exports.Blues = ['rgb(247, 251, 255)', 'rgb(222, 235, 247)', 'rgb(198, 219, 239)', 'rgb(158, 202, 225)', 'rgb(107, 174, 214)', 'rgb(66, 146, 198)', 'rgb(33, 113, 181)', 'rgb(8, 81, 156)', 'rgb(8, 48, 107)'];
-
-	var Greens = exports.Greens = ['rgb(247, 252, 245)', 'rgb(229, 245, 224)', 'rgb(199, 233, 192)', 'rgb(161, 217, 155)', 'rgb(116, 196, 118)', 'rgb(65, 171, 93)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
-
-	var Oranges = exports.Oranges = ['rgb(255, 245, 235)', 'rgb(254, 230, 206)', 'rgb(253, 208, 162)', 'rgb(253, 174, 107)', 'rgb(253, 141, 60)', 'rgb(241, 105, 19)', 'rgb(217, 72, 1)', 'rgb(166, 54, 3)', 'rgb(127, 39, 4)'];
-
-	var Reds = exports.Reds = ['rgb(255, 245, 240)', 'rgb(254, 224, 210)', 'rgb(252, 187, 161)', 'rgb(252, 146, 114)', 'rgb(251, 106, 74)', 'rgb(239, 59, 44)', 'rgb(203, 24, 29)', 'rgb(165, 15, 21)', 'rgb(103, 0, 13)'];
-
-	var Greys = exports.Greys = ['rgb(255, 255, 255)', 'rgb(240, 240, 240)', 'rgb(217, 217, 217)', 'rgb(189, 189, 189)', 'rgb(150, 150, 150)', 'rgb(115, 115, 115)', 'rgb(82, 82, 82)', 'rgb(37, 37, 37)', 'rgb(0, 0, 0)'];
-
-	var PuOr = exports.PuOr = ['rgb(127, 59, 8)', 'rgb(179, 88, 6)', 'rgb(224, 130, 20)', 'rgb(253, 184, 99)', 'rgb(254, 224, 182)', 'rgb(247, 247, 247)', 'rgb(216, 218, 235)', 'rgb(178, 171, 210)', 'rgb(128, 115, 172)', 'rgb(84, 39, 136)', 'rgb(45, 0, 75)'];
-
-	var BrBG = exports.BrBG = ['rgb(84, 48, 5)', 'rgb(140, 81, 10)', 'rgb(191, 129, 45)', 'rgb(223, 194, 125)', 'rgb(246, 232, 195)', 'rgb(245, 245, 245)', 'rgb(199, 234, 229)', 'rgb(128, 205, 193)', 'rgb(53, 151, 143)', 'rgb(1, 102, 94)', 'rgb(0, 60, 48)'];
-
-	var PRGn = exports.PRGn = ['rgb(64, 0, 75)', 'rgb(118, 42, 131)', 'rgb(153, 112, 171)', 'rgb(194, 165, 207)', 'rgb(231, 212, 232)', 'rgb(247, 247, 247)', 'rgb(217, 240, 211)', 'rgb(166, 219, 160)', 'rgb(90, 174, 97)', 'rgb(27, 120, 55)', 'rgb(0, 68, 27)'];
-
-	var PiYG = exports.PiYG = ['rgb(142, 1, 82)', 'rgb(197, 27, 125)', 'rgb(222, 119, 174)', 'rgb(241, 182, 218)', 'rgb(253, 224, 239)', 'rgb(247, 247, 247)', 'rgb(230, 245, 208)', 'rgb(184, 225, 134)', 'rgb(127, 188, 65)', 'rgb(77, 146, 33)', 'rgb(39, 100, 25)'];
-
-	var RdBu = exports.RdBu = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(247, 247, 247)', 'rgb(209, 229, 240)', 'rgb(146, 197, 222)', 'rgb(67, 147, 195)', 'rgb(33, 102, 172)', 'rgb(5, 48, 97)'];
-
-	var RdGy = exports.RdGy = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(255, 255, 255)', 'rgb(224, 224, 224)', 'rgb(186, 186, 186)', 'rgb(135, 135, 135)', 'rgb(77, 77, 77)', 'rgb(26, 26, 26)'];
-
-	var RdYlBu = exports.RdYlBu = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 144)', 'rgb(255, 255, 191)', 'rgb(224, 243, 248)', 'rgb(171, 217, 233)', 'rgb(116, 173, 209)', 'rgb(69, 117, 180)', 'rgb(49, 54, 149)'];
-
-	var Spectral = exports.Spectral = ['rgb(158, 1, 66)', 'rgb(213, 62, 79)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(230, 245, 152)', 'rgb(171, 221, 164)', 'rgb(102, 194, 165)', 'rgb(50, 136, 189)', 'rgb(94, 79, 162)'];
-
-	var RdYlGn = exports.RdYlGn = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(217, 239, 139)', 'rgb(166, 217, 106)', 'rgb(102, 189, 99)', 'rgb(26, 152, 80)', 'rgb(0, 104, 55)'];
-
-	var Accent = exports.Accent = ['rgb(127, 201, 127)', 'rgb(190, 174, 212)', 'rgb(253, 192, 134)', 'rgb(255, 255, 153)', 'rgb(56, 108, 176)', 'rgb(240, 2, 127)', 'rgb(191, 91, 23)', 'rgb(102, 102, 102)'];
-
-	var Dark2 = exports.Dark2 = ['rgb(27, 158, 119)', 'rgb(217, 95, 2)', 'rgb(117, 112, 179)', 'rgb(231, 41, 138)', 'rgb(102, 166, 30)', 'rgb(230, 171, 2)', 'rgb(166, 118, 29)', 'rgb(102, 102, 102)'];
-
-	var Paired = exports.Paired = ['rgb(166, 206, 227)', 'rgb(31, 120, 180)', 'rgb(178, 223, 138)', 'rgb(51, 160, 44)', 'rgb(251, 154, 153)', 'rgb(227, 26, 28)', 'rgb(253, 191, 111)', 'rgb(255, 127, 0)', 'rgb(202, 178, 214)', 'rgb(106, 61, 154)', 'rgb(255, 255, 153)', 'rgb(177, 89, 40)'];
-
-	var Pastel1 = exports.Pastel1 = ['rgb(251, 180, 174)', 'rgb(179, 205, 227)', 'rgb(204, 235, 197)', 'rgb(222, 203, 228)', 'rgb(254, 217, 166)', 'rgb(255, 255, 204)', 'rgb(229, 216, 189)', 'rgb(253, 218, 236)', 'rgb(242, 242, 242)'];
-
-	var Pastel2 = exports.Pastel2 = ['rgb(179, 226, 205)', 'rgb(253, 205, 172)', 'rgb(203, 213, 232)', 'rgb(244, 202, 228)', 'rgb(230, 245, 201)', 'rgb(255, 242, 174)', 'rgb(241, 226, 204)', 'rgb(204, 204, 204)'];
-
-	var Set1 = exports.Set1 = ['rgb(228, 26, 28)', 'rgb(55, 126, 184)', 'rgb(77, 175, 74)', 'rgb(152, 78, 163)', 'rgb(255, 127, 0)', 'rgb(255, 255, 51)', 'rgb(166, 86, 40)', 'rgb(247, 129, 191)', 'rgb(153, 153, 153)'];
-
-	var Set2 = exports.Set2 = ['rgb(102, 194, 165)', 'rgb(252, 141, 98)', 'rgb(141, 160, 203)', 'rgb(231, 138, 195)', 'rgb(166, 216, 84)', 'rgb(255, 217, 47)', 'rgb(229, 196, 148)', 'rgb(179, 179, 179)'];
-
-	var Set3 = exports.Set3 = ['rgb(141, 211, 199)', 'rgb(255, 255, 179)', 'rgb(190, 186, 218)', 'rgb(251, 128, 114)', 'rgb(128, 177, 211)', 'rgb(253, 180, 98)', 'rgb(179, 222, 105)', 'rgb(252, 205, 229)', 'rgb(217, 217, 217)', 'rgb(188, 128, 189)', 'rgb(204, 235, 197)', 'rgb(255, 237, 111)'];
-
-	exports.default = {
-	  YlGn: YlGn,
-	  YlGnBu: YlGnBu,
-	  GnBu: GnBu,
-	  BuGn: BuGn,
-	  PuBuGn: PuBuGn,
-	  PuBu: PuBu,
-	  BuPu: BuPu,
-	  RdPu: RdPu,
-	  PuRd: PuRd,
-	  OrRd: OrRd,
-	  YlOrRd: YlOrRd,
-	  YlOrBr: YlOrBr,
-	  Purples: Purples,
-	  Blues: Blues,
-	  Greens: Greens,
-	  Oranges: Oranges,
-	  Reds: Reds,
-	  Greys: Greys,
-	  PuOr: PuOr,
-	  BrBG: BrBG,
-	  PRGn: PRGn,
-	  PiYG: PiYG,
-	  RdBu: RdBu,
-	  RdGy: RdGy,
-	  RdYlBu: RdYlBu,
-	  Spectral: Spectral,
-	  RdYlGn: RdYlGn,
-	  Accent: Accent,
-	  Dark2: Dark2,
-	  Paired: Paired,
-	  Pastel1: Pastel1,
-	  Pastel2: Pastel2,
-	  Set1: Set1,
-	  Set2: Set2,
-	  Set3: Set3
-	};
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Partition Provider
-	// ----------------------------------------------------------------------------
-
-	function partitionProvider(publicAPI, model, fetchHelper) {
-	  // Private members
-	  var ready = publicAPI.firePartitionReady;
-	  delete publicAPI.firePartitionReady;
-
-	  // Protected members
-	  if (!model.partitionData) {
-	    model.partitionData = {};
-	  }
-
-	  // Return true if data is available
-	  publicAPI.loadPartition = function (field) {
-	    if (!model.partitionData[field]) {
-	      model.partitionData[field] = { pending: true };
-	      fetchHelper.addRequest(field);
-	      return false;
-	    }
-
-	    if (model.partitionData[field].pending) {
-	      return false;
-	    }
-
-	    if (model.partitionData[field].stale) {
-	      // stale means the client sent some data to the server,
-	      // and we need the server to return 'ground truth', even
-	      // though we have our version of the data right now.
-	      delete model.partitionData[field].stale;
-	      fetchHelper.addRequest(field);
-	      return true;
-	    }
-
-	    return true;
-	  };
-
-	  publicAPI.getPartition = function (field) {
-	    return model.partitionData[field];
-	  };
-	  // server sent us some data
-	  publicAPI.setPartition = function (field, data) {
-	    model.partitionData[field] = data;
-	    ready(field, data);
-	  };
-	  // client generated new data
-	  publicAPI.changePartition = function (field, data) {
-	    model.partitionData[field] = data;
-	    model.partitionData[field].stale = true;
-	    publicAPI.firePartitionChange(field, data);
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // partitionData: null,
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'PartitionProvider');
-	  // Change asynchronous default - immediate event tiggers data send to server, and server reply is async.
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionChange', false);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'partitionReady');
-	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Partition');
-
-	  partitionProvider(publicAPI, model, fetchHelper);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Histogram 1D Provider
-	// ----------------------------------------------------------------------------
-
-	function histogram1DProvider(publicAPI, model, fetchHelper) {
-	  // Private members
-	  var ready = publicAPI.fireHistogram1DReady;
-	  delete publicAPI.fireHistogram1DReady;
-
-	  // Protected members
-	  if (!model.histogram1DData) {
-	    model.histogram1DData = {};
-	  }
-
-	  // Data access
-	  publicAPI.setHistogram1DNumberOfBins = function (bin) {
-	    if (model.histogram1DNumberOfBins !== bin) {
-	      model.histogram1DData = {};
-	      model.histogram1DNumberOfBins = bin;
-	    }
-	  };
-
-	  // Return true if data is available
-	  publicAPI.loadHistogram1D = function (field) {
-	    if (!model.histogram1DData[field]) {
-	      model.histogram1DData[field] = { pending: true };
-	      fetchHelper.addRequest(field);
-	      return false;
-	    }
-
-	    if (model.histogram1DData[field].pending) {
-	      return false;
-	    }
-
-	    return true;
-	  };
-
-	  publicAPI.getHistogram1D = function (field) {
-	    return model.histogram1DData[field];
-	  };
-	  publicAPI.setHistogram1D = function (field, data) {
-	    model.histogram1DData[field] = data;
-	    ready(field, data);
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // histogram1DData: null,
-	  histogram1DNumberOfBins: 32
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'Histogram1DProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram1DNumberOfBins']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'histogram1DReady');
-	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Histogram1D');
-
-	  histogram1DProvider(publicAPI, model, fetchHelper);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(14);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Histogram Bin Hover Provider
-	// ----------------------------------------------------------------------------
-
-	function histogramBinHoverProvider(publicAPI, model) {
-	  if (!model.hoverState) {
-	    model.hoverState = {};
-	  }
-
-	  publicAPI.setHoverState = function (hoverState) {
-	    model.hoverState = hoverState;
-	    publicAPI.fireHoverBinChange(model.hoverState);
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'HistogramBinHoverProvider');
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'HoverBinChange');
-
-	  histogramBinHoverProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 53 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = {
