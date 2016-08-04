@@ -22,7 +22,7 @@ export function annotation(selection, score, weight = 1, rationale = '') {
 // ----------------------------------------------------------------------------
 
 export function update(annotationObject, changeSet) {
-  const updatedAnnotation = Object.assign({}, annotation, changeSet);
+  const updatedAnnotation = Object.assign({}, annotationObject, changeSet);
 
   let changeDetected = false;
   Object.keys(updatedAnnotation).forEach(key => {

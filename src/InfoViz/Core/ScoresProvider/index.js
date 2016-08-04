@@ -31,6 +31,7 @@ function scoresProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
+  defaultScore: 0,
   // scores: null,
 };
 
@@ -42,7 +43,8 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'ScoresProvider');
   CompositeClosureHelper.event(publicAPI, model, 'scoresChange', false);
-  CompositeClosureHelper.get(publicAPI, model, ['scores']);
+  CompositeClosureHelper.get(publicAPI, model, ['defaultScore', 'scores']);
+  CompositeClosureHelper.set(publicAPI, model, ['defaultScore']);
 
   scoresProvider(publicAPI, model);
 }
