@@ -1,3 +1,6 @@
+import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
+import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+
 import d3 from 'd3';
 /* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
@@ -13,19 +16,33 @@ let dividerPopupDiv = null;
 export function init(inPublicAPI, inModel) {
   publicAPI = inPublicAPI;
   model = inModel;
-  // TODO make sure model.scores has the right format
-  if (typeof model.scores !== 'undefined') {
-    // setup a bgColor
-    model.scores.forEach((score, i) => {
-      if (typeof score.bgColor === 'undefined') {
+
+  publicAPI.setScores = (scores, defaultScore) => {
+    // TODO make sure model.scores has the right format?
+    model.scores = scores;
+    model.defaultScore = defaultScore;
+    if (model.scores) {
+      // setup a bgColor
+      model.scores.forEach((score, i) => {
         const lightness = d3.hsl(score.color).l;
         // make bg darker for light colors.
         const blend = (lightness >= 0.45 ? 0.4 : 0.2);
         const interp = d3.interpolateRgb('#fff', score.color);
         score.bgColor = interp(blend);
-      }
-    });
+      });
+    }
+  };
+
+  if (model.provider.isA('ScoresProvider')) {
+    publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
   }
+}
+
+export function defaultFieldData() {
+  return {
+    scoreDirty: false,
+    annotation: null,
+  };
 }
 
 export function createDefaultDivider(val, uncert) {
@@ -40,43 +57,37 @@ function getRegionBounds(dividers, hobj) {
   return [hobj.min].concat(dividers.map((div) => (div.value)), hobj.max);
 }
 
-// Translate our dividers and regions into a piecewise-linear partition (2D array)
+// Translate our dividers and regions into an annotation
 // suitable for scoring this histogram.
-function dividersToPartition(dividers, regions, hobj, scores) {
-  if (!regions || !dividers || !scores) return null;
-  if (regions.length !== dividers.length + 1) return null;
-  const regionBounds = getRegionBounds(dividers, hobj);
-  const uncertScale = (hobj.max - hobj.min);
-  const scoreData = [];
-  for (let i = 0; i < regions.length; i++) {
-    const x0 = (i !== 0 ? regionBounds[i] + dividers[i - 1].uncertainty * uncertScale : regionBounds[i]);
-    const x1 = (i !== regions.length - 1 ? regionBounds[i + 1] - dividers[i].uncertainty * uncertScale : regionBounds[i + 1]);
-    const yVal = scores[regions[i]].value;
-    scoreData.push([x0, yVal], [x1, yVal]);
+function dividersToPartition(def, scores) {
+  if (!def.regions || !def.dividers || !scores) return null;
+  if (def.regions.length !== def.dividers.length + 1) return null;
+  const uncertScale = (def.hobj.max - def.hobj.min);
+
+  const partitionSelection = SelectionBuilder.partition(def.name, def.dividers);
+  partitionSelection.partition.dividers.forEach((div, index) => { div.uncertainty *= uncertScale; });
+  // console.log('DBG partitionSelection', JSON.stringify(partitionSelection, 2));
+
+  // Construct a partition annotation:
+  let partitionAnnotation = null;
+  if (def.annotation) {
+    partitionAnnotation = AnnotationBuilder.update(def.annotation, { selection: partitionSelection, score: def.regions });
+  } else {
+    partitionAnnotation = AnnotationBuilder.annotation(partitionSelection, def.regions, 1, '');
   }
-  return scoreData;
+  return partitionAnnotation;
 }
 
-// retrieve partition, and re-create dividers and regions
+// retrieve annotation, and re-create dividers and regions
 function partitionToDividers(scoreData, def, hobj, scores) {
-  if (scoreData.length % 2 !== 0) console.error('partition expected paired points, length', scoreData.length);
-  const regions = [];
-  const dividers = [];
-  for (let i = 0; i < scoreData.length; i += 2) {
-    const lower = scoreData[i];
-    const upper = scoreData[i + 1];
-    if (lower[1] !== upper[1]) console.error('partition mismatch', lower[1], upper[1]);
-    const regionVal = scores.findIndex((el) => (el.value === lower[1]));
-    regions.push(regionVal);
-    if (i < scoreData.length - 2) {
-      const nextLower = scoreData[i + 2];
-      const divVal = 0.5 * (upper[0] + nextLower[0]);
-      const uncert = (upper[0] === nextLower[0] ? 0 : 0.5 * (nextLower[0] - upper[0]) / (hobj.max - hobj.min));
-      dividers.push(createDefaultDivider(divVal, uncert));
-    }
-  }
+  // console.log('DBG return', JSON.stringify(scoreData, null, 2));
+  const uncertScale = (hobj.max - hobj.min);
+  const regions = scoreData.score;
+  const dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
+  dividers.forEach((div, index) => { div.uncertainty *= 1 / uncertScale; });
+
   // don't replace the default region with an empty region, so UI can display the default region.
-  if (regions.length > 0 && regions[0] !== model.defaultScore) {
+  if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
     def.regions = regions;
     def.dividers = dividers;
   }
@@ -84,7 +95,7 @@ function partitionToDividers(scoreData, def, hobj, scores) {
 
 // communicate with the server which regions/dividers have changed.
 function sendScores(def, hobj) {
-  const scoreData = dividersToPartition(def.dividers, def.regions, def.hobj, model.scores);
+  const scoreData = dividersToPartition(def, model.scores);
   if (scoreData === null) {
     console.error('Cannot translate scores to send to provider');
     return;
@@ -96,6 +107,9 @@ function sendScores(def, hobj) {
     // until the server returns new data - see addSubscriptions() ..
     // model.provider.onPartitionReady() below, which sets scoreDirty again to
     // begin using the new data.
+  }
+  if (model.provider.isA('SelectionProvider')) {
+    model.provider.setAnnotation(scoreData);
   }
 }
 
@@ -601,7 +615,7 @@ export function editingScore(def) {
 export function filterFieldNames(fieldNames) {
   if (getDisplayOnlyScored()) {
     // filter for fields that have scores
-    return fieldNames.filter((name) => (showScore(model.provider.getField(name))));
+    return fieldNames.filter((name) => (showScore(model.fieldData[name])));
   }
   return fieldNames;
 }
@@ -745,13 +759,9 @@ export function prepareItem(def, idx, svgGr, tdsl) {
       reg.sel.exit().remove();
     });
 
-  // invisible overlay to catch mouse events.
+  // invisible overlay to catch mouse events. Sized correctly in HistogramSelector
   const svgOverlay = svgGr.select(`.${style.jsOverlay}`);
   svgOverlay
-    .attr('x', -model.histMargin.left)
-    .attr('y', -model.histMargin.top)
-    .attr('width', publicAPI.svgWidth())
-    .attr('height', publicAPI.svgHeight()) // allow clicks inside x-axis.
     .on('click.score', () => {
       // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
       if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
@@ -819,10 +829,24 @@ export function prepareItem(def, idx, svgGr, tdsl) {
 }
 
 export function addSubscriptions() {
-  model.subscriptions.push(model.provider.onPartitionReady((field) => {
-    model.provider.getField(field).scoreDirty = true;
-    publicAPI.render(field);
-  }));
+  if (model.provider.isA('PartitionProvider')) {
+    model.subscriptions.push(model.provider.onPartitionReady((field) => {
+      model.fieldData[field].scoreDirty = true;
+      publicAPI.render(field);
+    }));
+  }
+  if (model.provider.isA('SelectionProvider')) {
+    model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
+      if (annotation.selection.type === 'partition') {
+        const field = annotation.selection.partition.variable;
+        // respond to annotation.
+        model.fieldData[field].annotation = annotation;
+        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+
+        publicAPI.render(field);
+      }
+    }));
+  }
 }
 
 export default {
@@ -830,6 +854,7 @@ export default {
   createGroups,
   createHeader,
   createPopups,
+  defaultFieldData,
   editingScore,
   filterFieldNames,
   init,

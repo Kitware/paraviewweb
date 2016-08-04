@@ -97,7 +97,7 @@ function histogramSelector(publicAPI, model) {
   publicAPI.svgWidth = () => (model.histWidth + model.histMargin.left + model.histMargin.right);
   publicAPI.svgHeight = () => (model.histHeight + model.histMargin.top + model.histMargin.bottom);
 
-  function fetchData() {
+  function fetchData(field) {
     model.needData = true;
 
     if (model.provider) {
@@ -107,6 +107,19 @@ function histogramSelector(publicAPI, model) {
       // Initialize fields
       if (model.provider.isA('FieldProvider')) {
         fieldNames = model.provider.getFieldNames();
+        if (!model.fieldData) {
+          model.fieldData = {};
+          fieldNames.forEach(name => {
+            model.fieldData[name] = Object.assign(
+              {},
+              model.provider.getField(name),
+              Score.defaultFieldData()
+              );
+          });
+        } else if (field !== undefined) {
+          // update of a specific field from the field provider, most likely the 'active' flag.
+          Object.assign(model.fieldData[field.name], field);
+        }
       }
 
       // Fetch 1D Histogram
@@ -303,7 +316,7 @@ function histogramSelector(publicAPI, model) {
           let name = model.singleModeName;
           if (!name) return '';
           if (name.length > 10) {
-            name = `${name.substring(0, 9)}...`;
+            name = `${name.slice(0, 9)}...`;
           }
           return name;
         });
@@ -353,7 +366,7 @@ function histogramSelector(publicAPI, model) {
       // get the data and put it into the nest based on the
       // number of boxesPerRow
       const mungedData = fieldNames.map(name => {
-        const d = model.provider.getField(name);
+        const d = model.fieldData[name];
         return d;
       });
 
@@ -560,8 +573,15 @@ function histogramSelector(publicAPI, model) {
         hdata.exit().remove();
 
         if (model.provider.isA('HistogramBinHoverProvider')) {
+          const svgOverlay = svgGr.select(`.${style.jsOverlay}`);
+          svgOverlay
+            .attr('x', -model.histMargin.left)
+            .attr('y', -model.histMargin.top)
+            .attr('width', publicAPI.svgWidth())
+            .attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
+
           if (!Score.editingScore(def)) {
-            svgGr.select(`.${style.jsOverlay}`)
+            svgOverlay
               .on('mousemove.hs', (d, i) => {
                 const mCoords = publicAPI.getMouseCoords(tdsl);
                 const binNum = Math.floor((mCoords[0] / model.histWidth) * hsize);
@@ -577,7 +597,7 @@ function histogramSelector(publicAPI, model) {
           } else {
             // disable when score editing is happening - it's distracting.
             // Note we still respond to hovers over other components.
-            svgGr.select(`.${style.jsOverlay}`)
+            svgOverlay
               .on('.hs', null);
           }
         }
