@@ -1,7 +1,6 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
-// import LegendIcon from '../LegendIcon';
 import SvgIconWidget from '../../SvgIconWidget';
 import Ineq from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
@@ -18,7 +17,7 @@ const CHOICE_LABELS = {
 //   "closeToLeft": false
 // },
 
-export default function DividerRender(props) {
+export default function dividerRender(props) {
   const { divider } = props;
   const formatter = new NumberFormatter(3, [Number(divider.value), Number(divider.uncertainty)]);
 
@@ -57,47 +56,45 @@ export default function DividerRender(props) {
     props.onChange(path);
   }
 
-  /* eslint-disable react/jsx-curly-spacing */
   return (
-    <section className={ style.fiveClauseContainer }>
-      <div className={ style.activeInequality } data-path="closeToLeft" onClick={ toggleIneq }>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={ CHOICE_LABELS[divider.closeToLeft ? '*' : 'o'] } />
+    <section className={style.fiveClauseContainer}>
+      <div className={style.activeInequality} data-path="closeToLeft" onClick={toggleIneq}>
+        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[divider.closeToLeft ? '*' : 'o']} />
       </div>
       <input
-        className={ style.numberInput }
+        className={style.numberInput}
         type="text"
         pattern="[0-9]*[.]*[0-9]*"
         data-path="value"
-        value={ divider.value }
-        onChange={ onChange }
-        onBlur={ onBlur }
+        value={divider.value}
+        onChange={onChange}
+        onBlur={onBlur}
       />
       {(divider.uncertainty !== undefined) ? (
         <span>
-          { /* plus-minus unicode character: &#xb1; */ }
-          <div className={ style.inequality }>&#xb1;
+          {/* plus-minus unicode character: &#xb1; */}
+          <div className={style.inequality}>&#xb1;
           </div>
           <input
-            className={ style.numberInput }
+            className={style.numberInput}
             type="text"
             pattern="[0-9]*[.]*[0-9]*"
             data-path="uncertainty"
-            value={ divider.uncertainty }
-            onChange={ onChange }
-            onBlur={ onBlur }
+            value={divider.uncertainty}
+            onChange={onChange}
+            onBlur={onBlur}
           />
-          <div className={ style.inequality }>%
+          <div className={style.inequality}>%
           </div>
         </span>
         ) : null
       }
-      <i className={ style.deleteButton } onClick={ onDelete }></i>
-    </section>);
-  /* eslint-enable react/jsx-curly-spacing */
+      <i className={style.deleteButton} onClick={onDelete}></i>
+    </section>
+  );
 }
 
-DividerRender.propTypes = {
-  legendService: React.PropTypes.object,
+dividerRender.propTypes = {
   divider: React.PropTypes.object,
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,

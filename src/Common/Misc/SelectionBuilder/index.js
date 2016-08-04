@@ -204,10 +204,18 @@ export function convertToRuleSelection(selection) {
 }
 
 // ----------------------------------------------------------------------------
+
+export function markModified(selection) {
+  generation++;
+  return Object.assign({}, selection, { generation });
+}
+
+// ----------------------------------------------------------------------------
 // Exposed object
 // ----------------------------------------------------------------------------
 
 export default {
+  markModified,
   empty,
   partition,
   range,
