@@ -32685,7 +32685,7 @@
 	    // Apply style
 	    _d2.default.select(model.container).select('thead').classed(_FieldSelector2.default.thead, true);
 	    _d2.default.select(model.container).select('tbody').classed(_FieldSelector2.default.tbody, true);
-	    _d2.default.select(model.container).select('th.mode').on('click', function (d) {
+	    _d2.default.select(model.container).select('th.field-selector-mode').on('click', function (d) {
 	      model.displayUnselected = !model.displayUnselected;
 	      publicAPI.render();
 	    }).select('i')
@@ -32694,7 +32694,7 @@
 
 	    var data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
 	    // Update header label
-	    _d2.default.select(model.container).select('th.label').text(model.displayUnselected ? 'All Variables (' + data.length + ')' : 'Selected Variables (' + data.length + ')').on('click', function (d) {
+	    _d2.default.select(model.container).select('th.field-selector-label').text(model.displayUnselected ? 'All Variables (' + data.length + ')' : 'Selected Variables (' + data.length + ')').on('click', function (d) {
 	      model.displayUnselected = !model.displayUnselected;
 	      publicAPI.render();
 	    });
@@ -33741,7 +33741,7 @@
 /* 36 */
 /***/ function(module, exports) {
 
-	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"mode\"><i></i></th><th class=\"label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
+	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"field-selector-mode\"><i></i></th><th class=\"field-selector-label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
 /* 37 */
