@@ -67,7 +67,7 @@ export default function ruleSelection(props) {
     }
 
     // Notify of changes
-    props.onChange(editing ? selection : SelectionBuilder.modified(selection), !editing);
+    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
   };
 
   const onDelete = (pathToDelete) => {
@@ -101,7 +101,7 @@ export default function ruleSelection(props) {
     if (selection.rule.terms.length > 1) {
       // Notify the change to other components
       ensureRuleNumbers(selection.rule);
-      props.onChange(SelectionBuilder.modified(selection), true);
+      props.onChange(SelectionBuilder.markModified(selection), true);
     } else {
       props.onChange(SelectionBuilder.empty(), true);
     }

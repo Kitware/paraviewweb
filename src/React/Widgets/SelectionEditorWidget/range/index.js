@@ -30,7 +30,7 @@ export default function rangeSelection(props) {
     }
 
     // Notify happens in parent
-    props.onChange(editing ? selection : SelectionBuilder.modified(selection), !editing);
+    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
   };
 
   const onDelete = (pathToDelete) => {
@@ -49,7 +49,7 @@ export default function rangeSelection(props) {
 
     // If we still have at least one variable, selection isn't empty.
     if (Object.keys(selection.range.variables).length !== 0) {
-      props.onChange(SelectionBuilder.modified(selection), true);
+      props.onChange(SelectionBuilder.markModified(selection), true);
     } else {
       props.onChange(SelectionBuilder.empty(), true);
     }

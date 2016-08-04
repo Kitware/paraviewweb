@@ -21,7 +21,7 @@ export default function partitionSelection(props) {
     }
 
     // Notify happens in parent
-    props.onChange(editing ? selection : SelectionBuilder.modified(selection), !editing);
+    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
   };
 
   const onDelete = pathToDelete => {
@@ -35,7 +35,7 @@ export default function partitionSelection(props) {
 
     // If we still have at least one divider, selection isn't empty.
     if (selection.partition.dividers.length !== 0) {
-      props.onChange(SelectionBuilder.modified(selection), true);
+      props.onChange(SelectionBuilder.markModified(selection), true);
     } else {
       props.onChange(SelectionBuilder.empty(), true);
     }
