@@ -54,78 +54,58 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(69);
+	var _reactDom = __webpack_require__(71);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _SelectionBuilder = __webpack_require__(59);
+	var _SelectionBuilder = __webpack_require__(60);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
-
-	var _CompositeClosureHelper = __webpack_require__(204);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
 	var _LegendProvider = __webpack_require__(206);
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _SelectionProvider = __webpack_require__(218);
-
-	var _SelectionProvider2 = _interopRequireDefault(_SelectionProvider);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Load CSS
-
-	// import FieldProvider from '../../../../InfoViz/Core/FieldProvider';
-	__webpack_require__(221);
-
-	var legendEntries = ['pressure', 'temperature'];
+	__webpack_require__(220);
 
 	var rangeSelection = _SelectionBuilder2.default.range({
 	  pressure: [{ interval: [0, 101.3], endpoints: 'oo', uncertainty: 15 }, { interval: [200, 400], endpoints: '*o', uncertainty: 30 }],
 	  temperature: [{ interval: [233, Number.MAX_VALUE], endpoints: 'oo', uncertainty: 15 }]
 	});
+
 	var partitionSelection = _SelectionBuilder2.default.partition('pressure', [{ value: 90, uncertainty: 0 }, { value: 101.3, uncertainty: 20 }, { value: 200, uncertainty: 40, closeToLeft: true }]);
 
-	var jsonData = [rangeSelection, _SelectionBuilder2.default.convertToRuleSelection(rangeSelection), partitionSelection];
-	// console.log('partitionSelection', JSON.stringify(partitionSelection, null, 2));
-
-	var dataModel = {
-	  legendEntries: legendEntries
-	};
-
-	var provider = _CompositeClosureHelper2.default.newInstance(function (publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, initialValues);
-	  // FieldProvider.extend(publicAPI, model, initialValues);
-	  _LegendProvider2.default.extend(publicAPI, model, initialValues);
-	  _SelectionProvider2.default.extend(publicAPI, model, initialValues);
-	})(dataModel);
-
-	var currSel = 0;
-	// provider.setSelection(JSON.parse(JSON.stringify(jsonData[currSel])));
-	provider.setSelection(jsonData[currSel]);
-
-	// Demo - reset if we delete the selection
-	provider.onSelectionChange(function (sel) {
-	  if (sel.type === 'empty') {
-	    window.setTimeout(function () {
-	      currSel = (currSel + 1) % jsonData.length;
-	      provider.setSelection(jsonData[currSel]);
-	    }, 2000);
-	  }
-	});
+	var selectionTypes = [rangeSelection, partitionSelection, _SelectionBuilder2.default.convertToRuleSelection(rangeSelection)];
+	var legendService = _LegendProvider2.default.newInstance({ legendEntries: ['pressure', 'temperature'] });
 
 	// Get react component
-
 	document.body.style.padding = '10px';
 
-	_reactDom2.default.render(_react2.default.createElement(_2.default, {
-	  provider: provider
-	}), document.querySelector('.content'));
+	function render() {
+	  _reactDom2.default.render(_react2.default.createElement(
+	    'div',
+	    null,
+	    selectionTypes.map(function (selection, idx) {
+	      return _react2.default.createElement(_2.default, {
+	        key: idx,
+	        selection: selection,
+	        getLegend: legendService.getLegend,
+	        onChange: function onChange(newSelection, save) {
+	          selectionTypes[idx] = newSelection;
+	          if (save) {
+	            console.log('Push selection', newSelection.generation, newSelection);
+	          }
+	          render();
+	        }
+	      });
+	    })
+	  ), document.querySelector('.content'));
+	}
+
+	render();
 
 /***/ },
 /* 1 */
@@ -136,140 +116,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = selectionEditorWidget;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RenderFactory = __webpack_require__(34);
+	var _types = __webpack_require__(34);
 
-	var _RenderFactory2 = _interopRequireDefault(_RenderFactory);
-
-	var _RenderFactory3 = __webpack_require__(46);
-
-	var _RenderFactory4 = _interopRequireDefault(_RenderFactory3);
-
-	var _RenderFactory5 = __webpack_require__(60);
-
-	var _RenderFactory6 = _interopRequireDefault(_RenderFactory5);
-
-	var _RenderFactory7 = __webpack_require__(66);
-
-	var _RenderFactory8 = _interopRequireDefault(_RenderFactory7);
-
-	var _SelectionEditorWidget = __webpack_require__(35);
-
-	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
+	var _types2 = _interopRequireDefault(_types);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _react2.default.createClass({
-	  displayName: 'SelectionEditorWidget',
+	function selectionEditorWidget(props) {
+	  var SelectionWidget = _types2.default[props.selection ? props.selection.type : 'empty'];
+	  return _react2.default.createElement(SelectionWidget, props);
+	}
 
-	  propTypes: {
-	    provider: _react2.default.PropTypes.object,
-	    selections: _react2.default.PropTypes.array
-	  },
+	selectionEditorWidget.propTypes = {
+	  selection: _react2.default.PropTypes.object,
+	  ranges: _react2.default.PropTypes.object,
+	  onChange: _react2.default.PropTypes.func,
+	  getLegend: _react2.default.PropTypes.func
+	};
 
-	  getInitialState: function getInitialState() {
-	    return {};
-	  },
-	  componentWillMount: function componentWillMount() {
-	    var _this = this;
-
-	    var selection = this.props.provider.getSelection();
-
-	    if (selection) {
-	      // formatNumbers(selection.rule);
-	      this.setState({ selection: selection });
-	    }
-
-	    // Attach listeners
-	    if (this.props.provider.isA('SelectionProvider')) {
-	      this.subscriptions.push(this.props.provider.onSelectionChange(function (sel) {
-	        _this.setState({ selection: sel });
-	      }));
-	    }
-	    // this.subscriptions.push(
-	    //   annotationService.onSelectionChanged((data, envelope) => {
-	    //     formatNumbers(data.rule);
-	    //     this.setState({ selection: data });
-	    //   })
-	    // );
-	    // this.subscriptions.push(
-	    //   annotationService.onAnnotationAdded((data, envelope) => {
-	    //     this.forceUpdate();
-	    //   })
-	    // );
-	    // this.subscriptions.push(
-	    //   annotationService.onAnnotationChange((data, envelope) => {
-	    //     this.forceUpdate();
-	    //   })
-	    // );
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    // Remove listeners
-	    while (this.subscriptions.length) {
-	      this.subscriptions.pop().unsubscribe();
-	    }
-	  },
-
-
-	  // Callback methods. Type renderer calls with whatever args they need. We
-	  // pass current selection and those args to type renderer.
-	  onChange: function onChange() {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    var newSelection = this.renderFactory[this.state.selection.type].onChangeSelection.apply(this, [this.state.selection].concat(args));
-
-	    this.setState({ selection: newSelection.selection });
-
-	    // Notify the change to other components (only if not in progress editing)
-	    if (newSelection.propagate && this.props.provider.isA('SelectionProvider')) {
-	      // ensureRuleNumbers(selection.rule);
-	      this.props.provider.setSelection(newSelection.selection);
-	    }
-	  },
-	  onDelete: function onDelete() {
-	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	      args[_key2] = arguments[_key2];
-	    }
-
-	    var newSelection = this.renderFactory[this.state.selection.type].onDeleteSelection.apply(this, [this.state.selection].concat(args));
-
-	    this.setState({ selection: newSelection.selection });
-
-	    // Notify the change to other components (only if not in progress editing)
-	    if (newSelection.propagate && this.props.provider.isA('SelectionProvider')) {
-	      this.props.provider.setSelection(newSelection.selection);
-	    }
-	  },
-
-
-	  subscriptions: [],
-	  renderFactory: {
-	    empty: _RenderFactory2.default,
-	    partition: _RenderFactory4.default,
-	    rule: _RenderFactory6.default,
-	    range: _RenderFactory8.default
-	  },
-
-	  render: function render() {
-	    var type = this.state.selection ? this.state.selection.type : 'empty';
-
-	    return _react2.default.createElement(
-	      'div',
-	      { className: _SelectionEditorWidget2.default.container },
-	      this.renderFactory[type].render(this.state.selection, // selection to process
-	      this.props, // properties
-	      this.onChange, // onChange Callback
-	      this.onDelete) // onDelete Callback
-
-	    );
-	  }
-	});
+	selectionEditorWidget.default = {
+	  onChange: function onChange(selection, isEditDone) {}
+	};
 
 /***/ },
 /* 2 */
@@ -3939,19 +3812,54 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.render = render;
+
+	var _empty = __webpack_require__(35);
+
+	var _empty2 = _interopRequireDefault(_empty);
+
+	var _partition = __webpack_require__(47);
+
+	var _partition2 = _interopRequireDefault(_partition);
+
+	var _range = __webpack_require__(61);
+
+	var _range2 = _interopRequireDefault(_range);
+
+	var _rule = __webpack_require__(67);
+
+	var _rule2 = _interopRequireDefault(_rule);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	  empty: _empty2.default,
+	  partition: _partition2.default,
+	  range: _range2.default,
+	  rule: _rule2.default
+	};
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = emptySelection;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SelectionEditorWidget = __webpack_require__(35);
+	var _SelectionEditorWidget = __webpack_require__(36);
 
 	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function render(selection, props) {
+	function emptySelection(selection, props) {
 	  var onChange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 	  var onDelete = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
 
@@ -3962,19 +3870,17 @@
 	  );
 	}
 
-	exports.default = { render: render };
-
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(36);
+	var content = __webpack_require__(37);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(45)(content, {});
+	var update = __webpack_require__(46)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3991,15 +3897,15 @@
 	}
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(37)();
+	exports = module.exports = __webpack_require__(38)();
 	// imports
-	exports.i(__webpack_require__(38), undefined);
+	exports.i(__webpack_require__(39), undefined);
 
 	// module
-	exports.push([module.id, ".SelectionEditorWidget_container_5V7s2 {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n}\n\n.SelectionEditorWidget_emptySelection_1pUgF {\n  font-size: 250%;\n  text-align: center;\n  position: absolute;\n  width: 100%;\n  top: 50%;\n  transform: translate(0, -50%);\n}\n\n.SelectionEditorWidget_table_1T3t7 {\n  border-collapse: separate;\n  border-spacing: 2px;\n}\n\n.SelectionEditorWidget_rootTable_bLW8D {\n  margin: 10px auto;\n  position: relative;\n}\n\n.SelectionEditorWidget_operationCell_1aX1y {\n  width: 32px;\n}\n\n.SelectionEditorWidget_verticalText_2309p {\n  border: 1px solid #aaa;\n  border-radius: 50%;\n  color: white;\n  background: #aaa;\n  display: block;\n\n  text-align: center;\n  width: 25px;\n  height: 20px;\n  padding-top: 5px;\n}\n\n.SelectionEditorWidget_groupTableCell_2VVLQ {\n  padding: 2px;\n  border-top: 2px solid #aaa;\n  border-left: 2px solid #aaa;\n  border-bottom: 2px solid #aaa;\n  border-radius: 10px 0 0 10px;\n}\n\n.SelectionEditorWidget_groupTableCellPadding_1WZ0V {\n  padding: 4px 4px 4px 2px;\n}\n\n.SelectionEditorWidget_tableCell_2NVzf {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.SelectionEditorWidget_fiveClauseContainer_O8ZFs {\n  width: 100%;\n  text-align: right;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.SelectionEditorWidget_fiveClauseContainer_O8ZFs > * {\n  margin-left: 5px;\n}\n\n.SelectionEditorWidget_inequality_3yXBN {\n  -ms-flex: none;\n      flex: none;\n  display: inline-block;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  padding: 0 4px;\n  width: 20px;\n  height: 20px;\n\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2 {\n  cursor: pointer;\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2 svg circle {\n  stroke: #aaa;\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2:hover svg circle {\n  stroke: black;\n}\n\n.SelectionEditorWidget_numberInput_1eDy5 {\n  -ms-flex: none;\n      flex: none;\n  width: 60px;\n}\n\n.SelectionEditorWidget_deleteButton_3srkx {\n  cursor: pointer;\n}\n", ""]);
+	exports.push([module.id, ".SelectionEditorWidget_container_5V7s2 {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n}\n\n.SelectionEditorWidget_emptySelection_1pUgF {\n  font-size: 250%;\n  text-align: center;\n  position: relative;\n  width: 100%;\n}\n\n.SelectionEditorWidget_table_1T3t7 {\n  border-collapse: separate;\n  border-spacing: 2px;\n}\n\n.SelectionEditorWidget_rootTable_bLW8D {\n  margin: 10px auto;\n  position: relative;\n}\n\n.SelectionEditorWidget_operationCell_1aX1y {\n  width: 32px;\n}\n\n.SelectionEditorWidget_verticalText_2309p {\n  border: 1px solid #aaa;\n  border-radius: 50%;\n  color: white;\n  background: #aaa;\n  display: block;\n\n  text-align: center;\n  width: 25px;\n  height: 20px;\n  padding-top: 5px;\n}\n\n.SelectionEditorWidget_groupTableCell_2VVLQ {\n  padding: 2px;\n  border-top: 2px solid #aaa;\n  border-left: 2px solid #aaa;\n  border-bottom: 2px solid #aaa;\n  border-radius: 10px 0 0 10px;\n}\n\n.SelectionEditorWidget_groupTableCellPadding_1WZ0V {\n  padding: 4px 4px 4px 2px;\n}\n\n.SelectionEditorWidget_tableCell_2NVzf {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.SelectionEditorWidget_fiveClauseContainer_O8ZFs {\n  width: 100%;\n  text-align: right;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.SelectionEditorWidget_fiveClauseContainer_O8ZFs > * {\n  margin-left: 5px;\n}\n\n.SelectionEditorWidget_inequality_3yXBN {\n  -ms-flex: none;\n      flex: none;\n  display: inline-block;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  padding: 0 4px;\n  width: 20px;\n  height: 20px;\n\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2 {\n  cursor: pointer;\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2 svg circle {\n  stroke: #aaa;\n}\n\n.SelectionEditorWidget_activeInequality_3Ebs2:hover svg circle {\n  stroke: black;\n}\n\n.SelectionEditorWidget_numberInput_1eDy5 {\n  -ms-flex: none;\n      flex: none;\n  width: 60px;\n}\n\n.SelectionEditorWidget_deleteButton_3srkx {\n  cursor: pointer;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -4016,11 +3922,11 @@
 		"inequality": "SelectionEditorWidget_inequality_3yXBN",
 		"activeInequality": "SelectionEditorWidget_activeInequality_3Ebs2 SelectionEditorWidget_inequality_3yXBN",
 		"numberInput": "SelectionEditorWidget_numberInput_1eDy5",
-		"deleteButton": "SelectionEditorWidget_deleteButton_3srkx " + __webpack_require__(38).locals["fa"] + " " + __webpack_require__(38).locals["fa-fw"] + " " + __webpack_require__(38).locals["fa-trash-o"] + ""
+		"deleteButton": "SelectionEditorWidget_deleteButton_3srkx " + __webpack_require__(39).locals["fa"] + " " + __webpack_require__(39).locals["fa-fw"] + " " + __webpack_require__(39).locals["fa-trash-o"] + ""
 	};
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports) {
 
 	/*
@@ -4076,15 +3982,15 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(37)();
+	exports = module.exports = __webpack_require__(38)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(39) + ");\n  src: url(" + __webpack_require__(40) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(41) + ") format('woff2'), url(" + __webpack_require__(42) + ") format('woff'), url(" + __webpack_require__(43) + ") format('truetype'), url(" + __webpack_require__(44) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  -webkit-filter: none;\n          filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
+	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(40) + ");\n  src: url(" + __webpack_require__(41) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(42) + ") format('woff2'), url(" + __webpack_require__(43) + ") format('woff'), url(" + __webpack_require__(44) + ") format('truetype'), url(" + __webpack_require__(45) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  -webkit-filter: none;\n          filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -4810,12 +4716,6 @@
 	};
 
 /***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
-
-/***/ },
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4825,28 +4725,34 @@
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "db812d8a70a4e88e888744c1c9a27e89.woff2";
+	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
 
 /***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "a35720c2fed2c7f043bc7e4ffb45e073.woff";
+	module.exports = __webpack_require__.p + "db812d8a70a4e88e888744c1c9a27e89.woff2";
 
 /***/ },
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "a3de2170e4e9df77161ea5d3f31b2668.ttf";
+	module.exports = __webpack_require__.p + "a35720c2fed2c7f043bc7e4ffb45e073.woff";
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "f775f9cca88e21d45bebe185b27c0e5b.svg";
+	module.exports = __webpack_require__.p + "a3de2170e4e9df77161ea5d3f31b2668.ttf";
 
 /***/ },
 /* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "f775f9cca88e21d45bebe185b27c0e5b.svg";
+
+/***/ },
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -5098,103 +5004,6 @@
 
 
 /***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.onChangeSelection = onChangeSelection;
-	exports.onDeleteSelection = onDeleteSelection;
-	exports.render = render;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _FieldRender = __webpack_require__(47);
-
-	var _FieldRender2 = _interopRequireDefault(_FieldRender);
-
-	var _DividerRender = __webpack_require__(54);
-
-	var _DividerRender2 = _interopRequireDefault(_DividerRender);
-
-	var _SelectionBuilder = __webpack_require__(59);
-
-	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// Callback methods
-	function onChangeSelection(currSelection, changedPath) {
-	  var editing = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	  // clone, so we don't step on whatever is current.
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  if (changedPath[0] === 'dividers') {
-	    var divider = selection.partition.dividers[changedPath[1]];
-	    var changeItemKey = changedPath[2];
-	    var newValue = changedPath[3];
-
-	    // console.log('change', divider, changeItemKey, newValue);
-	    divider[changeItemKey] = newValue;
-	  }
-	  // Notify happens in parent
-	  return { selection: selection, propagate: !editing };
-	}
-	// import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
-
-
-	function onDeleteSelection(currSelection, pathToDelete) {
-	  // clone, so we don't step on whatever is current.
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  if (pathToDelete[0] === 'dividers') {
-	    var dividers = selection.partition.dividers;
-	    var deleteIndex = pathToDelete[1];
-
-	    // console.log('delete', selection.partition.dividers[pathToDelete[1]], deleteIndex);
-	    // remove one.
-	    dividers.splice(deleteIndex, 1);
-	  }
-	  // If we still have at least one divider, selection isn't empty.
-	  if (selection.partition.dividers.length !== 0) {
-	    return { selection: selection, propagate: true };
-	  }
-	  return { selection: _SelectionBuilder2.default.empty(), propagate: true };
-	}
-
-	function render(selection, props) {
-	  var onChange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	  var onDelete = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
-
-	  var dividers = selection.partition.dividers;
-	  var fieldName = selection.partition.variable;
-
-	  // doesn't like provider, legendService, but it's valid for us
-	  /* eslint-disable react/prop-types */
-	  return _react2.default.createElement(
-	    _FieldRender2.default,
-	    { fieldName: fieldName, legendService: props.provider, depth: 0 },
-	    dividers.map(function (divider, idx) {
-	      var subProps = { onChange: onChange, onDelete: onDelete, divider: divider, path: ['dividers', idx],
-	        key: idx, legendService: props.provider };
-	      /* eslint-enable react/prop-types */
-
-	      return _react2.default.createElement(_DividerRender2.default, subProps);
-	    })
-	  );
-	}
-
-	exports.default = {
-	  render: render,
-	  onChangeSelection: onChangeSelection,
-	  onDeleteSelection: onDeleteSelection
-	};
-
-/***/ },
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5203,23 +5012,114 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = FieldRender;
+	exports.default = partitionSelection;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SelectionEditorWidget = __webpack_require__(35);
+	var _FieldRender = __webpack_require__(48);
+
+	var _FieldRender2 = _interopRequireDefault(_FieldRender);
+
+	var _DividerRender = __webpack_require__(55);
+
+	var _DividerRender2 = _interopRequireDefault(_DividerRender);
+
+	var _SelectionBuilder = __webpack_require__(60);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function partitionSelection(props) {
+	  var dividers = props.selection.partition.dividers;
+	  var fieldName = props.selection.partition.variable;
+
+	  var onChange = function onChange(changedPath) {
+	    var editing = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	    // clone, so we don't step on whatever is current.
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    if (changedPath[0] === 'dividers') {
+	      var divider = selection.partition.dividers[changedPath[1]];
+	      var changeItemKey = changedPath[2];
+	      var newValue = changedPath[3];
+
+	      // console.log('change', divider, changeItemKey, newValue);
+	      divider[changeItemKey] = newValue;
+	    }
+
+	    // Notify happens in parent
+	    props.onChange(editing ? selection : _SelectionBuilder2.default.markModified(selection), !editing);
+	  };
+
+	  var onDelete = function onDelete(pathToDelete) {
+	    // clone, so we don't step on whatever is current.
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    if (pathToDelete[0] === 'dividers') {
+	      var deleteIndex = pathToDelete[1];
+	      // remove one.
+	      dividers.splice(deleteIndex, 1);
+	    }
+
+	    // If we still have at least one divider, selection isn't empty.
+	    if (selection.partition.dividers.length !== 0) {
+	      props.onChange(_SelectionBuilder2.default.markModified(selection), true);
+	    } else {
+	      props.onChange(_SelectionBuilder2.default.empty(), true);
+	    }
+	  };
+
+	  return _react2.default.createElement(
+	    _FieldRender2.default,
+	    { fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
+	    dividers.map(function (divider, idx) {
+	      return _react2.default.createElement(_DividerRender2.default, {
+	        onChange: onChange,
+	        onDelete: onDelete,
+	        divider: divider,
+	        path: ['divider', idx],
+	        key: idx,
+	        getLegend: props.getLegend
+	      });
+	    })
+	  );
+	}
+
+	partitionSelection.propTypes = {
+	  selection: _react2.default.PropTypes.object,
+	  ranges: _react2.default.PropTypes.object,
+	  onChange: _react2.default.PropTypes.func,
+	  getLegend: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = fieldRender;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _SelectionEditorWidget = __webpack_require__(36);
 
 	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
 
-	var _LegendIcon = __webpack_require__(48);
+	var _LegendIcon = __webpack_require__(49);
 
 	var _LegendIcon2 = _interopRequireDefault(_LegendIcon);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function FieldRender(props) {
+	function fieldRender(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
@@ -5232,7 +5132,7 @@
 	        _react2.default.createElement(
 	          'td',
 	          { className: _SelectionEditorWidget2.default.operationCell, title: props.fieldName },
-	          _react2.default.createElement(_LegendIcon2.default, { width: '25px', height: '25px', provider: props.legendService, name: props.fieldName })
+	          _react2.default.createElement(_LegendIcon2.default, { width: '25px', height: '25px', getLegend: props.getLegend, name: props.fieldName })
 	        ),
 	        _react2.default.createElement('td', { className: _SelectionEditorWidget2.default.groupTableCell }),
 	        _react2.default.createElement(
@@ -5263,60 +5163,11 @@
 	  );
 	}
 
-	FieldRender.propTypes = {
+	fieldRender.propTypes = {
 	  children: _react2.default.PropTypes.array,
-	  legendService: _react2.default.PropTypes.object,
+	  getLegend: _react2.default.PropTypes.func,
 	  fieldName: _react2.default.PropTypes.string,
 	  depth: _react2.default.PropTypes.number
-	};
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = LegendIcon;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _SvgIconWidget = __webpack_require__(49);
-
-	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function LegendIcon(props) {
-	  if (!props.provider || !props.provider.isA('LegendProvider')) {
-	    return _react2.default.createElement(
-	      'span',
-	      null,
-	      props.name
-	    );
-	  }
-	  var style = { fill: props.provider.getLegend(props.name).color };
-	  var newStyle = Object.assign({ stroke: 'black', strokeWidth: 1 }, style, props.style);
-
-	  return _react2.default.createElement(_SvgIconWidget2.default, {
-	    style: newStyle,
-	    width: props.width, height: props.height,
-	    icon: props.provider.getLegend(props.name).shape,
-	    onClick: props.onClick
-	  });
-	}
-
-	LegendIcon.propTypes = {
-	  provider: _react2.default.PropTypes.object,
-	  style: _react2.default.PropTypes.object,
-	  name: _react2.default.PropTypes.string,
-	  height: _react2.default.PropTypes.string,
-	  width: _react2.default.PropTypes.string,
-	  onClick: _react2.default.PropTypes.func
 	};
 
 /***/ },
@@ -5328,12 +5179,66 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = legendIcon;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _kitware = __webpack_require__(50);
+	var _SvgIconWidget = __webpack_require__(50);
+
+	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function legendIcon(props) {
+	  if (!props.getLegend) {
+	    return _react2.default.createElement(
+	      'span',
+	      null,
+	      props.name
+	    );
+	  }
+	  var style = { fill: props.getLegend(props.name).color };
+	  var newStyle = Object.assign({ stroke: 'black', strokeWidth: 1 }, style, props.style);
+
+	  return _react2.default.createElement(_SvgIconWidget2.default, {
+	    icon: props.getLegend(props.name).shape,
+
+	    width: props.width,
+	    height: props.height,
+	    style: newStyle,
+
+	    onClick: props.onClick
+	  });
+	}
+
+	legendIcon.propTypes = {
+	  name: _react2.default.PropTypes.string,
+	  getLegend: _react2.default.PropTypes.func,
+
+	  width: _react2.default.PropTypes.string,
+	  height: _react2.default.PropTypes.string,
+	  style: _react2.default.PropTypes.object,
+
+	  onClick: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _kitware = __webpack_require__(51);
 
 	var _kitware2 = _interopRequireDefault(_kitware);
 
@@ -5379,19 +5284,19 @@
 	});
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
+	var sprite = __webpack_require__(52);;
 	var image = "<symbol viewBox=\"0 0 256 256\" id=\"kitware\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g id=\"kitware_kitware\"> <g> <g> <path d=\"M216.9,77c-6.2,0-12.3,0-18.5,0c-66.9,18.7-76.9,102.5-30,142.9c-54.2-36.8-44.4-130,29.5-149.8c-6.2,0-12.3,0-18.5,0\n\t\t\t\tc-66.9,18.7-76.9,102.5-30,142.9c-54.2-36.8-44.4-130,29.5-149.8c-6.2,0-12.3,0-18.5,0c-21,5.9-36.3,18.2-46.1,33.5\n\t\t\t\tc-0.7-28.8-5.2-58.2-13.9-87.7c-5.2,5-10.4,9.9-15.6,14.9c25.8,73.8,21.6,151.9-10.2,217.1c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tc12.7-22.5,22-47.1,28-73c8.8,23.8,28.3,44.2,58.5,52.3c0.3,0,0.6,0,1,0c5.5,2.8,11.4,5.2,17.9,6.9c0.3,0,0.6,0,1,0\n\t\t\t\tc5.5,2.8,11.4,5.2,17.9,6.9c2.8,0,5.7,0,8.5,0C131.6,215.7,133.3,99.4,216.9,77z\"/> </g> <g> <path d=\"M57.1,50.6c-5.2,5-10.4,9.9-15.5,14.9c28,43.5,37,102.5,21.4,164c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tC88.5,170.7,84.3,104.9,57.1,50.6z\"/> </g> <g> <path d=\"M78.8,29.8c-5.2,5-10.4,9.9-15.5,14.9c26.9,58.6,29.3,127.2,5.6,190.6c1.4,1.4,2.8,2.7,4.3,4.1\n\t\t\t\tC102.6,174.6,105,99.2,78.8,29.8z\"/> </g> </g> </g> </symbol>";
 	module.exports = sprite.add(image, "kitware");
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(52);
+	var Sprite = __webpack_require__(53);
 	var globalSprite = new Sprite();
 
 	if (document.body) {
@@ -5406,10 +5311,10 @@
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sniffr = __webpack_require__(53);
+	var Sniffr = __webpack_require__(54);
 
 	/**
 	 * List of SVG attributes to fix url target in them
@@ -5661,7 +5566,7 @@
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 	(function(host) {
@@ -5785,7 +5690,7 @@
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5802,29 +5707,29 @@
 	//   "closeToLeft": false
 	// },
 
-	DividerRender;
+	dividerRender;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SelectionEditorWidget = __webpack_require__(35);
+	var _SelectionEditorWidget = __webpack_require__(36);
 
 	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
 
-	var _NumberFormatter = __webpack_require__(55);
+	var _NumberFormatter = __webpack_require__(56);
 
 	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
 
-	var _SvgIconWidget = __webpack_require__(49);
+	var _SvgIconWidget = __webpack_require__(50);
 
 	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
 
-	var _Ineq = __webpack_require__(57);
+	var _Ineq = __webpack_require__(58);
 
 	var _Ineq2 = _interopRequireDefault(_Ineq);
 
-	var _Ineqq = __webpack_require__(58);
+	var _Ineqq = __webpack_require__(59);
 
 	var _Ineqq2 = _interopRequireDefault(_Ineqq);
 
@@ -5833,9 +5738,7 @@
 	var CHOICE_LABELS = {
 	  o: _Ineq2.default,
 	  '*': _Ineqq2.default
-	};
-	// import LegendIcon from '../LegendIcon';
-	function DividerRender(props) {
+	};function dividerRender(props) {
 	  var divider = props.divider;
 
 	  var formatter = new _NumberFormatter2.default(3, [Number(divider.value), Number(divider.uncertainty)]);
@@ -5877,7 +5780,6 @@
 	    props.onChange(path);
 	  }
 
-	  /* eslint-disable react/jsx-curly-spacing */
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _SelectionEditorWidget2.default.fiveClauseContainer },
@@ -5920,11 +5822,9 @@
 	    ) : null,
 	    _react2.default.createElement('i', { className: _SelectionEditorWidget2.default.deleteButton, onClick: onDelete })
 	  );
-	  /* eslint-enable react/jsx-curly-spacing */
 	}
 
-	DividerRender.propTypes = {
-	  legendService: _react2.default.PropTypes.object,
+	dividerRender.propTypes = {
 	  divider: _react2.default.PropTypes.object,
 	  path: _react2.default.PropTypes.array,
 	  onChange: _react2.default.PropTypes.func,
@@ -5932,7 +5832,7 @@
 	};
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5943,7 +5843,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _d = __webpack_require__(56);
+	var _d = __webpack_require__(57);
 
 	var _d2 = _interopRequireDefault(_d);
 
@@ -6087,7 +5987,7 @@
 	exports.default = NumberFormatter;
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -15646,25 +15546,25 @@
 	}();
 
 /***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 104 104\" id=\"Ineq\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>Ineq</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"Ineq_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"Ineq_Ineq\"> <circle id=\"Ineq_Oval-1\" stroke-width=\"6\" fill=\"#D8D8D8\" cx=\"52\" cy=\"52\" r=\"47\"/> <polygon id=\"Ineq_&lt;\" fill=\"#4A4A4A\" points=\"36 55.288 36 48.696 68.512 35 68.512 43.704 48.928 52.088 68.512 60.216 68.512 68.984\"/> </g> </g> </symbol>";
-	module.exports = sprite.add(image, "Ineq");
-
-/***/ },
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 104 104\" id=\"Ineq\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>Ineq</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"Ineq_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"Ineq_Ineq\"> <circle id=\"Ineq_Oval-1\" stroke-width=\"6\" fill=\"#D8D8D8\" cx=\"52\" cy=\"52\" r=\"47\"/> <polygon id=\"Ineq_&lt;\" fill=\"#4A4A4A\" points=\"36 55.288 36 48.696 68.512 35 68.512 43.704 48.928 52.088 68.512 60.216 68.512 68.984\"/> </g> </g> </symbol>";
+	module.exports = sprite.add(image, "Ineq");
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(52);;
 	var image = "<symbol viewBox=\"0 0 104 104\" id=\"Ineqq\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>Ineqq</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"Ineqq_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"Ineqq_Ineqq\"> <circle id=\"Ineqq_Oval-1\" stroke-width=\"6\" fill=\"#D8D8D8\" cx=\"52\" cy=\"52\" r=\"47\"/> <path d=\"M36,73.688 L36,65.816 L68.512,65.816 L68.512,73.688 L36,73.688 Z M36,51.288 L36,44.696 L68.512,31 L68.512,39.704 L48.928,48.088 L68.512,56.216 L68.512,64.984 L36,51.288 Z\" id=\"Ineqq_&#x2264;\" fill=\"#4A4A4A\"/> </g> </g> </symbol>";
 	module.exports = sprite.add(image, "Ineqq");
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -15677,6 +15577,7 @@
 	exports.range = range;
 	exports.rule = rule;
 	exports.convertToRuleSelection = convertToRuleSelection;
+	exports.markModified = markModified;
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -15870,233 +15771,23 @@
 	}
 
 	// ----------------------------------------------------------------------------
+
+	function markModified(selection) {
+	  generation++;
+	  return Object.assign({}, selection, { generation: generation });
+	}
+
+	// ----------------------------------------------------------------------------
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
 	exports.default = {
+	  markModified: markModified,
 	  empty: empty,
 	  partition: partition,
 	  range: range,
 	  rule: rule,
 	  convertToRuleSelection: convertToRuleSelection
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.formatNumbers = formatNumbers;
-	exports.onChangeSelection = onChangeSelection;
-	exports.onDeleteSelection = onDeleteSelection;
-	exports.renderRule = renderRule;
-	exports.render = render;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _OperatorRender = __webpack_require__(61);
-
-	var _OperatorRender2 = _interopRequireDefault(_OperatorRender);
-
-	var _FiveClauseRender = __webpack_require__(64);
-
-	var _FiveClauseRender2 = _interopRequireDefault(_FiveClauseRender);
-
-	var _DepthMatchingRender = __webpack_require__(65);
-
-	var _DepthMatchingRender2 = _interopRequireDefault(_DepthMatchingRender);
-
-	var _NumberFormatter = __webpack_require__(55);
-
-	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
-
-	var _SelectionBuilder = __webpack_require__(59);
-
-	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function extractMaxDepth(rule, currentDepth) {
-	  if (!rule || !rule.terms || rule.terms.length === 0) {
-	    return currentDepth;
-	  }
-
-	  var ruleSelector = rule.type;
-	  if (ruleSelector === 'rule') {
-	    return extractMaxDepth(rule.rule, currentDepth);
-	  }
-	  if (ruleSelector === 'logical') {
-	    return rule.terms.filter(function (r, idx) {
-	      return idx > 0;
-	    }) // Get the sub rules
-	    .map(function (sr) {
-	      return extractMaxDepth(sr, currentDepth + 1);
-	    }) // Get depth of subRules
-	    .reduce(function (prev, curr) {
-	      return prev > curr ? prev : curr;
-	    }); // Extract max
-	  }
-
-	  return currentDepth;
-	}
-
-	// Edit in place
-	function ensureRuleNumbers(rule) {
-	  if (!rule || rule.length === 0) {
-	    return;
-	  }
-
-	  var ruleSelector = rule.type;
-	  if (ruleSelector === 'rule') {
-	    ensureRuleNumbers(rule.rule);
-	  }
-	  if (ruleSelector === 'logical') {
-	    rule.terms.filter(function (r, idx) {
-	      return idx > 0;
-	    }).forEach(function (r) {
-	      return ensureRuleNumbers(r);
-	    });
-	  }
-
-	  if (ruleSelector === '5C') {
-	    var terms = rule.terms;
-	    terms[0] = Number(terms[0]);
-	    terms[4] = Number(terms[4]);
-	  }
-	}
-
-	function formatNumbers(rule) {
-	  if (!rule || rule.length === 0) {
-	    return;
-	  }
-
-	  var ruleSelector = rule.type;
-	  if (ruleSelector === 'rule') {
-	    formatNumbers(rule.rule);
-	  }
-	  if (ruleSelector === 'logical') {
-	    rule.terms.filter(function (r, idx) {
-	      return idx > 0;
-	    }).forEach(function (r) {
-	      return formatNumbers(r);
-	    });
-	  }
-
-	  if (ruleSelector === '5C') {
-	    var terms = rule.terms;
-	    var formatter = new _NumberFormatter2.default(3, [Number(terms[0]), Number(terms[4])]);
-	    terms[0] = Number(formatter.eval(terms[0]));
-	    terms[4] = Number(formatter.eval(terms[4]));
-	  }
-	}
-
-	// Callback methods
-	function onChangeSelection(currSelection, changedPath) {
-	  var editing = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  var terms = selection.rule.terms;
-	  var currentSelection = terms;
-
-	  while (changedPath.length > 2) {
-	    var idx = changedPath.shift();
-	    currentSelection[idx].terms = [].concat(currentSelection[idx].terms);
-	    currentSelection = currentSelection[idx].terms;
-	  }
-	  currentSelection[changedPath[0]] = changedPath[1];
-
-	  // Notify the change to other components (only if not in progress editing)
-	  if (!editing) {
-	    ensureRuleNumbers(selection.rule);
-	  }
-	  return { selection: selection, propagate: !editing };
-	}
-
-	function onDeleteSelection(currSelection, pathToDelete) {
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  var terms = selection.rule.terms;
-	  var currentSelection = terms;
-	  var lastIdx = pathToDelete[0];
-	  var previousSelection = currentSelection;
-
-	  if (pathToDelete.length > 1) {
-	    while (pathToDelete.length > 2) {
-	      lastIdx = pathToDelete.shift();
-	      currentSelection[lastIdx].terms = [].concat(currentSelection[lastIdx].terms);
-	      previousSelection = currentSelection;
-	      currentSelection = currentSelection[lastIdx].terms;
-	    }
-
-	    // do we have more that 2 terms in this clause? If so, we can just remove one.
-	    if (currentSelection[pathToDelete[0]].terms.length > 3) {
-	      currentSelection[pathToDelete[0]].terms.splice(pathToDelete[0], 1);
-	    } else {
-	      // Down to 1 clause - we need to bubble up the rule
-	      var idxToKeep = pathToDelete[1] === 1 ? 2 : 1;
-	      previousSelection[lastIdx] = currentSelection[pathToDelete[0]].terms[idxToKeep];
-	    }
-	  } else {
-	    // Filtering the root
-	    selection.rule.terms.splice(pathToDelete[0], 1);
-	  }
-
-	  if (selection.rule.terms.length > 1) {
-	    // Notify the change to other components
-	    ensureRuleNumbers(selection.rule);
-	    return { selection: selection, propagate: true };
-	  }
-	  return { selection: _SelectionBuilder2.default.empty(), propagate: true };
-	}
-
-	function renderRule(rule, props, path, depth) {
-	  var maxDepth = arguments.length <= 4 || arguments[4] === undefined ? 2 : arguments[4];
-	  var onChange = arguments.length <= 5 || arguments[5] === undefined ? null : arguments[5];
-	  var onDelete = arguments.length <= 6 || arguments[6] === undefined ? null : arguments[6];
-
-	  if (!rule || rule.length === 0 || !rule.type) {
-	    return null;
-	  }
-
-	  var ruleSelector = rule.type;
-	  var subProps = Object.assign({ onChange: onChange, onDelete: onDelete }, props, { rule: rule, depth: depth, maxDepth: maxDepth, path: path, legendService: props.provider });
-
-	  if (ruleSelector === 'logical') {
-	    return _react2.default.createElement(_OperatorRender2.default, subProps);
-	  }
-	  if (ruleSelector === '5C') {
-	    return _react2.default.createElement(
-	      _DepthMatchingRender2.default,
-	      { depth: depth, maxDepth: maxDepth },
-	      _react2.default.createElement(_FiveClauseRender2.default, subProps)
-	    );
-	  }
-	  return null;
-	}
-
-	function render(selection, props) {
-	  var onChange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	  var onDelete = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
-
-	  return renderRule(selection.rule, // rule to process
-	  props, // properties
-	  [], // initial path
-	  0, // current depth
-	  extractMaxDepth(selection.rule, 0), // Max depth
-	  onChange, // onChange Callback
-	  onDelete); // onDelete Callback
-	}
-
-	exports.default = {
-	  render: render,
-	  renderRule: renderRule,
-	  onChangeSelection: onChangeSelection,
-	  onDeleteSelection: onDeleteSelection
 	};
 
 /***/ },
@@ -16108,264 +15799,129 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = OperatorRender;
+	exports.default = rangeSelection;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RenderFactory = __webpack_require__(60);
+	var _DepthMatchingRender = __webpack_require__(62);
 
-	var _RenderFactory2 = _interopRequireDefault(_RenderFactory);
+	var _DepthMatchingRender2 = _interopRequireDefault(_DepthMatchingRender);
 
-	var _SelectionEditorWidget = __webpack_require__(35);
+	var _FiveClauseRender = __webpack_require__(63);
 
-	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
+	var _FiveClauseRender2 = _interopRequireDefault(_FiveClauseRender);
 
-	var _SvgIconWidget = __webpack_require__(49);
+	var _OperatorRender = __webpack_require__(64);
 
-	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+	var _OperatorRender2 = _interopRequireDefault(_OperatorRender);
 
-	var _And = __webpack_require__(62);
+	var _SelectionBuilder = __webpack_require__(60);
 
-	var _And2 = _interopRequireDefault(_And);
-
-	var _Or = __webpack_require__(63);
-
-	var _Or2 = _interopRequireDefault(_Or);
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var OPERATOR_LABEL = {
-	  or: _Or2.default,
-	  and: _And2.default
-	};
+	function rangeSelection(props) {
+	  var vars = props.selection.range.variables;
 
-	function OperatorRender(props) {
-	  var operator = props.rule.terms[0];
-	  var subRules = props.rule.terms.filter(function (r, idx) {
-	    return idx > 0;
+	  var maxDepth = 1;
+	  Object.keys(vars).forEach(function (key) {
+	    if (vars[key].length > 1) maxDepth = 2;
 	  });
+
+	  var onChange = function onChange(changedPath) {
+	    var editing = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	    // clone, so we don't step on whatever is current.
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    var currentInterval = selection.range.variables[changedPath[0]][changedPath[1]];
+	    var changeItemIndex = changedPath[2];
+	    var newValue = changedPath[3];
+
+	    if (changeItemIndex === 0 || changeItemIndex === 4) {
+	      // change an input
+	      currentInterval.interval[changeItemIndex === 0 ? 0 : 1] = newValue;
+	    } else if (changeItemIndex === 1 || changeItemIndex === 3) {
+	      currentInterval.endpoints = changeItemIndex === 1 ? '' + newValue + currentInterval.endpoints.slice(1, 2) : '' + currentInterval.endpoints.slice(0, 1) + newValue;
+	    }
+
+	    // Notify happens in parent
+	    props.onChange(editing ? selection : _SelectionBuilder2.default.markModified(selection), !editing);
+	  };
+
+	  var onDelete = function onDelete(pathToDelete) {
+	    // clone, so we don't step on whatever is current.
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    var intervals = selection.range.variables[pathToDelete[0]];
+	    var deleteIntervalIndex = pathToDelete[1];
+
+	    // do we have more that 2 terms for this variable? If so, we can just remove one.
+	    if (intervals.length >= 2) {
+	      intervals.splice(deleteIntervalIndex, 1);
+	    } else {
+	      // Deleting the last interval - delete the variable.
+	      delete selection.range.variables[pathToDelete[0]];
+	    }
+
+	    // If we still have at least one variable, selection isn't empty.
+	    if (Object.keys(selection.range.variables).length !== 0) {
+	      props.onChange(_SelectionBuilder2.default.markModified(selection), true);
+	    } else {
+	      props.onChange(_SelectionBuilder2.default.empty(), true);
+	    }
+	  };
+
 	  return _react2.default.createElement(
-	    'table',
-	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
-	    _react2.default.createElement(
-	      'tbody',
-	      null,
-	      _react2.default.createElement(
-	        'tr',
-	        null,
-	        _react2.default.createElement(
-	          'td',
-	          { className: _SelectionEditorWidget2.default.operationCell },
-	          _react2.default.createElement(_SvgIconWidget2.default, { icon: OPERATOR_LABEL[operator], width: '25px', height: '25px' })
-	        ),
-	        _react2.default.createElement('td', { className: _SelectionEditorWidget2.default.groupTableCell }),
-	        _react2.default.createElement(
-	          'td',
-	          null,
-	          _react2.default.createElement(
-	            'table',
-	            { className: _SelectionEditorWidget2.default.table },
-	            _react2.default.createElement(
-	              'tbody',
-	              null,
-	              subRules.map(function (r, idx) {
-	                return _react2.default.createElement(
-	                  'tr',
-	                  { key: idx },
-	                  _react2.default.createElement(
-	                    'td',
-	                    { className: _SelectionEditorWidget2.default.tableCell },
-	                    _RenderFactory2.default.renderRule(r, props, [].concat(props.path, idx + 1), props.depth + 1, props.maxDepth)
-	                  )
-	                );
-	              })
-	            )
-	          )
-	        )
-	      )
-	    )
+	    _OperatorRender2.default,
+	    { operator: 'and', depth: 0 },
+	    Object.keys(vars).map(function (fieldName, idx) {
+	      if (vars[fieldName].length > 1) {
+	        return _react2.default.createElement(
+	          _OperatorRender2.default,
+	          { operator: 'or', depth: 1, key: idx },
+	          vars[fieldName].map(function (clause, j) {
+	            return _react2.default.createElement(_FiveClauseRender2.default, {
+	              getLegend: props.getLegend,
+	              onChange: onChange,
+	              onDelete: onDelete,
+	              intervalSpec: clause,
+	              fieldName: fieldName,
+	              path: [fieldName, j],
+	              key: j
+	            });
+	          })
+	        );
+	      }
+	      return vars[fieldName].map(function (clause, j) {
+	        return _react2.default.createElement(
+	          _DepthMatchingRender2.default,
+	          { depth: 1, maxDepth: maxDepth },
+	          _react2.default.createElement(_FiveClauseRender2.default, {
+	            getLegend: props.getLegend,
+	            onChange: onChange,
+	            onDelete: onDelete,
+	            intervalSpec: clause,
+	            fieldName: fieldName,
+	            path: [fieldName, j],
+	            key: j
+	          })
+	        );
+	      });
+	    })
 	  );
 	}
 
-	OperatorRender.propTypes = {
-	  legendService: _react2.default.PropTypes.object,
-	  // annotationService: React.PropTypes.object,
-	  rule: _react2.default.PropTypes.object,
-	  depth: _react2.default.PropTypes.number,
-	  maxDepth: _react2.default.PropTypes.number,
-	  path: _react2.default.PropTypes.array,
+	rangeSelection.propTypes = {
+	  selection: _react2.default.PropTypes.object,
+	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  onDelete: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func
 	};
 
 /***/ },
 /* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 104 104\" id=\"And\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>And</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"And_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"And_And\"> <circle id=\"And_Oval-1\" fill=\"#4A4A4A\" cx=\"52\" cy=\"52\" r=\"50\"/> <path d=\"M45.1891892,54.8378378 C43.7837768,55.3243268 42.4459523,55.8918886 41.1756757,56.5405405 C39.9053991,57.1891924 38.8108154,57.9459416 37.8918919,58.8108108 C36.9729684,59.67568 36.2432459,60.6891834 35.7027027,61.8513514 C35.1621595,63.0135193 34.8918919,64.324317 34.8918919,65.7837838 C34.8918919,66.9189246 35.1216193,67.9729681 35.5810811,68.9459459 C36.0405428,69.9189238 36.6621582,70.7432399 37.4459459,71.4189189 C38.2297336,72.094598 39.1486434,72.6216197 40.2027027,73 C41.256762,73.3783803 42.3783724,73.5675676 43.5675676,73.5675676 C45.9459578,73.5675676 48.0675582,73.0000057 49.9324324,71.8648649 C51.7973066,70.7297241 53.5675592,69.1351454 55.2432432,67.0810811 L45.1891892,54.8378378 Z M58.7297297,35.6216216 C58.7297297,33.8378289 58.2162214,32.4054108 57.1891892,31.3243243 C56.162157,30.2432378 54.7297389,29.7027027 52.8918919,29.7027027 C50.7297189,29.7027027 48.9864931,30.4053984 47.6621622,31.8108108 C46.3378312,33.2162232 45.6756757,34.9729624 45.6756757,37.0810811 C45.6756757,38.4864935 45.9999968,39.9594518 46.6486486,41.5 C47.2973005,43.0405482 48.0540497,44.2972924 48.9189189,45.2702703 C50.270277,44.7837814 51.5405346,44.2027061 52.7297297,43.527027 C53.9189249,42.851348 54.959455,42.1081122 55.8513514,41.2972973 C56.7432477,40.4864824 57.4459434,39.6081128 57.9594595,38.6621622 C58.4729755,37.7162115 58.7297297,36.7027081 58.7297297,35.6216216 L58.7297297,35.6216216 Z M60.9189189,60.4324324 L67.8918919,50.5405405 L79.4054054,50.5405405 L66.5945946,66.8378378 L78.5135135,80.8648649 L66.6756757,80.8648649 L61,73.6486486 C57.8648492,76.7837995 54.8108257,78.9594534 51.8378378,80.1756757 C48.86485,81.391898 45.8378532,82 42.7567568,82 C40.1621492,82 37.7837946,81.6756789 35.6216216,81.027027 C33.4594486,80.3783751 31.5946024,79.4054119 30.027027,78.1081081 C28.4594516,76.8108043 27.2297342,75.2027123 26.3378378,73.2837838 C25.4459415,71.3648553 25,69.1351478 25,66.5945946 C25,64.324313 25.4054014,62.2432527 26.2162162,60.3513514 C27.0270311,58.45945 28.1216147,56.7702777 29.5,55.2837838 C30.8783853,53.7972899 32.5135041,52.5000055 34.4054054,51.3918919 C36.2973068,50.2837782 38.2972868,49.3243284 40.4054054,48.5135135 C39.3243189,46.9459381 38.4459493,45.2432524 37.7702703,43.4054054 C37.0945912,41.5675584 36.7567568,39.6216319 36.7567568,37.5675676 C36.7567568,35.1891773 37.1756715,33.0405501 38.0135135,31.1216216 C38.8513555,29.2026931 39.9864793,27.5675743 41.4189189,26.2162162 C42.8513585,24.8648581 44.5405308,23.824328 46.4864865,23.0945946 C48.4324422,22.3648612 50.5135024,22 52.7297297,22 C54.8378484,22 56.8108016,22.2972943 58.6486486,22.8918919 C60.4864957,23.4864895 62.0675609,24.3513457 63.3918919,25.4864865 C64.7162228,26.6216273 65.7702664,27.9999919 66.5540541,29.6216216 C67.3378418,31.2432514 67.7297297,33.1080976 67.7297297,35.2162162 C67.7297297,38.8378559 66.4324454,41.9189062 63.8378378,44.4594595 C61.2432303,47.0000127 57.7297519,49.2432335 53.2972973,51.1891892 L60.9189189,60.4324324 Z\" id=\"And_&amp;\" fill=\"#FFFFFF\"/> </g> </g> </symbol>";
-	module.exports = sprite.add(image, "And");
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 104 104\" id=\"Or\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>Or</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"Or_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"Or_Or\"> <circle id=\"Or_Oval-1\" fill=\"#4A4A4A\" cx=\"52\" cy=\"52\" r=\"50\"/> <path d=\"M32.232,78.096 L25,75.728 L44.776,26 L52.008,28.496 L32.232,78.096 Z M58.792,78.096 L51.56,75.728 L71.336,26 L78.568,28.496 L58.792,78.096 Z\" id=\"Or_//\" fill=\"#FFFFFF\"/> </g> </g> </symbol>";
-	module.exports = sprite.add(image, "Or");
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = FiveClauseRender;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _SelectionEditorWidget = __webpack_require__(35);
-
-	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
-
-	var _NumberFormatter = __webpack_require__(55);
-
-	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
-
-	var _LegendIcon = __webpack_require__(48);
-
-	var _LegendIcon2 = _interopRequireDefault(_LegendIcon);
-
-	var _SvgIconWidget = __webpack_require__(49);
-
-	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
-
-	var _Ineq = __webpack_require__(57);
-
-	var _Ineq2 = _interopRequireDefault(_Ineq);
-
-	var _Ineqq = __webpack_require__(58);
-
-	var _Ineqq2 = _interopRequireDefault(_Ineqq);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var CHOICE_LABELS = {
-	  '<': _Ineq2.default,
-	  '<=': _Ineqq2.default
-	};
-
-	var NEXT_VALUE = {
-	  '<': '<=',
-	  '<=': '<'
-	};
-
-	function FiveClauseRender(props) {
-	  var rule = props.rule;
-
-	  var terms = rule.terms;
-	  var formatter = new _NumberFormatter2.default(3, [Number(terms[0]), Number(terms[4])]);
-
-	  function onChange(e) {
-	    var force = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-
-	    if (!e.target.validity.valid) {
-	      return;
-	    }
-
-	    var value = e.target.value;
-	    var shouldBeNumber = e.target.nodeName === 'INPUT';
-	    var path = [].concat(props.path, Number(e.target.dataset.path));
-
-	    if (shouldBeNumber) {
-	      path.push(!force ? value : Number(formatter.eval(Number(value))));
-	    } else {
-	      path.push(value);
-	    }
-
-	    props.onChange(path, !force);
-	  }
-
-	  function onBlur(e) {
-	    onChange(e, true);
-	  }
-
-	  function onDelete() {
-	    props.onDelete(props.path);
-	  }
-
-	  function toggleIneq(e) {
-	    var target = e.target;
-	    while (!target.dataset) {
-	      target = target.parentNode;
-	    }
-	    var idx = Number(target.dataset.path);
-	    var path = [].concat(props.path, idx, NEXT_VALUE[terms[idx]]);
-	    props.onChange(path);
-	  }
-
-	  /* eslint-disable react/jsx-curly-spacing */
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _SelectionEditorWidget2.default.fiveClauseContainer },
-	    _react2.default.createElement('input', {
-	      className: _SelectionEditorWidget2.default.numberInput,
-	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
-	      'data-path': '0',
-	      value: terms[0],
-	      onChange: onChange,
-	      onBlur: onBlur
-	    }),
-	    _react2.default.createElement(
-	      'div',
-	      { className: _SelectionEditorWidget2.default.activeInequality, 'data-path': '1', onClick: toggleIneq },
-	      _react2.default.createElement(_SvgIconWidget2.default, { style: { pointerEvents: 'none' }, width: '20px', height: '20px', icon: CHOICE_LABELS[terms[1]] })
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: _SelectionEditorWidget2.default.inequality, title: terms[2] },
-	      _react2.default.createElement(_LegendIcon2.default, { width: '20px', height: '20px', provider: props.legendService, name: terms[2] })
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: _SelectionEditorWidget2.default.activeInequality, 'data-path': '3', onClick: toggleIneq },
-	      _react2.default.createElement(_SvgIconWidget2.default, { style: { pointerEvents: 'none' }, width: '20px', height: '20px', icon: CHOICE_LABELS[terms[3]] })
-	    ),
-	    _react2.default.createElement('input', {
-	      className: _SelectionEditorWidget2.default.numberInput,
-	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
-	      'data-path': '4',
-	      value: terms[4] // formatter.eval(terms[1])
-	      , onChange: onChange,
-	      onBlur: onBlur
-	    }),
-	    _react2.default.createElement('i', { className: _SelectionEditorWidget2.default.deleteButton, onClick: onDelete })
-	  );
-	  /* eslint-enable react/jsx-curly-spacing */
-	}
-
-	FiveClauseRender.propTypes = {
-	  legendService: _react2.default.PropTypes.object,
-	  rule: _react2.default.PropTypes.object,
-	  depth: _react2.default.PropTypes.number,
-	  path: _react2.default.PropTypes.array,
-	  onChange: _react2.default.PropTypes.func,
-	  onDelete: _react2.default.PropTypes.func
-	};
-
-/***/ },
-/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16379,7 +15935,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SelectionEditorWidget = __webpack_require__(35);
+	var _SelectionEditorWidget = __webpack_require__(36);
 
 	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
 
@@ -16438,7 +15994,7 @@
 	};
 
 /***/ },
-/* 66 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16446,270 +16002,35 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.onChangeSelection = onChangeSelection;
-	exports.onDeleteSelection = onDeleteSelection;
-	exports.render = render;
+	exports.default = fiveClauseRender;
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _OperatorRender = __webpack_require__(67);
-
-	var _OperatorRender2 = _interopRequireDefault(_OperatorRender);
-
-	var _FiveClauseRender = __webpack_require__(68);
-
-	var _FiveClauseRender2 = _interopRequireDefault(_FiveClauseRender);
-
-	var _DepthMatchingRender = __webpack_require__(65);
-
-	var _DepthMatchingRender2 = _interopRequireDefault(_DepthMatchingRender);
-
-	var _SelectionBuilder = __webpack_require__(59);
-
-	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// Callback methods
-	function onChangeSelection(currSelection, changedPath) {
-	  var editing = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	  // clone, so we don't step on whatever is current.
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  var currentInterval = selection.range.variables[changedPath[0]][changedPath[1]];
-	  var changeItemIndex = changedPath[2];
-	  var newValue = changedPath[3];
-
-	  // console.log('change', currentInterval, changeItemIndex, newValue);
-	  if (changeItemIndex === 0 || changeItemIndex === 4) {
-	    // change an input
-	    currentInterval.interval[changeItemIndex === 0 ? 0 : 1] = newValue;
-	  } else if (changeItemIndex === 1 || changeItemIndex === 3) {
-	    currentInterval.endpoints = changeItemIndex === 1 ? '' + newValue + currentInterval.endpoints.slice(1, 2) : '' + currentInterval.endpoints.slice(0, 1) + newValue;
-	  }
-	  // Notify happens in parent
-	  return { selection: selection, propagate: !editing };
-	}
-	// import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
-
-
-	function onDeleteSelection(currSelection, pathToDelete) {
-	  // clone, so we don't step on whatever is current.
-	  var selection = JSON.parse(JSON.stringify(currSelection));
-	  var intervals = selection.range.variables[pathToDelete[0]];
-	  var deleteIntervalIndex = pathToDelete[1];
-
-	  // console.log('delete', intervals, deleteIntervalIndex);
-	  // do we have more that 2 terms for this variable? If so, we can just remove one.
-	  if (intervals.length >= 2) {
-	    intervals.splice(deleteIntervalIndex, 1);
-	  } else {
-	    // Deleting the last interval - delete the variable.
-	    delete selection.range.variables[pathToDelete[0]];
-	  }
-
-	  // If we still have at least one variable, selection isn't empty.
-	  if (Object.keys(selection.range.variables).length !== 0) {
-	    return { selection: selection, propagate: true };
-	  }
-	  return { selection: _SelectionBuilder2.default.empty(), propagate: true };
-	}
-
-	function render(selection, props) {
-	  var onChange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	  var onDelete = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
-
-	  var vars = selection.range.variables;
-
-	  var maxDepth = 1;
-	  Object.keys(vars).forEach(function (key) {
-	    if (vars[key].length > 1) maxDepth = 2;
-	  });
-
-	  return _react2.default.createElement(
-	    _OperatorRender2.default,
-	    { operator: 'and', depth: 0 },
-	    Object.keys(vars).map(function (fieldName, idx) {
-	      // doesn't like legendService, but it's valid for 5C
-	      /* eslint-disable react/prop-types */
-	      var getSubProps = function getSubProps(clause, j) {
-	        return { onChange: onChange, onDelete: onDelete, intervalSpec: clause, fieldName: fieldName, path: [fieldName, j],
-	          key: j, legendService: props.provider };
-	      };
-	      /* eslint-enable react/prop-types */
-	      if (vars[fieldName].length > 1) {
-	        return _react2.default.createElement(
-	          _OperatorRender2.default,
-	          { operator: 'or', depth: 1, key: idx },
-	          vars[fieldName].map(function (clause, j) {
-	            return _react2.default.createElement(_FiveClauseRender2.default, getSubProps(clause, j));
-	          })
-	        );
-	      }
-	      return vars[fieldName].map(function (clause, j) {
-	        return _react2.default.createElement(
-	          _DepthMatchingRender2.default,
-	          { depth: 1, maxDepth: maxDepth },
-	          _react2.default.createElement(_FiveClauseRender2.default, getSubProps(clause, j))
-	        );
-	      });
-	    })
-	  );
-	}
-
-	exports.default = {
-	  render: render,
-	  onChangeSelection: onChangeSelection,
-	  onDeleteSelection: onDeleteSelection
-	};
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = OperatorRender;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _SelectionEditorWidget = __webpack_require__(35);
-
-	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
-
-	var _SvgIconWidget = __webpack_require__(49);
-
-	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
-
-	var _And = __webpack_require__(62);
-
-	var _And2 = _interopRequireDefault(_And);
-
-	var _Or = __webpack_require__(63);
-
-	var _Or2 = _interopRequireDefault(_Or);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// import RenderFactory from './RenderFactory';
-
-
-	var OPERATOR_LABEL = {
-	  or: _Or2.default,
-	  and: _And2.default
-	};
-
-	function OperatorRender(props) {
-	  var operator = props.operator;
-	  // const subRules = props.rule.terms.filter((r, idx) => (idx > 0));
-	  return _react2.default.createElement(
-	    'table',
-	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
-	    _react2.default.createElement(
-	      'tbody',
-	      null,
-	      _react2.default.createElement(
-	        'tr',
-	        null,
-	        _react2.default.createElement(
-	          'td',
-	          { className: _SelectionEditorWidget2.default.operationCell },
-	          _react2.default.createElement(_SvgIconWidget2.default, { icon: OPERATOR_LABEL[operator], width: '25px', height: '25px' })
-	        ),
-	        _react2.default.createElement('td', { className: _SelectionEditorWidget2.default.groupTableCell }),
-	        _react2.default.createElement(
-	          'td',
-	          null,
-	          _react2.default.createElement(
-	            'table',
-	            { className: _SelectionEditorWidget2.default.table },
-	            _react2.default.createElement(
-	              'tbody',
-	              null,
-	              _react2.default.Children.map(props.children, function (r, idx) {
-	                return _react2.default.createElement(
-	                  'tr',
-	                  { key: idx },
-	                  _react2.default.createElement(
-	                    'td',
-	                    { className: _SelectionEditorWidget2.default.tableCell },
-	                    r
-	                  )
-	                );
-	              })
-	            )
-	          )
-	        )
-	      )
-	    )
-	  );
-	}
-
-	OperatorRender.propTypes = {
-	  children: _react2.default.PropTypes.array,
-	  // annotationService: React.PropTypes.object,
-	  operator: _react2.default.PropTypes.string,
-	  depth: _react2.default.PropTypes.number
-	};
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default =
-
-	// typical intervalSpec we are rendering as 5 clauses:
-	// {
-	//   "interval": [
-	//     233,
-	//     1.7976931348623157e+308
-	//   ],
-	//   "endpoints": "oo",
-	//   "uncertainty": 15
-	// }
-
-	/* eslint-disable react/jsx-no-bind */
-	FiveClauseRender;
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _SelectionEditorWidget = __webpack_require__(35);
-
-	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
-
-	var _NumberFormatter = __webpack_require__(55);
-
-	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
-
-	var _LegendIcon = __webpack_require__(48);
-
-	var _LegendIcon2 = _interopRequireDefault(_LegendIcon);
-
-	var _SvgIconWidget = __webpack_require__(49);
-
-	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
-
-	var _Ineq = __webpack_require__(57);
+	var _Ineq = __webpack_require__(58);
 
 	var _Ineq2 = _interopRequireDefault(_Ineq);
 
-	var _Ineqq = __webpack_require__(58);
+	var _Ineqq = __webpack_require__(59);
 
 	var _Ineqq2 = _interopRequireDefault(_Ineqq);
+
+	var _LegendIcon = __webpack_require__(49);
+
+	var _LegendIcon2 = _interopRequireDefault(_LegendIcon);
+
+	var _NumberFormatter = __webpack_require__(56);
+
+	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
+
+	var _SvgIconWidget = __webpack_require__(50);
+
+	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+
+	var _SelectionEditorWidget = __webpack_require__(36);
+
+	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16721,7 +16042,19 @@
 	var NEXT_VALUE = {
 	  o: '*',
 	  '*': 'o'
-	};function FiveClauseRender(props) {
+	};
+
+	// typical intervalSpec we are rendering as 5 clauses:
+	// {
+	//   "interval": [
+	//     233,
+	//     1.7976931348623157e+308
+	//   ],
+	//   "endpoints": "oo",
+	//   "uncertainty": 15
+	// }
+
+	function fiveClauseRender(props) {
 	  var intervalSpec = props.intervalSpec;
 	  var fieldName = props.fieldName;
 
@@ -16766,7 +16099,6 @@
 	    props.onChange(path);
 	  }
 
-	  /* eslint-disable react/jsx-curly-spacing */
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _SelectionEditorWidget2.default.fiveClauseContainer },
@@ -16787,7 +16119,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: _SelectionEditorWidget2.default.inequality, title: terms[2] },
-	      _react2.default.createElement(_LegendIcon2.default, { width: '20px', height: '20px', provider: props.legendService, name: terms[2] })
+	      _react2.default.createElement(_LegendIcon2.default, { width: '20px', height: '20px', getLegend: props.getLegend, name: terms[2] })
 	    ),
 	    _react2.default.createElement(
 	      'div',
@@ -16805,11 +16137,10 @@
 	    }),
 	    _react2.default.createElement('i', { className: _SelectionEditorWidget2.default.deleteButton, onClick: onDelete })
 	  );
-	  /* eslint-enable react/jsx-curly-spacing */
 	}
 
-	FiveClauseRender.propTypes = {
-	  legendService: _react2.default.PropTypes.object,
+	fiveClauseRender.propTypes = {
+	  getLegend: _react2.default.PropTypes.func,
 	  fieldName: _react2.default.PropTypes.string,
 	  intervalSpec: _react2.default.PropTypes.object,
 	  path: _react2.default.PropTypes.array,
@@ -16818,16 +16149,609 @@
 	};
 
 /***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = operatorRender;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _And = __webpack_require__(65);
+
+	var _And2 = _interopRequireDefault(_And);
+
+	var _Or = __webpack_require__(66);
+
+	var _Or2 = _interopRequireDefault(_Or);
+
+	var _SvgIconWidget = __webpack_require__(50);
+
+	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+
+	var _SelectionEditorWidget = __webpack_require__(36);
+
+	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var OPERATOR_LABEL = {
+	  or: _Or2.default,
+	  and: _And2.default
+	};
+
+	function operatorRender(props) {
+	  var operator = props.operator;
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement(
+	          'td',
+	          { className: _SelectionEditorWidget2.default.operationCell },
+	          _react2.default.createElement(_SvgIconWidget2.default, { icon: OPERATOR_LABEL[operator], width: '25px', height: '25px' })
+	        ),
+	        _react2.default.createElement('td', { className: _SelectionEditorWidget2.default.groupTableCell }),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement(
+	            'table',
+	            { className: _SelectionEditorWidget2.default.table },
+	            _react2.default.createElement(
+	              'tbody',
+	              null,
+	              _react2.default.Children.map(props.children, function (r, idx) {
+	                return _react2.default.createElement(
+	                  'tr',
+	                  { key: idx },
+	                  _react2.default.createElement(
+	                    'td',
+	                    { className: _SelectionEditorWidget2.default.tableCell },
+	                    r
+	                  )
+	                );
+	              })
+	            )
+	          )
+	        )
+	      )
+	    )
+	  );
+	}
+
+	operatorRender.propTypes = {
+	  children: _react2.default.PropTypes.array,
+	  operator: _react2.default.PropTypes.string,
+	  depth: _react2.default.PropTypes.number
+	};
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 104 104\" id=\"And\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>And</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"And_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"And_And\"> <circle id=\"And_Oval-1\" fill=\"#4A4A4A\" cx=\"52\" cy=\"52\" r=\"50\"/> <path d=\"M45.1891892,54.8378378 C43.7837768,55.3243268 42.4459523,55.8918886 41.1756757,56.5405405 C39.9053991,57.1891924 38.8108154,57.9459416 37.8918919,58.8108108 C36.9729684,59.67568 36.2432459,60.6891834 35.7027027,61.8513514 C35.1621595,63.0135193 34.8918919,64.324317 34.8918919,65.7837838 C34.8918919,66.9189246 35.1216193,67.9729681 35.5810811,68.9459459 C36.0405428,69.9189238 36.6621582,70.7432399 37.4459459,71.4189189 C38.2297336,72.094598 39.1486434,72.6216197 40.2027027,73 C41.256762,73.3783803 42.3783724,73.5675676 43.5675676,73.5675676 C45.9459578,73.5675676 48.0675582,73.0000057 49.9324324,71.8648649 C51.7973066,70.7297241 53.5675592,69.1351454 55.2432432,67.0810811 L45.1891892,54.8378378 Z M58.7297297,35.6216216 C58.7297297,33.8378289 58.2162214,32.4054108 57.1891892,31.3243243 C56.162157,30.2432378 54.7297389,29.7027027 52.8918919,29.7027027 C50.7297189,29.7027027 48.9864931,30.4053984 47.6621622,31.8108108 C46.3378312,33.2162232 45.6756757,34.9729624 45.6756757,37.0810811 C45.6756757,38.4864935 45.9999968,39.9594518 46.6486486,41.5 C47.2973005,43.0405482 48.0540497,44.2972924 48.9189189,45.2702703 C50.270277,44.7837814 51.5405346,44.2027061 52.7297297,43.527027 C53.9189249,42.851348 54.959455,42.1081122 55.8513514,41.2972973 C56.7432477,40.4864824 57.4459434,39.6081128 57.9594595,38.6621622 C58.4729755,37.7162115 58.7297297,36.7027081 58.7297297,35.6216216 L58.7297297,35.6216216 Z M60.9189189,60.4324324 L67.8918919,50.5405405 L79.4054054,50.5405405 L66.5945946,66.8378378 L78.5135135,80.8648649 L66.6756757,80.8648649 L61,73.6486486 C57.8648492,76.7837995 54.8108257,78.9594534 51.8378378,80.1756757 C48.86485,81.391898 45.8378532,82 42.7567568,82 C40.1621492,82 37.7837946,81.6756789 35.6216216,81.027027 C33.4594486,80.3783751 31.5946024,79.4054119 30.027027,78.1081081 C28.4594516,76.8108043 27.2297342,75.2027123 26.3378378,73.2837838 C25.4459415,71.3648553 25,69.1351478 25,66.5945946 C25,64.324313 25.4054014,62.2432527 26.2162162,60.3513514 C27.0270311,58.45945 28.1216147,56.7702777 29.5,55.2837838 C30.8783853,53.7972899 32.5135041,52.5000055 34.4054054,51.3918919 C36.2973068,50.2837782 38.2972868,49.3243284 40.4054054,48.5135135 C39.3243189,46.9459381 38.4459493,45.2432524 37.7702703,43.4054054 C37.0945912,41.5675584 36.7567568,39.6216319 36.7567568,37.5675676 C36.7567568,35.1891773 37.1756715,33.0405501 38.0135135,31.1216216 C38.8513555,29.2026931 39.9864793,27.5675743 41.4189189,26.2162162 C42.8513585,24.8648581 44.5405308,23.824328 46.4864865,23.0945946 C48.4324422,22.3648612 50.5135024,22 52.7297297,22 C54.8378484,22 56.8108016,22.2972943 58.6486486,22.8918919 C60.4864957,23.4864895 62.0675609,24.3513457 63.3918919,25.4864865 C64.7162228,26.6216273 65.7702664,27.9999919 66.5540541,29.6216216 C67.3378418,31.2432514 67.7297297,33.1080976 67.7297297,35.2162162 C67.7297297,38.8378559 66.4324454,41.9189062 63.8378378,44.4594595 C61.2432303,47.0000127 57.7297519,49.2432335 53.2972973,51.1891892 L60.9189189,60.4324324 Z\" id=\"And_&amp;\" fill=\"#FFFFFF\"/> </g> </g> </symbol>";
+	module.exports = sprite.add(image, "And");
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 104 104\" id=\"Or\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch --> <title>Or</title> <desc>Created with Sketch.</desc> <defs/> <g id=\"Or_Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"> <g id=\"Or_Or\"> <circle id=\"Or_Oval-1\" fill=\"#4A4A4A\" cx=\"52\" cy=\"52\" r=\"50\"/> <path d=\"M32.232,78.096 L25,75.728 L44.776,26 L52.008,28.496 L32.232,78.096 Z M58.792,78.096 L51.56,75.728 L71.336,26 L78.568,28.496 L58.792,78.096 Z\" id=\"Or_//\" fill=\"#FFFFFF\"/> </g> </g> </symbol>";
+	module.exports = sprite.add(image, "Or");
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ruleSelection;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _RuleRender = __webpack_require__(68);
+
+	var _RuleRender2 = _interopRequireDefault(_RuleRender);
+
+	var _SelectionBuilder = __webpack_require__(60);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function extractMaxDepth(rule, currentDepth) {
+	  if (!rule || !rule.terms || rule.terms.length === 0) {
+	    return currentDepth;
+	  }
+
+	  var ruleSelector = rule.type;
+	  if (ruleSelector === 'rule') {
+	    return extractMaxDepth(rule.rule, currentDepth);
+	  }
+	  if (ruleSelector === 'logical') {
+	    return rule.terms.filter(function (r, idx) {
+	      return idx > 0;
+	    }) // Get the sub rules
+	    .map(function (sr) {
+	      return extractMaxDepth(sr, currentDepth + 1);
+	    }) // Get depth of subRules
+	    .reduce(function (prev, curr) {
+	      return prev > curr ? prev : curr;
+	    }); // Extract max
+	  }
+
+	  return currentDepth;
+	}
+
+	// Edit in place
+	function ensureRuleNumbers(rule) {
+	  if (!rule || rule.length === 0) {
+	    return;
+	  }
+
+	  var ruleSelector = rule.type;
+	  if (ruleSelector === 'rule') {
+	    ensureRuleNumbers(rule.rule);
+	  }
+	  if (ruleSelector === 'logical') {
+	    rule.terms.filter(function (r, idx) {
+	      return idx > 0;
+	    }).forEach(function (r) {
+	      return ensureRuleNumbers(r);
+	    });
+	  }
+
+	  if (ruleSelector === '5C') {
+	    var terms = rule.terms;
+	    terms[0] = Number(terms[0]);
+	    terms[4] = Number(terms[4]);
+	  }
+	}
+
+	function ruleSelection(props) {
+	  var rule = props.selection.rule;
+	  if (!rule || rule.length === 0 || !rule.type) {
+	    return null;
+	  }
+
+	  var onChange = function onChange(changedPath) {
+	    var editing = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    var terms = selection.rule.terms;
+	    var currentSelection = terms;
+
+	    while (changedPath.length > 2) {
+	      var idx = changedPath.shift();
+	      currentSelection[idx].terms = [].concat(currentSelection[idx].terms);
+	      currentSelection = currentSelection[idx].terms;
+	    }
+	    currentSelection[changedPath[0]] = changedPath[1];
+
+	    // Notify the change to other components (only if not in progress editing)
+	    if (!editing) {
+	      ensureRuleNumbers(selection.rule);
+	    }
+
+	    // Notify of changes
+	    props.onChange(editing ? selection : _SelectionBuilder2.default.markModified(selection), !editing);
+	  };
+
+	  var onDelete = function onDelete(pathToDelete) {
+	    var selection = JSON.parse(JSON.stringify(props.selection));
+	    var terms = selection.rule.terms;
+	    var currentSelection = terms;
+	    var lastIdx = pathToDelete[0];
+	    var previousSelection = currentSelection;
+
+	    if (pathToDelete.length > 1) {
+	      while (pathToDelete.length > 2) {
+	        lastIdx = pathToDelete.shift();
+	        currentSelection[lastIdx].terms = [].concat(currentSelection[lastIdx].terms);
+	        previousSelection = currentSelection;
+	        currentSelection = currentSelection[lastIdx].terms;
+	      }
+
+	      // do we have more that 2 terms in this clause? If so, we can just remove one.
+	      if (currentSelection[pathToDelete[0]].terms.length > 3) {
+	        currentSelection[pathToDelete[0]].terms.splice(pathToDelete[0], 1);
+	      } else {
+	        // Down to 1 clause - we need to bubble up the rule
+	        var idxToKeep = pathToDelete[1] === 1 ? 2 : 1;
+	        previousSelection[lastIdx] = currentSelection[pathToDelete[0]].terms[idxToKeep];
+	      }
+	    } else {
+	      // Filtering the root
+	      selection.rule.terms.splice(pathToDelete[0], 1);
+	    }
+
+	    if (selection.rule.terms.length > 1) {
+	      // Notify the change to other components
+	      ensureRuleNumbers(selection.rule);
+	      props.onChange(_SelectionBuilder2.default.markModified(selection), true);
+	    } else {
+	      props.onChange(_SelectionBuilder2.default.empty(), true);
+	    }
+	  };
+
+	  return _react2.default.createElement(_RuleRender2.default, {
+	    getLegend: props.getLegend,
+
+	    onChange: onChange,
+	    onDelete: onDelete,
+
+	    rule: rule,
+	    depth: 0,
+	    maxDepth: extractMaxDepth(rule, 0),
+	    path: []
+	  });
+	}
+
+	ruleSelection.propTypes = {
+	  selection: _react2.default.PropTypes.object,
+	  ranges: _react2.default.PropTypes.object,
+	  onChange: _react2.default.PropTypes.func,
+	  getLegend: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ruleRender;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _OperatorRender = __webpack_require__(69);
+
+	var _OperatorRender2 = _interopRequireDefault(_OperatorRender);
+
+	var _FiveClauseRender = __webpack_require__(70);
+
+	var _FiveClauseRender2 = _interopRequireDefault(_FiveClauseRender);
+
+	var _DepthMatchingRender = __webpack_require__(62);
+
+	var _DepthMatchingRender2 = _interopRequireDefault(_DepthMatchingRender);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function ruleRender(props) {
+	  var ruleSelector = props.rule.type;
+	  if (ruleSelector === 'logical') {
+	    return _react2.default.createElement(_OperatorRender2.default, {
+	      getLegend: props.getLegend,
+
+	      onChange: props.onChange,
+	      onDelete: props.onDelete,
+
+	      rule: props.rule,
+	      depth: props.depth,
+	      maxDepth: props.maxDepth,
+	      path: props.path
+	    });
+	  }
+	  if (ruleSelector === '5C') {
+	    return _react2.default.createElement(
+	      _DepthMatchingRender2.default,
+	      { depth: props.depth, maxDepth: props.maxDepth },
+	      _react2.default.createElement(_FiveClauseRender2.default, {
+	        getLegend: props.getLegend,
+
+	        onChange: props.onChange,
+	        onDelete: props.onDelete,
+
+	        rule: props.rule,
+	        depth: props.depth,
+	        maxDepth: props.maxDepth,
+	        path: props.path
+	      })
+	    );
+	  }
+	  return null;
+	}
+
+	ruleRender.propTypes = {
+	  rule: _react2.default.PropTypes.object,
+	  depth: _react2.default.PropTypes.number,
+	  maxDepth: _react2.default.PropTypes.number,
+	  path: _react2.default.PropTypes.array,
+	  onChange: _react2.default.PropTypes.func,
+	  onDelete: _react2.default.PropTypes.func,
+	  getLegend: _react2.default.PropTypes.func
+	};
+
+/***/ },
 /* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(70);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = operatorRender;
 
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _And = __webpack_require__(65);
+
+	var _And2 = _interopRequireDefault(_And);
+
+	var _Or = __webpack_require__(66);
+
+	var _Or2 = _interopRequireDefault(_Or);
+
+	var _RuleRender = __webpack_require__(68);
+
+	var _RuleRender2 = _interopRequireDefault(_RuleRender);
+
+	var _SvgIconWidget = __webpack_require__(50);
+
+	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+
+	var _SelectionEditorWidget = __webpack_require__(36);
+
+	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var OPERATOR_LABEL = {
+	  or: _Or2.default,
+	  and: _And2.default
+	};
+
+	function operatorRender(props) {
+	  var operator = props.rule.terms[0];
+	  var subRules = props.rule.terms.filter(function (r, idx) {
+	    return idx > 0;
+	  });
+	  return _react2.default.createElement(
+	    'table',
+	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement(
+	          'td',
+	          { className: _SelectionEditorWidget2.default.operationCell },
+	          _react2.default.createElement(_SvgIconWidget2.default, { icon: OPERATOR_LABEL[operator], width: '25px', height: '25px' })
+	        ),
+	        _react2.default.createElement('td', { className: _SelectionEditorWidget2.default.groupTableCell }),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement(
+	            'table',
+	            { className: _SelectionEditorWidget2.default.table },
+	            _react2.default.createElement(
+	              'tbody',
+	              null,
+	              subRules.map(function (r, idx) {
+	                return _react2.default.createElement(
+	                  'tr',
+	                  { key: idx },
+	                  _react2.default.createElement(
+	                    'td',
+	                    { className: _SelectionEditorWidget2.default.tableCell },
+	                    _react2.default.createElement(_RuleRender2.default, {
+	                      rule: r,
+	                      path: [].concat(props.path, idx + 1),
+	                      depth: props.depth + 1,
+	                      maxDepth: props.maxDepth,
+	                      onChange: props.onChange,
+	                      onDelete: props.onDelete,
+	                      getLegend: props.getLegend
+	                    })
+	                  )
+	                );
+	              })
+	            )
+	          )
+	        )
+	      )
+	    )
+	  );
+	}
+
+	operatorRender.propTypes = {
+	  getLegend: _react2.default.PropTypes.func,
+	  rule: _react2.default.PropTypes.object,
+	  depth: _react2.default.PropTypes.number,
+	  maxDepth: _react2.default.PropTypes.number,
+	  path: _react2.default.PropTypes.array,
+	  onChange: _react2.default.PropTypes.func,
+	  onDelete: _react2.default.PropTypes.func
+	};
 
 /***/ },
 /* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = fiveClauseRender;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Ineq = __webpack_require__(58);
+
+	var _Ineq2 = _interopRequireDefault(_Ineq);
+
+	var _Ineqq = __webpack_require__(59);
+
+	var _Ineqq2 = _interopRequireDefault(_Ineqq);
+
+	var _LegendIcon = __webpack_require__(49);
+
+	var _LegendIcon2 = _interopRequireDefault(_LegendIcon);
+
+	var _NumberFormatter = __webpack_require__(56);
+
+	var _NumberFormatter2 = _interopRequireDefault(_NumberFormatter);
+
+	var _SvgIconWidget = __webpack_require__(50);
+
+	var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
+
+	var _SelectionEditorWidget = __webpack_require__(36);
+
+	var _SelectionEditorWidget2 = _interopRequireDefault(_SelectionEditorWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CHOICE_LABELS = {
+	  '<': _Ineq2.default,
+	  '<=': _Ineqq2.default
+	};
+
+	var NEXT_VALUE = {
+	  '<': '<=',
+	  '<=': '<'
+	};
+
+	function fiveClauseRender(props) {
+	  var rule = props.rule;
+
+	  var terms = rule.terms;
+	  var formatter = new _NumberFormatter2.default(3, [Number(terms[0]), Number(terms[4])]);
+
+	  function onChange(e) {
+	    var force = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	    if (!e.target.validity.valid) {
+	      return;
+	    }
+
+	    var value = e.target.value;
+	    var shouldBeNumber = e.target.nodeName === 'INPUT';
+	    var path = [].concat(props.path, Number(e.target.dataset.path));
+
+	    if (shouldBeNumber) {
+	      path.push(!force ? value : Number(formatter.eval(Number(value))));
+	    } else {
+	      path.push(value);
+	    }
+
+	    props.onChange(path, !force);
+	  }
+
+	  function onBlur(e) {
+	    onChange(e, true);
+	  }
+
+	  function onDelete() {
+	    props.onDelete(props.path);
+	  }
+
+	  function toggleIneq(e) {
+	    var target = e.target;
+	    while (!target.dataset) {
+	      target = target.parentNode;
+	    }
+	    var idx = Number(target.dataset.path);
+	    var path = [].concat(props.path, idx, NEXT_VALUE[terms[idx]]);
+	    props.onChange(path);
+	  }
+
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _SelectionEditorWidget2.default.fiveClauseContainer },
+	    _react2.default.createElement('input', {
+	      className: _SelectionEditorWidget2.default.numberInput,
+	      type: 'text',
+	      pattern: '[0-9]*[.]*[0-9]*',
+	      'data-path': '0',
+	      value: terms[0],
+	      onChange: onChange,
+	      onBlur: onBlur
+	    }),
+	    _react2.default.createElement(
+	      'div',
+	      { className: _SelectionEditorWidget2.default.activeInequality, 'data-path': '1', onClick: toggleIneq },
+	      _react2.default.createElement(_SvgIconWidget2.default, { style: { pointerEvents: 'none' }, width: '20px', height: '20px', icon: CHOICE_LABELS[terms[1]] })
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: _SelectionEditorWidget2.default.inequality, title: terms[2] },
+	      _react2.default.createElement(_LegendIcon2.default, { width: '20px', height: '20px', getLegend: props.getLegend, name: terms[2] })
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: _SelectionEditorWidget2.default.activeInequality, 'data-path': '3', onClick: toggleIneq },
+	      _react2.default.createElement(_SvgIconWidget2.default, { style: { pointerEvents: 'none' }, width: '20px', height: '20px', icon: CHOICE_LABELS[terms[3]] })
+	    ),
+	    _react2.default.createElement('input', {
+	      className: _SelectionEditorWidget2.default.numberInput,
+	      type: 'text',
+	      pattern: '[0-9]*[.]*[0-9]*',
+	      'data-path': '4',
+	      value: terms[4] // formatter.eval(terms[1])
+	      , onChange: onChange,
+	      onBlur: onBlur
+	    }),
+	    _react2.default.createElement('i', { className: _SelectionEditorWidget2.default.deleteButton, onClick: onDelete })
+	  );
+	}
+
+	fiveClauseRender.propTypes = {
+	  getLegend: _react2.default.PropTypes.func,
+	  rule: _react2.default.PropTypes.object,
+	  depth: _react2.default.PropTypes.number,
+	  path: _react2.default.PropTypes.array,
+	  onChange: _react2.default.PropTypes.func,
+	  onDelete: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(72);
+
+
+/***/ },
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -16845,17 +16769,17 @@
 
 	'use strict';
 
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDefaultInjection = __webpack_require__(74);
-	var ReactMount = __webpack_require__(194);
-	var ReactPerf = __webpack_require__(94);
-	var ReactReconciler = __webpack_require__(95);
-	var ReactUpdates = __webpack_require__(91);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDefaultInjection = __webpack_require__(76);
+	var ReactMount = __webpack_require__(196);
+	var ReactPerf = __webpack_require__(96);
+	var ReactReconciler = __webpack_require__(97);
+	var ReactUpdates = __webpack_require__(93);
 	var ReactVersion = __webpack_require__(32);
 
-	var findDOMNode = __webpack_require__(201);
-	var getNativeComponentFromComposite = __webpack_require__(202);
-	var renderSubtreeIntoContainer = __webpack_require__(203);
+	var findDOMNode = __webpack_require__(203);
+	var getNativeComponentFromComposite = __webpack_require__(204);
+	var renderSubtreeIntoContainer = __webpack_require__(205);
 	var warning = __webpack_require__(11);
 
 	ReactDefaultInjection.inject();
@@ -16898,7 +16822,7 @@
 	}
 
 	if (process.env.NODE_ENV !== 'production') {
-	  var ExecutionEnvironment = __webpack_require__(84);
+	  var ExecutionEnvironment = __webpack_require__(86);
 	  if (ExecutionEnvironment.canUseDOM && window.top === window.self) {
 
 	    // First check if devtools is not installed
@@ -16937,7 +16861,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -16953,8 +16877,8 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
-	var ReactDOMComponentFlags = __webpack_require__(73);
+	var DOMProperty = __webpack_require__(74);
+	var ReactDOMComponentFlags = __webpack_require__(75);
 
 	var invariant = __webpack_require__(8);
 
@@ -17129,7 +17053,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -17348,7 +17272,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports) {
 
 	/**
@@ -17371,7 +17295,7 @@
 	module.exports = ReactDOMComponentFlags;
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -17387,25 +17311,25 @@
 
 	'use strict';
 
-	var BeforeInputEventPlugin = __webpack_require__(75);
-	var ChangeEventPlugin = __webpack_require__(90);
-	var DefaultEventPluginOrder = __webpack_require__(102);
-	var EnterLeaveEventPlugin = __webpack_require__(103);
-	var ExecutionEnvironment = __webpack_require__(84);
-	var HTMLDOMPropertyConfig = __webpack_require__(108);
-	var ReactComponentBrowserEnvironment = __webpack_require__(109);
-	var ReactDOMComponent = __webpack_require__(122);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDOMEmptyComponent = __webpack_require__(163);
-	var ReactDOMTreeTraversal = __webpack_require__(164);
-	var ReactDOMTextComponent = __webpack_require__(165);
-	var ReactDefaultBatchingStrategy = __webpack_require__(166);
-	var ReactEventListener = __webpack_require__(167);
-	var ReactInjection = __webpack_require__(170);
-	var ReactReconcileTransaction = __webpack_require__(171);
-	var SVGDOMPropertyConfig = __webpack_require__(179);
-	var SelectEventPlugin = __webpack_require__(180);
-	var SimpleEventPlugin = __webpack_require__(181);
+	var BeforeInputEventPlugin = __webpack_require__(77);
+	var ChangeEventPlugin = __webpack_require__(92);
+	var DefaultEventPluginOrder = __webpack_require__(104);
+	var EnterLeaveEventPlugin = __webpack_require__(105);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var HTMLDOMPropertyConfig = __webpack_require__(110);
+	var ReactComponentBrowserEnvironment = __webpack_require__(111);
+	var ReactDOMComponent = __webpack_require__(124);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDOMEmptyComponent = __webpack_require__(165);
+	var ReactDOMTreeTraversal = __webpack_require__(166);
+	var ReactDOMTextComponent = __webpack_require__(167);
+	var ReactDefaultBatchingStrategy = __webpack_require__(168);
+	var ReactEventListener = __webpack_require__(169);
+	var ReactInjection = __webpack_require__(172);
+	var ReactReconcileTransaction = __webpack_require__(173);
+	var SVGDOMPropertyConfig = __webpack_require__(181);
+	var SelectEventPlugin = __webpack_require__(182);
+	var SimpleEventPlugin = __webpack_require__(183);
 
 	var alreadyInjected = false;
 
@@ -17458,7 +17382,7 @@
 	  if (process.env.NODE_ENV !== 'production') {
 	    var url = ExecutionEnvironment.canUseDOM && window.location.href || '';
 	    if (/[?&]react_perf\b/.test(url)) {
-	      var ReactDefaultPerf = __webpack_require__(192);
+	      var ReactDefaultPerf = __webpack_require__(194);
 	      ReactDefaultPerf.start();
 	    }
 	  }
@@ -17470,7 +17394,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17486,12 +17410,12 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventPropagators = __webpack_require__(77);
-	var ExecutionEnvironment = __webpack_require__(84);
-	var FallbackCompositionState = __webpack_require__(85);
-	var SyntheticCompositionEvent = __webpack_require__(87);
-	var SyntheticInputEvent = __webpack_require__(89);
+	var EventConstants = __webpack_require__(78);
+	var EventPropagators = __webpack_require__(79);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var FallbackCompositionState = __webpack_require__(87);
+	var SyntheticCompositionEvent = __webpack_require__(89);
+	var SyntheticInputEvent = __webpack_require__(91);
 
 	var keyOf = __webpack_require__(27);
 
@@ -17863,7 +17787,7 @@
 	module.exports = BeforeInputEventPlugin;
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17965,7 +17889,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -17981,12 +17905,12 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventPluginHub = __webpack_require__(78);
-	var EventPluginUtils = __webpack_require__(80);
+	var EventConstants = __webpack_require__(78);
+	var EventPluginHub = __webpack_require__(80);
+	var EventPluginUtils = __webpack_require__(82);
 
-	var accumulateInto = __webpack_require__(82);
-	var forEachAccumulated = __webpack_require__(83);
+	var accumulateInto = __webpack_require__(84);
+	var forEachAccumulated = __webpack_require__(85);
 	var warning = __webpack_require__(11);
 
 	var PropagationPhases = EventConstants.PropagationPhases;
@@ -18108,7 +18032,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -18124,12 +18048,12 @@
 
 	'use strict';
 
-	var EventPluginRegistry = __webpack_require__(79);
-	var EventPluginUtils = __webpack_require__(80);
-	var ReactErrorUtils = __webpack_require__(81);
+	var EventPluginRegistry = __webpack_require__(81);
+	var EventPluginUtils = __webpack_require__(82);
+	var ReactErrorUtils = __webpack_require__(83);
 
-	var accumulateInto = __webpack_require__(82);
-	var forEachAccumulated = __webpack_require__(83);
+	var accumulateInto = __webpack_require__(84);
+	var forEachAccumulated = __webpack_require__(85);
 	var invariant = __webpack_require__(8);
 
 	/**
@@ -18349,7 +18273,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -18596,7 +18520,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -18612,8 +18536,8 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var ReactErrorUtils = __webpack_require__(81);
+	var EventConstants = __webpack_require__(78);
+	var ReactErrorUtils = __webpack_require__(83);
 
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
@@ -18829,7 +18753,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -18911,7 +18835,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -18976,7 +18900,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports) {
 
 	/**
@@ -19011,7 +18935,7 @@
 	module.exports = forEachAccumulated;
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports) {
 
 	/**
@@ -19051,7 +18975,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19071,7 +18995,7 @@
 
 	var PooledClass = __webpack_require__(7);
 
-	var getTextContentAccessor = __webpack_require__(86);
+	var getTextContentAccessor = __webpack_require__(88);
 
 	/**
 	 * This helper class stores information about text content of a target node,
@@ -19151,7 +19075,7 @@
 	module.exports = FallbackCompositionState;
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19167,7 +19091,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var contentKey = null;
 
@@ -19189,7 +19113,7 @@
 	module.exports = getTextContentAccessor;
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19205,7 +19129,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
 	/**
 	 * @interface Event
@@ -19230,7 +19154,7 @@
 	module.exports = SyntheticCompositionEvent;
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -19497,7 +19421,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19513,7 +19437,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
 	/**
 	 * @interface Event
@@ -19539,7 +19463,7 @@
 	module.exports = SyntheticInputEvent;
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19555,17 +19479,17 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventPluginHub = __webpack_require__(78);
-	var EventPropagators = __webpack_require__(77);
-	var ExecutionEnvironment = __webpack_require__(84);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactUpdates = __webpack_require__(91);
-	var SyntheticEvent = __webpack_require__(88);
+	var EventConstants = __webpack_require__(78);
+	var EventPluginHub = __webpack_require__(80);
+	var EventPropagators = __webpack_require__(79);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactUpdates = __webpack_require__(93);
+	var SyntheticEvent = __webpack_require__(90);
 
-	var getEventTarget = __webpack_require__(99);
-	var isEventSupported = __webpack_require__(100);
-	var isTextInputElement = __webpack_require__(101);
+	var getEventTarget = __webpack_require__(101);
+	var isEventSupported = __webpack_require__(102);
+	var isTextInputElement = __webpack_require__(103);
 	var keyOf = __webpack_require__(27);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -19869,7 +19793,7 @@
 	module.exports = ChangeEventPlugin;
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -19887,12 +19811,12 @@
 
 	var _assign = __webpack_require__(5);
 
-	var CallbackQueue = __webpack_require__(92);
+	var CallbackQueue = __webpack_require__(94);
 	var PooledClass = __webpack_require__(7);
-	var ReactFeatureFlags = __webpack_require__(93);
-	var ReactPerf = __webpack_require__(94);
-	var ReactReconciler = __webpack_require__(95);
-	var Transaction = __webpack_require__(98);
+	var ReactFeatureFlags = __webpack_require__(95);
+	var ReactPerf = __webpack_require__(96);
+	var ReactReconciler = __webpack_require__(97);
+	var Transaction = __webpack_require__(100);
 
 	var invariant = __webpack_require__(8);
 
@@ -20116,7 +20040,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20227,7 +20151,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports) {
 
 	/**
@@ -20253,7 +20177,7 @@
 	module.exports = ReactFeatureFlags;
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20355,7 +20279,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20371,7 +20295,7 @@
 
 	'use strict';
 
-	var ReactRef = __webpack_require__(96);
+	var ReactRef = __webpack_require__(98);
 	var ReactInstrumentation = __webpack_require__(19);
 
 	/**
@@ -20491,7 +20415,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20507,7 +20431,7 @@
 
 	'use strict';
 
-	var ReactOwner = __webpack_require__(97);
+	var ReactOwner = __webpack_require__(99);
 
 	var ReactRef = {};
 
@@ -20574,7 +20498,7 @@
 	module.exports = ReactRef;
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20672,7 +20596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20909,7 +20833,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports) {
 
 	/**
@@ -20949,7 +20873,7 @@
 	module.exports = getEventTarget;
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20965,7 +20889,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -21014,7 +20938,7 @@
 	module.exports = isEventSupported;
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports) {
 
 	/**
@@ -21060,7 +20984,7 @@
 	module.exports = isTextInputElement;
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21092,7 +21016,7 @@
 	module.exports = DefaultEventPluginOrder;
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21108,10 +21032,10 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventPropagators = __webpack_require__(77);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var SyntheticMouseEvent = __webpack_require__(104);
+	var EventConstants = __webpack_require__(78);
+	var EventPropagators = __webpack_require__(79);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var SyntheticMouseEvent = __webpack_require__(106);
 
 	var keyOf = __webpack_require__(27);
 
@@ -21202,7 +21126,7 @@
 	module.exports = EnterLeaveEventPlugin;
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21218,10 +21142,10 @@
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(105);
-	var ViewportMetrics = __webpack_require__(106);
+	var SyntheticUIEvent = __webpack_require__(107);
+	var ViewportMetrics = __webpack_require__(108);
 
-	var getEventModifierState = __webpack_require__(107);
+	var getEventModifierState = __webpack_require__(109);
 
 	/**
 	 * @interface MouseEvent
@@ -21279,7 +21203,7 @@
 	module.exports = SyntheticMouseEvent;
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21295,9 +21219,9 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
-	var getEventTarget = __webpack_require__(99);
+	var getEventTarget = __webpack_require__(101);
 
 	/**
 	 * @interface UIEvent
@@ -21343,7 +21267,7 @@
 	module.exports = SyntheticUIEvent;
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports) {
 
 	/**
@@ -21375,7 +21299,7 @@
 	module.exports = ViewportMetrics;
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports) {
 
 	/**
@@ -21423,7 +21347,7 @@
 	module.exports = getEventModifierState;
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21439,7 +21363,7 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
+	var DOMProperty = __webpack_require__(74);
 
 	var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 	var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -21637,7 +21561,7 @@
 	module.exports = HTMLDOMPropertyConfig;
 
 /***/ },
-/* 109 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21653,9 +21577,9 @@
 
 	'use strict';
 
-	var DOMChildrenOperations = __webpack_require__(110);
-	var ReactDOMIDOperations = __webpack_require__(121);
-	var ReactPerf = __webpack_require__(94);
+	var DOMChildrenOperations = __webpack_require__(112);
+	var ReactDOMIDOperations = __webpack_require__(123);
+	var ReactPerf = __webpack_require__(96);
 
 	/**
 	 * Abstracts away all functionality of the reconciler that requires knowledge of
@@ -21686,7 +21610,7 @@
 	module.exports = ReactComponentBrowserEnvironment;
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21702,14 +21626,14 @@
 
 	'use strict';
 
-	var DOMLazyTree = __webpack_require__(111);
-	var Danger = __webpack_require__(116);
-	var ReactMultiChildUpdateTypes = __webpack_require__(120);
-	var ReactPerf = __webpack_require__(94);
+	var DOMLazyTree = __webpack_require__(113);
+	var Danger = __webpack_require__(118);
+	var ReactMultiChildUpdateTypes = __webpack_require__(122);
+	var ReactPerf = __webpack_require__(96);
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(112);
-	var setInnerHTML = __webpack_require__(115);
-	var setTextContent = __webpack_require__(113);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(114);
+	var setInnerHTML = __webpack_require__(117);
+	var setTextContent = __webpack_require__(115);
 
 	function getNodeAfter(parentNode, node) {
 	  // Special case for text components, which return [open, close] comments
@@ -21850,7 +21774,7 @@
 	module.exports = DOMChildrenOperations;
 
 /***/ },
-/* 111 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21866,8 +21790,8 @@
 
 	'use strict';
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(112);
-	var setTextContent = __webpack_require__(113);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(114);
+	var setTextContent = __webpack_require__(115);
 
 	/**
 	 * In IE (8-11) and Edge, appending nodes with no children is dramatically
@@ -21960,7 +21884,7 @@
 	module.exports = DOMLazyTree;
 
 /***/ },
-/* 112 */
+/* 114 */
 /***/ function(module, exports) {
 
 	/**
@@ -21997,7 +21921,7 @@
 	module.exports = createMicrosoftUnsafeLocalFunction;
 
 /***/ },
-/* 113 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22013,9 +21937,9 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
-	var escapeTextContentForBrowser = __webpack_require__(114);
-	var setInnerHTML = __webpack_require__(115);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var escapeTextContentForBrowser = __webpack_require__(116);
+	var setInnerHTML = __webpack_require__(117);
 
 	/**
 	 * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -22042,7 +21966,7 @@
 	module.exports = setTextContent;
 
 /***/ },
-/* 114 */
+/* 116 */
 /***/ function(module, exports) {
 
 	/**
@@ -22085,7 +22009,7 @@
 	module.exports = escapeTextContentForBrowser;
 
 /***/ },
-/* 115 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22101,12 +22025,12 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var WHITESPACE_TEST = /^[ \r\n\t\f]/;
 	var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(112);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(114);
 
 	/**
 	 * Set the innerHTML property of a node, ensuring that whitespace is preserved
@@ -22172,7 +22096,7 @@
 	module.exports = setInnerHTML;
 
 /***/ },
-/* 116 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -22188,12 +22112,12 @@
 
 	'use strict';
 
-	var DOMLazyTree = __webpack_require__(111);
-	var ExecutionEnvironment = __webpack_require__(84);
+	var DOMLazyTree = __webpack_require__(113);
+	var ExecutionEnvironment = __webpack_require__(86);
 
-	var createNodesFromMarkup = __webpack_require__(117);
+	var createNodesFromMarkup = __webpack_require__(119);
 	var emptyFunction = __webpack_require__(12);
-	var getMarkupWrap = __webpack_require__(119);
+	var getMarkupWrap = __webpack_require__(121);
 	var invariant = __webpack_require__(8);
 
 	var OPEN_TAG_NAME_EXP = /^(<[^ \/>]+)/;
@@ -22322,7 +22246,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 117 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -22340,10 +22264,10 @@
 
 	/*eslint-disable fb-www/unsafe-html*/
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
-	var createArrayFromMixed = __webpack_require__(118);
-	var getMarkupWrap = __webpack_require__(119);
+	var createArrayFromMixed = __webpack_require__(120);
+	var getMarkupWrap = __webpack_require__(121);
 	var invariant = __webpack_require__(8);
 
 	/**
@@ -22411,7 +22335,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 118 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -22543,7 +22467,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 119 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -22560,7 +22484,7 @@
 
 	/*eslint-disable fb-www/unsafe-html */
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var invariant = __webpack_require__(8);
 
@@ -22643,7 +22567,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 120 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22680,7 +22604,7 @@
 	module.exports = ReactMultiChildUpdateTypes;
 
 /***/ },
-/* 121 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22696,9 +22620,9 @@
 
 	'use strict';
 
-	var DOMChildrenOperations = __webpack_require__(110);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactPerf = __webpack_require__(94);
+	var DOMChildrenOperations = __webpack_require__(112);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactPerf = __webpack_require__(96);
 
 	/**
 	 * Operations used to process updates to DOM nodes.
@@ -22724,7 +22648,7 @@
 	module.exports = ReactDOMIDOperations;
 
 /***/ },
-/* 122 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -22744,33 +22668,33 @@
 
 	var _assign = __webpack_require__(5);
 
-	var AutoFocusUtils = __webpack_require__(123);
-	var CSSPropertyOperations = __webpack_require__(125);
-	var DOMLazyTree = __webpack_require__(111);
-	var DOMNamespaces = __webpack_require__(133);
-	var DOMProperty = __webpack_require__(72);
-	var DOMPropertyOperations = __webpack_require__(134);
-	var EventConstants = __webpack_require__(76);
-	var EventPluginHub = __webpack_require__(78);
-	var EventPluginRegistry = __webpack_require__(79);
-	var ReactBrowserEventEmitter = __webpack_require__(139);
-	var ReactComponentBrowserEnvironment = __webpack_require__(109);
-	var ReactDOMButton = __webpack_require__(142);
-	var ReactDOMComponentFlags = __webpack_require__(73);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDOMInput = __webpack_require__(144);
-	var ReactDOMOption = __webpack_require__(146);
-	var ReactDOMSelect = __webpack_require__(147);
-	var ReactDOMTextarea = __webpack_require__(148);
-	var ReactMultiChild = __webpack_require__(149);
-	var ReactPerf = __webpack_require__(94);
+	var AutoFocusUtils = __webpack_require__(125);
+	var CSSPropertyOperations = __webpack_require__(127);
+	var DOMLazyTree = __webpack_require__(113);
+	var DOMNamespaces = __webpack_require__(135);
+	var DOMProperty = __webpack_require__(74);
+	var DOMPropertyOperations = __webpack_require__(136);
+	var EventConstants = __webpack_require__(78);
+	var EventPluginHub = __webpack_require__(80);
+	var EventPluginRegistry = __webpack_require__(81);
+	var ReactBrowserEventEmitter = __webpack_require__(141);
+	var ReactComponentBrowserEnvironment = __webpack_require__(111);
+	var ReactDOMButton = __webpack_require__(144);
+	var ReactDOMComponentFlags = __webpack_require__(75);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDOMInput = __webpack_require__(146);
+	var ReactDOMOption = __webpack_require__(148);
+	var ReactDOMSelect = __webpack_require__(149);
+	var ReactDOMTextarea = __webpack_require__(150);
+	var ReactMultiChild = __webpack_require__(151);
+	var ReactPerf = __webpack_require__(96);
 
-	var escapeTextContentForBrowser = __webpack_require__(114);
+	var escapeTextContentForBrowser = __webpack_require__(116);
 	var invariant = __webpack_require__(8);
-	var isEventSupported = __webpack_require__(100);
+	var isEventSupported = __webpack_require__(102);
 	var keyOf = __webpack_require__(27);
-	var shallowEqual = __webpack_require__(161);
-	var validateDOMNesting = __webpack_require__(162);
+	var shallowEqual = __webpack_require__(163);
+	var validateDOMNesting = __webpack_require__(164);
 	var warning = __webpack_require__(11);
 
 	var Flags = ReactDOMComponentFlags;
@@ -23639,7 +23563,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 123 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23655,9 +23579,9 @@
 
 	'use strict';
 
-	var ReactDOMComponentTree = __webpack_require__(71);
+	var ReactDOMComponentTree = __webpack_require__(73);
 
-	var focusNode = __webpack_require__(124);
+	var focusNode = __webpack_require__(126);
 
 	var AutoFocusUtils = {
 	  focusDOMComponent: function () {
@@ -23668,7 +23592,7 @@
 	module.exports = AutoFocusUtils;
 
 /***/ },
-/* 124 */
+/* 126 */
 /***/ function(module, exports) {
 
 	/**
@@ -23699,7 +23623,7 @@
 	module.exports = focusNode;
 
 /***/ },
-/* 125 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -23715,14 +23639,14 @@
 
 	'use strict';
 
-	var CSSProperty = __webpack_require__(126);
-	var ExecutionEnvironment = __webpack_require__(84);
-	var ReactPerf = __webpack_require__(94);
+	var CSSProperty = __webpack_require__(128);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var ReactPerf = __webpack_require__(96);
 
-	var camelizeStyleName = __webpack_require__(127);
-	var dangerousStyleValue = __webpack_require__(129);
-	var hyphenateStyleName = __webpack_require__(130);
-	var memoizeStringOnly = __webpack_require__(132);
+	var camelizeStyleName = __webpack_require__(129);
+	var dangerousStyleValue = __webpack_require__(131);
+	var hyphenateStyleName = __webpack_require__(132);
+	var memoizeStringOnly = __webpack_require__(134);
 	var warning = __webpack_require__(11);
 
 	var processStyleName = memoizeStringOnly(function (styleName) {
@@ -23910,7 +23834,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 126 */
+/* 128 */
 /***/ function(module, exports) {
 
 	/**
@@ -24063,7 +23987,7 @@
 	module.exports = CSSProperty;
 
 /***/ },
-/* 127 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24079,7 +24003,7 @@
 
 	'use strict';
 
-	var camelize = __webpack_require__(128);
+	var camelize = __webpack_require__(130);
 
 	var msPattern = /^-ms-/;
 
@@ -24107,7 +24031,7 @@
 	module.exports = camelizeStyleName;
 
 /***/ },
-/* 128 */
+/* 130 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -24143,7 +24067,7 @@
 	module.exports = camelize;
 
 /***/ },
-/* 129 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24159,7 +24083,7 @@
 
 	'use strict';
 
-	var CSSProperty = __webpack_require__(126);
+	var CSSProperty = __webpack_require__(128);
 	var warning = __webpack_require__(11);
 
 	var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -24226,7 +24150,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 130 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24242,7 +24166,7 @@
 
 	'use strict';
 
-	var hyphenate = __webpack_require__(131);
+	var hyphenate = __webpack_require__(133);
 
 	var msPattern = /^ms-/;
 
@@ -24269,7 +24193,7 @@
 	module.exports = hyphenateStyleName;
 
 /***/ },
-/* 131 */
+/* 133 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24306,7 +24230,7 @@
 	module.exports = hyphenate;
 
 /***/ },
-/* 132 */
+/* 134 */
 /***/ function(module, exports) {
 
 	/**
@@ -24340,7 +24264,7 @@
 	module.exports = memoizeStringOnly;
 
 /***/ },
-/* 133 */
+/* 135 */
 /***/ function(module, exports) {
 
 	/**
@@ -24365,7 +24289,7 @@
 	module.exports = DOMNamespaces;
 
 /***/ },
-/* 134 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24381,11 +24305,11 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
-	var ReactDOMInstrumentation = __webpack_require__(135);
-	var ReactPerf = __webpack_require__(94);
+	var DOMProperty = __webpack_require__(74);
+	var ReactDOMInstrumentation = __webpack_require__(137);
+	var ReactPerf = __webpack_require__(96);
 
-	var quoteAttributeValueForBrowser = __webpack_require__(138);
+	var quoteAttributeValueForBrowser = __webpack_require__(140);
 	var warning = __webpack_require__(11);
 
 	var VALID_ATTRIBUTE_NAME_REGEX = new RegExp('^[' + DOMProperty.ATTRIBUTE_NAME_START_CHAR + '][' + DOMProperty.ATTRIBUTE_NAME_CHAR + ']*$');
@@ -24584,7 +24508,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 135 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24600,12 +24524,12 @@
 
 	'use strict';
 
-	var ReactDOMDebugTool = __webpack_require__(136);
+	var ReactDOMDebugTool = __webpack_require__(138);
 
 	module.exports = { debugTool: ReactDOMDebugTool };
 
 /***/ },
-/* 136 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24621,7 +24545,7 @@
 
 	'use strict';
 
-	var ReactDOMUnknownPropertyDevtool = __webpack_require__(137);
+	var ReactDOMUnknownPropertyDevtool = __webpack_require__(139);
 
 	var warning = __webpack_require__(11);
 
@@ -24672,7 +24596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 137 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24688,8 +24612,8 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
-	var EventPluginRegistry = __webpack_require__(79);
+	var DOMProperty = __webpack_require__(74);
+	var EventPluginRegistry = __webpack_require__(81);
 
 	var warning = __webpack_require__(11);
 
@@ -24742,7 +24666,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 138 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24758,7 +24682,7 @@
 
 	'use strict';
 
-	var escapeTextContentForBrowser = __webpack_require__(114);
+	var escapeTextContentForBrowser = __webpack_require__(116);
 
 	/**
 	 * Escapes attribute value to prevent scripting attacks.
@@ -24773,7 +24697,7 @@
 	module.exports = quoteAttributeValueForBrowser;
 
 /***/ },
-/* 139 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24791,13 +24715,13 @@
 
 	var _assign = __webpack_require__(5);
 
-	var EventConstants = __webpack_require__(76);
-	var EventPluginRegistry = __webpack_require__(79);
-	var ReactEventEmitterMixin = __webpack_require__(140);
-	var ViewportMetrics = __webpack_require__(106);
+	var EventConstants = __webpack_require__(78);
+	var EventPluginRegistry = __webpack_require__(81);
+	var ReactEventEmitterMixin = __webpack_require__(142);
+	var ViewportMetrics = __webpack_require__(108);
 
-	var getVendorPrefixedEventName = __webpack_require__(141);
-	var isEventSupported = __webpack_require__(100);
+	var getVendorPrefixedEventName = __webpack_require__(143);
+	var isEventSupported = __webpack_require__(102);
 
 	/**
 	 * Summary of `ReactBrowserEventEmitter` event handling:
@@ -25095,7 +25019,7 @@
 	module.exports = ReactBrowserEventEmitter;
 
 /***/ },
-/* 140 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25111,7 +25035,7 @@
 
 	'use strict';
 
-	var EventPluginHub = __webpack_require__(78);
+	var EventPluginHub = __webpack_require__(80);
 
 	function runEventQueueInBatch(events) {
 	  EventPluginHub.enqueueEvents(events);
@@ -25133,7 +25057,7 @@
 	module.exports = ReactEventEmitterMixin;
 
 /***/ },
-/* 141 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25149,7 +25073,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	/**
 	 * Generate a mapping of standard vendor prefixes using the defined style property and event name.
@@ -25239,7 +25163,7 @@
 	module.exports = getVendorPrefixedEventName;
 
 /***/ },
-/* 142 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25255,7 +25179,7 @@
 
 	'use strict';
 
-	var DisabledInputUtils = __webpack_require__(143);
+	var DisabledInputUtils = __webpack_require__(145);
 
 	/**
 	 * Implements a <button> native component that does not receive mouse events
@@ -25268,7 +25192,7 @@
 	module.exports = ReactDOMButton;
 
 /***/ },
-/* 143 */
+/* 145 */
 /***/ function(module, exports) {
 
 	/**
@@ -25323,7 +25247,7 @@
 	module.exports = DisabledInputUtils;
 
 /***/ },
-/* 144 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25341,11 +25265,11 @@
 
 	var _assign = __webpack_require__(5);
 
-	var DisabledInputUtils = __webpack_require__(143);
-	var DOMPropertyOperations = __webpack_require__(134);
-	var LinkedValueUtils = __webpack_require__(145);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactUpdates = __webpack_require__(91);
+	var DisabledInputUtils = __webpack_require__(145);
+	var DOMPropertyOperations = __webpack_require__(136);
+	var LinkedValueUtils = __webpack_require__(147);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactUpdates = __webpack_require__(93);
 
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
@@ -25533,7 +25457,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 145 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25672,7 +25596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 146 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25691,8 +25615,8 @@
 	var _assign = __webpack_require__(5);
 
 	var ReactChildren = __webpack_require__(6);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDOMSelect = __webpack_require__(147);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDOMSelect = __webpack_require__(149);
 
 	var warning = __webpack_require__(11);
 
@@ -25787,7 +25711,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 147 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25805,10 +25729,10 @@
 
 	var _assign = __webpack_require__(5);
 
-	var DisabledInputUtils = __webpack_require__(143);
-	var LinkedValueUtils = __webpack_require__(145);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactUpdates = __webpack_require__(91);
+	var DisabledInputUtils = __webpack_require__(145);
+	var LinkedValueUtils = __webpack_require__(147);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactUpdates = __webpack_require__(93);
 
 	var warning = __webpack_require__(11);
 
@@ -26006,7 +25930,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 148 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26024,11 +25948,11 @@
 
 	var _assign = __webpack_require__(5);
 
-	var DisabledInputUtils = __webpack_require__(143);
-	var DOMPropertyOperations = __webpack_require__(134);
-	var LinkedValueUtils = __webpack_require__(145);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactUpdates = __webpack_require__(91);
+	var DisabledInputUtils = __webpack_require__(145);
+	var DOMPropertyOperations = __webpack_require__(136);
+	var LinkedValueUtils = __webpack_require__(147);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactUpdates = __webpack_require__(93);
 
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
@@ -26154,7 +26078,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 149 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26170,14 +26094,14 @@
 
 	'use strict';
 
-	var ReactComponentEnvironment = __webpack_require__(150);
-	var ReactMultiChildUpdateTypes = __webpack_require__(120);
+	var ReactComponentEnvironment = __webpack_require__(152);
+	var ReactMultiChildUpdateTypes = __webpack_require__(122);
 
 	var ReactCurrentOwner = __webpack_require__(10);
-	var ReactReconciler = __webpack_require__(95);
-	var ReactChildReconciler = __webpack_require__(151);
+	var ReactReconciler = __webpack_require__(97);
+	var ReactChildReconciler = __webpack_require__(153);
 
-	var flattenChildren = __webpack_require__(160);
+	var flattenChildren = __webpack_require__(162);
 	var invariant = __webpack_require__(8);
 
 	/**
@@ -26562,7 +26486,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 150 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26619,7 +26543,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 151 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26635,11 +26559,11 @@
 
 	'use strict';
 
-	var ReactReconciler = __webpack_require__(95);
+	var ReactReconciler = __webpack_require__(97);
 
-	var instantiateReactComponent = __webpack_require__(152);
+	var instantiateReactComponent = __webpack_require__(154);
 	var KeyEscapeUtils = __webpack_require__(16);
-	var shouldUpdateReactComponent = __webpack_require__(157);
+	var shouldUpdateReactComponent = __webpack_require__(159);
 	var traverseAllChildren = __webpack_require__(14);
 	var warning = __webpack_require__(11);
 
@@ -26750,7 +26674,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 152 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26768,9 +26692,9 @@
 
 	var _assign = __webpack_require__(5);
 
-	var ReactCompositeComponent = __webpack_require__(153);
-	var ReactEmptyComponent = __webpack_require__(158);
-	var ReactNativeComponent = __webpack_require__(159);
+	var ReactCompositeComponent = __webpack_require__(155);
+	var ReactEmptyComponent = __webpack_require__(160);
+	var ReactNativeComponent = __webpack_require__(161);
 
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
@@ -26867,7 +26791,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 153 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26885,22 +26809,22 @@
 
 	var _assign = __webpack_require__(5);
 
-	var ReactComponentEnvironment = __webpack_require__(150);
+	var ReactComponentEnvironment = __webpack_require__(152);
 	var ReactCurrentOwner = __webpack_require__(10);
 	var ReactElement = __webpack_require__(9);
-	var ReactErrorUtils = __webpack_require__(81);
-	var ReactInstanceMap = __webpack_require__(154);
+	var ReactErrorUtils = __webpack_require__(83);
+	var ReactInstanceMap = __webpack_require__(156);
 	var ReactInstrumentation = __webpack_require__(19);
-	var ReactNodeTypes = __webpack_require__(155);
-	var ReactPerf = __webpack_require__(94);
+	var ReactNodeTypes = __webpack_require__(157);
+	var ReactPerf = __webpack_require__(96);
 	var ReactPropTypeLocations = __webpack_require__(24);
 	var ReactPropTypeLocationNames = __webpack_require__(26);
-	var ReactReconciler = __webpack_require__(95);
-	var ReactUpdateQueue = __webpack_require__(156);
+	var ReactReconciler = __webpack_require__(97);
+	var ReactUpdateQueue = __webpack_require__(158);
 
 	var emptyObject = __webpack_require__(22);
 	var invariant = __webpack_require__(8);
-	var shouldUpdateReactComponent = __webpack_require__(157);
+	var shouldUpdateReactComponent = __webpack_require__(159);
 	var warning = __webpack_require__(11);
 
 	function getDeclarationErrorAddendum(component) {
@@ -27667,7 +27591,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 154 */
+/* 156 */
 /***/ function(module, exports) {
 
 	/**
@@ -27720,7 +27644,7 @@
 	module.exports = ReactInstanceMap;
 
 /***/ },
-/* 155 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27763,7 +27687,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 156 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27780,8 +27704,8 @@
 	'use strict';
 
 	var ReactCurrentOwner = __webpack_require__(10);
-	var ReactInstanceMap = __webpack_require__(154);
-	var ReactUpdates = __webpack_require__(91);
+	var ReactInstanceMap = __webpack_require__(156);
+	var ReactUpdates = __webpack_require__(93);
 
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
@@ -27984,7 +27908,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 157 */
+/* 159 */
 /***/ function(module, exports) {
 
 	/**
@@ -28031,7 +27955,7 @@
 	module.exports = shouldUpdateReactComponent;
 
 /***/ },
-/* 158 */
+/* 160 */
 /***/ function(module, exports) {
 
 	/**
@@ -28066,7 +27990,7 @@
 	module.exports = ReactEmptyComponent;
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28167,7 +28091,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28222,7 +28146,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 161 */
+/* 163 */
 /***/ function(module, exports) {
 
 	/**
@@ -28293,7 +28217,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 162 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28668,7 +28592,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 163 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28686,8 +28610,8 @@
 
 	var _assign = __webpack_require__(5);
 
-	var DOMLazyTree = __webpack_require__(111);
-	var ReactDOMComponentTree = __webpack_require__(71);
+	var DOMLazyTree = __webpack_require__(113);
+	var ReactDOMComponentTree = __webpack_require__(73);
 
 	var ReactDOMEmptyComponent = function (instantiate) {
 	  // ReactCompositeComponent uses this:
@@ -28733,7 +28657,7 @@
 	module.exports = ReactDOMEmptyComponent;
 
 /***/ },
-/* 164 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28873,7 +28797,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 165 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28891,14 +28815,14 @@
 
 	var _assign = __webpack_require__(5);
 
-	var DOMChildrenOperations = __webpack_require__(110);
-	var DOMLazyTree = __webpack_require__(111);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactPerf = __webpack_require__(94);
+	var DOMChildrenOperations = __webpack_require__(112);
+	var DOMLazyTree = __webpack_require__(113);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactPerf = __webpack_require__(96);
 
-	var escapeTextContentForBrowser = __webpack_require__(114);
+	var escapeTextContentForBrowser = __webpack_require__(116);
 	var invariant = __webpack_require__(8);
-	var validateDOMNesting = __webpack_require__(162);
+	var validateDOMNesting = __webpack_require__(164);
 
 	/**
 	 * Text nodes violate a couple assumptions that React makes about components:
@@ -29048,7 +28972,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 166 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29066,8 +28990,8 @@
 
 	var _assign = __webpack_require__(5);
 
-	var ReactUpdates = __webpack_require__(91);
-	var Transaction = __webpack_require__(98);
+	var ReactUpdates = __webpack_require__(93);
+	var Transaction = __webpack_require__(100);
 
 	var emptyFunction = __webpack_require__(12);
 
@@ -29121,7 +29045,7 @@
 	module.exports = ReactDefaultBatchingStrategy;
 
 /***/ },
-/* 167 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29139,14 +29063,14 @@
 
 	var _assign = __webpack_require__(5);
 
-	var EventListener = __webpack_require__(168);
-	var ExecutionEnvironment = __webpack_require__(84);
+	var EventListener = __webpack_require__(170);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var PooledClass = __webpack_require__(7);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactUpdates = __webpack_require__(91);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactUpdates = __webpack_require__(93);
 
-	var getEventTarget = __webpack_require__(99);
-	var getUnboundedScrollPosition = __webpack_require__(169);
+	var getEventTarget = __webpack_require__(101);
+	var getUnboundedScrollPosition = __webpack_require__(171);
 
 	/**
 	 * Find the deepest React component completely containing the root of the
@@ -29283,7 +29207,7 @@
 	module.exports = ReactEventListener;
 
 /***/ },
-/* 168 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -29372,7 +29296,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 169 */
+/* 171 */
 /***/ function(module, exports) {
 
 	/**
@@ -29415,7 +29339,7 @@
 	module.exports = getUnboundedScrollPosition;
 
 /***/ },
-/* 170 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29431,16 +29355,16 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
-	var EventPluginHub = __webpack_require__(78);
-	var EventPluginUtils = __webpack_require__(80);
-	var ReactComponentEnvironment = __webpack_require__(150);
+	var DOMProperty = __webpack_require__(74);
+	var EventPluginHub = __webpack_require__(80);
+	var EventPluginUtils = __webpack_require__(82);
+	var ReactComponentEnvironment = __webpack_require__(152);
 	var ReactClass = __webpack_require__(23);
-	var ReactEmptyComponent = __webpack_require__(158);
-	var ReactBrowserEventEmitter = __webpack_require__(139);
-	var ReactNativeComponent = __webpack_require__(159);
-	var ReactPerf = __webpack_require__(94);
-	var ReactUpdates = __webpack_require__(91);
+	var ReactEmptyComponent = __webpack_require__(160);
+	var ReactBrowserEventEmitter = __webpack_require__(141);
+	var ReactNativeComponent = __webpack_require__(161);
+	var ReactPerf = __webpack_require__(96);
+	var ReactUpdates = __webpack_require__(93);
 
 	var ReactInjection = {
 	  Component: ReactComponentEnvironment.injection,
@@ -29458,7 +29382,7 @@
 	module.exports = ReactInjection;
 
 /***/ },
-/* 171 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29476,11 +29400,11 @@
 
 	var _assign = __webpack_require__(5);
 
-	var CallbackQueue = __webpack_require__(92);
+	var CallbackQueue = __webpack_require__(94);
 	var PooledClass = __webpack_require__(7);
-	var ReactBrowserEventEmitter = __webpack_require__(139);
-	var ReactInputSelection = __webpack_require__(172);
-	var Transaction = __webpack_require__(98);
+	var ReactBrowserEventEmitter = __webpack_require__(141);
+	var ReactInputSelection = __webpack_require__(174);
+	var Transaction = __webpack_require__(100);
 
 	/**
 	 * Ensures that, when possible, the selection range (currently selected text
@@ -29625,7 +29549,7 @@
 	module.exports = ReactReconcileTransaction;
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29641,11 +29565,11 @@
 
 	'use strict';
 
-	var ReactDOMSelection = __webpack_require__(173);
+	var ReactDOMSelection = __webpack_require__(175);
 
-	var containsNode = __webpack_require__(175);
-	var focusNode = __webpack_require__(124);
-	var getActiveElement = __webpack_require__(178);
+	var containsNode = __webpack_require__(177);
+	var focusNode = __webpack_require__(126);
+	var getActiveElement = __webpack_require__(180);
 
 	function isInDocument(node) {
 	  return containsNode(document.documentElement, node);
@@ -29754,7 +29678,7 @@
 	module.exports = ReactInputSelection;
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29770,10 +29694,10 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
-	var getNodeForCharacterOffset = __webpack_require__(174);
-	var getTextContentAccessor = __webpack_require__(86);
+	var getNodeForCharacterOffset = __webpack_require__(176);
+	var getTextContentAccessor = __webpack_require__(88);
 
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -29971,7 +29895,7 @@
 	module.exports = ReactDOMSelection;
 
 /***/ },
-/* 174 */
+/* 176 */
 /***/ function(module, exports) {
 
 	/**
@@ -30050,7 +29974,7 @@
 	module.exports = getNodeForCharacterOffset;
 
 /***/ },
-/* 175 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30066,7 +29990,7 @@
 	 * 
 	 */
 
-	var isTextNode = __webpack_require__(176);
+	var isTextNode = __webpack_require__(178);
 
 	/*eslint-disable no-bitwise */
 
@@ -30094,7 +30018,7 @@
 	module.exports = containsNode;
 
 /***/ },
-/* 176 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30110,7 +30034,7 @@
 	 * @typechecks
 	 */
 
-	var isNode = __webpack_require__(177);
+	var isNode = __webpack_require__(179);
 
 	/**
 	 * @param {*} object The object to check.
@@ -30123,7 +30047,7 @@
 	module.exports = isTextNode;
 
 /***/ },
-/* 177 */
+/* 179 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30150,7 +30074,7 @@
 	module.exports = isNode;
 
 /***/ },
-/* 178 */
+/* 180 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30189,7 +30113,7 @@
 	module.exports = getActiveElement;
 
 /***/ },
-/* 179 */
+/* 181 */
 /***/ function(module, exports) {
 
 	/**
@@ -30494,7 +30418,7 @@
 	module.exports = SVGDOMPropertyConfig;
 
 /***/ },
-/* 180 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30510,17 +30434,17 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventPropagators = __webpack_require__(77);
-	var ExecutionEnvironment = __webpack_require__(84);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactInputSelection = __webpack_require__(172);
-	var SyntheticEvent = __webpack_require__(88);
+	var EventConstants = __webpack_require__(78);
+	var EventPropagators = __webpack_require__(79);
+	var ExecutionEnvironment = __webpack_require__(86);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactInputSelection = __webpack_require__(174);
+	var SyntheticEvent = __webpack_require__(90);
 
-	var getActiveElement = __webpack_require__(178);
-	var isTextInputElement = __webpack_require__(101);
+	var getActiveElement = __webpack_require__(180);
+	var isTextInputElement = __webpack_require__(103);
 	var keyOf = __webpack_require__(27);
-	var shallowEqual = __webpack_require__(161);
+	var shallowEqual = __webpack_require__(163);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -30695,7 +30619,7 @@
 	module.exports = SelectEventPlugin;
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30711,24 +30635,24 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(76);
-	var EventListener = __webpack_require__(168);
-	var EventPropagators = __webpack_require__(77);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var SyntheticAnimationEvent = __webpack_require__(182);
-	var SyntheticClipboardEvent = __webpack_require__(183);
-	var SyntheticEvent = __webpack_require__(88);
-	var SyntheticFocusEvent = __webpack_require__(184);
-	var SyntheticKeyboardEvent = __webpack_require__(185);
-	var SyntheticMouseEvent = __webpack_require__(104);
-	var SyntheticDragEvent = __webpack_require__(188);
-	var SyntheticTouchEvent = __webpack_require__(189);
-	var SyntheticTransitionEvent = __webpack_require__(190);
-	var SyntheticUIEvent = __webpack_require__(105);
-	var SyntheticWheelEvent = __webpack_require__(191);
+	var EventConstants = __webpack_require__(78);
+	var EventListener = __webpack_require__(170);
+	var EventPropagators = __webpack_require__(79);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var SyntheticAnimationEvent = __webpack_require__(184);
+	var SyntheticClipboardEvent = __webpack_require__(185);
+	var SyntheticEvent = __webpack_require__(90);
+	var SyntheticFocusEvent = __webpack_require__(186);
+	var SyntheticKeyboardEvent = __webpack_require__(187);
+	var SyntheticMouseEvent = __webpack_require__(106);
+	var SyntheticDragEvent = __webpack_require__(190);
+	var SyntheticTouchEvent = __webpack_require__(191);
+	var SyntheticTransitionEvent = __webpack_require__(192);
+	var SyntheticUIEvent = __webpack_require__(107);
+	var SyntheticWheelEvent = __webpack_require__(193);
 
 	var emptyFunction = __webpack_require__(12);
-	var getEventCharCode = __webpack_require__(186);
+	var getEventCharCode = __webpack_require__(188);
 	var invariant = __webpack_require__(8);
 	var keyOf = __webpack_require__(27);
 
@@ -31328,7 +31252,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31344,7 +31268,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
 	/**
 	 * @interface Event
@@ -31372,7 +31296,7 @@
 	module.exports = SyntheticAnimationEvent;
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31388,7 +31312,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
 	/**
 	 * @interface Event
@@ -31415,7 +31339,7 @@
 	module.exports = SyntheticClipboardEvent;
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31431,7 +31355,7 @@
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(105);
+	var SyntheticUIEvent = __webpack_require__(107);
 
 	/**
 	 * @interface FocusEvent
@@ -31456,7 +31380,7 @@
 	module.exports = SyntheticFocusEvent;
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31472,11 +31396,11 @@
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(105);
+	var SyntheticUIEvent = __webpack_require__(107);
 
-	var getEventCharCode = __webpack_require__(186);
-	var getEventKey = __webpack_require__(187);
-	var getEventModifierState = __webpack_require__(107);
+	var getEventCharCode = __webpack_require__(188);
+	var getEventKey = __webpack_require__(189);
+	var getEventModifierState = __webpack_require__(109);
 
 	/**
 	 * @interface KeyboardEvent
@@ -31545,7 +31469,7 @@
 	module.exports = SyntheticKeyboardEvent;
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports) {
 
 	/**
@@ -31600,7 +31524,7 @@
 	module.exports = getEventCharCode;
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31616,7 +31540,7 @@
 
 	'use strict';
 
-	var getEventCharCode = __webpack_require__(186);
+	var getEventCharCode = __webpack_require__(188);
 
 	/**
 	 * Normalization of deprecated HTML5 `key` values
@@ -31707,7 +31631,7 @@
 	module.exports = getEventKey;
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31723,7 +31647,7 @@
 
 	'use strict';
 
-	var SyntheticMouseEvent = __webpack_require__(104);
+	var SyntheticMouseEvent = __webpack_require__(106);
 
 	/**
 	 * @interface DragEvent
@@ -31748,7 +31672,7 @@
 	module.exports = SyntheticDragEvent;
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31764,9 +31688,9 @@
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(105);
+	var SyntheticUIEvent = __webpack_require__(107);
 
-	var getEventModifierState = __webpack_require__(107);
+	var getEventModifierState = __webpack_require__(109);
 
 	/**
 	 * @interface TouchEvent
@@ -31798,7 +31722,7 @@
 	module.exports = SyntheticTouchEvent;
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31814,7 +31738,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(88);
+	var SyntheticEvent = __webpack_require__(90);
 
 	/**
 	 * @interface Event
@@ -31842,7 +31766,7 @@
 	module.exports = SyntheticTransitionEvent;
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31858,7 +31782,7 @@
 
 	'use strict';
 
-	var SyntheticMouseEvent = __webpack_require__(104);
+	var SyntheticMouseEvent = __webpack_require__(106);
 
 	/**
 	 * @interface WheelEvent
@@ -31901,7 +31825,7 @@
 	module.exports = SyntheticWheelEvent;
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -31917,13 +31841,13 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(72);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDefaultPerfAnalysis = __webpack_require__(193);
-	var ReactMount = __webpack_require__(194);
-	var ReactPerf = __webpack_require__(94);
+	var DOMProperty = __webpack_require__(74);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDefaultPerfAnalysis = __webpack_require__(195);
+	var ReactMount = __webpack_require__(196);
+	var ReactPerf = __webpack_require__(96);
 
-	var performanceNow = __webpack_require__(199);
+	var performanceNow = __webpack_require__(201);
 	var warning = __webpack_require__(11);
 
 	function roundFloat(val) {
@@ -32223,7 +32147,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32438,7 +32362,7 @@
 	module.exports = ReactDefaultPerfAnalysis;
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32454,27 +32378,27 @@
 
 	'use strict';
 
-	var DOMLazyTree = __webpack_require__(111);
-	var DOMProperty = __webpack_require__(72);
-	var ReactBrowserEventEmitter = __webpack_require__(139);
+	var DOMLazyTree = __webpack_require__(113);
+	var DOMProperty = __webpack_require__(74);
+	var ReactBrowserEventEmitter = __webpack_require__(141);
 	var ReactCurrentOwner = __webpack_require__(10);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactDOMContainerInfo = __webpack_require__(195);
-	var ReactDOMFeatureFlags = __webpack_require__(196);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactDOMContainerInfo = __webpack_require__(197);
+	var ReactDOMFeatureFlags = __webpack_require__(198);
 	var ReactElement = __webpack_require__(9);
-	var ReactFeatureFlags = __webpack_require__(93);
+	var ReactFeatureFlags = __webpack_require__(95);
 	var ReactInstrumentation = __webpack_require__(19);
-	var ReactMarkupChecksum = __webpack_require__(197);
-	var ReactPerf = __webpack_require__(94);
-	var ReactReconciler = __webpack_require__(95);
-	var ReactUpdateQueue = __webpack_require__(156);
-	var ReactUpdates = __webpack_require__(91);
+	var ReactMarkupChecksum = __webpack_require__(199);
+	var ReactPerf = __webpack_require__(96);
+	var ReactReconciler = __webpack_require__(97);
+	var ReactUpdateQueue = __webpack_require__(158);
+	var ReactUpdates = __webpack_require__(93);
 
 	var emptyObject = __webpack_require__(22);
-	var instantiateReactComponent = __webpack_require__(152);
+	var instantiateReactComponent = __webpack_require__(154);
 	var invariant = __webpack_require__(8);
-	var setInnerHTML = __webpack_require__(115);
-	var shouldUpdateReactComponent = __webpack_require__(157);
+	var setInnerHTML = __webpack_require__(117);
+	var shouldUpdateReactComponent = __webpack_require__(159);
 	var warning = __webpack_require__(11);
 
 	var ATTR_NAME = DOMProperty.ID_ATTRIBUTE_NAME;
@@ -32922,7 +32846,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32938,7 +32862,7 @@
 
 	'use strict';
 
-	var validateDOMNesting = __webpack_require__(162);
+	var validateDOMNesting = __webpack_require__(164);
 
 	var DOC_NODE_TYPE = 9;
 
@@ -32961,7 +32885,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports) {
 
 	/**
@@ -32984,7 +32908,7 @@
 	module.exports = ReactDOMFeatureFlags;
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33000,7 +32924,7 @@
 
 	'use strict';
 
-	var adler32 = __webpack_require__(198);
+	var adler32 = __webpack_require__(200);
 
 	var TAG_END = /\/?>/;
 	var COMMENT_START = /^<\!\-\-/;
@@ -33039,7 +32963,7 @@
 	module.exports = ReactMarkupChecksum;
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports) {
 
 	/**
@@ -33087,7 +33011,7 @@
 	module.exports = adler32;
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33103,7 +33027,7 @@
 	 * @typechecks
 	 */
 
-	var performance = __webpack_require__(200);
+	var performance = __webpack_require__(202);
 
 	var performanceNow;
 
@@ -33125,7 +33049,7 @@
 	module.exports = performanceNow;
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33141,7 +33065,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(84);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var performance;
 
@@ -33152,7 +33076,7 @@
 	module.exports = performance || {};
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -33169,10 +33093,10 @@
 	'use strict';
 
 	var ReactCurrentOwner = __webpack_require__(10);
-	var ReactDOMComponentTree = __webpack_require__(71);
-	var ReactInstanceMap = __webpack_require__(154);
+	var ReactDOMComponentTree = __webpack_require__(73);
+	var ReactInstanceMap = __webpack_require__(156);
 
-	var getNativeComponentFromComposite = __webpack_require__(202);
+	var getNativeComponentFromComposite = __webpack_require__(204);
 	var invariant = __webpack_require__(8);
 	var warning = __webpack_require__(11);
 
@@ -33214,7 +33138,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33230,7 +33154,7 @@
 
 	'use strict';
 
-	var ReactNodeTypes = __webpack_require__(155);
+	var ReactNodeTypes = __webpack_require__(157);
 
 	function getNativeComponentFromComposite(inst) {
 	  var type;
@@ -33249,7 +33173,7 @@
 	module.exports = getNativeComponentFromComposite;
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33265,12 +33189,219 @@
 
 	'use strict';
 
-	var ReactMount = __webpack_require__(194);
+	var ReactMount = __webpack_require__(196);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 204 */
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = exports.STATIC = undefined;
+	exports.createSortedIterator = createSortedIterator;
+	exports.extend = extend;
+
+	var _CompositeClosureHelper = __webpack_require__(207);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
+
+	var _shapes = __webpack_require__(209);
+
+	var _shapes2 = _interopRequireDefault(_shapes);
+
+	var _ColorPalettes = __webpack_require__(219);
+
+	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------------------------------------------------
+	// Global
+	// ----------------------------------------------------------------------------
+
+	function convert(item, model) {
+	  var result = { color: item.colors };
+	  result.shape = model.legendShapes[item.shapes];
+	  return result;
+	}
+
+	function createSortedIterator(priorityOrder, propertyChoices, defaultValues) {
+	  var propertyKeys = Object.keys(propertyChoices);
+
+	  var prioritySizes = priorityOrder.map(function (name) {
+	    return propertyChoices[name].length;
+	  });
+	  var priorityIndex = prioritySizes.map(function (i) {
+	    return 0;
+	  });
+
+	  var get = function get() {
+	    var item = {};
+	    propertyKeys.forEach(function (name) {
+	      var idx = priorityOrder.indexOf(name);
+	      if (idx === -1) {
+	        item[name] = defaultValues[name];
+	      } else {
+	        item[name] = propertyChoices[name][priorityIndex[idx]];
+	      }
+	    });
+	    return item;
+	  };
+
+	  var next = function next() {
+	    var overflowIdx = 0;
+	    priorityIndex[overflowIdx]++;
+	    while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
+	      // Handle overflow
+	      priorityIndex[overflowIdx] = 0;
+	      if (overflowIdx < priorityIndex.length) {
+	        priorityIndex[++overflowIdx]++;
+	      }
+	    }
+	  };
+
+	  return { get: get, next: next };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Static API
+	// ----------------------------------------------------------------------------
+
+	var STATIC = exports.STATIC = {
+	  shapes: _shapes2.default,
+	  palettes: _ColorPalettes2.default
+	};
+
+	// ----------------------------------------------------------------------------
+	// Legend Provider
+	// ----------------------------------------------------------------------------
+
+	function legendProvider(publicAPI, model) {
+	  publicAPI.addLegendEntry = function (name) {
+	    if (model.legendEntries.indexOf(name) === -1 && name) {
+	      model.legendEntries.push(name);
+	      model.legendDirty = true;
+	    }
+	  };
+
+	  publicAPI.removeLegendEntry = function (name) {
+	    if (model.legendEntries.indexOf(name) !== -1 && name) {
+	      model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
+	      model.legendDirty = true;
+	    }
+	  };
+	  publicAPI.removeAllLegendEntry = function () {
+	    model.legendEntries = [];
+	    model.legendDirty = true;
+	  };
+
+	  publicAPI.assignLegend = function () {
+	    var newPriority = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+	    if (newPriority) {
+	      model.legendPriorities = newPriority;
+	      model.legendDirty = true;
+	    }
+	    if (model.legendDirty) {
+	      (function () {
+	        var shapesArray = Object.keys(model.legendShapes);
+	        model.legendDirty = false;
+	        model.legendMapping = {};
+
+	        if (model.legendPriorities && model.legendPriorities.length) {
+	          (function () {
+	            var defaultColor = model.legendColors[0];
+	            var defaultShape = shapesArray[0];
+
+	            var iterator = createSortedIterator(model.legendPriorities, { colors: model.legendColors, shapes: shapesArray }, { colors: defaultColor, shapes: defaultShape });
+
+	            model.legendEntries.forEach(function (name) {
+	              model.legendMapping[name] = convert(iterator.get(), model);
+	              iterator.next();
+	            });
+	          })();
+	        } else {
+	          model.legendEntries.forEach(function (name, idx) {
+	            model.legendMapping[name] = {
+	              color: model.legendColors[idx % model.legendColors.length],
+	              shape: model.legendShapes[shapesArray[idx % shapesArray.length]]
+	            };
+	          });
+	        }
+	      })();
+	    }
+	  };
+
+	  publicAPI.useLegendPalette = function (name) {
+	    var colorSet = _ColorPalettes2.default[name];
+	    if (colorSet) {
+	      model.legendColors = [].concat(colorSet);
+	      model.legendDirty = true;
+	    }
+	  };
+
+	  publicAPI.updateLegendSettings = function (settings) {
+	    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(function (key) {
+	      if (settings[key]) {
+	        model[key] = [].concat(settings.key);
+	        model.legendDirty = true;
+	      }
+	    });
+	  };
+
+	  publicAPI.listLegendColorPalettes = function () {
+	    return Object.keys(_ColorPalettes2.default);
+	  };
+
+	  publicAPI.getLegend = function (name) {
+	    if (model.legendDirty) {
+	      publicAPI.assignLegend();
+	    }
+	    return model.legendMapping[name];
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  legendShapes: _shapes2.default,
+	  legendColors: [].concat(_ColorPalettes2.default.Paired),
+	  legendEntries: [],
+	  legendPriorities: ['shapes', 'colors'],
+	  legendMapping: {},
+	  legendDirty: true
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
+	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'LegendProvider');
+
+	  legendProvider(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
+
+/***/ },
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
@@ -33534,10 +33665,10 @@
 	  newInstance: newInstance,
 	  set: set
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(205).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(208).setImmediate))
 
 /***/ },
-/* 205 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(4).nextTick;
@@ -33616,217 +33747,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(205).setImmediate, __webpack_require__(205).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(208).setImmediate, __webpack_require__(208).clearImmediate))
 
 /***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = exports.STATIC = undefined;
-	exports.createSortedIterator = createSortedIterator;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(204);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	var _shapes = __webpack_require__(207);
-
-	var _shapes2 = _interopRequireDefault(_shapes);
-
-	var _ColorPalettes = __webpack_require__(217);
-
-	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Global
-	// ----------------------------------------------------------------------------
-
-	function convert(item, model) {
-	  var result = { color: item.colors };
-	  result.shape = model.legendShapes[item.shapes];
-	  return result;
-	}
-
-	function createSortedIterator(priorityOrder, propertyChoices, defaultValues) {
-	  var propertyKeys = Object.keys(propertyChoices);
-
-	  var prioritySizes = priorityOrder.map(function (name) {
-	    return propertyChoices[name].length;
-	  });
-	  var priorityIndex = prioritySizes.map(function (i) {
-	    return 0;
-	  });
-
-	  var get = function get() {
-	    var item = {};
-	    propertyKeys.forEach(function (name) {
-	      var idx = priorityOrder.indexOf(name);
-	      if (idx === -1) {
-	        item[name] = defaultValues[name];
-	      } else {
-	        item[name] = propertyChoices[name][priorityIndex[idx]];
-	      }
-	    });
-	    return item;
-	  };
-
-	  var next = function next() {
-	    var overflowIdx = 0;
-	    priorityIndex[overflowIdx]++;
-	    while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
-	      // Handle overflow
-	      priorityIndex[overflowIdx] = 0;
-	      if (overflowIdx < priorityIndex.length) {
-	        priorityIndex[++overflowIdx]++;
-	      }
-	    }
-	  };
-
-	  return { get: get, next: next };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Static API
-	// ----------------------------------------------------------------------------
-
-	var STATIC = exports.STATIC = {
-	  shapes: _shapes2.default,
-	  palettes: _ColorPalettes2.default
-	};
-
-	// ----------------------------------------------------------------------------
-	// Legend Provider
-	// ----------------------------------------------------------------------------
-
-	function legendProvider(publicAPI, model) {
-	  publicAPI.addLegendEntry = function (name) {
-	    if (model.legendEntries.indexOf(name) === -1 && name) {
-	      model.legendEntries.push(name);
-	      model.legendDirty = true;
-	    }
-	  };
-
-	  publicAPI.removeLegendEntry = function (name) {
-	    if (model.legendEntries.indexOf(name) !== -1 && name) {
-	      model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
-	      model.legendDirty = true;
-	    }
-	  };
-	  publicAPI.removeAllLegendEntry = function () {
-	    model.legendEntries = [];
-	    model.legendDirty = true;
-	  };
-
-	  publicAPI.assignLegend = function () {
-	    var newPriority = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
-
-	    if (newPriority) {
-	      model.legendPriorities = newPriority;
-	      model.legendDirty = true;
-	    }
-	    if (model.legendDirty) {
-	      (function () {
-	        var shapesArray = Object.keys(model.legendShapes);
-	        model.legendDirty = false;
-	        model.legendMapping = {};
-
-	        if (model.legendPriorities && model.legendPriorities.length) {
-	          (function () {
-	            var defaultColor = model.legendColors[0];
-	            var defaultShape = shapesArray[0];
-
-	            var iterator = createSortedIterator(model.legendPriorities, { colors: model.legendColors, shapes: shapesArray }, { colors: defaultColor, shapes: defaultShape });
-
-	            model.legendEntries.forEach(function (name) {
-	              model.legendMapping[name] = convert(iterator.get(), model);
-	              iterator.next();
-	            });
-	          })();
-	        } else {
-	          model.legendEntries.forEach(function (name, idx) {
-	            model.legendMapping[name] = {
-	              color: model.legendColors[idx % model.legendColors.length],
-	              shape: model.legendShapes[shapesArray[idx % shapesArray.length]]
-	            };
-	          });
-	        }
-	      })();
-	    }
-	  };
-
-	  publicAPI.useLegendPalette = function (name) {
-	    var colorSet = _ColorPalettes2.default[name];
-	    if (colorSet) {
-	      model.legendColors = [].concat(colorSet);
-	      model.legendDirty = true;
-	    }
-	  };
-
-	  publicAPI.updateLegendSettings = function (settings) {
-	    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(function (key) {
-	      if (settings[key]) {
-	        model[key] = [].concat(settings.key);
-	        model.legendDirty = true;
-	      }
-	    });
-	  };
-
-	  publicAPI.listLegendColorPalettes = function () {
-	    return Object.keys(_ColorPalettes2.default);
-	  };
-
-	  publicAPI.getLegend = function (name) {
-	    if (model.legendDirty) {
-	      publicAPI.assignLegend();
-	    }
-	    return model.legendMapping[name];
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  legendShapes: _shapes2.default,
-	  legendColors: [].concat(_ColorPalettes2.default.Paired),
-	  legendEntries: [],
-	  legendPriorities: ['shapes', 'colors'],
-	  legendMapping: {},
-	  legendDirty: true
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'LegendProvider');
-
-	  legendProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
-
-/***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33835,39 +33759,39 @@
 	  value: true
 	});
 
-	var _Circle = __webpack_require__(208);
+	var _Circle = __webpack_require__(210);
 
 	var _Circle2 = _interopRequireDefault(_Circle);
 
-	var _Square = __webpack_require__(209);
+	var _Square = __webpack_require__(211);
 
 	var _Square2 = _interopRequireDefault(_Square);
 
-	var _Triangle = __webpack_require__(210);
+	var _Triangle = __webpack_require__(212);
 
 	var _Triangle2 = _interopRequireDefault(_Triangle);
 
-	var _Diamond = __webpack_require__(211);
+	var _Diamond = __webpack_require__(213);
 
 	var _Diamond2 = _interopRequireDefault(_Diamond);
 
-	var _X = __webpack_require__(212);
+	var _X = __webpack_require__(214);
 
 	var _X2 = _interopRequireDefault(_X);
 
-	var _Pentagon = __webpack_require__(213);
+	var _Pentagon = __webpack_require__(215);
 
 	var _Pentagon2 = _interopRequireDefault(_Pentagon);
 
-	var _InvertedTriangle = __webpack_require__(214);
+	var _InvertedTriangle = __webpack_require__(216);
 
 	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
 
-	var _Star = __webpack_require__(215);
+	var _Star = __webpack_require__(217);
 
 	var _Star2 = _interopRequireDefault(_Star);
 
-	var _Plus = __webpack_require__(216);
+	var _Plus = __webpack_require__(218);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
@@ -33886,88 +33810,88 @@
 	};
 
 /***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Circle");
-
-/***/ },
-/* 209 */
-/***/ function(module, exports, __webpack_require__) {
-
-	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
-
-/***/ },
 /* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Circle");
 
 /***/ },
 /* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
 
 /***/ },
 /* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
 
 /***/ },
 /* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
 
 /***/ },
 /* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
 
 /***/ },
 /* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
 
 /***/ },
 /* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;
-	var sprite = __webpack_require__(51);;
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(52);;
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	;
+	var sprite = __webpack_require__(52);;
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34084,464 +34008,16 @@
 	};
 
 /***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(204);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
-	var _dataHelper = __webpack_require__(219);
-
-	var _dataHelper2 = _interopRequireDefault(_dataHelper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Selection Provider
-	// ----------------------------------------------------------------------------
-
-	function selectionProvider(publicAPI, model) {
-	  var dataSubscriptions = [];
-
-	  if (!model.selectionData) {
-	    model.selectionData = {};
-	  }
-	  if (!model.selectionMetaData) {
-	    model.selectionMetaData = {};
-	  }
-
-	  function off() {
-	    var count = dataSubscriptions.length;
-	    while (count--) {
-	      dataSubscriptions[count] = null;
-	    }
-	  }
-
-	  function flushDataToListener(dataListener) {
-	    if (dataListener) {
-	      var event = _dataHelper2.default.getNotificationData(model.selectionData, dataListener.request);
-	      if (event) {
-	        dataListener.onDataReady(event);
-	      }
-	    }
-	  }
-
-	  // Method use to store received data
-	  publicAPI.setSelectionData = function (data) {
-	    _dataHelper2.default.set(model.selectionData, data);
-
-	    // Process all subscription to see if we can trigger a notification
-	    dataSubscriptions.forEach(flushDataToListener);
-	  };
-
-	  // Method use to access cached data. Will return undefined if not available
-	  publicAPI.getSelectionData = function (query) {
-	    return _dataHelper2.default.get(model.selectionData, query);
-	  };
-
-	  // Use to extend data subscription
-	  publicAPI.updateSelectionMetadata = function (addon) {
-	    model.selectionMetaData[addon.type] = Object.assign({}, model.selectionMetaData[addon.type], addon.metadata);
-	  };
-
-	  // Get metadata for a given data type
-	  publicAPI.getSelectionMetadata = function (type) {
-	    return model.selectionMetaData[type];
-	  };
-
-	  // --------------------------------
-
-	  publicAPI.setSelection = function (selection) {
-	    model.selection = selection;
-	    publicAPI.fireSelectionChange(selection);
-	  };
-
-	  // --------------------------------
-
-	  // annotation = {
-	  //    selection: {...},
-	  //    score: [0],
-	  //    weight: 1,
-	  //    rationale: 'why not...',
-	  // }
-
-	  publicAPI.setAnnotation = function (annotation) {
-	    model.annotation = annotation;
-	    if (annotation.selection) {
-	      publicAPI.setSelection(annotation.selection);
-	    } else {
-	      annotation.selection = model.selection;
-	    }
-	    publicAPI.fireAnnotationChange(annotation);
-	  };
-
-	  // --------------------------------
-
-	  publicAPI.subscribeToDataSelection = function (type, onDataReady) {
-	    var variables = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-	    var metadata = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-
-	    var id = dataSubscriptions.length;
-	    var request = { id: id, type: type, variables: variables, metadata: metadata };
-	    var dataListener = { onDataReady: onDataReady, request: request };
-	    dataSubscriptions.push(dataListener);
-	    publicAPI.fireDataSubscriptionChange(request);
-	    flushDataToListener(dataListener);
-	    return {
-	      unsubscribe: function unsubscribe() {
-	        dataSubscriptions[id] = null;
-	      },
-	      update: function update(vars, meta) {
-	        request.variables = [].concat(vars);
-	        request.metadata = Object.assign({}, request.metadata, meta);
-	        publicAPI.fireDataSubscriptionChange(request);
-	        flushDataToListener(dataListener);
-	      }
-	    };
-	  };
-
-	  publicAPI.destroy = _CompositeClosureHelper2.default.chain(off, publicAPI.destroy);
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // selection: null,
-	  // selectionData: null,
-	  // selectionMetaData: null,
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'SelectionProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['selection', 'annotation']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'selectionChange');
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'annotationChange');
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'dataSubscriptionChange');
-
-	  selectionProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.getHandler = getHandler;
-	exports.set = set;
-	exports.get = get;
-	exports.getNotificationData = getNotificationData;
-
-	var _histogram2d = __webpack_require__(220);
-
-	var _histogram2d2 = _interopRequireDefault(_histogram2d);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var dataMapping = {
-	  histogram2d: _histogram2d2.default
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function getHandler(data) {
-	  var handler = dataMapping[data.type];
-	  if (handler) {
-	    return handler;
-	  }
-
-	  throw new Error('No set handler for ' + data.type);
-	}
-
-	function set(model, data) {
-	  return getHandler(data).set(model, data);
-	}
-
-	function get(model, data) {
-	  return getHandler(data).get(model, data);
-	}
-
-	function getNotificationData(model, request) {
-	  return getHandler(request).getNotificationData(model, request);
-	}
-
-	exports.default = {
-	  set: set,
-	  get: get,
-	  getNotificationData: getNotificationData
-	};
-
-/***/ },
 /* 220 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.set = set;
-	// ----------------------------------------------------------------------------
-	// Histogram2d
-	// ----------------------------------------------------------------------------
-	//
-	// ===> SET
-	//
-	//  const payload = {
-	//    type: 'histogram2d',
-	//    data: {
-	//      x: 'temperature',
-	//      y: 'pressure',
-	//      bins: [...],
-	//      score: 0,
-	//      annotationId: 24, // Generation of the annotation
-	//      selectionId: 23, // Generation of the selection
-	//    },
-	//  }
-	//
-	// ===> GET
-	//
-	//  const query = {
-	//    type: 'histogram2d',
-	//    axes: ['temperature', 'pressure'],
-	//    score: [0, 2],
-	//  }
-	//
-	// const response = [
-	//   {
-	//     x: 'temperature',
-	//     y: 'pressure',
-	//     bins: [],
-	//     score: 0,
-	//     annotationId: 24,
-	//     selectionId: 23,
-	//     maxCount: 3534,
-	//   }, {
-	//     x: 'temperature',
-	//     y: 'pressure',
-	//     bins: [],
-	//     score: 2,
-	//     annotationId: 24,
-	//     selectionId: 23,
-	//     maxCount: 3534,
-	//   },
-	// ];
-	//
-	// ===> NOTIFICATION
-	//
-	// request = {
-	//   type: 'histogram2d',
-	//   variables: [
-	//     ['temperature', 'pressure'],
-	//     ['pressure', 'velocity'],
-	//     ['velocity', 'abcd'],
-	//   ],
-	//   metadata: {
-	//     partitionScore: [0, 2],
-	//   },
-	// }
-	//
-	// const notification = {
-	//   temperature: {
-	//     pressure: [
-	//       {
-	//         x: 'temperature',
-	//         y: 'pressure',
-	//         bins: [],
-	//         score: 0,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       }, {
-	//         x: 'temperature',
-	//         y: 'pressure',
-	//         bins: [],
-	//         score: 2,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       },
-	//     ],
-	//   },
-	//   pressure: {
-	//     velocity: [
-	//       {
-	//         x: 'pressure',
-	//         y: 'velocity',
-	//         bins: [],
-	//         score: 0,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       }, {
-	//         x: 'pressure',
-	//         y: 'velocity',
-	//         bins: [],
-	//         score: 2,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       },
-	//     ],
-	//   },
-	//   velocity: {
-	//     abcd: [
-	//       {
-	//         x: 'velocity',
-	//         y: 'abcd',
-	//         bins: [],
-	//         score: 0,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       }, {
-	//         x: 'velocity',
-	//         y: 'abcd',
-	//         bins: [],
-	//         score: 2,
-	//         annotationId: 24,
-	//         selectionId: 23,
-	//         maxCount: 3534,
-	//       },
-	//     ],
-	//   },
-	// };
-	//
-	// ----------------------------------------------------------------------------
-
-	// function flipHistogram(histo2d) {
-	//   const newHisto2d = {
-	//     bins: histo2d.bins.map(bin => {
-	//       const { x, y, count } = bin;
-	//       return {
-	//         x: y,
-	//         y: x,
-	//         count,
-	//       };
-	//     }),
-	//     x: histo2d.y,
-	//     y: histo2d.x };
-
-	//   return newHisto2d;
-	// }
-
-	// ----------------------------------------------------------------------------
-
-	function set(model, payload) {
-	  if (!model.histogram2d) {
-	    model.histogram2d = {};
-	  }
-	  var _payload$data = payload.data;
-	  var x = _payload$data.x;
-	  var y = _payload$data.y;
-	  var annotationId = _payload$data.annotationId;
-	  var score = _payload$data.score;
-
-	  if (!model.histogram2d[x.name]) {
-	    model.histogram2d[x.name] = {};
-	  }
-	  if (!model.histogram2d[x.name][y.name]) {
-	    model.histogram2d[x.name][y.name] = [];
-	  }
-
-	  model.histogram2d[x.name][y.name] = [].concat(payload.data, model.histogram2d[x.name][y.name].filter(function (hist) {
-	    return hist.annotationId === annotationId && hist.score !== score;
-	  }));
-
-	  // Attach max count
-	  var count = 0;
-	  payload.data.bins.forEach(function (item) {
-	    count = count < item.count ? item.count : count;
-	  });
-	  payload.data.maxCount = count;
-
-	  // Create flipped histogram?
-	  // FIXME
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function get(model, query) {
-	  if (model.histogram2d && model.histogram2d[query.axes[0]] && model.histogram2d[query.axes[0]][query.axes[1]]) {
-	    if (query.score) {
-	      return model.histogram2d[query.axes[0]][query.axes[1]].filter(function (hist) {
-	        return query.score.indexOf(hist.score) !== -1;
-	      });
-	    }
-	    return model.histogram2d[query.axes[0]][query.axes[1]];
-	  }
-	  return null;
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function getNotificationData(model, request) {
-	  var result = {};
-	  var missingData = false;
-
-	  request.variables.forEach(function (axes) {
-	    var histograms = get(model, { axes: axes });
-	    if (histograms && histograms.length) {
-	      if (!result[axes[0]]) {
-	        result[axes[0]] = {};
-	      }
-	      result[axes[0]][axes[1]] = histograms;
-	    } else {
-	      missingData = true;
-	    }
-	  });
-
-	  return missingData ? null : result;
-	}
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = {
-	  set: set,
-	  get: get,
-	  getNotificationData: getNotificationData
-	};
-
-/***/ },
-/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(222);
+	var content = __webpack_require__(221);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(45)(content, {});
+	var update = __webpack_require__(46)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -34558,10 +34034,10 @@
 	}
 
 /***/ },
-/* 222 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(37)();
+	exports = module.exports = __webpack_require__(38)();
 	// imports
 
 

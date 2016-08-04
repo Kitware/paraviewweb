@@ -32392,6 +32392,7 @@
 	exports.range = range;
 	exports.rule = rule;
 	exports.convertToRuleSelection = convertToRuleSelection;
+	exports.markModified = markModified;
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -32585,10 +32586,18 @@
 	}
 
 	// ----------------------------------------------------------------------------
+
+	function markModified(selection) {
+	  generation++;
+	  return Object.assign({}, selection, { generation: generation });
+	}
+
+	// ----------------------------------------------------------------------------
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
 	exports.default = {
+	  markModified: markModified,
 	  empty: empty,
 	  partition: partition,
 	  range: range,
