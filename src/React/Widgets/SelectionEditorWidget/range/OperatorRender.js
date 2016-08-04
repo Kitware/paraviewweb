@@ -14,7 +14,7 @@ const OPERATOR_LABEL = {
 export default function operatorRender(props) {
   const operator = props.operator;
   return (
-    <table className={props.depth ? style.table : style.rootTable}>
+    <table className={[props.depth ? style.table : style.rootTable, props.className].join(' ')}>
       <tbody>
         <tr>
           <td className={style.operationCell}>
@@ -44,4 +44,5 @@ operatorRender.propTypes = {
   children: React.PropTypes.array,
   operator: React.PropTypes.string,
   depth: React.PropTypes.number,
+  className: React.PropTypes.string,
 };

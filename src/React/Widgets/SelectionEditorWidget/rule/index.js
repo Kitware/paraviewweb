@@ -109,6 +109,7 @@ export default function ruleSelection(props) {
 
   return (
     <RuleRender
+      className={props.className}
       getLegend={props.getLegend}
 
       onChange={onChange}
@@ -126,5 +127,6 @@ ruleSelection.propTypes = {
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
+  className: React.PropTypes.string,
 };
 

@@ -4,7 +4,7 @@ import LegendIcon from '../LegendIcon';
 
 export default function fieldRender(props) {
   return (
-    <table className={props.depth ? style.table : style.rootTable}>
+    <table className={[props.depth ? style.table : style.rootTable, props.className].join(' ')}>
       <tbody>
         <tr>
           <td className={style.operationCell} title={props.fieldName}>
@@ -35,4 +35,5 @@ fieldRender.propTypes = {
   getLegend: React.PropTypes.func,
   fieldName: React.PropTypes.string,
   depth: React.PropTypes.number,
+  className: React.PropTypes.string,
 };

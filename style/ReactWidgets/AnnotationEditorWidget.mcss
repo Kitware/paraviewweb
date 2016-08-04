@@ -1,0 +1,80 @@
+.topContainer {
+  position: relative;
+  width: 420px;
+  margin: 10px auto;
+}
+
+.scoreContainer {
+  min-width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scoreBlock {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 2px solid gray;
+  margin: 2px;
+  opacity: 0.5;
+}
+
+.selectedScoreBlock {
+  composes: scoreBlock;
+  opacity: 1;
+  border: 2px solid black;
+}
+
+.verticalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.lineContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.lineContainerSpaceBetween {
+  composes: lineContainer;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.flexItem {
+  flex: 1;
+  min-width: 10px;
+}
+
+.weightInput {
+  width: 45px;
+}
+
+.label {
+  flex: 1;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.labelCenter {
+  composes: label;
+  text-align: center;
+}
+
+.textBox {
+  flex: 1;
+  margin: 0 5px;
+}
+
+.backgroundScore {
+  position: absolute;
+  opacity: 0.2;
+  z-index: -1;
+  width: 320px;
+  right: calc(100% + 5px);
+  border-radius: 5px;
+}

@@ -30,7 +30,7 @@ export default function partitionSelection(props) {
     if (pathToDelete[0] === 'dividers') {
       const deleteIndex = pathToDelete[1];
       // remove one.
-      dividers.splice(deleteIndex, 1);
+      selection.partition.dividers.splice(deleteIndex, 1);
     }
 
     // If we still have at least one divider, selection isn't empty.
@@ -42,13 +42,13 @@ export default function partitionSelection(props) {
   };
 
   return (
-    <FieldRender fieldName={fieldName} getLegend={props.getLegend} depth={0} >
+    <FieldRender className={props.className} fieldName={fieldName} getLegend={props.getLegend} depth={0} >
       {dividers.map((divider, idx) =>
         <DividerRender
           onChange={onChange}
           onDelete={onDelete}
           divider={divider}
-          path={['divider', idx]}
+          path={['dividers', idx]}
           key={idx}
           getLegend={props.getLegend}
         />
@@ -61,5 +61,6 @@ partitionSelection.propTypes = {
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
+  className: React.PropTypes.string,
 };
 

@@ -11,6 +11,7 @@ selectionEditorWidget.propTypes = {
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
+  className: React.PropTypes.string,
 };
 
 selectionEditorWidget.default = {
