@@ -66,7 +66,7 @@ function fieldSelector(publicAPI, model) {
     d3.select(model.container).select('thead').classed(style.thead, true);
     d3.select(model.container).select('tbody').classed(style.tbody, true);
     d3.select(model.container)
-      .select('th.mode')
+      .select('th.field-selector-mode')
       .on('click', d => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();
@@ -80,7 +80,7 @@ function fieldSelector(publicAPI, model) {
     const data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
     // Update header label
     d3.select(model.container)
-      .select('th.label')
+      .select('th.field-selector-label')
       .text(model.displayUnselected ? `All Variables (${data.length})` : `Selected Variables (${data.length})`)
       .on('click', d => {
         model.displayUnselected = !model.displayUnselected;
