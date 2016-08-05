@@ -21649,7 +21649,7 @@
 	    }));
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
 	      if (model.useAnnotation) {
-	        var annotation = _AnnotationBuilder2.default.annotation(model.axes.getSelection(), model.defaultScore, model.defaultWeight);
+	        var annotation = _AnnotationBuilder2.default.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
 	        model.provider.setAnnotation(annotation);
 	      } else {
 	        model.provider.setSelection(model.axes.getSelection());
@@ -21702,6 +21702,7 @@
 	  hoverIndicatorWidth: 7,
 
 	  numberOfBins: 128,
+
 	  useAnnotation: false,
 	  defaultScore: 0,
 	  defaultWeight: 1
@@ -32083,8 +32084,10 @@
 	              return Object.assign({}, i);
 	            });
 	            if (scoreMapping && scoreMapping.length === 1) {
-	              nameToAxisMap[axisName].selections.score = scoreMapping[0];
-	              nameToAxisMap[axisName].selections.color = scoreColorMap[scoreMapping[0]] ? 'rgb(' + scoreColorMap[scoreMapping[0]].join(',') + ')' : 'rgb(105, 195, 255)';
+	              nameToAxisMap[axisName].selections.forEach(function (axisSelection) {
+	                axisSelection.score = scoreMapping[0];
+	                axisSelection.color = scoreColorMap[scoreMapping[0]] ? 'rgb(' + scoreColorMap[scoreMapping[0]].join(',') + ')' : 'rgb(105, 195, 255)';
+	              });
 	            }
 	          });
 	        } else if (selection.type === 'partition') {

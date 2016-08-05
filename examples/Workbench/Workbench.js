@@ -42741,7 +42741,6 @@
 	  function changeViewport(event) {
 	    var idx = Number(event.currentTarget.getAttribute('name'));
 	    var name = event.currentTarget.value;
-	    console.log('changeViewport', idx, name, props.viewports[name], props.viewports[name].component);
 	    props.onViewportChange(idx, props.viewports[name].component);
 	  }
 	  var LayoutItem = LAYOUT_VIEW[props.activeLayout];
