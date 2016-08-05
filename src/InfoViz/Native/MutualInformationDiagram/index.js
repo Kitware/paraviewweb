@@ -4,6 +4,7 @@ import htmlContent from './body.html';
 import iconImage from './InfoDiagramIconSmall.png';
 import multiClicker from '../../Core/D3MultiClick';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
+import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
 
 import {
@@ -80,6 +81,12 @@ function informationDiagram(publicAPI, model) {
       publicAPI.resize();
     }
   }
+
+  publicAPI.propagateAnnotationInsteadOfSelection = (useAnnotation = true, defaultScore = 0, defaultWeight = 0) => {
+    model.useAnnotation = useAnnotation;
+    model.defaultScore = defaultScore;
+    model.defaultWeight = defaultWeight;
+  };
 
   publicAPI.resize = () => {
     if (!model.container) {
@@ -309,7 +316,13 @@ function informationDiagram(publicAPI, model) {
       });
 
       if (proceed) {
-        model.provider.setSelection(SelectionBuilder.range(vars));
+        const selection = SelectionBuilder.range(vars);
+        if (model.useAnnotation) {
+          const annotation = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+          model.provider.setAnnotation(annotation);
+        } else {
+          model.provider.setSelection(selection);
+        }
       }
     }
 
@@ -903,6 +916,10 @@ const DEFAULT_VALUES = {
   glyphSize: 15,
 
   statusBarVisible: false,
+
+  useAnnotation: false,
+  defaultScore: 0,
+  defaultWeight: 1,
 };
 
 // ----------------------------------------------------------------------------
