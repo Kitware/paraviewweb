@@ -20990,12 +20990,10 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
+	    while (model.subscriptions.length) {
+	      model.subscriptions.pop().unsubscribe();
+	    }
 	    Object.keys(model).forEach(function (field) {
-	      if (field === 'subscriptions') {
-	        model[field].forEach(function (subscription) {
-	          return subscription.unsubscribe();
-	        });
-	      }
 	      delete model[field];
 	    });
 
@@ -35485,6 +35483,7 @@
 	});
 	exports.annotation = annotation;
 	exports.update = update;
+	exports.markModified = markModified;
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -35530,12 +35529,20 @@
 	}
 
 	// ----------------------------------------------------------------------------
+
+	function markModified(annotationObject) {
+	  generation++;
+	  return Object.assign({}, annotationObject, { generation: generation });
+	}
+
+	// ----------------------------------------------------------------------------
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
 	exports.default = {
 	  annotation: annotation,
-	  update: update
+	  update: update,
+	  markModified: markModified
 	};
 
 /***/ },

@@ -137,10 +137,11 @@
 	  selection: _react2.default.PropTypes.object,
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  getLegend: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func,
+	  className: _react2.default.PropTypes.string
 	};
 
-	selectionEditorWidget.default = {
+	selectionEditorWidget.defaultProps = {
 	  onChange: function onChange(selection, isEditDone) {}
 	};
 
@@ -3859,16 +3860,17 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function emptySelection(selection, props) {
-	  var onChange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	  var onDelete = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
-
+	function emptySelection(props) {
 	  return _react2.default.createElement(
 	    'div',
-	    { className: _SelectionEditorWidget2.default.emptySelection },
+	    { className: [_SelectionEditorWidget2.default.emptySelection, props.className].join(' ') },
 	    'No selection'
 	  );
 	}
+
+	emptySelection.propTypes = {
+	  className: _react2.default.PropTypes.string
+	};
 
 /***/ },
 /* 36 */
@@ -5060,7 +5062,7 @@
 	    if (pathToDelete[0] === 'dividers') {
 	      var deleteIndex = pathToDelete[1];
 	      // remove one.
-	      dividers.splice(deleteIndex, 1);
+	      selection.partition.dividers.splice(deleteIndex, 1);
 	    }
 
 	    // If we still have at least one divider, selection isn't empty.
@@ -5073,13 +5075,13 @@
 
 	  return _react2.default.createElement(
 	    _FieldRender2.default,
-	    { fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
+	    { className: props.className, fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
 	    dividers.map(function (divider, idx) {
 	      return _react2.default.createElement(_DividerRender2.default, {
 	        onChange: onChange,
 	        onDelete: onDelete,
 	        divider: divider,
-	        path: ['divider', idx],
+	        path: ['dividers', idx],
 	        key: idx,
 	        getLegend: props.getLegend
 	      });
@@ -5091,7 +5093,8 @@
 	  selection: _react2.default.PropTypes.object,
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  getLegend: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -5122,7 +5125,7 @@
 	function fieldRender(props) {
 	  return _react2.default.createElement(
 	    'table',
-	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
+	    { className: [props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable, props.className].join(' ') },
 	    _react2.default.createElement(
 	      'tbody',
 	      null,
@@ -5167,7 +5170,8 @@
 	  children: _react2.default.PropTypes.array,
 	  getLegend: _react2.default.PropTypes.func,
 	  fieldName: _react2.default.PropTypes.string,
-	  depth: _react2.default.PropTypes.number
+	  depth: _react2.default.PropTypes.number,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -15875,7 +15879,7 @@
 
 	  return _react2.default.createElement(
 	    _OperatorRender2.default,
-	    { operator: 'and', depth: 0 },
+	    { operator: 'and', depth: 0, className: props.className },
 	    Object.keys(vars).map(function (fieldName, idx) {
 	      if (vars[fieldName].length > 1) {
 	        return _react2.default.createElement(
@@ -15917,7 +15921,8 @@
 	  selection: _react2.default.PropTypes.object,
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  getLegend: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -16190,7 +16195,7 @@
 	  var operator = props.operator;
 	  return _react2.default.createElement(
 	    'table',
-	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
+	    { className: [props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable, props.className].join(' ') },
 	    _react2.default.createElement(
 	      'tbody',
 	      null,
@@ -16234,7 +16239,8 @@
 	operatorRender.propTypes = {
 	  children: _react2.default.PropTypes.array,
 	  operator: _react2.default.PropTypes.string,
-	  depth: _react2.default.PropTypes.number
+	  depth: _react2.default.PropTypes.number,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -16396,6 +16402,7 @@
 	  };
 
 	  return _react2.default.createElement(_RuleRender2.default, {
+	    className: props.className,
 	    getLegend: props.getLegend,
 
 	    onChange: onChange,
@@ -16412,7 +16419,8 @@
 	  selection: _react2.default.PropTypes.object,
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  getLegend: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -16448,6 +16456,7 @@
 	  var ruleSelector = props.rule.type;
 	  if (ruleSelector === 'logical') {
 	    return _react2.default.createElement(_OperatorRender2.default, {
+	      className: props.className,
 	      getLegend: props.getLegend,
 
 	      onChange: props.onChange,
@@ -16480,6 +16489,7 @@
 	}
 
 	ruleRender.propTypes = {
+	  className: _react2.default.PropTypes.string,
 	  rule: _react2.default.PropTypes.object,
 	  depth: _react2.default.PropTypes.number,
 	  maxDepth: _react2.default.PropTypes.number,
@@ -16538,7 +16548,7 @@
 	  });
 	  return _react2.default.createElement(
 	    'table',
-	    { className: props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable },
+	    { className: [props.depth ? _SelectionEditorWidget2.default.table : _SelectionEditorWidget2.default.rootTable, props.className].join(' ') },
 	    _react2.default.createElement(
 	      'tbody',
 	      null,
@@ -16594,7 +16604,8 @@
 	  maxDepth: _react2.default.PropTypes.number,
 	  path: _react2.default.PropTypes.array,
 	  onChange: _react2.default.PropTypes.func,
-	  onDelete: _react2.default.PropTypes.func
+	  onDelete: _react2.default.PropTypes.func,
+	  className: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -33496,12 +33507,10 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
+	    while (model.subscriptions.length) {
+	      model.subscriptions.pop().unsubscribe();
+	    }
 	    Object.keys(model).forEach(function (field) {
-	      if (field === 'subscriptions') {
-	        model[field].forEach(function (subscription) {
-	          return subscription.unsubscribe();
-	        });
-	      }
 	      delete model[field];
 	    });
 

@@ -21520,7 +21520,7 @@
 
 	    model.container = element;
 
-	    if (model.container !== null) {
+	    if (model.container) {
 	      model.container.innerHTML = _body2.default;
 	      _d2.default.select(model.container).select('div.parallel-coords-placeholder').select('img').attr('src', _ParallelCoordsIconSmall2.default);
 	      model.container.appendChild(model.canvas);
@@ -21806,12 +21806,10 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
+	    while (model.subscriptions.length) {
+	      model.subscriptions.pop().unsubscribe();
+	    }
 	    Object.keys(model).forEach(function (field) {
-	      if (field === 'subscriptions') {
-	        model[field].forEach(function (subscription) {
-	          return subscription.unsubscribe();
-	        });
-	      }
 	      delete model[field];
 	    });
 
