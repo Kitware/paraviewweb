@@ -35,8 +35,6 @@ export default function manyScoreAnnotationEditorWidget(props) {
             <BGSelector
               key={`bgscore-${idx}`}
               index={idx}
-              step={28}
-              margin={1}
               color={scoreToColor[score]}
             />
           )}

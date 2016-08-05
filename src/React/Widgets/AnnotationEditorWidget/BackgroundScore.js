@@ -20,8 +20,8 @@ bgScore.propTypes = {
   margin: React.PropTypes.number,
 };
 
-bgScore.DefaultProps = {
+bgScore.defaultProps = {
   index: 0,
-  step: 30,
+  step: 28,
   margin: 1,
 };

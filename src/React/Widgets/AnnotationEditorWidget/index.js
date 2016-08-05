@@ -71,6 +71,6 @@ annotationEditorWidget.propTypes = {
   getLegend: React.PropTypes.func,
 };
 
-annotationEditorWidget.DefaultProps = {
+annotationEditorWidget.defaultProps = {
   onChange(annotation, isEditDone) {},
 };

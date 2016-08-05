@@ -31,7 +31,7 @@ scoreSelector.propTypes = {
   className: React.PropTypes.string,
 };
 
-scoreSelector.default = {
+scoreSelector.defaultProps = {
   name: 'default',
   horizontal: false,
   onChange(name, score) {},

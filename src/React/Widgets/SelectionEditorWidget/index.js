@@ -14,6 +14,6 @@ selectionEditorWidget.propTypes = {
   className: React.PropTypes.string,
 };
 
-selectionEditorWidget.default = {
+selectionEditorWidget.defaultProps = {
   onChange(selection, isEditDone) {},
 };
