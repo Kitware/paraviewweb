@@ -41,7 +41,6 @@ export default function workbenchController(props) {
   function changeViewport(event) {
     const idx = Number(event.currentTarget.getAttribute('name'));
     const name = event.currentTarget.value;
-    console.log('changeViewport', idx, name, props.viewports[name], props.viewports[name].component);
     props.onViewportChange(idx, props.viewports[name].component);
   }
   const LayoutItem = LAYOUT_VIEW[props.activeLayout];
