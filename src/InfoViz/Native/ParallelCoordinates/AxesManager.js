@@ -114,9 +114,11 @@ export default class AxesManager {
         Object.keys(selection.range.variables).forEach(axisName => {
           nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
           if (scoreMapping && scoreMapping.length === 1) {
-            nameToAxisMap[axisName].selections.score = scoreMapping[0];
-            nameToAxisMap[axisName].selections.color = scoreColorMap[scoreMapping[0]]
-              ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
+            nameToAxisMap[axisName].selections.forEach(axisSelection => {
+              axisSelection.score = scoreMapping[0];
+              axisSelection.color = scoreColorMap[scoreMapping[0]]
+                ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
+            });
           }
         });
       } else if (selection.type === 'partition') {

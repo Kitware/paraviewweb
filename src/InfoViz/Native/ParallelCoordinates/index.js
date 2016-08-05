@@ -854,7 +854,7 @@ function parallelCoordinate(publicAPI, model) {
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       if (model.useAnnotation) {
-        const annotation = AnnotationBuilder.annotation(model.axes.getSelection(), model.defaultScore, model.defaultWeight);
+        const annotation = AnnotationBuilder.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
         model.provider.setAnnotation(annotation);
       } else {
         model.provider.setSelection(model.axes.getSelection());
@@ -907,6 +907,7 @@ const DEFAULT_VALUES = {
   hoverIndicatorWidth: 7,
 
   numberOfBins: 128,
+
   useAnnotation: false,
   defaultScore: 0,
   defaultWeight: 1,
