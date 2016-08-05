@@ -40,10 +40,19 @@ export function update(annotationObject, changeSet) {
 }
 
 // ----------------------------------------------------------------------------
+
+export function markModified(annotationObject) {
+  generation++;
+  return Object.assign({}, annotationObject, { generation });
+}
+
+
+// ----------------------------------------------------------------------------
 // Exposed object
 // ----------------------------------------------------------------------------
 
 export default {
   annotation,
   update,
+  markModified,
 };

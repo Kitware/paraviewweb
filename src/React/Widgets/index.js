@@ -1,4 +1,5 @@
 import ActionListWidget         from './ActionListWidget';
+import AnnotationEditorWidget   from './AnnotationEditorWidget';
 import ButtonSelectorWidget     from './ButtonSelectorWidget';
 import CollapsibleWidget        from './CollapsibleWidget';
 import ColorByWidget            from './ColorByWidget';
@@ -32,6 +33,7 @@ import TogglePanelWidget        from './TogglePanelWidget';
 
 export default {
   ActionListWidget,
+  AnnotationEditorWidget,
   ButtonSelectorWidget,
   CollapsibleWidget,
   ColorByWidget,

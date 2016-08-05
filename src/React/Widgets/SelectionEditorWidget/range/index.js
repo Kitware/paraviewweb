@@ -56,7 +56,7 @@ export default function rangeSelection(props) {
   };
 
   return (
-    <OperatorRender operator={'and'} depth={0} >
+    <OperatorRender operator={'and'} depth={0} className={props.className}>
       {Object.keys(vars).map(
         (fieldName, idx) => {
           if (vars[fieldName].length > 1) {
@@ -99,4 +99,5 @@ rangeSelection.propTypes = {
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
+  className: React.PropTypes.string,
 };

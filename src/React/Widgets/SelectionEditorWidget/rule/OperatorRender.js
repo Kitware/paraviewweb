@@ -16,7 +16,7 @@ export default function operatorRender(props) {
   const operator = props.rule.terms[0];
   const subRules = props.rule.terms.filter((r, idx) => (idx > 0));
   return (
-    <table className={props.depth ? style.table : style.rootTable}>
+    <table className={[props.depth ? style.table : style.rootTable, props.className].join(' ')}>
       <tbody>
         <tr>
           <td className={style.operationCell}>
@@ -58,4 +58,5 @@ operatorRender.propTypes = {
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,
   onDelete: React.PropTypes.func,
+  className: React.PropTypes.string,
 };

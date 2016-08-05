@@ -9,6 +9,7 @@ export default function ruleRender(props) {
   if (ruleSelector === 'logical') {
     return (
       <OperatorRender
+        className={props.className}
         getLegend={props.getLegend}
 
         onChange={props.onChange}
@@ -40,6 +41,7 @@ export default function ruleRender(props) {
 }
 
 ruleRender.propTypes = {
+  className: React.PropTypes.string,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,
   maxDepth: React.PropTypes.number,
