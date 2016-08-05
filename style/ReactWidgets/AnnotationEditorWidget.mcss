@@ -48,6 +48,7 @@
 .flexItem {
   flex: 1;
   min-width: 10px;
+  z-index: 1;
 }
 
 .weightInput {

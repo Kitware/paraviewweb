@@ -32,9 +32,9 @@ const partitionSelection = SelectionBuilder.partition('pressure', [
 ]);
 
 const annotations = [
-  AnnotationBuilder.annotation(rangeSelection, [100]),
-  AnnotationBuilder.annotation(partitionSelection, [0, 100, 0, -Number.MAX_VALUE]),
-  AnnotationBuilder.annotation(SelectionBuilder.convertToRuleSelection(rangeSelection), [0]),
+  AnnotationBuilder.annotation(rangeSelection, [0]),
+  AnnotationBuilder.annotation(partitionSelection, [1, 0, 1, 2]),
+  AnnotationBuilder.annotation(SelectionBuilder.convertToRuleSelection(rangeSelection), [1]),
 ];
 const legendService = LegendProvider.newInstance({ legendEntries: ['pressure', 'temperature'] });
 
@@ -58,7 +58,7 @@ function render() {
               render();
             }}
           />
-          <hr/>
+          <hr />
         </div>
       )}
     </div>,
