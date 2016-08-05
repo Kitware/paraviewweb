@@ -822,6 +822,11 @@
 	      return this.activeLayout;
 	    }
 	  }, {
+	    key: 'getLayoutCount',
+	    value: function getLayoutCount() {
+	      return LAYOUT_TO_COUNT[this.activeLayout];
+	    }
+	  }, {
 	    key: 'triggerChange',
 	    value: function triggerChange() {
 	      var viewports = this.getViewportMapping();

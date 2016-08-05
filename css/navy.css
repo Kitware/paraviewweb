@@ -1235,7 +1235,6 @@ a.article-title:hover {
   -moz-transform-origin: 0;
   -ms-transform-origin: 0;
   transform-origin: 0;
-  -webkit-border-radius: 2px;
   border-radius: 2px;
 }
 .mobile-nav-toggle-bar:first-child {

@@ -84,7 +84,7 @@
 
 	var partitionSelection = _SelectionBuilder2.default.partition('pressure', [{ value: 90, uncertainty: 0 }, { value: 101.3, uncertainty: 20 }, { value: 200, uncertainty: 40, closeToLeft: true }]);
 
-	var annotations = [_AnnotationBuilder2.default.annotation(rangeSelection, [100]), _AnnotationBuilder2.default.annotation(partitionSelection, [0, 100, 0, -Number.MAX_VALUE]), _AnnotationBuilder2.default.annotation(_SelectionBuilder2.default.convertToRuleSelection(rangeSelection), [0])];
+	var annotations = [_AnnotationBuilder2.default.annotation(rangeSelection, [0]), _AnnotationBuilder2.default.annotation(partitionSelection, [1, 0, 1, 2]), _AnnotationBuilder2.default.annotation(_SelectionBuilder2.default.convertToRuleSelection(rangeSelection), [1])];
 	var legendService = _LegendProvider2.default.newInstance({ legendEntries: ['pressure', 'temperature'] });
 
 	// Get react component
@@ -157,6 +157,10 @@
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function annotationEditorWidget(props) {
+	  if (!props.annotation) {
+	    return null;
+	  }
+
 	  var onSelectionChange = function onSelectionChange(selection, isEditDone) {
 	    var annotation = _AnnotationBuilder2.default.update(props.annotation, { selection: selection });
 
@@ -4031,10 +4035,10 @@
 	    props.scores.map(function (score, idx) {
 	      return _react2.default.createElement('div', {
 	        key: idx,
-	        className: props.score === score.value ? _AnnotationEditorWidget2.default.selectedScoreBlock : _AnnotationEditorWidget2.default.scoreBlock,
+	        className: props.score === idx ? _AnnotationEditorWidget2.default.selectedScoreBlock : _AnnotationEditorWidget2.default.scoreBlock,
 	        style: { background: score.color, display: props.horizontal ? 'inline-block' : 'block' },
 	        title: score.name,
-	        'data-score': score.value,
+	        'data-score': idx,
 	        onClick: click
 	      });
 	    })
@@ -4091,7 +4095,7 @@
 
 
 	// module
-	exports.push([module.id, ".AnnotationEditorWidget_topContainer_24fJ6 {\n  position: relative;\n  width: 420px;\n  margin: 10px auto;\n}\n\n.AnnotationEditorWidget_scoreContainer_1nXfK {\n  min-width: 100px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_scoreBlock_3tnq- {\n  width: 20px;\n  height: 20px;\n  border-radius: 3px;\n  border: 2px solid gray;\n  margin: 2px;\n  opacity: 0.5;\n}\n\n.AnnotationEditorWidget_selectedScoreBlock_2cwgZ {\n  opacity: 1;\n  border: 2px solid black;\n}\n\n.AnnotationEditorWidget_verticalContainer_1gNOL {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.AnnotationEditorWidget_lineContainer_1UKoA {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_lineContainerSpaceBetween_3UP4K {\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  padding: 5px;\n}\n\n.AnnotationEditorWidget_flexItem_190Y4 {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 10px;\n}\n\n.AnnotationEditorWidget_weightInput_3ok1J {\n  width: 45px;\n}\n\n.AnnotationEditorWidget_label_D3_TE {\n  -ms-flex: 1;\n      flex: 1;\n  font-weight: bold;\n  margin-right: 20px;\n}\n\n.AnnotationEditorWidget_labelCenter_14aH_ {\n  text-align: center;\n}\n\n.AnnotationEditorWidget_textBox_2ksb1 {\n  -ms-flex: 1;\n      flex: 1;\n  margin: 0 5px;\n}\n\n.AnnotationEditorWidget_backgroundScore_3sJJd {\n  position: absolute;\n  opacity: 0.2;\n  z-index: -1;\n  width: 320px;\n  right: calc(100% + 5px);\n  border-radius: 5px;\n}\n", ""]);
+	exports.push([module.id, ".AnnotationEditorWidget_topContainer_24fJ6 {\n  position: relative;\n  width: 420px;\n  margin: 10px auto;\n}\n\n.AnnotationEditorWidget_scoreContainer_1nXfK {\n  min-width: 100px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_scoreBlock_3tnq- {\n  width: 20px;\n  height: 20px;\n  border-radius: 3px;\n  border: 2px solid gray;\n  margin: 2px;\n  opacity: 0.5;\n}\n\n.AnnotationEditorWidget_selectedScoreBlock_2cwgZ {\n  opacity: 1;\n  border: 2px solid black;\n}\n\n.AnnotationEditorWidget_verticalContainer_1gNOL {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.AnnotationEditorWidget_lineContainer_1UKoA {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_lineContainerSpaceBetween_3UP4K {\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  padding: 5px;\n}\n\n.AnnotationEditorWidget_flexItem_190Y4 {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 10px;\n  z-index: 1;\n}\n\n.AnnotationEditorWidget_weightInput_3ok1J {\n  width: 45px;\n}\n\n.AnnotationEditorWidget_label_D3_TE {\n  -ms-flex: 1;\n      flex: 1;\n  font-weight: bold;\n  margin-right: 20px;\n}\n\n.AnnotationEditorWidget_labelCenter_14aH_ {\n  text-align: center;\n}\n\n.AnnotationEditorWidget_textBox_2ksb1 {\n  -ms-flex: 1;\n      flex: 1;\n  margin: 0 5px;\n}\n\n.AnnotationEditorWidget_backgroundScore_3sJJd {\n  position: absolute;\n  opacity: 0.2;\n  z-index: -1;\n  width: 320px;\n  right: calc(100% + 5px);\n  border-radius: 5px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -17130,10 +17134,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function manyScoreAnnotationEditorWidget(props) {
-	  var scoreToColor = {};
-	  props.scores.forEach(function (score) {
-	    scoreToColor[score.value] = score.color;
-	  });
 	  return _react2.default.createElement(
 	    'div',
 	    { className: _AnnotationEditorWidget2.default.verticalContainer },
@@ -17149,7 +17149,7 @@
 	      }),
 	      _react2.default.createElement(
 	        'div',
-	        { className: _AnnotationEditorWidget2.default.verticalContainer, style: { position: 'relative' } },
+	        { className: _AnnotationEditorWidget2.default.verticalContainer, style: { position: 'relative', zIndex: 0 } },
 	        props.annotation.score.map(function (score, idx) {
 	          return _react2.default.createElement(_ScoreSelector2.default, {
 	            key: 'score-' + idx,
@@ -17165,7 +17165,7 @@
 	          return _react2.default.createElement(_BackgroundScore2.default, {
 	            key: 'bgscore-' + idx,
 	            index: idx,
-	            color: scoreToColor[score]
+	            color: props.scores[score].color
 	          });
 	        })
 	      )
