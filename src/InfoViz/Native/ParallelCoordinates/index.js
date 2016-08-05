@@ -709,7 +709,7 @@ function parallelCoordinate(publicAPI, model) {
 
     model.container = element;
 
-    if (model.container !== null) {
+    if (model.container) {
       model.container.innerHTML = htmlContent;
       d3.select(model.container).
         select('div.parallel-coords-placeholder').
