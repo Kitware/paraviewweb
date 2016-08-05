@@ -98,7 +98,7 @@ export default class AxesManager {
     return axesPairs;
   }
 
-  resetSelections(selection = {}, triggerEvent = true, scoreMapping = [], scoreColorMap = {}) {
+  resetSelections(selection = {}, triggerEvent = true, scoreMapping = [], scoreColorMap = []) {
     this.clearAllSelections(true);
 
     // index axes
@@ -115,7 +115,8 @@ export default class AxesManager {
           nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
           if (scoreMapping && scoreMapping.length === 1) {
             nameToAxisMap[axisName].selections.score = scoreMapping[0];
-            nameToAxisMap[axisName].selections.color = `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` || 'rgb(105, 195, 255)';
+            nameToAxisMap[axisName].selections.color = scoreColorMap[scoreMapping[0]]
+              ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
           }
         });
       } else if (selection.type === 'partition') {
@@ -128,31 +129,30 @@ export default class AxesManager {
               interval: [axis.range[0], divider.value],
               endpoints: toEndpoint(true, !divider.closeToLeft),
               uncertainty: divider.uncertainty, // FIXME that is wrong...
-              color: scoreColorMap[scoreMapping[idx]] || 'rgb(105, 195, 255)',
+              color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
               score: scoreMapping[idx],
             });
+          } else {
+            axis.selections.push({
+              interval: [array[idx - 1].value, divider.value],
+              endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+              uncertainty: divider.uncertainty, // FIXME that is wrong...
+              color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
+              score: scoreMapping[idx + 1],
+            });
           }
-
-          axis.selections.push({
-            interval: [array[idx - 1].value, divider.value],
-            endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
-            uncertainty: divider.uncertainty, // FIXME that is wrong...
-            color: scoreColorMap[scoreMapping[idx + 1]] || 'rgb(105, 195, 255)',
-            score: scoreMapping[idx + 1],
-          });
-
           if (idx + 1 === array.length) {
             axis.selections.push({
               interval: [divider.value, axis.range[1]],
               endpoints: toEndpoint(divider.closeToLeft, true),
               uncertainty: divider.uncertainty, // FIXME that is wrong...
-              color: scoreColorMap[scoreMapping[idx + 2]] || 'rgb(105, 195, 255)',
+              color: scoreColorMap[scoreMapping[idx + 1]] ? `rgb(${scoreColorMap[scoreMapping[idx + 1]].join(',')})` : 'rgb(105, 195, 255)',
               score: scoreMapping[idx + 2],
             });
           }
         });
       } else {
-        console.error('Parallel coordinate does not understand a selection that is not range based');
+        console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
       }
     }
 

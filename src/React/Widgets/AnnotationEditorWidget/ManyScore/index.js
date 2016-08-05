@@ -5,10 +5,6 @@ import SelectionEditorWidget from '../../SelectionEditorWidget';
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function manyScoreAnnotationEditorWidget(props) {
-  const scoreToColor = {};
-  props.scores.forEach(score => {
-    scoreToColor[score.value] = score.color;
-  });
   return (
     <div className={style.verticalContainer}>
       <section className={style.lineContainerSpaceBetween}>
@@ -19,7 +15,7 @@ export default function manyScoreAnnotationEditorWidget(props) {
           getLegend={props.getLegend}
           onChange={props.onSelectionChange}
         />
-        <div className={style.verticalContainer} style={{ position: 'relative' }}>
+        <div className={style.verticalContainer} style={{ position: 'relative', zIndex: 0 }}>
           {props.annotation.score.map((score, idx) =>
             <ScoreSelector
               key={`score-${idx}`}
@@ -35,7 +31,7 @@ export default function manyScoreAnnotationEditorWidget(props) {
             <BGSelector
               key={`bgscore-${idx}`}
               index={idx}
-              color={scoreToColor[score]}
+              color={props.scores[score].color}
             />
           )}
         </div>

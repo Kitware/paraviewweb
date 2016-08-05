@@ -11,10 +11,10 @@ export default function scoreSelector(props) {
       {props.scores.map((score, idx) =>
         <div
           key={idx}
-          className={props.score === score.value ? style.selectedScoreBlock : style.scoreBlock}
+          className={props.score === idx ? style.selectedScoreBlock : style.scoreBlock}
           style={{ background: score.color, display: props.horizontal ? 'inline-block' : 'block' }}
           title={score.name}
-          data-score={score.value}
+          data-score={idx}
           onClick={click}
         >
         </div>

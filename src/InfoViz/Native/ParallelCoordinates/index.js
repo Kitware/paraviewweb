@@ -1,4 +1,5 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/ParallelCoordinates.mcss';
@@ -65,7 +66,7 @@ export function toColorArray(colorString) {
 
 function parallelCoordinate(publicAPI, model) {
   // Private internal
-  const scoreToColor = {};
+  const scoreToColor = [];
 
   function updateSizeInformation() {
     if (!model.canvas) {
@@ -658,6 +659,12 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
 
+  publicAPI.propagateAnnotationInsteadOfSelection = (useAnnotation = true, defaultScore = 0, defaultWeight = 0) => {
+    model.useAnnotation = useAnnotation;
+    model.defaultScore = defaultScore;
+    model.defaultWeight = defaultWeight;
+  };
+
   publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
     model.partitionScore = scoreList;
     if (model.dataSubscription && model.partitionScore) {
@@ -668,12 +675,11 @@ function parallelCoordinate(publicAPI, model) {
   publicAPI.setScores = scores => {
     model.scores = scores;
     if (!model.partitionScore && scores) {
-      publicAPI.setVisibleScoresForPartitionSelection(scores.map(score => score.value));
+      publicAPI.setVisibleScoresForPartitionSelection(scores.map((score, idx) => idx));
     }
     if (model.scores) {
-      Object.keys(scoreToColor).forEach(name => delete scoreToColor[name]);
-      model.scores.forEach(score => {
-        scoreToColor[score.value] = toColorArray(score.color);
+      model.scores.forEach((score, idx) => {
+        scoreToColor[idx] = toColorArray(score.color);
       });
     }
   };
@@ -843,11 +849,17 @@ function parallelCoordinate(publicAPI, model) {
       publicAPI.render();
     }));
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
-      model.axes.resetSelections(annotation.sel, false, annotation.score, scoreToColor);
+      model.axes.resetSelections(annotation.selection, false, annotation.score, scoreToColor);
       publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
-      model.provider.setSelection(model.axes.getSelection());
+      if (model.useAnnotation) {
+        const annotation = AnnotationBuilder.annotation(model.axes.getSelection(), model.defaultScore, model.defaultWeight);
+        model.provider.setAnnotation(annotation);
+      } else {
+        model.provider.setSelection(model.axes.getSelection());
+      }
+
       publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
@@ -895,6 +907,9 @@ const DEFAULT_VALUES = {
   hoverIndicatorWidth: 7,
 
   numberOfBins: 128,
+  useAnnotation: false,
+  defaultScore: 0,
+  defaultWeight: 1,
 
   // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };

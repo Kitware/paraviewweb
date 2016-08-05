@@ -6,6 +6,10 @@ import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function annotationEditorWidget(props) {
+  if (!props.annotation) {
+    return null;
+  }
+
   const onSelectionChange = (selection, isEditDone) => {
     const annotation = AnnotationBuilder.update(props.annotation, { selection });
 
