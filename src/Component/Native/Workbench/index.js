@@ -259,6 +259,10 @@ export default class ComponentWorkbench {
     return this.activeLayout;
   }
 
+  getLayoutCount() {
+    return LAYOUT_TO_COUNT[this.activeLayout];
+  }
+
   triggerChange() {
     const viewports = this.getViewportMapping();
     const layout = this.getLayout();
