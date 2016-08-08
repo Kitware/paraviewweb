@@ -1,9 +1,11 @@
 import equals       from 'mout/src/object/equals';
 import React        from 'react';
 import ReactDOM     from 'react-dom';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
 
 import style        from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
+
+import sizeHelper   from '../../../Common/Misc/SizeHelper';
+
 
 function interpolate(values, xRatio) {
   var size = values.length,

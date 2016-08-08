@@ -1,6 +1,7 @@
 import React        from 'react';
-import InputCell    from './InputCell';
 import style        from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
+import InputCell    from './InputCell';
 
 function arrayFill(arr, expectedLength, filler = '') {
   if (!arr) {

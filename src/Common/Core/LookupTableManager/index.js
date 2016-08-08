@@ -1,5 +1,5 @@
-import LookupTable  from '../LookupTable';
 import Monologue    from 'monologue.js';
+import LookupTable  from '../LookupTable';
 
 const TOPIC = {
   CHANGE: 'LookupTable.change',

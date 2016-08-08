@@ -2,8 +2,10 @@
 
 import React      from 'react';
 import ReactDOM   from 'react-dom';
-import swatchURL  from './defaultSwatches.png';
+
 import style      from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
+
+import swatchURL  from './defaultSwatches.png';
 
 /**
  * This React component expect the following input properties:

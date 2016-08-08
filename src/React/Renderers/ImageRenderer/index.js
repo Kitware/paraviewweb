@@ -2,15 +2,14 @@
 
 import React            from 'react';
 import ReactDOM         from 'react-dom';
+import Monologue        from 'monologue.js';
+
+import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
 import ContentEditable  from '../../Widgets/ContentEditableWidget';
 import ImageExporter    from '../../../Common/Misc/ImageExporter';
 import sizeHelper       from '../../../Common/Misc/SizeHelper';
 import MouseHandler     from '../../../Interaction/Core/MouseHandler';
-
-import Monologue        from 'monologue.js';
-
-import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
 const DRAW_DONE = 'ImageRenderer.draw.done';
 

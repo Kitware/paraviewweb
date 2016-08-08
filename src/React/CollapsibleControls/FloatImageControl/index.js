@@ -1,8 +1,9 @@
+import React                from 'react';
+import style                from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
+
 import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import LayerItem            from './LayerItem';
 import NumberSliderWidget   from '../../Widgets/NumberSliderWidget';
-import React                from 'react';
-import style                from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
 export default React.createClass({
 

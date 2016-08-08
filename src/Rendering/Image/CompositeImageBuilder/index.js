@@ -1,6 +1,7 @@
+import max from 'mout/object/max';
+
 import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
-import max from 'mout/object/max';
 
 export default class CompositeImageBuilder extends AbstractImageBuilder {
 

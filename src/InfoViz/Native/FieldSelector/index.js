@@ -1,7 +1,7 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
+
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import template from './template.html';
 
 // ----------------------------------------------------------------------------

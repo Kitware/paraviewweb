@@ -1,6 +1,6 @@
-import ChildItem    from './ChildItem';
 import React        from 'react';
 import style        from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
+import ChildItem    from './ChildItem';
 
 /**
  * This React component expect the following input properties:

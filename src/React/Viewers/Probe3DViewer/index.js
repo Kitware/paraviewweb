@@ -1,14 +1,14 @@
 import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 
+import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
+
 import AbstractViewerMenu           from '../AbstractViewerMenu';
 import LineChartViewer              from '../LineChartViewer';
 import LookupTableManagerControl    from '../../CollapsibleControls/LookupTableManagerControl';
 import ProbeControl                 from '../../CollapsibleControls/ProbeControl';
 import CollapsibleWidget            from '../../Widgets/CollapsibleWidget';
 import QueryDataModelWidget         from '../../Widgets/QueryDataModelWidget';
-
-import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
 
 const
   renderAxisMap = {

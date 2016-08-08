@@ -1,9 +1,10 @@
 import React            from 'react';
 import equals           from 'mout/src/array/equals';
-import factory          from '../../Properties/PropertyFactory';
-import { proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 import style from 'PVWStyle/ReactWidgets/ProxyPropertyGroup.mcss';
+
+import factory          from '../../Properties/PropertyFactory';
+import { proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 export default React.createClass({
 

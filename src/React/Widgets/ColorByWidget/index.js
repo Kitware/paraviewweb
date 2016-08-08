@@ -1,6 +1,6 @@
 import React        from 'react';
-import AdvancedView from './AdvancedView';
 import style        from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+import AdvancedView from './AdvancedView';
 
 const SEP = ':|:';
 

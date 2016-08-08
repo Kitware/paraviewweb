@@ -1,8 +1,9 @@
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import max from 'mout/object/max';
 import merge from 'mout/src/object/merge';
 import vec3 from 'gl-matrix/src/gl-matrix/vec3.js';
 import vec4 from 'gl-matrix/src/gl-matrix/vec4.js';
+
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 

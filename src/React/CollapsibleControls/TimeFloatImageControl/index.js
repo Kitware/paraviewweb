@@ -1,8 +1,10 @@
-import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import React                    from 'react';
+
+import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
+
+import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
 import ToggleIconButtonWidget   from '../../Widgets/ToggleIconButtonWidget';
-import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
 export default React.createClass({
 

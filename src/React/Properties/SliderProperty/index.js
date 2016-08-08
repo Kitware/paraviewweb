@@ -1,8 +1,10 @@
-import BlockMixin       from '../PropertyFactory/BlockMixin';
 import React            from 'react';
+
+import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
+import BlockMixin       from '../PropertyFactory/BlockMixin';
 import Slider           from './Slider';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 /* eslint-disable react/no-danger */
 export default React.createClass({

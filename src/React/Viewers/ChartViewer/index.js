@@ -1,5 +1,6 @@
-import AbstractViewerMenu   from '../AbstractViewerMenu';
 import React                from 'react';
+
+import AbstractViewerMenu   from '../AbstractViewerMenu';
 import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
 
 export default React.createClass({

@@ -1,8 +1,10 @@
 import equals       from 'mout/src/object/equals';
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
 import React        from 'react';
 import ReactDOM     from 'react-dom';
+
 import style        from 'PVWStyle/ReactWidgets/Coordinate2DWidget.mcss';
+
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 /*
   CoordinateControl class

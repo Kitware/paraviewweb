@@ -1,9 +1,11 @@
+import React                from 'react';
+
+import style                from 'PVWStyle/ReactCollapsibleControls/LightControl.mcss';
+
 import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import Coordinate2DWidget   from '../../Widgets/Coordinate2DWidget';
 import LightButton          from '../../Widgets/ToggleIconButtonWidget';
 import NumberInputWidget    from '../../Widgets/NumberInputWidget';
-import React                from 'react';
-import style                from 'PVWStyle/ReactCollapsibleControls/LightControl.mcss';
 
 export default React.createClass({
 

@@ -1,5 +1,6 @@
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import max from 'mout/object/max';
+
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 

@@ -1,10 +1,10 @@
+import d3 from 'd3';
+
+import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
+
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
-import d3 from 'd3';
-/* eslint-disable import/no-unresolved */
-import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
-/* eslint-enable import/no-unresolved */
 import downArrowImage from './down_arrow.png';
 
 let publicAPI = null;

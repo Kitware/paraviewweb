@@ -1,6 +1,6 @@
 import React            from 'react';
-import PropertyGroup    from '../ProxyPropertyGroupWidget';
 import style            from 'PVWStyle/ReactWidgets/ProxyEditorWidget.mcss';
+import PropertyGroup    from '../ProxyPropertyGroupWidget';
 
 export default React.createClass({
 

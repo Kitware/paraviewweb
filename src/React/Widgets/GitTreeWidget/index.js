@@ -1,7 +1,7 @@
 import React      from 'react';
 import ReactDOM   from 'react-dom';
-import SizeHelper from '../../../Common/Misc/SizeHelper';
 import style      from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
+import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 function sortById(a, b) {
   return Number(a.id) < Number(b.id);

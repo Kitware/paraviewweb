@@ -1,13 +1,10 @@
 /* global document */
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-
 import d3 from 'd3';
-/* eslint-disable import/no-unresolved */
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
-/* eslint-enable import/no-unresolved */
+
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import multiClicker from '../../Core/D3MultiClick';
-// import template from './template.html';
 import Score from './Score';
 
 // ----------------------------------------------------------------------------

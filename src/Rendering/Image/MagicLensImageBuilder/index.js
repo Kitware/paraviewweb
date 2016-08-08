@@ -1,6 +1,7 @@
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import Monologue from 'monologue.js';
 import now from 'mout/src/time/now';
+
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 const
   IMAGE_READY_TOPIC = 'image-ready',

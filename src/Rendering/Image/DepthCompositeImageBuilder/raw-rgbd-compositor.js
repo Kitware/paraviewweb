@@ -1,7 +1,8 @@
+import max from 'mout/object/max';
+
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
-import max from 'mout/object/max';
 
 import vertexShader from '../../../Common/Misc/WebGl/shaders/vertex/basic.c';
 import fragmentShaderDisplay from './shaders/fragment/display.c';

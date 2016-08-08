@@ -1,8 +1,10 @@
-import DataListenerMixin        from './DataListenerMixin';
-import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
 import React                    from 'react';
 import ReactDOM                 from 'react-dom';
+
 import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
+
+import DataListenerMixin        from './DataListenerMixin';
+import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
 
 /**
  * This React component expect the following input properties:

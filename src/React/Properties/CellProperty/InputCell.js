@@ -1,7 +1,8 @@
 import React    from 'react';
+import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
 import convert  from '../../../Common/Misc/Convert';
 import validate from '../../../Common/Misc/Validate';
-import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 export default React.createClass({
 

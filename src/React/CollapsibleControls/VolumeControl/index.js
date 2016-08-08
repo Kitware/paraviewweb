@@ -1,9 +1,11 @@
+import React                from 'react';
+
+import style                from 'PVWStyle/ReactCollapsibleControls/VolumeControl.mcss';
+
 import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import EqualizerWidget      from '../../Widgets/EqualizerWidget';
 import LightButton          from '../../Widgets/ToggleIconButtonWidget';
 import LookupTableWidget    from '../../Widgets/LookupTableWidget';
-import React                from 'react';
-import style                from 'PVWStyle/ReactCollapsibleControls/VolumeControl.mcss';
 
 export default React.createClass({
 

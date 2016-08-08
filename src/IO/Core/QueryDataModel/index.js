@@ -1,6 +1,5 @@
 /* global Image */
 
-import DataManager from '../DataManager';
 import hasOwn from 'mout/object/hasOwn';
 import max from 'mout/object/max';
 import min from 'mout/object/min';
@@ -8,6 +7,8 @@ import Monologue from 'monologue.js';
 import now from 'mout/src/time/now';
 import omit from 'mout/object/omit';
 import size from 'mout/object/size';
+
+import DataManager from '../DataManager';
 
 // ============================================================================
 const

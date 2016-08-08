@@ -1,6 +1,6 @@
 import React    from 'react';
-import factory  from '../PropertyFactory';
 import style    from 'PVWStyle/ReactProperties/PropertyPanel.mcss';
+import factory  from '../PropertyFactory';
 
 export default React.createClass({
 

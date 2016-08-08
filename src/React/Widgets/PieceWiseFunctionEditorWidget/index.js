@@ -1,10 +1,11 @@
-import LinearPieceWiseEditor from '../../../NativeUI/Canvas/LinearPieceWiseEditor';
-import SvgIconWidget from '../SvgIconWidget';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import equals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/ReactWidgets/PieceWiseFunctionEditorWidget.mcss';
+
+import LinearPieceWiseEditor from '../../../NativeUI/Canvas/LinearPieceWiseEditor';
+import SvgIconWidget from '../SvgIconWidget';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 

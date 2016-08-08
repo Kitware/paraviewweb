@@ -1,8 +1,8 @@
 /* global atob btoa */
 
 import React      from 'react';
-import ActionList from '../ActionListWidget';
 import style      from 'PVWStyle/ReactWidgets/FileBrowserWidget.mcss';
+import ActionList from '../ActionListWidget';
 
 export default React.createClass({
 

@@ -1,8 +1,10 @@
 import React              from 'react';
+
+import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+
 import PresetListWidget   from '../PresetListWidget';
 import ScalarRangeWidget  from '../ScalarRangeWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
-import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 
 export default React.createClass({
 

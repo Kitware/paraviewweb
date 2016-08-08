@@ -1,8 +1,9 @@
-import ColorPicker          from '../ColorPickerWidget';
-import NumberInputWidget    from '../NumberInputWidget';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
 import style                from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
+
+import ColorPicker          from '../ColorPickerWidget';
+import NumberInputWidget    from '../NumberInputWidget';
 
 const STYLE = {
   range: {

@@ -1,15 +1,16 @@
 import equals       from 'mout/src/array/equals';
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
 import React        from 'react';
 import ReactDOM     from 'react-dom';
+
+import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
+
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 import {
     getSize,
     onSizeChange,
     startListening,
 } from '../../../Common/Misc/SizeHelper';
-
-import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
 
 export default React.createClass({
 

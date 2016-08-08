@@ -1,9 +1,10 @@
-import React        from 'react';
-import ReactDOM     from 'react-dom';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
-import style        from 'PVWStyle/ReactRenderers/PlotlyRenderer.mcss';
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import Plotly   from 'plotly.js';
 
-import Plotly from 'plotly.js';
+import style from 'PVWStyle/ReactRenderers/PlotlyRenderer.mcss';
+
+import sizeHelper from '../../../Common/Misc/SizeHelper';
 
 export default React.createClass({
 

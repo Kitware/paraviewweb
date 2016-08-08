@@ -1,9 +1,10 @@
 /* global window */
 
-import AbstractImageBuilder  from '../AbstractImageBuilder';
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import contains              from 'mout/src/array/contains';
 import equals                from 'mout/src/object/equals';
+
+import AbstractImageBuilder  from '../AbstractImageBuilder';
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 const
   PROBE_CHANGE_TOPIC = 'probe-change',

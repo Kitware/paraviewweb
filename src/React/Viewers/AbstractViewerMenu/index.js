@@ -1,10 +1,11 @@
 import React             from 'react';
+
+import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
+
 import GeometryRenderer  from '../../Renderers/GeometryRenderer';
 import ImageRenderer     from '../../Renderers/ImageRenderer';
 import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
 import PlotlyRenderer    from '../../Renderers/PlotlyRenderer';
-
-import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
 
 export default React.createClass({
 

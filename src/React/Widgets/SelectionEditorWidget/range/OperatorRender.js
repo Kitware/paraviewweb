@@ -1,10 +1,10 @@
 import React          from 'react';
 
+import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+
 import And            from '../../../../../svg/Operations/And.svg';
 import Or             from '../../../../../svg/Operations/Or.svg';
 import SvgIconWidget  from '../../SvgIconWidget';
-
-import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 const OPERATOR_LABEL = {
   or: Or,

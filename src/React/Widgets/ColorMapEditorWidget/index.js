@@ -1,9 +1,11 @@
 import React from 'react';
+
+import style from 'PVWStyle/ReactWidgets/ColorMapEditorWidget.mcss';
+
 import SvgIconWidget from '../SvgIconWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
 import PresetListWidget from '../PresetListWidget';
 
-import style from 'PVWStyle/ReactWidgets/ColorMapEditorWidget.mcss';
 
 import paletteIcon from '../../../../svg/colors/Palette.svg';
 import opacityIcon from '../../../../svg/colors/Opacity.svg';

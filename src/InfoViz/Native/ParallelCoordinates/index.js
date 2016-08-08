@@ -1,14 +1,14 @@
 /* global document */
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
-
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/ParallelCoordinates.mcss';
-import axisControlSvg from './AxisControl-svg.html';
-import iconImage from './ParallelCoordsIconSmall.png';
-import htmlContent from './body.html';
+
+import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 import AxesManager from './AxesManager';
+import axisControlSvg from './AxisControl-svg.html';
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import htmlContent from './body.html';
+import iconImage from './ParallelCoordsIconSmall.png';
 
 // ----------------------------------------------------------------------------
 // Global

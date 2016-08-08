@@ -1,8 +1,9 @@
+import React            from 'react';
+import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
 import BlockMixin       from '../PropertyFactory/BlockMixin';
 import Checkbox         from './Checkbox';
-import React            from 'react';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 /* eslint-disable react/no-danger */
 export default React.createClass({
