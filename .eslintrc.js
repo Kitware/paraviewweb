@@ -17,7 +17,6 @@ module.exports = {
     'prefer-spread': 0,
     'react/jsx-filename-extension': 0,
     'jsx-a11y/label-has-for': 0,
-    'react/jsx-curly-spacing': 0,
   },
   'settings': {
     'import/resolver': 'webpack'

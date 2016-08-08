@@ -25,6 +25,6 @@ export default React.createClass({
     delete propsCopy.onChange;
     delete propsCopy.idx;
 
-    return <NumberSliderControl { ...propsCopy } onChange={this.valueChange} />;
+    return <NumberSliderControl {...propsCopy} onChange={this.valueChange} />;
   },
 });
