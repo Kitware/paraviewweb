@@ -53,9 +53,9 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
       busy(client._.post(`/file${encodeQueryAsString(params)}`))
         .then(upload => {
           var chunkSize = 10 * 1024 * 1024,
-            uploadNextChunk,
-            i = 0,
-            chunks = Math.floor(file.size / chunkSize);
+            uploadNextChunk;
+            // i = 0,
+            // chunks = Math.floor(file.size / chunkSize);
 
           uploadNextChunk = (offset) => {
             var blob;
@@ -76,9 +76,8 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
               blob = file.slice(offset, offset + chunkSize);
               uploadChunk(upload.data._id, offset, blob)
                 .then((uploadResp) => {
-                  var msg = '';
                   i += 1;
-                  msg += `chunk ${i} of ${chunks} uploaded`;
+                  // const msg = `chunk ${i} of ${chunks} uploaded`;
 
                   uploadNextChunk(offset + chunkSize);
                 })
