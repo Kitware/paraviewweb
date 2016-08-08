@@ -65,7 +65,9 @@ export default class CPUCompositor {
 
           // Skip pixels (bg | not visible)
           if (layerIdx === 255 || this.colorHelper.hasNoContent(layerIdx)) {
+            /* eslint-disable no-continue */
             continue;
+            /* eslint-enable no-continue */
           }
 
           if (this.intensityData) {

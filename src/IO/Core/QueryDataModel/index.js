@@ -679,7 +679,9 @@ export default class QueryDataModel {
       while (count--) {
         if (idxs[count] < sizes[count]) {
           // We are good
+          /* eslint-disable no-continue */
           continue;
+          /* eslint-enable no-continue */
         } else if (count > 0) {
           // We need to move the index back up
           idxs[count] = 0;
