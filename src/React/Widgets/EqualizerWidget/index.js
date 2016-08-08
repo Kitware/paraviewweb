@@ -56,7 +56,7 @@ export default React.createClass({
   componentDidMount() {
     this.updateDimensions();
     this.draw();
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvas));
+    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.canvas));
     this.mouseHandler.attach({
       click: this.clicked,
       drag: this.clicked,
@@ -96,7 +96,7 @@ export default React.createClass({
   },
 
   draw() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    var ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
     ctx.strokeStyle = this.props.stroke;
     ctx.lineWidth = '1';
 
@@ -137,7 +137,7 @@ export default React.createClass({
   },
 
   clicked(e) {
-    var rect = ReactDOM.findDOMNode(this.refs.canvas).getClientRects()[0],
+    var rect = ReactDOM.findDOMNode(this.canvas).getClientRects()[0],
       x = e.pointers[0].clientX - rect.left - 2 * this.props.spacing,
       y = e.pointers[0].clientY - rect.top - 2 * this.props.spacing,
       effectiveHeight = rect.height - 4 * this.props.spacing,
@@ -159,7 +159,7 @@ export default React.createClass({
   render() {
     return (
       <div className={style.container}>
-        <canvas className={style.canvas} ref="canvas" width={this.state.width} height={this.state.height}>
+        <canvas className={style.canvas} ref={(c) => { this.canvas = c; }} width={this.state.width} height={this.state.height}>
         </canvas>
       </div>
     );

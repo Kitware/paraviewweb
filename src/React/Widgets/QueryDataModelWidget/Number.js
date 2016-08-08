@@ -44,28 +44,28 @@ export default React.createClass({
   previous() {
     if (this.props.model.previous(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      ReactDOM.findDOMNode(this.slider).focus();
     }
   },
 
   next() {
     if (this.props.model.next(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      ReactDOM.findDOMNode(this.slider).focus();
     }
   },
 
   first() {
     if (this.props.model.first(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      ReactDOM.findDOMNode(this.slider).focus();
     }
   },
 
   last() {
     if (this.props.model.last(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      ReactDOM.findDOMNode(this.slider).focus();
     }
   },
 
@@ -81,7 +81,7 @@ export default React.createClass({
 
   enableButtons(event) {
     this.setState({ button: true });
-    ReactDOM.findDOMNode(this.refs.slider).focus();
+    ReactDOM.findDOMNode(this.slider).focus();
   },
 
   disableButtons() {
@@ -89,7 +89,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.refs.slider).focus();
+    ReactDOM.findDOMNode(this.slider).focus();
   },
 
   toggleAnimation() {
@@ -155,7 +155,7 @@ export default React.createClass({
           <div className={style.slider} onMouseEnter={this.grabFocus}>
             <input
               className={style.input}
-              ref="slider"
+              ref={(c) => { this.slider = c; }}
               type="range"
               min="0"
               max={this.props.model.getSize(this.props.arg) - 1}

@@ -34,7 +34,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.refs.select).focus();
+    ReactDOM.findDOMNode(this.select).focus();
   },
 
   toggleAnimation() {
@@ -51,7 +51,7 @@ export default React.createClass({
         <div className={style.row} onMouseEnter={this.grabFocus}>
           <select
             className={style.input}
-            ref="select"
+            ref={(c) => { this.select = c; }}
             value={this.props.model.getValue(this.props.arg)}
             onChange={this.handleChange}
           >

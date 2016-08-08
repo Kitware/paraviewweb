@@ -117,7 +117,7 @@ export default React.createClass({
       return;
     }
 
-    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
+    const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d'),
       fields = this.props.data.fields,
       size = fields.length,
       fieldsColors = {},
@@ -130,8 +130,8 @@ export default React.createClass({
     for (let idx = 0; idx < size; ++idx) {
       this.drawField(ctx, idx, fields[idx].data, fields[idx].range);
       fieldsColors[fields[idx].name] = this.props.colors[idx];
-      if ({}.hasOwnProperty.call(this.refs, fields[idx].name)) {
-        ReactDOM.findDOMNode(this.refs[fields[idx].name]).innerHTML = interpolate(fields[idx].data, ratio);
+      if ({}.hasOwnProperty.call(this, fields[idx].name)) {
+        ReactDOM.findDOMNode(this[fields[idx].name]).innerHTML = interpolate(fields[idx].data, ratio);
       }
     }
 
@@ -141,7 +141,7 @@ export default React.createClass({
 
     // Draw cursor
     if (this.state.legend) {
-      ReactDOM.findDOMNode(this.refs.xValueLabel).innerHTML = (
+      ReactDOM.findDOMNode(this.xValueLabel).innerHTML = (
         (this.props.data.xRange[1] - this.props.data.xRange[0]) *
         ratio + this.props.data.xRange[0]).toFixed(5);
 
@@ -222,7 +222,7 @@ export default React.createClass({
         <li className={style.legendItem} key={name}>
           <i className={style.legendItemColor} style={{ color }}></i>
           <b>{name}</b>
-          <span className={style.legendItemValue} ref={name}></span>
+          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }}></span>
         </li>);
     });
 
@@ -230,7 +230,7 @@ export default React.createClass({
       <div className={style.container}>
         <canvas
           className={style.canvas}
-          ref="canvas"
+          ref={(c) => { this.canvas = c; }}
           onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
@@ -238,7 +238,7 @@ export default React.createClass({
         </canvas>
         <div className={this.state.legend ? style.legend : style.hidden}>
           <div className={style.legendBar}>
-            <span className={style.legendText} ref="xValueLabel"></span>
+            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }}></span>
             <i className={style.toggleLegendButton} onClick={this.toggleLegend}></i>
           </div>
           <ul className={style.legendContent}>

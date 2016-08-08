@@ -26,7 +26,7 @@ export default React.createClass({
     sizeHelper.startListening();
 
     this.dataSubscription = this.props.chartBuilder.onDataReady(data => {
-      const container = ReactDOM.findDOMNode(this.refs.chartRenderer);
+      const container = ReactDOM.findDOMNode(this.chartRenderer);
       if (!container) {
         return;
       }
@@ -82,13 +82,13 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    const elt = ReactDOM.findDOMNode(this.refs.chartRenderer);
+    const elt = ReactDOM.findDOMNode(this.chartRenderer);
     if (elt.layout) {
       Plotly.relayout(elt, elt.layout);
     }
   },
 
   render() {
-    return (<div className={style.chartContainer} ref="chartRenderer"></div>);
+    return (<div className={style.chartContainer} ref={(c) => { this.chartRenderer = c; }}></div>);
   },
 });

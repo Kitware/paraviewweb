@@ -80,7 +80,6 @@ export default React.createClass({
         >
           <LookupTableWidget
             key="LookupTableWidget"
-            ref="LookupTableWidget"
             originalRange={lut.originalRange}
             lookupTable={lut.lookupTable}
             lookupTableManager={lut.lookupTableManager}
@@ -88,7 +87,6 @@ export default React.createClass({
         </CollapsibleWidget>
         <CollapsibleWidget title="Opacity Control" subtitle={[cpuGpuButton, resetOpacityButton]} activeSubTitle>
           <EqualizerWidget
-            ref="EqualizerWidget"
             key="Equalizer"
             layers={equalizer.getOpacities()}
             onChange={equalizer.updateOpacities}

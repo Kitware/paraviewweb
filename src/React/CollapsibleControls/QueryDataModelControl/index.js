@@ -48,7 +48,6 @@ export default React.createClass({
       >
         <QueryDataModelWidget
           key="QueryDataModelWidget"
-          ref="QueryDataModelWidget"
           model={this.props.model}
         />
       </CollapsibleWidget>);

@@ -33,7 +33,7 @@ export default React.createClass({
 
   componentDidMount() {
     if (this.props.geometryBuilder) {
-      this.props.geometryBuilder.configureRenderer(ReactDOM.findDOMNode(this.refs.canvasRenderer));
+      this.props.geometryBuilder.configureRenderer(ReactDOM.findDOMNode(this.canvasRenderer));
       this.props.geometryBuilder.render();
     }
     this.updateDimensions();
@@ -79,7 +79,7 @@ export default React.createClass({
     return (
       <canvas
         className="CanvasImageRenderer"
-        ref="canvasRenderer"
+        ref={(c) => { this.canvasRenderer = c; }}
         width={this.state.width}
         height={this.state.height}
       >

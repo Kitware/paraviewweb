@@ -6,7 +6,6 @@ import SvgIconWidget from '../SvgIconWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
 import PresetListWidget from '../PresetListWidget';
 
-
 import paletteIcon from '../../../../svg/colors/Palette.svg';
 import opacityIcon from '../../../../svg/colors/Opacity.svg';
 import timeIcon from '../../../../svg/colors/Time.svg';
@@ -146,7 +145,6 @@ export default React.createClass({
         <div className={this.state.showOpacityControls ? style.pieceWiseEditor : style.hidden}>
           <PieceWiseFunctionEditorWidget
             points={this.props.currentOpacityPoints}
-            ref="pieceWiseEditor"
             rangeMin={this.state.showOpacityControls ? this.props.rangeMin : 1}
             rangeMax={this.state.showOpacityControls ? this.props.rangeMax : 0}
             onChange={this.onOpacityTransferFunctionChanged}

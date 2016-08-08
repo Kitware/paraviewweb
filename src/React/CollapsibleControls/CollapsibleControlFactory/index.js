@@ -21,6 +21,7 @@ import LookupTableWidget            from '../../Widgets/LookupTableWidget';
 /* eslint-disable react/display-name */
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/no-string-refs */
 const WidgetFactoryMapping = {
   QueryDataModelWidget({ queryDataModel, handleExploration }) {
     return (
@@ -139,6 +140,7 @@ const WidgetFactoryMapping = {
 /* eslint-enable react/display-name */
 /* eslint-enable react/no-multi-comp */
 /* eslint-enable react/prop-types */
+/* eslint-enable react/no-string-refs */
 function createWidget(name, options) {
   var fn = WidgetFactoryMapping[name];
 

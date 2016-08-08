@@ -62,7 +62,7 @@ export default React.createClass({
   },
 
   getRenderer() {
-    return this.refs.renderer;
+    return this.renderer;
   },
 
   attachListener(dataModel) {
@@ -100,7 +100,7 @@ export default React.createClass({
 
   resetCamera() {
     if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
-      this.refs.renderer.resetCamera();
+      this.renderer.resetCamera();
     }
   },
 
@@ -137,7 +137,7 @@ export default React.createClass({
     if (isImageRenderer) {
       renderer = (
         <ImageRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           imageBuilder={rootImageBuilder}
           listener={this.props.mouseListener || rootImageBuilder.getListeners()}
@@ -147,7 +147,7 @@ export default React.createClass({
     if (isMultiViewer) {
       renderer = (
         <MultiViewRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           renderers={this.props.renderers}
           layout={this.props.layout}
@@ -157,7 +157,7 @@ export default React.createClass({
     if (isGeometryViewer) {
       renderer = (
         <GeometryRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           geometryBuilder={this.props.geometryBuilder}
         />);
@@ -166,7 +166,7 @@ export default React.createClass({
     if (isChartViewer) {
       renderer = (
         <PlotlyRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           chartBuilder={this.props.chartBuilder}
         />);

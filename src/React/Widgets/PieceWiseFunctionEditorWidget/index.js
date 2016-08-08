@@ -44,7 +44,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    const canvas = this.refs.canvas;
+    const canvas = this.canvas;
     this.editor = new LinearPieceWiseEditor(canvas);
 
     this.editor.setControlPoints(this.props.points);
@@ -201,7 +201,7 @@ export default React.createClass({
           className={style.canvas}
           width={this.state.width}
           height={this.state.height}
-          ref="canvas"
+          ref={(c) => { this.canvas = c; }}
         />
         {this.props.hidePointControl ? null :
           <div className={style.pointControls}>

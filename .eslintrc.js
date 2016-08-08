@@ -19,7 +19,6 @@ module.exports = {
     'prefer-spread': 0,
     'react/jsx-filename-extension': 0,
     'react/self-closing-comp': 0,
-    'react/no-string-refs': 0,
     'jsx-a11y/label-has-for': 0,
     'react/no-find-dom-node': 0,
     'operator-assignment': 0,

@@ -46,7 +46,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    var ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
   },
@@ -60,7 +60,7 @@ export default React.createClass({
       this.setState({ originalColor: this.props.color });
     }
     if (!this.state.preview) {
-      const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+      const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
       ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
       ctx.fillRect(0, 0, 1, 1);
     }
@@ -69,7 +69,7 @@ export default React.createClass({
 
   showColor(event) {
     var color = this.state.originalColor,
-      ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+      ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
     event.preventDefault();
 
     if (event.type === 'mouseleave') {
@@ -81,7 +81,7 @@ export default React.createClass({
       return;
     }
 
-    const img = ReactDOM.findDOMNode(this.refs.swatch),
+    const img = ReactDOM.findDOMNode(this.swatch),
       rect = img.getBoundingClientRect();
 
     const scale = this.image.width / rect.width,
@@ -110,7 +110,7 @@ export default React.createClass({
 
     color[idx] = value;
 
-    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
     ctx.fillStyle = `rgb(${color.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
 
@@ -136,7 +136,7 @@ export default React.createClass({
         <div className={style.activeColor}>
           <canvas
             className={style.colorCanvas}
-            ref="canvas"
+            ref={(c) => { this.canvas = c; }}
             width="1"
             height="1"
           >
@@ -172,7 +172,7 @@ export default React.createClass({
         <div className={style.swatch}>
           <img
             alt="swatch"
-            ref="swatch"
+            ref={(c) => { this.swatch = c; }}
             className={style.swatchImage}
             width="100%"
             src={this.state.swatch}

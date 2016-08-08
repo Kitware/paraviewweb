@@ -89,7 +89,7 @@ const MultiViewRenderer = React.createClass({
     this.updateDimensions();
 
     // Attach mouse listener
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvasRenderer));
+    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.canvasRenderer));
 
     this.mouseHandler.attach({
       drag: this.dragCallback,
@@ -281,7 +281,7 @@ const MultiViewRenderer = React.createClass({
   drawViewport(viewport) {
     var renderer = this.props.renderers[viewport.name],
       region = viewport.region,
-      ctx = ReactDOM.findDOMNode(this.refs.canvasRenderer).getContext('2d');
+      ctx = ReactDOM.findDOMNode(this.canvasRenderer).getContext('2d');
 
     if (!renderer || (renderer.builder && !renderer.dataToDraw) || (renderer.painter && !renderer.painter.isReady())) {
       return;
@@ -360,7 +360,7 @@ const MultiViewRenderer = React.createClass({
   },
 
   drawLayout() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvasRenderer).getContext('2d'),
+    var ctx = ReactDOM.findDOMNode(this.canvasRenderer).getContext('2d'),
       width = (ctx.canvas.width = this.state.width),
       height = (ctx.canvas.height = this.state.height),
       centerPx = [this.center[0] * width, this.center[1] * height],
@@ -401,7 +401,7 @@ const MultiViewRenderer = React.createClass({
     return (
       <canvas
         className="CanvasMultiImageRenderer"
-        ref="canvasRenderer"
+        ref={(c) => { this.canvasRenderer = c; }}
         width={this.state.width}
         height={this.state.height}
       >

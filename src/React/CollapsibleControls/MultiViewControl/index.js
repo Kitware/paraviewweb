@@ -83,7 +83,6 @@ export default React.createClass({
         <CollapsibleWidget title="Viewport">
           <select
             style={{ width: '100%' }}
-            ref="select"
             value={this.state.renderMethod}
             onChange={this.onRenderMethodChange}
           >

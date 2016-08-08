@@ -84,7 +84,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var canvas = ReactDOM.findDOMNode(this.refs.canvas);
+    var canvas = ReactDOM.findDOMNode(this.canvas);
     this.props.lookupTable.drawToCanvas(canvas);
   },
 
@@ -100,7 +100,7 @@ export default React.createClass({
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.internal_lut) {
-      const canvas = ReactDOM.findDOMNode(this.refs.canvas);
+      const canvas = ReactDOM.findDOMNode(this.canvas);
       this.props.lookupTable.drawToCanvas(canvas);
 
       if (this.state.mode === 'edit') {
@@ -129,8 +129,8 @@ export default React.createClass({
   },
 
   updateScalarRange() {
-    var minValue = ReactDOM.findDOMNode(this.refs.min).value,
-      maxValue = ReactDOM.findDOMNode(this.refs.max).value;
+    var minValue = ReactDOM.findDOMNode(this.min).value,
+      maxValue = ReactDOM.findDOMNode(this.max).value;
     this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
     this.forceUpdate();
   },
@@ -270,7 +270,7 @@ export default React.createClass({
       } else {
         lut.setPreset(newPreset);
       }
-      lut.drawToCanvas(ReactDOM.findDOMNode(this.refs.canvas));
+      lut.drawToCanvas(ReactDOM.findDOMNode(this.canvas));
     }
     this.setState({ activePreset: newPreset });
   },
@@ -293,7 +293,7 @@ export default React.createClass({
             onClick={this.toggleEditMode}
           ></i>
           <canvas
-            ref="canvas"
+            ref={(c) => { this.canvas = c; }}
             className={style.canvas}
             width={this.props.lookupTable.colorTableSize * this.props.lookupTable.scale}
             height="1"
@@ -305,7 +305,7 @@ export default React.createClass({
         </div>
         <div className={style.range} style={STYLE.range[this.state.mode]}>
           <NumberInputWidget
-            ref="min"
+            ref={(c) => { this.min = c; }}
             className={style.input}
             value={this.props.lookupTable.getScalarRange()[0]}
             onChange={this.updateScalarRange}
@@ -315,7 +315,7 @@ export default React.createClass({
             className={style.resetRangeButton}
           ></i>
           <NumberInputWidget
-            ref="max"
+            ref={(c) => { this.max = c; }}
             className={style.inputRight}
             value={this.props.lookupTable.getScalarRange()[1]}
             onChange={this.updateScalarRange}
@@ -337,7 +337,6 @@ export default React.createClass({
               className={style.addButton}
             ></i>
             <NumberInputWidget
-              ref="x"
               className={style.inputRight}
               value={controlPointValue}
               onChange={this.updateScalar}
