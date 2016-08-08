@@ -37,7 +37,7 @@ export const ruleTypes = {
 // Public builder method
 // ----------------------------------------------------------------------------
 
-export function empty() {
+function empty() {
   generation++;
   return {
     type: 'empty',
@@ -47,7 +47,7 @@ export function empty() {
 
 // ----------------------------------------------------------------------------
 
-export function partition(variable, dividers) {
+function partition(variable, dividers) {
   generation++;
   return {
     type: 'partition',
@@ -64,7 +64,7 @@ export function partition(variable, dividers) {
 
 // ----------------------------------------------------------------------------
 
-export function range(vars) {
+function range(vars) {
   generation++;
   const variables = {};
   const selection = {
@@ -91,7 +91,7 @@ export function range(vars) {
 
 // ----------------------------------------------------------------------------
 
-export function rule(type = 'multi', terms = [], roles = []) {
+function rule(type = 'multi', terms = [], roles = []) {
   generation++;
   // FIXME ?? deepClone ??
   return {
@@ -189,7 +189,7 @@ function partitionToRule(selection) {
 
 // ----------------------------------------------------------------------------
 
-export function convertToRuleSelection(selection) {
+function convertToRuleSelection(selection) {
   if (selection.type === 'range') {
     return rangeToRule(selection);
   }
@@ -205,7 +205,7 @@ export function convertToRuleSelection(selection) {
 
 // ----------------------------------------------------------------------------
 
-export function markModified(selection) {
+function markModified(selection) {
   generation++;
   return Object.assign({}, selection, { generation });
 }

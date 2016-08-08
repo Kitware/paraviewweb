@@ -27,7 +27,7 @@ function updateSize(domElement, cacheObj) {
 
 // ------ New API ------
 
-export function getSize(domElement, clearCache = false) {
+function getSize(domElement, clearCache = false) {
   var cachedSize = domSizes.get(domElement);
   if (!cachedSize || clearCache) {
     cachedSize = { timestamp: -1 };
@@ -38,26 +38,26 @@ export function getSize(domElement, clearCache = false) {
   return cachedSize;
 }
 
-export function onSizeChange(callback) {
+function onSizeChange(callback) {
   return observableInstance.on(TOPIC, callback);
 }
 
-export function triggerChange() {
+function triggerChange() {
   observableInstance.emit(TOPIC);
 }
 
-export function isListening() {
+function isListening() {
   return listenerAttached;
 }
 
-export function startListening() {
+function startListening() {
   if (!listenerAttached) {
     window.addEventListener('resize', windowListener);
     listenerAttached = true;
   }
 }
 
-export function stopListening() {
+function stopListening() {
   if (listenerAttached) {
     window.removeEventListener('resize', windowListener);
     listenerAttached = false;

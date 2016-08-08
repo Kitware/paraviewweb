@@ -6,7 +6,7 @@ const dataMapping = {
 
 // ----------------------------------------------------------------------------
 
-export function getHandler(data) {
+function getHandler(data) {
   const handler = dataMapping[data.type];
   if (handler) {
     return handler;
@@ -15,15 +15,15 @@ export function getHandler(data) {
   throw new Error(`No set handler for ${data.type}`);
 }
 
-export function set(model, data) {
+function set(model, data) {
   return getHandler(data).set(model, data);
 }
 
-export function get(model, data) {
+function get(model, data) {
   return getHandler(data).get(model, data);
 }
 
-export function getNotificationData(model, request) {
+function getNotificationData(model, request) {
   return getHandler(request).getNotificationData(model, request);
 }
 

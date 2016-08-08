@@ -10,7 +10,7 @@ export function capitalize(str) {
 // Add isA function and register your class name
 // ----------------------------------------------------------------------------
 
-export function isA(publicAPI, model = {}, name = null) {
+function isA(publicAPI, model = {}, name = null) {
   if (!model.isA) {
     model.isA = [];
   }
@@ -28,7 +28,7 @@ export function isA(publicAPI, model = {}, name = null) {
 // Basic setter
 // ----------------------------------------------------------------------------
 
-export function set(publicAPI, model = {}, names = []) {
+function set(publicAPI, model = {}, names = []) {
   names.forEach(name => {
     publicAPI[`set${capitalize(name)}`] = value => {
       model[name] = value;
@@ -40,7 +40,7 @@ export function set(publicAPI, model = {}, names = []) {
 // Basic getter
 // ----------------------------------------------------------------------------
 
-export function get(publicAPI, model = {}, names = []) {
+function get(publicAPI, model = {}, names = []) {
   names.forEach(name => {
     publicAPI[`get${capitalize(name)}`] = () => model[name];
   });
@@ -50,7 +50,7 @@ export function get(publicAPI, model = {}, names = []) {
 // Add destroy function
 // ----------------------------------------------------------------------------
 
-export function destroy(publicAPI, model = {}) {
+function destroy(publicAPI, model = {}) {
   const previousDestroy = publicAPI.destroy;
 
   if (!model.subscriptions) {
@@ -77,7 +77,7 @@ export function destroy(publicAPI, model = {}) {
 // Event handling: onXXX(callback), fireXXX(args...)
 // ----------------------------------------------------------------------------
 
-export function event(publicAPI, model, eventName, asynchrounous = true) {
+function event(publicAPI, model, eventName, asynchrounous = true) {
   const callbacks = [];
   const previousDestroy = publicAPI.destroy;
 
@@ -137,7 +137,7 @@ export function event(publicAPI, model, eventName, asynchrounous = true) {
 // ----------------------------------------------------------------------------
 // Fetch handling: setXXXFetchCallback / return { addRequest }
 // ----------------------------------------------------------------------------
-export function fetch(publicAPI, model, name) {
+function fetch(publicAPI, model, name) {
   let fetchCallback = null;
   const requestQueue = [];
 
@@ -177,7 +177,7 @@ export function fetch(publicAPI, model, name) {
 // Chain function calls
 // ----------------------------------------------------------------------------
 
-export function chain(...fn) {
+function chain(...fn) {
   return (...args) => fn.filter(i => !!i).forEach(i => i(...args));
 }
 
@@ -185,7 +185,7 @@ export function chain(...fn) {
 // newInstance
 // ----------------------------------------------------------------------------
 
-export function newInstance(extend) {
+function newInstance(extend) {
   return (initialValues = {}) => {
     const model = {};
     const publicAPI = {};

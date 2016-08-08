@@ -13,7 +13,7 @@ let displayOnlyScored = false;
 let scorePopupDiv = null;
 let dividerPopupDiv = null;
 
-export function init(inPublicAPI, inModel) {
+function init(inPublicAPI, inModel) {
   publicAPI = inPublicAPI;
   model = inModel;
 
@@ -38,14 +38,14 @@ export function init(inPublicAPI, inModel) {
   }
 }
 
-export function defaultFieldData() {
+function defaultFieldData() {
   return {
     scoreDirty: false,
     annotation: null,
   };
 }
 
-export function createDefaultDivider(val, uncert) {
+function createDefaultDivider(val, uncert) {
   return {
     value: val,
     uncertainty: uncert,
@@ -129,11 +129,11 @@ const scoredHeaderClick = (d) => {
   publicAPI.render();
 };
 
-export function getDisplayOnlyScored() {
+function getDisplayOnlyScored() {
   return displayOnlyScored;
 }
 
-export function createGroups(svgGr) {
+function createGroups(svgGr) {
   // scoring interface background group, must be behind.
   svgGr.insert('g', ':first-child')
     .classed(style.jsScoreBackground, true);
@@ -141,7 +141,7 @@ export function createGroups(svgGr) {
     .classed(style.score, true);
 }
 
-export function createHeader(header) {
+function createHeader(header) {
   if (typeof model.scores !== 'undefined') {
     header.append('span')
       .on('click', scoredHeaderClick)
@@ -154,7 +154,7 @@ export function createHeader(header) {
   }
 }
 
-export function updateHeader() {
+function updateHeader() {
   if (typeof model.scores !== 'undefined') {
     d3.select(`.${style.jsScoredIcon}`)
       // apply class - 'false' should come first to not remove common base class.
@@ -163,7 +163,7 @@ export function updateHeader() {
   }
 }
 
-export function createDragDivider(hitIndex, val, def, hobj) {
+function createDragDivider(hitIndex, val, def, hobj) {
   let dragD = null;
   if (hitIndex >= 0) {
     // start modifying existing divider
@@ -215,7 +215,7 @@ function clampDragDividerUncertainty(val, def) {
   def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 }
 
-export function moveDragDivider(val, def) {
+function moveDragDivider(val, def) {
   if (def.dragDivider.index >= 0) {
     // if we drag outside our bounds, make this a 'temporary' extra divider.
     if (val < def.dragDivider.low) {
@@ -244,7 +244,7 @@ const bisectDividers = d3.bisector((a, b) => (a.value - b.value)).left;
 
 // where are we (to the left of) in the divider list?
 // Did we hit one?
-export function dividerPick(overCoords, def, marginPx, minVal) {
+function dividerPick(overCoords, def, marginPx, minVal) {
   const val = def.xScale.invert(overCoords[0]);
   const index = bisectDividers(def.dividers, createDefaultDivider(val));
   let hitIndex = -1;
@@ -267,14 +267,14 @@ export function dividerPick(overCoords, def, marginPx, minVal) {
   return [val, index, hitIndex];
 }
 
-export function regionPick(overCoords, def, hobj) {
+function regionPick(overCoords, def, hobj) {
   if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
   const val = def.xScale.invert(overCoords[0]);
   const hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
   return hitIndex;
 }
 
-export function finishDivider(def, hobj, forceDelete = false) {
+function finishDivider(def, hobj, forceDelete = false) {
   const val = def.dragDivider.newDivider.value;
   // if val is defined, we moved an existing divider inside
   // its region, and we just need to render. Otherwise...
@@ -331,7 +331,7 @@ export function finishDivider(def, hobj, forceDelete = false) {
   def.dragDivider = undefined;
 }
 
-export function positionPopup(popupDiv, left, top) {
+function positionPopup(popupDiv, left, top) {
   const clientRect = model.listContainer.getBoundingClientRect();
   const popupRect = popupDiv.node().getBoundingClientRect();
   if (popupRect.width + left > clientRect.width) {
@@ -351,12 +351,12 @@ export function positionPopup(popupDiv, left, top) {
   }
 }
 
-export function validateDividerVal(n) {
+function validateDividerVal(n) {
   // is it a finite float number?
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
+function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
   const topMargin = 4;
   const rowHeight = 28;
   // 's' SI unit label won't work for a number entry field.
@@ -471,7 +471,7 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
     });
 }
 // Divider editing popup allows changing its value or uncertainty, or deleting it.
-export function createDividerPopup() {
+function createDividerPopup() {
   const dPopupDiv = d3.select(model.listContainer).append('div')
     .classed(style.dividerPopup, true)
     .style('display', 'none');
@@ -517,7 +517,7 @@ export function createDividerPopup() {
   return dPopupDiv;
 }
 
-export function showScorePopup(sPopupDiv, coord, selRow) {
+function showScorePopup(sPopupDiv, coord, selRow) {
   // it seemed like a good idea to use getBoundingClientRect() to determine row height
   // but it returns all zeros when the popup has been invisible...
   const topMargin = 4;
@@ -532,7 +532,7 @@ export function showScorePopup(sPopupDiv, coord, selRow) {
     .style('background-color', (d, i) => ((i === selRow) ? d.bgColor : '#fff'));
 }
 
-export function createScorePopup() {
+function createScorePopup() {
   const sPopupDiv = d3.select(model.listContainer).append('div')
     .classed(style.scorePopup, true)
     .style('display', 'none')
@@ -590,7 +590,7 @@ export function createScorePopup() {
   return sPopupDiv;
 }
 
-export function createPopups() {
+function createPopups() {
   if (typeof model.scores !== 'undefined') {
     scorePopupDiv = d3.select(model.listContainer).select(`.${style.jsScorePopup}`);
     if (scorePopupDiv.empty()) {
@@ -603,17 +603,17 @@ export function createPopups() {
   }
 }
 
-export function showScore(def) {
+function showScore(def) {
   // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
   return (def.editScore || (typeof def.regions !== 'undefined' &&
                             ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
 }
 
-export function editingScore(def) {
+function editingScore(def) {
   return def.editScore;
 }
 
-export function filterFieldNames(fieldNames) {
+function filterFieldNames(fieldNames) {
   if (getDisplayOnlyScored()) {
     // filter for fields that have scores
     return fieldNames.filter((name) => (showScore(model.fieldData[name])));
@@ -621,7 +621,7 @@ export function filterFieldNames(fieldNames) {
   return fieldNames;
 }
 
-export function prepareItem(def, idx, svgGr, tdsl) {
+function prepareItem(def, idx, svgGr, tdsl) {
   if (typeof model.scores === 'undefined') return;
   if (typeof def.dividers === 'undefined') {
     def.dividers = [];
@@ -827,7 +827,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
   }
 }
 
-export function addSubscriptions() {
+function addSubscriptions() {
   if (model.provider.isA('PartitionProvider')) {
     model.subscriptions.push(model.provider.onPartitionReady((field) => {
       model.fieldData[field].scoreDirty = true;
