@@ -1,3 +1,5 @@
+/* global window */
+
 import React        from 'react';
 import ReactDOM     from 'react-dom';
 import sizeHelper   from '../../../Common/Misc/SizeHelper';
@@ -60,7 +62,7 @@ export default React.createClass({
       });
 
       if (this.props.geometryBuilder) {
-        this.props.geometryBuilder.updateSize(innerWidth, innerHeight);
+        this.props.geometryBuilder.updateSize(window.innerWidth, window.innerHeight);
       }
       return true;
     }

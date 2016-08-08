@@ -1,3 +1,5 @@
+/* global WebSocket Blob window URL */
+
 import Monologue from 'monologue.js';
 
 const

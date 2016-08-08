@@ -1,3 +1,5 @@
+/* global document Image */
+
 import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 import {

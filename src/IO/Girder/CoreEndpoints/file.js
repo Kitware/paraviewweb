@@ -1,3 +1,5 @@
+/* global FormData XMLHttpRequest */
+
 /* eslint-disable no-underscore-dangle */
 export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString, progress }) {
   function uploadChunk(uploadId, offset, chunk) {
@@ -54,8 +56,6 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         .then(upload => {
           var chunkSize = 10 * 1024 * 1024,
             uploadNextChunk;
-            // i = 0,
-            // chunks = Math.floor(file.size / chunkSize);
 
           uploadNextChunk = (offset) => {
             var blob;
@@ -76,9 +76,6 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
               blob = file.slice(offset, offset + chunkSize);
               uploadChunk(upload.data._id, offset, blob)
                 .then((uploadResp) => {
-                  i += 1;
-                  // const msg = `chunk ${i} of ${chunks} uploaded`;
-
                   uploadNextChunk(offset + chunkSize);
                 })
                 .catch((error) => {

@@ -1,3 +1,5 @@
+/* global Image */
+
 import DataManager from '../DataManager';
 import hasOwn from 'mout/object/hasOwn';
 import max from 'mout/object/max';

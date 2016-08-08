@@ -19,7 +19,6 @@ module.exports = {
     'no-continue': 0,
     'no-lonely-if': 0,
     'no-mixed-operators': 0,
-    'no-undef': 0,
     'object-property-newline': 0,
     'prefer-spread': 0,
     'react/jsx-filename-extension': 0,

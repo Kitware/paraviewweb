@@ -1,3 +1,5 @@
+/* global document */
+
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 import d3 from 'd3';

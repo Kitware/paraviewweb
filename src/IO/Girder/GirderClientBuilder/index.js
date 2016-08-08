@@ -1,3 +1,5 @@
+/* global window EventSource document */
+
 import axios from 'axios';
 import Monologue from 'monologue.js';
 
@@ -59,7 +61,7 @@ function mustContain(object = {}, ...keys) {
 
 // ----------------------------------------------------------------------------
 
-export function build(config = location, ...extensions) {
+export function build(config = window.location, ...extensions) {
   var userData,
     token,
     loginPromise,

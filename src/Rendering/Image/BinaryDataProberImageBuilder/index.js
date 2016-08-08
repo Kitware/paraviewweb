@@ -1,3 +1,5 @@
+/* global window */
+
 import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 

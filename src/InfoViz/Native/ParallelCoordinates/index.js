@@ -1,3 +1,5 @@
+/* global document */
+
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 

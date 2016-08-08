@@ -1,3 +1,5 @@
+/* global window */
+
 // Module dependencies and constants
 import request from './request.js';
 import PatternMap from './pattern.js';

@@ -1,3 +1,5 @@
+/* global document */
+
 import style from 'PVWStyle/ComponentNative/ToggleControl.mcss';
 
 const SELECTOR_BUTTON_CLASS = style.jsControlButton;

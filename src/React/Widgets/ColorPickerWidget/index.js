@@ -1,3 +1,5 @@
+/* global Image */
+
 import React      from 'react';
 import ReactDOM   from 'react-dom';
 import swatchURL  from './defaultSwatches.png';

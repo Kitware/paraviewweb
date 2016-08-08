@@ -1,3 +1,5 @@
+/* global document */
+
 import Layouts from '../../../React/Renderers/MultiLayoutRenderer/Layouts';
 import Monologue from 'monologue.js';
 import style from 'PVWStyle/ComponentNative/Workbench.mcss';

@@ -1,3 +1,5 @@
+/* global window */
+
 import Observable   from '../Observable';
 import { debounce } from '../Debounce';
 

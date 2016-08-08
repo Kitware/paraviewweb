@@ -1,3 +1,5 @@
+/* global window */
+
 import DataManager from '../DataManager';
 import Monologue from 'monologue.js';
 

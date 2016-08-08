@@ -161,7 +161,7 @@ function getWidgets(obj) {
     if (widget) {
       widgetList.push(widget);
     } else {
-      console.error('Unable to create widget for name:', name);
+      console.error('Unable to create widget for name:', desc.name);
     }
   });
 

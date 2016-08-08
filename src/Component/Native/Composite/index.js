@@ -1,5 +1,6 @@
-import style from 'PVWStyle/ComponentNative/Composite.mcss';
+/* global document */
 
+import style from 'PVWStyle/ComponentNative/Composite.mcss';
 
 export default class NativeCompositeComponent {
   constructor(el) {
