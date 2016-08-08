@@ -1,7 +1,6 @@
 /* global window document */
 
 import React    from 'react';
-import ReactDOM from 'react-dom';
 
 const noOp = () => { };
 
@@ -25,18 +24,18 @@ export default React.createClass({
   },
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.html !== ReactDOM.findDOMNode(this).innerHTML;
+    return nextProps.html !== this.rootContainer.innerHTML;
   },
 
   componentDidUpdate() {
-    if (this.props.html !== ReactDOM.findDOMNode(this).innerHTML) {
-      ReactDOM.findDOMNode(this).innerHTML = this.props.html;
+    if (this.props.html !== this.rootContainer.innerHTML) {
+      this.rootContainer.innerHTML = this.props.html;
     }
   },
 
   setFocus() {
     const range = document.createRange();
-    range.selectNodeContents(ReactDOM.findDOMNode(this));
+    range.selectNodeContents(this.rootContainer);
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
@@ -44,7 +43,7 @@ export default React.createClass({
 
   blurEditable(event) {
     if (event.charCode === 13) {
-      ReactDOM.findDOMNode(this).blur();
+      this.rootContainer.blur();
       window.getSelection().removeAllRanges();
       if (this.props.onBlur) {
         this.props.onBlur();
@@ -53,7 +52,7 @@ export default React.createClass({
   },
 
   emitChange(evt) {
-    var html = ReactDOM.findDOMNode(this).innerHTML;
+    var html = this.rootContainer.innerHTML;
     if (this.props.onChange && html !== this.lastHtml) {
       evt.target = {
         value: html,
@@ -70,6 +69,7 @@ export default React.createClass({
   render() {
     return (
       <div
+        ref={c => { this.rootContainer = c; }}
         className={this.props.className}
         onInput={this.emitChange}
         onBlur={this.emitChange}

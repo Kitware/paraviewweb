@@ -1,5 +1,4 @@
 import React                    from 'react';
-import ReactDOM                 from 'react-dom';
 
 import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
@@ -44,28 +43,28 @@ export default React.createClass({
   previous() {
     if (this.props.model.previous(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.slider).focus();
+      this.slider.focus();
     }
   },
 
   next() {
     if (this.props.model.next(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.slider).focus();
+      this.slider.focus();
     }
   },
 
   first() {
     if (this.props.model.first(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.slider).focus();
+      this.slider.focus();
     }
   },
 
   last() {
     if (this.props.model.last(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.slider).focus();
+      this.slider.focus();
     }
   },
 
@@ -81,7 +80,7 @@ export default React.createClass({
 
   enableButtons(event) {
     this.setState({ button: true });
-    ReactDOM.findDOMNode(this.slider).focus();
+    this.slider.focus();
   },
 
   disableButtons() {
@@ -89,7 +88,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.slider).focus();
+    this.slider.focus();
   },
 
   toggleAnimation() {

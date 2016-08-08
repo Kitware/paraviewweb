@@ -1,6 +1,5 @@
 import equals       from 'mout/src/object/equals';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
 
 import style        from 'PVWStyle/ReactWidgets/Coordinate2DWidget.mcss';
 
@@ -43,7 +42,7 @@ export default React.createClass({
 
   componentDidMount() {
     this.drawControl();
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.canvas));
+    this.mouseHandler = new MouseHandler(this.canvas);
     this.mouseHandler.attach({
       click: this.pointerAction,
       mousedown: this.pointerAction,
@@ -97,7 +96,7 @@ export default React.createClass({
 
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
-    var rect = ReactDOM.findDOMNode(this.canvas).getBoundingClientRect();
+    var rect = this.canvas.getBoundingClientRect();
     var x = e.pointers[0].clientX - rect.left - (this.props.width / 2),
       y = -(e.pointers[0].clientY - rect.top - (this.props.height / 2));
     this.setState({
@@ -107,7 +106,7 @@ export default React.createClass({
   },
 
   drawControl() {
-    var ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d'),
+    var ctx = this.canvas.getContext('2d'),
       height = ctx.canvas.height,
       width = ctx.canvas.width;
 
@@ -138,7 +137,7 @@ export default React.createClass({
   },
 
   drawPlus(color, location_) {
-    const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     const height = ctx.canvas.height;
     const width = ctx.canvas.width;
     const lineLen = 5;

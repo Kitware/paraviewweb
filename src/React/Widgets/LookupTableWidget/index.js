@@ -1,5 +1,4 @@
 import React                from 'react';
-import ReactDOM             from 'react-dom';
 import style                from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
 
 import ColorPicker          from '../ColorPickerWidget';
@@ -84,7 +83,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var canvas = ReactDOM.findDOMNode(this.canvas);
+    var canvas = this.canvas;
     this.props.lookupTable.drawToCanvas(canvas);
   },
 
@@ -100,7 +99,7 @@ export default React.createClass({
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.internal_lut) {
-      const canvas = ReactDOM.findDOMNode(this.canvas);
+      const canvas = this.canvas;
       this.props.lookupTable.drawToCanvas(canvas);
 
       if (this.state.mode === 'edit') {
@@ -129,8 +128,8 @@ export default React.createClass({
   },
 
   updateScalarRange() {
-    var minValue = ReactDOM.findDOMNode(this.min).value,
-      maxValue = ReactDOM.findDOMNode(this.max).value;
+    var minValue = this.min.value,
+      maxValue = this.max.value;
     this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
     this.forceUpdate();
   },
@@ -270,7 +269,7 @@ export default React.createClass({
       } else {
         lut.setPreset(newPreset);
       }
-      lut.drawToCanvas(ReactDOM.findDOMNode(this.canvas));
+      lut.drawToCanvas(this.canvas);
     }
     this.setState({ activePreset: newPreset });
   },

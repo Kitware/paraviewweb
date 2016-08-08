@@ -1,5 +1,4 @@
 import React      from 'react';
-import ReactDOM   from 'react-dom';
 import style      from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
@@ -213,7 +212,7 @@ export default React.createClass({
     var { actives, nodes } = this.state;
 
     if (event.target.nodeName !== 'circle' && !event.target.classList.contains(style.iconText)) {
-      const size = SizeHelper.getSize(ReactDOM.findDOMNode(this)),
+      const size = SizeHelper.getSize(this.rootContainer),
         { deltaY } = this.props,
         // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
         originTop = size.clientRect.y || size.clientRect.top,
@@ -418,6 +417,7 @@ export default React.createClass({
   render() {
     return (
       <svg
+        ref={c => { this.rootContainer = c; }}
         style={this.props.style}
         width={this.props.width}
         height={`${this.props.deltaY * this.state.nodes.length}px`}

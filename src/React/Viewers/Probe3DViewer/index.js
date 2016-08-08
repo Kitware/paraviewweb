@@ -1,5 +1,4 @@
 import React                        from 'react';
-import ReactDOM                     from 'react-dom';
 
 import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
 
@@ -139,7 +138,7 @@ export default React.createClass({
   },
 
   dragOn(event) {
-    var el = ReactDOM.findDOMNode(this.chartContainer),
+    var el = this.chartContainer,
       top = Number(el.style.top.replace('px', '')),
       left = Number(el.style.left.replace('px', ''));
 
@@ -153,7 +152,7 @@ export default React.createClass({
 
   dragChart(event) {
     if (this.dragChartFlag) {
-      const el = ReactDOM.findDOMNode(this.chartContainer);
+      const el = this.chartContainer;
       el.style.left = `${(event.clientX - this.dragPosition[0])}px`;
       el.style.top = `${(event.clientY - this.dragPosition[1])}px`;
     }

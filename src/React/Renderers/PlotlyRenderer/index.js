@@ -1,6 +1,5 @@
-import React    from 'react';
-import ReactDOM from 'react-dom';
-import Plotly   from 'plotly.js';
+import React  from 'react';
+import Plotly from 'plotly.js';
 
 import style from 'PVWStyle/ReactRenderers/PlotlyRenderer.mcss';
 
@@ -26,7 +25,7 @@ export default React.createClass({
     sizeHelper.startListening();
 
     this.dataSubscription = this.props.chartBuilder.onDataReady(data => {
-      const container = ReactDOM.findDOMNode(this.chartRenderer);
+      const container = this.chartRenderer;
       if (!container) {
         return;
       }
@@ -82,7 +81,7 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    const elt = ReactDOM.findDOMNode(this.chartRenderer);
+    const elt = this.chartRenderer;
     if (elt.layout) {
       Plotly.relayout(elt, elt.layout);
     }

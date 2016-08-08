@@ -1,5 +1,4 @@
 import React                    from 'react';
-import ReactDOM                 from 'react-dom';
 
 import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
@@ -34,7 +33,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.select).focus();
+    this.select.focus();
   },
 
   toggleAnimation() {

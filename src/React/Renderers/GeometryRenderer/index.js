@@ -1,7 +1,6 @@
 /* global window */
 
 import React        from 'react';
-import ReactDOM     from 'react-dom';
 import sizeHelper   from '../../../Common/Misc/SizeHelper';
 
 export default React.createClass({
@@ -33,7 +32,7 @@ export default React.createClass({
 
   componentDidMount() {
     if (this.props.geometryBuilder) {
-      this.props.geometryBuilder.configureRenderer(ReactDOM.findDOMNode(this.canvasRenderer));
+      this.props.geometryBuilder.configureRenderer(this.canvasRenderer);
       this.props.geometryBuilder.render();
     }
     this.updateDimensions();
@@ -52,7 +51,7 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
+    var el = this.canvasRenderer.parentNode,
       elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {

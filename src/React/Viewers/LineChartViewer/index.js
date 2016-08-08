@@ -1,6 +1,5 @@
 import equals       from 'mout/src/object/equals';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
 
 import style        from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
 
@@ -95,7 +94,7 @@ export default React.createClass({
   updateDimensions() {
     this.xPosition = 0;
 
-    const el = ReactDOM.findDOMNode(this).parentNode,
+    const el = this.rootContainer.parentNode,
       elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
@@ -117,7 +116,7 @@ export default React.createClass({
       return;
     }
 
-    const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d'),
+    const ctx = this.canvas.getContext('2d'),
       fields = this.props.data.fields,
       size = fields.length,
       fieldsColors = {},
@@ -131,7 +130,7 @@ export default React.createClass({
       this.drawField(ctx, idx, fields[idx].data, fields[idx].range);
       fieldsColors[fields[idx].name] = this.props.colors[idx];
       if ({}.hasOwnProperty.call(this, fields[idx].name)) {
-        ReactDOM.findDOMNode(this[fields[idx].name]).innerHTML = interpolate(fields[idx].data, ratio);
+        this[fields[idx].name].innerHTML = interpolate(fields[idx].data, ratio);
       }
     }
 
@@ -141,7 +140,7 @@ export default React.createClass({
 
     // Draw cursor
     if (this.state.legend) {
-      ReactDOM.findDOMNode(this.xValueLabel).innerHTML = (
+      this.xValueLabel.innerHTML = (
         ((this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio)
         + this.props.data.xRange[0]).toFixed(5);
 
@@ -227,7 +226,7 @@ export default React.createClass({
     });
 
     return (
-      <div className={style.container}>
+      <div className={style.container} ref={c => { this.rootContainer = c; }}>
         <canvas
           className={style.canvas}
           ref={(c) => { this.canvas = c; }}

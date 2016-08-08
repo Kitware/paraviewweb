@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import equals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/ReactWidgets/PieceWiseFunctionEditorWidget.mcss';
@@ -97,7 +96,7 @@ export default React.createClass({
 
   updateDimensions() {
     const { clientWidth, clientHeight } =
-      sizeHelper.getSize(ReactDOM.findDOMNode(this), true);
+      sizeHelper.getSize(this.rootContainer, true);
     if (this.props.width === -1) {
       this.setState({ width: clientWidth });
     }
@@ -196,7 +195,7 @@ export default React.createClass({
     const activePointOpacity = this.state.activePoint !== -1 ?
       this.props.points[this.state.activePoint].y : 0.5;
     return (
-      <div className={style.pieceWiseFunctionEditorWidget}>
+      <div className={style.pieceWiseFunctionEditorWidget} ref={c => { this.rootContainer = c; }}>
         <canvas
           className={style.canvas}
           width={this.state.width}

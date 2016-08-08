@@ -1,6 +1,5 @@
 import equals       from 'mout/src/array/equals';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
 
 import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
 
@@ -56,7 +55,7 @@ export default React.createClass({
   componentDidMount() {
     this.updateDimensions();
     this.draw();
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.canvas));
+    this.mouseHandler = new MouseHandler(this.canvas);
     this.mouseHandler.attach({
       click: this.clicked,
       drag: this.clicked,
@@ -85,7 +84,7 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
+    var el = this.rootContainer.parentNode,
       innerWidth = getSize(el).clientWidth;
 
     if (el && innerWidth && (this.state.width !== innerWidth)) {
@@ -96,7 +95,7 @@ export default React.createClass({
   },
 
   draw() {
-    var ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+    var ctx = this.canvas.getContext('2d');
     ctx.strokeStyle = this.props.stroke;
     ctx.lineWidth = '1';
 
@@ -137,7 +136,7 @@ export default React.createClass({
   },
 
   clicked(e) {
-    var rect = ReactDOM.findDOMNode(this.canvas).getClientRects()[0],
+    var rect = this.canvas.getClientRects()[0],
       x = e.pointers[0].clientX - rect.left - (2 * this.props.spacing),
       y = e.pointers[0].clientY - rect.top - (2 * this.props.spacing),
       effectiveHeight = rect.height - (4 * this.props.spacing),
@@ -158,7 +157,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={style.container}>
+      <div className={style.container} ref={c => { this.rootContainer = c; }}>
         <canvas className={style.canvas} ref={(c) => { this.canvas = c; }} width={this.state.width} height={this.state.height}>
         </canvas>
       </div>

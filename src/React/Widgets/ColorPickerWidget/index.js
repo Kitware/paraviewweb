@@ -1,7 +1,6 @@
 /* global Image */
 
 import React      from 'react';
-import ReactDOM   from 'react-dom';
 
 import style      from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
 
@@ -46,7 +45,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+    var ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
   },
@@ -60,7 +59,7 @@ export default React.createClass({
       this.setState({ originalColor: this.props.color });
     }
     if (!this.state.preview) {
-      const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+      const ctx = this.canvas.getContext('2d');
       ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
       ctx.fillRect(0, 0, 1, 1);
     }
@@ -69,7 +68,7 @@ export default React.createClass({
 
   showColor(event) {
     var color = this.state.originalColor,
-      ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+      ctx = this.canvas.getContext('2d');
     event.preventDefault();
 
     if (event.type === 'mouseleave') {
@@ -81,7 +80,7 @@ export default React.createClass({
       return;
     }
 
-    const img = ReactDOM.findDOMNode(this.swatch),
+    const img = this.swatch,
       rect = img.getBoundingClientRect();
 
     const scale = this.image.width / rect.width,
@@ -110,7 +109,7 @@ export default React.createClass({
 
     color[idx] = value;
 
-    const ctx = ReactDOM.findDOMNode(this.canvas).getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${color.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
 

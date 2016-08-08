@@ -1,5 +1,4 @@
 import React            from 'react';
-import ReactDOM         from 'react-dom';
 import Monologue        from 'monologue.js';
 
 import layoutFunctions  from './Layouts';
@@ -89,7 +88,7 @@ const MultiViewRenderer = React.createClass({
     this.updateDimensions();
 
     // Attach mouse listener
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.canvasRenderer));
+    this.mouseHandler = new MouseHandler(this.canvasRenderer);
 
     this.mouseHandler.attach({
       drag: this.dragCallback,
@@ -179,7 +178,7 @@ const MultiViewRenderer = React.createClass({
   },
 
   updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
+    var el = this.canvasRenderer.parentNode,
       elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
@@ -281,7 +280,7 @@ const MultiViewRenderer = React.createClass({
   drawViewport(viewport) {
     var renderer = this.props.renderers[viewport.name],
       region = viewport.region,
-      ctx = ReactDOM.findDOMNode(this.canvasRenderer).getContext('2d');
+      ctx = this.canvasRenderer.getContext('2d');
 
     if (!renderer || (renderer.builder && !renderer.dataToDraw) || (renderer.painter && !renderer.painter.isReady())) {
       return;
@@ -360,7 +359,7 @@ const MultiViewRenderer = React.createClass({
   },
 
   drawLayout() {
-    var ctx = ReactDOM.findDOMNode(this.canvasRenderer).getContext('2d'),
+    var ctx = this.canvasRenderer.getContext('2d'),
       width = (ctx.canvas.width = this.state.width),
       height = (ctx.canvas.height = this.state.height),
       centerPx = [this.center[0] * width, this.center[1] * height],

@@ -1,5 +1,4 @@
 import React                from 'react';
-import ReactDOM             from 'react-dom';
 
 import BinaryImageStream    from '../../../IO/WebSocket/BinaryImageStream';
 import NativeImageRenderer  from '../../../NativeUI/Renderers/NativeImageRenderer';
@@ -32,7 +31,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    const container = ReactDOM.findDOMNode(this);
+    const container = this.rootContainer;
 
     const wsbUrl = `${this.props.connection.urls}b`;
     this.binaryImageStream = new BinaryImageStream(wsbUrl);
@@ -91,7 +90,7 @@ export default React.createClass({
   },
 
   render() {
-    return <div className={this.props.className} style={this.props.style} ></div>;
+    return <div className={this.props.className} style={this.props.style} ref={c => { this.rootContainer = c; }}></div>;
   },
 });
 
