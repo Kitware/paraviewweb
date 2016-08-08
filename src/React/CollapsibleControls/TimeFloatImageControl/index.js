@@ -160,7 +160,7 @@ export default React.createClass({
           {chartData.fields.map((field, index) =>
             <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'}>
               <label className={style.label}>
-                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }}></i>
+                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }} />
                 {field.name}
               </label>
               <span className={style.value} title={field.data[timeIdx]}>{field.data[timeIdx]}</span>

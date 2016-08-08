@@ -16,7 +16,6 @@ module.exports = {
     'import/no-named-as-default-member': 0,
     'prefer-spread': 0,
     'react/jsx-filename-extension': 0,
-    'react/self-closing-comp': 0,
     'jsx-a11y/label-has-for': 0,
     'react/jsx-curly-spacing': 0,
   },

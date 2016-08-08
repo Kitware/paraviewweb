@@ -90,7 +90,7 @@ export default React.createClass({
   },
 
   render() {
-    return <div className={this.props.className} style={this.props.style} ref={c => { this.rootContainer = c; }}></div>;
+    return <div className={this.props.className} style={this.props.style} ref={c => { this.rootContainer = c; }} />;
   },
 });
 

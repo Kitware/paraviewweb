@@ -183,34 +183,28 @@ export default React.createClass({
                 (magicLensController.isFront() ? style.magicLensButtonIn : style.magicLensButtonOut)
                 : style.hidden}
               onClick={this.toggleLens}
-            >
-            </i>
+            />
             <i
               className={(serverRecording && isImageRenderer && this.props.imageBuilder.handleRecord)
                 ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden}
               onClick={this.toggleRecord}
-            >
-            </i>
+            />
             <i
               className={(isImageRenderer || isGeometryViewer) ? style.resetCameraButton : style.hidden}
               onClick={this.resetCamera}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? style.playButton : style.hidden)}
               onClick={this.play}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.isAnimating() ? style.stopButton : style.hidden)}
               onClick={this.stop}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() ? style.speedButton : style.hidden)}
               onClick={this.updateSpeed}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() ? style.animationSpeed : style.hidden)}
               onClick={this.updateSpeed}
@@ -220,8 +214,7 @@ export default React.createClass({
             <i
               className={this.state.collapsed ? style.collapsedMenuButton : style.menuButton}
               onClick={this.togglePanel}
-            >
-            </i>
+            />
           </div>
           <div className={style.controlContent}>
             {this.props.children}

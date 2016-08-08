@@ -138,8 +138,7 @@ export default React.createClass({
             ref={(c) => { this.canvas = c; }}
             width="1"
             height="1"
-          >
-          </canvas>
+          />
           <input
             className={style.colorRGB}
             type="number"

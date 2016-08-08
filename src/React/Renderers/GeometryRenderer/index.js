@@ -81,7 +81,6 @@ export default React.createClass({
         ref={(c) => { this.canvasRenderer = c; }}
         width={this.state.width}
         height={this.state.height}
-      >
-      </canvas>);
+      />);
   },
 });

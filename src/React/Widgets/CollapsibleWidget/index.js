@@ -61,7 +61,7 @@ export default React.createClass({
       <section className={style.container} style={localStyle}>
         <div className={style.header}>
           <div onClick={this.toggleOpen}>
-            <i className={style[this.state.open ? 'caret' : 'caretClosed']}></i>
+            <i className={style[this.state.open ? 'caret' : 'caretClosed']} />
             <strong className={style.title}>{this.props.title}</strong>
           </div>
           <span className={this.props.activeSubTitle ? style.subtitleActive : style.subtitle}>{this.props.subtitle}</span>

@@ -290,17 +290,17 @@ export default React.createClass({
           <i
             className={style.editButton}
             onClick={this.toggleEditMode}
-          ></i>
+          />
           <canvas
             ref={(c) => { this.canvas = c; }}
             className={style.canvas}
             width={this.props.lookupTable.colorTableSize * this.props.lookupTable.scale}
             height="1"
-          ></canvas>
+          />
           <i
             className={style.presetButton}
             onClick={this.togglePresetMode}
-          ></i>
+          />
         </div>
         <div className={style.range} style={STYLE.range[this.state.mode]}>
           <NumberInputWidget
@@ -312,7 +312,7 @@ export default React.createClass({
           <i
             onClick={this.resetRange}
             className={style.resetRangeButton}
-          ></i>
+          />
           <NumberInputWidget
             ref={(c) => { this.max = c; }}
             className={style.inputRight}
@@ -325,16 +325,16 @@ export default React.createClass({
             <i
               onClick={this.previousControlPoint}
               className={style.previousButton}
-            ></i>
+            />
             <div className={style.label}>{this.state.currentControlPointIndex + 1} / {this.props.lookupTable.getNumberOfControlPoints()}</div>
             <i
               onClick={this.nextControlPoint}
               className={style.nextButton}
-            ></i>
+            />
             <i
               onClick={this.addControlPoint}
               className={style.addButton}
-            ></i>
+            />
             <NumberInputWidget
               className={style.inputRight}
               value={controlPointValue}
@@ -343,7 +343,7 @@ export default React.createClass({
             <i
               onClick={this.deleteControlPoint}
               className={style.deleteButton}
-            ></i>
+            />
           </div>
           <ColorPicker color={color} onChange={this.updateRGB} />
         </div>
@@ -353,7 +353,7 @@ export default React.createClass({
             className={
               this.state.activePreset === this.props.lookupTable.getPresets()[0]
               ? style.disablePreviousButton : style.previousButton}
-          ></i>
+          />
           {this.props.lookupTable.getPresets().map(preset =>
             <div
               onClick={this.setPreset}
@@ -368,7 +368,7 @@ export default React.createClass({
             onClick={this.nextPreset}
             className={(this.state.activePreset === this.props.lookupTable.getPresets()[this.props.lookupTable.getPresets().length - 1]
               ? style.disableNextButton : style.nextButton)}
-          ></i>
+          />
         </div>
       </div>);
   },

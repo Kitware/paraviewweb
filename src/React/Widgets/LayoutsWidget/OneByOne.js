@@ -6,7 +6,7 @@ export default function oneByOne(props) {
     <table className={props.active === '1x1' ? style.activeTable : style.table} name="1x1" onClick={props.onClick}>
       <tbody>
         <tr>
-          <td className={props.activeRegion === 0 ? style.activeTd : style.td}></td>
+          <td className={props.activeRegion === 0 ? style.activeTd : style.td} />
         </tr>
       </tbody>
     </table>);

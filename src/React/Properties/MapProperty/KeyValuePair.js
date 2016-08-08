@@ -61,7 +61,7 @@ export default React.createClass({
           />
         </td>
         <td className={style.actionColumn}>
-          <i className={style.deleteButton} onClick={this.removeItem}></i>
+          <i className={style.deleteButton} onClick={this.removeItem} />
         </td>
       </tr>);
   },

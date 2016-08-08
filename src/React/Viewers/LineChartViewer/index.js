@@ -219,9 +219,9 @@ export default React.createClass({
       const color = this.state.fieldsColors[name];
       legend.push(
         <li className={style.legendItem} key={name}>
-          <i className={style.legendItemColor} style={{ color }}></i>
+          <i className={style.legendItemColor} style={{ color }} />
           <b>{name}</b>
-          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }}></span>
+          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }} />
         </li>);
     });
 
@@ -233,12 +233,11 @@ export default React.createClass({
           onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
-        >
-        </canvas>
+        />
         <div className={this.state.legend ? style.legend : style.hidden}>
           <div className={style.legendBar}>
-            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }}></span>
-            <i className={style.toggleLegendButton} onClick={this.toggleLegend}></i>
+            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }} />
+            <i className={style.toggleLegendButton} onClick={this.toggleLegend} />
           </div>
           <ul className={style.legendContent}>
             {legend}
@@ -246,7 +245,7 @@ export default React.createClass({
         </div>
         <div className={this.state.legend ? style.hidden : style.legend} onClick={this.toggleLegend}>
           <div className={style.legendButtons}>
-            <i className={style.toggleLegendButton}></i>
+            <i className={style.toggleLegendButton} />
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ export default React.createClass({
           data-user={item.data || ''}
           onClick={this.processClick}
         >
-          <i className={item.icon}></i>{item.name}
+          <i className={item.icon} />{item.name}
         </li>);
     });
 

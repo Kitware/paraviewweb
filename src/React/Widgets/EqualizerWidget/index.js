@@ -158,8 +158,12 @@ export default React.createClass({
   render() {
     return (
       <div className={style.container} ref={c => { this.rootContainer = c; }}>
-        <canvas className={style.canvas} ref={(c) => { this.canvas = c; }} width={this.state.width} height={this.state.height}>
-        </canvas>
+        <canvas
+          className={style.canvas}
+          ref={(c) => { this.canvas = c; }}
+          width={this.state.width}
+          height={this.state.height}
+        />
       </div>
     );
   },

@@ -104,7 +104,7 @@ export default function fiveClauseRender(props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      <i className={style.deleteButton} onClick={onDelete}></i>
+      <i className={style.deleteButton} onClick={onDelete} />
     </section>);
 }
 

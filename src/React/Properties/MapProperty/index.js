@@ -82,7 +82,7 @@ export default React.createClass({
               <tr>
                 <th className={styleProp.inputColumn}>Name</th>
                 <th className={styleProp.inputColumn}>Value</th>
-                <th className={styleProp.actionColumn}><i className={styleProp.addButton} onClick={this.addEntry}></i></th>
+                <th className={styleProp.actionColumn}><i className={styleProp.addButton} onClick={this.addEntry} /></th>
               </tr>
               {mapper()}
             </tbody>

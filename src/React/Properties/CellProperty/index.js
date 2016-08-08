@@ -79,8 +79,7 @@ export default React.createClass({
             <i
               className={this.props.ui.layout === '-1' ? style.plusIcon : style.hidden}
               onClick={this.addValue}
-            >
-            </i>
+            />
             <ToggleIconButton
               icon={style.helpIcon}
               value={this.state.helpOpen}

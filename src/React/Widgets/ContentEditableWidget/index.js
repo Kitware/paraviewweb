@@ -76,7 +76,7 @@ export default React.createClass({
         onKeyPress={this.props.blurOnEnter ? this.blurEditable : noOp}
         contentEditable
         dangerouslySetInnerHTML={{ __html: this.props.html }}
-      ></div>);
+      />);
   },
   /* eslint-enable react/no-danger */
 });

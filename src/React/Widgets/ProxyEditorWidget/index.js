@@ -59,7 +59,7 @@ export default React.createClass({
           <i
             className={this.state.advanced ? style.activeAdvancedButton : style.advancedButton}
             onClick={this.toggleAdvanced}
-          ></i>
+          />
           <input
             type="text"
             placeholder="filter properties..."
@@ -69,7 +69,7 @@ export default React.createClass({
           <i
             className={changeCount ? style.validateButtonOn : style.validateButton}
             onClick={this.applyChanges}
-          ></i>
+          />
         </div>
         <div className={style.contentContainer}>
           {this.props.children}

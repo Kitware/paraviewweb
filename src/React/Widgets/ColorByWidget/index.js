@@ -159,7 +159,7 @@ export default React.createClass({
     return (
       <div className={[style.container, this.props.className].join(' ')}>
         <div className={style.line}>
-          <i className={style.representationIcon}></i>
+          <i className={style.representationIcon} />
           <select
             className={style.input}
             value={this.state.representationValue}
@@ -171,7 +171,7 @@ export default React.createClass({
           </select>
         </div>
         <div className={style.line}>
-          <i className={style.colorIcon}></i>
+          <i className={style.colorIcon} />
           <select
             className={style.input}
             value={this.state.colorValue}
@@ -188,8 +188,7 @@ export default React.createClass({
           <i
             onClick={this.toggleAdvancedView}
             className={this.state.advancedView ? style.advanceIconOn : style.advanceIconOff}
-          >
-          </i>
+          />
           {this.props.scalarBar && this.state.colorValue && this.state.colorValue.split(SEP)[1].length ?
             <img
               onClick={this.toggleScalarBar}
@@ -197,12 +196,12 @@ export default React.createClass({
               src={`data:image/png;base64,${this.props.scalarBar}`}
               alt="ScalarBar"
             />
-            : <div className={style.scalarBar} style={{ backgroundColor: this.state.solidColor }}></div>
+            : <div className={style.scalarBar} style={{ backgroundColor: this.state.solidColor }} />
          }
           <i
             onClick={this.toggleScalarBar}
             className={this.state.scalarBarVisible ? style.scalarBarIconOn : style.scalarBarIconOff}
-          ></i>
+          />
         </div>
         <AdvancedView visible={this.state.advancedView} {...this.props} />
       </div>);

@@ -8,8 +8,8 @@ export default function DepthMatchingRender(props) {
         <table className={style.table}>
           <tbody>
             <tr>
-              <td className={style.operationCell}></td>
-              <td className={style.groupTableCellPadding}></td>
+              <td className={style.operationCell} />
+              <td className={style.groupTableCellPadding} />
               <td>
                 <table className={style.table}>
                   <tbody>

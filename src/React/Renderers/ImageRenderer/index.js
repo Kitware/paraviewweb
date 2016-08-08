@@ -534,8 +534,7 @@ const ImageRenderer = React.createClass({
           ref={(c) => { this.canvasRenderer = c; }}
           width={this.state.width}
           height={this.state.height}
-        >
-        </canvas>
+        />
         <div className={this.state.dialog ? style.dialog : style.hidden}>
           <div className={style.inside}>
             <img

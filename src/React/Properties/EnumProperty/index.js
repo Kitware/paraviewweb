@@ -69,7 +69,7 @@ export default React.createClass({
       mapper = () => {
         var ret = [];
         if (!multiple && !this.props.ui.noEmpty) {
-          ret.push(<option key="empty-value" value={null}></option>);
+          ret.push(<option key="empty-value" value={null} />);
         }
 
         Object.keys(this.props.ui.domain).forEach(key => {

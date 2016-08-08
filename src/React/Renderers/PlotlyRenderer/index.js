@@ -88,6 +88,6 @@ export default React.createClass({
   },
 
   render() {
-    return (<div className={style.chartContainer} ref={(c) => { this.chartRenderer = c; }}></div>);
+    return (<div className={style.chartContainer} ref={(c) => { this.chartRenderer = c; }} />);
   },
 });

@@ -71,9 +71,9 @@ export default React.createClass({
           onChange={this.updateRange}
         />
         <div className={style.actionLine}>
-          <i onClick={this.apply} data-type="data" className={style.dataRangeIcon}></i>
-          <i onClick={this.apply} data-type="time" className={style.timeRangeIcon}></i>
-          <i onClick={this.apply} data-type="custom" className={style.customRangeIcon}></i>
+          <i onClick={this.apply} data-type="data" className={style.dataRangeIcon} />
+          <i onClick={this.apply} data-type="time" className={style.timeRangeIcon} />
+          <i onClick={this.apply} data-type="custom" className={style.customRangeIcon} />
         </div>
       </div>);
   },

@@ -177,7 +177,7 @@ export default React.createClass({
           className={style.canvas}
           width={this.props.width}
           height={this.props.height}
-        ></canvas>
+        />
         <section className={(this.props.hideXY ? style.hidden : style.inputContainer)} >
           <label className={style.inputLabel}> x: </label>
           <input

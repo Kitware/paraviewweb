@@ -22,8 +22,7 @@ export default function operatorRender(props) {
           <td className={style.operationCell}>
             <SvgIconWidget icon={OPERATOR_LABEL[operator]} width="25px" height="25px" />
           </td>
-          <td className={style.groupTableCell}>
-          </td>
+          <td className={style.groupTableCell} />
           <td>
             <table className={style.table}>
               <tbody>

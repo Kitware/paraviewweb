@@ -122,11 +122,11 @@ export default React.createClass({
             <i
               className={this.state.button ? (this.state.advanced ? style.firstButton : style.previousButton) : style.hidden}
               onClick={this.state.advanced ? this.first : this.previous}
-            ></i>
+            />
             <i
               className={this.state.button ? (this.state.advanced ? style.lastButton : style.nextButton) : style.hidden}
               onClick={this.state.advanced ? this.last : this.next}
-            ></i>
+            />
           </div>
         </div>
         <div className={[style.row, style.mobileOnly].join(' ')}>
@@ -135,19 +135,19 @@ export default React.createClass({
             <i
               className={style.firstButton}
               onClick={this.first}
-            ></i>
+            />
             <i
               className={style.lastButton}
               onClick={this.last}
-            ></i>
+            />
             <i
               className={style.previousButton}
               onClick={this.previous}
-            ></i>
+            />
             <i
               className={style.nextButton}
               onClick={this.next}
-            ></i>
+            />
           </div>
         </div>
         <div className={style.row}>

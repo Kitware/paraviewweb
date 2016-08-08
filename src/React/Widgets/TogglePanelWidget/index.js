@@ -67,7 +67,7 @@ export default React.createClass({
             lineHeight: this.props.size.button[1],
           }}
           onClick={this.togglePanel}
-        ></span>
+        />
         <div className={[style.button, buttonAnchor].join(' ')}>
           <div
             className={[style.content, panelAnchor].join(' ')}
