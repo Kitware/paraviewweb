@@ -52,6 +52,8 @@
 
 	var _SizeHelper = __webpack_require__(21);
 
+	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
+
 	var _SmartConnect = __webpack_require__(24);
 
 	var _SmartConnect2 = _interopRequireDefault(_SmartConnect);
@@ -83,10 +85,10 @@
 	    console.log('We are good');
 	  });
 	  window.renderer = renderer;
-	  (0, _SizeHelper.onSizeChange)(function () {
+	  _SizeHelper2.default.onSizeChange(function () {
 	    renderer.resize();
 	  });
-	  (0, _SizeHelper.startListening)();
+	  _SizeHelper2.default.startListening();
 	});
 	smartConnect.connect();
 
@@ -100,7 +102,8 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document Image */
+	/* eslint-disable no-underscore-dangle */
 
 	var _monologue = __webpack_require__(2);
 
@@ -115,6 +118,8 @@
 	var _VtkWebMouseListener2 = _interopRequireDefault(_VtkWebMouseListener);
 
 	var _SizeHelper = __webpack_require__(21);
+
+	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -215,7 +220,7 @@
 	        this.mouseHandler = new _MouseHandler2.default(container);
 	        this.mouseHandler.attach(this.mouseListener.getListeners());
 	        this.container.appendChild(this.canvas);
-	        this.size = (0, _SizeHelper.getSize)(container);
+	        this.size = _SizeHelper2.default.getSize(container);
 	        this.render(true);
 	      }
 	    }
@@ -292,7 +297,7 @@
 	    key: 'resize',
 	    value: function resize() {
 	      if (this.container) {
-	        this.size = (0, _SizeHelper.getSize)(this.container);
+	        this.size = _SizeHelper2.default.getSize(this.container);
 	        this.render(true);
 	      }
 	    }
@@ -331,7 +336,7 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * monologue.js - EventEmitter replacement with AMQP-style bindings and other advanced features. Compatible with postal.js's API.
 	 * Author: Jim Cowart (http://ifandelse.com)
-	 * Version: v0.3.3
+	 * Version: v0.3.5
 	 * Url: https://github.com/postaljs/monologue.js
 	 * License(s): MIT, GPL
 	 */
@@ -352,8 +357,9 @@
 			root.Monologue = factory( root._, root.riveter, root );
 		}
 	}( this, function( _, riveter, global, undefined ) {
-		var keyDelimiter = "|";
-		var bindingsResolver = {
+		
+	var keyDelimiter = "|";
+	var bindingsResolver = {
 		cache: {},
 		regex: {},
 
@@ -428,7 +434,7 @@
 		this.emitter = emitter;
 	};
 
-		var ConsecutiveDistinctPredicate = function() {
+	var ConsecutiveDistinctPredicate = function() {
 		var previous;
 		return function( data ) {
 			var eq = false;
@@ -443,7 +449,7 @@
 		};
 	};
 
-		var DistinctPredicate = function DistinctPredicateFactory() {
+	var DistinctPredicate = function DistinctPredicateFactory() {
 		var previous = [];
 		return function DistinctPredicate( data ) {
 			var isDistinct = !_.any( previous, function( p ) {
@@ -459,9 +465,9 @@
 		};
 	};
 
-		SubscriptionDefinition.prototype = {
+	SubscriptionDefinition.prototype = {
 
-			"catch": function( errorHandler ) {
+		"catch": function( errorHandler ) {
 			var original = this.callback;
 			var safeCallback = function() {
 				try {
@@ -474,34 +480,32 @@
 			return this;
 		},
 
-			defer: function defer() {
+		defer: function defer() {
 			return this.delay( 0 );
 		},
 
-			disposeAfter: function disposeAfter( maxCalls ) {
+		disposeAfter: function disposeAfter( maxCalls ) {
 			if ( !_.isNumber( maxCalls ) || maxCalls <= 0 ) {
 				throw new Error( "The value provided to disposeAfter (maxCalls) must be a number greater than zero." );
 			}
-			var self = this;
-			var dispose = _.after( maxCalls, _.bind( function() {
-				self.unsubscribe();
-			} ) );
-			self.pipeline.push( function( data, env, next ) {
+
+			var dispose = _.after( maxCalls, this.unsubscribe.bind( this ) );
+			this.pipeline.push( function( data, env, next ) {
 				next( data, env );
 				dispose();
 			} );
-			return self;
+			return this;
 		},
 
-			distinct: function distinct() {
+		distinct: function distinct() {
 			return this.constraint( new DistinctPredicate() );
 		},
 
-			distinctUntilChanged: function distinctUntilChanged() {
+		distinctUntilChanged: function distinctUntilChanged() {
 			return this.constraint( new ConsecutiveDistinctPredicate() );
 		},
 
-			invokeSubscriber: function invokeSubscriber( data, env ) {
+		invokeSubscriber: function invokeSubscriber( data, env ) {
 			if ( !this.inactive ) {
 				var self = this;
 				var pipeline = self.pipeline;
@@ -525,7 +529,7 @@
 			}
 		},
 
-			logError: function logError() {
+		logError: function logError() {
 			/* istanbul ignore else */
 			if ( console ) {
 				var report;
@@ -539,18 +543,18 @@
 			return this;
 		},
 
-			once: function once() {
+		once: function once() {
 			return this.disposeAfter( 1 );
 		},
 
-			unsubscribe: function() {
+		unsubscribe: function() {
 			/* istanbul ignore else */
 			if ( !this.inactive ) {
 				this.emitter.off( this );
 			}
 		},
 
-			constraint: function constraint( predicate ) {
+		constraint: function constraint( predicate ) {
 			if ( !_.isFunction( predicate ) ) {
 				throw new Error( "Predicate constraint must be a function" );
 			}
@@ -562,7 +566,7 @@
 			return this;
 		},
 
-			constraints: function constraints( predicates ) {
+		constraints: function constraints( predicates ) {
 			var self = this;
 			/* istanbul ignore else */
 			if ( _.isArray( predicates ) ) {
@@ -573,12 +577,12 @@
 			return self;
 		},
 
-			context: function contextSetter( context ) {
+		context: function contextSetter( context ) {
 			this._context = context;
 			return this;
 		},
 
-			debounce: function debounce( milliseconds, immediate ) {
+		debounce: function debounce( milliseconds, immediate ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -593,7 +597,7 @@
 			return this;
 		},
 
-			delay: function delay( milliseconds ) {
+		delay: function delay( milliseconds ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -606,7 +610,7 @@
 			return this;
 		},
 
-			throttle: function throttle( milliseconds ) {
+		throttle: function throttle( milliseconds ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -616,13 +620,13 @@
 			this.pipeline.push( _.throttle( fn, milliseconds ) );
 			return this;
 		}
-		};
+	};
 
-		SubscriptionDefinition.prototype.off = SubscriptionDefinition.prototype.unsubscribe;
-		// Backwards Compatibility
-		// WARNING: these will be removed after the next version
-		/* istanbul ignore next */
-		function warnOnDeprecation( oldMethod, newMethod ) {
+	SubscriptionDefinition.prototype.off = SubscriptionDefinition.prototype.unsubscribe;
+	// Backwards Compatibility
+	// WARNING: these will be removed after the next version
+	/* istanbul ignore next */
+	function warnOnDeprecation( oldMethod, newMethod ) {
 		return function() {
 			if ( console.warn || console.log ) {
 				var msg = "Warning, the " + oldMethod + " method has been deprecated. Please use " + newMethod + " instead.";
@@ -635,17 +639,18 @@
 			return SubscriptionDefinition.prototype[ newMethod ].apply( this, arguments );
 		};
 	}
-		var oldMethods = [ "withConstraint", "withConstraints", "withContext", "withDebounce", "withDelay", "withThrottle" ];
-		var newMethods = [ "constraint", "constraints", "context", "debounce", "delay", "throttle" ];
-		for ( var i = 0; i < 6; i++ ) {
-			var oldMethod = oldMethods[ i ];
-			SubscriptionDefinition.prototype[ oldMethod ] = warnOnDeprecation( oldMethod, newMethods[ i ] );
-		}
+	var oldMethods = [ "withConstraint", "withConstraints", "withContext", "withDebounce", "withDelay", "withThrottle" ];
+	var newMethods = [ "constraint", "constraints", "context", "debounce", "delay", "throttle" ];
+	for ( var i = 0; i < 6; i++ ) {
+		var oldMethod = oldMethods[ i ];
+		SubscriptionDefinition.prototype[ oldMethod ] = warnOnDeprecation( oldMethod, newMethods[ i ] );
+	}
 
-		var slice = Array.prototype.slice;
-		var Monologue = function() {};
+		
+	var slice = Array.prototype.slice;
+	var Monologue = function() {};
 
-		function getCacher( topic, cache, done ) {
+	function getCacher( topic, cache, done ) {
 		return function( subDef ) {
 			if ( Monologue.resolver.compare( subDef.topic, topic ) ) {
 				cache.push( subDef );
@@ -657,7 +662,7 @@
 		};
 	}
 
-		function getCachePurger( subDef, topic, cache ) {
+	function getCachePurger( subDef, topic, cache ) {
 		return function( sub, i, list ) {
 			if ( sub === subDef ) {
 				list.splice( i, 1 );
@@ -668,7 +673,7 @@
 		};
 	}
 
-		function removeSubscriber( subDef, emitter, idx, list ) {
+	function removeSubscriber( subDef, emitter, idx, list ) {
 		subDef.inactive = true;
 		list.splice( idx, 1 );
 		// remove SubscriptionDefinition from cache
@@ -680,7 +685,7 @@
 		}
 	}
 
-		Monologue.prototype = {
+	Monologue.prototype = {
 		on: function( topic, callback ) {
 			var self = this;
 			self._subscriptions = self._subscriptions || {};
@@ -779,11 +784,11 @@
 		}
 	};
 
-		Monologue.resolver = bindingsResolver;
-		Monologue.debug = false;
-		Monologue.SubscriptionDefinition = SubscriptionDefinition;
-		riveter( Monologue );
-		Monologue.mixInto = function( target ) {
+	Monologue.resolver = bindingsResolver;
+	Monologue.debug = false;
+	Monologue.SubscriptionDefinition = SubscriptionDefinition;
+	riveter( Monologue );
+	Monologue.mixInto = function( target ) {
 		riveter.punch( target, Monologue.prototype );
 	};
 
@@ -24022,12 +24027,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getSize = getSize;
-	exports.onSizeChange = onSizeChange;
-	exports.triggerChange = triggerChange;
-	exports.isListening = isListening;
-	exports.startListening = startListening;
-	exports.stopListening = stopListening;
 
 	var _Observable = __webpack_require__(22);
 
@@ -24038,6 +24037,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/* eslint-disable no-use-before-define */
+
+	/* global window */
 
 	var observableInstance = new _Observable2.default();
 	var TOPIC = 'window.size.change';
@@ -24212,7 +24213,7 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global window */
 
 	var _monologue = __webpack_require__(2);
 
@@ -24237,8 +24238,8 @@
 	var CONNECTION_READY_TOPIC = 'connection.ready',
 	    CONNECTION_CLOSE_TOPIC = 'connection.close',
 	    CONNECTION_ERROR_TOPIC = 'connection.error',
-	    DEFAULT_SESSION_MANAGER_URL = location.protocol + '//' + location.hostname + ':' + location.port + '/paraview/',
-	    DEFAULT_SESSION_URL = (location.protocol === 'https' ? 'wss' : 'ws') + '://' + location.hostname + ':' + location.port + '/ws';
+	    DEFAULT_SESSION_MANAGER_URL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/paraview/',
+	    DEFAULT_SESSION_URL = (window.location.protocol === 'https' ? 'wss' : 'ws') + '://' + window.location.hostname + ':' + window.location.port + '/ws';
 
 	function autobahnConnect(self) {
 	  var wsConnection = new _AutobahnConnection2.default(self.config.sessionURL, self.config.secret, self.config.retry);
@@ -24363,7 +24364,7 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global XMLHttpRequest */
 
 	var _monologue = __webpack_require__(2);
 
@@ -27235,7 +27236,6 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-
 	var process = module.exports = {};
 
 	// cached from whatever global is present so that test runners that stub it
@@ -27247,21 +27247,63 @@
 	var cachedClearTimeout;
 
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -27286,7 +27328,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -27303,7 +27345,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    runClearTimeout(timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -27315,7 +27357,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 

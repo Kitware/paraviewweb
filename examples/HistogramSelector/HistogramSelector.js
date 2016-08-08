@@ -517,12 +517,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getSize = getSize;
-	exports.onSizeChange = onSizeChange;
-	exports.triggerChange = triggerChange;
-	exports.isListening = isListening;
-	exports.startListening = startListening;
-	exports.stopListening = stopListening;
 
 	var _Observable = __webpack_require__(6);
 
@@ -533,6 +527,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/* eslint-disable no-use-before-define */
+
+	/* global window */
 
 	var observableInstance = new _Observable2.default();
 	var TOPIC = 'window.size.change';
@@ -660,7 +656,7 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * monologue.js - EventEmitter replacement with AMQP-style bindings and other advanced features. Compatible with postal.js's API.
 	 * Author: Jim Cowart (http://ifandelse.com)
-	 * Version: v0.3.3
+	 * Version: v0.3.5
 	 * Url: https://github.com/postaljs/monologue.js
 	 * License(s): MIT, GPL
 	 */
@@ -681,8 +677,9 @@
 			root.Monologue = factory( root._, root.riveter, root );
 		}
 	}( this, function( _, riveter, global, undefined ) {
-		var keyDelimiter = "|";
-		var bindingsResolver = {
+		
+	var keyDelimiter = "|";
+	var bindingsResolver = {
 		cache: {},
 		regex: {},
 
@@ -757,7 +754,7 @@
 		this.emitter = emitter;
 	};
 
-		var ConsecutiveDistinctPredicate = function() {
+	var ConsecutiveDistinctPredicate = function() {
 		var previous;
 		return function( data ) {
 			var eq = false;
@@ -772,7 +769,7 @@
 		};
 	};
 
-		var DistinctPredicate = function DistinctPredicateFactory() {
+	var DistinctPredicate = function DistinctPredicateFactory() {
 		var previous = [];
 		return function DistinctPredicate( data ) {
 			var isDistinct = !_.any( previous, function( p ) {
@@ -788,9 +785,9 @@
 		};
 	};
 
-		SubscriptionDefinition.prototype = {
+	SubscriptionDefinition.prototype = {
 
-			"catch": function( errorHandler ) {
+		"catch": function( errorHandler ) {
 			var original = this.callback;
 			var safeCallback = function() {
 				try {
@@ -803,34 +800,32 @@
 			return this;
 		},
 
-			defer: function defer() {
+		defer: function defer() {
 			return this.delay( 0 );
 		},
 
-			disposeAfter: function disposeAfter( maxCalls ) {
+		disposeAfter: function disposeAfter( maxCalls ) {
 			if ( !_.isNumber( maxCalls ) || maxCalls <= 0 ) {
 				throw new Error( "The value provided to disposeAfter (maxCalls) must be a number greater than zero." );
 			}
-			var self = this;
-			var dispose = _.after( maxCalls, _.bind( function() {
-				self.unsubscribe();
-			} ) );
-			self.pipeline.push( function( data, env, next ) {
+
+			var dispose = _.after( maxCalls, this.unsubscribe.bind( this ) );
+			this.pipeline.push( function( data, env, next ) {
 				next( data, env );
 				dispose();
 			} );
-			return self;
+			return this;
 		},
 
-			distinct: function distinct() {
+		distinct: function distinct() {
 			return this.constraint( new DistinctPredicate() );
 		},
 
-			distinctUntilChanged: function distinctUntilChanged() {
+		distinctUntilChanged: function distinctUntilChanged() {
 			return this.constraint( new ConsecutiveDistinctPredicate() );
 		},
 
-			invokeSubscriber: function invokeSubscriber( data, env ) {
+		invokeSubscriber: function invokeSubscriber( data, env ) {
 			if ( !this.inactive ) {
 				var self = this;
 				var pipeline = self.pipeline;
@@ -854,7 +849,7 @@
 			}
 		},
 
-			logError: function logError() {
+		logError: function logError() {
 			/* istanbul ignore else */
 			if ( console ) {
 				var report;
@@ -868,18 +863,18 @@
 			return this;
 		},
 
-			once: function once() {
+		once: function once() {
 			return this.disposeAfter( 1 );
 		},
 
-			unsubscribe: function() {
+		unsubscribe: function() {
 			/* istanbul ignore else */
 			if ( !this.inactive ) {
 				this.emitter.off( this );
 			}
 		},
 
-			constraint: function constraint( predicate ) {
+		constraint: function constraint( predicate ) {
 			if ( !_.isFunction( predicate ) ) {
 				throw new Error( "Predicate constraint must be a function" );
 			}
@@ -891,7 +886,7 @@
 			return this;
 		},
 
-			constraints: function constraints( predicates ) {
+		constraints: function constraints( predicates ) {
 			var self = this;
 			/* istanbul ignore else */
 			if ( _.isArray( predicates ) ) {
@@ -902,12 +897,12 @@
 			return self;
 		},
 
-			context: function contextSetter( context ) {
+		context: function contextSetter( context ) {
 			this._context = context;
 			return this;
 		},
 
-			debounce: function debounce( milliseconds, immediate ) {
+		debounce: function debounce( milliseconds, immediate ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -922,7 +917,7 @@
 			return this;
 		},
 
-			delay: function delay( milliseconds ) {
+		delay: function delay( milliseconds ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -935,7 +930,7 @@
 			return this;
 		},
 
-			throttle: function throttle( milliseconds ) {
+		throttle: function throttle( milliseconds ) {
 			if ( !_.isNumber( milliseconds ) ) {
 				throw new Error( "Milliseconds must be a number" );
 			}
@@ -945,13 +940,13 @@
 			this.pipeline.push( _.throttle( fn, milliseconds ) );
 			return this;
 		}
-		};
+	};
 
-		SubscriptionDefinition.prototype.off = SubscriptionDefinition.prototype.unsubscribe;
-		// Backwards Compatibility
-		// WARNING: these will be removed after the next version
-		/* istanbul ignore next */
-		function warnOnDeprecation( oldMethod, newMethod ) {
+	SubscriptionDefinition.prototype.off = SubscriptionDefinition.prototype.unsubscribe;
+	// Backwards Compatibility
+	// WARNING: these will be removed after the next version
+	/* istanbul ignore next */
+	function warnOnDeprecation( oldMethod, newMethod ) {
 		return function() {
 			if ( console.warn || console.log ) {
 				var msg = "Warning, the " + oldMethod + " method has been deprecated. Please use " + newMethod + " instead.";
@@ -964,17 +959,18 @@
 			return SubscriptionDefinition.prototype[ newMethod ].apply( this, arguments );
 		};
 	}
-		var oldMethods = [ "withConstraint", "withConstraints", "withContext", "withDebounce", "withDelay", "withThrottle" ];
-		var newMethods = [ "constraint", "constraints", "context", "debounce", "delay", "throttle" ];
-		for ( var i = 0; i < 6; i++ ) {
-			var oldMethod = oldMethods[ i ];
-			SubscriptionDefinition.prototype[ oldMethod ] = warnOnDeprecation( oldMethod, newMethods[ i ] );
-		}
+	var oldMethods = [ "withConstraint", "withConstraints", "withContext", "withDebounce", "withDelay", "withThrottle" ];
+	var newMethods = [ "constraint", "constraints", "context", "debounce", "delay", "throttle" ];
+	for ( var i = 0; i < 6; i++ ) {
+		var oldMethod = oldMethods[ i ];
+		SubscriptionDefinition.prototype[ oldMethod ] = warnOnDeprecation( oldMethod, newMethods[ i ] );
+	}
 
-		var slice = Array.prototype.slice;
-		var Monologue = function() {};
+		
+	var slice = Array.prototype.slice;
+	var Monologue = function() {};
 
-		function getCacher( topic, cache, done ) {
+	function getCacher( topic, cache, done ) {
 		return function( subDef ) {
 			if ( Monologue.resolver.compare( subDef.topic, topic ) ) {
 				cache.push( subDef );
@@ -986,7 +982,7 @@
 		};
 	}
 
-		function getCachePurger( subDef, topic, cache ) {
+	function getCachePurger( subDef, topic, cache ) {
 		return function( sub, i, list ) {
 			if ( sub === subDef ) {
 				list.splice( i, 1 );
@@ -997,7 +993,7 @@
 		};
 	}
 
-		function removeSubscriber( subDef, emitter, idx, list ) {
+	function removeSubscriber( subDef, emitter, idx, list ) {
 		subDef.inactive = true;
 		list.splice( idx, 1 );
 		// remove SubscriptionDefinition from cache
@@ -1009,7 +1005,7 @@
 		}
 	}
 
-		Monologue.prototype = {
+	Monologue.prototype = {
 		on: function( topic, callback ) {
 			var self = this;
 			self._subscriptions = self._subscriptions || {};
@@ -1108,11 +1104,11 @@
 		}
 	};
 
-		Monologue.resolver = bindingsResolver;
-		Monologue.debug = false;
-		Monologue.SubscriptionDefinition = SubscriptionDefinition;
-		riveter( Monologue );
-		Monologue.mixInto = function( target ) {
+	Monologue.resolver = bindingsResolver;
+	Monologue.debug = false;
+	Monologue.SubscriptionDefinition = SubscriptionDefinition;
+	riveter( Monologue );
+	Monologue.mixInto = function( target ) {
 		riveter.punch( target, Monologue.prototype );
 	};
 
@@ -20904,14 +20900,6 @@
 	  value: true
 	});
 	exports.capitalize = capitalize;
-	exports.isA = isA;
-	exports.set = set;
-	exports.get = get;
-	exports.destroy = destroy;
-	exports.event = event;
-	exports.fetch = fetch;
-	exports.chain = chain;
-	exports.newInstance = newInstance;
 	// ----------------------------------------------------------------------------
 	// capitilze provided string
 	// ----------------------------------------------------------------------------
@@ -21246,7 +21234,6 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-
 	var process = module.exports = {};
 
 	// cached from whatever global is present so that test runners that stub it
@@ -21258,21 +21245,63 @@
 	var cachedClearTimeout;
 
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -21297,7 +21326,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -21314,7 +21343,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    runClearTimeout(timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -21326,7 +21355,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 
@@ -21758,8 +21787,8 @@
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Circle");
 
@@ -21980,6 +22009,15 @@
 
 	  var svg = new DOMParser().parseFromString(svgString, 'image/svg+xml').documentElement;
 
+	  /**
+	   * Fix for browser (IE, maybe other too) which are throwing 'WrongDocumentError'
+	   * if you insert an element which is not part of the document
+	   * @see http://stackoverflow.com/questions/7981100/how-do-i-dynamically-insert-an-svg-image-into-html#7986519
+	   */
+	  if (document.importNode) {
+	    svg = document.importNode(svg, true);
+	  }
+
 	  if (this.browser.name !== 'ie' && this.urlPrefix) {
 	    baseUrlWorkAround(svg, DEFAULT_URI_PREFIX, this.urlPrefix);
 	  }
@@ -22164,8 +22202,8 @@
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Square");
 
@@ -22173,8 +22211,8 @@
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Triangle");
 
@@ -22182,8 +22220,8 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Diamond");
 
@@ -22191,8 +22229,8 @@
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "X");
 
@@ -22200,8 +22238,8 @@
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Pentagon");
 
@@ -22209,8 +22247,8 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "InvertedTriangle");
 
@@ -22218,8 +22256,8 @@
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Star");
 
@@ -22227,8 +22265,8 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	;
-	var sprite = __webpack_require__(20);;
+	
+	var sprite = __webpack_require__(20);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
@@ -22241,75 +22279,75 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var YlGn = exports.YlGn = ['rgb(255, 255, 229)', 'rgb(247, 252, 185)', 'rgb(217, 240, 163)', 'rgb(173, 221, 142)', 'rgb(120, 198, 121)', 'rgb(65, 171, 93)', 'rgb(35, 132, 67)', 'rgb(0, 104, 55)', 'rgb(0, 69, 41)'];
+	var YlGn = ['rgb(255, 255, 229)', 'rgb(247, 252, 185)', 'rgb(217, 240, 163)', 'rgb(173, 221, 142)', 'rgb(120, 198, 121)', 'rgb(65, 171, 93)', 'rgb(35, 132, 67)', 'rgb(0, 104, 55)', 'rgb(0, 69, 41)'];
 
-	var YlGnBu = exports.YlGnBu = ['rgb(255, 255, 217)', 'rgb(237, 248, 177)', 'rgb(199, 233, 180)', 'rgb(127, 205, 187)', 'rgb(65, 182, 196)', 'rgb(29, 145, 192)', 'rgb(34, 94, 168)', 'rgb(37, 52, 148)', 'rgb(8, 29, 88)'];
+	var YlGnBu = ['rgb(255, 255, 217)', 'rgb(237, 248, 177)', 'rgb(199, 233, 180)', 'rgb(127, 205, 187)', 'rgb(65, 182, 196)', 'rgb(29, 145, 192)', 'rgb(34, 94, 168)', 'rgb(37, 52, 148)', 'rgb(8, 29, 88)'];
 
-	var GnBu = exports.GnBu = ['rgb(247, 252, 240)', 'rgb(224, 243, 219)', 'rgb(204, 235, 197)', 'rgb(168, 221, 181)', 'rgb(123, 204, 196)', 'rgb(78, 179, 211)', 'rgb(43, 140, 190)', 'rgb(8, 104, 172)', 'rgb(8, 64, 129)'];
+	var GnBu = ['rgb(247, 252, 240)', 'rgb(224, 243, 219)', 'rgb(204, 235, 197)', 'rgb(168, 221, 181)', 'rgb(123, 204, 196)', 'rgb(78, 179, 211)', 'rgb(43, 140, 190)', 'rgb(8, 104, 172)', 'rgb(8, 64, 129)'];
 
-	var BuGn = exports.BuGn = ['rgb(247, 252, 253)', 'rgb(229, 245, 249)', 'rgb(204, 236, 230)', 'rgb(153, 216, 201)', 'rgb(102, 194, 164)', 'rgb(65, 174, 118)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
+	var BuGn = ['rgb(247, 252, 253)', 'rgb(229, 245, 249)', 'rgb(204, 236, 230)', 'rgb(153, 216, 201)', 'rgb(102, 194, 164)', 'rgb(65, 174, 118)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
 
-	var PuBuGn = exports.PuBuGn = ['rgb(255, 247, 251)', 'rgb(236, 226, 240)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(103, 169, 207)', 'rgb(54, 144, 192)', 'rgb(2, 129, 138)', 'rgb(1, 108, 89)', 'rgb(1, 70, 54)'];
+	var PuBuGn = ['rgb(255, 247, 251)', 'rgb(236, 226, 240)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(103, 169, 207)', 'rgb(54, 144, 192)', 'rgb(2, 129, 138)', 'rgb(1, 108, 89)', 'rgb(1, 70, 54)'];
 
-	var PuBu = exports.PuBu = ['rgb(255, 247, 251)', 'rgb(236, 231, 242)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(116, 169, 207)', 'rgb(54, 144, 192)', 'rgb(5, 112, 176)', 'rgb(4, 90, 141)', 'rgb(2, 56, 88)'];
+	var PuBu = ['rgb(255, 247, 251)', 'rgb(236, 231, 242)', 'rgb(208, 209, 230)', 'rgb(166, 189, 219)', 'rgb(116, 169, 207)', 'rgb(54, 144, 192)', 'rgb(5, 112, 176)', 'rgb(4, 90, 141)', 'rgb(2, 56, 88)'];
 
-	var BuPu = exports.BuPu = ['rgb(247, 252, 253)', 'rgb(224, 236, 244)', 'rgb(191, 211, 230)', 'rgb(158, 188, 218)', 'rgb(140, 150, 198)', 'rgb(140, 107, 177)', 'rgb(136, 65, 157)', 'rgb(129, 15, 124)', 'rgb(77, 0, 75)'];
+	var BuPu = ['rgb(247, 252, 253)', 'rgb(224, 236, 244)', 'rgb(191, 211, 230)', 'rgb(158, 188, 218)', 'rgb(140, 150, 198)', 'rgb(140, 107, 177)', 'rgb(136, 65, 157)', 'rgb(129, 15, 124)', 'rgb(77, 0, 75)'];
 
-	var RdPu = exports.RdPu = ['rgb(255, 247, 243)', 'rgb(253, 224, 221)', 'rgb(252, 197, 192)', 'rgb(250, 159, 181)', 'rgb(247, 104, 161)', 'rgb(221, 52, 151)', 'rgb(174, 1, 126)', 'rgb(122, 1, 119)', 'rgb(73, 0, 106)'];
+	var RdPu = ['rgb(255, 247, 243)', 'rgb(253, 224, 221)', 'rgb(252, 197, 192)', 'rgb(250, 159, 181)', 'rgb(247, 104, 161)', 'rgb(221, 52, 151)', 'rgb(174, 1, 126)', 'rgb(122, 1, 119)', 'rgb(73, 0, 106)'];
 
-	var PuRd = exports.PuRd = ['rgb(247, 244, 249)', 'rgb(231, 225, 239)', 'rgb(212, 185, 218)', 'rgb(201, 148, 199)', 'rgb(223, 101, 176)', 'rgb(231, 41, 138)', 'rgb(206, 18, 86)', 'rgb(152, 0, 67)', 'rgb(103, 0, 31)'];
+	var PuRd = ['rgb(247, 244, 249)', 'rgb(231, 225, 239)', 'rgb(212, 185, 218)', 'rgb(201, 148, 199)', 'rgb(223, 101, 176)', 'rgb(231, 41, 138)', 'rgb(206, 18, 86)', 'rgb(152, 0, 67)', 'rgb(103, 0, 31)'];
 
-	var OrRd = exports.OrRd = ['rgb(255, 247, 236)', 'rgb(254, 232, 200)', 'rgb(253, 212, 158)', 'rgb(253, 187, 132)', 'rgb(252, 141, 89)', 'rgb(239, 101, 72)', 'rgb(215, 48, 31)', 'rgb(179, 0, 0)', 'rgb(127, 0, 0)'];
+	var OrRd = ['rgb(255, 247, 236)', 'rgb(254, 232, 200)', 'rgb(253, 212, 158)', 'rgb(253, 187, 132)', 'rgb(252, 141, 89)', 'rgb(239, 101, 72)', 'rgb(215, 48, 31)', 'rgb(179, 0, 0)', 'rgb(127, 0, 0)'];
 
-	var YlOrRd = exports.YlOrRd = ['rgb(255, 255, 204)', 'rgb(255, 237, 160)', 'rgb(254, 217, 118)', 'rgb(254, 178, 76)', 'rgb(253, 141, 60)', 'rgb(252, 78, 42)', 'rgb(227, 26, 28)', 'rgb(189, 0, 38)', 'rgb(128, 0, 38)'];
+	var YlOrRd = ['rgb(255, 255, 204)', 'rgb(255, 237, 160)', 'rgb(254, 217, 118)', 'rgb(254, 178, 76)', 'rgb(253, 141, 60)', 'rgb(252, 78, 42)', 'rgb(227, 26, 28)', 'rgb(189, 0, 38)', 'rgb(128, 0, 38)'];
 
-	var YlOrBr = exports.YlOrBr = ['rgb(255, 255, 229)', 'rgb(255, 247, 188)', 'rgb(254, 227, 145)', 'rgb(254, 196, 79)', 'rgb(254, 153, 41)', 'rgb(236, 112, 20)', 'rgb(204, 76, 2)', 'rgb(153, 52, 4)', 'rgb(102, 37, 6)'];
+	var YlOrBr = ['rgb(255, 255, 229)', 'rgb(255, 247, 188)', 'rgb(254, 227, 145)', 'rgb(254, 196, 79)', 'rgb(254, 153, 41)', 'rgb(236, 112, 20)', 'rgb(204, 76, 2)', 'rgb(153, 52, 4)', 'rgb(102, 37, 6)'];
 
-	var Purples = exports.Purples = ['rgb(252, 251, 253)', 'rgb(239, 237, 245)', 'rgb(218, 218, 235)', 'rgb(188, 189, 220)', 'rgb(158, 154, 200)', 'rgb(128, 125, 186)', 'rgb(106, 81, 163)', 'rgb(84, 39, 143)', 'rgb(63, 0, 125)'];
+	var Purples = ['rgb(252, 251, 253)', 'rgb(239, 237, 245)', 'rgb(218, 218, 235)', 'rgb(188, 189, 220)', 'rgb(158, 154, 200)', 'rgb(128, 125, 186)', 'rgb(106, 81, 163)', 'rgb(84, 39, 143)', 'rgb(63, 0, 125)'];
 
-	var Blues = exports.Blues = ['rgb(247, 251, 255)', 'rgb(222, 235, 247)', 'rgb(198, 219, 239)', 'rgb(158, 202, 225)', 'rgb(107, 174, 214)', 'rgb(66, 146, 198)', 'rgb(33, 113, 181)', 'rgb(8, 81, 156)', 'rgb(8, 48, 107)'];
+	var Blues = ['rgb(247, 251, 255)', 'rgb(222, 235, 247)', 'rgb(198, 219, 239)', 'rgb(158, 202, 225)', 'rgb(107, 174, 214)', 'rgb(66, 146, 198)', 'rgb(33, 113, 181)', 'rgb(8, 81, 156)', 'rgb(8, 48, 107)'];
 
-	var Greens = exports.Greens = ['rgb(247, 252, 245)', 'rgb(229, 245, 224)', 'rgb(199, 233, 192)', 'rgb(161, 217, 155)', 'rgb(116, 196, 118)', 'rgb(65, 171, 93)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
+	var Greens = ['rgb(247, 252, 245)', 'rgb(229, 245, 224)', 'rgb(199, 233, 192)', 'rgb(161, 217, 155)', 'rgb(116, 196, 118)', 'rgb(65, 171, 93)', 'rgb(35, 139, 69)', 'rgb(0, 109, 44)', 'rgb(0, 68, 27)'];
 
-	var Oranges = exports.Oranges = ['rgb(255, 245, 235)', 'rgb(254, 230, 206)', 'rgb(253, 208, 162)', 'rgb(253, 174, 107)', 'rgb(253, 141, 60)', 'rgb(241, 105, 19)', 'rgb(217, 72, 1)', 'rgb(166, 54, 3)', 'rgb(127, 39, 4)'];
+	var Oranges = ['rgb(255, 245, 235)', 'rgb(254, 230, 206)', 'rgb(253, 208, 162)', 'rgb(253, 174, 107)', 'rgb(253, 141, 60)', 'rgb(241, 105, 19)', 'rgb(217, 72, 1)', 'rgb(166, 54, 3)', 'rgb(127, 39, 4)'];
 
-	var Reds = exports.Reds = ['rgb(255, 245, 240)', 'rgb(254, 224, 210)', 'rgb(252, 187, 161)', 'rgb(252, 146, 114)', 'rgb(251, 106, 74)', 'rgb(239, 59, 44)', 'rgb(203, 24, 29)', 'rgb(165, 15, 21)', 'rgb(103, 0, 13)'];
+	var Reds = ['rgb(255, 245, 240)', 'rgb(254, 224, 210)', 'rgb(252, 187, 161)', 'rgb(252, 146, 114)', 'rgb(251, 106, 74)', 'rgb(239, 59, 44)', 'rgb(203, 24, 29)', 'rgb(165, 15, 21)', 'rgb(103, 0, 13)'];
 
-	var Greys = exports.Greys = ['rgb(255, 255, 255)', 'rgb(240, 240, 240)', 'rgb(217, 217, 217)', 'rgb(189, 189, 189)', 'rgb(150, 150, 150)', 'rgb(115, 115, 115)', 'rgb(82, 82, 82)', 'rgb(37, 37, 37)', 'rgb(0, 0, 0)'];
+	var Greys = ['rgb(255, 255, 255)', 'rgb(240, 240, 240)', 'rgb(217, 217, 217)', 'rgb(189, 189, 189)', 'rgb(150, 150, 150)', 'rgb(115, 115, 115)', 'rgb(82, 82, 82)', 'rgb(37, 37, 37)', 'rgb(0, 0, 0)'];
 
-	var PuOr = exports.PuOr = ['rgb(127, 59, 8)', 'rgb(179, 88, 6)', 'rgb(224, 130, 20)', 'rgb(253, 184, 99)', 'rgb(254, 224, 182)', 'rgb(247, 247, 247)', 'rgb(216, 218, 235)', 'rgb(178, 171, 210)', 'rgb(128, 115, 172)', 'rgb(84, 39, 136)', 'rgb(45, 0, 75)'];
+	var PuOr = ['rgb(127, 59, 8)', 'rgb(179, 88, 6)', 'rgb(224, 130, 20)', 'rgb(253, 184, 99)', 'rgb(254, 224, 182)', 'rgb(247, 247, 247)', 'rgb(216, 218, 235)', 'rgb(178, 171, 210)', 'rgb(128, 115, 172)', 'rgb(84, 39, 136)', 'rgb(45, 0, 75)'];
 
-	var BrBG = exports.BrBG = ['rgb(84, 48, 5)', 'rgb(140, 81, 10)', 'rgb(191, 129, 45)', 'rgb(223, 194, 125)', 'rgb(246, 232, 195)', 'rgb(245, 245, 245)', 'rgb(199, 234, 229)', 'rgb(128, 205, 193)', 'rgb(53, 151, 143)', 'rgb(1, 102, 94)', 'rgb(0, 60, 48)'];
+	var BrBG = ['rgb(84, 48, 5)', 'rgb(140, 81, 10)', 'rgb(191, 129, 45)', 'rgb(223, 194, 125)', 'rgb(246, 232, 195)', 'rgb(245, 245, 245)', 'rgb(199, 234, 229)', 'rgb(128, 205, 193)', 'rgb(53, 151, 143)', 'rgb(1, 102, 94)', 'rgb(0, 60, 48)'];
 
-	var PRGn = exports.PRGn = ['rgb(64, 0, 75)', 'rgb(118, 42, 131)', 'rgb(153, 112, 171)', 'rgb(194, 165, 207)', 'rgb(231, 212, 232)', 'rgb(247, 247, 247)', 'rgb(217, 240, 211)', 'rgb(166, 219, 160)', 'rgb(90, 174, 97)', 'rgb(27, 120, 55)', 'rgb(0, 68, 27)'];
+	var PRGn = ['rgb(64, 0, 75)', 'rgb(118, 42, 131)', 'rgb(153, 112, 171)', 'rgb(194, 165, 207)', 'rgb(231, 212, 232)', 'rgb(247, 247, 247)', 'rgb(217, 240, 211)', 'rgb(166, 219, 160)', 'rgb(90, 174, 97)', 'rgb(27, 120, 55)', 'rgb(0, 68, 27)'];
 
-	var PiYG = exports.PiYG = ['rgb(142, 1, 82)', 'rgb(197, 27, 125)', 'rgb(222, 119, 174)', 'rgb(241, 182, 218)', 'rgb(253, 224, 239)', 'rgb(247, 247, 247)', 'rgb(230, 245, 208)', 'rgb(184, 225, 134)', 'rgb(127, 188, 65)', 'rgb(77, 146, 33)', 'rgb(39, 100, 25)'];
+	var PiYG = ['rgb(142, 1, 82)', 'rgb(197, 27, 125)', 'rgb(222, 119, 174)', 'rgb(241, 182, 218)', 'rgb(253, 224, 239)', 'rgb(247, 247, 247)', 'rgb(230, 245, 208)', 'rgb(184, 225, 134)', 'rgb(127, 188, 65)', 'rgb(77, 146, 33)', 'rgb(39, 100, 25)'];
 
-	var RdBu = exports.RdBu = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(247, 247, 247)', 'rgb(209, 229, 240)', 'rgb(146, 197, 222)', 'rgb(67, 147, 195)', 'rgb(33, 102, 172)', 'rgb(5, 48, 97)'];
+	var RdBu = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(247, 247, 247)', 'rgb(209, 229, 240)', 'rgb(146, 197, 222)', 'rgb(67, 147, 195)', 'rgb(33, 102, 172)', 'rgb(5, 48, 97)'];
 
-	var RdGy = exports.RdGy = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(255, 255, 255)', 'rgb(224, 224, 224)', 'rgb(186, 186, 186)', 'rgb(135, 135, 135)', 'rgb(77, 77, 77)', 'rgb(26, 26, 26)'];
+	var RdGy = ['rgb(103, 0, 31)', 'rgb(178, 24, 43)', 'rgb(214, 96, 77)', 'rgb(244, 165, 130)', 'rgb(253, 219, 199)', 'rgb(255, 255, 255)', 'rgb(224, 224, 224)', 'rgb(186, 186, 186)', 'rgb(135, 135, 135)', 'rgb(77, 77, 77)', 'rgb(26, 26, 26)'];
 
-	var RdYlBu = exports.RdYlBu = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 144)', 'rgb(255, 255, 191)', 'rgb(224, 243, 248)', 'rgb(171, 217, 233)', 'rgb(116, 173, 209)', 'rgb(69, 117, 180)', 'rgb(49, 54, 149)'];
+	var RdYlBu = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 144)', 'rgb(255, 255, 191)', 'rgb(224, 243, 248)', 'rgb(171, 217, 233)', 'rgb(116, 173, 209)', 'rgb(69, 117, 180)', 'rgb(49, 54, 149)'];
 
-	var Spectral = exports.Spectral = ['rgb(158, 1, 66)', 'rgb(213, 62, 79)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(230, 245, 152)', 'rgb(171, 221, 164)', 'rgb(102, 194, 165)', 'rgb(50, 136, 189)', 'rgb(94, 79, 162)'];
+	var Spectral = ['rgb(158, 1, 66)', 'rgb(213, 62, 79)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(230, 245, 152)', 'rgb(171, 221, 164)', 'rgb(102, 194, 165)', 'rgb(50, 136, 189)', 'rgb(94, 79, 162)'];
 
-	var RdYlGn = exports.RdYlGn = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(217, 239, 139)', 'rgb(166, 217, 106)', 'rgb(102, 189, 99)', 'rgb(26, 152, 80)', 'rgb(0, 104, 55)'];
+	var RdYlGn = ['rgb(165, 0, 38)', 'rgb(215, 48, 39)', 'rgb(244, 109, 67)', 'rgb(253, 174, 97)', 'rgb(254, 224, 139)', 'rgb(255, 255, 191)', 'rgb(217, 239, 139)', 'rgb(166, 217, 106)', 'rgb(102, 189, 99)', 'rgb(26, 152, 80)', 'rgb(0, 104, 55)'];
 
-	var Accent = exports.Accent = ['rgb(127, 201, 127)', 'rgb(190, 174, 212)', 'rgb(253, 192, 134)', 'rgb(255, 255, 153)', 'rgb(56, 108, 176)', 'rgb(240, 2, 127)', 'rgb(191, 91, 23)', 'rgb(102, 102, 102)'];
+	var Accent = ['rgb(127, 201, 127)', 'rgb(190, 174, 212)', 'rgb(253, 192, 134)', 'rgb(255, 255, 153)', 'rgb(56, 108, 176)', 'rgb(240, 2, 127)', 'rgb(191, 91, 23)', 'rgb(102, 102, 102)'];
 
-	var Dark2 = exports.Dark2 = ['rgb(27, 158, 119)', 'rgb(217, 95, 2)', 'rgb(117, 112, 179)', 'rgb(231, 41, 138)', 'rgb(102, 166, 30)', 'rgb(230, 171, 2)', 'rgb(166, 118, 29)', 'rgb(102, 102, 102)'];
+	var Dark2 = ['rgb(27, 158, 119)', 'rgb(217, 95, 2)', 'rgb(117, 112, 179)', 'rgb(231, 41, 138)', 'rgb(102, 166, 30)', 'rgb(230, 171, 2)', 'rgb(166, 118, 29)', 'rgb(102, 102, 102)'];
 
-	var Paired = exports.Paired = ['rgb(166, 206, 227)', 'rgb(31, 120, 180)', 'rgb(178, 223, 138)', 'rgb(51, 160, 44)', 'rgb(251, 154, 153)', 'rgb(227, 26, 28)', 'rgb(253, 191, 111)', 'rgb(255, 127, 0)', 'rgb(202, 178, 214)', 'rgb(106, 61, 154)', 'rgb(255, 255, 153)', 'rgb(177, 89, 40)'];
+	var Paired = ['rgb(166, 206, 227)', 'rgb(31, 120, 180)', 'rgb(178, 223, 138)', 'rgb(51, 160, 44)', 'rgb(251, 154, 153)', 'rgb(227, 26, 28)', 'rgb(253, 191, 111)', 'rgb(255, 127, 0)', 'rgb(202, 178, 214)', 'rgb(106, 61, 154)', 'rgb(255, 255, 153)', 'rgb(177, 89, 40)'];
 
-	var Pastel1 = exports.Pastel1 = ['rgb(251, 180, 174)', 'rgb(179, 205, 227)', 'rgb(204, 235, 197)', 'rgb(222, 203, 228)', 'rgb(254, 217, 166)', 'rgb(255, 255, 204)', 'rgb(229, 216, 189)', 'rgb(253, 218, 236)', 'rgb(242, 242, 242)'];
+	var Pastel1 = ['rgb(251, 180, 174)', 'rgb(179, 205, 227)', 'rgb(204, 235, 197)', 'rgb(222, 203, 228)', 'rgb(254, 217, 166)', 'rgb(255, 255, 204)', 'rgb(229, 216, 189)', 'rgb(253, 218, 236)', 'rgb(242, 242, 242)'];
 
-	var Pastel2 = exports.Pastel2 = ['rgb(179, 226, 205)', 'rgb(253, 205, 172)', 'rgb(203, 213, 232)', 'rgb(244, 202, 228)', 'rgb(230, 245, 201)', 'rgb(255, 242, 174)', 'rgb(241, 226, 204)', 'rgb(204, 204, 204)'];
+	var Pastel2 = ['rgb(179, 226, 205)', 'rgb(253, 205, 172)', 'rgb(203, 213, 232)', 'rgb(244, 202, 228)', 'rgb(230, 245, 201)', 'rgb(255, 242, 174)', 'rgb(241, 226, 204)', 'rgb(204, 204, 204)'];
 
-	var Set1 = exports.Set1 = ['rgb(228, 26, 28)', 'rgb(55, 126, 184)', 'rgb(77, 175, 74)', 'rgb(152, 78, 163)', 'rgb(255, 127, 0)', 'rgb(255, 255, 51)', 'rgb(166, 86, 40)', 'rgb(247, 129, 191)', 'rgb(153, 153, 153)'];
+	var Set1 = ['rgb(228, 26, 28)', 'rgb(55, 126, 184)', 'rgb(77, 175, 74)', 'rgb(152, 78, 163)', 'rgb(255, 127, 0)', 'rgb(255, 255, 51)', 'rgb(166, 86, 40)', 'rgb(247, 129, 191)', 'rgb(153, 153, 153)'];
 
-	var Set2 = exports.Set2 = ['rgb(102, 194, 165)', 'rgb(252, 141, 98)', 'rgb(141, 160, 203)', 'rgb(231, 138, 195)', 'rgb(166, 216, 84)', 'rgb(255, 217, 47)', 'rgb(229, 196, 148)', 'rgb(179, 179, 179)'];
+	var Set2 = ['rgb(102, 194, 165)', 'rgb(252, 141, 98)', 'rgb(141, 160, 203)', 'rgb(231, 138, 195)', 'rgb(166, 216, 84)', 'rgb(255, 217, 47)', 'rgb(229, 196, 148)', 'rgb(179, 179, 179)'];
 
-	var Set3 = exports.Set3 = ['rgb(141, 211, 199)', 'rgb(255, 255, 179)', 'rgb(190, 186, 218)', 'rgb(251, 128, 114)', 'rgb(128, 177, 211)', 'rgb(253, 180, 98)', 'rgb(179, 222, 105)', 'rgb(252, 205, 229)', 'rgb(217, 217, 217)', 'rgb(188, 128, 189)', 'rgb(204, 235, 197)', 'rgb(255, 237, 111)'];
+	var Set3 = ['rgb(141, 211, 199)', 'rgb(255, 255, 179)', 'rgb(190, 186, 218)', 'rgb(251, 128, 114)', 'rgb(128, 177, 211)', 'rgb(253, 180, 98)', 'rgb(179, 222, 105)', 'rgb(252, 205, 229)', 'rgb(217, 217, 217)', 'rgb(188, 128, 189)', 'rgb(204, 235, 197)', 'rgb(255, 237, 111)'];
 
 	exports.default = {
 	  YlGn: YlGn,
@@ -22861,10 +22899,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getHandler = getHandler;
-	exports.set = set;
-	exports.get = get;
-	exports.getNotificationData = getNotificationData;
 
 	var _histogram2d = __webpack_require__(38);
 
@@ -23148,10 +23182,6 @@
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _CompositeClosureHelper = __webpack_require__(13);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
 	var _d = __webpack_require__(40);
 
 	var _d2 = _interopRequireDefault(_d);
@@ -23159,6 +23189,10 @@
 	var _HistogramSelector = __webpack_require__(41);
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
 	var _D3MultiClick = __webpack_require__(50);
 
@@ -23195,7 +23229,6 @@
 	// provides an integral number of histograms across the container's width.
 	//
 
-	/* eslint-enable import/no-unresolved */
 	function histogramSelector(publicAPI, model) {
 	  // in contact-sheet mode, specify the smallest width a histogram can shrink
 	  // to before fewer histograms are created to fill the container's width
@@ -23683,7 +23716,7 @@
 	          }).attr('x', function (d, i) {
 	            return model.histWidth / hsize * i;
 	          }).attr('height', function (d) {
-	            return model.histHeight * d / cmax;
+	            return model.histHeight * (d / cmax);
 	          }).attr('width', Math.ceil(model.histWidth / hsize));
 
 	          hdata.exit().remove();
@@ -23793,9 +23826,7 @@
 	    var everything = _d2.default.select(model.container);
 	    Object.keys(data.state).forEach(function (pName) {
 	      var binList = data.state[pName];
-	      everything.selectAll('rect[pname=\'' + pName + '\']').
-	      // classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
-	      classed(_HistogramSelector2.default.binHilite, function (d, i) {
+	      everything.selectAll('rect[pname=\'' + pName + '\']').classed(_HistogramSelector2.default.binHilite, function (d, i) {
 	        return binList.indexOf(i) >= 0;
 	      });
 	    });
@@ -23823,9 +23854,8 @@
 	// Object factory
 	// ----------------------------------------------------------------------------
 
-	// import template from './template.html';
+	/* global document */
 
-	/* eslint-disable import/no-unresolved */
 	var DEFAULT_VALUES = {
 	  container: null,
 	  provider: null,
@@ -34412,43 +34442,6 @@
 	});
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	/* eslint-disable import/no-unresolved */
-
-	/* eslint-enable import/no-unresolved */
-
-
-	exports.init = init;
-	exports.defaultFieldData = defaultFieldData;
-	exports.createDefaultDivider = createDefaultDivider;
-	exports.getDisplayOnlyScored = getDisplayOnlyScored;
-	exports.createGroups = createGroups;
-	exports.createHeader = createHeader;
-	exports.updateHeader = updateHeader;
-	exports.createDragDivider = createDragDivider;
-	exports.moveDragDivider = moveDragDivider;
-	exports.dividerPick = dividerPick;
-	exports.regionPick = regionPick;
-	exports.finishDivider = finishDivider;
-	exports.positionPopup = positionPopup;
-	exports.validateDividerVal = validateDividerVal;
-	exports.showDividerPopup = showDividerPopup;
-	exports.createDividerPopup = createDividerPopup;
-	exports.showScorePopup = showScorePopup;
-	exports.createScorePopup = createScorePopup;
-	exports.createPopups = createPopups;
-	exports.showScore = showScore;
-	exports.editingScore = editingScore;
-	exports.filterFieldNames = filterFieldNames;
-	exports.prepareItem = prepareItem;
-	exports.addSubscriptions = addSubscriptions;
-
-	var _SelectionBuilder = __webpack_require__(52);
-
-	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
-
-	var _AnnotationBuilder = __webpack_require__(53);
-
-	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
 	var _d2 = __webpack_require__(40);
 
@@ -34457,6 +34450,14 @@
 	var _HistogramSelector = __webpack_require__(41);
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
+
+	var _SelectionBuilder = __webpack_require__(52);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	var _AnnotationBuilder = __webpack_require__(53);
+
+	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
 	var _down_arrow = __webpack_require__(54);
 
@@ -34774,10 +34775,8 @@
 	        def.regions.splice(index, 0, def.regions[index]);
 	      }
 	    }
-	  } else {
-	    if (def.dragDivider.index >= 0 && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
-	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
-	    }
+	  } else if (def.dragDivider.index >= 0 && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
+	    def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 	  }
 	  // make sure uncertainties don't overlap.
 	  def.dividers.forEach(function (divider, index) {
@@ -34819,7 +34818,7 @@
 	  var formatter = _d3.default.format('.4g');
 
 	  dPopupDiv.style('display', 'initial');
-	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - topMargin - 2 * rowHeight);
+	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 2 * rowHeight));
 
 	  var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
 	  var savedVal = selDivider.value;
@@ -34868,7 +34867,11 @@
 	  uncertInput.attr('value', formatter(100 * selDivider.uncertainty)).property('value', formatter(100 * selDivider.uncertainty)).on('input', function () {
 	    // typing values, show feedback.
 	    var uncert = _d3.default.event.target.value;
-	    if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else uncert = 0.01 * uncert;
+	    if (!validateDividerVal(uncert)) {
+	      uncert = selectedDef.dragDivider.savedUncert;
+	    } else {
+	      uncert *= 0.01;
+	    }
 	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
 	    if (selectedDef.dragDivider.newDivider.value === undefined) {
 	      // don't use selDivider, might be out-of-date if the server sent us dividers.
@@ -34929,7 +34932,7 @@
 	  var rowHeight = 26;
 
 	  sPopupDiv.style('display', 'initial');
-	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - topMargin - (0.6 + selRow) * rowHeight);
+	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - (topMargin + (0.6 + selRow) * rowHeight));
 
 	  sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
 	    return i === selRow ? d.bgColor : '#fff';
@@ -35083,13 +35086,11 @@
 	        // create a temp divider to render.
 	        def.dragDivider = createDragDivider(-1, val, def, hobj);
 	        publicAPI.render();
-	      } else {
-	        if (hitIndex >= 0) {
-	          // start dragging existing divider
-	          // it becomes a temporary copy if we go outside our bounds
-	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	          publicAPI.render();
-	        }
+	      } else if (hitIndex >= 0) {
+	        // start dragging existing divider
+	        // it becomes a temporary copy if we go outside our bounds
+	        def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	        publicAPI.render();
 	      }
 	    }).on('drag', function () {
 	      var overCoords = publicAPI.getMouseCoords(tdsl);
@@ -35254,12 +35255,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.empty = empty;
-	exports.partition = partition;
-	exports.range = range;
-	exports.rule = rule;
-	exports.convertToRuleSelection = convertToRuleSelection;
-	exports.markModified = markModified;
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -35481,9 +35476,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.annotation = annotation;
-	exports.update = update;
-	exports.markModified = markModified;
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -35563,10 +35555,6 @@
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _CompositeClosureHelper = __webpack_require__(13);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
 	var _d = __webpack_require__(40);
 
 	var _d2 = _interopRequireDefault(_d);
@@ -35574,6 +35562,10 @@
 	var _FieldSelector = __webpack_require__(56);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
+
+	var _CompositeClosureHelper = __webpack_require__(13);
+
+	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
 	var _template = __webpack_require__(58);
 
@@ -35760,7 +35752,7 @@
 	                }).attr('x', function (d, i) {
 	                  return model.fieldHistWidth / hsize * i;
 	                }).attr('height', function (d) {
-	                  return model.fieldHistHeight * d / cmax;
+	                  return model.fieldHistHeight * (d / cmax);
 	                }).attr('width', model.fieldHistWidth / hsize);
 
 	                hdata.exit().remove();
