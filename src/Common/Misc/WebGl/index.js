@@ -66,7 +66,7 @@ export function applyProgramDataMapping(gl, programName, mappingName, glConfig, 
     gl.bindBuffer(gl.ARRAY_BUFFER, glBuffer);
     program[bufferMapping.name] = gl.getAttribLocation(program, bufferMapping.attribute);
     gl.enableVertexAttribArray(program[bufferMapping.name]);
-    gl.vertexAttribPointer.apply(gl, [program[bufferMapping.name]].concat(bufferMapping.format));
+    gl.vertexAttribPointer(program[bufferMapping.name], ...bufferMapping.format);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   });
 }

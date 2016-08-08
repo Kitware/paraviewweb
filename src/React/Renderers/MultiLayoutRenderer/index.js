@@ -384,7 +384,7 @@ const MultiViewRenderer = React.createClass({
       }
       ctx.beginPath();
       ctx.strokeStyle = viewports[i].active ? this.props.activeColor : this.props.borderColor;
-      ctx.rect.apply(ctx, region);
+      ctx.rect(...region);
       ctx.stroke();
     }
 

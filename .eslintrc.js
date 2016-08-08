@@ -14,7 +14,6 @@ module.exports = {
     // 'no-restricted-syntax': 1,
     'import/no-extraneous-dependencies': 0, // Force dependency instead of devDep
     'import/no-named-as-default-member': 0,
-    'prefer-spread': 0,
     'react/jsx-filename-extension': 0,
     'jsx-a11y/label-has-for': 0,
   },
