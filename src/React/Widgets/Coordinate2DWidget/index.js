@@ -69,7 +69,7 @@ export default React.createClass({
       newVals = false;
 
     ['x', 'y'].forEach((el) => {
-      if (coords.hasOwnProperty(el)) {
+      if ({}.hasOwnProperty.call(coords, el)) {
         newCoords[el] = this.limitValue(parseFloat(coords[el]));
         newVals = true;
       }

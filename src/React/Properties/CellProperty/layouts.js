@@ -134,19 +134,19 @@ const layouts = {
 /* eslint-enable */
 
 export default function (data, ui, callback) {
-  if (!ui.hasOwnProperty('layout')) {
+  if (!{}.hasOwnProperty.call(ui, 'layout')) {
     ui.layout = 'NO_LAYOUT';
   }
 
-  if (!ui.hasOwnProperty('size')) {
+  if (!{}.hasOwnProperty.call(ui, 'size')) {
     ui.size = 1;
   }
 
-  if (!ui.hasOwnProperty('type')) {
+  if (!{}.hasOwnProperty.call(ui, 'type')) {
     ui.type = 'string';
   }
 
-  if (!ui.hasOwnProperty('domain')) {
+  if (!{}.hasOwnProperty.call(ui, 'domain')) {
     ui.domain = {};
   }
 

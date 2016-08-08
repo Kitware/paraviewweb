@@ -22,7 +22,6 @@ module.exports = {
     'react/no-string-refs': 0,
     'jsx-a11y/label-has-for': 0,
     'react/no-find-dom-node': 0,
-    'no-prototype-builtins': 0,
     'operator-assignment': 0,
     'react/jsx-curly-spacing': 0,
   },

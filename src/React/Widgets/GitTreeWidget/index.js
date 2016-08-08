@@ -31,7 +31,7 @@ function generateModel(list, rootId) {
     var node = Object.assign({}, el);
 
     // Register node as a child of its parent
-    if (!model.tree.hasOwnProperty(node.parent)) {
+    if (!{}.hasOwnProperty.call(model.tree, node.parent)) {
       model.tree[node.parent] = [node];
     } else {
       model.tree[node.parent].push(node);

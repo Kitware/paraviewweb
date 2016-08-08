@@ -130,7 +130,7 @@ export default React.createClass({
     for (let idx = 0; idx < size; ++idx) {
       this.drawField(ctx, idx, fields[idx].data, fields[idx].range);
       fieldsColors[fields[idx].name] = this.props.colors[idx];
-      if (this.refs.hasOwnProperty(fields[idx].name)) {
+      if ({}.hasOwnProperty.call(this.refs, fields[idx].name)) {
         ReactDOM.findDOMNode(this.refs[fields[idx].name]).innerHTML = interpolate(fields[idx].data, ratio);
       }
     }

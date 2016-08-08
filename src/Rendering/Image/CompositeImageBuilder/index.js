@@ -69,7 +69,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
       const key = compositeArray[count];
       if (key[0] === '@') {
         // Skip pixels
-      } else if (map.hasOwnProperty(key)) {
+      } else if ({}.hasOwnProperty.call(map, key)) {
         // Already computed
       } else {
         let offset = -1;
