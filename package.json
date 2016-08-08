@@ -38,7 +38,7 @@
 
         "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
 
-        "kw-web-suite": "2.0.1",
+        "kw-web-suite": "2.1.0",
         "kw-doc": "1.0.13",
 
         "expect"                    : "1.18.0",
