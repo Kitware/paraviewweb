@@ -1,6 +1,7 @@
+import React                from 'react';
+
 import AbstractViewerMenu   from '../AbstractViewerMenu';
 import MultiViewControl     from '../../CollapsibleControls/MultiViewControl';
-import React                from 'react';
 import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
 
 export default React.createClass({
@@ -24,7 +25,7 @@ export default React.createClass({
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-mount-set-state */
   componentDidMount() {
-    var renderer = this.refs.catalystWidget.getRenderer();
+    var renderer = this.catalystWidget.getRenderer();
 
     this.setState({ renderer });
 
@@ -89,7 +90,7 @@ export default React.createClass({
 
     return (
       <AbstractViewerMenu
-        ref="catalystWidget"
+        ref={(c) => { this.catalystWidget = c; }}
         queryDataModel={queryDataModel}
         renderers={this.props.renderers}
         renderer="MultiViewRenderer"

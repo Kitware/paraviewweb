@@ -1,8 +1,9 @@
+import React                    from 'react';
+
+import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
+
 import DataListenerMixin        from './DataListenerMixin';
 import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
-import React                    from 'react';
-import ReactDOM                 from 'react-dom';
-import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
 /**
  * This React component expect the following input properties:
@@ -32,7 +33,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.refs.select).focus();
+    this.select.focus();
   },
 
   toggleAnimation() {
@@ -49,7 +50,7 @@ export default React.createClass({
         <div className={style.row} onMouseEnter={this.grabFocus}>
           <select
             className={style.input}
-            ref="select"
+            ref={(c) => { this.select = c; }}
             value={this.props.model.getValue(this.props.arg)}
             onChange={this.handleChange}
           >

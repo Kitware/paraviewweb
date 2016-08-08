@@ -60,7 +60,7 @@ export default class ColorByHelper {
     this.categories = [];
     for (let layerIdx = 0; layerIdx < this.nbLayers; layerIdx++) {
       const layerCode = encoding[layerIdx],
-        colorCode = query[layerIdx * 2 + 1];
+        colorCode = query[(layerIdx * 2) + 1];
 
       if (colorCode === '_') {
         this.layerVisible[layerCode] = 0.0;

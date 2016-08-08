@@ -1,7 +1,7 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
+
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import template from './template.html';
 
 // ----------------------------------------------------------------------------
@@ -209,23 +209,23 @@ function fieldSelector(publicAPI, model) {
               hdata
                 .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
                 .attr('pname', fieldName)
-                .attr('y', d => model.fieldHistHeight * (1.0 - d / cmax))
+                .attr('y', d => model.fieldHistHeight * (1.0 - (d / cmax)))
                 .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
-                .attr('height', d => model.fieldHistHeight * d / cmax)
+                .attr('height', d => model.fieldHistHeight * (d / cmax))
                 .attr('width', model.fieldHistWidth / hsize);
 
               hdata.exit().remove();
 
               if (model.provider.isA('HistogramBinHoverProvider')) {
-                histCell.select('svg').
-                  on('mousemove', function inner(d, i) {
+                histCell.select('svg')
+                  .on('mousemove', function inner(d, i) {
                     const mCoords = d3.mouse(this);
                     const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
                     const state = {};
                     state[fieldName] = [binNum];
                     model.provider.setHoverState({ state });
-                  }).
-                  on('mouseout', (d, i) => {
+                  })
+                  .on('mouseout', (d, i) => {
                     const state = {};
                     state[fieldName] = [-1];
                     model.provider.setHoverState({ state });
@@ -252,9 +252,9 @@ function fieldSelector(publicAPI, model) {
     const svg = d3.select(model.container);
     Object.keys(data.state).forEach(pName => {
       const binList = data.state[pName];
-      svg.selectAll(`rect[pname='${pName}']`).
-            classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
-            classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
+      svg.selectAll(`rect[pname='${pName}']`)
+        .classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1)
+        .classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
     });
   }
 

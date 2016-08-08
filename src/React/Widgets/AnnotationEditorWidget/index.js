@@ -1,9 +1,10 @@
 import React from 'react';
+
+import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
+
 import OneScore from './OneScore';
 import ManyScore from './ManyScore';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
-
-import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function annotationEditorWidget(props) {
   if (!props.annotation) {

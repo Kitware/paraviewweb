@@ -1,4 +1,4 @@
-import { bindTextureToFramebuffer } from '../WebGl';
+import WebGl from '../WebGl';
 
 export default class PingPong {
 
@@ -8,8 +8,8 @@ export default class PingPong {
     this.fbos = fbos;
     this.textures = textures;
 
-    bindTextureToFramebuffer(this.gl, this.fbos[0], this.textures[1]);
-    bindTextureToFramebuffer(this.gl, this.fbos[1], this.textures[0]);
+    WebGl.bindTextureToFramebuffer(this.gl, this.fbos[0], this.textures[1]);
+    WebGl.bindTextureToFramebuffer(this.gl, this.fbos[1], this.textures[0]);
   }
 
   swap() {

@@ -1,6 +1,7 @@
+import React                from 'react';
+
 import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import LayoutsWidget        from '../../Widgets/LayoutsWidget';
-import React                from 'react';
 
 /**
  * This React component expect the following input properties:
@@ -82,7 +83,6 @@ export default React.createClass({
         <CollapsibleWidget title="Viewport">
           <select
             style={{ width: '100%' }}
-            ref="select"
             value={this.state.renderMethod}
             onChange={this.onRenderMethodChange}
           >

@@ -1,3 +1,4 @@
+/* global document */
 
 export default class NativeSpacerComponent {
   constructor(size = '30px') {

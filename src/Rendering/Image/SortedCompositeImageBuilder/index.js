@@ -30,8 +30,8 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
         const color = this.lookupTable.getColor(this.metadata.scalars[idx]);
 
         this.lutTextureData[idx * 4] = color[0] * 255;
-        this.lutTextureData[idx * 4 + 1] = color[1] * 255;
-        this.lutTextureData[idx * 4 + 2] = color[2] * 255;
+        this.lutTextureData[(idx * 4) + 1] = color[1] * 255;
+        this.lutTextureData[(idx * 4) + 2] = color[2] * 255;
       }
       this.render();
     }));
@@ -60,7 +60,7 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
     this.equalizerModel.onChange((data, envelope) => {
       var opacities = data.getOpacities();
       for (let idx = 0; idx < this.metadata.layers; idx++) {
-        this.lutTextureData[idx * 4 + 3] = opacities[idx] * 255;
+        this.lutTextureData[(idx * 4) + 3] = opacities[idx] * 255;
       }
       this.render();
     });

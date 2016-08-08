@@ -1,4 +1,5 @@
-import DataManager from '../DataManager';
+/* global Image */
+
 import hasOwn from 'mout/object/hasOwn';
 import max from 'mout/object/max';
 import min from 'mout/object/min';
@@ -6,6 +7,8 @@ import Monologue from 'monologue.js';
 import now from 'mout/src/time/now';
 import omit from 'mout/object/omit';
 import size from 'mout/object/size';
+
+import DataManager from '../DataManager';
 
 // ============================================================================
 const
@@ -676,20 +679,20 @@ export default class QueryDataModel {
       while (count--) {
         if (idxs[count] < sizes[count]) {
           // We are good
+          /* eslint-disable no-continue */
           continue;
-        } else {
+          /* eslint-enable no-continue */
+        } else if (count > 0) {
           // We need to move the index back up
-          if (count > 0) {
-            idxs[count] = 0;
-            idxs[count - 1]++;
-          } else {
-            this.exploreState.animate = false;
-            this.emit('state.change.exploration', {
-              exploration: this.exploreState,
-              instance: this,
-            });
-            return this.exploreState.animate; // We are done
-          }
+          idxs[count] = 0;
+          idxs[count - 1]++;
+        } else {
+          this.exploreState.animate = false;
+          this.emit('state.change.exploration', {
+            exploration: this.exploreState,
+            instance: this,
+          });
+          return this.exploreState.animate; // We are done
         }
       }
 

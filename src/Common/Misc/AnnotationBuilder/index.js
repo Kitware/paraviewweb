@@ -8,7 +8,7 @@ let generation = 0;
 // Public builder method
 // ----------------------------------------------------------------------------
 
-export function annotation(selection, score, weight = 1, rationale = '') {
+function annotation(selection, score, weight = 1, rationale = '') {
   generation++;
   return {
     generation,
@@ -21,7 +21,7 @@ export function annotation(selection, score, weight = 1, rationale = '') {
 
 // ----------------------------------------------------------------------------
 
-export function update(annotationObject, changeSet) {
+function update(annotationObject, changeSet) {
   const updatedAnnotation = Object.assign({}, annotationObject, changeSet);
 
   let changeDetected = false;
@@ -41,7 +41,7 @@ export function update(annotationObject, changeSet) {
 
 // ----------------------------------------------------------------------------
 
-export function markModified(annotationObject) {
+function markModified(annotationObject) {
   generation++;
   return Object.assign({}, annotationObject, { generation });
 }

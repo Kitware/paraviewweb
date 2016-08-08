@@ -1,5 +1,5 @@
 // Show GL informations
-export function showGlInfo(gl) {
+function showGlInfo(gl) {
   var vertexUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
   var fragmentUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
   var combinedUnits = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
@@ -56,7 +56,7 @@ function createShaderProgram(gl, shaders) {
 }
 
 // Apply new mapping to a program
-export function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResources) {
+function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResources) {
   var program = glResources.programs[programName];
   var mapping = glConfig.mappings[mappingName];
 
@@ -66,7 +66,7 @@ export function applyProgramDataMapping(gl, programName, mappingName, glConfig, 
     gl.bindBuffer(gl.ARRAY_BUFFER, glBuffer);
     program[bufferMapping.name] = gl.getAttribLocation(program, bufferMapping.attribute);
     gl.enableVertexAttribArray(program[bufferMapping.name]);
-    gl.vertexAttribPointer.apply(gl, [program[bufferMapping.name]].concat(bufferMapping.format));
+    gl.vertexAttribPointer(program[bufferMapping.name], ...bufferMapping.format);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   });
 }
@@ -91,7 +91,7 @@ function buildShaderProgram(gl, name, config, resources) {
 }
 
 // Bind texture to Framebuffer
-export function bindTextureToFramebuffer(gl, fbo, texture) {
+function bindTextureToFramebuffer(gl, fbo, texture) {
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -150,7 +150,7 @@ function freeGLResources(glResources) {
 }
 
 // Create GL resources
-export function createGLResources(gl, glConfig) {
+function createGLResources(gl, glConfig) {
   var resources = { gl, buffers: {}, textures: {}, framebuffers: {}, programs: {} };
   var buffers = glConfig.resources.buffers || [];
   var textures = glConfig.resources.textures || [];
@@ -205,7 +205,7 @@ export function createGLResources(gl, glConfig) {
 
 //----------------------------------------------------------------------------
 
-export function transformShader(shaderContent, variableDict, config) {
+function transformShader(shaderContent, variableDict, config) {
   var match = null;
   var unrolledContents = null;
   var shaderString = shaderContent;

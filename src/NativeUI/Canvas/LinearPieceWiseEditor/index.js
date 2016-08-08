@@ -32,8 +32,8 @@ export function getCanvasSize(ctx, margin = 0) {
 function getCanvasCoordinates(ctx, point, margin) {
   const { width, height } = getCanvasSize(ctx, margin);
   let { x, y } = point;
-  x = Math.floor(x * width + margin + 0.5);
-  y = Math.floor((1 - y) * height + margin + 0.5);
+  x = Math.floor((x * width) + margin + 0.5);
+  y = Math.floor(((1 - y) * height) + margin + 0.5);
   return { x, y };
 }
 
@@ -51,10 +51,10 @@ function getNormalizePosition(event, ctx, margin) {
 
   return {
     x: (event.clientX - rect.left - margin) / width,
-    y: 1 - (event.clientY - rect.top - margin) / height,
+    y: 1 - ((event.clientY - rect.top - margin) / height),
     epsilon: {
-      x: 2 * margin / width,
-      y: 2 * margin / height,
+      x: (2 * margin) / width,
+      y: (2 * margin) / height,
     },
   };
 }

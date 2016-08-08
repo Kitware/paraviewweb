@@ -38,8 +38,7 @@ export default React.createClass({
           type="checkbox"
           checked={this.props.value}
           onChange={this.valueChange}
-        >
-        </input>
+        />
       </div>);
   },
 });

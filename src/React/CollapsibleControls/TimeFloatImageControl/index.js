@@ -1,8 +1,10 @@
-import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import React                    from 'react';
+
+import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
+
+import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
 import ToggleIconButtonWidget   from '../../Widgets/ToggleIconButtonWidget';
-import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
 export default React.createClass({
 
@@ -158,7 +160,7 @@ export default React.createClass({
           {chartData.fields.map((field, index) =>
             <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'}>
               <label className={style.label}>
-                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }}></i>
+                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }} />
                 {field.name}
               </label>
               <span className={style.value} title={field.data[timeIdx]}>{field.data[timeIdx]}</span>

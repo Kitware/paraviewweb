@@ -1,8 +1,10 @@
 import React              from 'react';
+
+import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+
 import PresetListWidget   from '../PresetListWidget';
 import ScalarRangeWidget  from '../ScalarRangeWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
-import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 
 export default React.createClass({
 
@@ -64,17 +66,17 @@ export default React.createClass({
             data-idx="0"
             onClick={this.updateActiveView}
             className={this.state.activeAdvanceView === '0' ? style.activePresetIcon : style.presetIcon}
-          ></i>
+          />
           <i
             data-idx="1"
             onClick={this.updateActiveView}
             className={this.state.activeAdvanceView === '1' ? style.activeRangeIcon : style.rangeIcon}
-          ></i>
+          />
           <i
             data-idx="2"
             onClick={this.updateActiveView}
             className={this.state.activeAdvanceView === '2' ? style.activeOpacityIcon : style.opacityIcon}
-          ></i>
+          />
         </div>
         <div className={style.advancedViewContent}>
           <PresetListWidget

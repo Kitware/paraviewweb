@@ -38,7 +38,7 @@ export default React.createClass({
         <i
           className={!inEditMode ? style.deleteButtonOff : isActive ? style.activeButton : style.deleteButtonOn}
           onClick={this.toggleActiveLayer}
-        ></i>
+        />
         <div className={style.label}>
           {this.props.item.name}
         </div>

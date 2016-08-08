@@ -1,5 +1,6 @@
 import React                        from 'react';
-import ReactDOM                     from 'react-dom';
+
+import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
 
 import AbstractViewerMenu           from '../AbstractViewerMenu';
 import LineChartViewer              from '../LineChartViewer';
@@ -7,8 +8,6 @@ import LookupTableManagerControl    from '../../CollapsibleControls/LookupTableM
 import ProbeControl                 from '../../CollapsibleControls/ProbeControl';
 import CollapsibleWidget            from '../../Widgets/CollapsibleWidget';
 import QueryDataModelWidget         from '../../Widgets/QueryDataModelWidget';
-
-import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
 
 const
   renderAxisMap = {
@@ -84,7 +83,7 @@ export default React.createClass({
 
   componentDidUpdate() {
     if (this.state.chartVisible) {
-      this.refs.chartViewer.updateDimensions();
+      this.chartViewer.updateDimensions();
     }
   },
 
@@ -139,7 +138,7 @@ export default React.createClass({
   },
 
   dragOn(event) {
-    var el = ReactDOM.findDOMNode(this.refs.chartContainer),
+    var el = this.chartContainer,
       top = Number(el.style.top.replace('px', '')),
       left = Number(el.style.left.replace('px', ''));
 
@@ -153,7 +152,7 @@ export default React.createClass({
 
   dragChart(event) {
     if (this.dragChartFlag) {
-      const el = ReactDOM.findDOMNode(this.refs.chartContainer);
+      const el = this.chartContainer;
       el.style.left = `${(event.clientX - this.dragPosition[0])}px`;
       el.style.top = `${(event.clientY - this.dragPosition[1])}px`;
     }
@@ -183,23 +182,19 @@ export default React.createClass({
         <AbstractViewerMenu queryDataModel={queryDataModel} imageBuilder={imageBuilder} mouseListener={imageBuilder.getListeners()}>
           <LookupTableManagerControl
             key="LookupTableManagerWidget"
-            ref="LookupTableManagerWidget"
             lookupTableManager={imageBuilder.lookupTableManager}
             field={imageBuilder.getField()}
           />
           <ProbeControl
-            ref="ProbeControl"
             imageBuilder={imageBuilder}
           />
           <CollapsibleWidget
-            ref="chartCollapsable"
             title="Chart"
             visible={this.props.probe && imageBuilder.isCrossHairEnabled()}
             onChange={this.onChartVisibilityChange}
             open={this.state.chartVisible}
           >
             <div
-              ref="chartButtons"
               className={style.row}
             >
               <button
@@ -223,7 +218,6 @@ export default React.createClass({
             </div>
           </CollapsibleWidget>
           <CollapsibleWidget
-            ref="queryDataModelParameters"
             title="Parameters"
             visible={queryDataModel.originalData.arguments_order.length > 0}
           >
@@ -231,14 +225,14 @@ export default React.createClass({
           </CollapsibleWidget>
         </AbstractViewerMenu>
         <div
-          ref="chartContainer"
+          ref={(c) => { this.chartContainer = c; }}
           className={(this.state.chartVisible && imageBuilder.isCrossHairEnabled()) ? style.chartContainer : style.hidden}
           onMouseMove={this.dragChart}
           onMouseUp={this.dragOff}
           onMouseDown={this.dragOn}
         >
           <LineChartViewer
-            ref="chartViewer"
+            ref={(c) => { this.chartViewer = c; }}
             cursor={(this.state.probe[this.state.chartAxis] / dimensions[this.state.chartAxis])}
             data={this.state.chartData}
             width={this.state.chartSize.width}

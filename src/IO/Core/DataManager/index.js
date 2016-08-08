@@ -1,7 +1,10 @@
+/* global window */
+
+import Monologue from 'monologue.js';
+
 // Module dependencies and constants
 import request from './request.js';
 import PatternMap from './pattern.js';
-import Monologue from 'monologue.js';
 
 const
   typeFnMap = {

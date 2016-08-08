@@ -1,11 +1,11 @@
 import React            from 'react';
 
+import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import enumStyle        from 'PVWStyle/ReactProperties/EnumProperty.mcss';
+
 import convert          from '../../../Common/Misc/Convert';
 import BlockMixin       from '../PropertyFactory/BlockMixin';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
-
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
-import enumStyle        from 'PVWStyle/ReactProperties/EnumProperty.mcss';
 
 function valueToString(obj) {
   if (typeof obj === 'string') {
@@ -69,7 +69,7 @@ export default React.createClass({
       mapper = () => {
         var ret = [];
         if (!multiple && !this.props.ui.noEmpty) {
-          ret.push(<option key="empty-value" value={null}></option>);
+          ret.push(<option key="empty-value" value={null} />);
         }
 
         Object.keys(this.props.ui.domain).forEach(key => {

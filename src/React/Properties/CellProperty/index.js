@@ -1,8 +1,9 @@
+import React            from 'react';
+import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
 import BlockMixin       from '../PropertyFactory/BlockMixin';
 import layouts          from './layouts';
-import React            from 'react';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 /* eslint-disable react/no-danger */
 export default React.createClass({
@@ -78,8 +79,7 @@ export default React.createClass({
             <i
               className={this.props.ui.layout === '-1' ? style.plusIcon : style.hidden}
               onClick={this.addValue}
-            >
-            </i>
+            />
             <ToggleIconButton
               icon={style.helpIcon}
               value={this.state.helpOpen}

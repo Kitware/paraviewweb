@@ -1,10 +1,11 @@
 import React             from 'react';
+
+import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
+
 import GeometryRenderer  from '../../Renderers/GeometryRenderer';
 import ImageRenderer     from '../../Renderers/ImageRenderer';
 import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
 import PlotlyRenderer    from '../../Renderers/PlotlyRenderer';
-
-import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
 
 export default React.createClass({
 
@@ -61,7 +62,7 @@ export default React.createClass({
   },
 
   getRenderer() {
-    return this.refs.renderer;
+    return this.renderer;
   },
 
   attachListener(dataModel) {
@@ -99,7 +100,7 @@ export default React.createClass({
 
   resetCamera() {
     if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
-      this.refs.renderer.resetCamera();
+      this.renderer.resetCamera();
     }
   },
 
@@ -136,7 +137,7 @@ export default React.createClass({
     if (isImageRenderer) {
       renderer = (
         <ImageRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           imageBuilder={rootImageBuilder}
           listener={this.props.mouseListener || rootImageBuilder.getListeners()}
@@ -146,7 +147,7 @@ export default React.createClass({
     if (isMultiViewer) {
       renderer = (
         <MultiViewRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           renderers={this.props.renderers}
           layout={this.props.layout}
@@ -156,7 +157,7 @@ export default React.createClass({
     if (isGeometryViewer) {
       renderer = (
         <GeometryRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           geometryBuilder={this.props.geometryBuilder}
         />);
@@ -165,7 +166,7 @@ export default React.createClass({
     if (isChartViewer) {
       renderer = (
         <PlotlyRenderer
-          ref="renderer"
+          ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           chartBuilder={this.props.chartBuilder}
         />);
@@ -182,34 +183,28 @@ export default React.createClass({
                 (magicLensController.isFront() ? style.magicLensButtonIn : style.magicLensButtonOut)
                 : style.hidden}
               onClick={this.toggleLens}
-            >
-            </i>
+            />
             <i
               className={(serverRecording && isImageRenderer && this.props.imageBuilder.handleRecord)
                 ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden}
               onClick={this.toggleRecord}
-            >
-            </i>
+            />
             <i
               className={(isImageRenderer || isGeometryViewer) ? style.resetCameraButton : style.hidden}
               onClick={this.resetCamera}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? style.playButton : style.hidden)}
               onClick={this.play}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.isAnimating() ? style.stopButton : style.hidden)}
               onClick={this.stop}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() ? style.speedButton : style.hidden)}
               onClick={this.updateSpeed}
-            >
-            </i>
+            />
             <i
               className={(queryDataModel.hasAnimationFlag() ? style.animationSpeed : style.hidden)}
               onClick={this.updateSpeed}
@@ -219,8 +214,7 @@ export default React.createClass({
             <i
               className={this.state.collapsed ? style.collapsedMenuButton : style.menuButton}
               onClick={this.togglePanel}
-            >
-            </i>
+            />
           </div>
           <div className={style.controlContent}>
             {this.props.children}

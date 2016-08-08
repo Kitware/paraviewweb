@@ -1,9 +1,10 @@
 import React            from 'react';
 import equals           from 'mout/src/array/equals';
-import factory          from '../../Properties/PropertyFactory';
-import { proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 import style from 'PVWStyle/ReactWidgets/ProxyPropertyGroup.mcss';
+
+import factory          from '../../Properties/PropertyFactory';
+import { proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 export default React.createClass({
 
@@ -73,10 +74,10 @@ export default React.createClass({
     return (
       <div className={style.container}>
         <div className={style.toolbar} onClick={this.toggleCollapsedMode}>
-          <i className={this.state.collapsed ? style.collapedIcon : style.expandedIcon}></i>
+          <i className={this.state.collapsed ? style.collapedIcon : style.expandedIcon} />
           <span className={style.title}>{this.props.proxy.name}</span>
           <span className={changeSetCount ? style.tag : style.emptyTag}>
-            <i className={style.tagBackground}></i>
+            <i className={style.tagBackground} />
             <strong className={style.tagCount}>{changeSetCount}</strong>
           </span>
         </div>

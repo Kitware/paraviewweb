@@ -1,7 +1,8 @@
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
-import { loop } from '../../../Common/Misc/Loop';
 import merge from 'mout/src/object/merge';
 import vec4 from 'gl-matrix/src/gl-matrix/vec4.js';
+
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
+import { loop } from '../../../Common/Misc/Loop';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 

@@ -1,14 +1,14 @@
+/* global Image document */
+
 import React            from 'react';
-import ReactDOM         from 'react-dom';
+import Monologue        from 'monologue.js';
+
+import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
 import ContentEditable  from '../../Widgets/ContentEditableWidget';
 import ImageExporter    from '../../../Common/Misc/ImageExporter';
 import sizeHelper       from '../../../Common/Misc/SizeHelper';
 import MouseHandler     from '../../../Interaction/Core/MouseHandler';
-
-import Monologue        from 'monologue.js';
-
-import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
 const DRAW_DONE = 'ImageRenderer.draw.done';
 
@@ -28,7 +28,7 @@ function onImageLoaded() {
 function drawToCanvasAsImage() {
   var image = this,
     component = this.component,
-    canvas = ReactDOM.findDOMNode(component.refs.canvasRenderer),
+    canvas = component.canvasRenderer,
     ctx = canvas.getContext('2d'),
     w = component.state.width,
     h = component.state.height,
@@ -72,7 +72,7 @@ function drawToCanvasAsBuffer() {
   var image = this,
     data = this.data,
     component = this.component,
-    destCanvas = ReactDOM.findDOMNode(component.refs.canvasRenderer),
+    destCanvas = component.canvasRenderer,
     ctx = destCanvas.getContext('2d'),
     w = component.state.width,
     h = component.state.height,
@@ -106,11 +106,11 @@ function drawToCanvasAsBuffer() {
     if (data.crosshair) {
       ctx.beginPath();
 
-      ctx.moveTo(translate[0] + scale[0] * data.crosshair[0], 0);
-      ctx.lineTo(translate[0] + scale[0] * data.crosshair[0], h);
+      ctx.moveTo(translate[0] + (scale[0] * data.crosshair[0]), 0);
+      ctx.lineTo(translate[0] + (scale[0] * data.crosshair[0]), h);
 
-      ctx.moveTo(0, translate[1] + scale[1] * data.crosshair[1]);
-      ctx.lineTo(w, translate[1] + scale[1] * data.crosshair[1]);
+      ctx.moveTo(0, translate[1] + (scale[1] * data.crosshair[1]));
+      ctx.lineTo(w, translate[1] + (scale[1] * data.crosshair[1]));
 
       ctx.strokeStyle = component.props.crosshairColor;
       ctx.lineWidth = 1;
@@ -220,7 +220,7 @@ const ImageRenderer = React.createClass({
     }
 
     // Attach mouse listener
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvasRenderer));
+    this.mouseHandler = new MouseHandler(this.canvasRenderer);
 
     // Allow modifier via press action
     if (this.props.modifiers) {
@@ -235,7 +235,7 @@ const ImageRenderer = React.createClass({
 
     this.mouseHandler.on('modifier.change', (change, envelope) => {
       const image = this.imageToDraw,
-        ctx = ReactDOM.findDOMNode(this.refs.canvasRenderer).getContext('2d');
+        ctx = this.canvasRenderer.getContext('2d');
 
       ctx.beginPath();
       ctx.fillStyle = '#ffffff';
@@ -302,7 +302,7 @@ const ImageRenderer = React.createClass({
   },
 
   getRenderingCanvas() {
-    return ReactDOM.findDOMNode(this.refs.canvasRenderer);
+    return this.canvasRenderer;
   },
 
   enableLocalRendering(enable = true) {
@@ -316,7 +316,7 @@ const ImageRenderer = React.createClass({
     this.imageExporter.updateMetadata({
       title: this.state.title,
       description: this.state.description,
-      image: ReactDOM.findDOMNode(this.refs.thumbnail).src,
+      image: this.thumbnail.src,
       path: this.props.imageBuilder.queryDataModel.basepath,
     });
   },
@@ -343,7 +343,7 @@ const ImageRenderer = React.createClass({
       this.resetCamera();
     } else if (event.keyCode === 85 && !this.state.dialog && (event.altKey || event.ctrlKey || event.metaKey)) {
       // u => Update dataset metadata
-      const thumbnailImage = ReactDOM.findDOMNode(this.refs.thumbnail);
+      const thumbnailImage = this.thumbnail;
 
       if (this.imageToDraw.data.canvas.nodeName === 'CANVAS') {
         if (this.imageToDraw.data.canvas.width === this.imageToDraw.data.area[2] && this.imageToDraw.data.canvas.height === this.imageToDraw.data.area[3]) {
@@ -405,8 +405,8 @@ const ImageRenderer = React.createClass({
           fixedY = event.relative.y / this.state.height;
 
         this.zoom = zoom;
-        this.center[0] = fixedX + deltaZoom * (x - fixedX);
-        this.center[1] = fixedY + deltaZoom * (y - fixedY);
+        this.center[0] = fixedX + (deltaZoom * (x - fixedX));
+        this.center[1] = fixedY + (deltaZoom * (y - fixedY));
 
         if (this.imageToDraw.drawToCanvas) {
           this.imageToDraw.drawToCanvas();
@@ -469,7 +469,7 @@ const ImageRenderer = React.createClass({
   },
 
   updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
+    var el = this.rootContainer.parentNode,
       elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
@@ -528,18 +528,17 @@ const ImageRenderer = React.createClass({
 
   render() {
     return (
-      <div className={style.container} >
+      <div className={style.container} ref={(c) => { this.rootContainer = c; }}>
         <canvas
           className={style.renderer}
-          ref="canvasRenderer"
+          ref={(c) => { this.canvasRenderer = c; }}
           width={this.state.width}
           height={this.state.height}
-        >
-        </canvas>
+        />
         <div className={this.state.dialog ? style.dialog : style.hidden}>
           <div className={style.inside}>
             <img
-              ref="thumbnail"
+              ref={(c) => { this.thumbnail = c; }}
               className={style.thumbnail}
               height={Math.floor(this.state.height / 2)}
               alt="thumbnail"

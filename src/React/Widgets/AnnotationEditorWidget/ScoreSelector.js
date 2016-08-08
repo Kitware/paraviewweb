@@ -16,8 +16,7 @@ export default function scoreSelector(props) {
           title={score.name}
           data-score={idx}
           onClick={click}
-        >
-        </div>
+        />
       )}
     </section>);
 }

@@ -1,6 +1,6 @@
-import ChildItem    from './ChildItem';
 import React        from 'react';
 import style        from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
+import ChildItem    from './ChildItem';
 
 /**
  * This React component expect the following input properties:
@@ -62,7 +62,7 @@ export default React.createClass({
       hasChildren = (children.length > 0),
       hasOpacity = model.hasOpacity(),
       hasDropDown = this.props.model.getColor(this.props.layer).length > 1,
-      editButton = hasChildren ? <i className={inEditMode ? style.editButtonOn : style.editButtonOff} onClick={this.toggleEditMode}></i> : '';
+      editButton = hasChildren ? <i className={inEditMode ? style.editButtonOn : style.editButtonOff} onClick={this.toggleEditMode} /> : '';
 
     return (
       <div className={style.section}>
@@ -72,8 +72,14 @@ export default React.createClass({
           </div>
           <div className={style.actions}>
             {editButton}
-            <i className={visible ? style.visibleButtonOn : style.visibleButtonOff} onClick={this.toggleVisibility}></i>
-            <i className={hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff} onClick={this.toggleDropDown}></i>
+            <i
+              className={visible ? style.visibleButtonOn : style.visibleButtonOff}
+              onClick={this.toggleVisibility}
+            />
+            <i
+              className={hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff}
+              onClick={this.toggleDropDown}
+            />
             <div
               onClick={this.updateColorBy}
               className={this.state.dropDown ? style.menu : style.hidden}

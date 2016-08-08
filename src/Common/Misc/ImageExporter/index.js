@@ -1,3 +1,5 @@
+/* global XMLHttpRequest Image */
+
 import CanvasOffscreenBuffer from '../CanvasOffscreenBuffer';
 
 export default class ImageExporter {

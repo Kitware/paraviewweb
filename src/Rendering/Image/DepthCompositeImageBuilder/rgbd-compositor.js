@@ -1,5 +1,6 @@
-import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import max from 'mout/object/max';
+
+import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
 import PingPong from '../../../Common/Misc/PingPong';
 
@@ -165,7 +166,7 @@ export default class RGBACompositor {
 
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[idx * 2 + 1];
+      const fieldCode = query[(idx * 2) + 1];
       if (fieldCode !== '_') {
         this.offsetList.push(this.spriteSize - offsets[layers[idx] + fieldCode]);
       }

@@ -1,8 +1,8 @@
+import React                from 'react';
+import style                from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
+
 import ColorPicker          from '../ColorPickerWidget';
 import NumberInputWidget    from '../NumberInputWidget';
-import React                from 'react';
-import ReactDOM             from 'react-dom';
-import style                from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
 
 const STYLE = {
   range: {
@@ -83,7 +83,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var canvas = ReactDOM.findDOMNode(this.refs.canvas);
+    var canvas = this.canvas;
     this.props.lookupTable.drawToCanvas(canvas);
   },
 
@@ -99,7 +99,7 @@ export default React.createClass({
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.internal_lut) {
-      const canvas = ReactDOM.findDOMNode(this.refs.canvas);
+      const canvas = this.canvas;
       this.props.lookupTable.drawToCanvas(canvas);
 
       if (this.state.mode === 'edit') {
@@ -108,10 +108,10 @@ export default React.createClass({
           x = Math.floor(this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex).x * this.props.lookupTable.colorTableSize),
           imageData = ctx.getImageData(0, 0, this.props.lookupTable.colorTableSize, 1);
 
-        const color = (imageData.data[x * 4] + imageData.data[x * 4 + 1] + imageData.data[x * 4 + 2] > 3 * 255 / 2) ? 0 : 255;
-        imageData.data[x * 4 + 0] = this.props.inverse ? (imageData.data[x * 4 + 0] + 128) % 256 : color;
-        imageData.data[x * 4 + 1] = this.props.inverse ? (imageData.data[x * 4 + 1] + 128) % 256 : color;
-        imageData.data[x * 4 + 2] = this.props.inverse ? (imageData.data[x * 4 + 2] + 128) % 256 : color;
+        const color = (imageData.data[x * 4] + imageData.data[(x * 4) + 1] + imageData.data[(x * 4) + 2] > (3 * 255) / 2) ? 0 : 255;
+        imageData.data[(x * 4) + 0] = this.props.inverse ? (imageData.data[(x * 4) + 0] + 128) % 256 : color;
+        imageData.data[(x * 4) + 1] = this.props.inverse ? (imageData.data[(x * 4) + 1] + 128) % 256 : color;
+        imageData.data[(x * 4) + 2] = this.props.inverse ? (imageData.data[(x * 4) + 2] + 128) % 256 : color;
 
         ctx.putImageData(imageData, 0, 0);
       }
@@ -128,8 +128,8 @@ export default React.createClass({
   },
 
   updateScalarRange() {
-    var minValue = ReactDOM.findDOMNode(this.refs.min).value,
-      maxValue = ReactDOM.findDOMNode(this.refs.max).value;
+    var minValue = this.min.value,
+      maxValue = this.max.value;
     this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
     this.forceUpdate();
   },
@@ -269,7 +269,7 @@ export default React.createClass({
       } else {
         lut.setPreset(newPreset);
       }
-      lut.drawToCanvas(ReactDOM.findDOMNode(this.refs.canvas));
+      lut.drawToCanvas(this.canvas);
     }
     this.setState({ activePreset: newPreset });
   },
@@ -290,21 +290,21 @@ export default React.createClass({
           <i
             className={style.editButton}
             onClick={this.toggleEditMode}
-          ></i>
+          />
           <canvas
-            ref="canvas"
+            ref={(c) => { this.canvas = c; }}
             className={style.canvas}
             width={this.props.lookupTable.colorTableSize * this.props.lookupTable.scale}
             height="1"
-          ></canvas>
+          />
           <i
             className={style.presetButton}
             onClick={this.togglePresetMode}
-          ></i>
+          />
         </div>
         <div className={style.range} style={STYLE.range[this.state.mode]}>
           <NumberInputWidget
-            ref="min"
+            ref={(c) => { this.min = c; }}
             className={style.input}
             value={this.props.lookupTable.getScalarRange()[0]}
             onChange={this.updateScalarRange}
@@ -312,9 +312,9 @@ export default React.createClass({
           <i
             onClick={this.resetRange}
             className={style.resetRangeButton}
-          ></i>
+          />
           <NumberInputWidget
-            ref="max"
+            ref={(c) => { this.max = c; }}
             className={style.inputRight}
             value={this.props.lookupTable.getScalarRange()[1]}
             onChange={this.updateScalarRange}
@@ -325,18 +325,17 @@ export default React.createClass({
             <i
               onClick={this.previousControlPoint}
               className={style.previousButton}
-            ></i>
+            />
             <div className={style.label}>{this.state.currentControlPointIndex + 1} / {this.props.lookupTable.getNumberOfControlPoints()}</div>
             <i
               onClick={this.nextControlPoint}
               className={style.nextButton}
-            ></i>
+            />
             <i
               onClick={this.addControlPoint}
               className={style.addButton}
-            ></i>
+            />
             <NumberInputWidget
-              ref="x"
               className={style.inputRight}
               value={controlPointValue}
               onChange={this.updateScalar}
@@ -344,7 +343,7 @@ export default React.createClass({
             <i
               onClick={this.deleteControlPoint}
               className={style.deleteButton}
-            ></i>
+            />
           </div>
           <ColorPicker color={color} onChange={this.updateRGB} />
         </div>
@@ -354,7 +353,7 @@ export default React.createClass({
             className={
               this.state.activePreset === this.props.lookupTable.getPresets()[0]
               ? style.disablePreviousButton : style.previousButton}
-          ></i>
+          />
           {this.props.lookupTable.getPresets().map(preset =>
             <div
               onClick={this.setPreset}
@@ -369,7 +368,7 @@ export default React.createClass({
             onClick={this.nextPreset}
             className={(this.state.activePreset === this.props.lookupTable.getPresets()[this.props.lookupTable.getPresets().length - 1]
               ? style.disableNextButton : style.nextButton)}
-          ></i>
+          />
         </div>
       </div>);
   },

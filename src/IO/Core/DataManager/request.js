@@ -1,3 +1,5 @@
+/* global XMLHttpRequest Blob */
+
 // Generic request handler
 function makeRequest(url, handler) {
   var xhr = new XMLHttpRequest();

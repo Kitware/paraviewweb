@@ -1,10 +1,10 @@
-import LinearPieceWiseEditor from '../../../NativeUI/Canvas/LinearPieceWiseEditor';
-import SvgIconWidget from '../SvgIconWidget';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import equals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/ReactWidgets/PieceWiseFunctionEditorWidget.mcss';
+
+import LinearPieceWiseEditor from '../../../NativeUI/Canvas/LinearPieceWiseEditor';
+import SvgIconWidget from '../SvgIconWidget';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 
@@ -43,7 +43,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    const canvas = this.refs.canvas;
+    const canvas = this.canvas;
     this.editor = new LinearPieceWiseEditor(canvas);
 
     this.editor.setControlPoints(this.props.points);
@@ -96,7 +96,7 @@ export default React.createClass({
 
   updateDimensions() {
     const { clientWidth, clientHeight } =
-      sizeHelper.getSize(ReactDOM.findDOMNode(this), true);
+      sizeHelper.getSize(this.rootContainer, true);
     if (this.props.width === -1) {
       this.setState({ width: clientWidth });
     }
@@ -189,18 +189,18 @@ export default React.createClass({
   },
 
   render() {
-    const activePointDataValue = (this.state.activePoint !== -1 ?
-      this.props.points[this.state.activePoint].x : 0.5) *
-      (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin;
+    const activePointDataValue = ((this.state.activePoint !== -1 ?
+          this.props.points[this.state.activePoint].x : 0.5) *
+          (this.props.rangeMax - this.props.rangeMin)) + this.props.rangeMin;
     const activePointOpacity = this.state.activePoint !== -1 ?
       this.props.points[this.state.activePoint].y : 0.5;
     return (
-      <div className={style.pieceWiseFunctionEditorWidget}>
+      <div className={style.pieceWiseFunctionEditorWidget} ref={c => { this.rootContainer = c; }}>
         <canvas
           className={style.canvas}
           width={this.state.width}
           height={this.state.height}
-          ref="canvas"
+          ref={(c) => { this.canvas = c; }}
         />
         {this.props.hidePointControl ? null :
           <div className={style.pointControls}>

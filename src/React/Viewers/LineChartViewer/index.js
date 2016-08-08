@@ -1,9 +1,10 @@
 import equals       from 'mout/src/object/equals';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
 
 import style        from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
+
+import sizeHelper   from '../../../Common/Misc/SizeHelper';
+
 
 function interpolate(values, xRatio) {
   var size = values.length,
@@ -11,7 +12,7 @@ function interpolate(values, xRatio) {
     a = values[Math.floor(idx)],
     b = values[Math.ceil(idx)],
     ratio = idx - Math.floor(idx);
-  return ((b - a) * ratio + a).toFixed(5);
+  return (((b - a) * ratio) + a).toFixed(5);
 }
 
 /**
@@ -93,7 +94,7 @@ export default React.createClass({
   updateDimensions() {
     this.xPosition = 0;
 
-    const el = ReactDOM.findDOMNode(this).parentNode,
+    const el = this.rootContainer.parentNode,
       elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
@@ -115,7 +116,7 @@ export default React.createClass({
       return;
     }
 
-    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
+    const ctx = this.canvas.getContext('2d'),
       fields = this.props.data.fields,
       size = fields.length,
       fieldsColors = {},
@@ -128,8 +129,8 @@ export default React.createClass({
     for (let idx = 0; idx < size; ++idx) {
       this.drawField(ctx, idx, fields[idx].data, fields[idx].range);
       fieldsColors[fields[idx].name] = this.props.colors[idx];
-      if (this.refs.hasOwnProperty(fields[idx].name)) {
-        ReactDOM.findDOMNode(this.refs[fields[idx].name]).innerHTML = interpolate(fields[idx].data, ratio);
+      if ({}.hasOwnProperty.call(this, fields[idx].name)) {
+        this[fields[idx].name].innerHTML = interpolate(fields[idx].data, ratio);
       }
     }
 
@@ -139,9 +140,9 @@ export default React.createClass({
 
     // Draw cursor
     if (this.state.legend) {
-      ReactDOM.findDOMNode(this.refs.xValueLabel).innerHTML = (
-        (this.props.data.xRange[1] - this.props.data.xRange[0]) *
-        ratio + this.props.data.xRange[0]).toFixed(5);
+      this.xValueLabel.innerHTML = (
+        ((this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio)
+        + this.props.data.xRange[0]).toFixed(5);
 
       ctx.beginPath();
       ctx.lineWidth = 1;
@@ -218,26 +219,25 @@ export default React.createClass({
       const color = this.state.fieldsColors[name];
       legend.push(
         <li className={style.legendItem} key={name}>
-          <i className={style.legendItemColor} style={{ color }}></i>
+          <i className={style.legendItemColor} style={{ color }} />
           <b>{name}</b>
-          <span className={style.legendItemValue} ref={name}></span>
+          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }} />
         </li>);
     });
 
     return (
-      <div className={style.container}>
+      <div className={style.container} ref={c => { this.rootContainer = c; }}>
         <canvas
           className={style.canvas}
-          ref="canvas"
+          ref={(c) => { this.canvas = c; }}
           onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
-        >
-        </canvas>
+        />
         <div className={this.state.legend ? style.legend : style.hidden}>
           <div className={style.legendBar}>
-            <span className={style.legendText} ref="xValueLabel"></span>
-            <i className={style.toggleLegendButton} onClick={this.toggleLegend}></i>
+            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }} />
+            <i className={style.toggleLegendButton} onClick={this.toggleLegend} />
           </div>
           <ul className={style.legendContent}>
             {legend}
@@ -245,7 +245,7 @@ export default React.createClass({
         </div>
         <div className={this.state.legend ? style.hidden : style.legend} onClick={this.toggleLegend}>
           <div className={style.legendButtons}>
-            <i className={style.toggleLegendButton}></i>
+            <i className={style.toggleLegendButton} />
           </div>
         </div>
       </div>

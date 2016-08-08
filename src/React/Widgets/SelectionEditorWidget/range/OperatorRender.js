@@ -1,10 +1,10 @@
 import React          from 'react';
 
+import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+
 import And            from '../../../../../svg/Operations/And.svg';
 import Or             from '../../../../../svg/Operations/Or.svg';
 import SvgIconWidget  from '../../SvgIconWidget';
-
-import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 const OPERATOR_LABEL = {
   or: Or,
@@ -20,8 +20,7 @@ export default function operatorRender(props) {
           <td className={style.operationCell}>
             <SvgIconWidget icon={OPERATOR_LABEL[operator]} width="25px" height="25px" />
           </td>
-          <td className={style.groupTableCell}>
-          </td>
+          <td className={style.groupTableCell} />
           <td>
             <table className={style.table}>
               <tbody>

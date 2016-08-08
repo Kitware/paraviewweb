@@ -1,7 +1,8 @@
 import React    from 'react';
+import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
 import convert  from '../../../Common/Misc/Convert';
 import validate from '../../../Common/Misc/Validate';
-import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 export default React.createClass({
 
@@ -42,7 +43,7 @@ export default React.createClass({
     }
 
     // Handle range
-    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
       const size = this.props.domain.range.length;
       const { min, max } = this.props.domain.range[idx % size] || {};
 
@@ -60,7 +61,7 @@ export default React.createClass({
 
     // Handle range
     let newValue = val;
-    if (this.props.domain.hasOwnProperty('range') && this.props.domain.range.length) {
+    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
       const size = this.props.domain.range.length;
       const { min, max, force } = this.props.domain.range[idx % size];
       if (force) {

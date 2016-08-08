@@ -22,7 +22,6 @@ export default React.createClass({
     };
   },
 
-  /* eslint-disable react/no-danger */
   render() {
     const style = Object.assign({}, this.props.style, {
       width: this.props.width,
@@ -32,11 +31,9 @@ export default React.createClass({
       <svg
         style={style}
         className={this.props.className}
-        dangerouslySetInnerHTML={{
-          __html: `<use xlink:href="${this.props.icon}"></use>`,
-        }}
         onClick={this.props.onClick}
-      />);
+      >
+        <use xlinkHref={this.props.icon} />
+      </svg>);
   },
-  /* eslint-enable react/no-danger */
 });

@@ -62,7 +62,7 @@ export default React.createClass({
     const min = Number(this.props.min),
       max = Number(this.props.max),
       delta = max - min,
-      value = delta * (Number(e.target.value) / Number(this.props.size)) + min;
+      value = ((delta * Number(e.target.value)) / Number(this.props.size)) + min;
 
     this.setState({ value, txtValue: null });
     if (this.props.onChange) {
@@ -78,7 +78,7 @@ export default React.createClass({
         <input
           type="range"
           className={style.rangeInput}
-          value={Math.floor((value - min) / (max - min) * size)}
+          value={Math.floor(((value - min) / (max - min)) * size)}
           onChange={this.sliderInput}
           min="0" max={size}
         />

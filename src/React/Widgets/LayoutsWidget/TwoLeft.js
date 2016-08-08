@@ -6,11 +6,11 @@ export default function twoLeft(props) {
     <table className={props.active === '3xL' ? style.activeTable : style.table} name="3xL" onClick={props.onClick}>
       <tbody>
         <tr>
-          <td rowSpan="2" className={props.activeRegion === 0 ? style.activeTd : style.td}></td>
-          <td className={props.activeRegion === 1 ? style.activeTd : style.td}></td>
+          <td rowSpan="2" className={props.activeRegion === 0 ? style.activeTd : style.td} />
+          <td className={props.activeRegion === 1 ? style.activeTd : style.td} />
         </tr>
         <tr>
-          <td className={props.activeRegion === 2 ? style.activeTd : style.td}></td>
+          <td className={props.activeRegion === 2 ? style.activeTd : style.td} />
         </tr>
       </tbody>
     </table>);

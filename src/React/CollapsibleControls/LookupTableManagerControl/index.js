@@ -1,7 +1,8 @@
+import React                from 'react';
+
 import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import LookupTableWidget    from '../../Widgets/LookupTableWidget';
 import DropDownWidget       from '../../Widgets/DropDownWidget';
-import React                from 'react';
 
 export default React.createClass({
 

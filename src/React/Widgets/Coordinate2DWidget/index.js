@@ -1,8 +1,9 @@
 import equals       from 'mout/src/object/equals';
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
+
 import style        from 'PVWStyle/ReactWidgets/Coordinate2DWidget.mcss';
+
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 /*
   CoordinateControl class
@@ -41,7 +42,7 @@ export default React.createClass({
 
   componentDidMount() {
     this.drawControl();
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvas));
+    this.mouseHandler = new MouseHandler(this.canvas);
     this.mouseHandler.attach({
       click: this.pointerAction,
       mousedown: this.pointerAction,
@@ -67,7 +68,7 @@ export default React.createClass({
       newVals = false;
 
     ['x', 'y'].forEach((el) => {
-      if (coords.hasOwnProperty(el)) {
+      if ({}.hasOwnProperty.call(coords, el)) {
         newCoords[el] = this.limitValue(parseFloat(coords[el]));
         newVals = true;
       }
@@ -95,9 +96,9 @@ export default React.createClass({
 
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
-    var rect = ReactDOM.findDOMNode(this.refs.canvas).getBoundingClientRect();
-    var x = e.pointers[0].clientX - rect.left - this.props.width / 2,
-      y = -(e.pointers[0].clientY - rect.top - this.props.height / 2);
+    var rect = this.canvas.getBoundingClientRect();
+    var x = e.pointers[0].clientX - rect.left - (this.props.width / 2),
+      y = -(e.pointers[0].clientY - rect.top - (this.props.height / 2));
     this.setState({
       x: this.limitValue(x / (this.props.width / 2)),
       y: this.limitValue(y / (this.props.height / 2)),
@@ -105,7 +106,7 @@ export default React.createClass({
   },
 
   drawControl() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
+    var ctx = this.canvas.getContext('2d'),
       height = ctx.canvas.height,
       width = ctx.canvas.width;
 
@@ -136,7 +137,7 @@ export default React.createClass({
   },
 
   drawPlus(color, location_) {
-    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     const height = ctx.canvas.height;
     const width = ctx.canvas.width;
     const lineLen = 5;
@@ -172,11 +173,11 @@ export default React.createClass({
     return (
       <section className={style.container}>
         <canvas
-          ref="canvas"
+          ref={(c) => { this.canvas = c; }}
           className={style.canvas}
           width={this.props.width}
           height={this.props.height}
-        ></canvas>
+        />
         <section className={(this.props.hideXY ? style.hidden : style.inputContainer)} >
           <label className={style.inputLabel}> x: </label>
           <input

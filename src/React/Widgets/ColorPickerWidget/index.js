@@ -1,7 +1,10 @@
+/* global Image */
+
 import React      from 'react';
-import ReactDOM   from 'react-dom';
-import swatchURL  from './defaultSwatches.png';
+
 import style      from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
+
+import swatchURL  from './defaultSwatches.png';
 
 /**
  * This React component expect the following input properties:
@@ -42,7 +45,7 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    var ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
   },
@@ -56,7 +59,7 @@ export default React.createClass({
       this.setState({ originalColor: this.props.color });
     }
     if (!this.state.preview) {
-      const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+      const ctx = this.canvas.getContext('2d');
       ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
       ctx.fillRect(0, 0, 1, 1);
     }
@@ -65,7 +68,7 @@ export default React.createClass({
 
   showColor(event) {
     var color = this.state.originalColor,
-      ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+      ctx = this.canvas.getContext('2d');
     event.preventDefault();
 
     if (event.type === 'mouseleave') {
@@ -77,7 +80,7 @@ export default React.createClass({
       return;
     }
 
-    const img = ReactDOM.findDOMNode(this.refs.swatch),
+    const img = this.swatch,
       rect = img.getBoundingClientRect();
 
     const scale = this.image.width / rect.width,
@@ -106,7 +109,7 @@ export default React.createClass({
 
     color[idx] = value;
 
-    const ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${color.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
 
@@ -132,11 +135,10 @@ export default React.createClass({
         <div className={style.activeColor}>
           <canvas
             className={style.colorCanvas}
-            ref="canvas"
+            ref={(c) => { this.canvas = c; }}
             width="1"
             height="1"
-          >
-          </canvas>
+          />
           <input
             className={style.colorRGB}
             type="number"
@@ -168,7 +170,7 @@ export default React.createClass({
         <div className={style.swatch}>
           <img
             alt="swatch"
-            ref="swatch"
+            ref={(c) => { this.swatch = c; }}
             className={style.swatchImage}
             width="100%"
             src={this.state.swatch}

@@ -1,3 +1,5 @@
+/* global window */
+
 import Monologue from 'monologue.js';
 import merge from 'mout/src/object/merge';
 import ProcessLauncher from '../../Core/ProcessLauncher';
@@ -7,8 +9,8 @@ const
   CONNECTION_READY_TOPIC = 'connection.ready',
   CONNECTION_CLOSE_TOPIC = 'connection.close',
   CONNECTION_ERROR_TOPIC = 'connection.error',
-  DEFAULT_SESSION_MANAGER_URL = `${location.protocol}//${location.hostname}:${location.port}/paraview/`,
-  DEFAULT_SESSION_URL = `${(location.protocol === 'https') ? 'wss' : 'ws'}://${location.hostname}:${location.port}/ws`;
+  DEFAULT_SESSION_MANAGER_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/paraview/`,
+  DEFAULT_SESSION_URL = `${(window.location.protocol === 'https') ? 'wss' : 'ws'}://${window.location.hostname}:${window.location.port}/ws`;
 
 
 function autobahnConnect(self) {

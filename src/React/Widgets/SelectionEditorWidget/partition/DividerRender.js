@@ -89,7 +89,7 @@ export default function dividerRender(props) {
         </span>
         ) : null
       }
-      <i className={style.deleteButton} onClick={onDelete}></i>
+      <i className={style.deleteButton} onClick={onDelete} />
     </section>
   );
 }

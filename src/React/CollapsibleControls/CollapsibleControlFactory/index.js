@@ -21,6 +21,7 @@ import LookupTableWidget            from '../../Widgets/LookupTableWidget';
 /* eslint-disable react/display-name */
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/no-string-refs */
 const WidgetFactoryMapping = {
   QueryDataModelWidget({ queryDataModel, handleExploration }) {
     return (
@@ -139,6 +140,7 @@ const WidgetFactoryMapping = {
 /* eslint-enable react/display-name */
 /* eslint-enable react/no-multi-comp */
 /* eslint-enable react/prop-types */
+/* eslint-enable react/no-string-refs */
 function createWidget(name, options) {
   var fn = WidgetFactoryMapping[name];
 
@@ -161,7 +163,7 @@ function getWidgets(obj) {
     if (widget) {
       widgetList.push(widget);
     } else {
-      console.error('Unable to create widget for name:', name);
+      console.error('Unable to create widget for name:', desc.name);
     }
   });
 

@@ -1,8 +1,9 @@
+import React                    from 'react';
+
+import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
+
 import DataListenerMixin        from './DataListenerMixin';
 import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
-import React                    from 'react';
-import ReactDOM                 from 'react-dom';
-import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
 /**
  * This React component expect the following input properties:
@@ -42,28 +43,28 @@ export default React.createClass({
   previous() {
     if (this.props.model.previous(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      this.slider.focus();
     }
   },
 
   next() {
     if (this.props.model.next(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      this.slider.focus();
     }
   },
 
   first() {
     if (this.props.model.first(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      this.slider.focus();
     }
   },
 
   last() {
     if (this.props.model.last(this.props.arg)) {
       this.props.model.lazyFetchData();
-      ReactDOM.findDOMNode(this.refs.slider).focus();
+      this.slider.focus();
     }
   },
 
@@ -79,7 +80,7 @@ export default React.createClass({
 
   enableButtons(event) {
     this.setState({ button: true });
-    ReactDOM.findDOMNode(this.refs.slider).focus();
+    this.slider.focus();
   },
 
   disableButtons() {
@@ -87,7 +88,7 @@ export default React.createClass({
   },
 
   grabFocus() {
-    ReactDOM.findDOMNode(this.refs.slider).focus();
+    this.slider.focus();
   },
 
   toggleAnimation() {
@@ -121,11 +122,11 @@ export default React.createClass({
             <i
               className={this.state.button ? (this.state.advanced ? style.firstButton : style.previousButton) : style.hidden}
               onClick={this.state.advanced ? this.first : this.previous}
-            ></i>
+            />
             <i
               className={this.state.button ? (this.state.advanced ? style.lastButton : style.nextButton) : style.hidden}
               onClick={this.state.advanced ? this.last : this.next}
-            ></i>
+            />
           </div>
         </div>
         <div className={[style.row, style.mobileOnly].join(' ')}>
@@ -134,26 +135,26 @@ export default React.createClass({
             <i
               className={style.firstButton}
               onClick={this.first}
-            ></i>
+            />
             <i
               className={style.lastButton}
               onClick={this.last}
-            ></i>
+            />
             <i
               className={style.previousButton}
               onClick={this.previous}
-            ></i>
+            />
             <i
               className={style.nextButton}
               onClick={this.next}
-            ></i>
+            />
           </div>
         </div>
         <div className={style.row}>
           <div className={style.slider} onMouseEnter={this.grabFocus}>
             <input
               className={style.input}
-              ref="slider"
+              ref={(c) => { this.slider = c; }}
               type="range"
               min="0"
               max={this.props.model.getSize(this.props.arg) - 1}

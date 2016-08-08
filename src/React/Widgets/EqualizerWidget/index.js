@@ -1,15 +1,11 @@
 import equals       from 'mout/src/array/equals';
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
 import React        from 'react';
-import ReactDOM     from 'react-dom';
-
-import {
-    getSize,
-    onSizeChange,
-    startListening,
-} from '../../../Common/Misc/SizeHelper';
 
 import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
+
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
+
+import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 export default React.createClass({
 
@@ -46,16 +42,16 @@ export default React.createClass({
 
   componentWillMount() {
     // Listen to window resize
-    this.sizeSubscription = onSizeChange(this.updateDimensions);
+    this.sizeSubscription = SizeHelper.onSizeChange(this.updateDimensions);
 
     // Make sure we monitor window size if it is not already the case
-    startListening();
+    SizeHelper.startListening();
   },
 
   componentDidMount() {
     this.updateDimensions();
     this.draw();
-    this.mouseHandler = new MouseHandler(ReactDOM.findDOMNode(this.refs.canvas));
+    this.mouseHandler = new MouseHandler(this.canvas);
     this.mouseHandler.attach({
       click: this.clicked,
       drag: this.clicked,
@@ -84,8 +80,8 @@ export default React.createClass({
   },
 
   updateDimensions() {
-    var el = ReactDOM.findDOMNode(this).parentNode,
-      innerWidth = getSize(el).clientWidth;
+    var el = this.rootContainer.parentNode,
+      innerWidth = SizeHelper.getSize(el, true).clientWidth;
 
     if (el && innerWidth && (this.state.width !== innerWidth)) {
       this.setState({ width: innerWidth });
@@ -95,7 +91,7 @@ export default React.createClass({
   },
 
   draw() {
-    var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d');
+    var ctx = this.canvas.getContext('2d');
     ctx.strokeStyle = this.props.stroke;
     ctx.lineWidth = '1';
 
@@ -104,24 +100,24 @@ export default React.createClass({
       height = this.state.height,
       size = array.length,
       spacing = this.props.spacing,
-      layerWidth = Math.floor(((width - 5 * spacing) / size) - spacing),
+      layerWidth = Math.floor(((width - (5 * spacing)) / size) - spacing),
       maxLayerHeight = height - (4 * spacing),
-      layerStep = layerWidth + (width - layerWidth * array.length - 2 * spacing) / (array.length + 1);
+      layerStep = layerWidth + ((width - (layerWidth * array.length) - (2 * spacing)) / (array.length + 1));
 
     ctx.clearRect(0, 0, this.state.width, this.state.height);
 
     ctx.beginPath();
-    ctx.rect(spacing, spacing, width - 2 * spacing, height - 2 * spacing);
+    ctx.rect(spacing, spacing, width - (2 * spacing), height - (2 * spacing));
     ctx.stroke();
 
     for (let i = 0; i < size; i++) {
       const layerHeight = array[i] * maxLayerHeight;
 
       ctx.fillStyle = this.props.colors[i % this.props.colors.length];
-      ctx.fillRect(layerStep * i + 2 * spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
+      ctx.fillRect((layerStep * i) + (2 * spacing), height - layerHeight - (2 * spacing), layerWidth, layerHeight);
 
       ctx.beginPath();
-      ctx.rect(layerStep * i + 2 * spacing, height - layerHeight - 2 * spacing, layerWidth, layerHeight);
+      ctx.rect((layerStep * i) + (2 * spacing), height - layerHeight - (2 * spacing), layerWidth, layerHeight);
       ctx.stroke();
     }
 
@@ -136,11 +132,11 @@ export default React.createClass({
   },
 
   clicked(e) {
-    var rect = ReactDOM.findDOMNode(this.refs.canvas).getClientRects()[0],
-      x = e.pointers[0].clientX - rect.left - 2 * this.props.spacing,
-      y = e.pointers[0].clientY - rect.top - 2 * this.props.spacing,
-      effectiveHeight = rect.height - 4 * this.props.spacing,
-      idx = Math.min(this.state.layers.length - 1, Math.floor((x / (rect.width - 4 * this.props.spacing)) * this.state.layers.length)),
+    var rect = this.canvas.getClientRects()[0],
+      x = e.pointers[0].clientX - rect.left - (2 * this.props.spacing),
+      y = e.pointers[0].clientY - rect.top - (2 * this.props.spacing),
+      effectiveHeight = rect.height - (4 * this.props.spacing),
+      idx = Math.min(this.state.layers.length - 1, Math.floor((x / (rect.width - (4 * this.props.spacing))) * this.state.layers.length)),
       opacity = 1.0 - (y / effectiveHeight),
       layers = [].concat(this.state.layers);
 
@@ -157,9 +153,13 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={style.container}>
-        <canvas className={style.canvas} ref="canvas" width={this.state.width} height={this.state.height}>
-        </canvas>
+      <div className={style.container} ref={c => { this.rootContainer = c; }}>
+        <canvas
+          className={style.canvas}
+          ref={(c) => { this.canvas = c; }}
+          width={this.state.width}
+          height={this.state.height}
+        />
       </div>
     );
   },

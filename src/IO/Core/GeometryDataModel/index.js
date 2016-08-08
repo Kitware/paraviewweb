@@ -1,5 +1,7 @@
-import DataManager from '../DataManager';
+/* global window */
+
 import Monologue from 'monologue.js';
+import DataManager from '../DataManager';
 
 const
   dataManager = new DataManager(),

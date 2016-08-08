@@ -1,6 +1,7 @@
 var offscreenCanvasCount = 0;
 
 // Create <canvas/> within the DOM
+/* global document */
 export default class CanvasOffscreenBuffer {
 
   constructor(width, height) {

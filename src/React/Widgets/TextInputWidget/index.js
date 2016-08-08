@@ -51,7 +51,7 @@ export default React.createClass({
           onChange={this.valueChange}
           onBlur={this.endEditing}
         />
-        <i className={this.state.editing ? style.editingButton : style.button}></i>
+        <i className={this.state.editing ? style.editingButton : style.button} />
       </div>);
   },
 });

@@ -1,10 +1,12 @@
+import React                    from 'react';
+
+import style                    from 'PVWStyle/ReactCollapsibleControls/QueryDataModelControl.mcss';
+
 import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import DataListenerMixin        from '../../Widgets/QueryDataModelWidget/DataListenerMixin';
 import DataListenerUpdateMixin  from '../../Widgets/QueryDataModelWidget/DataListenerUpdateMixin';
 import ExploreButton            from '../../Widgets/ToggleIconButtonWidget';
 import QueryDataModelWidget     from '../../Widgets/QueryDataModelWidget';
-import React                    from 'react';
-import style                    from 'PVWStyle/ReactCollapsibleControls/QueryDataModelControl.mcss';
 
 export default React.createClass({
 
@@ -46,7 +48,6 @@ export default React.createClass({
       >
         <QueryDataModelWidget
           key="QueryDataModelWidget"
-          ref="QueryDataModelWidget"
           model={this.props.model}
         />
       </CollapsibleWidget>);

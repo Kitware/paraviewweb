@@ -1,4 +1,4 @@
-export const YlGn = [
+const YlGn = [
   'rgb(255, 255, 229)',
   'rgb(247, 252, 185)',
   'rgb(217, 240, 163)',
@@ -10,7 +10,7 @@ export const YlGn = [
   'rgb(0, 69, 41)',
 ];
 
-export const YlGnBu = [
+const YlGnBu = [
   'rgb(255, 255, 217)',
   'rgb(237, 248, 177)',
   'rgb(199, 233, 180)',
@@ -22,7 +22,7 @@ export const YlGnBu = [
   'rgb(8, 29, 88)',
 ];
 
-export const GnBu = [
+const GnBu = [
   'rgb(247, 252, 240)',
   'rgb(224, 243, 219)',
   'rgb(204, 235, 197)',
@@ -34,7 +34,7 @@ export const GnBu = [
   'rgb(8, 64, 129)',
 ];
 
-export const BuGn = [
+const BuGn = [
   'rgb(247, 252, 253)',
   'rgb(229, 245, 249)',
   'rgb(204, 236, 230)',
@@ -46,7 +46,7 @@ export const BuGn = [
   'rgb(0, 68, 27)',
 ];
 
-export const PuBuGn = [
+const PuBuGn = [
   'rgb(255, 247, 251)',
   'rgb(236, 226, 240)',
   'rgb(208, 209, 230)',
@@ -58,7 +58,7 @@ export const PuBuGn = [
   'rgb(1, 70, 54)',
 ];
 
-export const PuBu = [
+const PuBu = [
   'rgb(255, 247, 251)',
   'rgb(236, 231, 242)',
   'rgb(208, 209, 230)',
@@ -70,7 +70,7 @@ export const PuBu = [
   'rgb(2, 56, 88)',
 ];
 
-export const BuPu = [
+const BuPu = [
   'rgb(247, 252, 253)',
   'rgb(224, 236, 244)',
   'rgb(191, 211, 230)',
@@ -82,7 +82,7 @@ export const BuPu = [
   'rgb(77, 0, 75)',
 ];
 
-export const RdPu = [
+const RdPu = [
   'rgb(255, 247, 243)',
   'rgb(253, 224, 221)',
   'rgb(252, 197, 192)',
@@ -94,7 +94,7 @@ export const RdPu = [
   'rgb(73, 0, 106)',
 ];
 
-export const PuRd = [
+const PuRd = [
   'rgb(247, 244, 249)',
   'rgb(231, 225, 239)',
   'rgb(212, 185, 218)',
@@ -106,7 +106,7 @@ export const PuRd = [
   'rgb(103, 0, 31)',
 ];
 
-export const OrRd = [
+const OrRd = [
   'rgb(255, 247, 236)',
   'rgb(254, 232, 200)',
   'rgb(253, 212, 158)',
@@ -118,7 +118,7 @@ export const OrRd = [
   'rgb(127, 0, 0)',
 ];
 
-export const YlOrRd = [
+const YlOrRd = [
   'rgb(255, 255, 204)',
   'rgb(255, 237, 160)',
   'rgb(254, 217, 118)',
@@ -130,7 +130,7 @@ export const YlOrRd = [
   'rgb(128, 0, 38)',
 ];
 
-export const YlOrBr = [
+const YlOrBr = [
   'rgb(255, 255, 229)',
   'rgb(255, 247, 188)',
   'rgb(254, 227, 145)',
@@ -142,7 +142,7 @@ export const YlOrBr = [
   'rgb(102, 37, 6)',
 ];
 
-export const Purples = [
+const Purples = [
   'rgb(252, 251, 253)',
   'rgb(239, 237, 245)',
   'rgb(218, 218, 235)',
@@ -154,7 +154,7 @@ export const Purples = [
   'rgb(63, 0, 125)',
 ];
 
-export const Blues = [
+const Blues = [
   'rgb(247, 251, 255)',
   'rgb(222, 235, 247)',
   'rgb(198, 219, 239)',
@@ -166,7 +166,7 @@ export const Blues = [
   'rgb(8, 48, 107)',
 ];
 
-export const Greens = [
+const Greens = [
   'rgb(247, 252, 245)',
   'rgb(229, 245, 224)',
   'rgb(199, 233, 192)',
@@ -178,7 +178,7 @@ export const Greens = [
   'rgb(0, 68, 27)',
 ];
 
-export const Oranges = [
+const Oranges = [
   'rgb(255, 245, 235)',
   'rgb(254, 230, 206)',
   'rgb(253, 208, 162)',
@@ -190,7 +190,7 @@ export const Oranges = [
   'rgb(127, 39, 4)',
 ];
 
-export const Reds = [
+const Reds = [
   'rgb(255, 245, 240)',
   'rgb(254, 224, 210)',
   'rgb(252, 187, 161)',
@@ -202,7 +202,7 @@ export const Reds = [
   'rgb(103, 0, 13)',
 ];
 
-export const Greys = [
+const Greys = [
   'rgb(255, 255, 255)',
   'rgb(240, 240, 240)',
   'rgb(217, 217, 217)',
@@ -214,7 +214,7 @@ export const Greys = [
   'rgb(0, 0, 0)',
 ];
 
-export const PuOr = [
+const PuOr = [
   'rgb(127, 59, 8)',
   'rgb(179, 88, 6)',
   'rgb(224, 130, 20)',
@@ -228,7 +228,7 @@ export const PuOr = [
   'rgb(45, 0, 75)',
 ];
 
-export const BrBG = [
+const BrBG = [
   'rgb(84, 48, 5)',
   'rgb(140, 81, 10)',
   'rgb(191, 129, 45)',
@@ -242,7 +242,7 @@ export const BrBG = [
   'rgb(0, 60, 48)',
 ];
 
-export const PRGn = [
+const PRGn = [
   'rgb(64, 0, 75)',
   'rgb(118, 42, 131)',
   'rgb(153, 112, 171)',
@@ -256,7 +256,7 @@ export const PRGn = [
   'rgb(0, 68, 27)',
 ];
 
-export const PiYG = [
+const PiYG = [
   'rgb(142, 1, 82)',
   'rgb(197, 27, 125)',
   'rgb(222, 119, 174)',
@@ -270,7 +270,7 @@ export const PiYG = [
   'rgb(39, 100, 25)',
 ];
 
-export const RdBu = [
+const RdBu = [
   'rgb(103, 0, 31)',
   'rgb(178, 24, 43)',
   'rgb(214, 96, 77)',
@@ -284,7 +284,7 @@ export const RdBu = [
   'rgb(5, 48, 97)',
 ];
 
-export const RdGy = [
+const RdGy = [
   'rgb(103, 0, 31)',
   'rgb(178, 24, 43)',
   'rgb(214, 96, 77)',
@@ -298,7 +298,7 @@ export const RdGy = [
   'rgb(26, 26, 26)',
 ];
 
-export const RdYlBu = [
+const RdYlBu = [
   'rgb(165, 0, 38)',
   'rgb(215, 48, 39)',
   'rgb(244, 109, 67)',
@@ -312,7 +312,7 @@ export const RdYlBu = [
   'rgb(49, 54, 149)',
 ];
 
-export const Spectral = [
+const Spectral = [
   'rgb(158, 1, 66)',
   'rgb(213, 62, 79)',
   'rgb(244, 109, 67)',
@@ -326,7 +326,7 @@ export const Spectral = [
   'rgb(94, 79, 162)',
 ];
 
-export const RdYlGn = [
+const RdYlGn = [
   'rgb(165, 0, 38)',
   'rgb(215, 48, 39)',
   'rgb(244, 109, 67)',
@@ -340,7 +340,7 @@ export const RdYlGn = [
   'rgb(0, 104, 55)',
 ];
 
-export const Accent = [
+const Accent = [
   'rgb(127, 201, 127)',
   'rgb(190, 174, 212)',
   'rgb(253, 192, 134)',
@@ -351,7 +351,7 @@ export const Accent = [
   'rgb(102, 102, 102)',
 ];
 
-export const Dark2 = [
+const Dark2 = [
   'rgb(27, 158, 119)',
   'rgb(217, 95, 2)',
   'rgb(117, 112, 179)',
@@ -362,7 +362,7 @@ export const Dark2 = [
   'rgb(102, 102, 102)',
 ];
 
-export const Paired = [
+const Paired = [
   'rgb(166, 206, 227)',
   'rgb(31, 120, 180)',
   'rgb(178, 223, 138)',
@@ -377,7 +377,7 @@ export const Paired = [
   'rgb(177, 89, 40)',
 ];
 
-export const Pastel1 = [
+const Pastel1 = [
   'rgb(251, 180, 174)',
   'rgb(179, 205, 227)',
   'rgb(204, 235, 197)',
@@ -389,7 +389,7 @@ export const Pastel1 = [
   'rgb(242, 242, 242)',
 ];
 
-export const Pastel2 = [
+const Pastel2 = [
   'rgb(179, 226, 205)',
   'rgb(253, 205, 172)',
   'rgb(203, 213, 232)',
@@ -400,7 +400,7 @@ export const Pastel2 = [
   'rgb(204, 204, 204)',
 ];
 
-export const Set1 = [
+const Set1 = [
   'rgb(228, 26, 28)',
   'rgb(55, 126, 184)',
   'rgb(77, 175, 74)',
@@ -412,7 +412,7 @@ export const Set1 = [
   'rgb(153, 153, 153)',
 ];
 
-export const Set2 = [
+const Set2 = [
   'rgb(102, 194, 165)',
   'rgb(252, 141, 98)',
   'rgb(141, 160, 203)',
@@ -423,7 +423,7 @@ export const Set2 = [
   'rgb(179, 179, 179)',
 ];
 
-export const Set3 = [
+const Set3 = [
   'rgb(141, 211, 199)',
   'rgb(255, 255, 179)',
   'rgb(190, 186, 218)',

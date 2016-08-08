@@ -1,6 +1,8 @@
-import Layouts from '../../../React/Renderers/MultiLayoutRenderer/Layouts';
+/* global document */
+
 import Monologue from 'monologue.js';
 import style from 'PVWStyle/ComponentNative/Workbench.mcss';
+import Layouts from '../../../React/Renderers/MultiLayoutRenderer/Layouts';
 
 const CHANGE_TOPIC = 'Workbench.change';
 const noOpRenderer = { resize() {}, render() {} };

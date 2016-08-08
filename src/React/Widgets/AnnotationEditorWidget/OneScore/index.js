@@ -1,7 +1,9 @@
 import React from 'react';
+
+import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
+
 import ScoreSelector from '../ScoreSelector';
 import SelectionEditorWidget from '../../SelectionEditorWidget';
-import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function oneScoreAnnotationEditorWidget(props) {
   return (

@@ -10,8 +10,7 @@ export default function fieldRender(props) {
           <td className={style.operationCell} title={props.fieldName}>
             <LegendIcon width="25px" height="25px" getLegend={props.getLegend} name={props.fieldName} />
           </td>
-          <td className={style.groupTableCell}>
-          </td>
+          <td className={style.groupTableCell} />
           <td>
             <table className={style.table}>
               <tbody>

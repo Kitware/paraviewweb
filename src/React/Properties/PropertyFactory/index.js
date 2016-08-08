@@ -1,8 +1,9 @@
+import React            from 'react';
+
 import CellProperty     from '../CellProperty';
 import CheckboxProperty from '../CheckboxProperty';
 import EnumProperty     from '../EnumProperty';
 import MapProperty     from '../MapProperty';
-import React            from 'react';
 import SliderProperty   from '../SliderProperty';
 
 /* eslint-disable react/display-name */

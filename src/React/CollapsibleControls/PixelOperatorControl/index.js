@@ -1,5 +1,6 @@
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import React                from 'react';
+
+import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
 import TextInputWidget      from '../../Widgets/TextInputWidget';
 
 export default React.createClass({

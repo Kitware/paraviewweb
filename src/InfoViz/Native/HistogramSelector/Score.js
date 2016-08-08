@@ -1,10 +1,10 @@
+import d3 from 'd3';
+
+import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
+
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
-import d3 from 'd3';
-/* eslint-disable import/no-unresolved */
-import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
-/* eslint-enable import/no-unresolved */
 import downArrowImage from './down_arrow.png';
 
 let publicAPI = null;
@@ -13,7 +13,7 @@ let displayOnlyScored = false;
 let scorePopupDiv = null;
 let dividerPopupDiv = null;
 
-export function init(inPublicAPI, inModel) {
+function init(inPublicAPI, inModel) {
   publicAPI = inPublicAPI;
   model = inModel;
 
@@ -38,14 +38,14 @@ export function init(inPublicAPI, inModel) {
   }
 }
 
-export function defaultFieldData() {
+function defaultFieldData() {
   return {
     scoreDirty: false,
     annotation: null,
   };
 }
 
-export function createDefaultDivider(val, uncert) {
+function createDefaultDivider(val, uncert) {
   return {
     value: val,
     uncertainty: uncert,
@@ -129,11 +129,11 @@ const scoredHeaderClick = (d) => {
   publicAPI.render();
 };
 
-export function getDisplayOnlyScored() {
+function getDisplayOnlyScored() {
   return displayOnlyScored;
 }
 
-export function createGroups(svgGr) {
+function createGroups(svgGr) {
   // scoring interface background group, must be behind.
   svgGr.insert('g', ':first-child')
     .classed(style.jsScoreBackground, true);
@@ -141,7 +141,7 @@ export function createGroups(svgGr) {
     .classed(style.score, true);
 }
 
-export function createHeader(header) {
+function createHeader(header) {
   if (typeof model.scores !== 'undefined') {
     header.append('span')
       .on('click', scoredHeaderClick)
@@ -154,7 +154,7 @@ export function createHeader(header) {
   }
 }
 
-export function updateHeader() {
+function updateHeader() {
   if (typeof model.scores !== 'undefined') {
     d3.select(`.${style.jsScoredIcon}`)
       // apply class - 'false' should come first to not remove common base class.
@@ -163,7 +163,7 @@ export function updateHeader() {
   }
 }
 
-export function createDragDivider(hitIndex, val, def, hobj) {
+function createDragDivider(hitIndex, val, def, hobj) {
   let dragD = null;
   if (hitIndex >= 0) {
     // start modifying existing divider
@@ -195,11 +195,11 @@ function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
   // Note comparison with low/high divider is signed. If val indicates divider has been
   // moved _past_ the neighboring divider, low/high will be negative.
   if (hitIndex > 0) {
-    const low = def.dividers[hitIndex - 1].value + def.dividers[hitIndex - 1].uncertainty * uncertScale;
+    const low = def.dividers[hitIndex - 1].value + (def.dividers[hitIndex - 1].uncertainty * uncertScale);
     maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
   }
   if (hitIndex < def.dividers.length - 1) {
-    const high = def.dividers[hitIndex + 1].value - def.dividers[hitIndex + 1].uncertainty * uncertScale;
+    const high = def.dividers[hitIndex + 1].value - (def.dividers[hitIndex + 1].uncertainty * uncertScale);
     maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
   }
   // make sure uncertainty is zero when val has passed a neighbor.
@@ -215,7 +215,7 @@ function clampDragDividerUncertainty(val, def) {
   def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
 }
 
-export function moveDragDivider(val, def) {
+function moveDragDivider(val, def) {
   if (def.dragDivider.index >= 0) {
     // if we drag outside our bounds, make this a 'temporary' extra divider.
     if (val < def.dragDivider.low) {
@@ -244,7 +244,7 @@ const bisectDividers = d3.bisector((a, b) => (a.value - b.value)).left;
 
 // where are we (to the left of) in the divider list?
 // Did we hit one?
-export function dividerPick(overCoords, def, marginPx, minVal) {
+function dividerPick(overCoords, def, marginPx, minVal) {
   const val = def.xScale.invert(overCoords[0]);
   const index = bisectDividers(def.dividers, createDefaultDivider(val));
   let hitIndex = -1;
@@ -267,14 +267,14 @@ export function dividerPick(overCoords, def, marginPx, minVal) {
   return [val, index, hitIndex];
 }
 
-export function regionPick(overCoords, def, hobj) {
+function regionPick(overCoords, def, hobj) {
   if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
   const val = def.xScale.invert(overCoords[0]);
   const hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
   return hitIndex;
 }
 
-export function finishDivider(def, hobj, forceDelete = false) {
+function finishDivider(def, hobj, forceDelete = false) {
   const val = def.dragDivider.newDivider.value;
   // if val is defined, we moved an existing divider inside
   // its region, and we just need to render. Otherwise...
@@ -319,11 +319,9 @@ export function finishDivider(def, hobj, forceDelete = false) {
         def.regions.splice(index, 0, def.regions[index]);
       }
     }
-  } else {
-    if (def.dragDivider.index >= 0 &&
-        def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
-      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
-    }
+  } else if (def.dragDivider.index >= 0
+      && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
+    def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
   }
   // make sure uncertainties don't overlap.
   def.dividers.forEach((divider, index) => {
@@ -333,7 +331,7 @@ export function finishDivider(def, hobj, forceDelete = false) {
   def.dragDivider = undefined;
 }
 
-export function positionPopup(popupDiv, left, top) {
+function positionPopup(popupDiv, left, top) {
   const clientRect = model.listContainer.getBoundingClientRect();
   const popupRect = popupDiv.node().getBoundingClientRect();
   if (popupRect.width + left > clientRect.width) {
@@ -353,12 +351,12 @@ export function positionPopup(popupDiv, left, top) {
   }
 }
 
-export function validateDividerVal(n) {
+function validateDividerVal(n) {
   // is it a finite float number?
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
+function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
   const topMargin = 4;
   const rowHeight = 28;
   // 's' SI unit label won't work for a number entry field.
@@ -366,8 +364,8 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
 
   dPopupDiv
     .style('display', 'initial');
-  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight,
-                coord[1] + model.headerSize - topMargin - 2 * rowHeight);
+  positionPopup(dPopupDiv, coord[0] - topMargin - (0.5 * rowHeight),
+                (coord[1] + model.headerSize) - (topMargin + (2 * rowHeight)));
 
   const selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
   let savedVal = selDivider.value;
@@ -427,8 +425,11 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
     .on('input', () => {
       // typing values, show feedback.
       let uncert = d3.event.target.value;
-      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;
-      else uncert = 0.01 * uncert;
+      if (!validateDividerVal(uncert)) {
+        uncert = selectedDef.dragDivider.savedUncert;
+      } else {
+        uncert *= 0.01;
+      }
       selectedDef.dragDivider.newDivider.uncertainty = uncert;
       if (selectedDef.dragDivider.newDivider.value === undefined) {
         // don't use selDivider, might be out-of-date if the server sent us dividers.
@@ -470,7 +471,7 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
     });
 }
 // Divider editing popup allows changing its value or uncertainty, or deleting it.
-export function createDividerPopup() {
+function createDividerPopup() {
   const dPopupDiv = d3.select(model.listContainer).append('div')
     .classed(style.dividerPopup, true)
     .style('display', 'none');
@@ -516,7 +517,7 @@ export function createDividerPopup() {
   return dPopupDiv;
 }
 
-export function showScorePopup(sPopupDiv, coord, selRow) {
+function showScorePopup(sPopupDiv, coord, selRow) {
   // it seemed like a good idea to use getBoundingClientRect() to determine row height
   // but it returns all zeros when the popup has been invisible...
   const topMargin = 4;
@@ -524,14 +525,14 @@ export function showScorePopup(sPopupDiv, coord, selRow) {
 
   sPopupDiv
     .style('display', 'initial');
-  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight,
-                coord[1] + model.headerSize - topMargin - (0.6 + selRow) * rowHeight);
+  positionPopup(sPopupDiv, coord[0] - topMargin - (0.6 * rowHeight),
+                (coord[1] + model.headerSize) - (topMargin + ((0.6 + selRow) * rowHeight)));
 
   sPopupDiv.selectAll(`.${style.jsScoreLabel}`)
     .style('background-color', (d, i) => ((i === selRow) ? d.bgColor : '#fff'));
 }
 
-export function createScorePopup() {
+function createScorePopup() {
   const sPopupDiv = d3.select(model.listContainer).append('div')
     .classed(style.scorePopup, true)
     .style('display', 'none')
@@ -589,7 +590,7 @@ export function createScorePopup() {
   return sPopupDiv;
 }
 
-export function createPopups() {
+function createPopups() {
   if (typeof model.scores !== 'undefined') {
     scorePopupDiv = d3.select(model.listContainer).select(`.${style.jsScorePopup}`);
     if (scorePopupDiv.empty()) {
@@ -602,17 +603,17 @@ export function createPopups() {
   }
 }
 
-export function showScore(def) {
+function showScore(def) {
   // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
   return (def.editScore || (typeof def.regions !== 'undefined' &&
                             ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
 }
 
-export function editingScore(def) {
+function editingScore(def) {
   return def.editScore;
 }
 
-export function filterFieldNames(fieldNames) {
+function filterFieldNames(fieldNames) {
   if (getDisplayOnlyScored()) {
     // filter for fields that have scores
     return fieldNames.filter((name) => (showScore(model.fieldData[name])));
@@ -620,7 +621,7 @@ export function filterFieldNames(fieldNames) {
   return fieldNames;
 }
 
-export function prepareItem(def, idx, svgGr, tdsl) {
+function prepareItem(def, idx, svgGr, tdsl) {
   if (typeof model.scores === 'undefined') return;
   if (typeof def.dividers === 'undefined') {
     def.dividers = [];
@@ -658,10 +659,10 @@ export function prepareItem(def, idx, svgGr, tdsl) {
       .attr('rx', 8)
       .attr('ry', 8);
     uncertRegions
-      .attr('x', d => def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min)))
+      .attr('x', d => def.xScale(d.value - (d.uncertainty * (hobj.max - hobj.min))))
       .attr('y', 0)
       // to get a width, need to start from 'zero' of this scale, which is hobj.min
-      .attr('width', (d, i) => def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min)))
+      .attr('width', (d, i) => def.xScale(hobj.min + (2 * d.uncertainty * (hobj.max - hobj.min))))
       .attr('height', () => model.histHeight)
       .attr('fill', '#000')
       .attr('opacity', (d) => (d.uncertainty > 0 ? '0.2' : '0'));
@@ -701,13 +702,11 @@ export function prepareItem(def, idx, svgGr, tdsl) {
           // create a temp divider to render.
           def.dragDivider = createDragDivider(-1, val, def, hobj);
           publicAPI.render();
-        } else {
-          if (hitIndex >= 0) {
-            // start dragging existing divider
-            // it becomes a temporary copy if we go outside our bounds
-            def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-            publicAPI.render();
-          }
+        } else if (hitIndex >= 0) {
+          // start dragging existing divider
+          // it becomes a temporary copy if we go outside our bounds
+          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+          publicAPI.render();
         }
       })
       .on('drag', () => {
@@ -753,7 +752,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         .attr('width', (d, i) => (def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i])) +
                                   (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
         // extend over the x-axis when editing.
-        .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3)
+        .attr('height', def.editScore ? (model.histHeight + model.histMargin.bottom) - 3 : model.histMargin.bottom - 3)
         .attr('fill', (d) => (model.scores[d].color))
         .attr('opacity', showScore(def) ? reg.opacity : '0');
       reg.sel.exit().remove();
@@ -828,7 +827,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
   }
 }
 
-export function addSubscriptions() {
+function addSubscriptions() {
   if (model.provider.isA('PartitionProvider')) {
     model.subscriptions.push(model.provider.onPartitionReady((field) => {
       model.fieldData[field].scoreDirty = true;

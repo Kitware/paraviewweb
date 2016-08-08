@@ -1,5 +1,5 @@
-import AbstractViewerMenu   from '../AbstractViewerMenu';
 import React                from 'react';
+import AbstractViewerMenu   from '../AbstractViewerMenu';
 
 export default React.createClass({
 

@@ -101,7 +101,7 @@ export default React.createClass({
                   onClick={this.activateButton}
                   data-idx={idx}
                   className={[style[className], obj.icon].join(' ')}
-                ></i>);
+                />);
             }
             return null;
           })}

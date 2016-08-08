@@ -57,25 +57,27 @@ export default class CPUCompositor {
     loop(!!this.reverseCompositePass, this.numLayers, drawIdx => {
       for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
-          const idx = this.width * y + x,
-            flipIdx = ((height - y - 1) * width + x),
-            layerIdx = this.orderData[drawIdx * imageSize + idx];
+          const idx = (this.width * y) + x,
+            flipIdx = (((height - y - 1) * width) + x),
+            layerIdx = this.orderData[(drawIdx * imageSize) + idx];
 
           let intensity = 1.0;
 
           // Skip pixels (bg | not visible)
           if (layerIdx === 255 || this.colorHelper.hasNoContent(layerIdx)) {
+            /* eslint-disable no-continue */
             continue;
+            /* eslint-enable no-continue */
           }
 
           if (this.intensityData) {
-            intensity = this.intensityData[drawIdx * imageSize + idx] / 255.0;
+            intensity = this.intensityData[(drawIdx * imageSize) + idx] / 255.0;
           }
 
           // Blend
-          const alphA = pixels[flipIdx * 4 + 3] / 255.0,
+          const alphA = pixels[(flipIdx * 4) + 3] / 255.0,
             alphANeg = 1.0 - alphA,
-            rgbA = [pixels[flipIdx * 4], pixels[flipIdx * 4 + 1], pixels[flipIdx * 4 + 2]],
+            rgbA = [pixels[flipIdx * 4], pixels[(flipIdx * 4) + 1], pixels[(flipIdx * 4) + 2]],
             pixelRGBA = this.colorHelper.getColor(layerIdx, idx),
             alphaB = pixelRGBA[3] / 255.0,
             rgbB = [
@@ -87,9 +89,9 @@ export default class CPUCompositor {
 
           if (alphaB > 0) {
             pixels[flipIdx * 4] = ((rgbA[0] * alphA) + rgbB[0]) / alphOut;
-            pixels[flipIdx * 4 + 1] = ((rgbA[1] * alphA) + rgbB[1]) / alphOut;
-            pixels[flipIdx * 4 + 2] = ((rgbA[2] * alphA) + rgbB[2]) / alphOut;
-            pixels[flipIdx * 4 + 3] = alphOut * 255.0;
+            pixels[(flipIdx * 4) + 1] = ((rgbA[1] * alphA) + rgbB[1]) / alphOut;
+            pixels[(flipIdx * 4) + 2] = ((rgbA[2] * alphA) + rgbB[2]) / alphOut;
+            pixels[(flipIdx * 4) + 3] = alphOut * 255.0;
           } else {
             console.log('no alpha while skip should have worked', pixelRGBA[3]);
           }

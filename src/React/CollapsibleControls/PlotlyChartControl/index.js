@@ -1,7 +1,8 @@
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import DropDownWidget       from '../../Widgets/DropDownWidget';
-import React       from 'react';
-// import style       from 'PVWStyle/ReactCollapsibleControls/PlotlyChartControl.mcss';
+import React from 'react';
+
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import DropDownWidget    from '../../Widgets/DropDownWidget';
+
 import Histogram   from './Histogram';
 import Histogram2D from './Histogram2D';
 import Scatter3D   from './Scatter3D';

@@ -1,12 +1,12 @@
 import React            from 'react';
 
+import style            from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+
 import Ineq             from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq            from '../../../../../svg/Operations/Ineqq.svg';
 import LegendIcon       from '../LegendIcon';
 import NumberFormatter  from '../../../../Common/Misc/NumberFormatter';
 import SvgIconWidget    from '../../SvgIconWidget';
-
-import style            from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 const CHOICE_LABELS = {
   o: Ineq,
@@ -104,7 +104,7 @@ export default function fiveClauseRender(props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      <i className={style.deleteButton} onClick={onDelete}></i>
+      <i className={style.deleteButton} onClick={onDelete} />
     </section>);
 }
 

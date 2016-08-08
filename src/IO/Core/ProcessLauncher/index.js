@@ -1,3 +1,5 @@
+/* global XMLHttpRequest */
+
 import Monologue from 'monologue.js';
 
 const

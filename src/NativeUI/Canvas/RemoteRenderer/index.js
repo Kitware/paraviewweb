@@ -1,7 +1,10 @@
+/* global document Image */
+/* eslint-disable no-underscore-dangle */
+
 import Monologue            from 'monologue.js';
 import MouseHandler         from '../../../Interaction/Core/MouseHandler';
 import VtkWebMouseListener  from '../../../Interaction/Core/VtkWebMouseListener';
-import { getSize }          from '../../../Common/Misc/SizeHelper';
+import SizeHelper           from '../../../Common/Misc/SizeHelper';
 
 const IMAGE_READY_TOPIC = 'image-ready';
 
@@ -81,7 +84,7 @@ export default class RemoteRenderer {
       this.mouseHandler = new MouseHandler(container);
       this.mouseHandler.attach(this.mouseListener.getListeners());
       this.container.appendChild(this.canvas);
-      this.size = getSize(container);
+      this.size = SizeHelper.getSize(container);
       this.render(true);
     }
   }
@@ -120,7 +123,7 @@ export default class RemoteRenderer {
             this.renderPending = false;
 
             // stats
-            const localTime = + new Date();
+            const localTime = +new Date();
             this.stats.workTime = resp.workTime;
             this.stats.roundTrip = (localTime - resp.localTime) - resp.workTime;
             this.stats.deltaT.push(localTime - resp.localTime);
@@ -155,7 +158,7 @@ export default class RemoteRenderer {
 
   resize() {
     if (this.container) {
-      this.size = getSize(this.container);
+      this.size = SizeHelper.getSize(this.container);
       this.render(true);
     }
   }
