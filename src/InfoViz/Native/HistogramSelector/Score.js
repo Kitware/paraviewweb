@@ -319,11 +319,9 @@ export function finishDivider(def, hobj, forceDelete = false) {
         def.regions.splice(index, 0, def.regions[index]);
       }
     }
-  } else {
-    if (def.dragDivider.index >= 0 &&
-        def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
-      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
-    }
+  } else if (def.dragDivider.index >= 0
+      && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
+    def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
   }
   // make sure uncertainties don't overlap.
   def.dividers.forEach((divider, index) => {
@@ -701,13 +699,11 @@ export function prepareItem(def, idx, svgGr, tdsl) {
           // create a temp divider to render.
           def.dragDivider = createDragDivider(-1, val, def, hobj);
           publicAPI.render();
-        } else {
-          if (hitIndex >= 0) {
-            // start dragging existing divider
-            // it becomes a temporary copy if we go outside our bounds
-            def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-            publicAPI.render();
-          }
+        } else if (hitIndex >= 0) {
+          // start dragging existing divider
+          // it becomes a temporary copy if we go outside our bounds
+          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+          publicAPI.render();
         }
       })
       .on('drag', () => {

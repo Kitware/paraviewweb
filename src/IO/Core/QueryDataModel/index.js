@@ -680,19 +680,17 @@ export default class QueryDataModel {
         if (idxs[count] < sizes[count]) {
           // We are good
           continue;
-        } else {
+        } else if (count > 0) {
           // We need to move the index back up
-          if (count > 0) {
-            idxs[count] = 0;
-            idxs[count - 1]++;
-          } else {
-            this.exploreState.animate = false;
-            this.emit('state.change.exploration', {
-              exploration: this.exploreState,
-              instance: this,
-            });
-            return this.exploreState.animate; // We are done
-          }
+          idxs[count] = 0;
+          idxs[count - 1]++;
+        } else {
+          this.exploreState.animate = false;
+          this.emit('state.change.exploration', {
+            exploration: this.exploreState,
+            instance: this,
+          });
+          return this.exploreState.animate; // We are done
         }
       }
 

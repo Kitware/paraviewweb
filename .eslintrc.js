@@ -15,7 +15,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 0, // Force dependency instead of devDep
     'import/no-named-as-default-member': 0,
     'no-continue': 0,
-    'no-lonely-if': 0,
     'no-mixed-operators': 0,
     'object-property-newline': 0,
     'prefer-spread': 0,
