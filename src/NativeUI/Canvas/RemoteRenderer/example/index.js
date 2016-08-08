@@ -1,5 +1,5 @@
 import RemoteRenderer from '..';
-import { onSizeChange, startListening } from '../../../../Common/Misc/SizeHelper';
+import SizeHelper from '../../../../Common/Misc/SizeHelper';
 import SmartConnect from '../../../../IO/WebSocket/SmartConnect';
 import ParaViewWebClient from '../../../../IO/WebSocket/ParaViewWebClient';
 
@@ -24,9 +24,9 @@ smartConnect.onConnectionReady(connection => {
     console.log('We are good');
   });
   window.renderer = renderer;
-  onSizeChange(() => {
+  SizeHelper.onSizeChange(() => {
     renderer.resize();
   });
-  startListening();
+  SizeHelper.startListening();
 });
 smartConnect.connect();
