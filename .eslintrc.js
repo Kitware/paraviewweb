@@ -12,8 +12,8 @@ module.exports = {
     'react/no-is-mounted': 1,
     'react/prefer-es6-class': 0,
     // 'no-restricted-syntax': 1,
-    'import/no-extraneous-dependencies': 0, // Force dependency instead of devDep
-    'react/jsx-filename-extension': 0,
+    'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
+    'react/jsx-filename-extension': [1, { "extensions": [".js"] }],
     'jsx-a11y/label-has-for': 0,
   },
   'settings': {
