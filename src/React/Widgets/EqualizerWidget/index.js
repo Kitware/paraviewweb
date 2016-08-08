@@ -5,11 +5,7 @@ import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
 
 import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
-import {
-    getSize,
-    onSizeChange,
-    startListening,
-} from '../../../Common/Misc/SizeHelper';
+import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 export default React.createClass({
 
@@ -46,10 +42,10 @@ export default React.createClass({
 
   componentWillMount() {
     // Listen to window resize
-    this.sizeSubscription = onSizeChange(this.updateDimensions);
+    this.sizeSubscription = SizeHelper.onSizeChange(this.updateDimensions);
 
     // Make sure we monitor window size if it is not already the case
-    startListening();
+    SizeHelper.startListening();
   },
 
   componentDidMount() {
@@ -85,7 +81,7 @@ export default React.createClass({
 
   updateDimensions() {
     var el = this.rootContainer.parentNode,
-      innerWidth = getSize(el).clientWidth;
+      innerWidth = SizeHelper.getSize(el, true).clientWidth;
 
     if (el && innerWidth && (this.state.width !== innerWidth)) {
       this.setState({ width: innerWidth });

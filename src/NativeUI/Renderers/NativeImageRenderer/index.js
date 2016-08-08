@@ -2,17 +2,12 @@
 
 import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
-import {
-  getSize,
-  onSizeChange,
-  startListening,
-}
-from '../../../Common/Misc/SizeHelper';
+import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 export default class NativeImageRenderer {
 
   constructor(domElement, imageProvider, mouseListeners = null, drawFPS = true) {
-    this.size = getSize(domElement);
+    this.size = SizeHelper.getSize(domElement);
     this.container = domElement;
     this.canvas = document.createElement('canvas');
     this.image = new Image();
@@ -43,15 +38,15 @@ export default class NativeImageRenderer {
     }));
 
     // Add size listener
-    this.subscriptions.push(onSizeChange(() => {
-      this.size = getSize(domElement);
+    this.subscriptions.push(SizeHelper.onSizeChange(() => {
+      this.size = SizeHelper.getSize(domElement);
       this.canvas.setAttribute('width', this.size.clientWidth);
       this.canvas.setAttribute('height', this.size.clientHeight);
       if (this.image.src && this.image.complete) {
         this.updateDrawnImage();
       }
     }));
-    startListening();
+    SizeHelper.startListening();
   }
 
   destroy() {
