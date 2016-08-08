@@ -699,9 +699,8 @@ function histogramSelector(publicAPI, model) {
     const everything = d3.select(model.container);
     Object.keys(data.state).forEach(pName => {
       const binList = data.state[pName];
-      everything.selectAll(`rect[pname='${pName}']`).
-            // classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
-            classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
+      everything.selectAll(`rect[pname='${pName}']`)
+        .classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
     });
   }
 

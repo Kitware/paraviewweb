@@ -217,15 +217,15 @@ function fieldSelector(publicAPI, model) {
               hdata.exit().remove();
 
               if (model.provider.isA('HistogramBinHoverProvider')) {
-                histCell.select('svg').
-                  on('mousemove', function inner(d, i) {
+                histCell.select('svg')
+                  .on('mousemove', function inner(d, i) {
                     const mCoords = d3.mouse(this);
                     const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
                     const state = {};
                     state[fieldName] = [binNum];
                     model.provider.setHoverState({ state });
-                  }).
-                  on('mouseout', (d, i) => {
+                  })
+                  .on('mouseout', (d, i) => {
                     const state = {};
                     state[fieldName] = [-1];
                     model.provider.setHoverState({ state });
@@ -252,9 +252,9 @@ function fieldSelector(publicAPI, model) {
     const svg = d3.select(model.container);
     Object.keys(data.state).forEach(pName => {
       const binList = data.state[pName];
-      svg.selectAll(`rect[pname='${pName}']`).
-            classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1).
-            classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
+      svg.selectAll(`rect[pname='${pName}']`)
+        .classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1)
+        .classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
     });
   }
 

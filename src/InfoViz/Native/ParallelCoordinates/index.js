@@ -362,9 +362,9 @@ function parallelCoordinate(publicAPI, model) {
         .classed(style.annotatedAxisText, (d, i) => d.annotated)
         .on('click', (d, i) => {
           model.axes.clearSelection(i);
-        }).
-        attr('text-anchor', (d, i) => d.align).
-        attr('transform', (d, i) => `translate(${d.centerX}, ${ypos})`);
+        })
+        .attr('text-anchor', (d, i) => d.align)
+        .attr('transform', (d, i) => `translate(${d.centerX}, ${ypos})`);
     }
   }
 
@@ -372,19 +372,19 @@ function parallelCoordinate(publicAPI, model) {
     // Manage the svg dom for the axis ticks
     const svg = d3.select(model.container).select('svg');
     const ticksGroup = svg.select('g.axis-ticks');
-    const axisTickNodes = ticksGroup.selectAll('text.axis-ticks').
-      data(tickDataModel);
+    const axisTickNodes = ticksGroup.selectAll('text.axis-ticks')
+      .data(tickDataModel);
 
-    axisTickNodes.enter().append('text').
-      classed('axis-ticks', true).
-      classed(style.axisTicks, true);
+    axisTickNodes.enter().append('text')
+      .classed('axis-ticks', true)
+      .classed(style.axisTicks, true);
 
     axisTickNodes.exit().remove();
 
-    ticksGroup.selectAll('text.axis-ticks').
-      text((d, i) => d.value).
-      attr('text-anchor', (d, i) => d.align).
-      attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
+    ticksGroup.selectAll('text.axis-ticks')
+      .text((d, i) => d.value)
+      .attr('text-anchor', (d, i) => d.align)
+      .attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
   }
 
   function axisMouseDragHandler(data, index) {
@@ -396,8 +396,9 @@ function parallelCoordinate(publicAPI, model) {
       if (rectHeight >= 0) {
         pendingSelection.attr('height', rectHeight);
       } else {
-        pendingSelection.attr('transform', `translate(${pendingSelection.attr('data-initial-x')}, ${coords[1]})`).
-          attr('height', -rectHeight);
+        pendingSelection
+          .attr('transform', `translate(${pendingSelection.attr('data-initial-x')}, ${coords[1]})`)
+          .attr('height', -rectHeight);
       }
     }
   }
@@ -412,8 +413,8 @@ function parallelCoordinate(publicAPI, model) {
     const axisLineGroup = svg.select('g.axis-lines');
 
     // Now manage the svg dom
-    const axisLineNodes = axisLineGroup.selectAll('rect.axis-lines').
-      data(axesCenters);
+    const axisLineNodes = axisLineGroup.selectAll('rect.axis-lines')
+      .data(axesCenters);
 
     axisLineNodes
       .enter()
@@ -719,10 +720,10 @@ function parallelCoordinate(publicAPI, model) {
 
     if (model.container) {
       model.container.innerHTML = htmlContent;
-      d3.select(model.container).
-        select('div.parallel-coords-placeholder').
-        select('img').
-        attr('src', iconImage);
+      d3.select(model.container)
+        .select('div.parallel-coords-placeholder')
+        .select('img')
+        .attr('src', iconImage);
       model.container.appendChild(model.canvas);
       d3.select(model.container).append('svg');
       publicAPI.resize();

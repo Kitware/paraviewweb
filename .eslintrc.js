@@ -12,7 +12,6 @@ module.exports = {
     'react/no-is-mounted': 1,
     'react/prefer-es6-class': 0,
     // 'no-restricted-syntax': 1,
-    'dot-location': 0,
     'import/imports-first': 0,
     'import/no-extraneous-dependencies': 0, // Force dependency instead of devDep
     'import/no-named-as-default-member': 0,
