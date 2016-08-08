@@ -425,8 +425,11 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
     .on('input', () => {
       // typing values, show feedback.
       let uncert = d3.event.target.value;
-      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;
-      else uncert = 0.01 * uncert;
+      if (!validateDividerVal(uncert)) {
+        uncert = selectedDef.dragDivider.savedUncert;
+      } else {
+        uncert *= 0.01;
+      }
       selectedDef.dragDivider.newDivider.uncertainty = uncert;
       if (selectedDef.dragDivider.newDivider.value === undefined) {
         // don't use selDivider, might be out-of-date if the server sent us dividers.

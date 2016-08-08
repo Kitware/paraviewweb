@@ -19,7 +19,6 @@ module.exports = {
     'react/self-closing-comp': 0,
     'jsx-a11y/label-has-for': 0,
     'react/no-find-dom-node': 0,
-    'operator-assignment': 0,
     'react/jsx-curly-spacing': 0,
   },
   'settings': {
