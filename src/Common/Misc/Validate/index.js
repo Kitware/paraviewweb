@@ -15,8 +15,16 @@ export function boolean(val) {
 }
 
 export default {
-  integer, int: integer,
-  double, dbl: double, float: double,
-  string, str: string,
-  boolean, bool: boolean,
+  integer,
+  int: integer,
+
+  double,
+  dbl: double,
+  float: double,
+
+  string,
+  str: string,
+
+  boolean,
+  bool: boolean,
 };
