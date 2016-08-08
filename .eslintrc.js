@@ -1,20 +1,23 @@
 module.exports = {
   extends: 'airbnb',
   rules: {
-    'max-len': [1, 160, 4, {"ignoreUrls": true}],
-    'no-console': 0,
-    'no-multi-spaces': [2, { exceptions: { "ImportDeclaration": true } }],
-    'no-nested-ternary': 0,
-    'no-param-reassign': [2, { props: false }],
-    'no-unused-vars': [2, { args: 'none' }],
+    'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
+    'max-len': ["warn", 160, 4, {"ignoreUrls": true}],
+    'no-multi-spaces': ["error", { exceptions: { "ImportDeclaration": true } }],
+    'no-param-reassign': ["error", { props: false }],
+    'no-unused-vars': ["error", { args: 'none' }],
+    'react/jsx-filename-extension': ["error", { "extensions": [".js"] }],
+
+    // Should fix that at some point but too much work...
+    'react/no-is-mounted': "warn",
     'no-var': 0,
     'one-var': 0,
-    'react/no-is-mounted': 1,
     'react/prefer-es6-class': 0,
-    // 'no-restricted-syntax': 1,
-    'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
-    'react/jsx-filename-extension': [1, { "extensions": [".js"] }],
+    'no-nested-ternary': 0,
+
+    // Not for us ;-)
     'jsx-a11y/label-has-for': 0,
+    'no-console': 0,
   },
   'settings': {
     'import/resolver': 'webpack'
