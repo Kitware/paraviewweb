@@ -98,8 +98,8 @@ export default React.createClass({
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
     var rect = ReactDOM.findDOMNode(this.canvas).getBoundingClientRect();
-    var x = e.pointers[0].clientX - rect.left - this.props.width / 2,
-      y = -(e.pointers[0].clientY - rect.top - this.props.height / 2);
+    var x = e.pointers[0].clientX - rect.left - (this.props.width / 2),
+      y = -(e.pointers[0].clientY - rect.top - (this.props.height / 2));
     this.setState({
       x: this.limitValue(x / (this.props.width / 2)),
       y: this.limitValue(y / (this.props.height / 2)),

@@ -27,7 +27,7 @@ export default class PipelineState {
 
       const layerIdx = LAYER_CODE.indexOf(layers[0]);
 
-      return (pipelineQuery[layerIdx * 2 + 1] !== '_');
+      return (pipelineQuery[(layerIdx * 2) + 1] !== '_');
     }
     function getColorCode(layers) {
       if (!pipelineQuery || layers.length > 1) {
@@ -35,7 +35,7 @@ export default class PipelineState {
       }
 
       const layerIdx = LAYER_CODE.indexOf(layers[0]);
-      const colorCode = pipelineQuery[layerIdx * 2 + 1];
+      const colorCode = pipelineQuery[(layerIdx * 2) + 1];
 
       return (colorCode === '_') ? layerFields[layers][0] : colorCode;
     }

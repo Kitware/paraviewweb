@@ -69,7 +69,7 @@ function assignNodePosition(model, node, x) {
 
     // Move down the tree with the most right side of the tree
     children.forEach((child, index) => {
-      assignNodePosition(model, child, x + children.length - index - 1);
+      assignNodePosition(model, child, (x + children.length) - (index + 1));
     });
   }
 }
@@ -299,10 +299,10 @@ export default React.createClass({
       const fillColor = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
 
       // Positions
-      const cx = deltaX * el.x + offset,
-        cy = deltaY * el.y + deltaY / 2,
-        tx = cx + radius * 2,
-        ty = cy + radius - 1;
+      const cx = (deltaX * el.x) + offset,
+        cy = (deltaY * el.y) + (deltaY / 2),
+        tx = cx + (radius * 2),
+        ty = cy + (radius - 1);
 
       return (
         <g key={`node-${index}`} className={style.cursor}>
@@ -335,9 +335,9 @@ export default React.createClass({
     const { deltaX, deltaY, offset, palette, stroke } = this.props;
 
     return this.state.branches.map((el, index) => {
-      const x1 = deltaX * el.x + offset,
-        y1 = deltaY * el.y + deltaY / 2,
-        y2 = deltaY * el.to + deltaY / 2,
+      const x1 = (deltaX * el.x) + offset,
+        y1 = (deltaY * el.y) + (deltaY / 2),
+        y2 = (deltaY * el.to) + (deltaY / 2),
         strokeColor = palette[el.x % palette.length];
 
       return (
@@ -354,13 +354,13 @@ export default React.createClass({
     const { deltaX, deltaY, offset, palette, radius, stroke } = this.props;
 
     return this.state.forks.map((el, index) => {
-      const x1 = deltaX * el.x + offset,
-        y1 = deltaY * el.y + deltaY / 2 + radius,
-        x2 = deltaX * el.toX + offset,
-        y2 = deltaY * el.toY + deltaY / 2 + radius,
+      const x1 = (deltaX * el.x) + offset,
+        y1 = (deltaY * el.y) + (deltaY / 2) + radius,
+        x2 = (deltaX * el.toX) + offset,
+        y2 = (deltaY * el.toY) + (deltaY / 2) + radius,
         strokeColor = palette[(el.toX) % palette.length],
         dPath = `M${x1},${y1} `
-              + `Q${x1},${y1 + deltaY / 3},${(x1 + x2) / 2},${y1 + deltaY / 3} `
+              + `Q${x1},${y1 + (deltaY / 3)},${(x1 + x2) / 2},${y1 + (deltaY / 3)} `
               + `T${x2},${y1 + deltaY} L${x2},${y2}`;
 
       return (
@@ -384,7 +384,7 @@ export default React.createClass({
         x="-50"
         width="1000"
         fill="#999"
-        y={el * deltaY + margin / 2}
+        y={(el * deltaY) + (margin / 2)}
         height={deltaY - margin}
       />
     );
@@ -408,7 +408,7 @@ export default React.createClass({
           onClick={this.deleteNode}
           data-id={node.y}
           x={Number(width) - offset - 10}
-          y={deltaY * node.y + deltaY / 2 + radius - 1}
+          y={(deltaY * node.y) + (deltaY / 2) + (radius - 1)}
           fill={currentTextColor}
         >&#xf014;
         </text>);

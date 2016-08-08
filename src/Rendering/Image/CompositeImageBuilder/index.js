@@ -46,7 +46,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
     this.offsetMap = {};
     this.compositeMap = {};
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[idx * 2 + 1];
+      const fieldCode = query[(idx * 2) + 1];
       if (fieldCode === '_') {
         this.offsetMap[layers[idx]] = -1;
       } else {
@@ -184,7 +184,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
         } else {
           offset = this.compositeMap[key];
           if (offset !== -1) {
-            ctx.drawImage(this.sprite.image, x, y + dimensions[1] * offset, 1, 1, x, y, 1, 1);
+            ctx.drawImage(this.sprite.image, x, y + (dimensions[1] * offset), 1, 1, x, y, 1, 1);
           }
           addToX(1);
         }

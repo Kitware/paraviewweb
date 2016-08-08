@@ -184,7 +184,7 @@ export default class AxesManager {
   }
 
   getAxisCenter(index, width) {
-    return index * width / (this.axes.length - 1);
+    return (index * width) / (this.axes.length - 1);
   }
 
   toggleOrientation(index) {
@@ -308,7 +308,7 @@ export default class AxesManager {
       controlsDataModel.push({
         orient: !axis.isUpsideDown(),
         centerX: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
-        centerY: model.canvasArea.height - model.borderOffsetBottom + 30, // FIXME what is 30?
+        centerY: (model.canvasArea.height - model.borderOffsetBottom) + 30, // FIXME what is 30?
       });
     });
 

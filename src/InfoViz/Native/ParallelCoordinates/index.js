@@ -338,7 +338,7 @@ function parallelCoordinate(publicAPI, model) {
         .selectAll('rect.axis-annotation-indicators')
         .attr('width', glyphSize + 3)
         .attr('height', glyphSize + 3)
-        .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5 + 1)}, ${glyphPadding - 1.5})`)
+        .attr('transform', (d, i) => `translate(${d.centerX - ((glyphSize * 0.5) + 1)}, ${glyphPadding - 1.5})`)
         .classed(style.axisAnnotated, (d, i) => d.annotated);
     } else {
       // Now manage the svg dom for the axis labels

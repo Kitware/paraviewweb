@@ -28,8 +28,8 @@ const texParameter = [
 function spherical2Cartesian(phi, theta) {
   var nPhi = parseFloat(phi),
     nTheta = parseFloat(theta),
-    phiRad = (180.0 - nPhi) * Math.PI / 180.0,
-    thetaRad = (180.0 - nTheta) * Math.PI / 180.0;
+    phiRad = (180.0 - nPhi) * (Math.PI / 180.0),
+    thetaRad = (180.0 - nTheta) * (Math.PI / 180.0);
   return [
     Math.sin(thetaRad) * Math.cos(phiRad),
     Math.sin(thetaRad) * Math.sin(phiRad),
@@ -294,7 +294,7 @@ export default class SXYZLightCompositor {
       fieldDependencies = this.compositePipeline.color_by_dependencies;
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[idx * 2 + 1];
+      const fieldCode = query[(idx * 2) + 1];
       if (fieldCode !== '_') {
         if (fieldDependencies[fieldCode]) {
           const depends = fieldDependencies[fieldCode];

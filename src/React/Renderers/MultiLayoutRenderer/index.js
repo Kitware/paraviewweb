@@ -309,8 +309,8 @@ const MultiViewRenderer = React.createClass({
 
       const tw = Math.floor(iw * zoomLevel) - 2,
         th = Math.floor(ih * zoomLevel) - 2,
-        tx = 1 + region[0] + (w * 0.5) - (tw / 2),
-        ty = 1 + region[1] + (h * 0.5) - (th / 2);
+        tx = 1 + region[0] + ((w * 0.5) - (tw / 2)),
+        ty = 1 + region[1] + ((h * 0.5) - (th / 2));
 
       try {
         ctx.drawImage(
@@ -325,11 +325,11 @@ const MultiViewRenderer = React.createClass({
 
           ctx.beginPath();
 
-          ctx.moveTo(translate[0] + scale[0] * dataToDraw.crosshair[0], ty);
-          ctx.lineTo(translate[0] + scale[0] * dataToDraw.crosshair[0], ty + th);
+          ctx.moveTo(translate[0] + (scale[0] * dataToDraw.crosshair[0]), ty);
+          ctx.lineTo(translate[0] + (scale[0] * dataToDraw.crosshair[0]), ty + th);
 
-          ctx.moveTo(tx, translate[1] + scale[1] * dataToDraw.crosshair[1]);
-          ctx.lineTo(tx + tw, translate[1] + scale[1] * dataToDraw.crosshair[1]);
+          ctx.moveTo(tx, translate[1] + (scale[1] * dataToDraw.crosshair[1]));
+          ctx.lineTo(tx + tw, translate[1] + (scale[1] * dataToDraw.crosshair[1]));
 
           ctx.strokeStyle = this.props.crosshairColor;
           ctx.lineWidth = 1;

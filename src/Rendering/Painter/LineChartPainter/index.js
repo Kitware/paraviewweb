@@ -40,7 +40,7 @@ function paintField(ctx, location, field, range) {
   function getY(idx) {
     var value = values[idx];
     value = (value > min) ? ((value < max) ? value : max) : min;
-    return yOffset + height - Math.floor((value - min) * scaleY);
+    return (yOffset + height) - Math.floor((value - min) * scaleY);
   }
 
   // Draw line
@@ -207,7 +207,7 @@ export default class LineChartPainter {
     // Paint tile if any
     if (this.title) {
       if (this.data.xRange && this.data.xRange.length === 2 && !isNaN(this.markerLocation)) {
-        xValue = ((this.data.xRange[1] - this.data.xRange[0]) * this.markerLocation + this.data.xRange[0]);
+        xValue = (((this.data.xRange[1] - this.data.xRange[0]) * this.markerLocation) + this.data.xRange[0]);
         if (xValue.toFixed) {
           xValue = xValue.toFixed(5);
         }

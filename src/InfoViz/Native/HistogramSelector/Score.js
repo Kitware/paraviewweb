@@ -195,11 +195,11 @@ function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
   // Note comparison with low/high divider is signed. If val indicates divider has been
   // moved _past_ the neighboring divider, low/high will be negative.
   if (hitIndex > 0) {
-    const low = def.dividers[hitIndex - 1].value + def.dividers[hitIndex - 1].uncertainty * uncertScale;
+    const low = def.dividers[hitIndex - 1].value + (def.dividers[hitIndex - 1].uncertainty * uncertScale);
     maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
   }
   if (hitIndex < def.dividers.length - 1) {
-    const high = def.dividers[hitIndex + 1].value - def.dividers[hitIndex + 1].uncertainty * uncertScale;
+    const high = def.dividers[hitIndex + 1].value - (def.dividers[hitIndex + 1].uncertainty * uncertScale);
     maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
   }
   // make sure uncertainty is zero when val has passed a neighbor.
@@ -364,8 +364,8 @@ export function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
 
   dPopupDiv
     .style('display', 'initial');
-  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight,
-                coord[1] + model.headerSize - topMargin - 2 * rowHeight);
+  positionPopup(dPopupDiv, coord[0] - topMargin - (0.5 * rowHeight),
+                (coord[1] + model.headerSize) - (topMargin + (2 * rowHeight)));
 
   const selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
   let savedVal = selDivider.value;
@@ -522,8 +522,8 @@ export function showScorePopup(sPopupDiv, coord, selRow) {
 
   sPopupDiv
     .style('display', 'initial');
-  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight,
-                coord[1] + model.headerSize - topMargin - (0.6 + selRow) * rowHeight);
+  positionPopup(sPopupDiv, coord[0] - topMargin - (0.6 * rowHeight),
+                (coord[1] + model.headerSize) - (topMargin + ((0.6 + selRow) * rowHeight)));
 
   sPopupDiv.selectAll(`.${style.jsScoreLabel}`)
     .style('background-color', (d, i) => ((i === selRow) ? d.bgColor : '#fff'));
@@ -656,10 +656,10 @@ export function prepareItem(def, idx, svgGr, tdsl) {
       .attr('rx', 8)
       .attr('ry', 8);
     uncertRegions
-      .attr('x', d => def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min)))
+      .attr('x', d => def.xScale(d.value - (d.uncertainty * (hobj.max - hobj.min))))
       .attr('y', 0)
       // to get a width, need to start from 'zero' of this scale, which is hobj.min
-      .attr('width', (d, i) => def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min)))
+      .attr('width', (d, i) => def.xScale(hobj.min + (2 * d.uncertainty * (hobj.max - hobj.min))))
       .attr('height', () => model.histHeight)
       .attr('fill', '#000')
       .attr('opacity', (d) => (d.uncertainty > 0 ? '0.2' : '0'));
@@ -749,7 +749,7 @@ export function prepareItem(def, idx, svgGr, tdsl) {
         .attr('width', (d, i) => (def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i])) +
                                   (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
         // extend over the x-axis when editing.
-        .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3)
+        .attr('height', def.editScore ? (model.histHeight + model.histMargin.bottom) - 3 : model.histMargin.bottom - 3)
         .attr('fill', (d) => (model.scores[d].color))
         .attr('opacity', showScore(def) ? reg.opacity : '0');
       reg.sel.exit().remove();

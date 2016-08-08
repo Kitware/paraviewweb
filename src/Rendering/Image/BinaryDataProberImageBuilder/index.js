@@ -210,7 +210,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       array = this.dataFields[this.field];
 
     if (array) {
-      this.probeValue = array[x + (ySize - y - 1) * xSize + z * xSize * ySize];
+      this.probeValue = array[x + ((ySize - y - 1) * xSize) + (z * xSize * ySize)];
     }
   }
 
@@ -289,23 +289,23 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       idxValues = [];
 
     if (axisIdx === 0) {
-      const offset = (ySize - py - 1) * xSize + pz * xSize * ySize;
+      const offset = ((ySize - py - 1) * xSize) + (pz * xSize * ySize);
       for (let x = 0; x < xSize; x++) {
         idxValues.push(offset + x);
       }
     }
     if (axisIdx === 1) {
-      const offset = px + pz * xSize * ySize;
+      const offset = px + (pz * xSize * ySize);
       for (let y = 0; y < ySize; y++) {
-        idxValues.push(offset + (ySize - y - 1) * xSize);
+        idxValues.push(offset + ((ySize - y - 1) * xSize));
       }
       idxValues.reverse();
     }
     if (axisIdx === 2) {
-      const offset = px + (ySize - py - 1) * xSize,
+      const offset = px + ((ySize - py - 1) * xSize),
         step = xSize * ySize;
       for (let z = 0; z < zSize; z++) {
-        idxValues.push(offset + z * step);
+        idxValues.push(offset + (z * step));
       }
     }
 
@@ -435,11 +435,11 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let x = 0; x < xSize; x++) {
-        const color = lut.getColor(array[offset + x + xSize * (ySize - y - 1)]);
+        const color = lut.getColor(array[offset + x + (xSize * (ySize - y - 1))]);
         pixels[idx * 4] = 255 * color[0];
-        pixels[idx * 4 + 1] = 255 * color[1];
-        pixels[idx * 4 + 2] = 255 * color[2];
-        pixels[idx * 4 + 3] = 255;
+        pixels[(idx * 4) + 1] = 255 * color[1];
+        pixels[(idx * 4) + 2] = 255 * color[2];
+        pixels[(idx * 4) + 3] = 255;
         idx++;
       }
     }
@@ -469,11 +469,11 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let z = 0; z < zSize; z++) {
-        const color = lut.getColor(array[offsetX + stepY * (ySize - y - 1) + stepZ * z]);
+        const color = lut.getColor(array[offsetX + (stepY * (ySize - y - 1)) + (stepZ * z)]);
         pixels[idx * 4] = 255 * color[0];
-        pixels[idx * 4 + 1] = 255 * color[1];
-        pixels[idx * 4 + 2] = 255 * color[2];
-        pixels[idx * 4 + 3] = 255;
+        pixels[(idx * 4) + 1] = 255 * color[1];
+        pixels[(idx * 4) + 2] = 255 * color[2];
+        pixels[(idx * 4) + 3] = 255;
         idx++;
       }
     }
@@ -500,11 +500,11 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let z = 0; z < zSize; z++) {
       for (let x = 0; x < xSize; x++) {
-        const color = lut.getColor(array[offset + x + (zSize - z - 1) * zStep]);
+        const color = lut.getColor(array[offset + x + ((zSize - z - 1) * zStep)]);
         pixels[idx * 4] = 255 * color[0];
-        pixels[idx * 4 + 1] = 255 * color[1];
-        pixels[idx * 4 + 2] = 255 * color[2];
-        pixels[idx * 4 + 3] = 255;
+        pixels[(idx * 4) + 1] = 255 * color[1];
+        pixels[(idx * 4) + 2] = 255 * color[2];
+        pixels[(idx * 4) + 3] = 255;
         idx++;
       }
     }

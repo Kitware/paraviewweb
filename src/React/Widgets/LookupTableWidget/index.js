@@ -109,10 +109,10 @@ export default React.createClass({
           x = Math.floor(this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex).x * this.props.lookupTable.colorTableSize),
           imageData = ctx.getImageData(0, 0, this.props.lookupTable.colorTableSize, 1);
 
-        const color = (imageData.data[x * 4] + imageData.data[x * 4 + 1] + imageData.data[x * 4 + 2] > 3 * 255 / 2) ? 0 : 255;
-        imageData.data[x * 4 + 0] = this.props.inverse ? (imageData.data[x * 4 + 0] + 128) % 256 : color;
-        imageData.data[x * 4 + 1] = this.props.inverse ? (imageData.data[x * 4 + 1] + 128) % 256 : color;
-        imageData.data[x * 4 + 2] = this.props.inverse ? (imageData.data[x * 4 + 2] + 128) % 256 : color;
+        const color = (imageData.data[x * 4] + imageData.data[(x * 4) + 1] + imageData.data[(x * 4) + 2] > (3 * 255) / 2) ? 0 : 255;
+        imageData.data[(x * 4) + 0] = this.props.inverse ? (imageData.data[(x * 4) + 0] + 128) % 256 : color;
+        imageData.data[(x * 4) + 1] = this.props.inverse ? (imageData.data[(x * 4) + 1] + 128) % 256 : color;
+        imageData.data[(x * 4) + 2] = this.props.inverse ? (imageData.data[(x * 4) + 2] + 128) % 256 : color;
 
         ctx.putImageData(imageData, 0, 0);
       }

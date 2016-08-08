@@ -14,7 +14,7 @@ const
       hasChange: (probe, x, y, z) => (probe[2] !== z),
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[0],
-          idx = x + y * width,
+          idx = x + (y * width),
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -27,7 +27,7 @@ const
       hasChange: (probe, x, y, z) => (probe[1] !== y),
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[0],
-          idx = x + z * width,
+          idx = x + (z * width),
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -40,7 +40,7 @@ const
       hasChange: (probe, x, y, z) => (probe[0] !== x),
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[2],
-          idx = z + y * width,
+          idx = z + (y * width),
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -225,7 +225,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     if (sliceIdx === undefined) {
       sliceIdx = this.probeXYZ[2];
     }
-    return this.metadata.sprite_size - sliceIdx % this.metadata.sprite_size - 1;
+    return this.metadata.sprite_size - (sliceIdx % this.metadata.sprite_size) - 1;
   }
 
   // ------------------------------------------------------------------------
@@ -337,7 +337,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
       if (this.metadata.origin && this.metadata.spacing) {
         probeData.xRange[0] = this.metadata.origin[axisIdx];
-        probeData.xRange[1] = this.metadata.origin[axisIdx] + this.metadata.spacing[axisIdx] * dimensions[axisIdx];
+        probeData.xRange[1] = this.metadata.origin[axisIdx] + (this.metadata.spacing[axisIdx] * dimensions[axisIdx]);
       }
 
       if (scalarPlan) {
@@ -507,7 +507,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         image = this;
 
       ctx.drawImage(image,
-        0, dimensions[1] * offset + xyz[1],
+        0, (dimensions[1] * offset) + xyz[1],
         dimensions[0], 1,
         0, activeLine, dimensions[0], 1);
 
@@ -557,7 +557,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       array = new Float32Array(width * height);
 
     while (idx < size) {
-      const value = ((pixBuffer[idx] + (256 * pixBuffer[idx + 1]) + (65536 * pixBuffer[idx + 2])) / 16777216) * delta + fieldRange[0];
+      const value = (((pixBuffer[idx] + (256 * pixBuffer[idx + 1]) + (65536 * pixBuffer[idx + 2])) / 16777216) * delta) + fieldRange[0];
       array[arrayIdx++] = value;
 
       // Move to next pixel

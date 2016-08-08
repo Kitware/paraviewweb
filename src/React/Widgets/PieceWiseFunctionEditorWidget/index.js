@@ -190,9 +190,9 @@ export default React.createClass({
   },
 
   render() {
-    const activePointDataValue = (this.state.activePoint !== -1 ?
-      this.props.points[this.state.activePoint].x : 0.5) *
-      (this.props.rangeMax - this.props.rangeMin) + this.props.rangeMin;
+    const activePointDataValue = ((this.state.activePoint !== -1 ?
+          this.props.points[this.state.activePoint].x : 0.5) *
+          (this.props.rangeMax - this.props.rangeMin)) + this.props.rangeMin;
     const activePointOpacity = this.state.activePoint !== -1 ?
       this.props.points[this.state.activePoint].y : 0.5;
     return (

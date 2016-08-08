@@ -209,9 +209,9 @@ function fieldSelector(publicAPI, model) {
               hdata
                 .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
                 .attr('pname', fieldName)
-                .attr('y', d => model.fieldHistHeight * (1.0 - d / cmax))
+                .attr('y', d => model.fieldHistHeight * (1.0 - (d / cmax)))
                 .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
-                .attr('height', d => model.fieldHistHeight * d / cmax)
+                .attr('height', d => model.fieldHistHeight * (d / cmax))
                 .attr('width', model.fieldHistWidth / hsize);
 
               hdata.exit().remove();

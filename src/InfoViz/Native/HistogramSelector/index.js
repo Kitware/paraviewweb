@@ -162,15 +162,15 @@ function histogramSelector(publicAPI, model) {
 
     // compute key values based on our new size
     const boxesPerRow = (singleMode ? 1 : Math.max(1, Math.floor(dimensions[0] / minBoxSize)));
-    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - 2 * boxMargin;
+    model.boxWidth = Math.floor(dimensions[0] / boxesPerRow) - (2 * boxMargin);
     if (boxesPerRow === 1) {
       // use 3 / 4 to make a single hist wider than it is tall.
-      model.boxHeight = Math.min(Math.floor((model.boxWidth + 2 * boxMargin) * (3 / 4) - 2 * boxMargin),
-                                 Math.floor(dimensions[1] - 2 * boxMargin));
+      model.boxHeight = Math.min(Math.floor(((model.boxWidth + (2 * boxMargin)) * (3 / 4)) - (2 * boxMargin)),
+                                 Math.floor(dimensions[1] - (2 * boxMargin)));
     } else {
       model.boxHeight = model.boxWidth;
     }
-    model.rowHeight = model.boxHeight + 2 * boxMargin;
+    model.rowHeight = model.boxHeight + (2 * boxMargin);
     model.rowsPerPage = Math.ceil(dimensions[1] / model.rowHeight);
 
     if (boxesPerRow !== model.boxesPerRow) {
@@ -178,11 +178,11 @@ function histogramSelector(publicAPI, model) {
       model.boxesPerRow = boxesPerRow;
     }
 
-    model.histWidth = model.boxWidth - boxBorder * 2 -
+    model.histWidth = model.boxWidth - (boxBorder * 2) -
                       model.histMargin.left - model.histMargin.right;
     // other row size, probably a way to query for this
     const otherRowHeight = 21;
-    model.histHeight = model.boxHeight - boxBorder * 2 - otherRowHeight -
+    model.histHeight = model.boxHeight - (boxBorder * 2) - otherRowHeight -
                        model.histMargin.top - model.histMargin.bottom;
 
     return updateBoxPerRow;
@@ -564,9 +564,9 @@ function histogramSelector(publicAPI, model) {
         hdata
           .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
           .attr('pname', def.name)
-          .attr('y', d => model.histHeight * (1.0 - d / cmax))
+          .attr('y', d => model.histHeight * (1.0 - (d / cmax)))
           .attr('x', (d, i) => (model.histWidth / hsize) * i)
-          .attr('height', d => model.histHeight * d / cmax)
+          .attr('height', d => model.histHeight * (d / cmax))
           .attr('width', Math.ceil(model.histWidth / hsize));
 
         hdata.exit().remove();
@@ -625,7 +625,7 @@ function histogramSelector(publicAPI, model) {
           // using .ticks() results in skipping min/max values,
           // if they aren't 'nice'. Make exactly 5 ticks.
           const myTicks = d3.range(numTicks).map((d) => (
-            hobj.min + (d / (numTicks - 1)) * (hobj.max - hobj.min))
+            hobj.min + ((d / (numTicks - 1)) * (hobj.max - hobj.min)))
           );
           def.xAxis
             .tickValues(myTicks);

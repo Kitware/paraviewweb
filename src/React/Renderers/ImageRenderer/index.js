@@ -107,11 +107,11 @@ function drawToCanvasAsBuffer() {
     if (data.crosshair) {
       ctx.beginPath();
 
-      ctx.moveTo(translate[0] + scale[0] * data.crosshair[0], 0);
-      ctx.lineTo(translate[0] + scale[0] * data.crosshair[0], h);
+      ctx.moveTo(translate[0] + (scale[0] * data.crosshair[0]), 0);
+      ctx.lineTo(translate[0] + (scale[0] * data.crosshair[0]), h);
 
-      ctx.moveTo(0, translate[1] + scale[1] * data.crosshair[1]);
-      ctx.lineTo(w, translate[1] + scale[1] * data.crosshair[1]);
+      ctx.moveTo(0, translate[1] + (scale[1] * data.crosshair[1]));
+      ctx.lineTo(w, translate[1] + (scale[1] * data.crosshair[1]));
 
       ctx.strokeStyle = component.props.crosshairColor;
       ctx.lineWidth = 1;
@@ -406,8 +406,8 @@ const ImageRenderer = React.createClass({
           fixedY = event.relative.y / this.state.height;
 
         this.zoom = zoom;
-        this.center[0] = fixedX + deltaZoom * (x - fixedX);
-        this.center[1] = fixedY + deltaZoom * (y - fixedY);
+        this.center[0] = fixedX + (deltaZoom * (x - fixedX));
+        this.center[1] = fixedY + (deltaZoom * (y - fixedY));
 
         if (this.imageToDraw.drawToCanvas) {
           this.imageToDraw.drawToCanvas();

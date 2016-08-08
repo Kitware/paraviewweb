@@ -13,7 +13,7 @@ function interpolate(values, xRatio) {
     a = values[Math.floor(idx)],
     b = values[Math.ceil(idx)],
     ratio = idx - Math.floor(idx);
-  return ((b - a) * ratio + a).toFixed(5);
+  return (((b - a) * ratio) + a).toFixed(5);
 }
 
 /**
@@ -142,8 +142,8 @@ export default React.createClass({
     // Draw cursor
     if (this.state.legend) {
       ReactDOM.findDOMNode(this.xValueLabel).innerHTML = (
-        (this.props.data.xRange[1] - this.props.data.xRange[0]) *
-        ratio + this.props.data.xRange[0]).toFixed(5);
+        ((this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio)
+        + this.props.data.xRange[0]).toFixed(5);
 
       ctx.beginPath();
       ctx.lineWidth = 1;

@@ -166,7 +166,7 @@ export default class RGBACompositor {
 
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[idx * 2 + 1];
+      const fieldCode = query[(idx * 2) + 1];
       if (fieldCode !== '_') {
         this.offsetList.push(this.spriteSize - offsets[layers[idx] + fieldCode]);
       }

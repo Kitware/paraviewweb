@@ -65,34 +65,33 @@ export default class SortedVolumeCompositor {
     loop(!!this.reverseCompositePass, this.numLayers, drawIdx => {
       for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
-          const idx = this.width * y + x,
-            flipIdx = ((height - y - 1) * width + x),
-            layerIdx = this.orderData[drawIdx * imageSize + idx],
-            multiplier = this.colorTable[layerIdx * 4 + 3] / 255.0,
-            alphB = this.alphaData[drawIdx * imageSize + idx] / 255.0;
+          const idx = (this.width * y) + x,
+            flipIdx = (((height - y - 1) * width) + x),
+            layerIdx = this.orderData[(drawIdx * imageSize) + idx],
+            multiplier = this.colorTable[(layerIdx * 4) + 3] / 255.0,
+            alphB = this.alphaData[(drawIdx * imageSize) + idx] / 255.0;
 
           let intensity = 1.0;
 
           if (this.intensityData) {
-            intensity = this.intensityData[drawIdx * imageSize + idx] / 255.0;
+            intensity = this.intensityData[(drawIdx * imageSize) + idx] / 255.0;
           }
 
           // Blend
-          const alphA = pixels[flipIdx * 4 + 3] / 255.0,
+          const alphA = pixels[(flipIdx * 4) + 3] / 255.0,
             alphANeg = 1.0 - alphA,
-            rgbA = [pixels[flipIdx * 4], pixels[flipIdx * 4 + 1], pixels[flipIdx * 4 + 2]],
+            rgbA = [pixels[flipIdx * 4], pixels[(flipIdx * 4) + 1], pixels[(flipIdx * 4) + 2]],
             rgbB = [
               this.colorTable[layerIdx * 4] * intensity * alphB * multiplier * alphANeg,
-              this.colorTable[layerIdx * 4 + 1] * intensity * alphB * multiplier * alphANeg,
-              this.colorTable[layerIdx * 4 + 2] * intensity * alphB * multiplier * alphANeg,
+              this.colorTable[(layerIdx * 4) + 1] * intensity * alphB * multiplier * alphANeg,
+              this.colorTable[(layerIdx * 4) + 2] * intensity * alphB * multiplier * alphANeg,
             ],
             alphOut = alphA + (alphB * multiplier * (1.0 - alphA));
 
           pixels[flipIdx * 4] = ((rgbA[0] * alphA) + rgbB[0]) / alphOut;
-          pixels[flipIdx * 4 + 1] = ((rgbA[1] * alphA) + rgbB[1]) / alphOut;
-          pixels[flipIdx * 4 + 2] = ((rgbA[2] * alphA) + rgbB[2]) / alphOut;
-
-          pixels[flipIdx * 4 + 3] = alphOut * 255.0;
+          pixels[(flipIdx * 4) + 1] = ((rgbA[1] * alphA) + rgbB[1]) / alphOut;
+          pixels[(flipIdx * 4) + 2] = ((rgbA[2] * alphA) + rgbB[2]) / alphOut;
+          pixels[(flipIdx * 4) + 3] = alphOut * 255.0;
         }
       }
     });

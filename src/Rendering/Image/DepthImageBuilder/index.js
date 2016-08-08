@@ -41,10 +41,10 @@ export default class DepthImageBuilder extends AbstractImageBuilder {
     // Fill bgCanvas with depth
     for (let i = 0; i < size; i++) {
       const value = this.depthArray[i];
-      pixels[i * 4 + 0] = value;
-      pixels[i * 4 + 1] = value;
-      pixels[i * 4 + 2] = value;
-      pixels[i * 4 + 3] = 255;
+      pixels[(i * 4) + 0] = value;
+      pixels[(i * 4) + 1] = value;
+      pixels[(i * 4) + 2] = value;
+      pixels[(i * 4) + 3] = 255;
     }
     ctx.putImageData(imageData, 0, 0);
 
