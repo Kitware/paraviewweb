@@ -153,6 +153,8 @@ export default class AxesManager {
             });
           }
         });
+      } else if (selection.type === 'empty') {
+        // nothing to do we already cleared the selection
       } else {
         console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
       }

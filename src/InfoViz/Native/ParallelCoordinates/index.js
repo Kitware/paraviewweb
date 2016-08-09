@@ -105,6 +105,7 @@ function parallelCoordinate(publicAPI, model) {
 
   function drawSelectionData(score) {
     if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
+      // console.log('filter draw', score, model.partitionScore.indexOf(score) !== -1);
       return model.partitionScore.indexOf(score) !== -1;
     }
     return true;
@@ -594,7 +595,7 @@ function parallelCoordinate(publicAPI, model) {
       let missingData = false;
 
       const processHistogram = (h, k) => {
-        if (drawSelectionData(h.score)) {
+        if (drawSelectionData(h.role.score)) {
           maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
           // Add in queue
           polygonsQueue.push([
@@ -602,7 +603,7 @@ function parallelCoordinate(publicAPI, model) {
             model.fgCtx,
             k, k + 1,
             h,
-            scoreToColor[h.score] || model.selectionColors,
+            scoreToColor[h.role.score] || model.selectionColors,
           ]);
         }
       };
