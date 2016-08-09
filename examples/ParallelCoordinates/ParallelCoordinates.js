@@ -20986,9 +20986,8 @@
 	  model.selectionData = null;
 
 	  function drawSelectionData(score) {
-	    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
-	      // console.log('filter draw', score, model.partitionScore.indexOf(score) !== -1);
-	      return model.partitionScore.indexOf(score) !== -1;
+	    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScores) {
+	      return model.partitionScores.indexOf(score) !== -1;
 	    }
 	    return true;
 	  }
@@ -21480,15 +21479,15 @@
 	  };
 
 	  publicAPI.setVisibleScoresForPartitionSelection = function (scoreList) {
-	    model.partitionScore = scoreList;
-	    if (model.dataSubscription && model.partitionScore) {
-	      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScore);
+	    model.partitionScores = scoreList;
+	    if (model.dataSubscription && model.partitionScores) {
+	      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
 	    }
 	  };
 
 	  publicAPI.setScores = function (scores) {
 	    model.scores = scores;
-	    if (!model.partitionScore && scores) {
+	    if (!model.partitionScores && scores) {
 	      publicAPI.setVisibleScoresForPartitionSelection(scores.map(function (score, idx) {
 	        return idx;
 	      }));
@@ -21634,7 +21633,7 @@
 	    model.dataSubscription = model.provider.subscribeToDataSelection('histogram2d', function (data) {
 	      model.selectionData = data;
 	      publicAPI.render();
-	    }, model.axes.getAxesPairs(), { partitionScore: model.partitionScore });
+	    }, model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
 	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
 	      model.axes.resetSelections(sel, false);
