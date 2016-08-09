@@ -107,7 +107,7 @@ export function quantile(xx, qq) {
 }
 
 export function matrixFind(xx, condition) {
-  if (! xx || xx.length < 1) {
+  if (!xx || xx.length < 1) {
     return [];
   }
 

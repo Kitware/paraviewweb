@@ -1,11 +1,13 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import d3 from 'd3';
+
+import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
+
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import htmlContent from './body.html';
 import iconImage from './InfoDiagramIconSmall.png';
 import multiClicker from '../../Core/D3MultiClick';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
-import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
 
 import {
   calculateAngleAndRadius,
@@ -27,6 +29,8 @@ const PMI_CHORD_MODE_ALL_BINS_TWO_VARS = 2;
 // ----------------------------------------------------------------------------
 
 function informationDiagram(publicAPI, model) {
+  let lastAnnotationPushed = null;
+
   if (!model.provider
     || !model.provider.isA('MutualInformationProvider')
     || !model.provider.isA('Histogram1DProvider')
@@ -318,8 +322,8 @@ function informationDiagram(publicAPI, model) {
       if (proceed) {
         const selection = SelectionBuilder.range(vars);
         if (model.useAnnotation) {
-          const annotation = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
-          model.provider.setAnnotation(annotation);
+          lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+          model.provider.setAnnotation(lastAnnotationPushed);
         } else {
           model.provider.setSelection(selection);
         }
@@ -336,7 +340,7 @@ function informationDiagram(publicAPI, model) {
       const binMap = {};
 
       function addBin(pName, bIdx) {
-        if (!binMap.hasOwnProperty(pName)) {
+        if (!binMap[pName]) {
           binMap[pName] = [];
         }
         if (binMap[pName].indexOf(bIdx) === -1) {
@@ -461,12 +465,12 @@ function informationDiagram(publicAPI, model) {
         .attr('d', (data, index) =>
           path({
             source: {
-              startAngle: (vaRange[0] + data[0][0] * vaRange[2]),
-              endAngle: (vaRange[0] + (data[0][0] + 1) * vaRange[2]),
+              startAngle: (vaRange[0] + (data[0][0] * vaRange[2])),
+              endAngle: (vaRange[0] + ((data[0][0] + 1) * vaRange[2])),
             },
             target: {
-              startAngle: (vbRange[0] + data[0][1] * vbRange[2]),
-              endAngle: (vbRange[0] + (data[0][1] + 1) * vbRange[2]),
+              startAngle: (vbRange[0] + (data[0][1] * vbRange[2])),
+              endAngle: (vbRange[0] + ((data[0][1] + 1) * vbRange[2])),
             },
           })
         )
@@ -627,7 +631,9 @@ function informationDiagram(publicAPI, model) {
 
     // Remove the labels that don't fit. :(
     groupText
-      .filter(function removeLongLabel(d, i) { return groupPath[0][i].getTotalLength() / 2 - deltaRadius < (this.getComputedTextLength() + model.glyphSize); })
+      .filter(function removeLongLabel(d, i) {
+        return ((groupPath[0][i].getTotalLength() / 2) - deltaRadius) < (this.getComputedTextLength() + model.glyphSize);
+      })
       .remove();
 
     // Add group for glyph
@@ -651,13 +657,13 @@ function informationDiagram(publicAPI, model) {
           const pathLength = groupPath[0][glyphData.index].getTotalLength();
           const avgRadius = (innerRadius + outerRadius) / 2;
           // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-          const glyphAngle = glyphData.startAngle + (pathLength / 4 / outerRadius) - (textLength + model.glyphSize) / 2 / avgRadius;
+          const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - (textLength + model.glyphSize)) / 2 / avgRadius;
 
           const currGlyph = d3.select(this);
           currGlyph
             .attr('transform', `translate(
-              ${avgRadius * Math.sin(glyphAngle) - model.glyphSize / 2},
-              ${-avgRadius * Math.cos(glyphAngle) - model.glyphSize / 2})`)
+              ${(avgRadius * Math.sin(glyphAngle)) - (model.glyphSize / 2)},
+              ${(-avgRadius * Math.cos(glyphAngle)) - (model.glyphSize / 2)})`)
             .select('svg')
             .attr('width', model.glyphSize)
             .attr('height', model.glyphSize)
@@ -671,7 +677,7 @@ function informationDiagram(publicAPI, model) {
 
         // Remove the glyphs that don't fit
         groupGlyph
-          .filter((d, i) => groupPath[0][i].getTotalLength() / 2 - deltaRadius < model.glyphSize)
+          .filter((d, i) => (groupPath[0][i].getTotalLength() / 2) - deltaRadius < model.glyphSize)
           .remove();
       });
     }
@@ -684,8 +690,8 @@ function informationDiagram(publicAPI, model) {
 
     function getBinRange(index, numberOfBins, paramRange) {
       return [
-        index / numberOfBins * paramRange[2] + paramRange[0],
-        (index + 1) / numberOfBins * paramRange[2] + paramRange[0],
+        (index / numberOfBins * paramRange[2]) + paramRange[0],
+        ((index + 1) / numberOfBins * paramRange[2]) + paramRange[0],
       ];
     }
 
@@ -715,10 +721,10 @@ function informationDiagram(publicAPI, model) {
         /* eslint-disable arrow-body-style */
         groupData.histo = gvar.counts.map((d, i) => {
           return {
-            startAngle: (i * delta + groupData.startAngle),
-            endAngle: ((i + 1) * delta + groupData.startAngle),
+            startAngle: ((i * delta) + groupData.startAngle),
+            endAngle: (((i + 1) * delta) + groupData.startAngle),
             innerRadius: (outerRadius + 10),
-            outerRadius: (outerRadius + 10 + d / maxcnt * (histoRadius - outerRadius)),
+            outerRadius: (outerRadius + 10 + (d / maxcnt * (histoRadius - outerRadius))),
             index: i,
             value: (d / total),
           };
@@ -845,12 +851,12 @@ function informationDiagram(publicAPI, model) {
             var vbRange = [vbGrp.startAngle, (vbGrp.endAngle - vbGrp.startAngle), (vbGrp.endAngle - vbGrp.startAngle) / histogram1DnumberOfBins];
             return path({
               source: {
-                startAngle: (vaRange[0] + data[0][0] * vaRange[2]),
-                endAngle: (vaRange[0] + (data[0][0] + 1) * vaRange[2]),
+                startAngle: (vaRange[0] + (data[0][0] * vaRange[2])),
+                endAngle: (vaRange[0] + ((data[0][0] + 1) * vaRange[2])),
               },
               target: {
-                startAngle: (vbRange[0] + data[0][1] * vbRange[2]),
-                endAngle: (vbRange[0] + (data[0][1] + 1) * vbRange[2]),
+                startAngle: (vbRange[0] + (data[0][1] * vbRange[2])),
+                endAngle: (vbRange[0] + ((data[0][1] + 1) * vbRange[2])),
               },
             });
           })
@@ -867,11 +873,11 @@ function informationDiagram(publicAPI, model) {
             return 'PMI: '
               + `${data[3][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
               + `${data[3][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
-          }).
-          on('mouseover', function mouseOver() {
+          })
+          .on('mouseover', function mouseOver() {
             publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-          }).
-          on('mouseout', () => {
+          })
+          .on('mouseout', () => {
             publicAPI.updateStatusBarText('');
           });
       };
@@ -882,12 +888,10 @@ function informationDiagram(publicAPI, model) {
     const svg = d3.select(model.container);
     Object.keys(data.state).forEach(pName => {
       const binList = data.state[pName];
-      svg.selectAll(`g.group[param-name='${pName}'] > path.htile`).
-        /* eslint-disable prefer-arrow-callback */
-        classed('hilite', function inner(d, i) {
-          return binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0;
-        });
-        /* eslint-enable prefer-arrow-callback */
+      svg.selectAll(`g.group[param-name='${pName}'] > path.htile`)
+        .classed('hilite', (d, i) =>
+          binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0
+        );
     });
   }
 
