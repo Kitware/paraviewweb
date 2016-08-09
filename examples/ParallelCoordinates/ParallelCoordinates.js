@@ -20951,6 +20951,7 @@
 	function parallelCoordinate(publicAPI, model) {
 	  // Private internal
 	  var scoreToColor = [];
+	  var lastAnnotationPushed = null;
 
 	  function updateSizeInformation() {
 	    if (!model.canvas) {
@@ -21640,13 +21641,20 @@
 	      publicAPI.render();
 	    }));
 	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
+	      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.generation === lastAnnotationPushed.generation + 1) {
+	        // Assume that it is still ours but edited by someone else
+	        lastAnnotationPushed = annotation;
+
+	        // Capture the score and update our default
+	        model.defaultScore = lastAnnotationPushed.score[0];
+	      }
 	      model.axes.resetSelections(annotation.selection, false, annotation.score, scoreToColor);
 	      publicAPI.render();
 	    }));
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
 	      if (model.useAnnotation) {
-	        var annotation = _AnnotationBuilder2.default.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
-	        model.provider.setAnnotation(annotation);
+	        lastAnnotationPushed = _AnnotationBuilder2.default.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
+	        model.provider.setAnnotation(lastAnnotationPushed);
 	      } else {
 	        model.provider.setSelection(model.axes.getSelection());
 	      }
