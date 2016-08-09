@@ -6,13 +6,19 @@
 //
 //  const payload = {
 //    type: 'histogram2d',
+//    filter: '7c1ce0b1-4ecd-4415-80d3-00364c1f7f8b',
 //    data: {
 //      x: 'temperature',
 //      y: 'pressure',
 //      bins: [...],
-//      score: 0,
-//      annotationId: 24, // Generation of the annotation
-//      selectionId: 23, // Generation of the selection
+//      annotationInfo: {
+//        annotationGeneration: 2,
+//        selectionGeneration: 5,
+//      },
+//      role: {
+//        score: 0,
+//        selected: true,
+//      },
 //    },
 //  }
 //
@@ -29,17 +35,27 @@
 //     x: 'temperature',
 //     y: 'pressure',
 //     bins: [],
-//     score: 0,
-//     annotationId: 24,
-//     selectionId: 23,
+//     annotationInfo: {
+//       annotationGeneration: 2,
+//       selectionGeneration: 5,
+//     },
+//     role: {
+//       score: 0,
+//       selected: true,
+//     },
 //     maxCount: 3534,
 //   }, {
 //     x: 'temperature',
 //     y: 'pressure',
 //     bins: [],
-//     score: 2,
-//     annotationId: 24,
-//     selectionId: 23,
+//     annotationInfo: {
+//       annotationGeneration: 2,
+//       selectionGeneration: 5,
+//     },
+//     role: {
+//       score: 0,
+//       selected: true,
+//     },
 //     maxCount: 3534,
 //   },
 // ];
@@ -65,17 +81,27 @@
 //         x: 'temperature',
 //         y: 'pressure',
 //         bins: [],
-//         score: 0,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 0,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       }, {
 //         x: 'temperature',
 //         y: 'pressure',
 //         bins: [],
-//         score: 2,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 2,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       },
 //     ],
@@ -86,17 +112,27 @@
 //         x: 'pressure',
 //         y: 'velocity',
 //         bins: [],
-//         score: 0,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 0,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       }, {
 //         x: 'pressure',
 //         y: 'velocity',
 //         bins: [],
-//         score: 2,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 2,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       },
 //     ],
@@ -107,17 +143,27 @@
 //         x: 'velocity',
 //         y: 'abcd',
 //         bins: [],
-//         score: 0,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 0,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       }, {
 //         x: 'velocity',
 //         y: 'abcd',
 //         bins: [],
-//         score: 2,
-//         annotationId: 24,
-//         selectionId: 23,
+//         annotationInfo: {
+//           annotationGeneration: 2,
+//           selectionGeneration: 5,
+//         },
+//         role: {
+//           score: 2,
+//           selected: true,
+//         },
 //         maxCount: 3534,
 //       },
 //     ],
@@ -148,7 +194,7 @@ export function set(model, payload) {
   if (!model.histogram2d) {
     model.histogram2d = {};
   }
-  const { x, y, annotationId, score } = payload.data;
+  const { x, y, annotationInfo, role } = payload.data;
   if (!model.histogram2d[x.name]) {
     model.histogram2d[x.name] = {};
   }
@@ -159,7 +205,7 @@ export function set(model, payload) {
   model.histogram2d[x.name][y.name] = [].concat(
     payload.data,
     model.histogram2d[x.name][y.name]
-      .filter(hist => hist.annotationId === annotationId && hist.score !== score));
+      .filter(hist => hist.annotationInfo.annotationGeneration === annotationInfo.annotationGeneration && hist.role.score !== role.score));
 
   // Attach max count
   let count = 0;
@@ -177,7 +223,7 @@ export function set(model, payload) {
 function get(model, query) {
   if (model.histogram2d && model.histogram2d[query.axes[0]] && model.histogram2d[query.axes[0]][query.axes[1]]) {
     if (query.score) {
-      return model.histogram2d[query.axes[0]][query.axes[1]].filter(hist => query.score.indexOf(hist.score) !== -1);
+      return model.histogram2d[query.axes[0]][query.axes[1]].filter(hist => query.score.indexOf(hist.role.score) !== -1);
     }
     return model.histogram2d[query.axes[0]][query.axes[1]];
   }
