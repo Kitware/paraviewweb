@@ -104,9 +104,8 @@ function parallelCoordinate(publicAPI, model) {
   model.selectionData = null;
 
   function drawSelectionData(score) {
-    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
-      // console.log('filter draw', score, model.partitionScore.indexOf(score) !== -1);
-      return model.partitionScore.indexOf(score) !== -1;
+    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScores) {
+      return model.partitionScores.indexOf(score) !== -1;
     }
     return true;
   }
@@ -670,15 +669,15 @@ function parallelCoordinate(publicAPI, model) {
   };
 
   publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
-    model.partitionScore = scoreList;
-    if (model.dataSubscription && model.partitionScore) {
-      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScore);
+    model.partitionScores = scoreList;
+    if (model.dataSubscription && model.partitionScores) {
+      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
     }
   };
 
   publicAPI.setScores = scores => {
     model.scores = scores;
-    if (!model.partitionScore && scores) {
+    if (!model.partitionScores && scores) {
       publicAPI.setVisibleScoresForPartitionSelection(scores.map((score, idx) => idx));
     }
     if (model.scores) {
@@ -846,7 +845,7 @@ function parallelCoordinate(publicAPI, model) {
         model.selectionData = data;
         publicAPI.render();
       },
-      model.axes.getAxesPairs(), { partitionScore: model.partitionScore });
+      model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       model.axes.resetSelections(sel, false);

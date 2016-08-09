@@ -7,7 +7,15 @@
 //  const payload = {
 //    type: 'count',
 //    data: {
-//
+//       annotationInfo: {
+//         annotationGeneration: 1,
+//         selectionGeneration: 1,
+//       },
+//       count: 20,
+//       role: {
+//         selected: true,
+//         score: 0,
+//       },
 //    },
 //  }
 //
