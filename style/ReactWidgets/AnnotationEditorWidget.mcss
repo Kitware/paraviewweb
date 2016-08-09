@@ -73,7 +73,7 @@
 
 .backgroundScore {
   position: absolute;
-  opacity: 0.2;
+  opacity: 0.5;
   z-index: -1;
   width: 320px;
   right: calc(100% + 5px);
