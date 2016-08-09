@@ -7,6 +7,7 @@ module.exports = {
     'no-param-reassign': ["error", { props: false }],
     'no-unused-vars': ["error", { args: 'none' }],
     'react/jsx-filename-extension': ["error", { "extensions": [".js"] }],
+    'no-mixed-operators': ["error", {"allowSamePrecedence": true}],
 
     // Should fix that at some point but too much work...
     'react/no-is-mounted': "warn",
