@@ -87,6 +87,8 @@ function selectionProvider(publicAPI, model) {
     flushDataToListener(dataListener);
     return {
       unsubscribe() {
+        request.action = 'unsubscribe';
+        publicAPI.fireDataSubscriptionChange(request);
         dataSubscriptions[id] = null;
       },
       update(vars, meta) {
