@@ -20987,6 +20987,7 @@
 
 	  function drawSelectionData(score) {
 	    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScore) {
+	      // console.log('filter draw', score, model.partitionScore.indexOf(score) !== -1);
 	      return model.partitionScore.indexOf(score) !== -1;
 	    }
 	    return true;
@@ -21401,10 +21402,10 @@
 	        var missingData = false;
 
 	        var processHistogram = function processHistogram(h, k) {
-	          if (drawSelectionData(h.score)) {
+	          if (drawSelectionData(h.role.score)) {
 	            maxCount = maxCount > h.maxCount ? maxCount : h.maxCount;
 	            // Add in queue
-	            polygonsQueue.push([axesCenters, model.fgCtx, k, k + 1, h, scoreToColor[h.score] || model.selectionColors]);
+	            polygonsQueue.push([axesCenters, model.fgCtx, k, k + 1, h, scoreToColor[h.role.score] || model.selectionColors]);
 	          }
 	        };
 
@@ -31627,6 +31628,8 @@
 	              }
 	            });
 	          })();
+	        } else if (selection.type === 'empty') {
+	          // nothing to do we already cleared the selection
 	        } else {
 	          console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
 	        }
