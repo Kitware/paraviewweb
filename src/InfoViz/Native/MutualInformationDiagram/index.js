@@ -905,6 +905,17 @@ function informationDiagram(publicAPI, model) {
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
+
+  if (model.provider.isA('SelectionProvider')) {
+    model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.generation === lastAnnotationPushed.generation + 1) {
+        // Assume that it is still ours but edited by someone else
+        lastAnnotationPushed = annotation;
+        // Capture the score and update our default
+        model.defaultScore = lastAnnotationPushed.score[0];
+      }
+    }));
+  }
 }
 
 // ----------------------------------------------------------------------------
