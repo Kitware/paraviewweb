@@ -1,5 +1,14 @@
-.viewport {
-  overflow: hidden;
+.baseViewport {
   position: absolute;
   outline: 1px solid #e0e0e0;
+}
+
+.viewport {
+  composes: baseViewport;
+  overflow: hidden;
+}
+
+.scrollableViewport {
+  composes: baseViewport;
+  overflow: auto;
 }
