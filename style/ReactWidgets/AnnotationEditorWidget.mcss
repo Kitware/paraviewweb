@@ -1,6 +1,6 @@
 .topContainer {
   position: relative;
-  width: 420px;
+  min-width: 420px;
   margin: 10px auto;
 }
 
