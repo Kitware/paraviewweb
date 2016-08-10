@@ -23940,7 +23940,7 @@
 	    model.container = element;
 
 	    if (model.container !== null) {
-	      var cSel = _d2.default.select(model.container).style('overflow-y', 'hidden');
+	      var cSel = _d2.default.select(model.container);
 	      createHeader(cSel);
 	      // wrapper height is set insize resize()
 	      var wrapper = cSel.append('div').style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {

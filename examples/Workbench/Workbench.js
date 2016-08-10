@@ -723,6 +723,8 @@
 	  }, {
 	    key: 'setViewport',
 	    value: function setViewport(index, instance) {
+	      var _this3 = this;
+
 	      var shouldTriggerChange = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 	      var count = NUMBER_OF_VIEWPORTS;
@@ -742,9 +744,15 @@
 	      }
 
 	      this.viewportList[index].renderer = instance;
+	      this.viewportList[index].el.setAttribute('class', _Workbench2.default.viewport);
 	      if (instance !== null) {
 	        instance.setContainer(this.viewportList[index].el);
 	        instance.resize();
+	        Object.keys(this.componentMap).forEach(function (name) {
+	          if (_this3.componentMap[name].component === instance && _this3.componentMap[name].scroll) {
+	            _this3.viewportList[index].el.setAttribute('class', _Workbench2.default.scrollableViewport);
+	          }
+	        });
 	      }
 
 	      if (shouldTriggerChange) {
@@ -754,11 +762,11 @@
 	  }, {
 	    key: 'setContainer',
 	    value: function setContainer(el) {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      if (this.el) {
 	        this.viewportList.forEach(function (viewport) {
-	          _this3.el.removeChild(viewport.el);
+	          _this4.el.removeChild(viewport.el);
 	        });
 	        this.removeEventListener();
 	      }
@@ -766,7 +774,7 @@
 	      this.el = el;
 	      if (this.el) {
 	        this.viewportList.forEach(function (viewport) {
-	          _this3.el.appendChild(viewport.el);
+	          _this4.el.appendChild(viewport.el);
 	        });
 	        if (this.useMouse) {
 	          this.addMouseListeners();
@@ -806,13 +814,13 @@
 	  }, {
 	    key: 'getViewportMapping',
 	    value: function getViewportMapping() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var viewportMapping = this.viewportList.map(function (viewport) {
 	        return viewport.renderer;
 	      });
 	      Object.keys(this.componentMap).forEach(function (name) {
-	        _this4.componentMap[name].viewport = viewportMapping.indexOf(_this4.componentMap[name].component);
+	        _this5.componentMap[name].viewport = viewportMapping.indexOf(_this5.componentMap[name].component);
 	      });
 	      return this.componentMap;
 	    }
@@ -21108,11 +21116,13 @@
 
 
 	// module
-	exports.push([module.id, ".Workbench_viewport_38YDW {\n  overflow: hidden;\n  position: absolute;\n  outline: 1px solid #e0e0e0;\n}\n", ""]);
+	exports.push([module.id, ".Workbench_baseViewport_1HxBD {\n  position: absolute;\n  outline: 1px solid #e0e0e0;\n}\n\n.Workbench_viewport_38YDW {\n  overflow: hidden;\n}\n\n.Workbench_scrollableViewport_2XQZS {\n  overflow: auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
-		"viewport": "Workbench_viewport_38YDW"
+		"baseViewport": "Workbench_baseViewport_1HxBD",
+		"viewport": "Workbench_viewport_38YDW Workbench_baseViewport_1HxBD",
+		"scrollableViewport": "Workbench_scrollableViewport_2XQZS Workbench_baseViewport_1HxBD"
 	};
 
 /***/ },

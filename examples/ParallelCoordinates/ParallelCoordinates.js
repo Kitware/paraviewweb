@@ -31621,7 +31621,7 @@
 	                  endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
 	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
 	                  color: scoreColorMap[scoreMapping[idx]] ? 'rgb(' + scoreColorMap[scoreMapping[idx]].join(',') + ')' : 'rgb(105, 195, 255)',
-	                  score: scoreMapping[idx + 1]
+	                  score: scoreMapping[idx]
 	                });
 	              }
 	              if (idx + 1 === array.length) {
@@ -31630,7 +31630,7 @@
 	                  endpoints: toEndpoint(divider.closeToLeft, true),
 	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
 	                  color: scoreColorMap[scoreMapping[idx + 1]] ? 'rgb(' + scoreColorMap[scoreMapping[idx + 1]].join(',') + ')' : 'rgb(105, 195, 255)',
-	                  score: scoreMapping[idx + 2]
+	                  score: scoreMapping[idx + 1]
 	                });
 	              }
 	            });
@@ -31794,7 +31794,7 @@
 	        this.axes.forEach(function (axis, index) {
 	          var screenX = _this8.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
 	          axis.selections.forEach(function (selection, selectionIndex) {
-	            if (drawScore && selection.score) {
+	            if (drawScore && selection.score !== undefined) {
 	              if (!drawScore(selection.score)) {
 	                return; // Skip unwanted score
 	              }

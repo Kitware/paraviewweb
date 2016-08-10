@@ -45,7 +45,7 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/ubuntu_14_04.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="ParaViewWeb on Ubuntu 14.04 LTSIntroductionThis document describes how to set up a ParaViewWeb server instance on a freshly installed Ubuntu Desktop 14.04 LTS.The server version can also be used, but">
-<meta property="og:updated_time" content="2016-08-09T22:18:08.160Z">
+<meta property="og:updated_time" content="2016-08-10T18:09:39.756Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="ParaViewWeb on Ubuntu 14.04 LTSIntroductionThis document describes how to set up a ParaViewWeb server instance on a freshly installed Ubuntu Desktop 14.04 LTS.The server version can also be used, but">
@@ -149,7 +149,7 @@
 <p>Then, you need the user pvw-user to execute /data/pvw/bin/start.sh when it is properly logged in with its display setup…</p>
 <h2 id="Configuring-Apache" class="article-heading"><a href="#Configuring-Apache" class="headerlink" title="Configuring Apache"></a>Configuring Apache<a class="article-anchor" href="#Configuring-Apache" aria-hidden="true"></a></h2><h3 id="Introduction-1" class="article-heading"><a href="#Introduction-1" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction-1" aria-hidden="true"></a></h3><p>Apache will act as our front-end webserver. This means that both the HTML content and the WebSocket forwarding will be handled by Apache.</p>
 <h3 id="Configuration" class="article-heading"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration<a class="article-anchor" href="#Configuration" aria-hidden="true"></a></h3><p>First of all, you will need to enable the modules that will be used by our ParaViewWeb virtual host.</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo a2enmod vhost_<span class="built_in">alias</span></div><div class="line">$ sudo a2enmod proxy</div><div class="line">$ sudo a2enmod proxy_http</div><div class="line">$ sudo a2enmod proxy_wstunnel</div><div class="line">$ sudo a2enmod rewrite</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo a2enmod vhost_alias</div><div class="line">$ sudo a2enmod proxy</div><div class="line">$ sudo a2enmod proxy_http</div><div class="line">$ sudo a2enmod proxy_wstunnel</div><div class="line">$ sudo a2enmod rewrite</div></pre></td></tr></table></figure>
 <p>Then lets create our virtual host.  Be sure to replace <code>YOUR_HOST_NAME_TO_REPLACE</code>, shown in the example below, with your actual host name.  Also include a real email address in place of <code>YOUR_EMAIL@COMPANY.COM</code>.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ vi  /etc/apache2/sites-available/001-pvw.conf</div><div class="line"></div><div class="line">    &lt;VirtualHost *:80&gt;</div><div class="line">      ServerName   YOUR_HOST_NAME_TO_REPLACE</div><div class="line">      ServerAdmin  YOUR_EMAIL@COMPANY.COM</div><div class="line">      DocumentRoot /data/www</div><div class="line"></div><div class="line">      ErrorLog /data/logs/error.log</div><div class="line">      CustomLog /data/logs/access.log combined</div><div class="line"></div><div class="line">      &lt;Directory /data/www&gt;</div><div class="line">          Options Indexes FollowSymLinks</div><div class="line">          Order allow,deny</div><div class="line">          Allow from all</div><div class="line">          AllowOverride None</div><div class="line">          Require all granted</div><div class="line">      &lt;/Directory&gt;</div><div class="line"></div><div class="line">      <span class="comment"># Handle launcher forwarding</span></div><div class="line">      ProxyPass /paraview http://localhost:8080/paraview</div><div class="line"></div><div class="line">      <span class="comment"># Handle WebSocket forwarding</span></div><div class="line">      RewriteEngine On</div><div class="line">      RewriteMap  session-to-port  txt:/data/proxy.txt</div><div class="line">      RewriteCond %&#123;QUERY_STRING&#125;  ^sessionId=(.*)$               [NC]</div><div class="line">      RewriteRule ^/proxy.*$       ws://<span class="variable">$&#123;session-to-port:%1&#125;</span>/ws  [P]</div><div class="line">    &lt;/VirtualHost&gt;</div></pre></td></tr></table></figure>
 <p>Then enable that virtual host and restart Apache</p>
@@ -172,7 +172,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-08-09T22:18:08.160Z" itemprop="dateModified">Last updated: 2016-08-09</time>
+                <time class="article-footer-updated" datetime="2016-08-10T18:09:39.756Z" itemprop="dateModified">Last updated: 2016-08-10</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
