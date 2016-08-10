@@ -674,8 +674,7 @@ function histogramSelector(publicAPI, model) {
     model.container = element;
 
     if (model.container !== null) {
-      const cSel = d3.select(model.container)
-        .style('overflow-y', 'hidden');
+      const cSel = d3.select(model.container);
       createHeader(cSel);
       // wrapper height is set insize resize()
       const wrapper = cSel.append('div')
