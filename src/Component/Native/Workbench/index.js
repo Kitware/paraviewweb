@@ -195,9 +195,15 @@ export default class ComponentWorkbench {
     }
 
     this.viewportList[index].renderer = instance;
+    this.viewportList[index].el.setAttribute('class', style.viewport);
     if (instance !== null) {
       instance.setContainer(this.viewportList[index].el);
       instance.resize();
+      Object.keys(this.componentMap).forEach(name => {
+        if (this.componentMap[name].component === instance && this.componentMap[name].scroll) {
+          this.viewportList[index].el.setAttribute('class', style.scrollableViewport);
+        }
+      });
     }
 
     if (shouldTriggerChange) {
