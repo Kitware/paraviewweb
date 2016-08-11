@@ -23278,8 +23278,16 @@
 	//
 	// ----------------------------------------------------------------------------
 
+	function keep(id) {
+	  return function (item) {
+	    return item.annotationInfo.annotationGeneration === id;
+	  };
+	}
+
 	function set(model, payload) {
-	  model.count = payload;
+	  var annotationGeneration = payload.data.annotationInfo.annotationGeneration;
+
+	  model.count = (model.count || []).filter(keep(annotationGeneration)).concat(payload.data);
 	}
 
 	// ----------------------------------------------------------------------------
