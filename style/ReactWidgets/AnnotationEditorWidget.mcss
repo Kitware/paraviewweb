@@ -15,10 +15,16 @@
 .scoreBlock {
   width: 20px;
   height: 20px;
+  line-height: 20px;
   border-radius: 3px;
   border: 2px solid gray;
   margin: 2px;
   opacity: 0.5;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
 }
 
 .selectedScoreBlock {

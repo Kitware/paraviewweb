@@ -43,8 +43,13 @@
 //
 // ----------------------------------------------------------------------------
 
+function keep(id) {
+  return item => (item.annotationInfo.annotationGeneration === id);
+}
+
 export function set(model, payload) {
-  model.count = payload;
+  const { annotationGeneration } = payload.data.annotationInfo;
+  model.count = (model.count || []).filter(keep(annotationGeneration)).concat(payload.data);
 }
 
 // ----------------------------------------------------------------------------
