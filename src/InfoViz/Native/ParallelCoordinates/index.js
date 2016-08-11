@@ -694,6 +694,9 @@ function parallelCoordinate(publicAPI, model) {
   }
 
   publicAPI.resize = () => {
+    if (!model.container) {
+      return;
+    }
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
     model.canvas.setAttribute('width', clientRect.width);
     model.canvas.setAttribute('height', clientRect.height);
