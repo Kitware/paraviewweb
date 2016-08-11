@@ -170,7 +170,7 @@
 	        this.props.path.map(function (name, idx) {
 	          return _react2.default.createElement(
 	            'li',
-	            { className: _FileBrowserWidget2.default.breadcrumbItem, key: name, 'data-idx': idx, title: name, onClick: _this.onPathChange },
+	            { className: _FileBrowserWidget2.default.breadcrumbItem, key: idx, 'data-idx': idx, title: name, onClick: _this.onPathChange },
 	            _react2.default.createElement('i', { className: _FileBrowserWidget2.default.breadcrumbFolderIcon }),
 	            _react2.default.createElement(
 	              'span',
