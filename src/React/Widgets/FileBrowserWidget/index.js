@@ -75,7 +75,7 @@ export default React.createClass({
       <div className={style.container}>
         <ul className={style.breadcrumb}>
           {this.props.path.map((name, idx) =>
-            <li className={style.breadcrumbItem} key={name} data-idx={idx} title={name} onClick={this.onPathChange}>
+            <li className={style.breadcrumbItem} key={idx} data-idx={idx} title={name} onClick={this.onPathChange}>
               <i className={style.breadcrumbFolderIcon} />
               <span className={style.breadcrumbLabel}>{name}</span>
             </li>
