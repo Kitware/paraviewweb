@@ -21506,6 +21506,9 @@
 	  }
 
 	  publicAPI.resize = function () {
+	    if (!model.container) {
+	      return;
+	    }
 	    var clientRect = model.canvas.parentElement.getBoundingClientRect();
 	    model.canvas.setAttribute('width', clientRect.width);
 	    model.canvas.setAttribute('height', clientRect.height);
