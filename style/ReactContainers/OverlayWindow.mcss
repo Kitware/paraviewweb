@@ -26,6 +26,15 @@
   left: 0;
   opacity: 1.0;
   overflow: hidden;
+}
+
+.frontEventContainer {
+  composes: eventContainer;
+  z-index: 20;
+}
+
+.backEventContainer {
+  composes: eventContainer;
   z-index: 10;
 }
 
