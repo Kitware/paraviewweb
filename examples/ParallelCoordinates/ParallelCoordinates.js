@@ -21386,12 +21386,14 @@
 
 	    var nbPolyDraw = model.axes.getNumberOf2DHistogram();
 	    var axesCenters = model.axes.extractAxesCenters(model);
-	    for (var j = 0; j < nbPolyDraw; ++j) {
-	      drawPolygons(axesCenters, model.bgCtx, j, j + 1, model.provider.getHistogram2D(model.axes.getAxis(j).name, model.axes.getAxis(j + 1).name), model.polygonColors);
-	    }
+	    if (!(model.axes.hasSelection() && model.showOnlySelection)) {
+	      for (var j = 0; j < nbPolyDraw; ++j) {
+	        drawPolygons(axesCenters, model.bgCtx, j, j + 1, model.provider.getHistogram2D(model.axes.getAxis(j).name, model.axes.getAxis(j + 1).name), model.polygonColors);
+	      }
 
-	    model.ctx.globalAlpha = model.polygonOpacityAdjustment;
-	    model.ctx.drawImage(model.bgCanvas, 0, 0, model.canvasArea.width, model.canvasArea.height, 0, 0, model.canvasArea.width, model.canvasArea.height);
+	      model.ctx.globalAlpha = model.polygonOpacityAdjustment;
+	      model.ctx.drawImage(model.bgCanvas, 0, 0, model.canvasArea.width, model.canvasArea.height, 0, 0, model.canvasArea.width, model.canvasArea.height);
+	    }
 
 	    // If there is a selection, draw that (the "focus") on top of the polygons
 	    if (model.axes.hasSelection()) {
@@ -21712,7 +21714,9 @@
 
 	  useAnnotation: false,
 	  defaultScore: 0,
-	  defaultWeight: 1
+	  defaultWeight: 1,
+
+	  showOnlySelection: false
 
 	};
 
@@ -21725,7 +21729,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection']);
 
 	  parallelCoordinate(publicAPI, model);
 	}
