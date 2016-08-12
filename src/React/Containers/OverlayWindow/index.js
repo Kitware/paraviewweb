@@ -1,5 +1,4 @@
 import React     from 'react';
-import ReactDOM  from 'react-dom';
 import style     from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
 // Clamp, but also let us know how much we cut off
@@ -13,8 +12,7 @@ function diffClamp(value, min, max) {
 }
 
 // Return extra information about the target element bounds
-function getMouseEventInfo(event, divRef) {
-  const divElt = ReactDOM.findDOMNode(divRef);
+function getMouseEventInfo(event, divElt) {
   const clientRect = divElt.getBoundingClientRect();
   return {
     relX: event.clientX - clientRect.left,
@@ -36,7 +34,7 @@ function createDragHandlers(thisObj) {
   }
   return {
     topLeft: event => {
-      const { delX, delY } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX, delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
@@ -51,7 +49,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     topRight: event => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
       const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
@@ -66,7 +64,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottomLeft: event => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
@@ -81,7 +79,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottomRight: event => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
       const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
@@ -96,7 +94,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     top: event => {
-      const { delY } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
       const dy = diffClamp(thisObj.state.y + delY, 0, maxY);
       thisObj.setState({
@@ -107,7 +105,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     right: event => {
-      const { delX, eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
       const dw = diffClamp(thisObj.state.width + delX, minWidth, maxWidth);
@@ -118,7 +116,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottom: event => {
-      const { delY, eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
       const dh = diffClamp(thisObj.state.height + delY, minHeight, maxHeight);
@@ -129,7 +127,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     left: event => {
-      const { delX } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { delX } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
       thisObj.setState({
@@ -140,7 +138,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     move: event => {
-      const { eltBounds } = computeMouseDelta(event, thisObj.refs.eventContainerDiv);
+      const { eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = eltBounds.width - thisObj.state.width;
       const maxY = eltBounds.height - thisObj.state.height;
       const dx = diffClamp(thisObj.state.x + (event.screenX - thisObj.getLastScreenX()), 0, maxX);
@@ -231,7 +229,7 @@ export default React.createClass({
   },
 
   computeActionRegion(evt) {
-    const { relX: x, relY: y } = getMouseEventInfo(evt, this.refs.mainContainerDiv);
+    const { relX: x, relY: y } = getMouseEventInfo(evt, this.mainContainerDiv);
     this.setLastScreenX(evt.screenX);
     this.setLastScreenY(evt.screenY);
 
@@ -242,6 +240,10 @@ export default React.createClass({
       cursor: null,
       dragAction: null,
     };
+
+    if (evt.target.nodeName === 'OPTION') {
+      return actionStruct;
+    }
 
     if (x < this.props.marginSize) {
       actionStruct.cursor = 'ew-resize';
@@ -257,7 +259,8 @@ export default React.createClass({
     } else if (y < (this.props.marginSize + this.props.titleBarHeight)) {
       actionStruct.cursor = 'move';
       actionStruct.dragAction = this.handlerMap.move;
-    } else if (y > (this.props.marginSize + this.props.titleBarHeight + contentHeight)) {
+    } else if (y >= (this.props.marginSize + this.props.titleBarHeight + contentHeight)
+      && y <= ((2 * this.props.marginSize) + this.props.titleBarHeight + contentHeight)) {
       actionStruct.cursor = 'ns-resize';
       actionStruct.dragAction = this.handlerMap.bottom;
     }
@@ -317,16 +320,16 @@ export default React.createClass({
     // Configure the initial event container props and style overrides
     const eventDivProps = {
       className: style.eventContainer,
-      ref: 'eventContainerDiv',
+      ref: c => (this.eventContainerDiv = c),
       style: {
-        pointerEvents: 'none',
+        pointerEvents: 'auto',
       },
     };
 
     // Configure the initial main container props and style overrides
     const mainDivProps = {
       className: style.mainContainer,
-      ref: 'mainContainerDiv',
+      ref: c => (this.mainContainerDiv = c),
       style: {
         pointerEvents: 'none',
         width: this.state.width,
@@ -340,6 +343,7 @@ export default React.createClass({
     if (this.state.dragging === true) {
       eventDivProps.onMouseUp = this.mouseUp;
       eventDivProps.onMouseMove = this.dragHandler;
+      mainDivProps.style.pointerEvents = 'none';
       eventDivProps.style.pointerEvents = 'auto';
       if (this.state.cursor !== null) {
         eventDivProps.style.cursor = this.state.cursor;
@@ -348,7 +352,8 @@ export default React.createClass({
       mainDivProps.onMouseDown = this.mouseDown;
       mainDivProps.onMouseUp = this.mouseUp;
       mainDivProps.onMouseMove = this.dragHandler;
-      mainDivProps.style.pointerEvents = 'visible';
+      mainDivProps.style.pointerEvents = 'auto';
+      eventDivProps.style.pointerEvents = 'none';
       if (this.state.cursor !== null) {
         mainDivProps.style.cursor = this.state.cursor;
       }
@@ -398,19 +403,19 @@ export default React.createClass({
           <div
             className="ulCorner" key={0} onMouseDown={this.hotCornerDown}
             style={{ position: 'absolute', width: w, height: w, top: -offset, left: -offset, cursor: 'nwse-resize', pointerEvents: 'auto' }}
-          ></div>
+          />
           <div
             className="urCorner" key={1} onMouseDown={this.hotCornerDown}
             style={{ position: 'absolute', width: w, height: w, top: -offset, right: -offset, cursor: 'nesw-resize', pointerEvents: 'auto' }}
-          ></div>
+          />
           <div
             className="llCorner" key={2} onMouseDown={this.hotCornerDown}
             style={{ position: 'absolute', width: w, height: w, bottom: -offset, left: -offset, cursor: 'nesw-resize', pointerEvents: 'auto' }}
-          ></div>
+          />
           <div
             className="lrCorner" key={3} onMouseDown={this.hotCornerDown}
             style={{ position: 'absolute', width: w, height: w, bottom: -offset, right: -offset, cursor: 'nwse-resize', pointerEvents: 'auto' }}
-          ></div>
+          />
           <div {...titleBarProps}>
             {this.props.title}
           </div>
@@ -418,7 +423,6 @@ export default React.createClass({
           {children}
           </div>
         </div>
-      </div>
-    );
+      </div>);
   },
 });
