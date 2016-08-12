@@ -166,8 +166,10 @@ export default React.createClass({
     minContentHeight: React.PropTypes.number,
     minContentWidth: React.PropTypes.number,
     onResize: React.PropTypes.func,
+    onActive: React.PropTypes.func,
     title: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element, React.PropTypes.array, React.PropTypes.object]),
     titleBarHeight: React.PropTypes.number,
+    front: React.PropTypes.bool,
     visible: React.PropTypes.bool,
     width: React.PropTypes.number,
     x: React.PropTypes.number,
@@ -187,6 +189,8 @@ export default React.createClass({
       titleBarHeight: 25,
       visible: true,
       width: 200,
+      front: false,
+      onActive: () => {},
       x: 10,
       y: 10,
     };
@@ -303,6 +307,7 @@ export default React.createClass({
     if (actionStruct.dragAction !== null) {
       this.dragHandler = actionStruct.dragAction;
       this.setState({ cursor: actionStruct.cursor, dragging: true });
+      this.props.onActive(true, this);
     }
   },
 
@@ -310,6 +315,7 @@ export default React.createClass({
     const actionStruct = this.computeActionRegion(evt);
     this.dragHandler = this.mouseMove;
     this.setState({ cursor: actionStruct.cursor, dragging: false });
+    this.props.onActive(false, this);
   },
 
   render() {
@@ -319,7 +325,7 @@ export default React.createClass({
 
     // Configure the initial event container props and style overrides
     const eventDivProps = {
-      className: style.eventContainer,
+      className: this.props.front ? style.frontEventContainer : style.backEventContainer,
       ref: c => (this.eventContainerDiv = c),
       style: {
         pointerEvents: 'auto',
