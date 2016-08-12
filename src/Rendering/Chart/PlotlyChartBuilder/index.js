@@ -93,10 +93,11 @@ export default class PlotlyChartBuilder {
 
   // ------------------------------------------------------------------------
 
-  setChartData(chartData) {
+  setChartData(chartData, layout) {
     this.dataReady({
       forceNewPlot: false,
       traces: chartData,
+      layout,
     });
   }
 
