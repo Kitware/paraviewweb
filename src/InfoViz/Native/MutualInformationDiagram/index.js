@@ -657,7 +657,7 @@ function informationDiagram(publicAPI, model) {
           const pathLength = groupPath[0][glyphData.index].getTotalLength();
           const avgRadius = (innerRadius + outerRadius) / 2;
           // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-          const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - (textLength + model.glyphSize)) / 2 / avgRadius;
+          const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - ((textLength + model.glyphSize) / 2 / avgRadius));
 
           const currGlyph = d3.select(this);
           currGlyph
