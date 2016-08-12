@@ -573,19 +573,21 @@ function parallelCoordinate(publicAPI, model) {
 
     const nbPolyDraw = model.axes.getNumberOf2DHistogram();
     const axesCenters = model.axes.extractAxesCenters(model);
-    for (let j = 0; j < nbPolyDraw; ++j) {
-      drawPolygons(
-        axesCenters,
-        model.bgCtx,
-        j, j + 1,
-        model.provider.getHistogram2D(model.axes.getAxis(j).name, model.axes.getAxis(j + 1).name),
-        model.polygonColors);
-    }
+    if (!(model.axes.hasSelection() && model.showOnlySelection)) {
+      for (let j = 0; j < nbPolyDraw; ++j) {
+        drawPolygons(
+          axesCenters,
+          model.bgCtx,
+          j, j + 1,
+          model.provider.getHistogram2D(model.axes.getAxis(j).name, model.axes.getAxis(j + 1).name),
+          model.polygonColors);
+      }
 
-    model.ctx.globalAlpha = model.polygonOpacityAdjustment;
-    model.ctx.drawImage(model.bgCanvas,
-      0, 0, model.canvasArea.width, model.canvasArea.height,
-      0, 0, model.canvasArea.width, model.canvasArea.height);
+      model.ctx.globalAlpha = model.polygonOpacityAdjustment;
+      model.ctx.drawImage(model.bgCanvas,
+        0, 0, model.canvasArea.width, model.canvasArea.height,
+        0, 0, model.canvasArea.width, model.canvasArea.height);
+    }
 
     // If there is a selection, draw that (the "focus") on top of the polygons
     if (model.axes.hasSelection()) {
@@ -926,6 +928,8 @@ const DEFAULT_VALUES = {
   defaultScore: 0,
   defaultWeight: 1,
 
+  showOnlySelection: false,
+
   // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };
 
@@ -936,7 +940,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection']);
+  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection']);
 
   parallelCoordinate(publicAPI, model);
 }
