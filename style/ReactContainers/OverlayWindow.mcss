@@ -3,6 +3,12 @@
 .mainContainerStyle {
   background-color: grey;
   border-radius: 5px;
+  border: 1px solid black;
+  box-shadow: 1px 1px 5px black;
+}
+
+.frontEventContainer .mainContainerStyle {
+  box-shadow: 1px 1px 10px black;
 }
 
 .contentStyle {
@@ -31,6 +37,7 @@
 .frontEventContainer {
   composes: eventContainer;
   z-index: 20;
+
 }
 
 .backEventContainer {
