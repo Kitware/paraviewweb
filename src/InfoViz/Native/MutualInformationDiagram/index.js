@@ -780,7 +780,7 @@ function informationDiagram(publicAPI, model) {
     // mutualInformationData.vmap[d.source.index].autoInfo/mutualInformationData.matrix[d.source.index][d.source.index]);
 
     svg
-      .selectAll('g.group path[id^=\'group\']')
+      .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
       .on('click', (d, i) => {
         pmiChordMode.mode = PMI_CHORD_MODE_NONE;
         pmiChordMode.srcParam = null;
