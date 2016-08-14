@@ -331,8 +331,9 @@ function informationDiagram(publicAPI, model) {
     }
 
     function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
+      // const svg = d3.select(model.container).select('svg');
       if (highlight) {
-        d3.select('g.pmiChords')
+        svg.select('g.pmiChords')
           .selectAll('path.pmiChord')
           .classed('highlight-pmi', false);
       }
@@ -349,7 +350,7 @@ function informationDiagram(publicAPI, model) {
       }
 
       if (oneBinAllVarsMode) {
-        d3.select('g.pmiChords').selectAll(`path[data-source-name="${param}"]:not(.fade)`)
+        svg.select('g.pmiChords').selectAll(`path[data-source-name="${param}"]:not(.fade)`)
           .classed('highlight-pmi', highlight)
           .each(function highlightPMI(d, i) {
             const elt = d3.select(this);
@@ -357,7 +358,7 @@ function informationDiagram(publicAPI, model) {
             addBin(elt.attr('data-target-name'), Number.parseInt(elt.attr('data-target-bin'), 10));
           });
 
-        d3.select('g.pmiChords')
+        svg.select('g.pmiChords')
           .selectAll(`path[data-target-name="${param}"]:not(.fade)`)
           .each(function inner(d, i) {
             const elt = d3.select(this);
@@ -369,13 +370,13 @@ function informationDiagram(publicAPI, model) {
           binMap[param] = [bin];
         }
 
-        d3.select('g.pmiChords').selectAll(`path[data-target-name="${param}"]:not(.fade)`)
+        svg.select('g.pmiChords').selectAll(`path[data-target-name="${param}"]:not(.fade)`)
           .classed('highlight-pmi', function inner(d, i) {
             const elt = d3.select(this);
             return binMap[param].indexOf(Number.parseInt(elt.attr('data-target-bin'), 10)) >= 0;
           });
       } else {
-        d3.select('g.pmiChords').selectAll(`path[data-source-name="${param}"][data-source-bin="${bin}"]:not(.fade)`)
+        svg.select('g.pmiChords').selectAll(`path[data-source-name="${param}"][data-source-bin="${bin}"]:not(.fade)`)
         .classed('highlight-pmi', highlight)
         .each(function highlightPMI(d, i) {
           const elt = d3.select(this);
@@ -383,7 +384,7 @@ function informationDiagram(publicAPI, model) {
           addBin(elt.attr('data-target-name'), Number.parseInt(elt.attr('data-target-bin'), 10));
         });
 
-        d3.select('g.pmiChords').selectAll(`path[data-target-name="${param}"][data-target-bin="${bin}"]:not(.fade)`)
+        svg.select('g.pmiChords').selectAll(`path[data-target-name="${param}"][data-target-bin="${bin}"]:not(.fade)`)
           .classed('highlight-pmi', highlight)
           .each(function highlightPMI(d, i) {
             const elt = d3.select(this);
@@ -439,10 +440,10 @@ function informationDiagram(publicAPI, model) {
       const linksToDraw = topPmi(probDict, 0.95);
 
       // Make mutual info chords invisible.
-      d3.selectAll('g.group path.chord')
+      svg.selectAll('g.group path.chord')
         .classed('fade', true);
 
-      const linkData = d3.select('g.pmiChords')
+      const linkData = svg.select('g.pmiChords')
         .selectAll('path.pmiChord')
         .data(d3.zip(linksToDraw.idx, linksToDraw.pmi,
           new Array(linksToDraw.idx.length).fill([va, vb])));
@@ -459,7 +460,7 @@ function informationDiagram(publicAPI, model) {
       const vaRange = [vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle), (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
       const vbRange = [vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle), (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
 
-      d3.select('g.pmiChords')
+      svg.select('g.pmiChords')
         .selectAll('path.pmiChord')
         .classed('fade', false)
         .attr('d', (data, index) =>
@@ -500,7 +501,8 @@ function informationDiagram(publicAPI, model) {
 
     // Mouse move hanlding ----------------------------------------------------
 
-    d3.select(model.container).select('svg')
+    // d3.select(model.container).select('svg')
+    svg
       .on('mousemove', function mouseMove(d, i) {
         const overCoords = d3.mouse(model.container);
         const info = findGroupAndBin(overCoords);
@@ -522,7 +524,7 @@ function informationDiagram(publicAPI, model) {
             if (info.radius <= innerRadius) {
               binMap = pmiBinMap;
             } else {
-              d3.select(`g.group[param-name='${info.group}'`)
+              svg.select(`g.group[param-name='${info.group}'`)
                 .selectAll('path.htile')
                 .each(function hTileInner(data, index) {
                   if (index === info.bin) {
@@ -828,7 +830,7 @@ function informationDiagram(publicAPI, model) {
         });
 
         // Make mutual info chords invisible.
-        d3.selectAll('g.group path.chord')
+        svg.selectAll('g.group path.chord')
           .classed('fade', true);
 
         const linkData = d3
@@ -841,7 +843,7 @@ function informationDiagram(publicAPI, model) {
           .classed(style.pmiChord, true);
         linkData.exit().remove();
 
-        d3.select('g.pmiChords')
+        svg.select('g.pmiChords')
           .selectAll('path.pmiChord')
           .classed('fade', false)
           .attr('d', (data, index) => {
