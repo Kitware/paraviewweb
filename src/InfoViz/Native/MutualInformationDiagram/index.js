@@ -333,7 +333,6 @@ function informationDiagram(publicAPI, model) {
     }
 
     function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
-      // const svg = d3.select(model.container).select('svg');
       if (highlight) {
         svg.select('g.pmiChords')
           .selectAll('path.pmiChord')
@@ -835,7 +834,7 @@ function informationDiagram(publicAPI, model) {
         svg.selectAll('g.group path.chord')
           .classed('fade', true);
 
-        const linkData = d3
+        const linkData = svg
           .select('g.pmiChords')
           .selectAll('path.pmiChord')
           .data(linkAccum);
