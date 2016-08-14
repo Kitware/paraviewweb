@@ -21,7 +21,6 @@ const PMI_CHORD_MODE_NONE = 0;
 const PMI_CHORD_MODE_ONE_BIN_ALL_VARS = 1;
 const PMI_CHORD_MODE_ALL_BINS_TWO_VARS = 2;
 
-
 /* eslint-disable no-use-before-define */
 
 // ----------------------------------------------------------------------------
@@ -38,6 +37,9 @@ function informationDiagram(publicAPI, model) {
     console.log('Invalid provider:', model.provider);
     return;
   }
+
+  // FIXME: Make some attempt at unique id, for now just use millis timestamp
+  model.instanceID = `informationDiagram-${Date.now()}`;
 
   // Handle style for status bar
   function updateStatusBarVisibility() {
@@ -616,7 +618,7 @@ function informationDiagram(publicAPI, model) {
     // Add the group arc.
     const groupPath = group
       .append('path')
-      .attr('id', (d, i) => `group${i}`)
+      .attr('id', (d, i) => `${model.instanceID}-group${i}`)
       .attr('d', arc);
 
     // Add a text label.
@@ -627,7 +629,7 @@ function informationDiagram(publicAPI, model) {
 
     groupText
       .append('textPath')
-      .attr('xlink:href', (d, i) => `#group${i}`)
+      .attr('xlink:href', (d, i) => `#${model.instanceID}-group${i}`)
       .attr('startOffset', '25%')
       .text((d, i) => mutualInformationData.vmap[i].name);
 
