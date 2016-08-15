@@ -90,6 +90,12 @@ export default class RemoteRenderer {
   }
 
   render(force = false) {
+    // Skip rendering if we are not visible
+    if (this.size && this.size.clientWidth === 0) {
+      // pretend success rendering
+      return true;
+    }
+
     if (this.renderPending) {
       this.renderOnIdle(force);
       return false;
@@ -142,7 +148,9 @@ export default class RemoteRenderer {
 
             // final image
             if (resp.stale) {
-              this.renderOnIdle(force);
+              // No force render when we are stale otherwise
+              // we will get in an infinite rendering loop
+              this.renderOnIdle(false);
             } else {
               this.emit(IMAGE_READY_TOPIC, this);
             }
