@@ -23338,9 +23338,9 @@
 
 	var _D3MultiClick2 = _interopRequireDefault(_D3MultiClick);
 
-	var _Score = __webpack_require__(52);
+	var _score = __webpack_require__(52);
 
-	var _Score2 = _interopRequireDefault(_Score);
+	var _score2 = _interopRequireDefault(_score);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23386,7 +23386,7 @@
 
 	  var lastNumFields = 0;
 
-	  _Score2.default.init(publicAPI, model);
+	  var scoreHelper = (0, _score2.default)(publicAPI, model);
 
 	  // This function modifies the Transform property
 	  // of the rows of the grid. Instead of creating new
@@ -23445,7 +23445,7 @@
 	        if (!model.fieldData) {
 	          model.fieldData = {};
 	          fieldNames.forEach(function (name) {
-	            model.fieldData[name] = Object.assign({}, model.provider.getField(name), _Score2.default.defaultFieldData());
+	            model.fieldData[name] = Object.assign({}, model.provider.getField(name), scoreHelper.defaultFieldData());
 	          });
 	        } else if (field !== undefined) {
 	          // update of a specific field from the field provider, most likely the 'active' flag.
@@ -23536,7 +23536,7 @@
 	    if (model.provider.isA('FieldProvider')) {
 	      fieldNames = !displayOnlySelected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
 	    }
-	    fieldNames = _Score2.default.filterFieldNames(fieldNames);
+	    fieldNames = scoreHelper.filterFieldNames(fieldNames);
 	    return fieldNames;
 	  }
 
@@ -23579,7 +23579,7 @@
 	    header.append('span').on('click', fieldHeaderClick).append('i').classed(_HistogramSelector2.default.jsFieldsIcon, true);
 	    header.append('span').classed(_HistogramSelector2.default.jsHeaderLabel, true).on('click', fieldHeaderClick);
 
-	    _Score2.default.createHeader(header);
+	    scoreHelper.createHeader(header);
 
 	    var numBoxesSpan = header.append('span').classed(_HistogramSelector2.default.headerBoxes, true);
 	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
@@ -23601,16 +23601,16 @@
 	  }
 
 	  function updateHeader(dataLength) {
-	    _d2.default.select('.' + _HistogramSelector2.default.jsFieldsIcon)
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsFieldsIcon)
 	    // apply class - 'false' should come first to not remove common base class.
 	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
-	    _Score2.default.updateHeader();
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderLabel).text(!displayOnlySelected ? 'All Variables (' + dataLength + ')' : 'Selected Variables (' + dataLength + ')');
+	    scoreHelper.updateHeader();
 
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
 
-	    _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
 
 	    if (model.provider.isA('LegendProvider') && model.singleModeName) {
 	      var _model$provider$getLe = model.provider.getLegend(model.singleModeName);
@@ -23618,9 +23618,9 @@
 	      var color = _model$provider$getLe.color;
 	      var shape = _model$provider$getLe.shape;
 
-	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
+	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
 	    } else {
-	      _d2.default.select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
+	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
 	        var name = model.singleModeName;
 	        if (!name) return '';
 	        if (name.length > 10) {
@@ -23756,7 +23756,7 @@
 	    boxes.exit().remove();
 
 	    // scoring interface - create floating controls to set scores, values, when needed.
-	    _Score2.default.createPopups();
+	    scoreHelper.createPopups();
 
 	    // for every item that has data, create all the sub-elements
 	    // and size them correctly based on our data
@@ -23813,7 +23813,7 @@
 	        svgGr.append('g').classed(_HistogramSelector2.default.axis, true);
 	        svgGr.append('g').classed(_HistogramSelector2.default.jsGRect, true);
 	        // scoring interface
-	        _Score2.default.createGroups(svgGr);
+	        scoreHelper.createGroups(svgGr);
 	        svgGr.append('rect').classed(_HistogramSelector2.default.overlay, true).style('cursor', 'default');
 	      }
 	      var dataActive = def.active;
@@ -23865,7 +23865,7 @@
 	            var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
 	            svgOverlay.attr('x', -model.histMargin.left).attr('y', -model.histMargin.top).attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
 
-	            if (!_Score2.default.editingScore(def)) {
+	            if (!scoreHelper.editingScore(def)) {
 	              svgOverlay.on('mousemove.hs', function (d, i) {
 	                var mCoords = publicAPI.getMouseCoords(tdsl);
 	                var binNum = Math.floor(mCoords[0] / model.histWidth * hsize);
@@ -23920,7 +23920,7 @@
 	          gAxis.selectAll('line').classed(_HistogramSelector2.default.axisLine, true);
 	          gAxis.selectAll('path').classed(_HistogramSelector2.default.axisPath, true);
 
-	          _Score2.default.prepareItem(def, idx, svgGr, tdsl);
+	          scoreHelper.prepareItem(def, idx, svgGr, tdsl);
 	        })();
 	      }
 	    }
@@ -23984,7 +23984,7 @@
 	  }
 
 	  // scoring interface
-	  _Score2.default.addSubscriptions();
+	  scoreHelper.addSubscriptions();
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
@@ -34583,6 +34583,8 @@
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+	exports.default = init;
+
 	var _d2 = __webpack_require__(41);
 
 	var _d3 = _interopRequireDefault(_d2);
@@ -34605,15 +34607,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var publicAPI = null;
-	var model = null;
-	var displayOnlyScored = false;
-	var scorePopupDiv = null;
-	var dividerPopupDiv = null;
-
 	function init(inPublicAPI, inModel) {
-	  publicAPI = inPublicAPI;
-	  model = inModel;
+	  var publicAPI = inPublicAPI;
+	  var model = inModel;
+	  var displayOnlyScored = false;
+	  var scorePopupDiv = null;
+	  var dividerPopupDiv = null;
 
 	  publicAPI.setScores = function (scores, defaultScore) {
 	    // TODO make sure model.scores has the right format?
@@ -34634,757 +34633,757 @@
 	  if (model.provider.isA('ScoresProvider')) {
 	    publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
 	  }
-	}
 
-	function defaultFieldData() {
-	  return {
-	    scoreDirty: false,
-	    annotation: null
-	  };
-	}
-
-	function createDefaultDivider(val, uncert) {
-	  return {
-	    value: val,
-	    uncertainty: uncert
-	  };
-	}
-
-	// add implicit bounds for the histogram min/max to dividers list
-	function getRegionBounds(dividers, hobj) {
-	  return [hobj.min].concat(dividers.map(function (div) {
-	    return div.value;
-	  }), hobj.max);
-	}
-
-	// Translate our dividers and regions into an annotation
-	// suitable for scoring this histogram.
-	function dividersToPartition(def, scores) {
-	  if (!def.regions || !def.dividers || !scores) return null;
-	  if (def.regions.length !== def.dividers.length + 1) return null;
-	  var uncertScale = def.hobj.max - def.hobj.min;
-
-	  var partitionSelection = _SelectionBuilder2.default.partition(def.name, def.dividers);
-	  partitionSelection.partition.dividers.forEach(function (div, index) {
-	    div.uncertainty *= uncertScale;
-	  });
-	  // console.log('DBG partitionSelection', JSON.stringify(partitionSelection, 2));
-
-	  // Construct a partition annotation:
-	  var partitionAnnotation = null;
-	  if (def.annotation) {
-	    partitionAnnotation = _AnnotationBuilder2.default.update(def.annotation, { selection: partitionSelection, score: def.regions });
-	  } else {
-	    partitionAnnotation = _AnnotationBuilder2.default.annotation(partitionSelection, def.regions, 1, '');
-	  }
-	  return partitionAnnotation;
-	}
-
-	// retrieve annotation, and re-create dividers and regions
-	function partitionToDividers(scoreData, def, hobj, scores) {
-	  // console.log('DBG return', JSON.stringify(scoreData, null, 2));
-	  var uncertScale = hobj.max - hobj.min;
-	  var regions = scoreData.score;
-	  var dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
-	  dividers.forEach(function (div, index) {
-	    div.uncertainty *= 1 / uncertScale;
-	  });
-
-	  // don't replace the default region with an empty region, so UI can display the default region.
-	  if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
-	    def.regions = regions;
-	    def.dividers = dividers;
-	  }
-	}
-
-	// communicate with the server which regions/dividers have changed.
-	function sendScores(def, hobj) {
-	  var scoreData = dividersToPartition(def, model.scores);
-	  if (scoreData === null) {
-	    console.error('Cannot translate scores to send to provider');
-	    return;
-	  }
-	  if (model.provider.isA('PartitionProvider')) {
-	    model.provider.changePartition(def.name, scoreData);
-	    def.scoreDirty = true;
-	    // set def.scoreDirty, to trigger a load of data. We'll use the current data
-	    // until the server returns new data - see addSubscriptions() ..
-	    // model.provider.onPartitionReady() below, which sets scoreDirty again to
-	    // begin using the new data.
-	  }
-	  if (model.provider.isA('SelectionProvider')) {
-	    model.provider.setAnnotation(scoreData);
-	  }
-	}
-
-	// retrieve regions/dividers from the server.
-	function getScores(def) {
-	  if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
-	    if (model.provider.loadPartition(def.name)) {
-	      var scoreData = model.provider.getPartition(def.name);
-	      partitionToDividers(scoreData, def, def.hobj, model.scores);
-	      def.scoreDirty = false;
-	    }
-	  }
-	}
-
-	var scoredHeaderClick = function scoredHeaderClick(d) {
-	  displayOnlyScored = !displayOnlyScored;
-	  publicAPI.render();
-	};
-
-	function getDisplayOnlyScored() {
-	  return displayOnlyScored;
-	}
-
-	function createGroups(svgGr) {
-	  // scoring interface background group, must be behind.
-	  svgGr.insert('g', ':first-child').classed(_HistogramSelector2.default.jsScoreBackground, true);
-	  svgGr.append('g').classed(_HistogramSelector2.default.score, true);
-	}
-
-	function createHeader(header) {
-	  if (typeof model.scores !== 'undefined') {
-	    header.append('span').on('click', scoredHeaderClick).append('i').classed(_HistogramSelector2.default.jsScoredIcon, true);
-	    header.append('span').classed(_HistogramSelector2.default.jsScoredHeader, true).text('Only Scored').on('click', scoredHeaderClick);
-	  }
-	}
-
-	function updateHeader() {
-	  if (typeof model.scores !== 'undefined') {
-	    _d3.default.select('.' + _HistogramSelector2.default.jsScoredIcon)
-	    // apply class - 'false' should come first to not remove common base class.
-	    .classed(getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, false).classed(!getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, true);
-	  }
-	}
-
-	function createDragDivider(hitIndex, val, def, hobj) {
-	  var dragD = null;
-	  if (hitIndex >= 0) {
-	    // start modifying existing divider
-	    // it becomes a temporary copy if we go outside our bounds
-	    dragD = { index: hitIndex,
-	      newDivider: createDefaultDivider(undefined, def.dividers[hitIndex].uncertainty),
-	      savedUncert: def.dividers[hitIndex].uncertainty,
-	      low: hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value,
-	      high: hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value
-	    };
-	  } else {
-	    // create a temp divider to render.
-	    dragD = { index: -1,
-	      newDivider: createDefaultDivider(val, 0),
-	      savedUncert: 0,
-	      low: hobj.min,
-	      high: hobj.max
+	  function defaultFieldData() {
+	    return {
+	      scoreDirty: false,
+	      annotation: null
 	    };
 	  }
-	  return dragD;
-	}
 
-	// enforce that divider uncertainties can't overlap.
-	// Look at neighboring dividers for boundaries on this divider's uncertainty.
-	function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
-	  if (hitIndex < 0) return currentUncertainty;
-	  var maxUncertainty = 0.5;
-	  var uncertScale = def.hobj.max - def.hobj.min;
-	  // Note comparison with low/high divider is signed. If val indicates divider has been
-	  // moved _past_ the neighboring divider, low/high will be negative.
-	  if (hitIndex > 0) {
-	    var low = def.dividers[hitIndex - 1].value + def.dividers[hitIndex - 1].uncertainty * uncertScale;
-	    maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
+	  function createDefaultDivider(val, uncert) {
+	    return {
+	      value: val,
+	      uncertainty: uncert
+	    };
 	  }
-	  if (hitIndex < def.dividers.length - 1) {
-	    var high = def.dividers[hitIndex + 1].value - def.dividers[hitIndex + 1].uncertainty * uncertScale;
-	    maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
+
+	  // add implicit bounds for the histogram min/max to dividers list
+	  function getRegionBounds(dividers, hobj) {
+	    return [hobj.min].concat(dividers.map(function (div) {
+	      return div.value;
+	    }), hobj.max);
 	  }
-	  // make sure uncertainty is zero when val has passed a neighbor.
-	  maxUncertainty = Math.max(maxUncertainty, 0);
-	  return Math.min(maxUncertainty, currentUncertainty);
-	}
 
-	// clamp the drag divider specifically
-	function clampDragDividerUncertainty(val, def) {
-	  if (def.dragDivider.index < 0) return;
+	  // Translate our dividers and regions into an annotation
+	  // suitable for scoring this histogram.
+	  function dividersToPartition(def, scores) {
+	    if (!def.regions || !def.dividers || !scores) return null;
+	    if (def.regions.length !== def.dividers.length + 1) return null;
+	    var uncertScale = def.hobj.max - def.hobj.min;
 
-	  def.dragDivider.newDivider.uncertainty = clampDividerUncertainty(val, def, def.dragDivider.index, def.dragDivider.savedUncert);
-	  def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
-	}
+	    var partitionSelection = _SelectionBuilder2.default.partition(def.name, def.dividers);
+	    partitionSelection.partition.dividers.forEach(function (div, index) {
+	      div.uncertainty *= uncertScale;
+	    });
+	    // console.log('DBG partitionSelection', JSON.stringify(partitionSelection, 2));
 
-	function moveDragDivider(val, def) {
-	  if (def.dragDivider.index >= 0) {
-	    // if we drag outside our bounds, make this a 'temporary' extra divider.
-	    if (val < def.dragDivider.low) {
-	      def.dragDivider.newDivider.value = val;
-	      def.dividers[def.dragDivider.index].value = def.dragDivider.low;
-	      clampDragDividerUncertainty(val, def);
-	      def.dividers[def.dragDivider.index].uncertainty = 0;
-	    } else if (val > def.dragDivider.high) {
-	      def.dragDivider.newDivider.value = val;
-	      def.dividers[def.dragDivider.index].value = def.dragDivider.high;
-	      clampDragDividerUncertainty(val, def);
-	      def.dividers[def.dragDivider.index].uncertainty = 0;
+	    // Construct a partition annotation:
+	    var partitionAnnotation = null;
+	    if (def.annotation) {
+	      partitionAnnotation = _AnnotationBuilder2.default.update(def.annotation, { selection: partitionSelection, score: def.regions });
 	    } else {
-	      def.dividers[def.dragDivider.index].value = val;
-	      clampDragDividerUncertainty(val, def);
-	      def.dragDivider.newDivider.value = undefined;
+	      partitionAnnotation = _AnnotationBuilder2.default.annotation(partitionSelection, def.regions, 1, '');
 	    }
-	  } else {
-	    def.dragDivider.newDivider.value = val;
-	  }
-	}
-
-	// create a sorting helper method, to sort dividers based on div.value
-	// D3 bug: just an accessor didn't work - must use comparator function
-	var bisectDividers = _d3.default.bisector(function (a, b) {
-	  return a.value - b.value;
-	}).left;
-
-	// where are we (to the left of) in the divider list?
-	// Did we hit one?
-	function dividerPick(overCoords, def, marginPx, minVal) {
-	  var val = def.xScale.invert(overCoords[0]);
-	  var index = bisectDividers(def.dividers, createDefaultDivider(val));
-	  var hitIndex = -1;
-	  if (def.dividers.length > 0) {
-	    if (index === 0) {
-	      hitIndex = 0;
-	    } else if (index === def.dividers.length) {
-	      hitIndex = index - 1;
-	    } else {
-	      hitIndex = def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1;
-	    }
-	    var margin = def.xScale.invert(marginPx) - minVal;
-	    // don't pick a divider outside the bounds of the histogram - pick the last region.
-	    if (Math.abs(def.dividers[hitIndex].value - val) > margin || val < def.hobj.min || val > def.hobj.max) {
-	      // we weren't close enough...
-	      hitIndex = -1;
-	    }
-	  }
-	  return [val, index, hitIndex];
-	}
-
-	function regionPick(overCoords, def, hobj) {
-	  if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
-	  var val = def.xScale.invert(overCoords[0]);
-	  var hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
-	  return hitIndex;
-	}
-
-	function finishDivider(def, hobj) {
-	  var forceDelete = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	  var val = def.dragDivider.newDivider.value;
-	  // if val is defined, we moved an existing divider inside
-	  // its region, and we just need to render. Otherwise...
-	  if (val !== undefined || forceDelete) {
-	    // drag 30 pixels out of the hist to delete.
-	    var dragOut = def.xScale.invert(30) - hobj.min;
-	    if (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut) {
-	      if (def.dragDivider.index >= 0) {
-	        // delete a region.
-	        if (forceDelete || def.dividers[def.dragDivider.index].value === def.dragDivider.high) {
-	          def.regions.splice(def.dragDivider.index + 1, 1);
-	        } else {
-	          def.regions.splice(def.dragDivider.index, 1);
-	        }
-	        // delete the divider.
-	        def.dividers.splice(def.dragDivider.index, 1);
-	      }
-	    } else {
-	      // adding a divider, we make a new region.
-	      var replaceRegion = true;
-	      // if we moved a divider, delete the old region, unless it's one of the edge regions - those persist.
-	      if (def.dragDivider.index >= 0) {
-	        if (def.dividers[def.dragDivider.index].value === def.dragDivider.low && def.dragDivider.low !== hobj.min) {
-	          def.regions.splice(def.dragDivider.index, 1);
-	        } else if (def.dividers[def.dragDivider.index].value === def.dragDivider.high && def.dragDivider.high !== hobj.max) {
-	          def.regions.splice(def.dragDivider.index + 1, 1);
-	        } else {
-	          replaceRegion = false;
-	        }
-	        // delete the old divider
-	        def.dividers.splice(def.dragDivider.index, 1);
-	      }
-	      // add a new divider
-	      def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
-	      // find the index based on dividers sorted by divider.value
-	      var index = bisectDividers(def.dividers, def.dragDivider.newDivider);
-	      def.dividers.splice(index, 0, def.dragDivider.newDivider);
-	      // add a new region if needed, copies the score of existing region.
-	      if (replaceRegion) {
-	        def.regions.splice(index, 0, def.regions[index]);
-	      }
-	    }
-	  } else if (def.dragDivider.index >= 0 && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
-	    def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
-	  }
-	  // make sure uncertainties don't overlap.
-	  def.dividers.forEach(function (divider, index) {
-	    divider.uncertainty = clampDividerUncertainty(divider.value, def, index, divider.uncertainty);
-	  });
-	  sendScores(def, hobj);
-	  def.dragDivider = undefined;
-	}
-
-	function positionPopup(popupDiv, left, top) {
-	  var clientRect = model.listContainer.getBoundingClientRect();
-	  var popupRect = popupDiv.node().getBoundingClientRect();
-	  if (popupRect.width + left > clientRect.width) {
-	    popupDiv.style('left', 'auto');
-	    popupDiv.style('right', 0);
-	  } else {
-	    popupDiv.style('right', null);
-	    popupDiv.style('left', left + 'px');
+	    return partitionAnnotation;
 	  }
 
-	  if (popupRect.height + top > clientRect.height) {
-	    popupDiv.style('top', 'auto');
-	    popupDiv.style('bottom', 0);
-	  } else {
-	    popupDiv.style('bottom', null);
-	    popupDiv.style('top', top + 'px');
-	  }
-	}
-
-	function validateDividerVal(n) {
-	  // is it a finite float number?
-	  return !isNaN(parseFloat(n)) && isFinite(n);
-	}
-
-	function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
-	  var topMargin = 4;
-	  var rowHeight = 28;
-	  // 's' SI unit label won't work for a number entry field.
-	  var formatter = _d3.default.format('.4g');
-
-	  dPopupDiv.style('display', 'initial');
-	  positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 2 * rowHeight));
-
-	  var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
-	  var savedVal = selDivider.value;
-	  selectedDef.dragDivider.savedUncert = selDivider.uncertainty;
-	  dPopupDiv.on('mouseleave', function () {
-	    if (selectedDef.dragDivider) {
-	      moveDragDivider(savedVal, selectedDef);
-	      finishDivider(selectedDef, hobj);
-	    }
-	    dPopupDiv.style('display', 'none');
-	    selectedDef.dragDivider = undefined;
-	    publicAPI.render();
-	  });
-	  var uncertInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerUncertaintyInput);
-	  var valInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerValueInput).attr('value', formatter(selDivider.value)).property('value', formatter(selDivider.value)).on('input', function () {
-	    // typing values, show feedback.
-	    var val = _d3.default.event.target.value;
-	    if (!validateDividerVal(val)) val = savedVal;
-	    moveDragDivider(val, selectedDef);
-	    uncertInput.property('value', formatter(100 * selectedDef.dragDivider.newDivider.uncertainty));
-	    publicAPI.render(selectedDef.name);
-	  }).on('change', function () {
-	    // committed to a value, show feedback.
-	    var val = _d3.default.event.target.value;
-	    if (!validateDividerVal(val)) val = savedVal;else {
-	      val = Math.min(hobj.max, Math.max(hobj.min, val));
-	      _d3.default.event.target.value = val;
-	      savedVal = val;
-	    }
-	    moveDragDivider(val, selectedDef);
-	    publicAPI.render(selectedDef.name);
-	  }).on('keyup', function () {
-	    // revert to last committed value
-	    if (_d3.default.event.key === 'Escape') {
-	      moveDragDivider(savedVal, selectedDef);
-	      dPopupDiv.on('mouseleave')();
-	    } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
-	      // commit current value
-	      dPopupDiv.on('mouseleave')();
-	    }
-	  });
-	  // initial select/focus so use can immediately change the value.
-	  valInput.node().select();
-	  valInput.node().focus();
-
-	  uncertInput.attr('value', formatter(100 * selDivider.uncertainty)).property('value', formatter(100 * selDivider.uncertainty)).on('input', function () {
-	    // typing values, show feedback.
-	    var uncert = _d3.default.event.target.value;
-	    if (!validateDividerVal(uncert)) {
-	      uncert = selectedDef.dragDivider.savedUncert;
-	    } else {
-	      uncert *= 0.01;
-	    }
-	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	    if (selectedDef.dragDivider.newDivider.value === undefined) {
-	      // don't use selDivider, might be out-of-date if the server sent us dividers.
-	      selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
-	    }
-	    publicAPI.render(selectedDef.name);
-	  }).on('change', function () {
-	    // committed to a value, show feedback.
-	    var uncert = _d3.default.event.target.value;
-	    if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
-	      // uncertainty is a % between 0 and 0.5
-	      uncert = Math.min(0.5, Math.max(0, 0.01 * uncert));
-	      _d3.default.event.target.value = formatter(100 * uncert);
-	      selectedDef.dragDivider.savedUncert = uncert;
-	    }
-	    selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	    if (selectedDef.dragDivider.newDivider.value === undefined) {
-	      selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
-	    }
-	    publicAPI.render(selectedDef.name);
-	  }).on('keyup', function () {
-	    if (_d3.default.event.key === 'Escape') {
-	      selectedDef.dragDivider.newDivider.uncertainty = selectedDef.dragDivider.savedUncert;
-	      dPopupDiv.on('mouseleave')();
-	    } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
-	      dPopupDiv.on('mouseleave')();
-	    }
-	  }).on('blur', function () {
-	    var val = selectedDef.dragDivider.newDivider.value === undefined ? selectedDef.dividers[selectedDef.dragDivider.index].value : selectedDef.dragDivider.newDivider.value;
-	    clampDragDividerUncertainty(val, selectedDef);
-	    _d3.default.event.target.value = formatter(100 * selectedDef.dragDivider.newDivider.uncertainty);
-	    publicAPI.render(selectedDef.name);
-	  });
-	}
-	// Divider editing popup allows changing its value or uncertainty, or deleting it.
-	function createDividerPopup() {
-	  var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerPopup, true).style('display', 'none');
-	  var table = dPopupDiv.append('table');
-	  var tr1 = table.append('tr');
-	  tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Value:');
-	  tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
-	  var tr2 = table.append('tr');
-	  tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('% Uncertainty:');
-	  tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
-	  dPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
-	  dPopupDiv.append('div').style('text-align', 'center').append('input').classed(_HistogramSelector2.default.scoreButton, true).style('align', 'center').attr('type', 'button').attr('value', 'Delete Divider').on('click', function () {
-	    finishDivider(model.selectedDef, model.selectedDef.hobj, true);
-	    dPopupDiv.style('display', 'none');
-	    publicAPI.render();
-	  });
-	  return dPopupDiv;
-	}
-
-	function showScorePopup(sPopupDiv, coord, selRow) {
-	  // it seemed like a good idea to use getBoundingClientRect() to determine row height
-	  // but it returns all zeros when the popup has been invisible...
-	  var topMargin = 4;
-	  var rowHeight = 26;
-
-	  sPopupDiv.style('display', 'initial');
-	  positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - (topMargin + (0.6 + selRow) * rowHeight));
-
-	  sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
-	    return i === selRow ? d.bgColor : '#fff';
-	  });
-	}
-
-	function createScorePopup() {
-	  var sPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.scorePopup, true).style('display', 'none').on('mouseleave', function () {
-	    sPopupDiv.style('display', 'none');
-	    model.selectedDef.dragDivider = undefined;
-	  });
-	  // create radio-buttons that allow choosing the score for the selected region
-	  var scoreChoices = sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
-	  scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
-	    return d.name;
-	  }).each(function myLabel(data, index) {
-	    // because we use 'each' and re-select the label, need to use parent 'index'
-	    // instead of 'i' in the (d, i) => functions below - i is always zero.
-	    var label = _d3.default.select(this);
-	    label.append('span').classed(_HistogramSelector2.default.scoreSwatch, true).style('background-color', function (d) {
-	      return d.color;
+	  // retrieve annotation, and re-create dividers and regions
+	  function partitionToDividers(scoreData, def, hobj, scores) {
+	    // console.log('DBG return', JSON.stringify(scoreData, null, 2));
+	    var uncertScale = hobj.max - hobj.min;
+	    var regions = scoreData.score;
+	    var dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
+	    dividers.forEach(function (div, index) {
+	      div.uncertainty *= 1 / uncertScale;
 	    });
-	    label.append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
-	      return d.name;
-	    }).property('checked', function (d) {
-	      return index === model.defaultScore;
-	    }).on('click', function (d) {
-	      // use click, not change, so we get notified even when current value is chosen.
-	      var def = model.selectedDef;
-	      def.regions[def.hitRegionIndex] = index;
-	      def.dragDivider = undefined;
-	      sPopupDiv.style('display', 'none');
-	      sendScores(def, def.hobj);
-	      publicAPI.render();
-	    });
-	  });
-	  sPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
-	  // create a button for creating a new divider, so we don't require
-	  // the invisible alt/ctrl click to create one.
-	  sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New Divider').on('click', function () {
-	    finishDivider(model.selectedDef, model.selectedDef.hobj);
-	    sPopupDiv.style('display', 'none');
-	    publicAPI.render();
-	  });
-	  return sPopupDiv;
-	}
 
-	function createPopups() {
-	  if (typeof model.scores !== 'undefined') {
-	    scorePopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsScorePopup);
-	    if (scorePopupDiv.empty()) {
-	      scorePopupDiv = createScorePopup();
-	    }
-	    dividerPopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsDividerPopup);
-	    if (dividerPopupDiv.empty()) {
-	      dividerPopupDiv = createDividerPopup();
+	    // don't replace the default region with an empty region, so UI can display the default region.
+	    if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
+	      def.regions = regions;
+	      def.dividers = dividers;
 	    }
 	  }
-	}
 
-	function showScore(def) {
-	  // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-	  return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
-	}
-
-	function editingScore(def) {
-	  return def.editScore;
-	}
-
-	function filterFieldNames(fieldNames) {
-	  if (getDisplayOnlyScored()) {
-	    // filter for fields that have scores
-	    return fieldNames.filter(function (name) {
-	      return showScore(model.fieldData[name]);
-	    });
-	  }
-	  return fieldNames;
-	}
-
-	function prepareItem(def, idx, svgGr, tdsl) {
-	  if (typeof model.scores === 'undefined') return;
-	  if (typeof def.dividers === 'undefined') {
-	    def.dividers = [];
-	    def.regions = [model.defaultScore];
-	    def.editScore = false;
-	    def.scoreDirty = true;
-	  }
-	  var hobj = def.hobj;
-
-	  // retrieve scores from the server, if available.
-	  getScores(def, hobj);
-
-	  var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
-	  var drag = null;
-	  if (def.editScore) {
-	    // add temp dragged divider, if needed.
-	    var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
-	    var dividers = gScore.selectAll('line').data(dividerData);
-	    dividers.enter().append('line');
-	    dividers.attr('x1', function (d) {
-	      return def.xScale(d.value);
-	    }).attr('y1', 0).attr('x2', function (d) {
-	      return def.xScale(d.value);
-	    }).attr('y2', function () {
-	      return model.histHeight;
-	    }).attr('stroke-width', 1).attr('stroke', 'black');
-	    dividers.exit().remove();
-
-	    var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
-	    uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
-	    uncertRegions.attr('x', function (d) {
-	      return def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min));
-	    }).attr('y', 0)
-	    // to get a width, need to start from 'zero' of this scale, which is hobj.min
-	    .attr('width', function (d, i) {
-	      return def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min));
-	    }).attr('height', function () {
-	      return model.histHeight;
-	    }).attr('fill', '#000').attr('opacity', function (d) {
-	      return d.uncertainty > 0 ? '0.2' : '0';
-	    });
-	    uncertRegions.exit().remove();
-
-	    var dragDivLabel = gScore.select('.' + _HistogramSelector2.default.jsScoreDivLabel);
-	    if (typeof def.dragDivider !== 'undefined') {
-	      if (dragDivLabel.empty()) {
-	        dragDivLabel = gScore.append('text').classed(_HistogramSelector2.default.jsScoreDivLabel, true).attr('text-anchor', 'middle').attr('stroke', 'none').attr('background-color', '#fff').attr('dy', '.71em');
-	      }
-	      var formatter = _d3.default.format('.3s');
-	      var divVal = def.dragDivider.newDivider.value !== undefined ? def.dragDivider.newDivider.value : def.dividers[def.dragDivider.index].value;
-	      dragDivLabel.text(formatter(divVal)).attr('x', '' + def.xScale(divVal)).attr('y', '' + (model.histHeight + 2));
-	    } else if (!dragDivLabel.empty()) {
-	      dragDivLabel.remove();
-	    }
-
-	    // divider interaction events.
-	    // Drag flow: drag a divider inside its current neighbors.
-	    // A divider outside its neighbors or a new divider is a temp divider,
-	    // added to the end of the list when rendering. Doesn't affect regions that way.
-	    drag = _d3.default.behavior.drag().on('dragstart', function () {
-	      var overCoords = publicAPI.getMouseCoords(tdsl);
-
-	      var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-
-	      var _dividerPick2 = _slicedToArray(_dividerPick, 3);
-
-	      var val = _dividerPick2[0];
-	      var hitIndex = _dividerPick2[2];
-
-	      if (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey) {
-	        // create a temp divider to render.
-	        def.dragDivider = createDragDivider(-1, val, def, hobj);
-	        publicAPI.render();
-	      } else if (hitIndex >= 0) {
-	        // start dragging existing divider
-	        // it becomes a temporary copy if we go outside our bounds
-	        def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	        publicAPI.render();
-	      }
-	    }).on('drag', function () {
-	      var overCoords = publicAPI.getMouseCoords(tdsl);
-	      if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
-	      var val = def.xScale.invert(overCoords[0]);
-	      moveDragDivider(val, def);
-	      publicAPI.render(def.name);
-	    }).on('dragend', function () {
-	      if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
-	      finishDivider(def, hobj);
-	      publicAPI.render();
-	    });
-	  } else {
-	    gScore.selectAll('line').remove();
-	    gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).remove();
-	  }
-
-	  // score regions
-	  // there are implicit bounds at the min and max.
-	  var regionBounds = getRegionBounds(def.dividers, hobj);
-	  var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
-	  // duplicate background regions are opaque, for a solid bright color.
-	  var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
-	  var numRegions = def.regions.length;
-	  [{ sel: scoreRegions, opacity: 0.2, class: _HistogramSelector2.default.scoreRegionFg }, { sel: scoreBgRegions, opacity: 1.0, class: _HistogramSelector2.default.scoreRegionBg }].forEach(function (reg) {
-	    reg.sel.enter().append('rect').classed(reg.class, true);
-	    // first and last region should hang 6 pixels over the start/end of the axis.
-	    var overhang = 6;
-	    reg.sel.attr('x', function (d, i) {
-	      return def.xScale(regionBounds[i]) - (i === 0 ? overhang : 0);
-	    }).attr('y', def.editScore ? 0 : model.histHeight)
-	    // width might be === overhang if a divider is dragged all the way to min/max.
-	    .attr('width', function (d, i) {
-	      return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]) + (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0);
-	    })
-	    // extend over the x-axis when editing.
-	    .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3).attr('fill', function (d) {
-	      return model.scores[d].color;
-	    }).attr('opacity', showScore(def) ? reg.opacity : '0');
-	    reg.sel.exit().remove();
-	  });
-
-	  // invisible overlay to catch mouse events. Sized correctly in HistogramSelector
-	  var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
-	  svgOverlay.on('click.score', function () {
-	    // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
-	    if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
-	    var overCoords = publicAPI.getMouseCoords(tdsl);
-	    if (overCoords[1] > model.histHeight) {
-	      def.editScore = !def.editScore;
-	      svgOverlay.style('cursor', def.editScore ? 'url(' + _down_arrow2.default + ') 12 22, auto' : 'pointer');
-	      if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
-	        var state = {};
-	        state[def.name] = [-1];
-	        model.provider.setHoverState({ state: state });
-	      }
-	      publicAPI.render();
+	  // communicate with the server which regions/dividers have changed.
+	  function sendScores(def, hobj) {
+	    var scoreData = dividersToPartition(def, model.scores);
+	    if (scoreData === null) {
+	      console.error('Cannot translate scores to send to provider');
 	      return;
 	    }
-	    if (def.editScore) {
-	      // if we didn't create or drag a divider, pick a region or divider
-	      var hitRegionIndex = regionPick(overCoords, def, hobj);
-	      // select a def, show popup.
-	      def.hitRegionIndex = hitRegionIndex;
-	      // create a temp divider in case we choose 'new |' from the popup.
+	    if (model.provider.isA('PartitionProvider')) {
+	      model.provider.changePartition(def.name, scoreData);
+	      def.scoreDirty = true;
+	      // set def.scoreDirty, to trigger a load of data. We'll use the current data
+	      // until the server returns new data - see addSubscriptions() ..
+	      // model.provider.onPartitionReady() below, which sets scoreDirty again to
+	      // begin using the new data.
+	    }
+	    if (model.provider.isA('SelectionProvider')) {
+	      model.provider.setAnnotation(scoreData);
+	    }
+	  }
 
-	      var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-
-	      var _dividerPick4 = _slicedToArray(_dividerPick3, 3);
-
-	      var val = _dividerPick4[0];
-	      var hitIndex = _dividerPick4[2];
-
-	      var coord = _d3.default.mouse(model.listContainer);
-	      model.selectedDef = def;
-	      if (hitIndex >= 0) {
-	        // pick an existing divider, popup to edit value, uncertainty, or delete.
-	        def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	        showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
-	      } else {
-	        if (typeof def.dragDivider === 'undefined') {
-	          def.dragDivider = createDragDivider(-1, val, def, hobj);
-	        } else {
-	          console.log('Internal: unexpected existing divider');
-	          def.dragDivider.newDivider.value = val;
-	        }
-
-	        var selRow = def.regions[def.hitRegionIndex];
-	        showScorePopup(scorePopupDiv, coord, selRow);
+	  // retrieve regions/dividers from the server.
+	  function getScores(def) {
+	    if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
+	      if (model.provider.loadPartition(def.name)) {
+	        var scoreData = model.provider.getPartition(def.name);
+	        partitionToDividers(scoreData, def, def.hobj, model.scores);
+	        def.scoreDirty = false;
 	      }
 	    }
-	  }).on('mousemove.score', function () {
-	    var overCoords = publicAPI.getMouseCoords(tdsl);
-	    if (def.editScore) {
-	      var _dividerPick5 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+	  }
 
-	      var _dividerPick6 = _slicedToArray(_dividerPick5, 3);
+	  var scoredHeaderClick = function scoredHeaderClick(d) {
+	    displayOnlyScored = !displayOnlyScored;
+	    publicAPI.render();
+	  };
 
-	      var hitIndex = _dividerPick6[2];
+	  function getDisplayOnlyScored() {
+	    return displayOnlyScored;
+	  }
 
-	      var cursor = 'pointer';
-	      // if we're over the bottom, indicate a click will shrink regions
-	      if (overCoords[1] > model.histHeight) cursor = 'url(' + _down_arrow2.default + ') 12 22, auto';
-	      // if we're over a divider, indicate drag-to-move
-	      else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
-	        // if modifiers are held down, we'll create a divider
-	        else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
-	      svgOverlay.style('cursor', cursor);
+	  function createGroups(svgGr) {
+	    // scoring interface background group, must be behind.
+	    svgGr.insert('g', ':first-child').classed(_HistogramSelector2.default.jsScoreBackground, true);
+	    svgGr.append('g').classed(_HistogramSelector2.default.score, true);
+	  }
+
+	  function createHeader(header) {
+	    if (typeof model.scores !== 'undefined') {
+	      header.append('span').on('click', scoredHeaderClick).append('i').classed(_HistogramSelector2.default.jsScoredIcon, true);
+	      header.append('span').classed(_HistogramSelector2.default.jsScoredHeader, true).text('Only Scored').on('click', scoredHeaderClick);
+	    }
+	  }
+
+	  function updateHeader() {
+	    if (typeof model.scores !== 'undefined') {
+	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsScoredIcon)
+	      // apply class - 'false' should come first to not remove common base class.
+	      .classed(getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, false).classed(!getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, true);
+	    }
+	  }
+
+	  function createDragDivider(hitIndex, val, def, hobj) {
+	    var dragD = null;
+	    if (hitIndex >= 0) {
+	      // start modifying existing divider
+	      // it becomes a temporary copy if we go outside our bounds
+	      dragD = { index: hitIndex,
+	        newDivider: createDefaultDivider(undefined, def.dividers[hitIndex].uncertainty),
+	        savedUncert: def.dividers[hitIndex].uncertainty,
+	        low: hitIndex === 0 ? hobj.min : def.dividers[hitIndex - 1].value,
+	        high: hitIndex === def.dividers.length - 1 ? hobj.max : def.dividers[hitIndex + 1].value
+	      };
 	    } else {
-	      // over the bottom, indicate we can start editing regions
-	      var pickIt = overCoords[1] > model.histHeight;
-	      svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
+	      // create a temp divider to render.
+	      dragD = { index: -1,
+	        newDivider: createDefaultDivider(val, 0),
+	        savedUncert: 0,
+	        low: hobj.min,
+	        high: hobj.max
+	      };
 	    }
-	  });
-	  if (def.editScore) {
-	    svgOverlay.call(drag);
-	  } else {
-	    svgOverlay.on('.drag', null);
+	    return dragD;
 	  }
-	}
 
-	function addSubscriptions() {
-	  if (model.provider.isA('PartitionProvider')) {
-	    model.subscriptions.push(model.provider.onPartitionReady(function (field) {
-	      model.fieldData[field].scoreDirty = true;
-	      publicAPI.render(field);
-	    }));
+	  // enforce that divider uncertainties can't overlap.
+	  // Look at neighboring dividers for boundaries on this divider's uncertainty.
+	  function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
+	    if (hitIndex < 0) return currentUncertainty;
+	    var maxUncertainty = 0.5;
+	    var uncertScale = def.hobj.max - def.hobj.min;
+	    // Note comparison with low/high divider is signed. If val indicates divider has been
+	    // moved _past_ the neighboring divider, low/high will be negative.
+	    if (hitIndex > 0) {
+	      var low = def.dividers[hitIndex - 1].value + def.dividers[hitIndex - 1].uncertainty * uncertScale;
+	      maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
+	    }
+	    if (hitIndex < def.dividers.length - 1) {
+	      var high = def.dividers[hitIndex + 1].value - def.dividers[hitIndex + 1].uncertainty * uncertScale;
+	      maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
+	    }
+	    // make sure uncertainty is zero when val has passed a neighbor.
+	    maxUncertainty = Math.max(maxUncertainty, 0);
+	    return Math.min(maxUncertainty, currentUncertainty);
 	  }
-	  if (model.provider.isA('SelectionProvider')) {
-	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
-	      if (annotation.selection.type === 'partition') {
-	        var field = annotation.selection.partition.variable;
-	        // respond to annotation.
-	        model.fieldData[field].annotation = annotation;
-	        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
 
-	        publicAPI.render(field);
+	  // clamp the drag divider specifically
+	  function clampDragDividerUncertainty(val, def) {
+	    if (def.dragDivider.index < 0) return;
+
+	    def.dragDivider.newDivider.uncertainty = clampDividerUncertainty(val, def, def.dragDivider.index, def.dragDivider.savedUncert);
+	    def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
+	  }
+
+	  function moveDragDivider(val, def) {
+	    if (def.dragDivider.index >= 0) {
+	      // if we drag outside our bounds, make this a 'temporary' extra divider.
+	      if (val < def.dragDivider.low) {
+	        def.dragDivider.newDivider.value = val;
+	        def.dividers[def.dragDivider.index].value = def.dragDivider.low;
+	        clampDragDividerUncertainty(val, def);
+	        def.dividers[def.dragDivider.index].uncertainty = 0;
+	      } else if (val > def.dragDivider.high) {
+	        def.dragDivider.newDivider.value = val;
+	        def.dividers[def.dragDivider.index].value = def.dragDivider.high;
+	        clampDragDividerUncertainty(val, def);
+	        def.dividers[def.dragDivider.index].uncertainty = 0;
+	      } else {
+	        def.dividers[def.dragDivider.index].value = val;
+	        clampDragDividerUncertainty(val, def);
+	        def.dragDivider.newDivider.value = undefined;
 	      }
-	    }));
+	    } else {
+	      def.dragDivider.newDivider.value = val;
+	    }
 	  }
-	}
 
-	exports.default = {
-	  addSubscriptions: addSubscriptions,
-	  createGroups: createGroups,
-	  createHeader: createHeader,
-	  createPopups: createPopups,
-	  defaultFieldData: defaultFieldData,
-	  editingScore: editingScore,
-	  filterFieldNames: filterFieldNames,
-	  init: init,
-	  prepareItem: prepareItem,
-	  updateHeader: updateHeader
-	};
+	  // create a sorting helper method, to sort dividers based on div.value
+	  // D3 bug: just an accessor didn't work - must use comparator function
+	  var bisectDividers = _d3.default.bisector(function (a, b) {
+	    return a.value - b.value;
+	  }).left;
+
+	  // where are we (to the left of) in the divider list?
+	  // Did we hit one?
+	  function dividerPick(overCoords, def, marginPx, minVal) {
+	    var val = def.xScale.invert(overCoords[0]);
+	    var index = bisectDividers(def.dividers, createDefaultDivider(val));
+	    var hitIndex = -1;
+	    if (def.dividers.length > 0) {
+	      if (index === 0) {
+	        hitIndex = 0;
+	      } else if (index === def.dividers.length) {
+	        hitIndex = index - 1;
+	      } else {
+	        hitIndex = def.dividers[index].value - val < val - def.dividers[index - 1].value ? index : index - 1;
+	      }
+	      var margin = def.xScale.invert(marginPx) - minVal;
+	      // don't pick a divider outside the bounds of the histogram - pick the last region.
+	      if (Math.abs(def.dividers[hitIndex].value - val) > margin || val < def.hobj.min || val > def.hobj.max) {
+	        // we weren't close enough...
+	        hitIndex = -1;
+	      }
+	    }
+	    return [val, index, hitIndex];
+	  }
+
+	  function regionPick(overCoords, def, hobj) {
+	    if (def.dividers.length === 0 || def.regions.length <= 1) return 0;
+	    var val = def.xScale.invert(overCoords[0]);
+	    var hitIndex = bisectDividers(def.dividers, createDefaultDivider(val));
+	    return hitIndex;
+	  }
+
+	  function finishDivider(def, hobj) {
+	    var forceDelete = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+	    var val = def.dragDivider.newDivider.value;
+	    // if val is defined, we moved an existing divider inside
+	    // its region, and we just need to render. Otherwise...
+	    if (val !== undefined || forceDelete) {
+	      // drag 30 pixels out of the hist to delete.
+	      var dragOut = def.xScale.invert(30) - hobj.min;
+	      if (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut) {
+	        if (def.dragDivider.index >= 0) {
+	          // delete a region.
+	          if (forceDelete || def.dividers[def.dragDivider.index].value === def.dragDivider.high) {
+	            def.regions.splice(def.dragDivider.index + 1, 1);
+	          } else {
+	            def.regions.splice(def.dragDivider.index, 1);
+	          }
+	          // delete the divider.
+	          def.dividers.splice(def.dragDivider.index, 1);
+	        }
+	      } else {
+	        // adding a divider, we make a new region.
+	        var replaceRegion = true;
+	        // if we moved a divider, delete the old region, unless it's one of the edge regions - those persist.
+	        if (def.dragDivider.index >= 0) {
+	          if (def.dividers[def.dragDivider.index].value === def.dragDivider.low && def.dragDivider.low !== hobj.min) {
+	            def.regions.splice(def.dragDivider.index, 1);
+	          } else if (def.dividers[def.dragDivider.index].value === def.dragDivider.high && def.dragDivider.high !== hobj.max) {
+	            def.regions.splice(def.dragDivider.index + 1, 1);
+	          } else {
+	            replaceRegion = false;
+	          }
+	          // delete the old divider
+	          def.dividers.splice(def.dragDivider.index, 1);
+	        }
+	        // add a new divider
+	        def.dragDivider.newDivider.value = Math.min(hobj.max, Math.max(hobj.min, val));
+	        // find the index based on dividers sorted by divider.value
+	        var index = bisectDividers(def.dividers, def.dragDivider.newDivider);
+	        def.dividers.splice(index, 0, def.dragDivider.newDivider);
+	        // add a new region if needed, copies the score of existing region.
+	        if (replaceRegion) {
+	          def.regions.splice(index, 0, def.regions[index]);
+	        }
+	      }
+	    } else if (def.dragDivider.index >= 0 && def.dividers[def.dragDivider.index].uncertainty !== def.dragDivider.newDivider.uncertainty) {
+	      def.dividers[def.dragDivider.index].uncertainty = def.dragDivider.newDivider.uncertainty;
+	    }
+	    // make sure uncertainties don't overlap.
+	    def.dividers.forEach(function (divider, index) {
+	      divider.uncertainty = clampDividerUncertainty(divider.value, def, index, divider.uncertainty);
+	    });
+	    sendScores(def, hobj);
+	    def.dragDivider = undefined;
+	  }
+
+	  function positionPopup(popupDiv, left, top) {
+	    var clientRect = model.listContainer.getBoundingClientRect();
+	    var popupRect = popupDiv.node().getBoundingClientRect();
+	    if (popupRect.width + left > clientRect.width) {
+	      popupDiv.style('left', 'auto');
+	      popupDiv.style('right', 0);
+	    } else {
+	      popupDiv.style('right', null);
+	      popupDiv.style('left', left + 'px');
+	    }
+
+	    if (popupRect.height + top > clientRect.height) {
+	      popupDiv.style('top', 'auto');
+	      popupDiv.style('bottom', 0);
+	    } else {
+	      popupDiv.style('bottom', null);
+	      popupDiv.style('top', top + 'px');
+	    }
+	  }
+
+	  function validateDividerVal(n) {
+	    // is it a finite float number?
+	    return !isNaN(parseFloat(n)) && isFinite(n);
+	  }
+
+	  function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {
+	    var topMargin = 4;
+	    var rowHeight = 28;
+	    // 's' SI unit label won't work for a number entry field.
+	    var formatter = _d3.default.format('.4g');
+
+	    dPopupDiv.style('display', 'initial');
+	    positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 2 * rowHeight));
+
+	    var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
+	    var savedVal = selDivider.value;
+	    selectedDef.dragDivider.savedUncert = selDivider.uncertainty;
+	    dPopupDiv.on('mouseleave', function () {
+	      if (selectedDef.dragDivider) {
+	        moveDragDivider(savedVal, selectedDef);
+	        finishDivider(selectedDef, hobj);
+	      }
+	      dPopupDiv.style('display', 'none');
+	      selectedDef.dragDivider = undefined;
+	      publicAPI.render();
+	    });
+	    var uncertInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerUncertaintyInput);
+	    var valInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerValueInput).attr('value', formatter(selDivider.value)).property('value', formatter(selDivider.value)).on('input', function () {
+	      // typing values, show feedback.
+	      var val = _d3.default.event.target.value;
+	      if (!validateDividerVal(val)) val = savedVal;
+	      moveDragDivider(val, selectedDef);
+	      uncertInput.property('value', formatter(100 * selectedDef.dragDivider.newDivider.uncertainty));
+	      publicAPI.render(selectedDef.name);
+	    }).on('change', function () {
+	      // committed to a value, show feedback.
+	      var val = _d3.default.event.target.value;
+	      if (!validateDividerVal(val)) val = savedVal;else {
+	        val = Math.min(hobj.max, Math.max(hobj.min, val));
+	        _d3.default.event.target.value = val;
+	        savedVal = val;
+	      }
+	      moveDragDivider(val, selectedDef);
+	      publicAPI.render(selectedDef.name);
+	    }).on('keyup', function () {
+	      // revert to last committed value
+	      if (_d3.default.event.key === 'Escape') {
+	        moveDragDivider(savedVal, selectedDef);
+	        dPopupDiv.on('mouseleave')();
+	      } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	        // commit current value
+	        dPopupDiv.on('mouseleave')();
+	      }
+	    });
+	    // initial select/focus so use can immediately change the value.
+	    valInput.node().select();
+	    valInput.node().focus();
+
+	    uncertInput.attr('value', formatter(100 * selDivider.uncertainty)).property('value', formatter(100 * selDivider.uncertainty)).on('input', function () {
+	      // typing values, show feedback.
+	      var uncert = _d3.default.event.target.value;
+	      if (!validateDividerVal(uncert)) {
+	        uncert = selectedDef.dragDivider.savedUncert;
+	      } else {
+	        uncert *= 0.01;
+	      }
+	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	      if (selectedDef.dragDivider.newDivider.value === undefined) {
+	        // don't use selDivider, might be out-of-date if the server sent us dividers.
+	        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	      }
+	      publicAPI.render(selectedDef.name);
+	    }).on('change', function () {
+	      // committed to a value, show feedback.
+	      var uncert = _d3.default.event.target.value;
+	      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
+	        // uncertainty is a % between 0 and 0.5
+	        uncert = Math.min(0.5, Math.max(0, 0.01 * uncert));
+	        _d3.default.event.target.value = formatter(100 * uncert);
+	        selectedDef.dragDivider.savedUncert = uncert;
+	      }
+	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	      if (selectedDef.dragDivider.newDivider.value === undefined) {
+	        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	      }
+	      publicAPI.render(selectedDef.name);
+	    }).on('keyup', function () {
+	      if (_d3.default.event.key === 'Escape') {
+	        selectedDef.dragDivider.newDivider.uncertainty = selectedDef.dragDivider.savedUncert;
+	        dPopupDiv.on('mouseleave')();
+	      } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	        dPopupDiv.on('mouseleave')();
+	      }
+	    }).on('blur', function () {
+	      var val = selectedDef.dragDivider.newDivider.value === undefined ? selectedDef.dividers[selectedDef.dragDivider.index].value : selectedDef.dragDivider.newDivider.value;
+	      clampDragDividerUncertainty(val, selectedDef);
+	      _d3.default.event.target.value = formatter(100 * selectedDef.dragDivider.newDivider.uncertainty);
+	      publicAPI.render(selectedDef.name);
+	    });
+	  }
+	  // Divider editing popup allows changing its value or uncertainty, or deleting it.
+	  function createDividerPopup() {
+	    var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerPopup, true).style('display', 'none');
+	    var table = dPopupDiv.append('table');
+	    var tr1 = table.append('tr');
+	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Value:');
+	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	    var tr2 = table.append('tr');
+	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('% Uncertainty:');
+	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	    dPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
+	    dPopupDiv.append('div').style('text-align', 'center').append('input').classed(_HistogramSelector2.default.scoreButton, true).style('align', 'center').attr('type', 'button').attr('value', 'Delete Divider').on('click', function () {
+	      finishDivider(model.selectedDef, model.selectedDef.hobj, true);
+	      dPopupDiv.style('display', 'none');
+	      publicAPI.render();
+	    });
+	    return dPopupDiv;
+	  }
+
+	  function showScorePopup(sPopupDiv, coord, selRow) {
+	    // it seemed like a good idea to use getBoundingClientRect() to determine row height
+	    // but it returns all zeros when the popup has been invisible...
+	    var topMargin = 4;
+	    var rowHeight = 26;
+
+	    sPopupDiv.style('display', 'initial');
+	    positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - (topMargin + (0.6 + selRow) * rowHeight));
+
+	    sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
+	      return i === selRow ? d.bgColor : '#fff';
+	    });
+	  }
+
+	  function createScorePopup() {
+	    var sPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.scorePopup, true).style('display', 'none').on('mouseleave', function () {
+	      sPopupDiv.style('display', 'none');
+	      model.selectedDef.dragDivider = undefined;
+	    });
+	    // create radio-buttons that allow choosing the score for the selected region
+	    var scoreChoices = sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreChoice).data(model.scores);
+	    scoreChoices.enter().append('label').classed(_HistogramSelector2.default.scoreLabel, true).text(function (d) {
+	      return d.name;
+	    }).each(function myLabel(data, index) {
+	      // because we use 'each' and re-select the label, need to use parent 'index'
+	      // instead of 'i' in the (d, i) => functions below - i is always zero.
+	      var label = _d3.default.select(this);
+	      label.append('span').classed(_HistogramSelector2.default.scoreSwatch, true).style('background-color', function (d) {
+	        return d.color;
+	      });
+	      label.append('input').classed(_HistogramSelector2.default.scoreChoice, true).attr('name', 'score_choice_rb').attr('type', 'radio').attr('value', function (d) {
+	        return d.name;
+	      }).property('checked', function (d) {
+	        return index === model.defaultScore;
+	      }).on('click', function (d) {
+	        // use click, not change, so we get notified even when current value is chosen.
+	        var def = model.selectedDef;
+	        def.regions[def.hitRegionIndex] = index;
+	        def.dragDivider = undefined;
+	        sPopupDiv.style('display', 'none');
+	        sendScores(def, def.hobj);
+	        publicAPI.render();
+	      });
+	    });
+	    sPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
+	    // create a button for creating a new divider, so we don't require
+	    // the invisible alt/ctrl click to create one.
+	    sPopupDiv.append('input').classed(_HistogramSelector2.default.scoreButton, true).attr('type', 'button').attr('value', 'New Divider').on('click', function () {
+	      finishDivider(model.selectedDef, model.selectedDef.hobj);
+	      sPopupDiv.style('display', 'none');
+	      publicAPI.render();
+	    });
+	    return sPopupDiv;
+	  }
+
+	  function createPopups() {
+	    if (typeof model.scores !== 'undefined') {
+	      scorePopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsScorePopup);
+	      if (scorePopupDiv.empty()) {
+	        scorePopupDiv = createScorePopup();
+	      }
+	      dividerPopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsDividerPopup);
+	      if (dividerPopupDiv.empty()) {
+	        dividerPopupDiv = createDividerPopup();
+	      }
+	    }
+	  }
+
+	  function showScore(def) {
+	    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+	    return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
+	  }
+
+	  function editingScore(def) {
+	    return def.editScore;
+	  }
+
+	  function filterFieldNames(fieldNames) {
+	    if (getDisplayOnlyScored()) {
+	      // filter for fields that have scores
+	      return fieldNames.filter(function (name) {
+	        return showScore(model.fieldData[name]);
+	      });
+	    }
+	    return fieldNames;
+	  }
+
+	  function prepareItem(def, idx, svgGr, tdsl) {
+	    if (typeof model.scores === 'undefined') return;
+	    if (typeof def.dividers === 'undefined') {
+	      def.dividers = [];
+	      def.regions = [model.defaultScore];
+	      def.editScore = false;
+	      def.scoreDirty = true;
+	    }
+	    var hobj = def.hobj;
+
+	    // retrieve scores from the server, if available.
+	    getScores(def, hobj);
+
+	    var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
+	    var drag = null;
+	    if (def.editScore) {
+	      // add temp dragged divider, if needed.
+	      var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
+	      var dividers = gScore.selectAll('line').data(dividerData);
+	      dividers.enter().append('line');
+	      dividers.attr('x1', function (d) {
+	        return def.xScale(d.value);
+	      }).attr('y1', 0).attr('x2', function (d) {
+	        return def.xScale(d.value);
+	      }).attr('y2', function () {
+	        return model.histHeight;
+	      }).attr('stroke-width', 1).attr('stroke', 'black');
+	      dividers.exit().remove();
+
+	      var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
+	      uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
+	      uncertRegions.attr('x', function (d) {
+	        return def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min));
+	      }).attr('y', 0)
+	      // to get a width, need to start from 'zero' of this scale, which is hobj.min
+	      .attr('width', function (d, i) {
+	        return def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min));
+	      }).attr('height', function () {
+	        return model.histHeight;
+	      }).attr('fill', '#000').attr('opacity', function (d) {
+	        return d.uncertainty > 0 ? '0.2' : '0';
+	      });
+	      uncertRegions.exit().remove();
+
+	      var dragDivLabel = gScore.select('.' + _HistogramSelector2.default.jsScoreDivLabel);
+	      if (typeof def.dragDivider !== 'undefined') {
+	        if (dragDivLabel.empty()) {
+	          dragDivLabel = gScore.append('text').classed(_HistogramSelector2.default.jsScoreDivLabel, true).attr('text-anchor', 'middle').attr('stroke', 'none').attr('background-color', '#fff').attr('dy', '.71em');
+	        }
+	        var formatter = _d3.default.format('.3s');
+	        var divVal = def.dragDivider.newDivider.value !== undefined ? def.dragDivider.newDivider.value : def.dividers[def.dragDivider.index].value;
+	        dragDivLabel.text(formatter(divVal)).attr('x', '' + def.xScale(divVal)).attr('y', '' + (model.histHeight + 2));
+	      } else if (!dragDivLabel.empty()) {
+	        dragDivLabel.remove();
+	      }
+
+	      // divider interaction events.
+	      // Drag flow: drag a divider inside its current neighbors.
+	      // A divider outside its neighbors or a new divider is a temp divider,
+	      // added to the end of the list when rendering. Doesn't affect regions that way.
+	      drag = _d3.default.behavior.drag().on('dragstart', function () {
+	        var overCoords = publicAPI.getMouseCoords(tdsl);
+
+	        var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	        var _dividerPick2 = _slicedToArray(_dividerPick, 3);
+
+	        var val = _dividerPick2[0];
+	        var hitIndex = _dividerPick2[2];
+
+	        if (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey) {
+	          // create a temp divider to render.
+	          def.dragDivider = createDragDivider(-1, val, def, hobj);
+	          publicAPI.render();
+	        } else if (hitIndex >= 0) {
+	          // start dragging existing divider
+	          // it becomes a temporary copy if we go outside our bounds
+	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	          publicAPI.render();
+	        }
+	      }).on('drag', function () {
+	        var overCoords = publicAPI.getMouseCoords(tdsl);
+	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	        var val = def.xScale.invert(overCoords[0]);
+	        moveDragDivider(val, def);
+	        publicAPI.render(def.name);
+	      }).on('dragend', function () {
+	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	        finishDivider(def, hobj);
+	        publicAPI.render();
+	      });
+	    } else {
+	      gScore.selectAll('line').remove();
+	      gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).remove();
+	    }
+
+	    // score regions
+	    // there are implicit bounds at the min and max.
+	    var regionBounds = getRegionBounds(def.dividers, hobj);
+	    var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
+	    // duplicate background regions are opaque, for a solid bright color.
+	    var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
+	    var numRegions = def.regions.length;
+	    [{ sel: scoreRegions, opacity: 0.2, class: _HistogramSelector2.default.scoreRegionFg }, { sel: scoreBgRegions, opacity: 1.0, class: _HistogramSelector2.default.scoreRegionBg }].forEach(function (reg) {
+	      reg.sel.enter().append('rect').classed(reg.class, true);
+	      // first and last region should hang 6 pixels over the start/end of the axis.
+	      var overhang = 6;
+	      reg.sel.attr('x', function (d, i) {
+	        return def.xScale(regionBounds[i]) - (i === 0 ? overhang : 0);
+	      }).attr('y', def.editScore ? 0 : model.histHeight)
+	      // width might be === overhang if a divider is dragged all the way to min/max.
+	      .attr('width', function (d, i) {
+	        return def.xScale(regionBounds[i + 1]) - def.xScale(regionBounds[i]) + (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0);
+	      })
+	      // extend over the x-axis when editing.
+	      .attr('height', def.editScore ? model.histHeight + model.histMargin.bottom - 3 : model.histMargin.bottom - 3).attr('fill', function (d) {
+	        return model.scores[d].color;
+	      }).attr('opacity', showScore(def) ? reg.opacity : '0');
+	      reg.sel.exit().remove();
+	    });
+
+	    // invisible overlay to catch mouse events. Sized correctly in HistogramSelector
+	    var svgOverlay = svgGr.select('.' + _HistogramSelector2.default.jsOverlay);
+	    svgOverlay.on('click.score', function () {
+	      // preventDefault() in dragstart didn't help, so watch for altKey or ctrlKey.
+	      if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
+	      var overCoords = publicAPI.getMouseCoords(tdsl);
+	      if (overCoords[1] > model.histHeight) {
+	        def.editScore = !def.editScore;
+	        svgOverlay.style('cursor', def.editScore ? 'url(' + _down_arrow2.default + ') 12 22, auto' : 'pointer');
+	        if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
+	          var state = {};
+	          state[def.name] = [-1];
+	          model.provider.setHoverState({ state: state });
+	        }
+	        publicAPI.render();
+	        return;
+	      }
+	      if (def.editScore) {
+	        // if we didn't create or drag a divider, pick a region or divider
+	        var hitRegionIndex = regionPick(overCoords, def, hobj);
+	        // select a def, show popup.
+	        def.hitRegionIndex = hitRegionIndex;
+	        // create a temp divider in case we choose 'new |' from the popup.
+
+	        var _dividerPick3 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	        var _dividerPick4 = _slicedToArray(_dividerPick3, 3);
+
+	        var val = _dividerPick4[0];
+	        var hitIndex = _dividerPick4[2];
+
+	        var coord = _d3.default.mouse(model.listContainer);
+	        model.selectedDef = def;
+	        if (hitIndex >= 0) {
+	          // pick an existing divider, popup to edit value, uncertainty, or delete.
+	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	          showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
+	        } else {
+	          if (typeof def.dragDivider === 'undefined') {
+	            def.dragDivider = createDragDivider(-1, val, def, hobj);
+	          } else {
+	            console.log('Internal: unexpected existing divider');
+	            def.dragDivider.newDivider.value = val;
+	          }
+
+	          var selRow = def.regions[def.hitRegionIndex];
+	          showScorePopup(scorePopupDiv, coord, selRow);
+	        }
+	      }
+	    }).on('mousemove.score', function () {
+	      var overCoords = publicAPI.getMouseCoords(tdsl);
+	      if (def.editScore) {
+	        var _dividerPick5 = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+
+	        var _dividerPick6 = _slicedToArray(_dividerPick5, 3);
+
+	        var hitIndex = _dividerPick6[2];
+
+	        var cursor = 'pointer';
+	        // if we're over the bottom, indicate a click will shrink regions
+	        if (overCoords[1] > model.histHeight) cursor = 'url(' + _down_arrow2.default + ') 12 22, auto';
+	        // if we're over a divider, indicate drag-to-move
+	        else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
+	          // if modifiers are held down, we'll create a divider
+	          else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
+	        svgOverlay.style('cursor', cursor);
+	      } else {
+	        // over the bottom, indicate we can start editing regions
+	        var pickIt = overCoords[1] > model.histHeight;
+	        svgOverlay.style('cursor', pickIt ? 'pointer' : 'default');
+	      }
+	    });
+	    if (def.editScore) {
+	      svgOverlay.call(drag);
+	    } else {
+	      svgOverlay.on('.drag', null);
+	    }
+	  }
+
+	  function addSubscriptions() {
+	    if (model.provider.isA('PartitionProvider')) {
+	      model.subscriptions.push(model.provider.onPartitionReady(function (field) {
+	        model.fieldData[field].scoreDirty = true;
+	        publicAPI.render(field);
+	      }));
+	    }
+	    if (model.provider.isA('SelectionProvider')) {
+	      model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
+	        if (annotation.selection.type === 'partition') {
+	          var field = annotation.selection.partition.variable;
+	          // respond to annotation.
+	          model.fieldData[field].annotation = annotation;
+	          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+
+	          publicAPI.render(field);
+	        }
+	      }));
+	    }
+	  }
+
+	  return {
+	    addSubscriptions: addSubscriptions,
+	    createGroups: createGroups,
+	    createHeader: createHeader,
+	    createPopups: createPopups,
+	    defaultFieldData: defaultFieldData,
+	    editingScore: editingScore,
+	    filterFieldNames: filterFieldNames,
+	    init: init,
+	    prepareItem: prepareItem,
+	    updateHeader: updateHeader
+	  };
+	}
 
 /***/ },
 /* 53 */
