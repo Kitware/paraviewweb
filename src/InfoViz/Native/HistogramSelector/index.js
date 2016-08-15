@@ -5,7 +5,7 @@ import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import multiClicker from '../../Core/D3MultiClick';
-import Score from './Score';
+import score from './score';
 
 // ----------------------------------------------------------------------------
 // Histogram Selector
@@ -49,7 +49,7 @@ function histogramSelector(publicAPI, model) {
 
   let lastNumFields = 0;
 
-  Score.init(publicAPI, model);
+  const scoreHelper = score(publicAPI, model);
 
   // This function modifies the Transform property
   // of the rows of the grid. Instead of creating new
@@ -112,7 +112,7 @@ function histogramSelector(publicAPI, model) {
             model.fieldData[name] = Object.assign(
               {},
               model.provider.getField(name),
-              Score.defaultFieldData()
+              scoreHelper.defaultFieldData()
               );
           });
         } else if (field !== undefined) {
@@ -208,7 +208,7 @@ function histogramSelector(publicAPI, model) {
       fieldNames = (!displayOnlySelected ? model.provider.getFieldNames() :
          model.provider.getActiveFieldNames());
     }
-    fieldNames = Score.filterFieldNames(fieldNames);
+    fieldNames = scoreHelper.filterFieldNames(fieldNames);
     return fieldNames;
   }
 
@@ -260,7 +260,7 @@ function histogramSelector(publicAPI, model) {
       .classed(style.jsHeaderLabel, true)
       .on('click', fieldHeaderClick);
 
-    Score.createHeader(header);
+    scoreHelper.createHeader(header);
 
     const numBoxesSpan = header.append('span')
       .classed(style.headerBoxes, true);
@@ -288,29 +288,36 @@ function histogramSelector(publicAPI, model) {
   }
 
   function updateHeader(dataLength) {
-    d3.select(`.${style.jsFieldsIcon}`)
+    d3.select(model.container)
+      .select(`.${style.jsFieldsIcon}`)
       // apply class - 'false' should come first to not remove common base class.
       .classed(displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
       .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
-    d3.select(`.${style.jsHeaderLabel}`)
+    d3.select(model.container)
+      .select(`.${style.jsHeaderLabel}`)
       .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
-    Score.updateHeader();
+    scoreHelper.updateHeader();
 
-    d3.select(`.${style.jsHeaderBoxes}`)
+    d3.select(model.container)
+      .select(`.${style.jsHeaderBoxes}`)
       .style('display', model.singleModeName === null ? 'initial' : 'none');
-    d3.select(`.${style.jsHeaderBoxesNum}`)
+    d3.select(model.container)
+      .select(`.${style.jsHeaderBoxesNum}`)
       .text(`${model.boxesPerRow} /row`);
 
-    d3.select(`.${style.jsHeaderSingle}`)
+    d3.select(model.container)
+      .select(`.${style.jsHeaderSingle}`)
       .style('display', model.singleModeName === null ? 'none' : 'initial');
 
     if (model.provider.isA('LegendProvider') && model.singleModeName) {
       const { color, shape } = model.provider.getLegend(model.singleModeName);
-      d3.select(`.${style.jsHeaderSingleField}`)
+      d3.select(model.container)
+        .select(`.${style.jsHeaderSingleField}`)
         .html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}'
                 fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
     } else {
-      d3.select(`.${style.jsHeaderSingleField}`)
+      d3.select(model.container)
+        .select(`.${style.jsHeaderSingleField}`)
         .text(() => {
           let name = model.singleModeName;
           if (!name) return '';
@@ -424,8 +431,8 @@ function histogramSelector(publicAPI, model) {
         if (reusableNode) {
           exitNodes[0][i] = undefined;
           d3.select(reusableNode)
-              .selectAll('table')
-              .classed(style.hiddenBox, true);
+            .selectAll('table')
+            .classed(style.hiddenBox, true);
           return reusableNode;
         }
       }
@@ -447,7 +454,7 @@ function histogramSelector(publicAPI, model) {
     boxes.exit().remove();
 
     // scoring interface - create floating controls to set scores, values, when needed.
-    Score.createPopups();
+    scoreHelper.createPopups();
 
     // for every item that has data, create all the sub-elements
     // and size them correctly based on our data
@@ -516,7 +523,7 @@ function histogramSelector(publicAPI, model) {
         svgGr.append('g')
           .classed(style.jsGRect, true);
         // scoring interface
-        Score.createGroups(svgGr);
+        scoreHelper.createGroups(svgGr);
         svgGr.append('rect')
           .classed(style.overlay, true)
           .style('cursor', 'default');
@@ -579,7 +586,7 @@ function histogramSelector(publicAPI, model) {
             .attr('width', publicAPI.svgWidth())
             .attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
 
-          if (!Score.editingScore(def)) {
+          if (!scoreHelper.editingScore(def)) {
             svgOverlay
               .on('mousemove.hs', (d, i) => {
                 const mCoords = publicAPI.getMouseCoords(tdsl);
@@ -648,7 +655,7 @@ function histogramSelector(publicAPI, model) {
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);
 
-        Score.prepareItem(def, idx, svgGr, tdsl);
+        scoreHelper.prepareItem(def, idx, svgGr, tdsl);
       }
     }
 
@@ -712,7 +719,7 @@ function histogramSelector(publicAPI, model) {
   }
 
   // scoring interface
-  Score.addSubscriptions();
+  scoreHelper.addSubscriptions();
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
