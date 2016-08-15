@@ -231,6 +231,12 @@
 
 	      var force = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
+	      // Skip rendering if we are not visible
+	      if (this.size && this.size.clientWidth === 0) {
+	        // pretend success rendering
+	        return true;
+	      }
+
 	      if (this.renderPending) {
 	        this.renderOnIdle(force);
 	        return false;
@@ -281,7 +287,9 @@
 
 	          // final image
 	          if (resp.stale) {
-	            _this2.renderOnIdle(force);
+	            // No force render when we are stale otherwise
+	            // we will get in an infinite rendering loop
+	            _this2.renderOnIdle(false);
 	          } else {
 	            _this2.emit(IMAGE_READY_TOPIC, _this2);
 	          }
