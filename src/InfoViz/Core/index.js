@@ -1,3 +1,4 @@
+import AnnotationStoreProvider from './AnnotationStoreProvider';
 import D3MultiClick from './D3MultiClick';
 import FieldProvider from './FieldProvider';
 import Histogram1DProvider from './Histogram1DProvider';
@@ -10,6 +11,7 @@ import ScoresProvider from './ScoresProvider';
 import SelectionProvider from './SelectionProvider';
 
 export default {
+  AnnotationStoreProvider,
   D3MultiClick,
   FieldProvider,
   Histogram1DProvider,
