@@ -119,13 +119,9 @@ function parallelCoordinate(publicAPI, model) {
 
       // Initialize axes
       if (model.provider.isA('FieldProvider')) {
-        /* eslint-disable arrow-body-style */
-        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name => {
-          return {
-            name,
-            range: model.provider.getField(name).range,
-          };
-        }));
+        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
+          ({ name, range: model.provider.getField(name).range })
+        ));
       }
 
       // Get the axes names
@@ -849,6 +845,9 @@ function parallelCoordinate(publicAPI, model) {
       'histogram2d',
       data => {
         model.selectionData = data;
+        if (model.provider.getAnnotation()) {
+          model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+        }
         publicAPI.render();
       },
       model.axes.getAxesPairs(), { partitionScores: model.partitionScores });

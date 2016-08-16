@@ -112,47 +112,51 @@ export default class AxesManager {
       if (selection.type === 'range') {
         this.selection = selection;
         Object.keys(selection.range.variables).forEach(axisName => {
-          nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
-          if (scoreMapping && scoreMapping.length === 1) {
-            nameToAxisMap[axisName].selections.forEach(axisSelection => {
-              axisSelection.score = scoreMapping[0];
-              axisSelection.color = scoreColorMap[scoreMapping[0]]
-                ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
-            });
+          if (nameToAxisMap[axisName]) {
+            nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
+            if (scoreMapping && scoreMapping.length === 1) {
+              nameToAxisMap[axisName].selections.forEach(axisSelection => {
+                axisSelection.score = scoreMapping[0];
+                axisSelection.color = scoreColorMap[scoreMapping[0]]
+                  ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
+              });
+            }
           }
         });
       } else if (selection.type === 'partition') {
         this.selection = selection;
         const axis = nameToAxisMap[selection.partition.variable];
-        axis.selections = [];
-        selection.partition.dividers.forEach((divider, idx, array) => {
-          if (idx === 0) {
-            axis.selections.push({
-              interval: [axis.range[0], divider.value],
-              endpoints: toEndpoint(true, !divider.closeToLeft),
-              uncertainty: divider.uncertainty, // FIXME that is wrong...
-              color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
-              score: scoreMapping[idx],
-            });
-          } else {
-            axis.selections.push({
-              interval: [array[idx - 1].value, divider.value],
-              endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
-              uncertainty: divider.uncertainty, // FIXME that is wrong...
-              color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
-              score: scoreMapping[idx],
-            });
-          }
-          if (idx + 1 === array.length) {
-            axis.selections.push({
-              interval: [divider.value, axis.range[1]],
-              endpoints: toEndpoint(divider.closeToLeft, true),
-              uncertainty: divider.uncertainty, // FIXME that is wrong...
-              color: scoreColorMap[scoreMapping[idx + 1]] ? `rgb(${scoreColorMap[scoreMapping[idx + 1]].join(',')})` : 'rgb(105, 195, 255)',
-              score: scoreMapping[idx + 1],
-            });
-          }
-        });
+        if (axis) {
+          axis.selections = [];
+          selection.partition.dividers.forEach((divider, idx, array) => {
+            if (idx === 0) {
+              axis.selections.push({
+                interval: [axis.range[0], divider.value],
+                endpoints: toEndpoint(true, !divider.closeToLeft),
+                uncertainty: divider.uncertainty, // FIXME that is wrong...
+                color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
+                score: scoreMapping[idx],
+              });
+            } else {
+              axis.selections.push({
+                interval: [array[idx - 1].value, divider.value],
+                endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+                uncertainty: divider.uncertainty, // FIXME that is wrong...
+                color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
+                score: scoreMapping[idx],
+              });
+            }
+            if (idx + 1 === array.length) {
+              axis.selections.push({
+                interval: [divider.value, axis.range[1]],
+                endpoints: toEndpoint(divider.closeToLeft, true),
+                uncertainty: divider.uncertainty, // FIXME that is wrong...
+                color: scoreColorMap[scoreMapping[idx + 1]] ? `rgb(${scoreColorMap[scoreMapping[idx + 1]].join(',')})` : 'rgb(105, 195, 255)',
+                score: scoreMapping[idx + 1],
+              });
+            }
+          });
+        }
       } else if (selection.type === 'empty') {
         // nothing to do we already cleared the selection
       } else {
