@@ -38,8 +38,6 @@ function fieldSelector(publicAPI, model) {
 
     if (el) {
       d3.select(model.container)
-        .style('overflow-y', 'auto')
-        .style('overflow-x', 'hidden');
       d3.select(model.container).html(template);
       d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
 
