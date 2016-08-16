@@ -305,6 +305,7 @@ export default React.createClass({
   mouseDown(evt) {
     const actionStruct = this.computeActionRegion(evt);
     if (actionStruct.dragAction !== null) {
+      evt.preventDefault();
       this.dragHandler = actionStruct.dragAction;
       this.setState({ cursor: actionStruct.cursor, dragging: true });
       this.props.onActive(true, this);
