@@ -44,7 +44,7 @@
 // ----------------------------------------------------------------------------
 
 function keep(id) {
-  return item => (item.annotationInfo.annotationGeneration === id) && item.role.selected;
+  return item => (item.annotationInfo.annotationGeneration === id);
 }
 
 function sortByScore(a, b) {
