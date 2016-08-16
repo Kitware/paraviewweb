@@ -23280,7 +23280,7 @@
 
 	function keep(id) {
 	  return function (item) {
-	    return item.annotationInfo.annotationGeneration === id && item.role.selected;
+	    return item.annotationInfo.annotationGeneration === id;
 	  };
 	}
 
