@@ -849,6 +849,9 @@ function parallelCoordinate(publicAPI, model) {
       'histogram2d',
       data => {
         model.selectionData = data;
+        if (model.provider.getAnnotation()) {
+          model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+        }
         publicAPI.render();
       },
       model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
