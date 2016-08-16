@@ -21001,12 +21001,8 @@
 
 	      // Initialize axes
 	      if (model.provider.isA('FieldProvider')) {
-	        /* eslint-disable arrow-body-style */
 	        model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
-	          return {
-	            name: name,
-	            range: model.provider.getField(name).range
-	          };
+	          return { name: name, range: model.provider.getField(name).range };
 	        }));
 	      }
 
@@ -21638,6 +21634,9 @@
 	  if (model.provider.isA('SelectionProvider')) {
 	    model.dataSubscription = model.provider.subscribeToDataSelection('histogram2d', function (data) {
 	      model.selectionData = data;
+	      if (model.provider.getAnnotation()) {
+	        model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+	      }
 	      publicAPI.render();
 	    }, model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
@@ -31599,49 +31598,53 @@
 	        if (selection.type === 'range') {
 	          this.selection = selection;
 	          Object.keys(selection.range.variables).forEach(function (axisName) {
-	            nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(function (i) {
-	              return Object.assign({}, i);
-	            });
-	            if (scoreMapping && scoreMapping.length === 1) {
-	              nameToAxisMap[axisName].selections.forEach(function (axisSelection) {
-	                axisSelection.score = scoreMapping[0];
-	                axisSelection.color = scoreColorMap[scoreMapping[0]] ? 'rgb(' + scoreColorMap[scoreMapping[0]].join(',') + ')' : 'rgb(105, 195, 255)';
+	            if (nameToAxisMap[axisName]) {
+	              nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(function (i) {
+	                return Object.assign({}, i);
 	              });
+	              if (scoreMapping && scoreMapping.length === 1) {
+	                nameToAxisMap[axisName].selections.forEach(function (axisSelection) {
+	                  axisSelection.score = scoreMapping[0];
+	                  axisSelection.color = scoreColorMap[scoreMapping[0]] ? 'rgb(' + scoreColorMap[scoreMapping[0]].join(',') + ')' : 'rgb(105, 195, 255)';
+	                });
+	              }
 	            }
 	          });
 	        } else if (selection.type === 'partition') {
 	          (function () {
 	            _this2.selection = selection;
 	            var axis = nameToAxisMap[selection.partition.variable];
-	            axis.selections = [];
-	            selection.partition.dividers.forEach(function (divider, idx, array) {
-	              if (idx === 0) {
-	                axis.selections.push({
-	                  interval: [axis.range[0], divider.value],
-	                  endpoints: toEndpoint(true, !divider.closeToLeft),
-	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
-	                  color: scoreColorMap[scoreMapping[idx]] ? 'rgb(' + scoreColorMap[scoreMapping[idx]].join(',') + ')' : 'rgb(105, 195, 255)',
-	                  score: scoreMapping[idx]
-	                });
-	              } else {
-	                axis.selections.push({
-	                  interval: [array[idx - 1].value, divider.value],
-	                  endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
-	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
-	                  color: scoreColorMap[scoreMapping[idx]] ? 'rgb(' + scoreColorMap[scoreMapping[idx]].join(',') + ')' : 'rgb(105, 195, 255)',
-	                  score: scoreMapping[idx]
-	                });
-	              }
-	              if (idx + 1 === array.length) {
-	                axis.selections.push({
-	                  interval: [divider.value, axis.range[1]],
-	                  endpoints: toEndpoint(divider.closeToLeft, true),
-	                  uncertainty: divider.uncertainty, // FIXME that is wrong...
-	                  color: scoreColorMap[scoreMapping[idx + 1]] ? 'rgb(' + scoreColorMap[scoreMapping[idx + 1]].join(',') + ')' : 'rgb(105, 195, 255)',
-	                  score: scoreMapping[idx + 1]
-	                });
-	              }
-	            });
+	            if (axis) {
+	              axis.selections = [];
+	              selection.partition.dividers.forEach(function (divider, idx, array) {
+	                if (idx === 0) {
+	                  axis.selections.push({
+	                    interval: [axis.range[0], divider.value],
+	                    endpoints: toEndpoint(true, !divider.closeToLeft),
+	                    uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                    color: scoreColorMap[scoreMapping[idx]] ? 'rgb(' + scoreColorMap[scoreMapping[idx]].join(',') + ')' : 'rgb(105, 195, 255)',
+	                    score: scoreMapping[idx]
+	                  });
+	                } else {
+	                  axis.selections.push({
+	                    interval: [array[idx - 1].value, divider.value],
+	                    endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+	                    uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                    color: scoreColorMap[scoreMapping[idx]] ? 'rgb(' + scoreColorMap[scoreMapping[idx]].join(',') + ')' : 'rgb(105, 195, 255)',
+	                    score: scoreMapping[idx]
+	                  });
+	                }
+	                if (idx + 1 === array.length) {
+	                  axis.selections.push({
+	                    interval: [divider.value, axis.range[1]],
+	                    endpoints: toEndpoint(divider.closeToLeft, true),
+	                    uncertainty: divider.uncertainty, // FIXME that is wrong...
+	                    color: scoreColorMap[scoreMapping[idx + 1]] ? 'rgb(' + scoreColorMap[scoreMapping[idx + 1]].join(',') + ')' : 'rgb(105, 195, 255)',
+	                    score: scoreMapping[idx + 1]
+	                  });
+	                }
+	              });
+	            }
 	          })();
 	        } else if (selection.type === 'empty') {
 	          // nothing to do we already cleared the selection
@@ -32799,7 +32802,7 @@
 	    model.container = el;
 
 	    if (el) {
-	      _d2.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden');
+	      _d2.default.select(model.container);
 	      _d2.default.select(model.container).html(_template2.default);
 	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
 

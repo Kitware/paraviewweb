@@ -23280,14 +23280,22 @@
 
 	function keep(id) {
 	  return function (item) {
-	    return item.annotationInfo.annotationGeneration === id;
+	    return item.annotationInfo.annotationGeneration === id && item.role.selected;
 	  };
+	}
+
+	function sortByScore(a, b) {
+	  return a.role.score - b.role.score;
 	}
 
 	function set(model, payload) {
 	  var annotationGeneration = payload.data.annotationInfo.annotationGeneration;
 
 	  model.count = (model.count || []).filter(keep(annotationGeneration)).concat(payload.data);
+	  model.count.sort(sortByScore);
+	  model.count = model.count.filter(function (item, idx, array) {
+	    return !idx || array[idx - 1].role.score !== item.role.score;
+	  });
 	}
 
 	// ----------------------------------------------------------------------------
@@ -35745,7 +35753,7 @@
 	    model.container = el;
 
 	    if (el) {
-	      _d2.default.select(model.container).style('overflow-y', 'auto').style('overflow-x', 'hidden');
+	      _d2.default.select(model.container);
 	      _d2.default.select(model.container).html(_template2.default);
 	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
 
