@@ -44,12 +44,18 @@
 // ----------------------------------------------------------------------------
 
 function keep(id) {
-  return item => (item.annotationInfo.annotationGeneration === id);
+  return item => (item.annotationInfo.annotationGeneration === id) && item.role.selected;
+}
+
+function sortByScore(a, b) {
+  return a.role.score - b.role.score;
 }
 
 export function set(model, payload) {
   const { annotationGeneration } = payload.data.annotationInfo;
   model.count = (model.count || []).filter(keep(annotationGeneration)).concat(payload.data);
+  model.count.sort(sortByScore);
+  model.count = model.count.filter((item, idx, array) => !idx || array[idx - 1].role.score !== item.role.score);
 }
 
 // ----------------------------------------------------------------------------
