@@ -119,13 +119,9 @@ function parallelCoordinate(publicAPI, model) {
 
       // Initialize axes
       if (model.provider.isA('FieldProvider')) {
-        /* eslint-disable arrow-body-style */
-        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name => {
-          return {
-            name,
-            range: model.provider.getField(name).range,
-          };
-        }));
+        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
+          ({ name, range: model.provider.getField(name).range })
+        ));
       }
 
       // Get the axes names
