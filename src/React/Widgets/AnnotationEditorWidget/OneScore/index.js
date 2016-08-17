@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CollapsibleWidget from '../../CollapsibleWidget';
+
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 import ScoreSelector from '../ScoreSelector';
@@ -43,16 +45,17 @@ export default function oneScoreAnnotationEditorWidget(props) {
       </section>
 
       <section className={style.lineContainerSpaceBetween}>
-        <label className={style.label}>Rationale</label>
+        <CollapsibleWidget title="Rationale" open={false}>
+          <textarea
+            className={style.textBox}
+            name="rationale"
+            rows="5"
+            value={props.annotation.rationale}
+            onChange={props.onAnnotationChange}
+            onBlur={props.onAnnotationChange}
+          />
+        </CollapsibleWidget>
       </section>
-      <textarea
-        className={style.textBox}
-        name="rationale"
-        rows="5"
-        value={props.annotation.rationale}
-        onChange={props.onAnnotationChange}
-        onBlur={props.onAnnotationChange}
-      />
     </div>);
 }
 
