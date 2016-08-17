@@ -4348,7 +4348,7 @@
 
 
 	// module
-	exports.push([module.id, ".AnnotationEditorWidget_topContainer_24fJ6 {\n  position: relative;\n  min-width: 420px;\n  margin: 10px auto;\n}\n\n.AnnotationEditorWidget_scoreContainer_1nXfK {\n  min-width: 100px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_scoreBlock_3tnq- {\n  width: 20px;\n  height: 20px;\n  line-height: 20px;\n  border-radius: 3px;\n  border: 2px solid gray;\n  margin: 2px;\n  opacity: 0.5;\n  text-align: center;\n  font-size: 10px;\n  font-weight: bold;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.AnnotationEditorWidget_selectedScoreBlock_2cwgZ {\n  opacity: 1;\n  border: 2px solid black;\n}\n\n.AnnotationEditorWidget_verticalContainer_1gNOL {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.AnnotationEditorWidget_lineContainer_1UKoA {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_lineContainerSpaceBetween_3UP4K {\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  padding: 5px;\n}\n\n.AnnotationEditorWidget_flexItem_190Y4 {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 10px;\n  z-index: 1;\n}\n\n.AnnotationEditorWidget_weightInput_3ok1J {\n  width: 45px;\n}\n\n.AnnotationEditorWidget_label_D3_TE {\n  -ms-flex: 1;\n      flex: 1;\n  font-weight: bold;\n  margin-right: 20px;\n}\n\n.AnnotationEditorWidget_labelCenter_14aH_ {\n  text-align: center;\n}\n\n.AnnotationEditorWidget_textBox_2ksb1 {\n  -ms-flex: 1;\n      flex: 1;\n  margin: 0 5px;\n}\n\n.AnnotationEditorWidget_backgroundScore_3sJJd {\n  position: absolute;\n  opacity: 0.5;\n  z-index: -1;\n  width: 320px;\n  right: calc(100% + 5px);\n  border-radius: 5px;\n}\n", ""]);
+	exports.push([module.id, ".AnnotationEditorWidget_topContainer_24fJ6 {\n  position: relative;\n  min-width: 420px;\n  margin: 10px auto;\n}\n\n.AnnotationEditorWidget_scoreContainer_1nXfK {\n  min-width: 100px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_scoreBlock_3tnq- {\n  box-sizing: border-box;\n  width: 24px;\n  height: 24px;\n  line-height: 24px;\n  border-radius: 3px;\n  border: 2px solid gray;\n  margin: 2px;\n  opacity: 0.5;\n  text-align: center;\n  font-size: 10px;\n  font-weight: bold;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.AnnotationEditorWidget_selectedScoreBlock_2cwgZ {\n  opacity: 1;\n  border: 2px solid black;\n}\n\n.AnnotationEditorWidget_verticalContainer_1gNOL {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.AnnotationEditorWidget_lineContainer_1UKoA {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.AnnotationEditorWidget_lineContainerSpaceBetween_3UP4K {\n  -ms-flex-pack: justify;\n      justify-content: space-between;\n  padding: 5px;\n}\n\n.AnnotationEditorWidget_lineContainerCenter_1jEoE {\n  -ms-flex-pack: center;\n      justify-content: center;\n  padding: 5px;\n}\n\n.AnnotationEditorWidget_flexItem_190Y4 {\n  -ms-flex: 1;\n      flex: 1;\n  min-width: 10px;\n  z-index: 1;\n}\n\n.AnnotationEditorWidget_weightInput_3ok1J {\n  width: 45px;\n}\n\n.AnnotationEditorWidget_label_D3_TE {\n  -ms-flex: 1;\n      flex: 1;\n  font-weight: bold;\n  margin-right: 20px;\n}\n\n.AnnotationEditorWidget_labelCenter_14aH_ {\n  text-align: center;\n}\n\n.AnnotationEditorWidget_textBox_2ksb1 {\n  -ms-flex: 1;\n      flex: 1;\n  margin: 0 5px;\n}\n\n.AnnotationEditorWidget_backgroundScore_3sJJd {\n  position: absolute;\n  opacity: 0.5;\n  z-index: -1;\n  width: 100%;\n  left: 0;\n  border-radius: 5px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -4359,6 +4359,7 @@
 		"verticalContainer": "AnnotationEditorWidget_verticalContainer_1gNOL",
 		"lineContainer": "AnnotationEditorWidget_lineContainer_1UKoA",
 		"lineContainerSpaceBetween": "AnnotationEditorWidget_lineContainerSpaceBetween_3UP4K AnnotationEditorWidget_lineContainer_1UKoA",
+		"lineContainerCenter": "AnnotationEditorWidget_lineContainerCenter_1jEoE AnnotationEditorWidget_lineContainer_1UKoA",
 		"flexItem": "AnnotationEditorWidget_flexItem_190Y4",
 		"weightInput": "AnnotationEditorWidget_weightInput_3ok1J",
 		"label": "AnnotationEditorWidget_label_D3_TE",
@@ -5842,18 +5843,27 @@
 	  };
 
 	  return _react2.default.createElement(
-	    _FieldRender2.default,
-	    { className: props.className, fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
-	    dividers.map(function (divider, idx) {
-	      return _react2.default.createElement(_DividerRender2.default, {
-	        onChange: onChange,
-	        onDelete: onDelete,
-	        divider: divider,
-	        path: ['dividers', idx],
-	        key: idx,
-	        getLegend: props.getLegend
-	      });
-	    })
+	    'div',
+	    { style: { position: 'relative' } },
+	    _react2.default.createElement(
+	      'div',
+	      { style: { position: 'absolute', width: '100%', height: '100%', zIndex: 0 } },
+	      props.children
+	    ),
+	    _react2.default.createElement(
+	      _FieldRender2.default,
+	      { className: props.className, fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
+	      dividers.map(function (divider, idx) {
+	        return _react2.default.createElement(_DividerRender2.default, {
+	          onChange: onChange,
+	          onDelete: onDelete,
+	          divider: divider,
+	          path: ['dividers', idx],
+	          key: idx,
+	          getLegend: props.getLegend
+	        });
+	      })
+	    )
 	  );
 	}
 
@@ -17559,14 +17569,24 @@
 	    { className: _AnnotationEditorWidget2.default.verticalContainer },
 	    _react2.default.createElement(
 	      'section',
-	      { className: _AnnotationEditorWidget2.default.lineContainerSpaceBetween },
-	      _react2.default.createElement(_SelectionEditorWidget2.default, {
-	        className: _AnnotationEditorWidget2.default.flexItem,
-	        selection: props.annotation.selection,
-	        ranges: props.ranges,
-	        getLegend: props.getLegend,
-	        onChange: props.onSelectionChange
-	      }),
+	      { className: _AnnotationEditorWidget2.default.lineContainerCenter },
+	      _react2.default.createElement(
+	        _SelectionEditorWidget2.default,
+	        {
+	          className: _AnnotationEditorWidget2.default.flexItem,
+	          selection: props.annotation.selection,
+	          ranges: props.ranges,
+	          getLegend: props.getLegend,
+	          onChange: props.onSelectionChange
+	        },
+	        props.annotation.score.map(function (score, idx) {
+	          return _react2.default.createElement(_BackgroundScore2.default, {
+	            key: 'bgscore-' + idx,
+	            index: idx,
+	            color: props.scores[score].color
+	          });
+	        })
+	      ),
 	      _react2.default.createElement(
 	        'div',
 	        { className: _AnnotationEditorWidget2.default.verticalContainer, style: { position: 'relative', zIndex: 0 } },
@@ -17579,13 +17599,6 @@
 	            name: '' + idx,
 	            onChange: props.onScoreChange,
 	            horizontal: true
-	          });
-	        }),
-	        props.annotation.score.map(function (score, idx) {
-	          return _react2.default.createElement(_BackgroundScore2.default, {
-	            key: 'bgscore-' + idx,
-	            index: idx,
-	            color: props.scores[score].color
 	          });
 	        })
 	      )

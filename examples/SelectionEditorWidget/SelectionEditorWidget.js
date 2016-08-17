@@ -5494,18 +5494,27 @@
 	  };
 
 	  return _react2.default.createElement(
-	    _FieldRender2.default,
-	    { className: props.className, fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
-	    dividers.map(function (divider, idx) {
-	      return _react2.default.createElement(_DividerRender2.default, {
-	        onChange: onChange,
-	        onDelete: onDelete,
-	        divider: divider,
-	        path: ['dividers', idx],
-	        key: idx,
-	        getLegend: props.getLegend
-	      });
-	    })
+	    'div',
+	    { style: { position: 'relative' } },
+	    _react2.default.createElement(
+	      'div',
+	      { style: { position: 'absolute', width: '100%', height: '100%', zIndex: 0 } },
+	      props.children
+	    ),
+	    _react2.default.createElement(
+	      _FieldRender2.default,
+	      { className: props.className, fieldName: fieldName, getLegend: props.getLegend, depth: 0 },
+	      dividers.map(function (divider, idx) {
+	        return _react2.default.createElement(_DividerRender2.default, {
+	          onChange: onChange,
+	          onDelete: onDelete,
+	          divider: divider,
+	          path: ['dividers', idx],
+	          key: idx,
+	          getLegend: props.getLegend
+	        });
+	      })
+	    )
 	  );
 	}
 
