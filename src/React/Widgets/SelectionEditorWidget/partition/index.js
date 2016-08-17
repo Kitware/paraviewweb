@@ -42,18 +42,23 @@ export default function partitionSelection(props) {
   };
 
   return (
-    <FieldRender className={props.className} fieldName={fieldName} getLegend={props.getLegend} depth={0} >
-      {dividers.map((divider, idx) =>
-        <DividerRender
-          onChange={onChange}
-          onDelete={onDelete}
-          divider={divider}
-          path={['dividers', idx]}
-          key={idx}
-          getLegend={props.getLegend}
-        />
-      )}
-    </FieldRender>);
+    <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}>
+        { props.children }
+      </div>
+      <FieldRender className={props.className} fieldName={fieldName} getLegend={props.getLegend} depth={0} >
+        {dividers.map((divider, idx) =>
+          <DividerRender
+            onChange={onChange}
+            onDelete={onDelete}
+            divider={divider}
+            path={['dividers', idx]}
+            key={idx}
+            getLegend={props.getLegend}
+          />
+        )}
+      </FieldRender>
+    </div>);
 }
 
 partitionSelection.propTypes = {
