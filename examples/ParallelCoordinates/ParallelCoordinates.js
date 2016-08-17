@@ -21728,7 +21728,7 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores']);
 	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection']);
 
 	  parallelCoordinate(publicAPI, model);
