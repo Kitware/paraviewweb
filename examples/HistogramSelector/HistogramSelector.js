@@ -23322,7 +23322,7 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23967,6 +23967,8 @@
 	      model.parameterList = wrapper.append('div').classed(_HistogramSelector2.default.histogramSelector, true);
 
 	      publicAPI.resize();
+
+	      setImmediate(scoreHelper.updateFieldAnnotations);
 	    }
 	  };
 
@@ -23996,6 +23998,9 @@
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
+
+	  // Expose update fields partitions
+	  publicAPI.updateFieldAnnotations = scoreHelper.updateFieldAnnotations;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -24056,6 +24061,7 @@
 	// ----------------------------------------------------------------------------
 
 	exports.default = { newInstance: newInstance, extend: extend };
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).setImmediate))
 
 /***/ },
 /* 41 */
@@ -35379,6 +35385,21 @@
 	    }
 	  }
 
+	  function updateFieldAnnotations(fieldsData) {
+	    var fieldAnnotations = fieldsData;
+	    if (!fieldAnnotations && model.provider.getFieldPartitions) {
+	      fieldAnnotations = model.provider.getFieldPartitions();
+	    }
+	    if (fieldAnnotations) {
+	      Object.keys(fieldAnnotations).forEach(function (field) {
+	        var annotation = fieldAnnotations[field];
+	        model.fieldData[field].annotation = annotation;
+	        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+	        publicAPI.render(field);
+	      });
+	    }
+	  }
+
 	  return {
 	    addSubscriptions: addSubscriptions,
 	    createGroups: createGroups,
@@ -35389,7 +35410,8 @@
 	    filterFieldNames: filterFieldNames,
 	    init: init,
 	    prepareItem: prepareItem,
-	    updateHeader: updateHeader
+	    updateHeader: updateHeader,
+	    updateFieldAnnotations: updateFieldAnnotations
 	  };
 	}
 
