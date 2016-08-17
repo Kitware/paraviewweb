@@ -939,7 +939,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores']);
   CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection']);
 
   parallelCoordinate(publicAPI, model);
