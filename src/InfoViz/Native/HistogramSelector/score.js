@@ -847,6 +847,21 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  function updateFieldAnnotations(fieldsData) {
+    let fieldAnnotations = fieldsData;
+    if (!fieldAnnotations && model.provider.getFieldPartitions) {
+      fieldAnnotations = model.provider.getFieldPartitions();
+    }
+    if (fieldAnnotations) {
+      Object.keys(fieldAnnotations).forEach(field => {
+        const annotation = fieldAnnotations[field];
+        model.fieldData[field].annotation = annotation;
+        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+        publicAPI.render(field);
+      });
+    }
+  }
+
   return {
     addSubscriptions,
     createGroups,
@@ -858,5 +873,6 @@ export default function init(inPublicAPI, inModel) {
     init,
     prepareItem,
     updateHeader,
+    updateFieldAnnotations,
   };
 }
