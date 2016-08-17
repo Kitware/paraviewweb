@@ -80,8 +80,9 @@
 }
 
 .textBox {
-  flex: 1;
   margin: 0 5px;
+  min-height: 5em;
+  width: 100%;
 }
 
 .backgroundScore {

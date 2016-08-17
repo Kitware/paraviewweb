@@ -170,7 +170,6 @@
 
 .row {
   position: absolute;
-  background: #fff;
   width: 100%;
 }
 
