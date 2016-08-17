@@ -695,6 +695,8 @@ function histogramSelector(publicAPI, model) {
         .classed(style.histogramSelector, true);
 
       publicAPI.resize();
+
+      setImmediate(scoreHelper.updateFieldAnnotations);
     }
   };
 
@@ -723,6 +725,9 @@ function histogramSelector(publicAPI, model) {
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
+
+  // Expose update fields partitions
+  publicAPI.updateFieldAnnotations = scoreHelper.updateFieldAnnotations;
 }
 
 // ----------------------------------------------------------------------------
