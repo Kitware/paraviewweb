@@ -6231,7 +6231,7 @@
 	    _react2.default.createElement('input', {
 	      className: _SelectionEditorWidget2.default.numberInput,
 	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
+	      pattern: _NumberFormatter.sciNotationRegExp,
 	      'data-path': 'value',
 	      value: divider.value,
 	      onChange: onChange,
@@ -6248,7 +6248,7 @@
 	      _react2.default.createElement('input', {
 	        className: _SelectionEditorWidget2.default.numberInput,
 	        type: 'text',
-	        pattern: '[0-9]*[.]*[0-9]*',
+	        pattern: _NumberFormatter.sciNotationRegExp,
 	        'data-path': 'uncertainty',
 	        value: divider.uncertainty,
 	        onChange: onChange,
@@ -6280,6 +6280,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.sciNotationRegExp = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6405,7 +6406,7 @@
 	      if (szn <= 3.0 && szn > -2) {
 	        return num.toFixed(prec - Math.floor(szn));
 	      }
-	      var exponent = -Math.floor(Math.log10(num) / 3) * 3;
+	      var exponent = -Math.floor(Math.log10(Math.abs(num)) / 3) * 3;
 	      var scaled = Math.pow(10, exponent) * num;
 	      // console.log(' sca ', scaled, ' exp ', exponent, ' szn ', szn, ' prec ', prec);
 	      return scaled.toFixed(prec - Math.ceil(szn + exponent)).concat('e').concat(-exponent.toFixed());
@@ -6423,7 +6424,11 @@
 	  return NumberFormatter;
 	}();
 
+	// provide a convenient regExp string for numbers
+
+
 	exports.default = NumberFormatter;
+	var sciNotationRegExp = exports.sciNotationRegExp = '[-+]?[0-9]*[.]?[0-9]*[eE]?[-+]?[0-9]*';
 
 /***/ },
 /* 59 */
@@ -16539,7 +16544,7 @@
 	    _react2.default.createElement('input', {
 	      className: _SelectionEditorWidget2.default.numberInput,
 	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
+	      pattern: _NumberFormatter.sciNotationRegExp,
 	      'data-path': '0',
 	      value: terms[0],
 	      onChange: onChange,
@@ -16563,7 +16568,7 @@
 	    _react2.default.createElement('input', {
 	      className: _SelectionEditorWidget2.default.numberInput,
 	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
+	      pattern: _NumberFormatter.sciNotationRegExp,
 	      'data-path': '4',
 	      value: terms[4] // formatter.eval(terms[1])
 	      , onChange: onChange,
@@ -17138,7 +17143,7 @@
 	    _react2.default.createElement('input', {
 	      className: _SelectionEditorWidget2.default.numberInput,
 	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
+	      pattern: _NumberFormatter.sciNotationRegExp,
 	      'data-path': '0',
 	      value: terms[0],
 	      onChange: onChange,
@@ -17162,7 +17167,7 @@
 	    _react2.default.createElement('input', {
 	      className: _SelectionEditorWidget2.default.numberInput,
 	      type: 'text',
-	      pattern: '[0-9]*[.]*[0-9]*',
+	      pattern: _NumberFormatter.sciNotationRegExp,
 	      'data-path': '4',
 	      value: terms[4] // formatter.eval(terms[1])
 	      , onChange: onChange,
