@@ -35753,7 +35753,6 @@
 	    model.container = el;
 
 	    if (el) {
-	      _d2.default.select(model.container);
 	      _d2.default.select(model.container).html(_template2.default);
 	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
 

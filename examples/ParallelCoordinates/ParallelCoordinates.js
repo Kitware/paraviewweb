@@ -21479,7 +21479,7 @@
 
 	  publicAPI.setVisibleScoresForPartitionSelection = function (scoreList) {
 	    model.partitionScores = scoreList;
-	    if (model.dataSubscription && model.partitionScores) {
+	    if (model.dataSubscription && model.partitionScores && model.propagatePartitionScores) {
 	      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
 	    }
 	  };
@@ -21715,8 +21715,9 @@
 	  defaultScore: 0,
 	  defaultWeight: 1,
 
-	  showOnlySelection: false
+	  showOnlySelection: false,
 
+	  propagatePartitionScores: false
 	};
 
 	// ----------------------------------------------------------------------------
@@ -21728,8 +21729,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
 
 	  parallelCoordinate(publicAPI, model);
 	}
@@ -32802,7 +32803,6 @@
 	    model.container = el;
 
 	    if (el) {
-	      _d2.default.select(model.container);
 	      _d2.default.select(model.container).html(_template2.default);
 	      _d2.default.select(model.container).select('.fieldSelector').classed(_FieldSelector2.default.fieldSelector, true);
 
