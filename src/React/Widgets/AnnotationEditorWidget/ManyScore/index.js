@@ -9,14 +9,22 @@ import SelectionEditorWidget from '../../SelectionEditorWidget';
 export default function manyScoreAnnotationEditorWidget(props) {
   return (
     <div className={style.verticalContainer}>
-      <section className={style.lineContainerSpaceBetween}>
+      <section className={style.lineContainerCenter}>
         <SelectionEditorWidget
           className={style.flexItem}
           selection={props.annotation.selection}
           ranges={props.ranges}
           getLegend={props.getLegend}
           onChange={props.onSelectionChange}
-        />
+        >
+          {props.annotation.score.map((score, idx) =>
+            <BGSelector
+              key={`bgscore-${idx}`}
+              index={idx}
+              color={props.scores[score].color}
+            />
+          )}
+        </SelectionEditorWidget>
         <div className={style.verticalContainer} style={{ position: 'relative', zIndex: 0 }}>
           {props.annotation.score.map((score, idx) =>
             <ScoreSelector
@@ -27,13 +35,6 @@ export default function manyScoreAnnotationEditorWidget(props) {
               name={`${idx}`}
               onChange={props.onScoreChange}
               horizontal
-            />
-          )}
-          {props.annotation.score.map((score, idx) =>
-            <BGSelector
-              key={`bgscore-${idx}`}
-              index={idx}
-              color={props.scores[score].color}
             />
           )}
         </div>
