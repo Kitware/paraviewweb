@@ -669,7 +669,7 @@ function parallelCoordinate(publicAPI, model) {
 
   publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
     model.partitionScores = scoreList;
-    if (model.dataSubscription && model.partitionScores) {
+    if (model.dataSubscription && model.partitionScores && model.propagatePartitionScores) {
       model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
     }
   };
@@ -929,6 +929,7 @@ const DEFAULT_VALUES = {
 
   showOnlySelection: false,
 
+  propagatePartitionScores: false,
   // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };
 
@@ -939,8 +940,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores']);
-  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores']);
+  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
 
   parallelCoordinate(publicAPI, model);
 }

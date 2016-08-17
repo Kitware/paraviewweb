@@ -37,7 +37,6 @@ function fieldSelector(publicAPI, model) {
     model.container = el;
 
     if (el) {
-      d3.select(model.container)
       d3.select(model.container).html(template);
       d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
 
