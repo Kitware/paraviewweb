@@ -1,6 +1,6 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
-import NumberFormatter from '../../../../Common/Misc/NumberFormatter';
+import NumberFormatter, { sciNotationRegExp } from '../../../../Common/Misc/NumberFormatter';
 import SvgIconWidget from '../../SvgIconWidget';
 import Ineq from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
@@ -64,7 +64,7 @@ export default function dividerRender(props) {
       <input
         className={style.numberInput}
         type="text"
-        pattern="[0-9]*[.]*[0-9]*"
+        pattern={sciNotationRegExp}
         data-path="value"
         value={divider.value}
         onChange={onChange}
@@ -78,7 +78,7 @@ export default function dividerRender(props) {
           <input
             className={style.numberInput}
             type="text"
-            pattern="[0-9]*[.]*[0-9]*"
+            pattern={sciNotationRegExp}
             data-path="uncertainty"
             value={divider.uncertainty}
             onChange={onChange}

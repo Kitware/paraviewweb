@@ -104,7 +104,7 @@ export default class NumberFormatter {
     if (szn <= 3.0 && szn > -2) {
       return num.toFixed(prec - Math.floor(szn));
     }
-    const exponent = -Math.floor(Math.log10(num) / 3) * 3;
+    const exponent = -Math.floor(Math.log10(Math.abs(num)) / 3) * 3;
     const scaled = Math.pow(10, exponent) * num;
     // console.log(' sca ', scaled, ' exp ', exponent, ' szn ', szn, ' prec ', prec);
     return scaled.toFixed(prec - Math.ceil(szn + exponent)).concat('e').concat(-exponent.toFixed());
@@ -115,3 +115,6 @@ export default class NumberFormatter {
     return o => self.eval(o);
   }
 }
+
+// provide a convenient regExp string for numbers
+export const sciNotationRegExp = '[-+]?[0-9]*[.]?[0-9]*[eE]?[-+]?[0-9]*';

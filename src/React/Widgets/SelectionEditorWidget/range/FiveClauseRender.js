@@ -5,7 +5,7 @@ import style            from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 import Ineq             from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq            from '../../../../../svg/Operations/Ineqq.svg';
 import LegendIcon       from '../LegendIcon';
-import NumberFormatter  from '../../../../Common/Misc/NumberFormatter';
+import NumberFormatter, { sciNotationRegExp } from '../../../../Common/Misc/NumberFormatter';
 import SvgIconWidget    from '../../SvgIconWidget';
 
 const CHOICE_LABELS = {
@@ -80,7 +80,7 @@ export default function fiveClauseRender(props) {
       <input
         className={style.numberInput}
         type="text"
-        pattern="[0-9]*[.]*[0-9]*"
+        pattern={sciNotationRegExp}
         data-path="0"
         value={terms[0]}
         onChange={onChange}
@@ -98,7 +98,7 @@ export default function fiveClauseRender(props) {
       <input
         className={style.numberInput}
         type="text"
-        pattern="[0-9]*[.]*[0-9]*"
+        pattern={sciNotationRegExp}
         data-path="4"
         value={terms[4]} // formatter.eval(terms[1])
         onChange={onChange}
