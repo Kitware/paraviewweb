@@ -38,6 +38,14 @@ function informationDiagram(publicAPI, model) {
     return;
   }
 
+  model.renderState = {
+    pmiAllBinsTwoVars: null,
+    pmiOneBinAllVars: null,
+    pmiHighlight: null,
+  };
+
+  model.clientRect = null;
+
   // FIXME: Make some attempt at unique id, for now just use millis timestamp
   model.instanceID = `informationDiagram-${Date.now()}`;
 
@@ -99,13 +107,13 @@ function informationDiagram(publicAPI, model) {
       return; // no shirt, no shoes, no service.
     }
 
-    const clientRect = model.container.getBoundingClientRect();
+    model.clientRect = model.container.getBoundingClientRect();
 
     d3.select(model.container)
       .select('div.status-bar-container')
-      .attr('data-width', `${clientRect.width - 20}px`);
+      .attr('data-width', `${model.clientRect.width - 20}px`);
 
-    publicAPI.render(clientRect.width, clientRect.height);
+    publicAPI.render();
   };
 
   publicAPI.setContainer = el => {
@@ -166,7 +174,7 @@ function informationDiagram(publicAPI, model) {
 
   publicAPI.updateStatusBarText = msg => d3.select(model.container).select('span.status-bar-text').text(msg);
 
-  publicAPI.render = (width, height) => {
+  publicAPI.render = () => {
     // Extract provider data for local access
     const getLegend = model.provider.isA('LegendProvider') ? model.provider.getLegend : null;
     const histogram1DnumberOfBins = model.provider.getHistogram1DNumberOfBins();
@@ -186,9 +194,12 @@ function informationDiagram(publicAPI, model) {
 
     // Guard against rendering if container is non-null but has no size (as
     // in the case when workbench layout doesn't include our container)
-    if (width === 0 || height === 0) {
+    if (model.clientRect === null || model.clientRect.width === 0 || model.clientRect.height === 0) {
       return;
     }
+
+    const width = model.clientRect.width;
+    const height = model.clientRect.height;
 
     // Make sure we have all the data we need
     if (model.needData) {
@@ -332,7 +343,9 @@ function informationDiagram(publicAPI, model) {
       }
     }
 
-    function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
+    // function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
+    function findPmiChordsToHighlight() {
+      const { group: param, bin, highlight, mode: oneBinAllVarsMode } = model.renderState.pmiHighlight;
       if (highlight) {
         svg.select('g.pmiChords')
           .selectAll('path.pmiChord')
@@ -413,7 +426,8 @@ function informationDiagram(publicAPI, model) {
       }
     }
 
-    function drawPMIAllBinsTwoVars(d, i) {
+    function drawPMIAllBinsTwoVars() {
+      const d = model.renderState.pmiAllBinsTwoVars.d;
       if (d.source.index === d.target.index) {
         console.log('Cannot render self-PMI', mutualInformationData.vmap[d.source.index].name);
         return;
@@ -502,8 +516,7 @@ function informationDiagram(publicAPI, model) {
 
     // Mouse move hanlding ----------------------------------------------------
 
-    // d3.select(model.container).select('svg')
-    svg
+    d3.select(model.container).select('svg')
       .on('mousemove', function mouseMove(d, i) {
         const overCoords = d3.mouse(model.container);
         const info = findGroupAndBin(overCoords);
@@ -521,7 +534,8 @@ function informationDiagram(publicAPI, model) {
           if (info.found) {
             let binMap = {};
             const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-            const pmiBinMap = findPmiChordsToHighlight(info.group, info.bin, true, oneBinAllVarsMode);
+            model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
+            const pmiBinMap = findPmiChordsToHighlight();
             if (info.radius <= innerRadius) {
               binMap = pmiBinMap;
             } else {
@@ -565,7 +579,9 @@ function informationDiagram(publicAPI, model) {
               pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS &&
               info.group === pmiChordMode.srcParam)) {
             if (info.found) {
-              drawPMIOneBinAllVars(info.group, info.bin)(d, i);
+              model.renderState.pmiAllBinsTwoVars = null;
+              model.renderState.pmiOneBinAllVars = { group: info.group, bin: info.bin, d, i };
+              drawPMIOneBinAllVars()(d, i);
             }
           }
         },
@@ -577,7 +593,8 @@ function informationDiagram(publicAPI, model) {
             let binMap = {};
             const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
             if (info.radius <= innerRadius) {
-              binMap = findPmiChordsToHighlight(info.group, info.bin, true, oneBinAllVarsMode);
+              model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
+              binMap = findPmiChordsToHighlight();
             }
             if (!oneBinAllVarsMode) {
               binMap[info.group] = [info.bin];
@@ -758,7 +775,11 @@ function informationDiagram(publicAPI, model) {
       .classed(style.chord, true)
       .classed('selfchord', d => (d.source.index === d.target.index))
       .attr('d', path)
-      .on('click', drawPMIAllBinsTwoVars)
+      .on('click', (d, i) => {
+        model.renderState.pmiOneBinAllVars = null;
+        model.renderState.pmiAllBinsTwoVars = { d, i };
+        drawPMIAllBinsTwoVars();
+      })
       .on('mouseover', function inner(d, i) {
         publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
       })
@@ -788,13 +809,24 @@ function informationDiagram(publicAPI, model) {
         updateChordVisibility({ mi: { show: true, index: i } });
       });
 
-    function drawPMIOneBinAllVars(gname, binIndex) {
-      var binVar = gname; // Hold on to the name of the variable whose bin we should draw.
-      var binIdx = binIndex;
+    if (model.renderState.pmiAllBinsTwoVars !== null) {
+      drawPMIAllBinsTwoVars();
+    } else if (model.renderState.pmiOneBinAllVars !== null) {
+      const { group: g, bin: b, d, i } = model.renderState.pmiOneBinAllVars;
+      drawPMIOneBinAllVars(g, b)(d, i);
+    }
+
+    if (model.renderState.pmiHighlight !== null) {
+      findPmiChordsToHighlight();
+    }
+
+    function drawPMIOneBinAllVars() {
+      var binVar = model.renderState.pmiOneBinAllVars.group; // Hold on to the name of the variable whose bin we should draw.
+      var binIdx = model.renderState.pmiOneBinAllVars.bin;
 
       pmiChordMode.mode = PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-      pmiChordMode.srcParam = gname;
-      pmiChordMode.srcBin = binIndex;
+      pmiChordMode.srcParam = binVar;
+      pmiChordMode.srcBin = binIdx;
 
       // Return a function that, given a bin datum, renders the highest PMI (or probability)
       // links from that bin to any/all other bins in other variables it co-occurs with.
@@ -902,8 +934,17 @@ function informationDiagram(publicAPI, model) {
   publicAPI.setContainer(model.container);
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  model.subscriptions.push(model.provider.onFieldChange(fetchData));
-  model.subscriptions.push(model.provider.onMutualInformationReady(publicAPI.render));
+  model.subscriptions.push(model.provider.onFieldChange(() => {
+    model.renderState = {
+      pmiAllBinsTwoVars: null,
+      pmiOneBinAllVars: null,
+      pmiHighlight: null,
+    };
+    fetchData();
+  }));
+  model.subscriptions.push(model.provider.onMutualInformationReady(mutualInfo => {
+    publicAPI.render();
+  }));
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
