@@ -23,11 +23,15 @@ function selectionProvider(publicAPI, model) {
   }
 
   function flushDataToListener(dataListener) {
-    if (dataListener) {
-      const event = dataHelper.getNotificationData(model.selectionData, dataListener.request);
-      if (event) {
-        dataListener.onDataReady(event);
+    try {
+      if (dataListener) {
+        const event = dataHelper.getNotificationData(model.selectionData, dataListener.request);
+        if (event) {
+          dataListener.onDataReady(event);
+        }
       }
+    } catch (err) {
+      console.log('flushDataToListener error caught:', err);
     }
   }
 

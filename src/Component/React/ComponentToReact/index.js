@@ -29,7 +29,9 @@ export default React.createClass({
   },
 
   resize() {
-    this.props.component.resize();
+    if (this.props.component) {
+      this.props.component.resize();
+    }
   },
 
   render() {

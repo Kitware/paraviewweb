@@ -185,7 +185,7 @@ function informationDiagram(publicAPI, model) {
       histogramData[name] = model.provider.getHistogram1D(name);
     });
 
-    if (variableList.length < 2 || model.container === null) {
+    if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
       d3.select(model.container).select('svg.information-diagram').classed(style.hidden, true);
       d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, false);
