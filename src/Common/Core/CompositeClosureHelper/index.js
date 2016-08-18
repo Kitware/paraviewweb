@@ -61,7 +61,7 @@ function destroy(publicAPI, model = {}) {
     if (previousDestroy) {
       previousDestroy();
     }
-    while (model.subscriptions.length) {
+    while (model.subscriptions && model.subscriptions.length) {
       model.subscriptions.pop().unsubscribe();
     }
     Object.keys(model).forEach(field => {
