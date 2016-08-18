@@ -852,6 +852,8 @@ function parallelCoordinate(publicAPI, model) {
       },
       model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
+    model.subscriptions.push(model.dataSubscription);
+
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       model.axes.resetSelections(sel, false);
       publicAPI.render();
