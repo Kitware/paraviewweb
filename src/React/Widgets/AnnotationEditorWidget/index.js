@@ -57,6 +57,10 @@ export default function annotationEditorWidget(props) {
 
   const Render = props.annotation.selection.type === 'partition' ? ManyScore : OneScore;
 
+  if (props.annotation.selection.type === 'empty') {
+    return null;
+  }
+
   return (
     <div className={style.topContainer}>
       <Render
