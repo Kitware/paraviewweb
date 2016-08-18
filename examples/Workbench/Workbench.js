@@ -768,7 +768,7 @@
 	        this.viewportList.forEach(function (viewport) {
 	          _this4.el.removeChild(viewport.el);
 	        });
-	        this.removeEventListener();
+	        this.removeMouseListeners();
 	      }
 
 	      this.el = el;

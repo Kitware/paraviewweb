@@ -20978,7 +20978,7 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
-	    while (model.subscriptions.length) {
+	    while (model.subscriptions && model.subscriptions.length) {
 	      model.subscriptions.pop().unsubscribe();
 	    }
 	    Object.keys(model).forEach(function (field) {
@@ -22770,11 +22770,15 @@
 	  }
 
 	  function flushDataToListener(dataListener) {
-	    if (dataListener) {
-	      var event = _dataHelper2.default.getNotificationData(model.selectionData, dataListener.request);
-	      if (event) {
-	        dataListener.onDataReady(event);
+	    try {
+	      if (dataListener) {
+	        var event = _dataHelper2.default.getNotificationData(model.selectionData, dataListener.request);
+	        if (event) {
+	          dataListener.onDataReady(event);
+	        }
 	      }
+	    } catch (err) {
+	      console.log('flushDataToListener error caught:', err);
 	    }
 	  }
 
@@ -23646,7 +23650,7 @@
 	  };
 
 	  publicAPI.resize = function () {
-	    if (model.container === null) return;
+	    if (!model.container) return;
 
 	    var clientRect = model.container.getBoundingClientRect();
 	    if (clientRect.width !== 0 && clientRect.height !== 0) {
@@ -23665,7 +23669,7 @@
 	      fetchData();
 	      return;
 	    }
-	    if (model.container === null || model.container.offsetParent === null) return;
+	    if (!model.container || model.container.offsetParent === null) return;
 
 	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
@@ -23955,7 +23959,7 @@
 
 	    model.container = element;
 
-	    if (model.container !== null) {
+	    if (model.container) {
 	      var cSel = _d2.default.select(model.container);
 	      createHeader(cSel);
 	      // wrapper height is set insize resize()
@@ -35385,6 +35389,7 @@
 	    }
 	  }
 
+	  // FIXME Aron (talk to Scott and Seb)
 	  function updateFieldAnnotations(fieldsData) {
 	    var fieldAnnotations = fieldsData;
 	    if (!fieldAnnotations && model.provider.getFieldPartitions) {
@@ -35393,9 +35398,11 @@
 	    if (fieldAnnotations) {
 	      Object.keys(fieldAnnotations).forEach(function (field) {
 	        var annotation = fieldAnnotations[field];
-	        model.fieldData[field].annotation = annotation;
-	        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
-	        publicAPI.render(field);
+	        if (model.fieldData[field] && model.fieldData[field].hobj) {
+	          model.fieldData[field].annotation = annotation;
+	          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+	          publicAPI.render(field);
+	        }
 	      });
 	    }
 	  }

@@ -211,6 +211,10 @@
 
 	  var Render = props.annotation.selection.type === 'partition' ? _ManyScore2.default : _OneScore2.default;
 
+	  if (props.annotation.selection.type === 'empty') {
+	    return null;
+	  }
+
 	  return _react2.default.createElement(
 	    'div',
 	    { className: _AnnotationEditorWidget2.default.topContainer },
@@ -35558,7 +35562,7 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
-	    while (model.subscriptions.length) {
+	    while (model.subscriptions && model.subscriptions.length) {
 	      model.subscriptions.pop().unsubscribe();
 	    }
 	    Object.keys(model).forEach(function (field) {

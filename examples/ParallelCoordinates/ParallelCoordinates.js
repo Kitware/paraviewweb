@@ -21336,7 +21336,7 @@
 	      return;
 	    }
 
-	    if (!model.axes.canRender() || model.container === null || model.containerHidden === true) {
+	    if (!model.axes.canRender() || !model.container || model.containerHidden === true) {
 	      _d2.default.select(model.container).select('svg.parallel-coords-overlay').classed(_ParallelCoordinates2.default.hidden, true);
 	      _d2.default.select(model.container).select('canvas').classed(_ParallelCoordinates2.default.hidden, true);
 	      _d2.default.select(model.container).select('div.parallel-coords-placeholder').classed(_ParallelCoordinates2.default.hidden, false);
@@ -21639,6 +21639,8 @@
 	      }
 	      publicAPI.render();
 	    }, model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
+
+	    model.subscriptions.push(model.dataSubscription);
 
 	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
 	      model.axes.resetSelections(sel, false);
@@ -32559,7 +32561,7 @@
 	    if (previousDestroy) {
 	      previousDestroy();
 	    }
-	    while (model.subscriptions.length) {
+	    while (model.subscriptions && model.subscriptions.length) {
 	      model.subscriptions.pop().unsubscribe();
 	    }
 	    Object.keys(model).forEach(function (field) {
