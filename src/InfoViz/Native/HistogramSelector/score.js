@@ -847,6 +847,7 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  // FIXME Aron (talk to Scott and Seb)
   function updateFieldAnnotations(fieldsData) {
     let fieldAnnotations = fieldsData;
     if (!fieldAnnotations && model.provider.getFieldPartitions) {
@@ -855,9 +856,11 @@ export default function init(inPublicAPI, inModel) {
     if (fieldAnnotations) {
       Object.keys(fieldAnnotations).forEach(field => {
         const annotation = fieldAnnotations[field];
-        model.fieldData[field].annotation = annotation;
-        partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
-        publicAPI.render(field);
+        if (model.fieldData[field] && model.fieldData[field].hobj) {
+          model.fieldData[field].annotation = annotation;
+          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+          publicAPI.render(field);
+        }
       });
     }
   }
