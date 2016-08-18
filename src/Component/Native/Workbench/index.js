@@ -216,7 +216,7 @@ export default class ComponentWorkbench {
       this.viewportList.forEach(viewport => {
         this.el.removeChild(viewport.el);
       });
-      this.removeEventListener();
+      this.removeMouseListeners();
     }
 
     this.el = el;
