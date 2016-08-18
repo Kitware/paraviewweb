@@ -336,7 +336,7 @@ function histogramSelector(publicAPI, model) {
   };
 
   publicAPI.resize = () => {
-    if (model.container === null) return;
+    if (!model.container) return;
 
     const clientRect = model.container.getBoundingClientRect();
     if (clientRect.width !== 0 && clientRect.height !== 0) {
@@ -354,7 +354,7 @@ function histogramSelector(publicAPI, model) {
       fetchData();
       return;
     }
-    if (model.container === null || model.container.offsetParent === null) return;
+    if (!model.container || model.container.offsetParent === null) return;
 
     const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
@@ -680,7 +680,7 @@ function histogramSelector(publicAPI, model) {
 
     model.container = element;
 
-    if (model.container !== null) {
+    if (model.container) {
       const cSel = d3.select(model.container);
       createHeader(cSel);
       // wrapper height is set insize resize()
