@@ -328,9 +328,7 @@ export default React.createClass({
     const eventDivProps = {
       className: this.props.front ? style.frontEventContainer : style.backEventContainer,
       ref: c => (this.eventContainerDiv = c),
-      style: {
-        pointerEvents: 'auto',
-      },
+      style: {},
     };
 
     // Configure the initial main container props and style overrides
@@ -338,7 +336,6 @@ export default React.createClass({
       className: style.mainContainer,
       ref: c => (this.mainContainerDiv = c),
       style: {
-        pointerEvents: 'none',
         width: this.state.width,
         height: this.state.height,
         top: this.state.y,

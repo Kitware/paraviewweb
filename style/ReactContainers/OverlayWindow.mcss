@@ -52,7 +52,6 @@
 
 .content {
   position: absolute;
-  pointer-events: auto;
   composes: contentStyle;
 }
 
