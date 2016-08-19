@@ -316,7 +316,7 @@ export default React.createClass({
     const actionStruct = this.computeActionRegion(evt);
     this.dragHandler = this.mouseMove;
     this.setState({ cursor: actionStruct.cursor, dragging: false });
-    this.props.onActive(false, this);
+    setImmediate(() => this.props.onActive(false, this));
   },
 
   render() {
