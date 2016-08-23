@@ -78,7 +78,7 @@ function fieldSelector(publicAPI, model) {
     // Update header label
     d3.select(model.container)
       .select('th.field-selector-label')
-      .text(model.displayUnselected ? `All Variables (${data.length})` : `Selected Variables (${data.length})`)
+      .text(`Only Selected (${data.length})`)
       .on('click', d => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();

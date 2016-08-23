@@ -295,7 +295,7 @@ function histogramSelector(publicAPI, model) {
       .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
     d3.select(model.container)
       .select(`.${style.jsHeaderLabel}`)
-      .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
+      .text(`Only Selected (${dataLength})`);
     scoreHelper.updateHeader();
 
     d3.select(model.container)
