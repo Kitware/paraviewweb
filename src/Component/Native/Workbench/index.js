@@ -45,6 +45,7 @@ export default class ComponentWorkbench {
     this.el = null;
     this.useMouse = useMouse;
     this.dragging = false;
+    this.dragOffset = { x: 0, y: 0 };
     this.wbArrange = {
       center,
       spacing,
@@ -59,6 +60,9 @@ export default class ComponentWorkbench {
         if (this.getClickedViewport(event.clientX - this.boundingRect.left,
             event.clientY - this.boundingRect.top) === -1 && event.target === this.el) {
           this.dragging = true;
+          // offset from current center to drag start.
+          this.dragOffset.x = this.boundingRect.width * this.wbArrange.center[0] - (event.clientX - this.boundingRect.left);
+          this.dragOffset.y = this.boundingRect.height * this.wbArrange.center[1] - (event.clientY - this.boundingRect.top);
           event.stopPropagation();
           event.preventDefault();
         }
@@ -70,10 +74,21 @@ export default class ComponentWorkbench {
         if (this.dragging) {
           event.stopPropagation();
           event.preventDefault();
-          this.wbArrange.center = [
-            (event.clientX - this.boundingRect.left) / this.boundingRect.width,
-            (event.clientY - this.boundingRect.top) / this.boundingRect.height,
-          ];
+          const centerSize = this.wbArrange.spacing;
+          if (Math.abs(this.dragOffset.x) > centerSize) {
+            // only drag boundary vertically
+            this.wbArrange.center[1] =
+              (event.clientY - this.boundingRect.top + this.dragOffset.y) / this.boundingRect.height;
+          } else if (Math.abs(this.dragOffset.y) > centerSize) {
+            // only drag boundary horizontally
+            this.wbArrange.center[0] =
+              (event.clientX - this.boundingRect.left + this.dragOffset.x) / this.boundingRect.width;
+          } else {
+            this.wbArrange.center = [
+              (event.clientX - this.boundingRect.left + this.dragOffset.x) / this.boundingRect.width,
+              (event.clientY - this.boundingRect.top + this.dragOffset.y) / this.boundingRect.height,
+            ];
+          }
           this.render();
         }
       },
