@@ -378,8 +378,9 @@ function parallelCoordinate(publicAPI, model) {
 
     axisTickNodes.exit().remove();
 
+    const formatter = d3.format('.3s');
     ticksGroup.selectAll('text.axis-ticks')
-      .text((d, i) => d.value)
+      .text((d, i) => formatter(d.value))
       .attr('text-anchor', (d, i) => d.align)
       .attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
   }
