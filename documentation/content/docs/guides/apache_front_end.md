@@ -51,13 +51,13 @@ In this case you should create a file in `/etc/apache2/sites-available/` and mak
 
 In either case, make sure to replace the `ServerName` value (shown below as `${MY-SERVER-NAME}`) with the correct host name.  Also make sure the `DocumentRoot` value (shown below as `${MY-DOCUMENT-ROOT}`) makes sense for your particular deployment, we typically point it at the `www` directory of the ParaView build or install tree.  Additionally, be sure to change `${MAPPING-FILE-DIR}` to the real location where you have put the map file.
 
-``` plain
+```apache
 <VirtualHost *:80>
     ServerName ${MY-SERVER-NAME}
     ServerAdmin webmaster@example-host.example.com
     DocumentRoot ${MY-DOCUMENT-ROOT}
-    ErrorLog "logs/pv-error_log"
-    CustomLog "logs/pv-access_log" common
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
     ### The following commented lines could be useful when running
     ### over https and wss:
@@ -73,20 +73,20 @@ In either case, make sure to replace the `ServerName` value (shown below as `${M
     #   SSLOptions +StdEnvVars +StrictRequire
     # </Location>
 
-    # Have Apache pass these requests to the launcher
+    # Rule for ParaViewWeb launcher
     ProxyPass /paraview http://localhost:9000/paraview
 
-    # Turn on the rewrite engine
+    # Rewrite setup for ParaViewWeb
     RewriteEngine On
 
     # This is the path the mapping file Jetty creates
     RewriteMap session-to-port txt:${MAPPING-FILE-DIR}/proxy.txt
 
     # This is the rewrite condition. Look for anything with a sessionId= in the query part of the URL and capture the value to use below.
-    RewriteCond %{QUERY_STRING}     ^sessionId=(.*)$ [NC]
+    RewriteCond %{QUERY_STRING}     ^sessionId=(.*)&path=(.*)$ [NC]
 
     # This does the rewrite using the mapping file and the sessionId
-    RewriteRule    ^/proxy.*$  ws://${session-to-port:%1}/ws  [P]
+    RewriteRule    ^/proxy.*$  ws://${session-to-port:%1}/%2  [P]
 
     <Directory "${MY-DOCUMENT-ROOT}">
         Options Indexes FollowSymLinks
@@ -95,7 +95,7 @@ In either case, make sure to replace the `ServerName` value (shown below as `${M
         AllowOverride None
         Require all granted
     </Directory>
-
+    
 </VirtualHost>
 ```
 
