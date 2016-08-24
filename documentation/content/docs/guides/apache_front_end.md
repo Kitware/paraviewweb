@@ -73,13 +73,6 @@ In either case, make sure to replace the `ServerName` value (shown below as `${M
     #   SSLOptions +StdEnvVars +StrictRequire
     # </Location>
 
-    # Proxy pass for Girder
-    # Don't proxy this internal endpoint
-    ProxyPass /api/v1/proxy !
-    ProxyPass /api/v1 http://localhost:8080/api/v1
-    ProxyPass /static http://localhost:8080/static
-    ProxyPassReverse / http://localhost:8080/
-
     # Rule for ParaViewWeb launcher
     ProxyPass /paraview http://localhost:9000/paraview
 
@@ -87,7 +80,7 @@ In either case, make sure to replace the `ServerName` value (shown below as `${M
     RewriteEngine On
 
     # This is the path the mapping file Jetty creates
-    RewriteMap session-to-port dbm:/opt/hpccloud/proxy.db
+    RewriteMap session-to-port txt:${MAPPING-FILE-DIR}/proxy.txt
 
     # This is the rewrite condition. Look for anything with a sessionId= in the query part of the URL and capture the value to use below.
     RewriteCond %{QUERY_STRING}     ^sessionId=(.*)&path=(.*)$ [NC]
