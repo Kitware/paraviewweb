@@ -45,7 +45,7 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/guides/python_launcher.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="How to use the Python LauncherIntroductionWhen deploying ParaViewWeb for multiple users, you will need a launcher module that will start a new visualization process for each user that requests one.  T">
-<meta property="og:updated_time" content="2016-08-19T07:10:55.411Z">
+<meta property="og:updated_time" content="2016-08-24T17:44:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="How to use the Python LauncherIntroductionWhen deploying ParaViewWeb for multiple users, you will need a launcher module that will start a new visualization process for each user that requests one.  T">
@@ -130,11 +130,11 @@
 <h2 id="Python-launcher-as-a-front-end" class="article-heading"><a href="#Python-launcher-as-a-front-end" class="headerlink" title="Python launcher as a front end"></a>Python launcher as a front end<a class="article-anchor" href="#Python-launcher-as-a-front-end" aria-hidden="true"></a></h2><p>It is worth mentioning briefly that the Python launcher can also be used as a front end.  Specifying a path for the <code>content</code> key of the <code>configuration</code> section of the laucher config json will cause the Python launcher to serve static content from listed directory.  The Python launcher can not, however, do websocket forwarding/tunnelling, so in this situation, clients would need direct access to the host/port combinations where the visualization processes are running.  Then, the <code>sessionURL</code> would take this form:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="string">"sessionURL"</span> : <span class="string">"ws://$&#123;host&#125;:$&#123;port&#125;/ws"</span>,</div></pre></td></tr></table></figure>
 <p>rather than this one:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="string">"sessionURL"</span>: <span class="string">"ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=$&#123;id&#125;"</span>,</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="string">"sessionURL"</span>: <span class="string">"ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=$&#123;id&#125;&amp;path=ws"</span>,</div></pre></td></tr></table></figure>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-08-19T07:10:55.411Z" itemprop="dateModified">Last updated: 2016-08-19</time>
+                <time class="article-footer-updated" datetime="2016-08-24T17:44:06.000Z" itemprop="dateModified">Last updated: 2016-08-24</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

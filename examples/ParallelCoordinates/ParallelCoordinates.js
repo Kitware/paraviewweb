@@ -21724,6 +21724,7 @@
 
 	// ----------------------------------------------------------------------------
 
+	// scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 	function extend(publicAPI, model) {
 	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
@@ -31652,8 +31653,8 @@
 	        } else if (selection.type === 'empty') {
 	          // nothing to do we already cleared the selection
 	        } else {
-	          console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
-	        }
+	            console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
+	          }
 	      }
 
 	      if (triggerEvent) {
@@ -31839,6 +31840,7 @@
 	      });
 
 	      // Tag first/last axis
+	      // FIXME what is 30?
 	      controlsDataModel[0].pos = -1;
 	      controlsDataModel[controlsDataModel.length - 1].pos = 1;
 

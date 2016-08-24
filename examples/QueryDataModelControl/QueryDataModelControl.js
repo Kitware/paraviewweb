@@ -270,12 +270,12 @@
 	            // Get new data
 	            _this.lazyFetchData(); // FIXME may need a category
 	          } else {
-	            // Auto stop as nothing change
-	            _this.keepAnimating = false;
-	            _this.emit('state.change.play', {
-	              instance: _this
-	            });
-	          }
+	              // Auto stop as nothing change
+	              _this.keepAnimating = false;
+	              _this.emit('state.change.play', {
+	                instance: _this
+	              });
+	            }
 	        })();
 	      } else {
 	        _this.emit('state.change.play', {
@@ -963,17 +963,17 @@
 	            continue;
 	            /* eslint-enable no-continue */
 	          } else if (count > 0) {
-	            // We need to move the index back up
-	            idxs[count] = 0;
-	            idxs[count - 1]++;
-	          } else {
-	            this.exploreState.animate = false;
-	            this.emit('state.change.exploration', {
-	              exploration: this.exploreState,
-	              instance: this
-	            });
-	            return this.exploreState.animate; // We are done
-	          }
+	              // We need to move the index back up
+	              idxs[count] = 0;
+	              idxs[count - 1]++;
+	            } else {
+	              this.exploreState.animate = false;
+	              this.emit('state.change.exploration', {
+	                exploration: this.exploreState,
+	                instance: this
+	              });
+	              return this.exploreState.animate; // We are done
+	            }
 	        }
 
 	        // Trigger the fetchData

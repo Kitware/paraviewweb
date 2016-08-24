@@ -21640,6 +21640,7 @@
 	    palette: _react2.default.PropTypes.array,
 	    radius: _react2.default.PropTypes.number,
 	    rootId: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number, _react2.default.PropTypes.instanceOf(null)]),
+	    // this could have some problematic effect
 	    stroke: _react2.default.PropTypes.number,
 	    style: _react2.default.PropTypes.object,
 	    textColor: _react2.default.PropTypes.array,
@@ -21670,6 +21671,7 @@
 	      textColor: ['black', 'white'], // Normal, Active
 	      textWeight: ['normal', 'bold'] };
 	  },
+	  // Normal, Active
 	  getInitialState: function getInitialState() {
 	    return {
 	      actives: [],

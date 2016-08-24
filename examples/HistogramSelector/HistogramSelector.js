@@ -149,6 +149,7 @@
 	});
 
 	// Create field selector
+	// defaultScore: 1,
 	var fieldSelector = _FieldSelector2.default.newInstance({ provider: provider, container: fieldSelectorContainer });
 
 	// Listen to window resize
@@ -22704,6 +22705,7 @@
 
 	// ----------------------------------------------------------------------------
 
+	// scores: null,
 	function extend(publicAPI, model) {
 	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
