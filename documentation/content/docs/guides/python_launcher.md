@@ -155,5 +155,5 @@ It is worth mentioning briefly that the Python launcher can also be used as a fr
 rather than this one:
 
 ```js
-  "sessionURL": "ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=${id}",
+  "sessionURL": "ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=${id}&path=ws",
 ```
