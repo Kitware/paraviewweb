@@ -26762,7 +26762,7 @@
 		"_args": [
 			[
 				"autobahn@0.9.6",
-				"/Users/tristan/Documents/work/paraviewweb"
+				"/home/travis/build/Kitware/paraviewweb"
 			]
 		],
 		"_from": "autobahn@0.9.6",
@@ -26791,7 +26791,7 @@
 		"_shasum": "51efec0cdb056872a1c698275260f67d7a3d32e3",
 		"_shrinkwrap": null,
 		"_spec": "autobahn@0.9.6",
-		"_where": "/Users/tristan/Documents/work/paraviewweb",
+		"_where": "/home/travis/build/Kitware/paraviewweb",
 		"author": {
 			"name": "Tavendo GmbH"
 		},
@@ -26815,17 +26815,17 @@
 		},
 		"homepage": "https://github.com/tavendo/AutobahnJS",
 		"keywords": [
-			"WAMP",
-			"WebSocket",
+			"PubSub",
 			"RPC",
-			"PubSub"
+			"WAMP",
+			"WebSocket"
 		],
 		"license": "MIT",
 		"main": "index.js",
 		"maintainers": [
 			{
-				"email": "tobias.oberstein@tavendo.de",
-				"name": "oberstet"
+				"name": "oberstet",
+				"email": "tobias.oberstein@tavendo.de"
 			}
 		],
 		"name": "autobahn",
