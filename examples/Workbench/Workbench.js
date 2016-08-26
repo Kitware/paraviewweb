@@ -589,6 +589,7 @@
 	    this.el = null;
 	    this.useMouse = useMouse;
 	    this.dragging = false;
+	    this.dragOffset = { x: 0, y: 0 };
 	    this.wbArrange = {
 	      center: center,
 	      spacing: spacing
@@ -602,6 +603,9 @@
 	      mousedown: function mousedown(event) {
 	        if (_this.getClickedViewport(event.clientX - _this.boundingRect.left, event.clientY - _this.boundingRect.top) === -1 && event.target === _this.el) {
 	          _this.dragging = true;
+	          // offset from current center to drag start.
+	          _this.dragOffset.x = _this.boundingRect.width * _this.wbArrange.center[0] - (event.clientX - _this.boundingRect.left);
+	          _this.dragOffset.y = _this.boundingRect.height * _this.wbArrange.center[1] - (event.clientY - _this.boundingRect.top);
 	          event.stopPropagation();
 	          event.preventDefault();
 	        }
@@ -613,7 +617,16 @@
 	        if (_this.dragging) {
 	          event.stopPropagation();
 	          event.preventDefault();
-	          _this.wbArrange.center = [(event.clientX - _this.boundingRect.left) / _this.boundingRect.width, (event.clientY - _this.boundingRect.top) / _this.boundingRect.height];
+	          var centerSize = _this.wbArrange.spacing;
+	          if (Math.abs(_this.dragOffset.x) > centerSize) {
+	            // only drag boundary vertically
+	            _this.wbArrange.center[1] = (event.clientY - _this.boundingRect.top + _this.dragOffset.y) / _this.boundingRect.height;
+	          } else if (Math.abs(_this.dragOffset.y) > centerSize) {
+	            // only drag boundary horizontally
+	            _this.wbArrange.center[0] = (event.clientX - _this.boundingRect.left + _this.dragOffset.x) / _this.boundingRect.width;
+	          } else {
+	            _this.wbArrange.center = [(event.clientX - _this.boundingRect.left + _this.dragOffset.x) / _this.boundingRect.width, (event.clientY - _this.boundingRect.top + _this.dragOffset.y) / _this.boundingRect.height];
+	          }
 	          _this.render();
 	        }
 	      }

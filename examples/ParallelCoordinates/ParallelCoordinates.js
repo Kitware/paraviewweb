@@ -21211,8 +21211,9 @@
 
 	    axisTickNodes.exit().remove();
 
+	    var formatter = _d2.default.format('.3s');
 	    ticksGroup.selectAll('text.axis-ticks').text(function (d, i) {
-	      return d.value;
+	      return formatter(d.value);
 	    }).attr('text-anchor', function (d, i) {
 	      return d.align;
 	    }).attr('transform', function (d, i) {
@@ -32838,8 +32839,10 @@
 	    .classed(!model.displayUnselected ? _FieldSelector2.default.allFieldsIcon : _FieldSelector2.default.selectedFieldsIcon, false).classed(model.displayUnselected ? _FieldSelector2.default.allFieldsIcon : _FieldSelector2.default.selectedFieldsIcon, true);
 
 	    var data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
+	    var totalNum = model.displayUnselected ? data.length : model.provider.getFieldNames().length;
+
 	    // Update header label
-	    _d2.default.select(model.container).select('th.field-selector-label').text(model.displayUnselected ? 'All Variables (' + data.length + ')' : 'Selected Variables (' + data.length + ')').on('click', function (d) {
+	    _d2.default.select(model.container).select('th.field-selector-label').style('text-align', 'left').text(model.displayUnselected ? 'Only Selected (' + data.length + ' total)' : 'Only Selected (' + data.length + ' / ' + totalNum + ' total)').on('click', function (d) {
 	      model.displayUnselected = !model.displayUnselected;
 	      publicAPI.render();
 	    });
@@ -33982,7 +33985,7 @@
 
 	var DEFAULT_VALUES = {
 	  fields: null,
-	  fieldsSorted: false
+	  fieldsSorted: true
 	};
 
 	// ----------------------------------------------------------------------------
@@ -35335,7 +35338,7 @@
 			"steals per game": {
 				"range": [
 					0,
-					2.48
+					2.480305
 				],
 				"active": true,
 				"id": 17,
