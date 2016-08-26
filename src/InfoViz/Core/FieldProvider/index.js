@@ -68,7 +68,7 @@ function fieldProvider(publicAPI, model) {
 
 const DEFAULT_VALUES = {
   fields: null,
-  fieldsSorted: false,
+  fieldsSorted: true,
 };
 
 // ----------------------------------------------------------------------------
