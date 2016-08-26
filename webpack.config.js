@@ -20,6 +20,9 @@ module.exports = {
     filename: 'ParaViewWeb.js',
   },
   module: {
+    noParse: [
+      /plotly\.js/
+    ],
     preLoaders: [{
       test: /\.js$/,
       loader: 'eslint-loader',

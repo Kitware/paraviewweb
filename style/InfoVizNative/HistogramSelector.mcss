@@ -213,8 +213,9 @@
   /*cursor: crosshair;*/
   padding: 0px;
   margin: 3px;
-  border-width: 2px;
+  border-width: 3px;
   border-spacing: 0;
+  border-collapse: separate;
   border-radius: 6px;
   border-style: solid;
   background-color: #fff;

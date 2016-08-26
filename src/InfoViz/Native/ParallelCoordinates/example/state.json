@@ -13,7 +13,7 @@
       "name": "percentage of team assists"
     },
     "steals per game": {
-      "range": [0, 2.48],
+      "range": [0, 2.480305],
       "active": true,
       "id": 17,
       "name": "steals per game"

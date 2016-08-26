@@ -155,7 +155,7 @@ function histogramSelector(publicAPI, model) {
     let updateBoxPerRow = false;
 
     const boxMargin = 3; // outside the box dimensions
-    const boxBorder = 2; // included in the box dimensions, visible border
+    const boxBorder = 3; // included in the box dimensions, visible border
 
     // Get the client area size
     const dimensions = getClientArea();
@@ -221,12 +221,15 @@ function histogramSelector(publicAPI, model) {
     if (model.singleModeName !== null) return;
     // Get the client area size
     const dimensions = getClientArea();
-    let newBoxesPerRow = Math.max(1, model.boxesPerRow + amount);
-    // compute a reasonable new maximum for box size based on the current container dimensions. 10 px padding.
-    const newMinBoxSize = Math.max(minBoxSizeLimit, Math.floor(dimensions[0] / newBoxesPerRow) - 10);
-    newBoxesPerRow = Math.floor(dimensions[0] / newMinBoxSize);
+    let maxNumBoxes = Math.floor(dimensions[0] / minBoxSizeLimit);
+    let newBoxesPerRow = Math.min(maxNumBoxes, Math.max(1, model.boxesPerRow + amount));
+
     // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
     if (newBoxesPerRow !== model.boxesPerRow) {
+      // compute a reasonable new minimum for box size based on the current container dimensions.
+      // Midway between desired and next larger number of boxes, except at limit.
+      const newMinBoxSize = (newBoxesPerRow === maxNumBoxes ? minBoxSizeLimit :
+        Math.floor(0.5 * ((dimensions[0] / newBoxesPerRow) + (dimensions[0] / (newBoxesPerRow + 1)))));
       minBoxSize = newMinBoxSize;
       publicAPI.render();
     }
@@ -258,6 +261,7 @@ function histogramSelector(publicAPI, model) {
       .classed(style.jsFieldsIcon, true);
     header.append('span')
       .classed(style.jsHeaderLabel, true)
+      .text('Only Selected')
       .on('click', fieldHeaderClick);
 
     scoreHelper.createHeader(header);
@@ -293,9 +297,6 @@ function histogramSelector(publicAPI, model) {
       // apply class - 'false' should come first to not remove common base class.
       .classed(displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
       .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
-    d3.select(model.container)
-      .select(`.${style.jsHeaderLabel}`)
-      .text(!displayOnlySelected ? `All Variables (${dataLength})` : `Selected Variables (${dataLength})`);
     scoreHelper.updateHeader();
 
     d3.select(model.container)
@@ -578,15 +579,15 @@ function histogramSelector(publicAPI, model) {
 
         hdata.exit().remove();
 
-        if (model.provider.isA('HistogramBinHoverProvider')) {
-          const svgOverlay = svgGr.select(`.${style.jsOverlay}`);
-          svgOverlay
-            .attr('x', -model.histMargin.left)
-            .attr('y', -model.histMargin.top)
-            .attr('width', publicAPI.svgWidth())
-            .attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
+        const svgOverlay = svgGr.select(`.${style.jsOverlay}`);
+        svgOverlay
+          .attr('x', -model.histMargin.left)
+          .attr('y', -model.histMargin.top)
+          .attr('width', publicAPI.svgWidth())
+          .attr('height', publicAPI.svgHeight()); // allow clicks inside x-axis.
 
-          if (!scoreHelper.editingScore(def)) {
+        if (!scoreHelper.editingScore(def)) {
+          if (model.provider.isA('HistogramBinHoverProvider')) {
             svgOverlay
               .on('mousemove.hs', (d, i) => {
                 const mCoords = publicAPI.getMouseCoords(tdsl);
@@ -600,12 +601,19 @@ function histogramSelector(publicAPI, model) {
                 state[def.name] = [-1];
                 model.provider.setHoverState({ state });
               });
-          } else {
-            // disable when score editing is happening - it's distracting.
-            // Note we still respond to hovers over other components.
-            svgOverlay
-              .on('.hs', null);
           }
+          svgOverlay
+            .on('click.hs', (d) => {
+              const overCoords = publicAPI.getMouseCoords(tdsl);
+              if (overCoords[1] <= model.histHeight) {
+                updateData(d);
+              }
+            });
+        } else {
+          // disable when score editing is happening - it's distracting.
+          // Note we still respond to hovers over other components.
+          svgOverlay
+            .on('.hs', null);
         }
 
         // Show an x-axis with just min/max displayed.

@@ -18,6 +18,9 @@ module.exports = {
   },
   webpack: {
     module: {
+      noParse: [
+      /plotly\.js/
+      ],
       loaders: vtkLoaders,
     },
     resolve: {
