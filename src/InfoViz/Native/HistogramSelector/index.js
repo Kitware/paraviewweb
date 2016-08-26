@@ -261,6 +261,7 @@ function histogramSelector(publicAPI, model) {
       .classed(style.jsFieldsIcon, true);
     header.append('span')
       .classed(style.jsHeaderLabel, true)
+      .text('Only Selected')
       .on('click', fieldHeaderClick);
 
     scoreHelper.createHeader(header);
@@ -296,9 +297,6 @@ function histogramSelector(publicAPI, model) {
       // apply class - 'false' should come first to not remove common base class.
       .classed(displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
       .classed(!displayOnlySelected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
-    d3.select(model.container)
-      .select(`.${style.jsHeaderLabel}`)
-      .text(`Only Selected (${dataLength})`);
     scoreHelper.updateHeader();
 
     d3.select(model.container)

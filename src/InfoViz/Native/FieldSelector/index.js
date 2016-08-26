@@ -75,10 +75,13 @@ function fieldSelector(publicAPI, model) {
 
 
     const data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
+    const totalNum = model.displayUnselected ? data.length : model.provider.getFieldNames().length;
+
     // Update header label
     d3.select(model.container)
       .select('th.field-selector-label')
-      .text(`Only Selected (${data.length})`)
+      .style('text-align', 'left')
+      .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
       .on('click', d => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();
