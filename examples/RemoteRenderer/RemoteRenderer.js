@@ -26761,7 +26761,15 @@
 	module.exports = {
 		"_args": [
 			[
-				"autobahn@0.9.6",
+				{
+					"raw": "autobahn@0.9.6",
+					"scope": null,
+					"escapedName": "autobahn",
+					"name": "autobahn",
+					"rawSpec": "0.9.6",
+					"spec": "0.9.6",
+					"type": "version"
+				},
 				"/home/travis/build/Kitware/paraviewweb"
 			]
 		],
@@ -26771,16 +26779,17 @@
 		"_installable": true,
 		"_location": "/autobahn",
 		"_npmUser": {
-			"email": "tobias.oberstein@tavendo.de",
-			"name": "oberstet"
+			"name": "oberstet",
+			"email": "tobias.oberstein@tavendo.de"
 		},
 		"_npmVersion": "1.3.21",
 		"_phantomChildren": {},
 		"_requested": {
-			"name": "autobahn",
 			"raw": "autobahn@0.9.6",
-			"rawSpec": "0.9.6",
 			"scope": null,
+			"escapedName": "autobahn",
+			"name": "autobahn",
+			"rawSpec": "0.9.6",
 			"spec": "0.9.6",
 			"type": "version"
 		},
@@ -26815,10 +26824,10 @@
 		},
 		"homepage": "https://github.com/tavendo/AutobahnJS",
 		"keywords": [
-			"PubSub",
-			"RPC",
 			"WAMP",
-			"WebSocket"
+			"WebSocket",
+			"RPC",
+			"PubSub"
 		],
 		"license": "MIT",
 		"main": "index.js",

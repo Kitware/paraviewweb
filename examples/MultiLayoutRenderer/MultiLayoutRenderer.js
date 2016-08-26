@@ -1370,20 +1370,12 @@
 	var warning = emptyFunction;
 
 	if (process.env.NODE_ENV !== 'production') {
-	  warning = function warning(condition, format) {
-	    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-	      args[_key - 2] = arguments[_key];
-	    }
+	  (function () {
+	    var printWarning = function printWarning(format) {
+	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        args[_key - 1] = arguments[_key];
+	      }
 
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
 	      var argIndex = 0;
 	      var message = 'Warning: ' + format.replace(/%s/g, function () {
 	        return args[argIndex++];
@@ -1397,8 +1389,26 @@
 	        // to find the callsite that caused this warning to fire.
 	        throw new Error(message);
 	      } catch (x) {}
-	    }
-	  };
+	    };
+
+	    warning = function warning(condition, format) {
+	      if (format === undefined) {
+	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	      }
+
+	      if (format.indexOf('Failed Composite propType: ') === 0) {
+	        return; // Ignore CompositeComponent proptype check.
+	      }
+
+	      if (!condition) {
+	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	          args[_key2 - 2] = arguments[_key2];
+	        }
+
+	        printWarning.apply(undefined, [format].concat(args));
+	      }
+	    };
+	  })();
 	}
 
 	module.exports = warning;
@@ -10533,7 +10543,7 @@
 	 * @return {boolean}
 	 */
 	function hasArrayNature(obj) {
-	  return(
+	  return (
 	    // not null/false
 	    !!obj && (
 	    // arrays are objects, NodeLists are functions in Safari
@@ -48764,7 +48774,7 @@
 	  function DataProberImageBuilder(queryDataModel, lookupTableManager) {
 	    _classCallCheck(this, DataProberImageBuilder);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DataProberImageBuilder).call(this, {
+	    var _this = _possibleConstructorReturn(this, (DataProberImageBuilder.__proto__ || Object.getPrototypeOf(DataProberImageBuilder)).call(this, {
 	      queryDataModel: queryDataModel, lookupTableManager: lookupTableManager
 	    }));
 
@@ -49451,7 +49461,7 @@
 	  }, {
 	    key: 'destroy',
 	    value: function destroy() {
-	      _get(Object.getPrototypeOf(DataProberImageBuilder.prototype), 'destroy', this).call(this);
+	      _get(DataProberImageBuilder.prototype.__proto__ || Object.getPrototypeOf(DataProberImageBuilder.prototype), 'destroy', this).call(this);
 
 	      this.off();
 
