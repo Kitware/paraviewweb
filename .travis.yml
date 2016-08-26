@@ -16,13 +16,19 @@ node_js:
 env:
   - CXX=g++-4.8
 addons:
+  sources:
+    - ubuntu-toolchain-r-test
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - xvfb
 env:
   CXX=g++-4.8
+
+before_script:
+  - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
+  - sleep 3
+
 script:
   - npm run build:release -- --bail
   - npm run test:travis
