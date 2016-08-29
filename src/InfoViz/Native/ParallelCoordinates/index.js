@@ -860,7 +860,7 @@ function parallelCoordinate(publicAPI, model) {
       publicAPI.render();
     }));
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
-      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.generation === lastAnnotationPushed.generation + 1) {
+      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.id === lastAnnotationPushed.id) {
         // Assume that it is still ours but edited by someone else
         lastAnnotationPushed = annotation;
 
@@ -872,7 +872,16 @@ function parallelCoordinate(publicAPI, model) {
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       if (model.useAnnotation) {
-        lastAnnotationPushed = AnnotationBuilder.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
+        lastAnnotationPushed = model.provider.getAnnotation();
+        if (!lastAnnotationPushed) {
+          lastAnnotationPushed = AnnotationBuilder.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
+        } else {
+          AnnotationBuilder.update(lastAnnotationPushed, {
+            selection: model.axes.getSelection(),
+            score: [model.defaultScore],
+            weight: model.defaultWeight,
+          });
+        }
         model.provider.setAnnotation(lastAnnotationPushed);
       } else {
         model.provider.setSelection(model.axes.getSelection());
