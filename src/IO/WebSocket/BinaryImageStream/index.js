@@ -43,6 +43,13 @@ export default class BinaryImageStream {
     }));
   }
 
+  invalidateCache() {
+    this.ws.send(JSON.stringify({
+      view_id: this.view_id,
+      invalidate_cache: true,
+    }));
+  }
+
   updateQuality(stillQuality = 100, interactiveQuality = 50) {
     this.stillQuality = stillQuality;
     this.interactiveQuality = interactiveQuality;
