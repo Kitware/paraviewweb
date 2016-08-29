@@ -1,3 +1,6 @@
+
+import { generateUUID } from '../UUID';
+
 // ----------------------------------------------------------------------------
 // Internal helpers
 // ----------------------------------------------------------------------------
@@ -11,6 +14,7 @@ let generation = 0;
 function annotation(selection, score, weight = 1, rationale = '') {
   generation++;
   return {
+    id: generateUUID(),
     generation,
     selection,
     score,
