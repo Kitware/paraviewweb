@@ -9,19 +9,24 @@ function annotationStoreProvider(publicAPI, model) {
     model.annotationStore = {};
   }
 
-  publicAPI.getStoreAnnotationNames = () => {
+  publicAPI.getStoredAnnotationNames = () => {
     const val = Object.keys(model.annotationStore);
     val.sort();
     return val;
   };
 
-  publicAPI.getStoreAnnotation = (name) => model.annotationStore[name];
+  publicAPI.getStoredAnnotation = (name) => model.annotationStore[name];
 
-  publicAPI.getStoreAnnotations = () => model.annotationStore;
+  publicAPI.getStoredAnnotations = () => model.annotationStore;
 
-  publicAPI.setStoreAnnotation = (name, annotation) => {
+  publicAPI.setStoredAnnotation = (name, annotation) => {
     model.annotationStore[name] = annotation;
     publicAPI.fireStoreAnnotationChange(name, annotation);
+  };
+
+  publicAPI.deleteStoredAnnotation = name => {
+    delete model.annotationStore[name];
+    publicAPI.fireStoreAnnotationChange(name);
   };
 }
 
