@@ -12,6 +12,8 @@ export default React.createClass({
   propTypes: {
     className: React.PropTypes.string,
     client: React.PropTypes.object,
+    viewId: React.PropTypes.number,
+    interactionTimout: React.PropTypes.number,
     connection: React.PropTypes.object,
     showFPS: React.PropTypes.bool,
     style: React.PropTypes.object,
@@ -22,6 +24,8 @@ export default React.createClass({
       className: '',
       showFPS: false,
       style: {},
+      viewId: -1,
+      interactionTimout: 500,
     };
   },
 
@@ -43,6 +47,7 @@ export default React.createClass({
         this.binaryImageStream.startInteractiveQuality();
       } else {
         this.binaryImageStream.stopInteractiveQuality();
+        setTimeout(() => this.binaryImageStream.invalidateCache(), this.props.interactionTimout);
       }
     });
 
@@ -60,7 +65,7 @@ export default React.createClass({
 
     // Establish image stream connection
     this.binaryImageStream.connect({
-      view_id: -1,
+      view_id: this.props.viewId,
     });
 
     // Update size
