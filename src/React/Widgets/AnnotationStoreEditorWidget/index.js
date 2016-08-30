@@ -20,7 +20,7 @@ export default function annotationStoreEditorWidget(props) {
       name,
       action: `${index}`,
       data: `${name}`,
-      active: (props.annotation === props.annotations[name]),
+      active: (props.annotation.id === props.annotations[name].id),
     }));
 
   const onActivateAnnotation = (name, action, data) => {
