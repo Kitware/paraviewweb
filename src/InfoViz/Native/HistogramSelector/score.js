@@ -66,7 +66,7 @@ export default function init(inPublicAPI, inModel) {
 
     // Construct a partition annotation:
     let partitionAnnotation = null;
-    if (def.annotation) {
+    if (def.annotation && !model.provider.shouldCreateNewAnnotation()) {
       partitionAnnotation = AnnotationBuilder.update(def.annotation, { selection: partitionSelection, score: def.regions });
     } else {
       partitionAnnotation = AnnotationBuilder.annotation(partitionSelection, def.regions, 1, '');
