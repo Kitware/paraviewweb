@@ -82,6 +82,11 @@ function selectionProvider(publicAPI, model) {
 
   // --------------------------------
 
+  publicAPI.isActiveAnnotationLinked = () => model.linkActiveAnnotation;
+  publicAPI.setActiveAnnotationToBeLinked = (isLinked) => (model.linkActiveAnnotation = isLinked);
+
+  // --------------------------------
+
   publicAPI.subscribeToDataSelection = (type, onDataReady, variables = [], metadata = {}) => {
     const id = dataSubscriptions.length;
     const request = { id, type, variables, metadata };
@@ -115,6 +120,7 @@ const DEFAULT_VALUES = {
   // selection: null,
   // selectionData: null,
   // selectionMetaData: null,
+  linkActiveAnnotation: false,
 };
 
 // ----------------------------------------------------------------------------
