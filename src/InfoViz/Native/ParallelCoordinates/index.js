@@ -879,7 +879,7 @@ function parallelCoordinate(publicAPI, model) {
         if (!lastAnnotationPushed) {
           lastAnnotationPushed = AnnotationBuilder.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
         } else {
-          AnnotationBuilder.update(lastAnnotationPushed, {
+          lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
             selection: model.axes.getSelection(),
             score: [model.defaultScore],
             weight: model.defaultWeight,
