@@ -860,7 +860,10 @@ function parallelCoordinate(publicAPI, model) {
       publicAPI.render();
     }));
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
-      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.id === lastAnnotationPushed.id) {
+      if (lastAnnotationPushed
+        && annotation.selection.type === 'range'
+        && annotation.id === lastAnnotationPushed.id
+        && annotation.generation === lastAnnotationPushed.generation + 1) {
         // Assume that it is still ours but edited by someone else
         lastAnnotationPushed = annotation;
 
