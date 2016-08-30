@@ -77,13 +77,14 @@ function selectionProvider(publicAPI, model) {
     } else {
       annotation.selection = model.selection;
     }
+    model.shouldCreateNewAnnotation = false;
     publicAPI.fireAnnotationChange(annotation);
   };
 
   // --------------------------------
 
-  publicAPI.isActiveAnnotationLinked = () => model.linkActiveAnnotation;
-  publicAPI.setActiveAnnotationToBeLinked = (isLinked) => (model.linkActiveAnnotation = isLinked);
+  publicAPI.shouldCreateNewAnnotation = () => model.shouldCreateNewAnnotation;
+  publicAPI.setCreateNewAnnotationFlag = (shouldCreate) => (model.shouldCreateNewAnnotation = shouldCreate);
 
   // --------------------------------
 
@@ -120,7 +121,7 @@ const DEFAULT_VALUES = {
   // selection: null,
   // selectionData: null,
   // selectionMetaData: null,
-  linkActiveAnnotation: false,
+  shouldCreateNewAnnotation: false,
 };
 
 // ----------------------------------------------------------------------------
