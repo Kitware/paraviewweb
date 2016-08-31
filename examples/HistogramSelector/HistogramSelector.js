@@ -22692,6 +22692,17 @@
 	    var score = model.scoreMapByValue[value];
 	    return score ? score.name : undefined;
 	  };
+	  publicAPI.getDefaultScore = function () {
+	    return model.scores ? model.scores.findIndex(function (score) {
+	      return !!score.isDefault;
+	    }) : 0;
+	  };
+	  publicAPI.setDefaultScore = function (value) {
+	    if (model.scores) {
+	      model.scores[publicAPI.getDefaultScore()].isDefault = false;
+	      model.scores[value].isDefault = true;
+	    }
+	  };
 	}
 
 	// ----------------------------------------------------------------------------
@@ -22699,7 +22710,7 @@
 	// ----------------------------------------------------------------------------
 
 	var DEFAULT_VALUES = {
-	  defaultScore: 0
+	  // scores: null,
 	};
 
 	// ----------------------------------------------------------------------------
@@ -22712,8 +22723,7 @@
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'ScoresProvider');
 	  _CompositeClosureHelper2.default.event(publicAPI, model, 'scoresChange', false);
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['defaultScore', 'scores']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['defaultScore']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['scores']);
 
 	  scoresProvider(publicAPI, model);
 	}
@@ -35309,6 +35319,11 @@
 	          var state = {};
 	          state[def.name] = [-1];
 	          model.provider.setHoverState({ state: state });
+	        }
+	        // set existing annotation as current if we activate for editing
+	        if (def.editScore && showScore(def) && def.annotation) {
+	          // TODO special 'active' method to call, instead of an edit?
+	          sendScores(def, def.hobj);
 	        }
 	        publicAPI.render();
 	        return;
