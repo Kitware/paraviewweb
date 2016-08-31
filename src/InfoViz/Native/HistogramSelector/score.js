@@ -772,6 +772,11 @@ export default function init(inPublicAPI, inModel) {
             state[def.name] = [-1];
             model.provider.setHoverState({ state });
           }
+          // set existing annotation as current if we activate for editing
+          if (def.editScore && showScore(def) && def.annotation) {
+            // TODO special 'active' method to call, instead of an edit?
+            sendScores(def, def.hobj);
+          }
           publicAPI.render();
           return;
         }

@@ -24,6 +24,15 @@ function scoresProvider(publicAPI, model) {
     const score = model.scoreMapByValue[value];
     return score ? score.name : undefined;
   };
+  publicAPI.getDefaultScore = () => {
+    return model.scores ? model.scores.findIndex(score => !!score.isDefault) : 0;
+  };
+  publicAPI.setDefaultScore = value => {
+    if (model.scores) {
+      model.scores[publicAPI.getDefaultScore()].isDefault = false;
+      model.scores[value].isDefault = true;
+    }
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -31,7 +40,6 @@ function scoresProvider(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
-  defaultScore: 0,
   // scores: null,
 };
 
@@ -43,8 +51,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'ScoresProvider');
   CompositeClosureHelper.event(publicAPI, model, 'scoresChange', false);
-  CompositeClosureHelper.get(publicAPI, model, ['defaultScore', 'scores']);
-  CompositeClosureHelper.set(publicAPI, model, ['defaultScore']);
+  CompositeClosureHelper.get(publicAPI, model, ['scores']);
 
   scoresProvider(publicAPI, model);
 }
