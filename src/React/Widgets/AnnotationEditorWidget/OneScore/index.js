@@ -10,6 +10,17 @@ import SelectionEditorWidget from '../../SelectionEditorWidget';
 export default function oneScoreAnnotationEditorWidget(props) {
   return (
     <div className={style.verticalContainer}>
+      <section className={style.lineContainer}>
+        <label className={style.nameLabel}>Name</label>
+        <input
+          type="text"
+          name="name"
+          className={style.nameInput}
+          value={props.annotation.name}
+          onChange={props.onAnnotationChange}
+          onBlur={props.onAnnotationChange}
+        />
+      </section>
       <SelectionEditorWidget
         className={style.flexItem}
         selection={props.annotation.selection}

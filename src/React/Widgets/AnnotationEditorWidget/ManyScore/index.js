@@ -11,6 +11,17 @@ import SelectionEditorWidget from '../../SelectionEditorWidget';
 export default function manyScoreAnnotationEditorWidget(props) {
   return (
     <div className={style.verticalContainer}>
+      <section className={style.lineContainer}>
+        <label className={style.nameLabel}>Name</label>
+        <input
+          type="text"
+          name="name"
+          className={style.nameInput}
+          value={props.annotation.name}
+          onChange={props.onAnnotationChange}
+          onBlur={props.onAnnotationChange}
+        />
+      </section>
       <section className={style.lineContainerCenter}>
         <SelectionEditorWidget
           className={style.flexItem}
