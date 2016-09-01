@@ -4,29 +4,53 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // Annotation Store Provider
 // ----------------------------------------------------------------------------
 
+const dupNameRegex = /^(.+)\s\(([\d]+)\)$/;
+
 function annotationStoreProvider(publicAPI, model) {
   if (!model.annotationStore) {
     model.annotationStore = {};
   }
 
   publicAPI.getStoredAnnotationNames = () => {
-    const val = Object.keys(model.annotationStore);
+    const val = Object.keys(model.annotationStore).map(id => model.annotationStore[id].name);
     val.sort();
     return val;
   };
 
-  publicAPI.getStoredAnnotation = (name) => model.annotationStore[name];
+  publicAPI.getNextStoredAnnotationName = name => {
+    const allNames = publicAPI.getStoredAnnotationNames();
+    let newName = name;
+    if (!name || name.length === 0) {
+      newName = 'Empty';
+    }
+
+    if (allNames.indexOf(newName) === -1) {
+      return newName;
+    }
+
+    const [, base, countStr] = dupNameRegex.exec(newName) || [newName, newName, '0'];
+    let count = Number(countStr) || 0;
+
+    while (allNames.indexOf(newName) !== -1) {
+      newName = `${base} (${++count})`;
+    }
+
+    return newName;
+  };
+
+
+  publicAPI.getStoredAnnotation = (id) => model.annotationStore[id];
 
   publicAPI.getStoredAnnotations = () => model.annotationStore;
 
-  publicAPI.setStoredAnnotation = (name, annotation) => {
-    model.annotationStore[name] = annotation;
-    publicAPI.fireStoreAnnotationChange(name, annotation);
+  publicAPI.setStoredAnnotation = (id, annotation) => {
+    model.annotationStore[id] = annotation;
+    publicAPI.fireStoreAnnotationChange(id, annotation);
   };
 
-  publicAPI.deleteStoredAnnotation = name => {
-    delete model.annotationStore[name];
-    publicAPI.fireStoreAnnotationChange(name);
+  publicAPI.deleteStoredAnnotation = id => {
+    delete model.annotationStore[id];
+    publicAPI.fireStoreAnnotationChange(id);
   };
 }
 
