@@ -4,7 +4,6 @@ import style from 'PVWStyle/ReactWidgets/AnnotationStoreEditorWidget.mcss';
 
 import ActionListWidget from '../ActionListWidget';
 import AnnotationEditorWidget from '../AnnotationEditorWidget';
-import ToggleIconButtonWidget from '..//ToggleIconButtonWidget';
 
 function button(label, action) {
   return <div key={label} className={style.button} onClick={action}>{label}</div>;
@@ -15,59 +14,58 @@ export default function annotationStoreEditorWidget(props) {
     return null;
   }
 
-  const listAnnotation = Object.keys(props.annotations).map((name, index) =>
+  const listAnnotation = Object.keys(props.annotations).map((id, index) =>
     ({
-      name,
+      name: props.annotations[id].name,
       action: `${index}`,
-      data: `${name}`,
-      active: (props.annotation.id === props.annotations[name].id),
+      data: `${id}`,
+      active: (props.annotation.id === id),
     }));
 
   const onActivateAnnotation = (name, action, data) => {
-    props.onChange('select', name, props.annotations[name]);
+    props.onChange('select', data, props.annotations[data]);
   };
 
-  const storeAction = name => (() => props.onChange(name, props.title, props.annotation));
+  const storeAction = action => (() => {
+    props.onChange(action, props.annotation.id, props.annotation);
+  });
 
   const buttons = [];
-  if (props.isLinked) {
-    buttons.push(button('Delete', storeAction('delete')));
-    buttons.push(button('Save', storeAction('save')));
+
+  if (props.annotations[props.annotation.id]) {
+    const storedSelectedAnnotation = props.annotations[props.annotation.id];
+    if (storedSelectedAnnotation.generation === props.annotation.generation) {
+      buttons.push(button('Delete', storeAction('delete')));
+    } else {
+      buttons.push(button('New', storeAction('new')));
+      buttons.push(button('Reset', storeAction('reset')));
+      buttons.push(button('Save', storeAction('save')));
+    }
   } else {
     buttons.push(button('New', storeAction('new')));
   }
 
   return (
     <div className={style.container}>
-      <section className={style.list}>
-        <ActionListWidget list={listAnnotation} onClick={onActivateAnnotation} />
-      </section>
-      <div className={style.formContent}>
-        <section className={style.formLine}>
-          <label className={style.label}>Title</label>
-          <ToggleIconButtonWidget
-            icon={props.isLinked ? style.linkedIcon : style.unlinkedIcon}
-            value={props.isLinked}
-            onChange={props.onLinkChange}
+      <div className={style.topLine}>
+        <section className={style.list}>
+          <ActionListWidget list={listAnnotation} onClick={onActivateAnnotation} />
+        </section>
+        <section className={style.editor}>
+          <AnnotationEditorWidget
+            annotation={props.annotation}
+            scores={props.scores}
+            ranges={props.ranges}
+            getLegend={props.getLegend}
+            onChange={props.onAnnotationChange}
           />
         </section>
-        <section className={style.formLine}>
-          <input
-            type="text"
-            name="title"
-            className={style.input}
-            value={props.title}
-            onChange={e => props.onTitleChange(e.target.value)}
-          />
+      </div>
+      <div className={style.buttonLine}>
+        <section className={style.buttonsSection}>
+          <div className={style.button} onClick="PushEmpty">Push Empty</div>
         </section>
-        <AnnotationEditorWidget
-          annotation={props.annotation}
-          scores={props.scores}
-          ranges={props.ranges}
-          getLegend={props.getLegend}
-          onChange={props.onAnnotationChange}
-        />
-        <section className={style.formButtons}>
+        <section className={style.buttonsSection}>
           {buttons}
         </section>
       </div>
@@ -75,10 +73,8 @@ export default function annotationStoreEditorWidget(props) {
 }
 
 annotationStoreEditorWidget.propTypes = {
-  title: React.PropTypes.string,
   annotation: React.PropTypes.object,
   annotations: React.PropTypes.object,
-  isLinked: React.PropTypes.bool,
 
   scores: React.PropTypes.array,
   ranges: React.PropTypes.object,
@@ -86,13 +82,9 @@ annotationStoreEditorWidget.propTypes = {
 
   onAnnotationChange: React.PropTypes.func,
   onChange: React.PropTypes.func,
-  onTitleChange: React.PropTypes.func,
-  onLinkChange: React.PropTypes.func,
 };
 
 annotationStoreEditorWidget.defaultProps = {
   onAnnotationChange(annotation, isEditing) {},
-  onChange(action, name, annotation) {},
-  onTitleChange(newTitle) {},
-  onLinkChange() {},
+  onChange(action, id, annotation) {},
 };
