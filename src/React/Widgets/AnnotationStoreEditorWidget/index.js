@@ -10,7 +10,7 @@ function button(label, action) {
 }
 
 export default function annotationStoreEditorWidget(props) {
-  if (!props.annotation || !props.annotations) {
+  if (!props.annotations) {
     return null;
   }
 
@@ -19,7 +19,7 @@ export default function annotationStoreEditorWidget(props) {
       name: props.annotations[id].name,
       action: `${index}`,
       data: `${id}`,
-      active: (props.annotation.id === id),
+      active: props.annotation ? (props.annotation.id === id) : false,
     }));
 
   const onActivateAnnotation = (name, action, data) => {
@@ -32,7 +32,7 @@ export default function annotationStoreEditorWidget(props) {
 
   const buttons = [];
 
-  if (props.annotations[props.annotation.id]) {
+  if (props.annotation && props.annotations[props.annotation.id]) {
     const storedSelectedAnnotation = props.annotations[props.annotation.id];
     if (storedSelectedAnnotation.generation === props.annotation.generation) {
       buttons.push(button('Delete', storeAction('delete')));
@@ -41,7 +41,7 @@ export default function annotationStoreEditorWidget(props) {
       buttons.push(button('Reset', storeAction('reset')));
       buttons.push(button('Save', storeAction('save')));
     }
-  } else {
+  } else if (props.annotation && props.annotation.selection.type !== 'empty') {
     buttons.push(button('New', storeAction('new')));
   }
 
@@ -63,7 +63,7 @@ export default function annotationStoreEditorWidget(props) {
       </div>
       <div className={style.buttonLine}>
         <section className={style.buttonsSection}>
-          <div className={style.button} onClick="PushEmpty">Push Empty</div>
+          <div className={style.button} onClick={() => props.onChange('pushEmpty')}>Push Empty</div>
         </section>
         <section className={style.buttonsSection}>
           {buttons}
