@@ -214,6 +214,8 @@ function markModified(selection) {
 // Exposed object
 // ----------------------------------------------------------------------------
 
+const EMPTY_SELECTION = empty();
+
 export default {
   markModified,
   empty,
@@ -221,4 +223,5 @@ export default {
   range,
   rule,
   convertToRuleSelection,
+  EMPTY_SELECTION,
 };
