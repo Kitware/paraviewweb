@@ -1,5 +1,6 @@
 
 import { generateUUID } from '../UUID';
+import SelectionBuilder from '../SelectionBuilder';
 
 // ----------------------------------------------------------------------------
 // Internal helpers
@@ -64,9 +65,12 @@ function markModified(annotationObject) {
 // Exposed object
 // ----------------------------------------------------------------------------
 
+const EMPTY_ANNOTATION = annotation(SelectionBuilder.EMPTY_SELECTION, 0);
+
 export default {
   annotation,
   update,
   markModified,
   fork,
+  EMPTY_ANNOTATION,
 };
