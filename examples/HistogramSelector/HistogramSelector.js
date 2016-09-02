@@ -35667,13 +35667,16 @@
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
+	var EMPTY_SELECTION = empty();
+
 	exports.default = {
 	  markModified: markModified,
 	  empty: empty,
 	  partition: partition,
 	  range: range,
 	  rule: rule,
-	  convertToRuleSelection: convertToRuleSelection
+	  convertToRuleSelection: convertToRuleSelection,
+	  EMPTY_SELECTION: EMPTY_SELECTION
 	};
 
 /***/ },
@@ -35687,6 +35690,12 @@
 	});
 
 	var _UUID = __webpack_require__(55);
+
+	var _SelectionBuilder = __webpack_require__(53);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// ----------------------------------------------------------------------------
 	// Internal helpers
@@ -35754,11 +35763,14 @@
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
+	var EMPTY_ANNOTATION = annotation(_SelectionBuilder2.default.EMPTY_SELECTION, 0);
+
 	exports.default = {
 	  annotation: annotation,
 	  update: update,
 	  markModified: markModified,
-	  fork: fork
+	  fork: fork,
+	  EMPTY_ANNOTATION: EMPTY_ANNOTATION
 	};
 
 /***/ },

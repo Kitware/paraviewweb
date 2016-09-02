@@ -20896,7 +20896,7 @@
 
 	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
-	var _AxesManager = __webpack_require__(19);
+	var _AxesManager = __webpack_require__(20);
 
 	var _AxesManager2 = _interopRequireDefault(_AxesManager);
 
@@ -21661,11 +21661,24 @@
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
 	      if (model.useAnnotation) {
 	        lastAnnotationPushed = model.provider.getAnnotation();
-	        if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation()) {
-	          lastAnnotationPushed = _AnnotationBuilder2.default.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
+
+	        // If parttion annotation special handle
+	        if (lastAnnotationPushed && lastAnnotationPushed.selection.type === 'partition') {
+	          var axisIdxToClear = model.axes.getAxesNames().indexOf(lastAnnotationPushed.selection.partition.variable);
+	          if (axisIdxToClear !== -1) {
+	            model.axes.getAxis(axisIdxToClear).clearSelection();
+	            model.axes.selection = null;
+	          }
+	        }
+
+	        var selection = model.axes.getSelection();
+	        if (selection.type === 'empty') {
+	          lastAnnotationPushed = _AnnotationBuilder2.default.EMPTY_ANNOTATION;
+	        } else if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
+	          lastAnnotationPushed = _AnnotationBuilder2.default.annotation(selection, [model.defaultScore], model.defaultWeight);
 	        } else {
 	          lastAnnotationPushed = _AnnotationBuilder2.default.update(lastAnnotationPushed, {
-	            selection: model.axes.getSelection(),
+	            selection: selection,
 	            score: [model.defaultScore],
 	            weight: model.defaultWeight
 	          });
@@ -31385,6 +31398,12 @@
 
 	var _UUID = __webpack_require__(18);
 
+	var _SelectionBuilder = __webpack_require__(19);
+
+	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	// ----------------------------------------------------------------------------
 	// Internal helpers
 	// ----------------------------------------------------------------------------
@@ -31451,11 +31470,14 @@
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
+	var EMPTY_ANNOTATION = annotation(_SelectionBuilder2.default.EMPTY_SELECTION, 0);
+
 	exports.default = {
 	  annotation: annotation,
 	  update: update,
 	  markModified: markModified,
-	  fork: fork
+	  fork: fork,
+	  EMPTY_ANNOTATION: EMPTY_ANNOTATION
 	};
 
 /***/ },
@@ -31495,6 +31517,230 @@
 
 /***/ },
 /* 19 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	// ----------------------------------------------------------------------------
+	// Internal helpers
+	// ----------------------------------------------------------------------------
+
+	var generation = 0;
+
+	function clone(obj, fieldList, defaults) {
+	  var clonedObj = {};
+	  fieldList.forEach(function (name) {
+	    if (defaults && obj[name] === undefined && defaults[name] !== undefined) {
+	      clonedObj[name] = defaults[name];
+	    } else {
+	      clonedObj[name] = obj[name];
+	    }
+	    if (Array.isArray(clonedObj[name])) {
+	      clonedObj[name] = clonedObj[name].map(function (i) {
+	        return i;
+	      });
+	    }
+	  });
+	  return clonedObj;
+	}
+
+	var endpointToRuleOperator = {
+	  o: '<',
+	  '*': '<='
+	};
+
+	var ruleTypes = exports.ruleTypes = {
+	  '3L': { terms: 3, operators: { values: [['<', '<=']], index: [1] }, variable: 0, values: [2] },
+	  '3R': { terms: 3, operators: { values: [['>', '>=']], index: [1] }, variable: 2, values: [0] },
+	  '5C': { terms: 5, operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] }, variable: 2, values: [0, 4] },
+	  multi: { terms: -1, operators: null },
+	  logical: { operators: { values: ['not', 'and', 'or', 'xor'], index: [0] } },
+	  row: {}
+	};
+
+	// ----------------------------------------------------------------------------
+	// Public builder method
+	// ----------------------------------------------------------------------------
+
+	function empty() {
+	  generation++;
+	  return {
+	    type: 'empty',
+	    generation: generation
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function partition(variable, dividers) {
+	  generation++;
+	  return {
+	    type: 'partition',
+	    generation: generation,
+	    partition: {
+	      variable: variable,
+	      dividers: dividers.map(function (divider) {
+	        return clone(divider, ['value', 'uncertainty', 'closeToLeft'], { closeToLeft: false });
+	      })
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function range(vars) {
+	  generation++;
+	  var variables = {};
+	  var selection = {
+	    type: 'range',
+	    generation: generation,
+	    range: {
+	      variables: variables
+	    }
+	  };
+
+	  // Fill variables
+	  Object.keys(vars).forEach(function (name) {
+	    variables[name] = vars[name].map(function (interval) {
+	      return clone(interval, ['interval', 'endpoints', 'uncertainty'], { endpoints: '**' });
+	    });
+	    variables[name].sort(function (a, b) {
+	      return a.interval[0] - b.interval[0];
+	    });
+	  });
+
+	  return selection;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function rule() {
+	  var type = arguments.length <= 0 || arguments[0] === undefined ? 'multi' : arguments[0];
+	  var terms = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	  var roles = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+	  generation++;
+	  // FIXME ?? deepClone ??
+	  return {
+	    type: 'rule',
+	    generation: generation,
+	    rule: {
+	      type: type,
+	      terms: terms,
+	      roles: roles
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function variableToRule(name, ranges) {
+	  var terms = ['or'];
+	  ranges.forEach(function (clause) {
+	    terms.push({
+	      type: '5C',
+	      terms: [clause.interval[0], endpointToRuleOperator[clause.endpoints[0]], name, endpointToRuleOperator[clause.endpoints[1]], clause.interval[1]]
+	    });
+	  });
+	  if (terms.length === 2) {
+	    // one range, don't need the logical 'or'
+	    return terms[1];
+	  }
+	  return {
+	    type: 'logical',
+	    terms: terms
+	  };
+	}
+
+	// ----------
+
+	function rangeToRule(selection) {
+	  var terms = ['and'];
+	  var vars = selection.range.variables;
+	  Object.keys(vars).forEach(function (name) {
+	    terms.push(variableToRule(name, vars[name]));
+	  });
+	  return rule('logical', terms);
+	}
+
+	// ----------
+
+	function partitionToRule(selection) {
+	  var roles = [];
+	  var _selection$partition = selection.partition;
+	  var dividers = _selection$partition.dividers;
+	  var variable = _selection$partition.variable;
+
+	  var terms = dividers.map(function (divider, idx, array) {
+	    if (idx === 0) {
+	      return {
+	        type: '3L',
+	        terms: [variable, divider.closeToLeft ? '<' : '<=', divider.value]
+	      };
+	    }
+	    return {
+	      type: '5C',
+	      terms: [array[idx - 1].value, array[idx - 1].closeToLeft ? '<' : '<=', variable, divider.closeToLeft ? '<' : '<=', divider.value]
+	    };
+	  });
+	  var lastDivider = dividers.slice(-1);
+	  terms.push({
+	    type: '3R',
+	    terms: [lastDivider.value, lastDivider.closeToLeft ? '<' : '<=', variable]
+	  });
+
+	  // Fill roles with partition number
+	  while (roles.length < terms.length) {
+	    roles.push({ partition: roles.length });
+	  }
+
+	  return rule('multi', terms, roles);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function convertToRuleSelection(selection) {
+	  if (selection.type === 'range') {
+	    return rangeToRule(selection);
+	  }
+	  if (selection.type === 'partition') {
+	    return partitionToRule(selection);
+	  }
+	  if (selection.type === 'empty') {
+	    return selection;
+	  }
+
+	  throw new Error('Convertion to rule not supported with selection of type ' + selection.type);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function markModified(selection) {
+	  generation++;
+	  return Object.assign({}, selection, { generation: generation });
+	}
+
+	// ----------------------------------------------------------------------------
+	// Exposed object
+	// ----------------------------------------------------------------------------
+
+	var EMPTY_SELECTION = empty();
+
+	exports.default = {
+	  markModified: markModified,
+	  empty: empty,
+	  partition: partition,
+	  range: range,
+	  rule: rule,
+	  convertToRuleSelection: convertToRuleSelection,
+	  EMPTY_SELECTION: EMPTY_SELECTION
+	};
+
+/***/ },
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
@@ -31507,11 +31753,11 @@
 
 	var _ = __webpack_require__(13);
 
-	var _Axis = __webpack_require__(22);
+	var _Axis = __webpack_require__(23);
 
 	var _Axis2 = _interopRequireDefault(_Axis);
 
-	var _SelectionBuilder = __webpack_require__(23);
+	var _SelectionBuilder = __webpack_require__(19);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
@@ -31852,7 +32098,7 @@
 	              selectionCount++;
 	            }
 	          });
-	          _this7.selection = selectionCount ? _SelectionBuilder2.default.range(vars) : _SelectionBuilder2.default.empty();
+	          _this7.selection = selectionCount ? _SelectionBuilder2.default.range(vars) : _SelectionBuilder2.default.EMPTY_SELECTION;
 	        })();
 	      }
 
@@ -31978,13 +32224,13 @@
 	}();
 
 	exports.default = AxesManager;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).setImmediate))
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(21).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(22).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -32060,10 +32306,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20).setImmediate, __webpack_require__(20).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).setImmediate, __webpack_require__(21).clearImmediate))
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -32229,7 +32475,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32305,227 +32551,6 @@
 	}();
 
 	exports.default = Axis;
-
-/***/ },
-/* 23 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	// ----------------------------------------------------------------------------
-	// Internal helpers
-	// ----------------------------------------------------------------------------
-
-	var generation = 0;
-
-	function clone(obj, fieldList, defaults) {
-	  var clonedObj = {};
-	  fieldList.forEach(function (name) {
-	    if (defaults && obj[name] === undefined && defaults[name] !== undefined) {
-	      clonedObj[name] = defaults[name];
-	    } else {
-	      clonedObj[name] = obj[name];
-	    }
-	    if (Array.isArray(clonedObj[name])) {
-	      clonedObj[name] = clonedObj[name].map(function (i) {
-	        return i;
-	      });
-	    }
-	  });
-	  return clonedObj;
-	}
-
-	var endpointToRuleOperator = {
-	  o: '<',
-	  '*': '<='
-	};
-
-	var ruleTypes = exports.ruleTypes = {
-	  '3L': { terms: 3, operators: { values: [['<', '<=']], index: [1] }, variable: 0, values: [2] },
-	  '3R': { terms: 3, operators: { values: [['>', '>=']], index: [1] }, variable: 2, values: [0] },
-	  '5C': { terms: 5, operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] }, variable: 2, values: [0, 4] },
-	  multi: { terms: -1, operators: null },
-	  logical: { operators: { values: ['not', 'and', 'or', 'xor'], index: [0] } },
-	  row: {}
-	};
-
-	// ----------------------------------------------------------------------------
-	// Public builder method
-	// ----------------------------------------------------------------------------
-
-	function empty() {
-	  generation++;
-	  return {
-	    type: 'empty',
-	    generation: generation
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function partition(variable, dividers) {
-	  generation++;
-	  return {
-	    type: 'partition',
-	    generation: generation,
-	    partition: {
-	      variable: variable,
-	      dividers: dividers.map(function (divider) {
-	        return clone(divider, ['value', 'uncertainty', 'closeToLeft'], { closeToLeft: false });
-	      })
-	    }
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function range(vars) {
-	  generation++;
-	  var variables = {};
-	  var selection = {
-	    type: 'range',
-	    generation: generation,
-	    range: {
-	      variables: variables
-	    }
-	  };
-
-	  // Fill variables
-	  Object.keys(vars).forEach(function (name) {
-	    variables[name] = vars[name].map(function (interval) {
-	      return clone(interval, ['interval', 'endpoints', 'uncertainty'], { endpoints: '**' });
-	    });
-	    variables[name].sort(function (a, b) {
-	      return a.interval[0] - b.interval[0];
-	    });
-	  });
-
-	  return selection;
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function rule() {
-	  var type = arguments.length <= 0 || arguments[0] === undefined ? 'multi' : arguments[0];
-	  var terms = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-	  var roles = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-
-	  generation++;
-	  // FIXME ?? deepClone ??
-	  return {
-	    type: 'rule',
-	    generation: generation,
-	    rule: {
-	      type: type,
-	      terms: terms,
-	      roles: roles
-	    }
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function variableToRule(name, ranges) {
-	  var terms = ['or'];
-	  ranges.forEach(function (clause) {
-	    terms.push({
-	      type: '5C',
-	      terms: [clause.interval[0], endpointToRuleOperator[clause.endpoints[0]], name, endpointToRuleOperator[clause.endpoints[1]], clause.interval[1]]
-	    });
-	  });
-	  if (terms.length === 2) {
-	    // one range, don't need the logical 'or'
-	    return terms[1];
-	  }
-	  return {
-	    type: 'logical',
-	    terms: terms
-	  };
-	}
-
-	// ----------
-
-	function rangeToRule(selection) {
-	  var terms = ['and'];
-	  var vars = selection.range.variables;
-	  Object.keys(vars).forEach(function (name) {
-	    terms.push(variableToRule(name, vars[name]));
-	  });
-	  return rule('logical', terms);
-	}
-
-	// ----------
-
-	function partitionToRule(selection) {
-	  var roles = [];
-	  var _selection$partition = selection.partition;
-	  var dividers = _selection$partition.dividers;
-	  var variable = _selection$partition.variable;
-
-	  var terms = dividers.map(function (divider, idx, array) {
-	    if (idx === 0) {
-	      return {
-	        type: '3L',
-	        terms: [variable, divider.closeToLeft ? '<' : '<=', divider.value]
-	      };
-	    }
-	    return {
-	      type: '5C',
-	      terms: [array[idx - 1].value, array[idx - 1].closeToLeft ? '<' : '<=', variable, divider.closeToLeft ? '<' : '<=', divider.value]
-	    };
-	  });
-	  var lastDivider = dividers.slice(-1);
-	  terms.push({
-	    type: '3R',
-	    terms: [lastDivider.value, lastDivider.closeToLeft ? '<' : '<=', variable]
-	  });
-
-	  // Fill roles with partition number
-	  while (roles.length < terms.length) {
-	    roles.push({ partition: roles.length });
-	  }
-
-	  return rule('multi', terms, roles);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function convertToRuleSelection(selection) {
-	  if (selection.type === 'range') {
-	    return rangeToRule(selection);
-	  }
-	  if (selection.type === 'partition') {
-	    return partitionToRule(selection);
-	  }
-	  if (selection.type === 'empty') {
-	    return selection;
-	  }
-
-	  throw new Error('Convertion to rule not supported with selection of type ' + selection.type);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	function markModified(selection) {
-	  generation++;
-	  return Object.assign({}, selection, { generation: generation });
-	}
-
-	// ----------------------------------------------------------------------------
-	// Exposed object
-	// ----------------------------------------------------------------------------
-
-	exports.default = {
-	  markModified: markModified,
-	  empty: empty,
-	  partition: partition,
-	  range: range,
-	  rule: rule,
-	  convertToRuleSelection: convertToRuleSelection
-	};
 
 /***/ },
 /* 24 */
@@ -32788,7 +32813,7 @@
 	  newInstance: newInstance,
 	  set: set
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).setImmediate))
 
 /***/ },
 /* 26 */

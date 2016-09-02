@@ -16312,13 +16312,16 @@
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
+	var EMPTY_SELECTION = empty();
+
 	exports.default = {
 	  markModified: markModified,
 	  empty: empty,
 	  partition: partition,
 	  range: range,
 	  rule: rule,
-	  convertToRuleSelection: convertToRuleSelection
+	  convertToRuleSelection: convertToRuleSelection,
+	  EMPTY_SELECTION: EMPTY_SELECTION
 	};
 
 /***/ },
