@@ -1,3 +1,6 @@
+
+import { generateUUID } from '../UUID';
+
 // ----------------------------------------------------------------------------
 // Internal helpers
 // ----------------------------------------------------------------------------
@@ -8,14 +11,16 @@ let generation = 0;
 // Public builder method
 // ----------------------------------------------------------------------------
 
-function annotation(selection, score, weight = 1, rationale = '') {
+function annotation(selection, score, weight = 1, rationale = '', name = '') {
   generation++;
   return {
+    id: generateUUID(),
     generation,
     selection,
     score,
     weight,
     rationale,
+    name,
   };
 }
 
@@ -41,6 +46,14 @@ function update(annotationObject, changeSet) {
 
 // ----------------------------------------------------------------------------
 
+function fork(annotationObj) {
+  const id = generateUUID();
+  generation++;
+  return Object.assign({}, annotationObj, { generation, id });
+}
+
+// ----------------------------------------------------------------------------
+
 function markModified(annotationObject) {
   generation++;
   return Object.assign({}, annotationObject, { generation });
@@ -55,4 +68,5 @@ export default {
   annotation,
   update,
   markModified,
+  fork,
 };

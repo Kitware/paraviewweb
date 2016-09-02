@@ -9,10 +9,14 @@
     color: #333;
     padding: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing: border-box;
+    height: 32px;
 }
 
 .activeItem {

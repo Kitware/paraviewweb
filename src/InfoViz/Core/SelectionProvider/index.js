@@ -77,8 +77,14 @@ function selectionProvider(publicAPI, model) {
     } else {
       annotation.selection = model.selection;
     }
+    model.shouldCreateNewAnnotation = false;
     publicAPI.fireAnnotationChange(annotation);
   };
+
+  // --------------------------------
+
+  publicAPI.shouldCreateNewAnnotation = () => model.shouldCreateNewAnnotation;
+  publicAPI.setCreateNewAnnotationFlag = (shouldCreate) => (model.shouldCreateNewAnnotation = shouldCreate);
 
   // --------------------------------
 
@@ -115,6 +121,7 @@ const DEFAULT_VALUES = {
   // selection: null,
   // selectionData: null,
   // selectionMetaData: null,
+  shouldCreateNewAnnotation: false,
 };
 
 // ----------------------------------------------------------------------------

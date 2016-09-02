@@ -1,15 +1,25 @@
 import React from 'react';
 
-import CollapsibleWidget from '../../CollapsibleWidget';
-
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
-import ScoreSelector from '../ScoreSelector';
-import SelectionEditorWidget from '../../SelectionEditorWidget';
+import CollapsibleWidget      from '../../CollapsibleWidget';
+import SelectionEditorWidget  from '../../SelectionEditorWidget';
+import ScoreSelector          from '../ScoreSelector';
 
 export default function oneScoreAnnotationEditorWidget(props) {
   return (
     <div className={style.verticalContainer}>
+      <section className={style.lineContainer}>
+        <label className={style.nameLabel}>Name</label>
+        <input
+          type="text"
+          name="name"
+          className={style.nameInput}
+          value={props.annotation.name}
+          onChange={props.onAnnotationChange}
+          onBlur={props.onAnnotationChange}
+        />
+      </section>
       <SelectionEditorWidget
         className={style.flexItem}
         selection={props.annotation.selection}

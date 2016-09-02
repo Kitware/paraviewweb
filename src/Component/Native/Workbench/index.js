@@ -61,8 +61,8 @@ export default class ComponentWorkbench {
             event.clientY - this.boundingRect.top) === -1 && event.target === this.el) {
           this.dragging = true;
           // offset from current center to drag start.
-          this.dragOffset.x = this.boundingRect.width * this.wbArrange.center[0] - (event.clientX - this.boundingRect.left);
-          this.dragOffset.y = this.boundingRect.height * this.wbArrange.center[1] - (event.clientY - this.boundingRect.top);
+          this.dragOffset.x = (this.boundingRect.width * this.wbArrange.center[0]) - (event.clientX - this.boundingRect.left);
+          this.dragOffset.y = (this.boundingRect.height * this.wbArrange.center[1]) - (event.clientY - this.boundingRect.top);
           event.stopPropagation();
           event.preventDefault();
         }

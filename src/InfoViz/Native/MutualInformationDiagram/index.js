@@ -335,7 +335,16 @@ function informationDiagram(publicAPI, model) {
       if (proceed) {
         const selection = SelectionBuilder.range(vars);
         if (model.useAnnotation) {
-          lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+          lastAnnotationPushed = model.provider.getAnnotation();
+          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation()) {
+            lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+          } else {
+            lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
+              selection,
+              score: [model.defaultScore],
+              weight: model.defaultWeight,
+            });
+          }
           model.provider.setAnnotation(lastAnnotationPushed);
         } else {
           model.provider.setSelection(selection);
@@ -952,7 +961,10 @@ function informationDiagram(publicAPI, model) {
 
   if (model.provider.isA('SelectionProvider')) {
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
-      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.generation === lastAnnotationPushed.generation + 1) {
+      if (lastAnnotationPushed
+        && annotation.selection.type === 'range'
+        && annotation.id === lastAnnotationPushed.id
+        && annotation.generation === lastAnnotationPushed.generation + 1) {
         // Assume that it is still ours but edited by someone else
         lastAnnotationPushed = annotation;
         // Capture the score and update our default

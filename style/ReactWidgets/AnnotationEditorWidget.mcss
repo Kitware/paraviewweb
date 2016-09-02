@@ -68,10 +68,22 @@
   width: 45px;
 }
 
+.nameInput {
+  min-width: 10px;
+  flex: 2;
+}
+
 .label {
   flex: 1;
   font-weight: bold;
   margin-right: 20px;
+}
+
+.nameLabel {
+  flex: none;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 15px;
 }
 
 .labelCenter {
