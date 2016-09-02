@@ -54,7 +54,7 @@ export default function manyScoreAnnotationEditorWidget(props) {
       </section>
 
       <section className={style.lineContainerSpaceBetween}>
-        <label className={style.label}></label>
+        <label className={style.label} />
         <div>
           <label className={style.label}>Weight</label>
           <input

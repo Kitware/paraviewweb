@@ -2,8 +2,10 @@
  * The following method was adapted from code found here:
  *
  *    http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- *
  */
+
+/* global window */
+
 export function generateUUID() {
   let d = Date.now();
   if (window.performance && typeof window.performance.now === 'function') {

@@ -221,8 +221,8 @@ function histogramSelector(publicAPI, model) {
     if (model.singleModeName !== null) return;
     // Get the client area size
     const dimensions = getClientArea();
-    let maxNumBoxes = Math.floor(dimensions[0] / minBoxSizeLimit);
-    let newBoxesPerRow = Math.min(maxNumBoxes, Math.max(1, model.boxesPerRow + amount));
+    const maxNumBoxes = Math.floor(dimensions[0] / minBoxSizeLimit);
+    const newBoxesPerRow = Math.min(maxNumBoxes, Math.max(1, model.boxesPerRow + amount));
 
     // if we actually changed, re-render, letting updateSizeInformation actually change dimensions.
     if (newBoxesPerRow !== model.boxesPerRow) {
