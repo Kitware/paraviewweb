@@ -275,7 +275,7 @@ export default class AxesManager {
           selectionCount++;
         }
       });
-      this.selection = selectionCount ? SelectionBuilder.range(vars) : SelectionBuilder.empty();
+      this.selection = selectionCount ? SelectionBuilder.range(vars) : SelectionBuilder.EMPTY_SELECTION;
     }
 
     return this.selection;
