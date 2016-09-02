@@ -71,7 +71,8 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'AnnotationStoreProvider');
   CompositeClosureHelper.event(publicAPI, model, 'StoreAnnotationChange');
-  CompositeClosureHelper.setGet(publicAPI, model, ['defaultEmptyAnnotationName']);
+  CompositeClosureHelper.set(publicAPI, model, ['defaultEmptyAnnotationName']);
+  CompositeClosureHelper.get(publicAPI, model, ['defaultEmptyAnnotationName']);
 
   annotationStoreProvider(publicAPI, model);
 }

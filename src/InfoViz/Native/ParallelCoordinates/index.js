@@ -876,11 +876,24 @@ function parallelCoordinate(publicAPI, model) {
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       if (model.useAnnotation) {
         lastAnnotationPushed = model.provider.getAnnotation();
-        if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation()) {
-          lastAnnotationPushed = AnnotationBuilder.annotation(model.axes.getSelection(), [model.defaultScore], model.defaultWeight);
+
+        // If parttion annotation special handle
+        if (lastAnnotationPushed && lastAnnotationPushed.selection.type === 'partition') {
+          const axisIdxToClear = model.axes.getAxesNames().indexOf(lastAnnotationPushed.selection.partition.variable);
+          if (axisIdxToClear !== -1) {
+            model.axes.getAxis(axisIdxToClear).clearSelection();
+            model.axes.selection = null;
+          }
+        }
+
+        const selection = model.axes.getSelection();
+        if (selection.type === 'empty') {
+          lastAnnotationPushed = AnnotationBuilder.EMPTY_ANNOTATION;
+        } else if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
+          lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
         } else {
           lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
-            selection: model.axes.getSelection(),
+            selection,
             score: [model.defaultScore],
             weight: model.defaultWeight,
           });
