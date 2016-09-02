@@ -105,3 +105,30 @@
   left: 0;
   border-radius: 5px;
 }
+
+.placeholderContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.placeholderImageContainer {
+  flex: none;
+  width: 200px;
+}
+
+.placeholderImage {
+  width: 100%;
+}
+
+.placeholderSubtitle {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  user-select: none;
+}
+
+.placeholderTitle {
+  composes: placeholderSubtitle;
+  font-size: 45px;
+}

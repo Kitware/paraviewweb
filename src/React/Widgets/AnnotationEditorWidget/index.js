@@ -4,11 +4,25 @@ import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 import OneScore from './OneScore';
 import ManyScore from './ManyScore';
+import placeHolder from './placeholder-full.png';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+
+const placeholderContainer = (
+  <div className={style.placeholderContainer}>
+    <div className={style.placeholderTitle}>
+      Annotation Editor
+    </div>
+    <div className={style.placeholderImageContainer}>
+      <img src={placeHolder} alt="Placeholder" className={style.placeholderImage} />
+    </div>
+    <div className={style.placeholderSubtitle}>
+      No annotation currently available
+    </div>
+  </div>);
 
 export default function annotationEditorWidget(props) {
   if (!props.annotation) {
-    return null;
+    return placeholderContainer;
   }
 
   const onSelectionChange = (selection, isEditDone) => {
@@ -58,7 +72,7 @@ export default function annotationEditorWidget(props) {
   const Render = props.annotation.selection.type === 'partition' ? ManyScore : OneScore;
 
   if (props.annotation.selection.type === 'empty') {
-    return null;
+    return placeholderContainer;
   }
 
   return (
