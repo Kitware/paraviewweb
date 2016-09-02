@@ -21,7 +21,7 @@ function annotationStoreProvider(publicAPI, model) {
     const allNames = publicAPI.getStoredAnnotationNames();
     let newName = name;
     if (!name || name.length === 0) {
-      newName = 'Empty';
+      newName = model.defaultEmptyAnnotationName;
     }
 
     if (allNames.indexOf(newName) === -1) {
@@ -60,6 +60,7 @@ function annotationStoreProvider(publicAPI, model) {
 
 const DEFAULT_VALUES = {
   // annotationStore: null,
+  defaultEmptyAnnotationName: 'Empty',
 };
 
 // ----------------------------------------------------------------------------
@@ -70,6 +71,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'AnnotationStoreProvider');
   CompositeClosureHelper.event(publicAPI, model, 'StoreAnnotationChange');
+  CompositeClosureHelper.setGet(publicAPI, model, ['defaultEmptyAnnotationName']);
 
   annotationStoreProvider(publicAPI, model);
 }
