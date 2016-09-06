@@ -111,6 +111,11 @@
   fill-opacity: .5;
 }
 
+.hoverOutline {
+  stroke-width: 0.5px;
+  stroke: #333;
+}
+
 .chord {
   fill: #bbb;
   fill-opacity: 0.5;

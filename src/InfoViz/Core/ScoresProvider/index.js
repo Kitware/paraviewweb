@@ -24,7 +24,13 @@ function scoresProvider(publicAPI, model) {
     const score = model.scoreMapByValue[value];
     return score ? score.name : undefined;
   };
-  publicAPI.getDefaultScore = () => (model.scores ? model.scores.findIndex(score => !!score.isDefault) : 0);
+  publicAPI.getDefaultScore = () => {
+    if (model.scores) {
+      const index = model.scores.findIndex(score => !!score.isDefault);
+      return (index === -1 ? 0 : index);
+    }
+    return 0;
+  };
   publicAPI.setDefaultScore = value => {
     if (model.scores) {
       model.scores[publicAPI.getDefaultScore()].isDefault = false;

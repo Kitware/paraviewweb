@@ -216,6 +216,7 @@ function informationDiagram(publicAPI, model) {
       mode: PMI_CHORD_MODE_NONE,
       srcParam: null,
       srcBin: null,
+      miIndex: -1,
     };
 
     const outerHistoRadius = Math.min(width, height) / 2;
@@ -389,7 +390,7 @@ function informationDiagram(publicAPI, model) {
             addBin(elt.attr('data-source-name'), Number.parseInt(elt.attr('data-source-bin'), 10));
           });
 
-        if (binMap[param].indexOf(bin) >= 0) {
+        if (binMap[param] && binMap[param].indexOf(bin) >= 0) {
           binMap[param] = [bin];
         }
 
@@ -523,13 +524,14 @@ function informationDiagram(publicAPI, model) {
         });
     }
 
-    // Mouse move hanlding ----------------------------------------------------
+    // Mouse move handling ----------------------------------------------------
 
     d3.select(model.container).select('svg')
       .on('mousemove', function mouseMove(d, i) {
         const overCoords = d3.mouse(model.container);
         const info = findGroupAndBin(overCoords);
         let clearStatusBar = false;
+        let groupHoverName = null;
 
         for (let idx = 0; idx < variableList.length; ++idx) {
           unHoverBin(variableList[idx]);
@@ -538,32 +540,44 @@ function informationDiagram(publicAPI, model) {
         if (info.radius > veryOutermostRadius) {
           d3.select(this).classed(style.noInteract, true);
           clearStatusBar = true;
+
         } else {
           d3.select(this).classed(style.noInteract, false);
           if (info.found) {
+            if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
+
             let binMap = {};
-            const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-            model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
-            const pmiBinMap = findPmiChordsToHighlight();
-            if (info.radius <= innerRadius) {
-              binMap = pmiBinMap;
-            } else {
-              svg.select(`g.group[param-name='${info.group}'`)
-                .selectAll('path.htile')
-                .each(function hTileInner(data, index) {
-                  if (index === info.bin) {
-                    publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-                  }
-                });
-            }
-            if (!oneBinAllVarsMode) {
-              binMap[info.group] = [info.bin];
+            if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
+              const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
+              model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
+              const pmiBinMap = findPmiChordsToHighlight();
+              if (info.radius <= innerRadius) {
+                binMap = pmiBinMap;
+              } else {
+                svg.select(`g.group[param-name='${info.group}'`)
+                  .selectAll('path.htile')
+                  .each(function hTileInner(data, index) {
+                    if (index === info.bin) {
+                      publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+                    }
+                  });
+              }
+              if (!oneBinAllVarsMode) {
+                binMap[info.group] = [info.bin];
+              }
             }
             hoverBins(binMap);
           } else {
             clearStatusBar = true;
           }
         }
+        // show a clickable variable legend arc, if hovered.
+        svg
+          .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
+          .classed(style.hoverOutline, (d, i) => {
+            // console.log(mutualInformationData.vmap[i].name, model.renderState.groupHoverName);
+            return mutualInformationData.vmap[i].name === groupHoverName;
+          })
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');
@@ -579,10 +593,7 @@ function informationDiagram(publicAPI, model) {
           const overCoords = d3.mouse(model.container);
           const info = findGroupAndBin(overCoords);
           if (info.radius > veryOutermostRadius) {
-            pmiChordMode.mode = PMI_CHORD_MODE_NONE;
-            pmiChordMode.srcParam = null;
-            pmiChordMode.srcBin = null;
-            updateChordVisibility({ mi: { show: true } });
+            showAllChords();
           } else if (info.radius > outerRadius ||
               (info.radius <= innerRadius &&
               pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS &&
@@ -731,6 +742,8 @@ function informationDiagram(publicAPI, model) {
         const gname = mutualInformationData.vmap[groupData.index].name;
         const gvar = histogramData[gname];
 
+        if (!gvar) return;
+
         // Set the color if it hasn't already been set
         if (!getLegend) {
           mutualInformationData.vmap[groupData.index].color = cmap(groupData.index);
@@ -774,6 +787,13 @@ function informationDiagram(publicAPI, model) {
           .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
       });
 
+    function showAllChords() {
+        pmiChordMode.mode = PMI_CHORD_MODE_NONE;
+        pmiChordMode.srcParam = null;
+        pmiChordMode.srcBin = null;
+        pmiChordMode.miIndex = -1;
+        updateChordVisibility({ mi: { show: true } });
+    }
     // Add the chords. Color only chords that show self-mutual-information.
     const chord = svg.select('g.mutualInfoChords')
       .selectAll('.chord')
@@ -812,10 +832,15 @@ function informationDiagram(publicAPI, model) {
     svg
       .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
       .on('click', (d, i) => {
-        pmiChordMode.mode = PMI_CHORD_MODE_NONE;
-        pmiChordMode.srcParam = null;
-        pmiChordMode.srcBin = null;
-        updateChordVisibility({ mi: { show: true, index: i } });
+        if (pmiChordMode.mode !== PMI_CHORD_MODE_NONE || pmiChordMode.miIndex !== i) {
+          pmiChordMode.mode = PMI_CHORD_MODE_NONE;
+          pmiChordMode.srcParam = null;
+          pmiChordMode.srcBin = null;
+          pmiChordMode.miIndex = i;
+          updateChordVisibility({ mi: { show: true, index: i } });
+        } else {
+          showAllChords();
+        }
       });
 
     if (model.renderState.pmiAllBinsTwoVars !== null) {
