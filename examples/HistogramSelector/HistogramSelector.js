@@ -22693,9 +22693,13 @@
 	    return score ? score.name : undefined;
 	  };
 	  publicAPI.getDefaultScore = function () {
-	    return model.scores ? model.scores.findIndex(function (score) {
-	      return !!score.isDefault;
-	    }) : 0;
+	    if (model.scores) {
+	      var index = model.scores.findIndex(function (score) {
+	        return !!score.isDefault;
+	      });
+	      return index === -1 ? 0 : index;
+	    }
+	    return 0;
 	  };
 	  publicAPI.setDefaultScore = function (value) {
 	    if (model.scores) {
