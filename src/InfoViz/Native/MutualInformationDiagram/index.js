@@ -540,7 +540,6 @@ function informationDiagram(publicAPI, model) {
         if (info.radius > veryOutermostRadius) {
           d3.select(this).classed(style.noInteract, true);
           clearStatusBar = true;
-
         } else {
           d3.select(this).classed(style.noInteract, false);
           if (info.found) {
@@ -574,10 +573,7 @@ function informationDiagram(publicAPI, model) {
         // show a clickable variable legend arc, if hovered.
         svg
           .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
-          .classed(style.hoverOutline, (d, i) => {
-            // console.log(mutualInformationData.vmap[i].name, model.renderState.groupHoverName);
-            return mutualInformationData.vmap[i].name === groupHoverName;
-          })
+          .classed(style.hoverOutline, (data, idx) => mutualInformationData.vmap[idx].name === groupHoverName);
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');
@@ -788,11 +784,11 @@ function informationDiagram(publicAPI, model) {
       });
 
     function showAllChords() {
-        pmiChordMode.mode = PMI_CHORD_MODE_NONE;
-        pmiChordMode.srcParam = null;
-        pmiChordMode.srcBin = null;
-        pmiChordMode.miIndex = -1;
-        updateChordVisibility({ mi: { show: true } });
+      pmiChordMode.mode = PMI_CHORD_MODE_NONE;
+      pmiChordMode.srcParam = null;
+      pmiChordMode.srcBin = null;
+      pmiChordMode.miIndex = -1;
+      updateChordVisibility({ mi: { show: true } });
     }
     // Add the chords. Color only chords that show self-mutual-information.
     const chord = svg.select('g.mutualInfoChords')
