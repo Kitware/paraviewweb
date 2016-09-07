@@ -5,11 +5,18 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // ----------------------------------------------------------------------------
 
 const dupNameRegex = /^(.+)\s\(([\d]+)\)$/;
+const PROVIDER_NAME = 'AnnotationStoreProvider';
 
 function annotationStoreProvider(publicAPI, model) {
   if (!model.annotationStore) {
     model.annotationStore = {};
   }
+
+  publicAPI.loadStoredAnnotationsFromState = () => {
+    if (publicAPI.isA('PersistentStateProvider')) {
+      model.annotationStore = publicAPI.getPersistentState(PROVIDER_NAME);
+    }
+  };
 
   publicAPI.getStoredAnnotationNames = () => {
     const val = Object.keys(model.annotationStore).map(id => model.annotationStore[id].name);
@@ -38,18 +45,23 @@ function annotationStoreProvider(publicAPI, model) {
     return newName;
   };
 
-
   publicAPI.getStoredAnnotation = (id) => model.annotationStore[id];
 
   publicAPI.getStoredAnnotations = () => model.annotationStore;
 
   publicAPI.setStoredAnnotation = (id, annotation) => {
     model.annotationStore[id] = annotation;
+    if (publicAPI.isA('PersistentStateProvider')) {
+      publicAPI.setPersistentState(PROVIDER_NAME, model.annotationStore);
+    }
     publicAPI.fireStoreAnnotationChange(id, annotation);
   };
 
   publicAPI.deleteStoredAnnotation = id => {
     delete model.annotationStore[id];
+    if (publicAPI.isA('PersistentStateProvider')) {
+      publicAPI.setPersistentState(PROVIDER_NAME, model.annotationStore);
+    }
     publicAPI.fireStoreAnnotationChange(id);
   };
 }
@@ -69,7 +81,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   Object.assign(model, DEFAULT_VALUES, initialValues);
 
   CompositeClosureHelper.destroy(publicAPI, model);
-  CompositeClosureHelper.isA(publicAPI, model, 'AnnotationStoreProvider');
+  CompositeClosureHelper.isA(publicAPI, model, PROVIDER_NAME);
   CompositeClosureHelper.event(publicAPI, model, 'StoreAnnotationChange');
   CompositeClosureHelper.set(publicAPI, model, ['defaultEmptyAnnotationName']);
   CompositeClosureHelper.get(publicAPI, model, ['defaultEmptyAnnotationName']);
