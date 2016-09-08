@@ -4,6 +4,9 @@ const DEFAULT_FIELD_STATE = {
   range: [0, 1],
   active: false,
 };
+
+const PROVIDER_NAME = 'FieldProvider';
+
 // ----------------------------------------------------------------------------
 // Field Provider
 // ----------------------------------------------------------------------------
@@ -12,6 +15,25 @@ function fieldProvider(publicAPI, model) {
   if (!model.fields) {
     model.fields = {};
   }
+
+  const triggerFieldChange = field => {
+    if (publicAPI.isA('PersistentStateProvider')) {
+      publicAPI.setPersistentState(PROVIDER_NAME, model.fields);
+    }
+    publicAPI.fireFieldChange(field);
+  };
+
+  publicAPI.loadFieldsFromState = () => {
+    let count = 0;
+    if (publicAPI.isA('PersistentStateProvider')) {
+      const storageItems = publicAPI.getPersistentState(PROVIDER_NAME);
+      Object.keys(storageItems).forEach(storeKey => {
+        publicAPI.updateField(storeKey, storageItems[storeKey]);
+        count += 1;
+      });
+    }
+    return count;
+  };
 
   publicAPI.getFieldNames = () => {
     const val = Object.keys(model.fields);
@@ -29,7 +51,7 @@ function fieldProvider(publicAPI, model) {
     const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name });
     field.range = [].concat(field.range); // Make sure we copy the array
     model.fields[name] = field;
-    publicAPI.fireFieldChange(field);
+    triggerFieldChange(field);
   };
 
   publicAPI.getField = (name) => (model.fields[name]);
@@ -47,18 +69,18 @@ function fieldProvider(publicAPI, model) {
     if (hasChange) {
       field.name = name; // Just in case
       model.fields[name] = field;
-      publicAPI.fireFieldChange(field);
+      triggerFieldChange(field);
     }
   };
 
   publicAPI.toggleFieldSelection = (name) => {
     model.fields[name].active = !model.fields[name].active;
-    publicAPI.fireFieldChange(model.fields[name]);
+    triggerFieldChange(model.fields[name]);
   };
 
   publicAPI.removeAllFields = () => {
     model.fields = {};
-    publicAPI.fireFieldChange();
+    triggerFieldChange();
   };
 }
 
@@ -77,7 +99,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   Object.assign(model, DEFAULT_VALUES, initialValues);
 
   CompositeClosureHelper.destroy(publicAPI, model);
-  CompositeClosureHelper.isA(publicAPI, model, 'FieldProvider');
+  CompositeClosureHelper.isA(publicAPI, model, PROVIDER_NAME);
   CompositeClosureHelper.event(publicAPI, model, 'FieldChange');
   CompositeClosureHelper.get(publicAPI, model, ['fieldsSorted']);
   CompositeClosureHelper.set(publicAPI, model, ['fieldsSorted']);

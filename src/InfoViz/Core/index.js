@@ -7,6 +7,7 @@ import HistogramBinHoverProvider from './HistogramBinHoverProvider';
 import LegendProvider from './LegendProvider';
 import MutualInformationProvider from './MutualInformationProvider';
 import PartitionProvider from './PartitionProvider';
+import PersistentStateProvider from './PersistentStateProvider';
 import ScoresProvider from './ScoresProvider';
 import SelectionProvider from './SelectionProvider';
 
@@ -20,6 +21,7 @@ export default {
   LegendProvider,
   MutualInformationProvider,
   PartitionProvider,
+  PersistentStateProvider,
   ScoresProvider,
   SelectionProvider,
 };
