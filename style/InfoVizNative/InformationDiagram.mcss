@@ -67,9 +67,20 @@
 
 .informationDiagramSvg {
   float: left;
-  display: inline;
   vertical-align: top;
+}
+
+.informationDiagramSvgShow {
+  composes: informationDiagramSvg;
+  display: inline;
   opacity: 1.0;
+  transition: opacity 0.5s;
+}
+.informationDiagramSvgHide {
+  composes: informationDiagramSvg;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
 .infoDiagramPlaceholder {
@@ -85,10 +96,6 @@
 
 .infoDiagramPlaceholder :global(.id-placeholder-title) {
     font-size: 45px;
-}
-
-.noInteract {
-  opacity: 0.75;
 }
 
 .group textPath {

@@ -71,7 +71,7 @@ export default function manyScoreAnnotationEditorWidget(props) {
       </section>
 
       <section className={style.lineContainerSpaceBetween}>
-        <CollapsibleWidget title="Rationale" open={false}>
+        <CollapsibleWidget title="Rationale" open={props.rationaleOpen}>
           <textarea
             className={style.textBox}
             name="rationale"
@@ -90,9 +90,13 @@ manyScoreAnnotationEditorWidget.propTypes = {
   scores: React.PropTypes.array,
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
+  rationaleOpen: React.PropTypes.bool,
 
   onSelectionChange: React.PropTypes.func,
   onAnnotationChange: React.PropTypes.func,
   onScoreChange: React.PropTypes.func,
 };
 
+manyScoreAnnotationEditorWidget.defaultProps = {
+  rationaleOpen: false,
+};

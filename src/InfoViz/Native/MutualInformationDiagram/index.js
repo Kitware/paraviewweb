@@ -187,7 +187,7 @@ function informationDiagram(publicAPI, model) {
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
-      d3.select(model.container).select('svg.information-diagram').classed(style.hidden, true);
+      d3.select(model.container).select('svg.information-diagram').attr('class', style.informationDiagramSvgHide);
       d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, false);
       return;
     }
@@ -256,9 +256,8 @@ function informationDiagram(publicAPI, model) {
       .attr('width', width)
       .attr('height', height)
       .style('float', 'left')
+      .attr('class', style.informationDiagramSvgShow)
       .classed('information-diagram', true)
-      .classed(style.informationDiagramSvg, true)
-      .classed(style.noInteract, true)
       .append('g')
       .classed('main-circle', true)
       .classed(style.mainCircle, true)
@@ -527,53 +526,55 @@ function informationDiagram(publicAPI, model) {
     // Mouse move handling ----------------------------------------------------
 
     d3.select(model.container).select('svg')
+      /* eslint-disable prefer-arrow-callback */
+      // need d3 provided 'this', below.
       .on('mousemove', function mouseMove(d, i) {
+        /* eslint-enable prefer-arrow-callback */
         const overCoords = d3.mouse(model.container);
         const info = findGroupAndBin(overCoords);
         let clearStatusBar = false;
         let groupHoverName = null;
+        let highlightAllGroups = false;
 
         for (let idx = 0; idx < variableList.length; ++idx) {
           unHoverBin(variableList[idx]);
         }
 
         if (info.radius > veryOutermostRadius) {
-          d3.select(this).classed(style.noInteract, true);
+          highlightAllGroups = true;
           clearStatusBar = true;
-        } else {
-          d3.select(this).classed(style.noInteract, false);
-          if (info.found) {
-            if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
+        } else if (info.found) {
+          if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
 
-            let binMap = {};
-            if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
-              const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-              model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
-              const pmiBinMap = findPmiChordsToHighlight();
-              if (info.radius <= innerRadius) {
-                binMap = pmiBinMap;
-              } else {
-                svg.select(`g.group[param-name='${info.group}'`)
-                  .selectAll('path.htile')
-                  .each(function hTileInner(data, index) {
-                    if (index === info.bin) {
-                      publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
-                    }
-                  });
-              }
-              if (!oneBinAllVarsMode) {
-                binMap[info.group] = [info.bin];
-              }
+          let binMap = {};
+          if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
+            const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
+            model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
+            const pmiBinMap = findPmiChordsToHighlight();
+            if (info.radius <= innerRadius) {
+              binMap = pmiBinMap;
+            } else {
+              svg.select(`g.group[param-name='${info.group}'`)
+                .selectAll('path.htile')
+                .each(function hTileInner(data, index) {
+                  if (index === info.bin) {
+                    publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+                  }
+                });
             }
-            hoverBins(binMap);
-          } else {
-            clearStatusBar = true;
+            if (!oneBinAllVarsMode) {
+              binMap[info.group] = [info.bin];
+            }
           }
+          hoverBins(binMap);
+        } else {
+          clearStatusBar = true;
         }
-        // show a clickable variable legend arc, if hovered.
+        // show a clickable variable legend arc, if hovered, or
+        // highlight all groups if a click will reset to default view (veryOutermostRadius)
         svg
           .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
-          .classed(style.hoverOutline, (data, idx) => mutualInformationData.vmap[idx].name === groupHoverName);
+          .classed(style.hoverOutline, (data, idx) => highlightAllGroups || mutualInformationData.vmap[idx].name === groupHoverName);
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');

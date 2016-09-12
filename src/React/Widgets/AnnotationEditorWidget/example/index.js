@@ -50,6 +50,7 @@ function render() {
             scores={scores}
             annotation={annotation}
             getLegend={legendService.getLegend}
+            // rationaleOpen={true}
             onChange={(newAnnotation, save) => {
               annotations[idx] = newAnnotation;
               if (save) {

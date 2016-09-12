@@ -92,8 +92,10 @@ annotationEditorWidget.propTypes = {
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
+  rationaleOpen: React.PropTypes.bool,
 };
 
 annotationEditorWidget.defaultProps = {
   onChange(annotation, isEditDone) {},
+  rationaleOpen: false,
 };
