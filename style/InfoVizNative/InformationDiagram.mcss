@@ -98,10 +98,6 @@
     font-size: 45px;
 }
 
-.noInteract {
-  opacity: 0.75;
-}
-
 .group textPath {
   user-select: none;
   fill: black;
