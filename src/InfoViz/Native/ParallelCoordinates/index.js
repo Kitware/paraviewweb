@@ -460,8 +460,8 @@ function parallelCoordinate(publicAPI, model) {
   function drawPolygons(axesCenters, gCtx, idxOne, idxTwo, histogram, colors) {
     const axisOne = model.axes.getAxis(idxOne);
     const axisTwo = model.axes.getAxis(idxTwo);
-    const deltaOne = histogram.x.delta;
-    const deltaTwo = histogram.y.delta;
+    let deltaOne = histogram.x.delta;
+    let deltaTwo = histogram.y.delta;
     const xleft = axesCenters[idxOne];
     const xright = axesCenters[idxTwo];
     let bin = null;
@@ -474,6 +474,16 @@ function parallelCoordinate(publicAPI, model) {
     let yLeftMax = 0;
     let yRightMin = 0;
     let yRightMax = 0;
+
+    if (deltaOne === 0) {
+      axisOne.range[1] = axisOne.range[0] + 1;
+      deltaOne = 1 / model.numberOfBins;
+    }
+
+    if (deltaTwo === 0) {
+      axisTwo.range[1] = axisTwo.range[0] + 1;
+      deltaTwo = 1 / model.numberOfBins;
+    }
 
     for (let i = 0; i < histogram.bins.length; ++i) {
       bin = histogram.bins[i];
@@ -572,11 +582,18 @@ function parallelCoordinate(publicAPI, model) {
     const axesCenters = model.axes.extractAxesCenters(model);
     if (!(model.axes.hasSelection() && model.showOnlySelection)) {
       for (let j = 0; j < nbPolyDraw; ++j) {
+        const axisOne = model.axes.getAxis(j);
+        const axisTwo = model.axes.getAxis(j + 1);
+        const histo2D = model.provider.getHistogram2D(axisOne.name, axisTwo.name);
+        // The histogram has the most up-to-date range information for the parameters,
+        // use it to set the ranges on the axes.
+        axisOne.range = histo2D.x.extent;
+        axisTwo.range = histo2D.y.extent;
         drawPolygons(
           axesCenters,
           model.bgCtx,
           j, j + 1,
-          model.provider.getHistogram2D(model.axes.getAxis(j).name, model.axes.getAxis(j + 1).name),
+          histo2D,
           model.polygonColors);
       }
 
@@ -825,11 +842,6 @@ function parallelCoordinate(publicAPI, model) {
 
   // Attach listener to provider
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  ['onHistogram2DReady'].forEach(method => {
-    if (model.provider[method]) {
-      model.subscriptions.push(model.provider[method](publicAPI.render));
-    }
-  });
   ['onFieldChange'].forEach(method => {
     if (model.provider[method]) {
       model.subscriptions.push(model.provider[method](fetchData));
@@ -840,6 +852,24 @@ function parallelCoordinate(publicAPI, model) {
       model.subscriptions.push(model.provider[method](handleHoverBinUpdate));
     }
   });
+
+  if (model.provider.isA('DataUpdateProvider')) {
+    model.updateSubscription = model.provider.subscribeToDataUpdate(
+      'histogram2d',
+      data => {
+        Object.keys(data).forEach(xName => {
+          Object.keys(data[xName]).forEach(yName => {
+            const histoPayload = data[xName][yName][0];
+            if (histoPayload.role && histoPayload.role.type && histoPayload.role.type === 'alldata') {
+              model.provider.setHistogram2D(xName, yName, histoPayload);
+            }
+          });
+        });
+        publicAPI.render();
+      },
+      model.axes.getAxesPairs(), { nbins: 32 });
+    model.subscriptions.push(model.updateSubscription);
+  }
 
   if (model.provider.isA('SelectionProvider')) {
     model.dataSubscription = model.provider.subscribeToDataSelection(
@@ -907,6 +937,9 @@ function parallelCoordinate(publicAPI, model) {
     }));
     model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
       model.dataSubscription.update(axisPairs);
+      if (model.provider.isA('DataUpdateProvider')) {
+        model.updateSubscription.update(axisPairs);
+      }
       publicAPI.render();
     }));
   } else {

@@ -4,6 +4,10 @@
 
 let generation = 0;
 
+function setInitialGenerationNumber(genNum) {
+  generation = genNum;
+}
+
 function clone(obj, fieldList, defaults) {
   const clonedObj = {};
   fieldList.forEach(name => {
@@ -223,5 +227,6 @@ export default {
   range,
   rule,
   convertToRuleSelection,
+  setInitialGenerationNumber,
   EMPTY_SELECTION,
 };
