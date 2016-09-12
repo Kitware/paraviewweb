@@ -58,6 +58,7 @@ export default function annotationStoreEditorWidget(props) {
             ranges={props.ranges}
             getLegend={props.getLegend}
             onChange={props.onAnnotationChange}
+            rationaleOpen={props.rationaleOpen}
           />
         </section>
       </div>
@@ -79,6 +80,7 @@ annotationStoreEditorWidget.propTypes = {
   scores: React.PropTypes.array,
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
+  rationaleOpen: React.PropTypes.bool,
 
   onAnnotationChange: React.PropTypes.func,
   onChange: React.PropTypes.func,
@@ -87,4 +89,5 @@ annotationStoreEditorWidget.propTypes = {
 annotationStoreEditorWidget.defaultProps = {
   onAnnotationChange(annotation, isEditing) {},
   onChange(action, id, annotation) {},
+  rationaleOpen: false,
 };
