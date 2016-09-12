@@ -101,8 +101,9 @@
 	        _react2.default.createElement(_2.default, {
 	          scores: scores,
 	          annotation: annotation,
-	          getLegend: legendService.getLegend,
-	          onChange: function onChange(newAnnotation, save) {
+	          getLegend: legendService.getLegend
+	          // rationaleOpen={true}
+	          , onChange: function onChange(newAnnotation, save) {
 	            annotations[idx] = newAnnotation;
 	            if (save) {
 	              console.log('Push annotation', newAnnotation.generation, newAnnotation);
@@ -255,11 +256,14 @@
 	  scores: _react2.default.PropTypes.array,
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
-	  getLegend: _react2.default.PropTypes.func
+	  getLegend: _react2.default.PropTypes.func,
+	  rationaleOpen: _react2.default.PropTypes.bool
 	};
 
 	annotationEditorWidget.defaultProps = {
-	  onChange: function onChange(annotation, isEditDone) {}
+	  onChange: function onChange(annotation, isEditDone) {},
+
+	  rationaleOpen: false
 	};
 
 /***/ },
@@ -4909,7 +4913,7 @@
 	      { className: _AnnotationEditorWidget2.default.lineContainerSpaceBetween },
 	      _react2.default.createElement(
 	        _CollapsibleWidget2.default,
-	        { title: 'Rationale', open: false },
+	        { title: 'Rationale', open: props.rationaleOpen },
 	        _react2.default.createElement('textarea', {
 	          className: _AnnotationEditorWidget2.default.textBox,
 	          name: 'rationale',
@@ -4928,10 +4932,15 @@
 	  scores: _react2.default.PropTypes.array,
 	  ranges: _react2.default.PropTypes.object,
 	  getLegend: _react2.default.PropTypes.func,
+	  rationaleOpen: _react2.default.PropTypes.bool,
 
 	  onSelectionChange: _react2.default.PropTypes.func,
 	  onAnnotationChange: _react2.default.PropTypes.func,
 	  onScoreChange: _react2.default.PropTypes.func
+	};
+
+	oneScoreAnnotationEditorWidget.defaultProps = {
+	  rationaleOpen: false
 	};
 
 /***/ },
@@ -17961,7 +17970,7 @@
 	      { className: _AnnotationEditorWidget2.default.lineContainerSpaceBetween },
 	      _react2.default.createElement(
 	        _CollapsibleWidget2.default,
-	        { title: 'Rationale', open: false },
+	        { title: 'Rationale', open: props.rationaleOpen },
 	        _react2.default.createElement('textarea', {
 	          className: _AnnotationEditorWidget2.default.textBox,
 	          name: 'rationale',
@@ -17980,10 +17989,15 @@
 	  scores: _react2.default.PropTypes.array,
 	  ranges: _react2.default.PropTypes.object,
 	  getLegend: _react2.default.PropTypes.func,
+	  rationaleOpen: _react2.default.PropTypes.bool,
 
 	  onSelectionChange: _react2.default.PropTypes.func,
 	  onAnnotationChange: _react2.default.PropTypes.func,
 	  onScoreChange: _react2.default.PropTypes.func
+	};
+
+	manyScoreAnnotationEditorWidget.defaultProps = {
+	  rationaleOpen: false
 	};
 
 /***/ },
