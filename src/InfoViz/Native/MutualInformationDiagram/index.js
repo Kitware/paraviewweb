@@ -187,7 +187,7 @@ function informationDiagram(publicAPI, model) {
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
-      d3.select(model.container).select('svg.information-diagram').classed(style.hidden, true);
+      d3.select(model.container).select('svg.information-diagram').attr('class', style.informationDiagramSvgHide);
       d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, false);
       return;
     }
@@ -256,8 +256,8 @@ function informationDiagram(publicAPI, model) {
       .attr('width', width)
       .attr('height', height)
       .style('float', 'left')
+      .attr('class', style.informationDiagramSvgShow)
       .classed('information-diagram', true)
-      .classed(style.informationDiagramSvg, true)
       .classed(style.noInteract, true)
       .append('g')
       .classed('main-circle', true)
