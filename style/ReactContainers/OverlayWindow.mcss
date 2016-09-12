@@ -1,7 +1,7 @@
 /* User styles that can be overridden */
 
 .mainContainerStyle {
-  background-color: grey;
+  background-color: #ccc;
   border-radius: 5px;
   border: 1px solid black;
   box-shadow: 1px 1px 5px black;
