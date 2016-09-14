@@ -70,6 +70,10 @@ const histogramSelector = HistogramSelector.newInstance({
 });
 // set a target number per row.
 histogramSelector.requestNumBoxesPerRow(4);
+// Or show a single variable as the focus.
+histogramSelector.displaySingleHistogram(provider.getFieldNames()[1]);
+// and maybe set a scoring annotation:
+// histogramSelector.setDefaultScorePartition(provider.getFieldNames()[1]);
 
 // Create field selector
 const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });

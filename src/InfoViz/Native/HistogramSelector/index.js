@@ -354,7 +354,7 @@ function histogramSelector(publicAPI, model) {
     }
   };
 
-  function toggleSingleModeEvt(d, i) {
+  function toggleSingleModeEvt(d) {
     if (model.singleModeName === null) {
       model.singleModeName = d.name;
     } else {
@@ -363,8 +363,15 @@ function histogramSelector(publicAPI, model) {
     model.scrollToName = d.name;
     publicAPI.render();
 
-    d3.event.stopPropagation();
+    if (d3.event) d3.event.stopPropagation();
   }
+
+  publicAPI.displaySingleHistogram = (fieldName) => {
+    model.singleModeName = null;
+    if (model.fieldData[fieldName]) {
+      toggleSingleModeEvt(model.fieldData[fieldName]);
+    }
+  };
 
   publicAPI.render = (onlyFieldName = null) => {
     if (model.needData) {

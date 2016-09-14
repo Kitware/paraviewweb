@@ -120,6 +120,16 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  publicAPI.setDefaultScorePartition = (fieldName) => {
+    const def = model.fieldData[fieldName];
+    if (def) {
+      def.editScore = true;
+      def.dividers = [createDefaultDivider(0.5 * (def.hobj.min + def.hobj.max), 0)];
+      def.regions = [2, 0];
+      sendScores(def, def.hobj);
+    }
+  };
+
   const scoredHeaderClick = (d) => {
     displayOnlyScored = !displayOnlyScored;
     publicAPI.render();
