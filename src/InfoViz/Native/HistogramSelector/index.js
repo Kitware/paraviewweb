@@ -235,6 +235,10 @@ function histogramSelector(publicAPI, model) {
     }
   }
 
+  publicAPI.requestNumBoxesPerRow = (count) => {
+    incrNumBoxes(count - model.boxesPerRow);
+  };
+
   function changeSingleField(direction) {
     if (model.singleModeName === null) return;
     const fieldNames = getCurrentFieldNames();
@@ -269,14 +273,14 @@ function histogramSelector(publicAPI, model) {
     const numBoxesSpan = header.append('span')
       .classed(style.headerBoxes, true);
     numBoxesSpan.append('i')
-      .classed(style.headerBoxesPlus, true)
-      .on('click', () => incrNumBoxes(1));
+      .classed(style.headerBoxesMinus, true)
+      .on('click', () => incrNumBoxes(-1));
     numBoxesSpan.append('span')
       .classed(style.jsHeaderBoxesNum, true)
       .text(model.boxesPerRow);
     numBoxesSpan.append('i')
-      .classed(style.headerBoxesMinus, true)
-      .on('click', () => incrNumBoxes(-1));
+      .classed(style.headerBoxesPlus, true)
+      .on('click', () => incrNumBoxes(1));
 
     const singleSpan = header.append('span')
       .classed(style.headerSingle, true);
@@ -349,6 +353,18 @@ function histogramSelector(publicAPI, model) {
       model.containerHidden = true;
     }
   };
+
+  function toggleSingleModeEvt(d, i) {
+    if (model.singleModeName === null) {
+      model.singleModeName = d.name;
+    } else {
+      model.singleModeName = null;
+    }
+    model.scrollToName = d.name;
+    publicAPI.render();
+
+    d3.event.stopPropagation();
+  }
 
   publicAPI.render = (onlyFieldName = null) => {
     if (model.needData) {
@@ -479,6 +495,7 @@ function histogramSelector(publicAPI, model) {
       let tdsl = trow2.select(`td.${style.jsSparkline}`);
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
+      let iconCell = trow1.select(`.${style.jsLegendIcons}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
       // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
@@ -490,21 +507,12 @@ function histogramSelector(publicAPI, model) {
               // const overCoords = d3.mouse(model.listContainer);
               updateData(d);
             },
-            function doubleClick(d, i) { // double click handler
-              if (model.singleModeName === null) {
-                model.singleModeName = d.name;
-              } else {
-                model.singleModeName = null;
-              }
-              model.scrollToName = d.name;
-              publicAPI.render();
-
-              d3.event.stopPropagation();
-            },
+            // double click handler
+            toggleSingleModeEvt,
           ])
           );
         trow2 = ttab.append('tr').classed(style.jsTr2, true);
-        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '2');
+        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '3');
         legendCell = trow1
           .append('td')
           .classed(style.legend, true);
@@ -512,6 +520,13 @@ function histogramSelector(publicAPI, model) {
         fieldCell = trow1
           .append('td')
           .classed(style.fieldName, true);
+        iconCell = trow1
+          .append('td')
+          .classed(style.legendIcons, true);
+        iconCell
+          .append('i')
+            .classed(style.expandIcon, true)
+            .on('click', toggleSingleModeEvt);
 
         // Create SVG, and main group created inside the margins for use by axes, title, etc.
         svgGr = tdsl.append('svg').classed(style.sparklineSvg, true)
@@ -550,8 +565,13 @@ function histogramSelector(publicAPI, model) {
         .classed(!dataActive ? style.selectedBox : style.unselectedBox, false)
         .classed(dataActive ? style.selectedBox : style.unselectedBox, true);
 
+      // Change interaction icons based on state.
+      iconCell.select(`.${style.jsExpandIcon}`)
+        .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon);
       // Apply field name
-      fieldCell.text(def.name);
+      fieldCell
+        .style('width', `${model.histWidth - (19)}px`)
+        .text(def.name);
 
       // adjust some settings based on current size
       tdsl.select('svg')

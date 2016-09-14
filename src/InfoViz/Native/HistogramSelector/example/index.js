@@ -68,6 +68,8 @@ const histogramSelector = HistogramSelector.newInstance({
   container: histogramSelectorContainer,
   // defaultScore: 1,
 });
+// set a target number per row.
+histogramSelector.requestNumBoxesPerRow(4);
 
 // Create field selector
 const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });

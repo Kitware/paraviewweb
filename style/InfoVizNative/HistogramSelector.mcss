@@ -5,6 +5,7 @@
 .jsDividerPopup,
 .jsDividerUncertaintyInput,
 .jsDividerValueInput,
+.jsExpandIcon,
 .jsFieldName,
 .jsFieldsIcon,
 .jsGHist,
@@ -16,6 +17,7 @@
 .jsHeaderSingleField,
 .jsHistRect,
 .jsLegend,
+.jsLegendIcons,
 .jsLegendRow,
 .jsOverlay,
 .jsScore,
@@ -130,6 +132,18 @@
   padding-right: 10px;
 }
 
+.expandIcon {
+  composes: jsExpandIcon;
+  composes: icon;
+  composes: fa-expand from 'font-awesome/css/font-awesome.css';
+  vertical-align: middle;
+}
+.shrinkIcon {
+  composes: jsExpandIcon;
+  composes: icon;
+  composes: fa-th-large from 'font-awesome/css/font-awesome.css';
+  vertical-align: middle;
+}
 
 
 .histogramSelectorCell {
@@ -153,7 +167,7 @@
 }
 
 .baseFieldName {
-  width: 99%;
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-align: left;
@@ -192,13 +206,23 @@
   opacity: 1;
 }
 
+.legendIcons {
+  composes: jsLegendIcons;
+  width: 19px;
+  visibility: hidden;
+}
+
+
 .baseLegendRow:hover {
   background-color: #ccd;
 }
-.baseLegendRow:hover .baseLegend, .baseLegendRow:hover .baseFieldName {
+.jsLegendRow:hover .baseLegend, .jsLegendRow:hover .baseFieldName, .jsLegendRow:hover .legendIcons {
   border-bottom: 1px solid #000;
 }
 
+.jsLegendRow:hover .jsLegendIcons {
+  visibility: visible;
+}
 .sparkline {
   composes: jsSparkline;
   composes: histogramSelectorCell;
@@ -238,8 +262,11 @@
 .jsBox:hover .baseLegendRow {
   background-color: #ccd;
 }
-.jsBox:hover .baseLegend, .jsBox:hover .baseFieldName {
+.jsBox:hover .baseLegend, .jsBox:hover .baseFieldName, .jsBox:hover .legendIcons {
   border-bottom: 1px solid #000;
+}
+.jsBox:hover .jsLegendIcons {
+  visibility: visible;
 }
 
 .histRect {
