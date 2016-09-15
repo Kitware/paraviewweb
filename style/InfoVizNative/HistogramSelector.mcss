@@ -5,10 +5,13 @@
 .jsDividerPopup,
 .jsDividerUncertaintyInput,
 .jsDividerValueInput,
+.jsDividerValuePopup,
+.jsExpandIcon,
 .jsFieldName,
 .jsFieldsIcon,
 .jsGHist,
 .jsGRect,
+.jsHeader,
 .jsHeaderBoxes,
 .jsHeaderBoxesNum,
 .jsHeaderLabel,
@@ -16,18 +19,20 @@
 .jsHeaderSingleField,
 .jsHistRect,
 .jsLegend,
+.jsLegendIcons,
 .jsLegendRow,
 .jsOverlay,
 .jsScore,
 .jsScoreBackground,
 .jsScoreChoice,
 .jsScoreDivLabel,
-.jsScoredIcon,
 .jsScoredHeader,
+.jsScoreIcon,
 .jsScoreLabel,
 .jsScorePopup,
 .jsScoreRect,
 .jsScoreUncertainty,
+.jsShowScoredIcon,
 .jsSparkline,
 .jsTr2 {
 
@@ -44,6 +49,7 @@
 }
 
 .header {
+  composes: jsHeader;
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
   font-size: 10pt;
   font-weight: bold;
@@ -82,11 +88,11 @@
   composes: allIcon;
 }
 .onlyScoredIcon {
-  composes: jsScoredIcon;
+  composes: jsShowScoredIcon;
   composes: selectedIcon;
 }
 .allScoredIcon {
-  composes: jsScoredIcon;
+  composes: jsShowScoredIcon;
   composes: allIcon;
 }
 
@@ -130,7 +136,34 @@
   padding-right: 10px;
 }
 
-
+.legendIcon {
+  vertical-align: middle;
+  padding: 1px 2px;
+}
+.expandIcon {
+  composes: jsExpandIcon;
+  composes: icon;
+  composes: fa-expand from 'font-awesome/css/font-awesome.css';
+  composes: legendIcon;
+  }
+.shrinkIcon {
+  composes: jsExpandIcon;
+  composes: icon;
+  composes: fa-th-large from 'font-awesome/css/font-awesome.css';
+  composes: legendIcon;
+}
+.scoreStartIcon {
+  composes: jsScoreIcon;
+  composes: icon;
+  composes: fa-star-o from 'font-awesome/css/font-awesome.css';
+  composes: legendIcon;
+}
+.scoreEndIcon {
+  composes: jsScoreIcon;
+  composes: icon;
+  composes: fa-star from 'font-awesome/css/font-awesome.css';
+  composes: legendIcon;
+}
 
 .histogramSelectorCell {
   padding: 0px;
@@ -153,7 +186,7 @@
 }
 
 .baseFieldName {
-  width: 99%;
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-align: left;
@@ -192,13 +225,22 @@
   opacity: 1;
 }
 
+.legendIcons {
+  composes: jsLegendIcons;
+  visibility: hidden;
+}
+
+
 .baseLegendRow:hover {
   background-color: #ccd;
 }
-.baseLegendRow:hover .baseLegend, .baseLegendRow:hover .baseFieldName {
+.jsLegendRow:hover .baseLegend, .jsLegendRow:hover .baseFieldName, .jsLegendRow:hover .legendIcons {
   border-bottom: 1px solid #000;
 }
 
+.jsLegendRow:hover .jsLegendIcons {
+  visibility: visible;
+}
 .sparkline {
   composes: jsSparkline;
   composes: histogramSelectorCell;
@@ -238,8 +280,11 @@
 .jsBox:hover .baseLegendRow {
   background-color: #ccd;
 }
-.jsBox:hover .baseLegend, .jsBox:hover .baseFieldName {
+.jsBox:hover .baseLegend, .jsBox:hover .baseFieldName, .jsBox:hover .legendIcons {
   border-bottom: 1px solid #000;
+}
+.jsBox:hover .jsLegendIcons {
+  visibility: visible;
 }
 
 .histRect {
@@ -324,6 +369,10 @@
 }
 .dividerPopup {
   composes: jsDividerPopup;
+  composes: popup;
+}
+.dividerValuePopup {
+  composes: jsDividerValuePopup;
   composes: popup;
 }
 

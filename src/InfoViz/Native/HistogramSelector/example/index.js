@@ -55,9 +55,9 @@ provider.assignLegend(['colors', 'shapes']);
 
 // activate scoring gui
 const scores = [
-  { name: 'Yes', color: '#00C900', value: 1 },
-  { name: 'Maybe', color: '#FFFF00', value: 0 },
-  { name: 'No', color: '#C90000', value: -1 },
+  { name: 'No', color: '#FDAE61', value: -1 },
+  { name: 'Maybe', color: '#FFFFBF', value: 0 },
+  { name: 'Yes', color: '#A6D96A', value: 1 },
 ];
 provider.setScores(scores);
 provider.setDefaultScore(1);
@@ -68,6 +68,16 @@ const histogramSelector = HistogramSelector.newInstance({
   container: histogramSelectorContainer,
   // defaultScore: 1,
 });
+// set a target number per row.
+histogramSelector.requestNumBoxesPerRow(4);
+// Or show a single variable as the focus, possibly disabling switching to other vars.
+// histogramSelector.displaySingleHistogram(provider.getFieldNames()[5], true);
+// and maybe set a scoring annotation:
+// histogramSelector.setDefaultScorePartition(provider.getFieldNames()[5]);
+// test reset:
+// window.setTimeout(() => {
+//   histogramSelector.requestNumBoxesPerRow(4);
+// }, 5000);
 
 // Create field selector
 const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });

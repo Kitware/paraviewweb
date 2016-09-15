@@ -13,6 +13,7 @@ export default function init(inPublicAPI, inModel) {
   let displayOnlyScored = false;
   let scorePopupDiv = null;
   let dividerPopupDiv = null;
+  let dividerValuePopupDiv = null;
 
   publicAPI.setScores = (scores, defaultScore) => {
     // TODO make sure model.scores has the right format?
@@ -29,6 +30,10 @@ export default function init(inPublicAPI, inModel) {
       });
     }
   };
+
+  function enabled() {
+    return model.scores !== undefined;
+  }
 
   if (model.provider.isA('ScoresProvider')) {
     publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
@@ -120,6 +125,22 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  publicAPI.setDefaultScorePartition = (fieldName) => {
+    const def = model.fieldData[fieldName];
+    if (def) {
+      def.editScore = true;
+      // create a divider halfway through.
+      def.dividers = [createDefaultDivider(0.5 * (def.hobj.min + def.hobj.max), 0)];
+      // set regions to 'no' | 'yes'
+      def.regions = [0, 2];
+      sendScores(def, def.hobj);
+      // set mode that prevents editing the annotation, except for the single divider.
+      def.lockAnnot = true;
+    } else {
+      def.lockAnnot = false;
+    }
+  };
+
   const scoredHeaderClick = (d) => {
     displayOnlyScored = !displayOnlyScored;
     publicAPI.render();
@@ -127,6 +148,24 @@ export default function init(inPublicAPI, inModel) {
 
   function getDisplayOnlyScored() {
     return displayOnlyScored;
+  }
+
+  function createScoreIcon(iconCell) {
+    if (!enabled()) return;
+    iconCell
+      .append('i')
+        .classed(style.scoreStartIcon, true)
+        .on('click', (d) => {
+          d.editScore = !d.editScore;
+          publicAPI.render(d.name);
+          if (d3.event) d3.event.stopPropagation();
+        });
+  }
+
+  function updateScoreIcon(iconCell, def) {
+    if (!enabled()) return;
+    iconCell.select(`.${style.jsScoreIcon}`)
+      .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
   }
 
   function createGroups(svgGr) {
@@ -138,11 +177,11 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function createHeader(header) {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       header.append('span')
         .on('click', scoredHeaderClick)
         .append('i')
-        .classed(style.jsScoredIcon, true);
+        .classed(style.jsShowScoredIcon, true);
       header.append('span')
         .classed(style.jsScoredHeader, true)
         .text('Only Scored')
@@ -151,9 +190,9 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function updateHeader() {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       d3.select(model.container)
-        .select(`.${style.jsScoredIcon}`)
+        .select(`.${style.jsShowScoredIcon}`)
         // apply class - 'false' should come first to not remove common base class.
         .classed(getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, false)
         .classed(!getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, true);
@@ -278,7 +317,7 @@ export default function init(inPublicAPI, inModel) {
     if (val !== undefined || forceDelete) {
       // drag 30 pixels out of the hist to delete.
       const dragOut = def.xScale.invert(30) - hobj.min;
-      if (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut) {
+      if (!def.lockAnnot && (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut)) {
         if (def.dragDivider.index >= 0) {
           // delete a region.
           if (forceDelete || def.dividers[def.dragDivider.index].value === def.dragDivider.high) {
@@ -467,6 +506,69 @@ export default function init(inPublicAPI, inModel) {
         publicAPI.render(selectedDef.name);
       });
   }
+
+  function showDividerValuePopup(dPopupDiv, selectedDef, hobj, coord) {
+    const topMargin = 4;
+    const rowHeight = 28;
+    // 's' SI unit label won't work for a number entry field.
+    const formatter = d3.format('.4g');
+
+    dPopupDiv
+      .style('display', 'initial');
+    positionPopup(dPopupDiv, coord[0] - topMargin - (0.5 * rowHeight),
+                  (coord[1] + model.headerSize) - (topMargin + (0.5 * rowHeight)));
+
+    const selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
+    let savedVal = selDivider.value;
+    selectedDef.dragDivider.savedUncert = selDivider.uncertainty;
+    dPopupDiv
+      .on('mouseleave', () => {
+        if (selectedDef.dragDivider) {
+          moveDragDivider(savedVal, selectedDef);
+          finishDivider(selectedDef, hobj);
+        }
+        dPopupDiv
+          .style('display', 'none');
+        selectedDef.dragDivider = undefined;
+        publicAPI.render();
+      });
+    const valInput = dPopupDiv.select(`.${style.jsDividerValueInput}`)
+      .attr('value', formatter(selDivider.value))
+      .property('value', formatter(selDivider.value))
+      .on('input', () => {
+        // typing values, show feedback.
+        let val = d3.event.target.value;
+        if (!validateDividerVal(val)) val = savedVal;
+        moveDragDivider(val, selectedDef);
+        publicAPI.render(selectedDef.name);
+      })
+      .on('change', () => {
+        // committed to a value, show feedback.
+        let val = d3.event.target.value;
+        if (!validateDividerVal(val)) val = savedVal;
+        else {
+          val = Math.min(hobj.max, Math.max(hobj.min, val));
+          d3.event.target.value = val;
+          savedVal = val;
+        }
+        moveDragDivider(val, selectedDef);
+        publicAPI.render(selectedDef.name);
+      })
+      .on('keyup', () => {
+        // revert to last committed value
+        if (d3.event.key === 'Escape') {
+          moveDragDivider(savedVal, selectedDef);
+          dPopupDiv.on('mouseleave')();
+        } else if (d3.event.key === 'Enter' || d3.event.key === 'Return') {
+          // commit current value
+          dPopupDiv.on('mouseleave')();
+        }
+      });
+    // initial select/focus so use can immediately change the value.
+    valInput.node().select();
+    valInput.node().focus();
+  }
+
   // Divider editing popup allows changing its value or uncertainty, or deleting it.
   function createDividerPopup() {
     const dPopupDiv = d3.select(model.listContainer)
@@ -512,6 +614,26 @@ export default function init(inPublicAPI, inModel) {
             .style('display', 'none');
           publicAPI.render();
         });
+    return dPopupDiv;
+  }
+  // Divider editing popup allows changing its value, only.
+  function createDividerValuePopup() {
+    const dPopupDiv = d3.select(model.listContainer)
+      .append('div')
+      .classed(style.dividerValuePopup, true)
+      .style('display', 'none');
+    const table = dPopupDiv.append('table');
+    const tr1 = table.append('tr');
+    tr1.append('td')
+      .classed(style.popupCell, true)
+      .text('Value:');
+    tr1.append('td')
+      .classed(style.popupCell, true)
+      .append('input')
+      .classed(style.jsDividerValueInput, true)
+      .attr('type', 'number')
+      .attr('step', 'any')
+      .style('width', '6em');
     return dPopupDiv;
   }
 
@@ -590,7 +712,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function createPopups() {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       scorePopupDiv = d3.select(model.listContainer).select(`.${style.jsScorePopup}`);
       if (scorePopupDiv.empty()) {
         scorePopupDiv = createScorePopup();
@@ -598,6 +720,10 @@ export default function init(inPublicAPI, inModel) {
       dividerPopupDiv = d3.select(model.listContainer).select(`.${style.jsDividerPopup}`);
       if (dividerPopupDiv.empty()) {
         dividerPopupDiv = createDividerPopup();
+      }
+      dividerValuePopupDiv = d3.select(model.listContainer).select(`.${style.jsDividerValuePopup}`);
+      if (dividerValuePopupDiv.empty()) {
+        dividerValuePopupDiv = createDividerValuePopup();
       }
     }
   }
@@ -621,12 +747,13 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function prepareItem(def, idx, svgGr, tdsl) {
-    if (typeof model.scores === 'undefined') return;
+    if (!enabled()) return;
     if (typeof def.dividers === 'undefined') {
       def.dividers = [];
       def.regions = [model.defaultScore];
       def.editScore = false;
       def.scoreDirty = true;
+      def.lockAnnot = false;
     }
     const hobj = def.hobj;
 
@@ -697,7 +824,7 @@ export default function init(inPublicAPI, inModel) {
         .on('dragstart', () => {
           const overCoords = publicAPI.getMouseCoords(tdsl);
           const [val, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
-          if (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey) {
+          if (!def.lockAnnot && (d3.event.sourceEvent.altKey || d3.event.sourceEvent.ctrlKey)) {
             // create a temp divider to render.
             def.dragDivider = createDragDivider(-1, val, def, hobj);
             publicAPI.render();
@@ -712,7 +839,8 @@ export default function init(inPublicAPI, inModel) {
           const overCoords = publicAPI.getMouseCoords(tdsl);
           if (typeof def.dragDivider === 'undefined' ||
               scorePopupDiv.style('display') !== 'none' ||
-              dividerPopupDiv.style('display') !== 'none') return;
+              dividerPopupDiv.style('display') !== 'none' ||
+              dividerValuePopupDiv.style('display') !== 'none') return;
           const val = def.xScale.invert(overCoords[0]);
           moveDragDivider(val, def);
           publicAPI.render(def.name);
@@ -720,7 +848,8 @@ export default function init(inPublicAPI, inModel) {
         .on('dragend', () => {
           if (typeof def.dragDivider === 'undefined' ||
               scorePopupDiv.style('display') !== 'none' ||
-              dividerPopupDiv.style('display') !== 'none') return;
+              dividerPopupDiv.style('display') !== 'none' ||
+              dividerValuePopupDiv.style('display') !== 'none') return;
           finishDivider(def, hobj);
           publicAPI.render();
         });
@@ -792,8 +921,9 @@ export default function init(inPublicAPI, inModel) {
           if (hitIndex >= 0) {
             // pick an existing divider, popup to edit value, uncertainty, or delete.
             def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-            showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
-          } else {
+            if (!def.lockAnnot) showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
+            else showDividerValuePopup(dividerValuePopupDiv, model.selectedDef, hobj, coord);
+          } else if (!def.lockAnnot) {
             if (typeof def.dragDivider === 'undefined') {
               def.dragDivider = createDragDivider(-1, val, def, hobj);
             } else {
@@ -875,12 +1005,15 @@ export default function init(inPublicAPI, inModel) {
     createGroups,
     createHeader,
     createPopups,
+    createScoreIcon,
     defaultFieldData,
     editingScore,
+    enabled,
     filterFieldNames,
     init,
     prepareItem,
     updateHeader,
     updateFieldAnnotations,
+    updateScoreIcon,
   };
 }

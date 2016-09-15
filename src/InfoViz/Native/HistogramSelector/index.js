@@ -37,7 +37,7 @@ function histogramSelector(publicAPI, model) {
   // to before fewer histograms are created to fill the container's width
   let minBoxSize = 200;
   // smallest we'll let it go. Limits boxesPerRow in header GUI.
-  const minBoxSizeLimit = 100;
+  const minBoxSizeLimit = 115;
   const legendSize = 15;
   // hard coded because I did not figure out how to
   // properly query this value from our container.
@@ -235,6 +235,13 @@ function histogramSelector(publicAPI, model) {
     }
   }
 
+  // let the caller set a specific number of boxes/row, within our normal size constraints.
+  publicAPI.requestNumBoxesPerRow = (count) => {
+    model.singleModeName = null;
+    model.singleModeSticky = false;
+    incrNumBoxes(count - model.boxesPerRow);
+  };
+
   function changeSingleField(direction) {
     if (model.singleModeName === null) return;
     const fieldNames = getCurrentFieldNames();
@@ -269,14 +276,14 @@ function histogramSelector(publicAPI, model) {
     const numBoxesSpan = header.append('span')
       .classed(style.headerBoxes, true);
     numBoxesSpan.append('i')
-      .classed(style.headerBoxesPlus, true)
-      .on('click', () => incrNumBoxes(1));
+      .classed(style.headerBoxesMinus, true)
+      .on('click', () => incrNumBoxes(-1));
     numBoxesSpan.append('span')
       .classed(style.jsHeaderBoxesNum, true)
       .text(model.boxesPerRow);
     numBoxesSpan.append('i')
-      .classed(style.headerBoxesMinus, true)
-      .on('click', () => incrNumBoxes(-1));
+      .classed(style.headerBoxesPlus, true)
+      .on('click', () => incrNumBoxes(1));
 
     const singleSpan = header.append('span')
       .classed(style.headerSingle, true);
@@ -292,6 +299,14 @@ function histogramSelector(publicAPI, model) {
   }
 
   function updateHeader(dataLength) {
+    if (model.singleModeSticky) {
+      // header isn't useful for a single histogram.
+      d3.select(model.container).select(`.${style.jsHeader}`)
+        .style('display', 'none');
+      return;
+    }
+    d3.select(model.container).select(`.${style.jsHeader}`)
+      .style('display', null);
     d3.select(model.container)
       .select(`.${style.jsFieldsIcon}`)
       // apply class - 'false' should come first to not remove common base class.
@@ -347,6 +362,35 @@ function histogramSelector(publicAPI, model) {
       publicAPI.render();
     } else {
       model.containerHidden = true;
+    }
+  };
+
+  function toggleSingleModeEvt(d) {
+    if (!model.singleModeSticky) {
+      if (model.singleModeName === null) {
+        model.singleModeName = d.name;
+      } else {
+        model.singleModeName = null;
+      }
+      model.scrollToName = d.name;
+      publicAPI.render();
+    }
+    if (d3.event) d3.event.stopPropagation();
+  }
+
+  // Display a single histogram. If disableSwitch is true, switching to
+  // other histograms in the fields list is disabled.
+  // Calling requestNumBoxesPerRow() re-enables switching.
+  publicAPI.displaySingleHistogram = (fieldName, disableSwitch) => {
+    model.singleModeName = null;
+    model.singleModeSticky = false;
+    if (model.fieldData[fieldName]) {
+      toggleSingleModeEvt(model.fieldData[fieldName]);
+    }
+    if (model.singleModeName && disableSwitch) {
+      model.singleModeSticky = true;
+    } else {
+      model.singleModeSticky = false;
     }
   };
 
@@ -479,6 +523,7 @@ function histogramSelector(publicAPI, model) {
       let tdsl = trow2.select(`td.${style.jsSparkline}`);
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
+      let iconCell = trow1.select(`.${style.jsLegendIcons}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
       // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
@@ -490,21 +535,12 @@ function histogramSelector(publicAPI, model) {
               // const overCoords = d3.mouse(model.listContainer);
               updateData(d);
             },
-            function doubleClick(d, i) { // double click handler
-              if (model.singleModeName === null) {
-                model.singleModeName = d.name;
-              } else {
-                model.singleModeName = null;
-              }
-              model.scrollToName = d.name;
-              publicAPI.render();
-
-              d3.event.stopPropagation();
-            },
+            // double click handler
+            toggleSingleModeEvt,
           ])
           );
         trow2 = ttab.append('tr').classed(style.jsTr2, true);
-        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '2');
+        tdsl = trow2.append('td').classed(style.sparkline, true).attr('colspan', '3');
         legendCell = trow1
           .append('td')
           .classed(style.legend, true);
@@ -512,6 +548,14 @@ function histogramSelector(publicAPI, model) {
         fieldCell = trow1
           .append('td')
           .classed(style.fieldName, true);
+        iconCell = trow1
+          .append('td')
+          .classed(style.legendIcons, true);
+        scoreHelper.createScoreIcon(iconCell);
+        iconCell
+          .append('i')
+            .classed(style.expandIcon, true)
+            .on('click', toggleSingleModeEvt);
 
         // Create SVG, and main group created inside the margins for use by axes, title, etc.
         svgGr = tdsl.append('svg').classed(style.sparklineSvg, true)
@@ -550,8 +594,17 @@ function histogramSelector(publicAPI, model) {
         .classed(!dataActive ? style.selectedBox : style.unselectedBox, false)
         .classed(dataActive ? style.selectedBox : style.unselectedBox, true);
 
+      // Change interaction icons based on state.
+      const numIcons = (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
+      iconCell.style('width', `${numIcons * 19}px`);
+      scoreHelper.updateScoreIcon(iconCell, def);
+      iconCell.select(`.${style.jsExpandIcon}`)
+        .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
+        .style('display', model.singleModeSticky ? 'none' : null);
       // Apply field name
-      fieldCell.text(def.name);
+      fieldCell
+        .style('width', `${model.histWidth - (numIcons * 19)}px`)
+        .text(def.name);
 
       // adjust some settings based on current size
       tdsl.select('svg')
@@ -757,6 +810,7 @@ const DEFAULT_VALUES = {
   boxHeight: 120,
   // show 1 per row?
   singleModeName: null,
+  singleModeSticky: false,
   scrollToName: null,
   // margins inside the SVG element.
   histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
