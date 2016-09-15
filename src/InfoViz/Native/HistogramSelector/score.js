@@ -31,6 +31,10 @@ export default function init(inPublicAPI, inModel) {
     }
   };
 
+  function enabled() {
+    return model.scores !== undefined;
+  }
+
   if (model.provider.isA('ScoresProvider')) {
     publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
   }
@@ -132,6 +136,8 @@ export default function init(inPublicAPI, inModel) {
       sendScores(def, def.hobj);
       // set mode that prevents editing the annotation, except for the single divider.
       def.lockAnnot = true;
+    } else {
+      def.lockAnnot = false;
     }
   };
 
@@ -144,6 +150,24 @@ export default function init(inPublicAPI, inModel) {
     return displayOnlyScored;
   }
 
+  function createScoreIcon(iconCell) {
+    if (!enabled()) return;
+    iconCell
+      .append('i')
+        .classed(style.scoreStartIcon, true)
+        .on('click', (d) => {
+          d.editScore = !d.editScore;
+          publicAPI.render(d.name);
+          if (d3.event) d3.event.stopPropagation();
+        });
+  }
+
+  function updateScoreIcon(iconCell, def) {
+    if (!enabled()) return;
+    iconCell.select(`.${style.jsScoreIcon}`)
+      .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
+  }
+
   function createGroups(svgGr) {
     // scoring interface background group, must be behind.
     svgGr.insert('g', ':first-child')
@@ -153,11 +177,11 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function createHeader(header) {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       header.append('span')
         .on('click', scoredHeaderClick)
         .append('i')
-        .classed(style.jsScoredIcon, true);
+        .classed(style.jsShowScoredIcon, true);
       header.append('span')
         .classed(style.jsScoredHeader, true)
         .text('Only Scored')
@@ -166,9 +190,9 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function updateHeader() {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       d3.select(model.container)
-        .select(`.${style.jsScoredIcon}`)
+        .select(`.${style.jsShowScoredIcon}`)
         // apply class - 'false' should come first to not remove common base class.
         .classed(getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, false)
         .classed(!getDisplayOnlyScored() ? style.allScoredIcon : style.onlyScoredIcon, true);
@@ -688,7 +712,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function createPopups() {
-    if (typeof model.scores !== 'undefined') {
+    if (enabled()) {
       scorePopupDiv = d3.select(model.listContainer).select(`.${style.jsScorePopup}`);
       if (scorePopupDiv.empty()) {
         scorePopupDiv = createScorePopup();
@@ -723,7 +747,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function prepareItem(def, idx, svgGr, tdsl) {
-    if (typeof model.scores === 'undefined') return;
+    if (!enabled()) return;
     if (typeof def.dividers === 'undefined') {
       def.dividers = [];
       def.regions = [model.defaultScore];
@@ -981,12 +1005,15 @@ export default function init(inPublicAPI, inModel) {
     createGroups,
     createHeader,
     createPopups,
+    createScoreIcon,
     defaultFieldData,
     editingScore,
+    enabled,
     filterFieldNames,
     init,
     prepareItem,
     updateHeader,
     updateFieldAnnotations,
+    updateScoreIcon,
   };
 }

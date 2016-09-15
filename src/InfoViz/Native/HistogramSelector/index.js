@@ -37,7 +37,7 @@ function histogramSelector(publicAPI, model) {
   // to before fewer histograms are created to fill the container's width
   let minBoxSize = 200;
   // smallest we'll let it go. Limits boxesPerRow in header GUI.
-  const minBoxSizeLimit = 100;
+  const minBoxSizeLimit = 115;
   const legendSize = 15;
   // hard coded because I did not figure out how to
   // properly query this value from our container.
@@ -551,6 +551,7 @@ function histogramSelector(publicAPI, model) {
         iconCell = trow1
           .append('td')
           .classed(style.legendIcons, true);
+        scoreHelper.createScoreIcon(iconCell);
         iconCell
           .append('i')
             .classed(style.expandIcon, true)
@@ -594,12 +595,15 @@ function histogramSelector(publicAPI, model) {
         .classed(dataActive ? style.selectedBox : style.unselectedBox, true);
 
       // Change interaction icons based on state.
+      const numIcons = (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
+      iconCell.style('width', `${numIcons * 19}px`);
+      scoreHelper.updateScoreIcon(iconCell, def);
       iconCell.select(`.${style.jsExpandIcon}`)
         .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
         .style('display', model.singleModeSticky ? 'none' : null);
       // Apply field name
       fieldCell
-        .style('width', `${model.histWidth - (19)}px`)
+        .style('width', `${model.histWidth - (numIcons * 19)}px`)
         .text(def.name);
 
       // adjust some settings based on current size
