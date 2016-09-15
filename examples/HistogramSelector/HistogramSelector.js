@@ -138,7 +138,7 @@
 	provider.assignLegend(['colors', 'shapes']);
 
 	// activate scoring gui
-	var scores = [{ name: 'Yes', color: '#00C900', value: 1 }, { name: 'Maybe', color: '#FFFF00', value: 0 }, { name: 'No', color: '#C90000', value: -1 }];
+	var scores = [{ name: 'No', color: '#FDAE61', value: -1 }, { name: 'Maybe', color: '#FFFFBF', value: 0 }, { name: 'Yes', color: '#A6D96A', value: 1 }];
 	provider.setScores(scores);
 	provider.setDefaultScore(1);
 
@@ -147,6 +147,16 @@
 	  provider: provider,
 	  container: histogramSelectorContainer
 	});
+	// set a target number per row.
+	histogramSelector.requestNumBoxesPerRow(4);
+	// Or show a single variable as the focus, possibly disabling switching to other vars.
+	// histogramSelector.displaySingleHistogram(provider.getFieldNames()[5], true);
+	// and maybe set a scoring annotation:
+	// histogramSelector.setDefaultScorePartition(provider.getFieldNames()[5]);
+	// test reset:
+	// window.setTimeout(() => {
+	//   histogramSelector.requestNumBoxesPerRow(4);
+	// }, 5000);
 
 	// Create field selector
 	var fieldSelector = _FieldSelector2.default.newInstance({ provider: provider, container: fieldSelectorContainer });
@@ -23435,7 +23445,7 @@
 	  // to before fewer histograms are created to fill the container's width
 	  var minBoxSize = 200;
 	  // smallest we'll let it go. Limits boxesPerRow in header GUI.
-	  var minBoxSizeLimit = 100;
+	  var minBoxSizeLimit = 115;
 	  var legendSize = 15;
 	  // hard coded because I did not figure out how to
 	  // properly query this value from our container.
@@ -23623,6 +23633,13 @@
 	    }
 	  }
 
+	  // let the caller set a specific number of boxes/row, within our normal size constraints.
+	  publicAPI.requestNumBoxesPerRow = function (count) {
+	    model.singleModeName = null;
+	    model.singleModeSticky = false;
+	    incrNumBoxes(count - model.boxesPerRow);
+	  };
+
 	  function changeSingleField(direction) {
 	    if (model.singleModeName === null) return;
 	    var fieldNames = getCurrentFieldNames();
@@ -23645,12 +23662,12 @@
 	    scoreHelper.createHeader(header);
 
 	    var numBoxesSpan = header.append('span').classed(_HistogramSelector2.default.headerBoxes, true);
-	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
-	      return incrNumBoxes(1);
-	    });
-	    numBoxesSpan.append('span').classed(_HistogramSelector2.default.jsHeaderBoxesNum, true).text(model.boxesPerRow);
 	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesMinus, true).on('click', function () {
 	      return incrNumBoxes(-1);
+	    });
+	    numBoxesSpan.append('span').classed(_HistogramSelector2.default.jsHeaderBoxesNum, true).text(model.boxesPerRow);
+	    numBoxesSpan.append('i').classed(_HistogramSelector2.default.headerBoxesPlus, true).on('click', function () {
+	      return incrNumBoxes(1);
 	    });
 
 	    var singleSpan = header.append('span').classed(_HistogramSelector2.default.headerSingle, true);
@@ -23664,6 +23681,12 @@
 	  }
 
 	  function updateHeader(dataLength) {
+	    if (model.singleModeSticky) {
+	      // header isn't useful for a single histogram.
+	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', 'none');
+	      return;
+	    }
+	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', null);
 	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsFieldsIcon)
 	    // apply class - 'false' should come first to not remove common base class.
 	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
@@ -23709,6 +23732,35 @@
 	      publicAPI.render();
 	    } else {
 	      model.containerHidden = true;
+	    }
+	  };
+
+	  function toggleSingleModeEvt(d) {
+	    if (!model.singleModeSticky) {
+	      if (model.singleModeName === null) {
+	        model.singleModeName = d.name;
+	      } else {
+	        model.singleModeName = null;
+	      }
+	      model.scrollToName = d.name;
+	      publicAPI.render();
+	    }
+	    if (_d2.default.event) _d2.default.event.stopPropagation();
+	  }
+
+	  // Display a single histogram. If disableSwitch is true, switching to
+	  // other histograms in the fields list is disabled.
+	  // Calling requestNumBoxesPerRow() re-enables switching.
+	  publicAPI.displaySingleHistogram = function (fieldName, disableSwitch) {
+	    model.singleModeName = null;
+	    model.singleModeSticky = false;
+	    if (model.fieldData[fieldName]) {
+	      toggleSingleModeEvt(model.fieldData[fieldName]);
+	    }
+	    if (model.singleModeName && disableSwitch) {
+	      model.singleModeSticky = true;
+	    } else {
+	      model.singleModeSticky = false;
 	    }
 	  };
 
@@ -23842,6 +23894,7 @@
 	      var tdsl = trow2.select('td.' + _HistogramSelector2.default.jsSparkline);
 	      var legendCell = trow1.select('.' + _HistogramSelector2.default.jsLegend);
 	      var fieldCell = trow1.select('.' + _HistogramSelector2.default.jsFieldName);
+	      var iconCell = trow1.select('.' + _HistogramSelector2.default.jsLegendIcons);
 	      var svgGr = tdsl.select('svg').select('.' + _HistogramSelector2.default.jsGHist);
 	      // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
@@ -23851,23 +23904,17 @@
 	          // single click handler
 	          // const overCoords = d3.mouse(model.listContainer);
 	          updateData(d);
-	        }, function doubleClick(d, i) {
-	          // double click handler
-	          if (model.singleModeName === null) {
-	            model.singleModeName = d.name;
-	          } else {
-	            model.singleModeName = null;
-	          }
-	          model.scrollToName = d.name;
-	          publicAPI.render();
-
-	          _d2.default.event.stopPropagation();
-	        }]));
+	        },
+	        // double click handler
+	        toggleSingleModeEvt]));
 	        trow2 = ttab.append('tr').classed(_HistogramSelector2.default.jsTr2, true);
-	        tdsl = trow2.append('td').classed(_HistogramSelector2.default.sparkline, true).attr('colspan', '2');
+	        tdsl = trow2.append('td').classed(_HistogramSelector2.default.sparkline, true).attr('colspan', '3');
 	        legendCell = trow1.append('td').classed(_HistogramSelector2.default.legend, true);
 
 	        fieldCell = trow1.append('td').classed(_HistogramSelector2.default.fieldName, true);
+	        iconCell = trow1.append('td').classed(_HistogramSelector2.default.legendIcons, true);
+	        scoreHelper.createScoreIcon(iconCell);
+	        iconCell.append('i').classed(_HistogramSelector2.default.expandIcon, true).on('click', toggleSingleModeEvt);
 
 	        // Create SVG, and main group created inside the margins for use by axes, title, etc.
 	        svgGr = tdsl.append('svg').classed(_HistogramSelector2.default.sparklineSvg, true).append('g').classed(_HistogramSelector2.default.jsGHist, true).attr('transform', 'translate( ' + model.histMargin.left + ', ' + model.histMargin.top + ' )');
@@ -23894,8 +23941,13 @@
 	      // selection outline
 	      ttab.classed(_HistogramSelector2.default.hiddenBox, false).classed(!dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, false).classed(dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, true);
 
+	      // Change interaction icons based on state.
+	      var numIcons = (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
+	      iconCell.style('width', numIcons * 19 + 'px');
+	      scoreHelper.updateScoreIcon(iconCell, def);
+	      iconCell.select('.' + _HistogramSelector2.default.jsExpandIcon).attr('class', model.singleModeName === null ? _HistogramSelector2.default.expandIcon : _HistogramSelector2.default.shrinkIcon).style('display', model.singleModeSticky ? 'none' : null);
 	      // Apply field name
-	      fieldCell.text(def.name);
+	      fieldCell.style('width', model.histWidth - numIcons * 19 + 'px').text(def.name);
 
 	      // adjust some settings based on current size
 	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
@@ -24084,6 +24136,7 @@
 	  boxHeight: 120,
 	  // show 1 per row?
 	  singleModeName: null,
+	  singleModeSticky: false,
 	  scrollToName: null,
 	  // margins inside the SVG element.
 	  histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
@@ -33717,7 +33770,7 @@
 	exports.i(__webpack_require__(44), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredIcon_3z54w,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: 99%;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_baseLegendRow_3sCqn:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsDividerValuePopup_22hnR,\n.HistogramSelector_jsExpandIcon_3RnGw,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeader_kEqGl,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendIcons_271gr,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreIcon_3FK84,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsShowScoredIcon_3H-gL,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_legendIcon_2C3V1 {\n  vertical-align: middle;\n  padding: 1px 2px;\n}\n.HistogramSelector_expandIcon_3Iizu {\n  }\n.HistogramSelector_shrinkIcon_3M4F1 {\n}\n.HistogramSelector_scoreStartIcon_32Yu7 {\n}\n.HistogramSelector_scoreEndIcon_JU7gc {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: auto;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_legendIcons_2mhe0 {\n  visibility: hidden;\n}\n\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n.HistogramSelector_dividerValuePopup_3piZN {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -33727,10 +33780,13 @@
 		"jsDividerPopup": "HistogramSelector_jsDividerPopup_2t15b",
 		"jsDividerUncertaintyInput": "HistogramSelector_jsDividerUncertaintyInput_2b0at",
 		"jsDividerValueInput": "HistogramSelector_jsDividerValueInput_2O_Nf",
+		"jsDividerValuePopup": "HistogramSelector_jsDividerValuePopup_22hnR",
+		"jsExpandIcon": "HistogramSelector_jsExpandIcon_3RnGw",
 		"jsFieldName": "HistogramSelector_jsFieldName_1yNQB",
 		"jsFieldsIcon": "HistogramSelector_jsFieldsIcon_lhO9n",
 		"jsGHist": "HistogramSelector_jsGHist_ZQa9E",
 		"jsGRect": "HistogramSelector_jsGRect_2e6-V",
+		"jsHeader": "HistogramSelector_jsHeader_kEqGl",
 		"jsHeaderBoxes": "HistogramSelector_jsHeaderBoxes_oN8YB",
 		"jsHeaderBoxesNum": "HistogramSelector_jsHeaderBoxesNum_2ceRh",
 		"jsHeaderLabel": "HistogramSelector_jsHeaderLabel_3vSys",
@@ -33738,30 +33794,32 @@
 		"jsHeaderSingleField": "HistogramSelector_jsHeaderSingleField_hXcin",
 		"jsHistRect": "HistogramSelector_jsHistRect_2uU6Y",
 		"jsLegend": "HistogramSelector_jsLegend_2mIDN",
+		"jsLegendIcons": "HistogramSelector_jsLegendIcons_271gr",
 		"jsLegendRow": "HistogramSelector_jsLegendRow_38X9b",
 		"jsOverlay": "HistogramSelector_jsOverlay_352at",
 		"jsScore": "HistogramSelector_jsScore_1gbB8",
 		"jsScoreBackground": "HistogramSelector_jsScoreBackground_2-WfA",
 		"jsScoreChoice": "HistogramSelector_jsScoreChoice_2vuVI",
 		"jsScoreDivLabel": "HistogramSelector_jsScoreDivLabel_1luPi",
-		"jsScoredIcon": "HistogramSelector_jsScoredIcon_3z54w",
 		"jsScoredHeader": "HistogramSelector_jsScoredHeader_2xv_q",
+		"jsScoreIcon": "HistogramSelector_jsScoreIcon_3FK84",
 		"jsScoreLabel": "HistogramSelector_jsScoreLabel_A3Ijp",
 		"jsScorePopup": "HistogramSelector_jsScorePopup_3i0QG",
 		"jsScoreRect": "HistogramSelector_jsScoreRect_24LOm",
 		"jsScoreUncertainty": "HistogramSelector_jsScoreUncertainty_3Q1FA",
+		"jsShowScoredIcon": "HistogramSelector_jsShowScoredIcon_3H-gL",
 		"jsSparkline": "HistogramSelector_jsSparkline_1zBX0",
 		"jsTr2": "HistogramSelector_jsTr2_hFTsm",
 		"histogramSelector": "HistogramSelector_histogramSelector_1OZH8",
-		"header": "HistogramSelector_header_Pm09R",
+		"header": "HistogramSelector_header_Pm09R HistogramSelector_jsHeader_kEqGl",
 		"hidden": "HistogramSelector_hidden_2YiXo",
 		"icon": "HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + "",
 		"selectedIcon": "HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-check-square-o"] + "",
 		"allIcon": "HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-square-o"] + "",
 		"selectedFieldsIcon": "HistogramSelector_selectedFieldsIcon_kN5eK HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-check-square-o"] + "",
 		"allFieldsIcon": "HistogramSelector_allFieldsIcon_3PkXB HistogramSelector_jsFieldsIcon_lhO9n HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-square-o"] + "",
-		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsScoredIcon_3z54w HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-check-square-o"] + "",
-		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsScoredIcon_3z54w HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-square-o"] + "",
+		"onlyScoredIcon": "HistogramSelector_onlyScoredIcon_2S3Yj HistogramSelector_jsShowScoredIcon_3H-gL HistogramSelector_selectedIcon_2MKqG HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-check-square-o"] + "",
+		"allScoredIcon": "HistogramSelector_allScoredIcon_37-rI HistogramSelector_jsShowScoredIcon_3H-gL HistogramSelector_allIcon_3FiMu HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-square-o"] + "",
 		"headerIcon": "HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-lg"] + "",
 		"headerBoxesPlus": "HistogramSelector_headerBoxesPlus_QvfiZ HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-lg"] + " " + __webpack_require__(44).locals["fa-plus-square-o"] + "",
 		"headerBoxesMinus": "HistogramSelector_headerBoxesMinus_3OpiA HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-lg"] + " " + __webpack_require__(44).locals["fa-minus-square-o"] + "",
@@ -33770,6 +33828,11 @@
 		"headerSingleNext": "HistogramSelector_headerSingleNext_3AS8U HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-lg"] + " " + __webpack_require__(44).locals["fa-caret-right"] + "",
 		"headerSinglePrev": "HistogramSelector_headerSinglePrev_LqQ5h HistogramSelector_headerSingleIcon_2a2Sv HistogramSelector_headerIcon_2IzMj HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-lg"] + " " + __webpack_require__(44).locals["fa-caret-left"] + "",
 		"headerSingle": "HistogramSelector_headerSingle_9NqJf HistogramSelector_jsHeaderSingle_2vVqV",
+		"legendIcon": "HistogramSelector_legendIcon_2C3V1",
+		"expandIcon": "HistogramSelector_expandIcon_3Iizu HistogramSelector_jsExpandIcon_3RnGw HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-expand"] + " HistogramSelector_legendIcon_2C3V1",
+		"shrinkIcon": "HistogramSelector_shrinkIcon_3M4F1 HistogramSelector_jsExpandIcon_3RnGw HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-th-large"] + " HistogramSelector_legendIcon_2C3V1",
+		"scoreStartIcon": "HistogramSelector_scoreStartIcon_32Yu7 HistogramSelector_jsScoreIcon_3FK84 HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-star-o"] + " HistogramSelector_legendIcon_2C3V1",
+		"scoreEndIcon": "HistogramSelector_scoreEndIcon_JU7gc HistogramSelector_jsScoreIcon_3FK84 HistogramSelector_icon_3dnwb " + __webpack_require__(44).locals["fa"] + " " + __webpack_require__(44).locals["fa-fw"] + " " + __webpack_require__(44).locals["fa-star"] + " HistogramSelector_legendIcon_2C3V1",
 		"histogramSelectorCell": "HistogramSelector_histogramSelectorCell_21EUK",
 		"baseLegend": "HistogramSelector_baseLegend_259om",
 		"legend": "HistogramSelector_legend_2EcSH HistogramSelector_jsLegend_2mIDN HistogramSelector_histogramSelectorCell_21EUK HistogramSelector_baseLegend_259om",
@@ -33781,6 +33844,7 @@
 		"legendRow": "HistogramSelector_legendRow_2eR5o HistogramSelector_jsLegendRow_38X9b HistogramSelector_baseLegendRow_3sCqn",
 		"unselectedLegendRow": "HistogramSelector_unselectedLegendRow_1la5i HistogramSelector_legendRow_2eR5o HistogramSelector_jsLegendRow_38X9b HistogramSelector_baseLegendRow_3sCqn",
 		"selectedLegendRow": "HistogramSelector_selectedLegendRow_30XXV HistogramSelector_legendRow_2eR5o HistogramSelector_jsLegendRow_38X9b HistogramSelector_baseLegendRow_3sCqn",
+		"legendIcons": "HistogramSelector_legendIcons_2mhe0 HistogramSelector_jsLegendIcons_271gr",
 		"sparkline": "HistogramSelector_sparkline_1A_M8 HistogramSelector_jsSparkline_1zBX0 HistogramSelector_histogramSelectorCell_21EUK",
 		"sparklineSvg": "HistogramSelector_sparklineSvg_1dxDG",
 		"box": "HistogramSelector_box_1PC6n HistogramSelector_jsBox_3Lo_R",
@@ -33805,6 +33869,7 @@
 		"popup": "HistogramSelector_popup_1VCrN",
 		"scorePopup": "HistogramSelector_scorePopup_1LiN9 HistogramSelector_jsScorePopup_3i0QG HistogramSelector_popup_1VCrN",
 		"dividerPopup": "HistogramSelector_dividerPopup_kMlSD HistogramSelector_jsDividerPopup_2t15b HistogramSelector_popup_1VCrN",
+		"dividerValuePopup": "HistogramSelector_dividerValuePopup_3piZN HistogramSelector_jsDividerValuePopup_22hnR HistogramSelector_popup_1VCrN",
 		"popupCell": "HistogramSelector_popupCell_19GVJ",
 		"scoreChoice": "HistogramSelector_scoreChoice_2GMeV HistogramSelector_jsScoreChoice_2vuVI",
 		"scoreLabel": "HistogramSelector_scoreLabel_2z-Hg HistogramSelector_jsScoreLabel_A3Ijp",
@@ -34687,6 +34752,7 @@
 	  var displayOnlyScored = false;
 	  var scorePopupDiv = null;
 	  var dividerPopupDiv = null;
+	  var dividerValuePopupDiv = null;
 
 	  publicAPI.setScores = function (scores, defaultScore) {
 	    // TODO make sure model.scores has the right format?
@@ -34703,6 +34769,10 @@
 	      });
 	    }
 	  };
+
+	  function enabled() {
+	    return model.scores !== undefined;
+	  }
 
 	  if (model.provider.isA('ScoresProvider')) {
 	    publicAPI.setScores(model.provider.getScores(), model.provider.getDefaultScore());
@@ -34800,6 +34870,22 @@
 	    }
 	  }
 
+	  publicAPI.setDefaultScorePartition = function (fieldName) {
+	    var def = model.fieldData[fieldName];
+	    if (def) {
+	      def.editScore = true;
+	      // create a divider halfway through.
+	      def.dividers = [createDefaultDivider(0.5 * (def.hobj.min + def.hobj.max), 0)];
+	      // set regions to 'no' | 'yes'
+	      def.regions = [0, 2];
+	      sendScores(def, def.hobj);
+	      // set mode that prevents editing the annotation, except for the single divider.
+	      def.lockAnnot = true;
+	    } else {
+	      def.lockAnnot = false;
+	    }
+	  };
+
 	  var scoredHeaderClick = function scoredHeaderClick(d) {
 	    displayOnlyScored = !displayOnlyScored;
 	    publicAPI.render();
@@ -34809,6 +34895,20 @@
 	    return displayOnlyScored;
 	  }
 
+	  function createScoreIcon(iconCell) {
+	    if (!enabled()) return;
+	    iconCell.append('i').classed(_HistogramSelector2.default.scoreStartIcon, true).on('click', function (d) {
+	      d.editScore = !d.editScore;
+	      publicAPI.render(d.name);
+	      if (_d3.default.event) _d3.default.event.stopPropagation();
+	    });
+	  }
+
+	  function updateScoreIcon(iconCell, def) {
+	    if (!enabled()) return;
+	    iconCell.select('.' + _HistogramSelector2.default.jsScoreIcon).attr('class', def.editScore ? _HistogramSelector2.default.scoreEndIcon : _HistogramSelector2.default.scoreStartIcon);
+	  }
+
 	  function createGroups(svgGr) {
 	    // scoring interface background group, must be behind.
 	    svgGr.insert('g', ':first-child').classed(_HistogramSelector2.default.jsScoreBackground, true);
@@ -34816,15 +34916,15 @@
 	  }
 
 	  function createHeader(header) {
-	    if (typeof model.scores !== 'undefined') {
-	      header.append('span').on('click', scoredHeaderClick).append('i').classed(_HistogramSelector2.default.jsScoredIcon, true);
+	    if (enabled()) {
+	      header.append('span').on('click', scoredHeaderClick).append('i').classed(_HistogramSelector2.default.jsShowScoredIcon, true);
 	      header.append('span').classed(_HistogramSelector2.default.jsScoredHeader, true).text('Only Scored').on('click', scoredHeaderClick);
 	    }
 	  }
 
 	  function updateHeader() {
-	    if (typeof model.scores !== 'undefined') {
-	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsScoredIcon)
+	    if (enabled()) {
+	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsShowScoredIcon)
 	      // apply class - 'false' should come first to not remove common base class.
 	      .classed(getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, false).classed(!getDisplayOnlyScored() ? _HistogramSelector2.default.allScoredIcon : _HistogramSelector2.default.onlyScoredIcon, true);
 	    }
@@ -34951,7 +35051,7 @@
 	    if (val !== undefined || forceDelete) {
 	      // drag 30 pixels out of the hist to delete.
 	      var dragOut = def.xScale.invert(30) - hobj.min;
-	      if (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut) {
+	      if (!def.lockAnnot && (forceDelete || val < hobj.min - dragOut || val > hobj.max + dragOut)) {
 	        if (def.dragDivider.index >= 0) {
 	          // delete a region.
 	          if (forceDelete || def.dividers[def.dragDivider.index].value === def.dragDivider.high) {
@@ -35118,6 +35218,59 @@
 	      publicAPI.render(selectedDef.name);
 	    });
 	  }
+
+	  function showDividerValuePopup(dPopupDiv, selectedDef, hobj, coord) {
+	    var topMargin = 4;
+	    var rowHeight = 28;
+	    // 's' SI unit label won't work for a number entry field.
+	    var formatter = _d3.default.format('.4g');
+
+	    dPopupDiv.style('display', 'initial');
+	    positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 0.5 * rowHeight));
+
+	    var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
+	    var savedVal = selDivider.value;
+	    selectedDef.dragDivider.savedUncert = selDivider.uncertainty;
+	    dPopupDiv.on('mouseleave', function () {
+	      if (selectedDef.dragDivider) {
+	        moveDragDivider(savedVal, selectedDef);
+	        finishDivider(selectedDef, hobj);
+	      }
+	      dPopupDiv.style('display', 'none');
+	      selectedDef.dragDivider = undefined;
+	      publicAPI.render();
+	    });
+	    var valInput = dPopupDiv.select('.' + _HistogramSelector2.default.jsDividerValueInput).attr('value', formatter(selDivider.value)).property('value', formatter(selDivider.value)).on('input', function () {
+	      // typing values, show feedback.
+	      var val = _d3.default.event.target.value;
+	      if (!validateDividerVal(val)) val = savedVal;
+	      moveDragDivider(val, selectedDef);
+	      publicAPI.render(selectedDef.name);
+	    }).on('change', function () {
+	      // committed to a value, show feedback.
+	      var val = _d3.default.event.target.value;
+	      if (!validateDividerVal(val)) val = savedVal;else {
+	        val = Math.min(hobj.max, Math.max(hobj.min, val));
+	        _d3.default.event.target.value = val;
+	        savedVal = val;
+	      }
+	      moveDragDivider(val, selectedDef);
+	      publicAPI.render(selectedDef.name);
+	    }).on('keyup', function () {
+	      // revert to last committed value
+	      if (_d3.default.event.key === 'Escape') {
+	        moveDragDivider(savedVal, selectedDef);
+	        dPopupDiv.on('mouseleave')();
+	      } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	        // commit current value
+	        dPopupDiv.on('mouseleave')();
+	      }
+	    });
+	    // initial select/focus so use can immediately change the value.
+	    valInput.node().select();
+	    valInput.node().focus();
+	  }
+
 	  // Divider editing popup allows changing its value or uncertainty, or deleting it.
 	  function createDividerPopup() {
 	    var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerPopup, true).style('display', 'none');
@@ -35134,6 +35287,15 @@
 	      dPopupDiv.style('display', 'none');
 	      publicAPI.render();
 	    });
+	    return dPopupDiv;
+	  }
+	  // Divider editing popup allows changing its value, only.
+	  function createDividerValuePopup() {
+	    var dPopupDiv = _d3.default.select(model.listContainer).append('div').classed(_HistogramSelector2.default.dividerValuePopup, true).style('display', 'none');
+	    var table = dPopupDiv.append('table');
+	    var tr1 = table.append('tr');
+	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Value:');
+	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
 	    return dPopupDiv;
 	  }
 
@@ -35193,7 +35355,7 @@
 	  }
 
 	  function createPopups() {
-	    if (typeof model.scores !== 'undefined') {
+	    if (enabled()) {
 	      scorePopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsScorePopup);
 	      if (scorePopupDiv.empty()) {
 	        scorePopupDiv = createScorePopup();
@@ -35201,6 +35363,10 @@
 	      dividerPopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsDividerPopup);
 	      if (dividerPopupDiv.empty()) {
 	        dividerPopupDiv = createDividerPopup();
+	      }
+	      dividerValuePopupDiv = _d3.default.select(model.listContainer).select('.' + _HistogramSelector2.default.jsDividerValuePopup);
+	      if (dividerValuePopupDiv.empty()) {
+	        dividerValuePopupDiv = createDividerValuePopup();
 	      }
 	    }
 	  }
@@ -35225,12 +35391,13 @@
 	  }
 
 	  function prepareItem(def, idx, svgGr, tdsl) {
-	    if (typeof model.scores === 'undefined') return;
+	    if (!enabled()) return;
 	    if (typeof def.dividers === 'undefined') {
 	      def.dividers = [];
 	      def.regions = [model.defaultScore];
 	      def.editScore = false;
 	      def.scoreDirty = true;
+	      def.lockAnnot = false;
 	    }
 	    var hobj = def.hobj;
 
@@ -35294,7 +35461,7 @@
 	        var val = _dividerPick2[0];
 	        var hitIndex = _dividerPick2[2];
 
-	        if (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey) {
+	        if (!def.lockAnnot && (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey)) {
 	          // create a temp divider to render.
 	          def.dragDivider = createDragDivider(-1, val, def, hobj);
 	          publicAPI.render();
@@ -35306,12 +35473,12 @@
 	        }
 	      }).on('drag', function () {
 	        var overCoords = publicAPI.getMouseCoords(tdsl);
-	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
 	        var val = def.xScale.invert(overCoords[0]);
 	        moveDragDivider(val, def);
 	        publicAPI.render(def.name);
 	      }).on('dragend', function () {
-	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none') return;
+	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
 	        finishDivider(def, hobj);
 	        publicAPI.render();
 	      });
@@ -35386,8 +35553,8 @@
 	        if (hitIndex >= 0) {
 	          // pick an existing divider, popup to edit value, uncertainty, or delete.
 	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	          showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);
-	        } else {
+	          if (!def.lockAnnot) showDividerPopup(dividerPopupDiv, model.selectedDef, hobj, coord);else showDividerValuePopup(dividerValuePopupDiv, model.selectedDef, hobj, coord);
+	        } else if (!def.lockAnnot) {
 	          if (typeof def.dragDivider === 'undefined') {
 	            def.dragDivider = createDragDivider(-1, val, def, hobj);
 	          } else {
@@ -35473,13 +35640,16 @@
 	    createGroups: createGroups,
 	    createHeader: createHeader,
 	    createPopups: createPopups,
+	    createScoreIcon: createScoreIcon,
 	    defaultFieldData: defaultFieldData,
 	    editingScore: editingScore,
+	    enabled: enabled,
 	    filterFieldNames: filterFieldNames,
 	    init: init,
 	    prepareItem: prepareItem,
 	    updateHeader: updateHeader,
-	    updateFieldAnnotations: updateFieldAnnotations
+	    updateFieldAnnotations: updateFieldAnnotations,
+	    updateScoreIcon: updateScoreIcon
 	  };
 	}
 
