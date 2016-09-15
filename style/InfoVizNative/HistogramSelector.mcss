@@ -5,11 +5,13 @@
 .jsDividerPopup,
 .jsDividerUncertaintyInput,
 .jsDividerValueInput,
+.jsDividerValuePopup,
 .jsExpandIcon,
 .jsFieldName,
 .jsFieldsIcon,
 .jsGHist,
 .jsGRect,
+.jsHeader,
 .jsHeaderBoxes,
 .jsHeaderBoxesNum,
 .jsHeaderLabel,
@@ -46,6 +48,7 @@
 }
 
 .header {
+  composes: jsHeader;
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
   font-size: 10pt;
   font-weight: bold;
@@ -351,6 +354,10 @@
 }
 .dividerPopup {
   composes: jsDividerPopup;
+  composes: popup;
+}
+.dividerValuePopup {
+  composes: jsDividerValuePopup;
   composes: popup;
 }
 

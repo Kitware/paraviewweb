@@ -235,7 +235,10 @@ function histogramSelector(publicAPI, model) {
     }
   }
 
+  // let the caller set a specific number of boxes/row, within our normal size constraints.
   publicAPI.requestNumBoxesPerRow = (count) => {
+    model.singleModeName = null;
+    model.singleModeSticky = false;
     incrNumBoxes(count - model.boxesPerRow);
   };
 
@@ -296,6 +299,14 @@ function histogramSelector(publicAPI, model) {
   }
 
   function updateHeader(dataLength) {
+    if (model.singleModeSticky) {
+      // header isn't useful for a single histogram.
+      d3.select(model.container).select(`.${style.jsHeader}`)
+        .style('display', 'none');
+      return;
+    }
+    d3.select(model.container).select(`.${style.jsHeader}`)
+      .style('display', null);
     d3.select(model.container)
       .select(`.${style.jsFieldsIcon}`)
       // apply class - 'false' should come first to not remove common base class.
@@ -355,21 +366,31 @@ function histogramSelector(publicAPI, model) {
   };
 
   function toggleSingleModeEvt(d) {
-    if (model.singleModeName === null) {
-      model.singleModeName = d.name;
-    } else {
-      model.singleModeName = null;
+    if (!model.singleModeSticky) {
+      if (model.singleModeName === null) {
+        model.singleModeName = d.name;
+      } else {
+        model.singleModeName = null;
+      }
+      model.scrollToName = d.name;
+      publicAPI.render();
     }
-    model.scrollToName = d.name;
-    publicAPI.render();
-
     if (d3.event) d3.event.stopPropagation();
   }
 
-  publicAPI.displaySingleHistogram = (fieldName) => {
+  // Display a single histogram. If disableSwitch is true, switching to
+  // other histograms in the fields list is disabled.
+  // Calling requestNumBoxesPerRow() re-enables switching.
+  publicAPI.displaySingleHistogram = (fieldName, disableSwitch) => {
     model.singleModeName = null;
+    model.singleModeSticky = false;
     if (model.fieldData[fieldName]) {
       toggleSingleModeEvt(model.fieldData[fieldName]);
+    }
+    if (model.singleModeName && disableSwitch) {
+      model.singleModeSticky = true;
+    } else {
+      model.singleModeSticky = false;
     }
   };
 
@@ -574,7 +595,8 @@ function histogramSelector(publicAPI, model) {
 
       // Change interaction icons based on state.
       iconCell.select(`.${style.jsExpandIcon}`)
-        .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon);
+        .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
+        .style('display', model.singleModeSticky ? 'none' : null);
       // Apply field name
       fieldCell
         .style('width', `${model.histWidth - (19)}px`)
@@ -784,6 +806,7 @@ const DEFAULT_VALUES = {
   boxHeight: 120,
   // show 1 per row?
   singleModeName: null,
+  singleModeSticky: false,
   scrollToName: null,
   // margins inside the SVG element.
   histMargin: { top: 6, right: 12, bottom: 23, left: 12 },
