@@ -8,6 +8,10 @@ import SelectionBuilder from '../SelectionBuilder';
 
 let generation = 0;
 
+function setInitialGenerationNumber(genNum) {
+  generation = genNum;
+}
+
 // ----------------------------------------------------------------------------
 // Public builder method
 // ----------------------------------------------------------------------------
@@ -22,6 +26,7 @@ function annotation(selection, score, weight = 1, rationale = '', name = '') {
     weight,
     rationale,
     name,
+    objective: false,
   };
 }
 
@@ -72,5 +77,6 @@ export default {
   update,
   markModified,
   fork,
+  setInitialGenerationNumber,
   EMPTY_ANNOTATION,
 };

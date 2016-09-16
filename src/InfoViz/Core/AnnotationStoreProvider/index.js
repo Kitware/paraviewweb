@@ -1,4 +1,6 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 
 // ----------------------------------------------------------------------------
 // Annotation Store Provider
@@ -15,6 +17,21 @@ function annotationStoreProvider(publicAPI, model) {
   publicAPI.loadStoredAnnotationsFromState = () => {
     if (publicAPI.isA('PersistentStateProvider')) {
       model.annotationStore = publicAPI.getPersistentState(PROVIDER_NAME);
+      // The AnnotationBuilder and SelectionBuilder need to know where to start
+      // their generation number count.
+      let maxAnnoGen = 0;
+      let maxSelGen = 0;
+      Object.keys(model.annotationStore).forEach(annoId => {
+        const anno = model.annotationStore[annoId];
+        if (anno.generation > maxAnnoGen) {
+          maxAnnoGen = anno.generation;
+        }
+        if (anno.selection.generation > maxSelGen) {
+          maxSelGen = anno.selection.generation;
+        }
+      });
+      AnnotationBuilder.setInitialGenerationNumber(maxAnnoGen);
+      SelectionBuilder.setInitialGenerationNumber(maxSelGen);
     }
   };
 
@@ -50,19 +67,41 @@ function annotationStoreProvider(publicAPI, model) {
   publicAPI.getStoredAnnotations = () => model.annotationStore;
 
   publicAPI.setStoredAnnotation = (id, annotation) => {
+    const changeSet = {
+      id,
+      annotation,
+      action: 'new',
+    };
+    if (model.annotationStore[id]) {
+      changeSet.action = 'save';
+    }
     model.annotationStore[id] = annotation;
     if (publicAPI.isA('PersistentStateProvider')) {
       publicAPI.setPersistentState(PROVIDER_NAME, model.annotationStore);
     }
-    publicAPI.fireStoreAnnotationChange(id, annotation);
+    publicAPI.fireStoreAnnotationChange(changeSet);
+  };
+
+  publicAPI.updateStoredAnnotations = updates => {
+    Object.keys(updates).forEach(annoId => {
+      model.annotationStore[annoId] = updates[annoId];
+    });
+    if (publicAPI.isA('PersistentStateProvider')) {
+      publicAPI.setPersistentState(PROVIDER_NAME, model.annotationStore);
+    }
+    publicAPI.fireStoreAnnotationChange({ action: 'updates' });
   };
 
   publicAPI.deleteStoredAnnotation = id => {
+    const changeSet = {
+      id,
+      action: 'delete',
+    };
     delete model.annotationStore[id];
     if (publicAPI.isA('PersistentStateProvider')) {
       publicAPI.setPersistentState(PROVIDER_NAME, model.annotationStore);
     }
-    publicAPI.fireStoreAnnotationChange(id);
+    publicAPI.fireStoreAnnotationChange(changeSet);
   };
 }
 
