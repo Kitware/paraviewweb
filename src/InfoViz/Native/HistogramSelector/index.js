@@ -781,6 +781,24 @@ function histogramSelector(publicAPI, model) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
 
+  if (model.provider.isA('DataUpdateProvider')) {
+    model.updateSubscription = model.provider.subscribeToDataUpdate(
+      'histogram1d',
+      data => {
+        Object.keys(data).forEach(xName => {
+          const histoPayload = data[xName][0];
+          model.provider.setHistogram1D(xName, {
+            counts: histoPayload.bins.map( b => b.count ),
+            min: histoPayload.x.extent[0],
+            max: histoPayload.x.extent[1]
+          });
+        });
+        publicAPI.render();
+      },
+      model.provider.getFieldNames(), { nbins: 32 });
+    model.subscriptions.push(model.updateSubscription);
+  }
+
   // scoring interface
   scoreHelper.addSubscriptions();
 
