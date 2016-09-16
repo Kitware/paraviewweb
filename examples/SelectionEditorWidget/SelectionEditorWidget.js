@@ -16115,6 +16115,10 @@
 
 	var generation = 0;
 
+	function setInitialGenerationNumber(genNum) {
+	  generation = genNum;
+	}
+
 	function clone(obj, fieldList, defaults) {
 	  var clonedObj = {};
 	  fieldList.forEach(function (name) {
@@ -16321,6 +16325,7 @@
 	  range: range,
 	  rule: rule,
 	  convertToRuleSelection: convertToRuleSelection,
+	  setInitialGenerationNumber: setInitialGenerationNumber,
 	  EMPTY_SELECTION: EMPTY_SELECTION
 	};
 

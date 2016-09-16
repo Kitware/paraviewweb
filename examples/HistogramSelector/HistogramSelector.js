@@ -35668,6 +35668,10 @@
 
 	var generation = 0;
 
+	function setInitialGenerationNumber(genNum) {
+	  generation = genNum;
+	}
+
 	function clone(obj, fieldList, defaults) {
 	  var clonedObj = {};
 	  fieldList.forEach(function (name) {
@@ -35874,6 +35878,7 @@
 	  range: range,
 	  rule: rule,
 	  convertToRuleSelection: convertToRuleSelection,
+	  setInitialGenerationNumber: setInitialGenerationNumber,
 	  EMPTY_SELECTION: EMPTY_SELECTION
 	};
 
@@ -35901,6 +35906,10 @@
 
 	var generation = 0;
 
+	function setInitialGenerationNumber(genNum) {
+	  generation = genNum;
+	}
+
 	// ----------------------------------------------------------------------------
 	// Public builder method
 	// ----------------------------------------------------------------------------
@@ -35918,7 +35927,8 @@
 	    score: score,
 	    weight: weight,
 	    rationale: rationale,
-	    name: name
+	    name: name,
+	    objective: false
 	  };
 	}
 
@@ -35968,6 +35978,7 @@
 	  update: update,
 	  markModified: markModified,
 	  fork: fork,
+	  setInitialGenerationNumber: setInitialGenerationNumber,
 	  EMPTY_ANNOTATION: EMPTY_ANNOTATION
 	};
 
