@@ -182,6 +182,89 @@ function chain(...fn) {
 }
 
 // ----------------------------------------------------------------------------
+// Data Subscription
+//   => dataHandler = {
+//         defaultMetadata: {
+//            numberOfBins: 32,
+//         },
+//         set(model, data) { return !!sameAsBefore; }, // Return true if nothing has changed
+//         get(model, request, dataChanged) {},
+//      }
+// ----------------------------------------------------------------------------
+
+function dataSubscriber(publicAPI, model, dataName, dataHandler) {
+  // Private members
+  const dataSubscriptions = [];
+  const eventName = `${dataName}SubscriptionChange`;
+  const fireMethodName = `fire${capitalize(eventName)}`;
+  const dataContainerName = `${dataName}_model`;
+
+  // Add data container to model if not exist
+  if (!model[dataContainerName]) {
+    model[dataContainerName] = {};
+  }
+
+  // Add event handling methods
+  event(publicAPI, model, eventName);
+
+  function off() {
+    let count = dataSubscriptions.length;
+    while (count--) {
+      dataSubscriptions[count] = null;
+    }
+  }
+
+  function flushDataToListener(dataListener, dataChanged) {
+    try {
+      if (dataListener) {
+        const dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
+        if (dataToForward) {
+          dataListener.onDataReady(dataToForward);
+        }
+      }
+    } catch (err) {
+      console.log(`flush ${dataName} error caught:`, err);
+    }
+  }
+
+  publicAPI[`subscribeTo${capitalize(dataName)}`] = (onDataReady, variables = [], metadata = {}) => {
+    const id = dataSubscriptions.length;
+    const request = {
+      id,
+      variables,
+      metadata: Object.assign({}, dataHandler.defaultMetadata, metadata),
+    };
+    const dataListener = { onDataReady, request };
+    dataSubscriptions.push(dataListener);
+    publicAPI[fireMethodName](request);
+    flushDataToListener(dataListener, null);
+    return {
+      unsubscribe() {
+        request.action = 'unsubscribe';
+        publicAPI[fireMethodName](request);
+        dataSubscriptions[id] = null;
+      },
+      update(vars, meta) {
+        request.variables = [].concat(vars);
+        request.metadata = Object.assign({}, request.metadata, meta);
+        publicAPI[fireMethodName](request);
+        flushDataToListener(dataListener, null);
+      },
+    };
+  };
+
+  // Method use to store data
+  publicAPI[`set${capitalize(dataName)}`] = data => {
+    // Process all subscription to see if we can trigger a notification
+    if (!dataHandler.set(model[dataContainerName], data)) {
+      dataSubscriptions.forEach(dataListener => flushDataToListener(dataListener, data));
+    }
+  };
+
+  publicAPI.destroy = chain(off, publicAPI.destroy);
+}
+
+// ----------------------------------------------------------------------------
 // newInstance
 // ----------------------------------------------------------------------------
 
@@ -203,4 +286,5 @@ export default {
   isA,
   newInstance,
   set,
+  dataSubscriber,
 };
