@@ -63,7 +63,7 @@ export default function init(inPublicAPI, inModel) {
   function dividersToPartition(def, scores) {
     if (!def.regions || !def.dividers || !scores) return null;
     if (def.regions.length !== def.dividers.length + 1) return null;
-    const uncertScale = (def.hobj.max - def.hobj.min);
+    const uncertScale = (def.range[1] - def.range[0]);
 
     const partitionSelection = SelectionBuilder.partition(def.name, def.dividers);
     partitionSelection.partition.dividers.forEach((div, index) => { div.uncertainty *= uncertScale; });
@@ -82,7 +82,7 @@ export default function init(inPublicAPI, inModel) {
   // retrieve annotation, and re-create dividers and regions
   function partitionToDividers(scoreData, def, hobj, scores) {
     // console.log('DBG return', JSON.stringify(scoreData, null, 2));
-    const uncertScale = (hobj.max - hobj.min);
+    const uncertScale = (def.range[1] - def.range[0]);
     const regions = scoreData.score;
     const dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
     dividers.forEach((div, index) => { div.uncertainty *= 1 / uncertScale; });
@@ -130,7 +130,7 @@ export default function init(inPublicAPI, inModel) {
     if (def) {
       def.editScore = true;
       // create a divider halfway through.
-      def.dividers = [createDefaultDivider(0.5 * (def.hobj.min + def.hobj.max), 0)];
+      def.dividers = [createDefaultDivider(0.5 * (def.range[0] + def.range[1]), 0)];
       // set regions to 'no' | 'yes'
       def.regions = [0, 2];
       sendScores(def, def.hobj);
@@ -991,7 +991,7 @@ export default function init(inPublicAPI, inModel) {
     if (fieldAnnotations) {
       Object.keys(fieldAnnotations).forEach(field => {
         const annotation = fieldAnnotations[field];
-        if (model.fieldData[field] && model.fieldData[field].hobj) {
+        if (model.fieldData[field]) {
           model.fieldData[field].annotation = annotation;
           partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
           publicAPI.render(field);

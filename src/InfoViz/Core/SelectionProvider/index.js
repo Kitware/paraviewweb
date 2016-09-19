@@ -87,7 +87,10 @@ function selectionProvider(publicAPI, model) {
   publicAPI.setCreateNewAnnotationFlag = (shouldCreate) => (model.shouldCreateNewAnnotation = shouldCreate);
 
   // --------------------------------
-
+  // When a new selection is made, data dependent on that selection will be pushed
+  // to subscribers.
+  // A subscriber should save the return value and call update() when they need to
+  // change the variables or meta data which is pushed to them.
   publicAPI.subscribeToDataSelection = (type, onDataReady, variables = [], metadata = {}) => {
     const id = dataSubscriptions.length;
     const request = { id, type, variables, metadata };
