@@ -788,9 +788,9 @@ function histogramSelector(publicAPI, model) {
         Object.keys(data).forEach(xName => {
           const histoPayload = data[xName][0];
           model.provider.setHistogram1D(xName, {
-            counts: histoPayload.bins.map( b => b.count ),
+            counts: histoPayload.bins.map(b => b.count),
             min: histoPayload.x.extent[0],
-            max: histoPayload.x.extent[1]
+            max: histoPayload.x.extent[1],
           });
         });
         publicAPI.render();
