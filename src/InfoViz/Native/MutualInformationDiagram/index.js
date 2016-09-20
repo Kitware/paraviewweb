@@ -72,14 +72,6 @@ function informationDiagram(publicAPI, model) {
     const fieldNames = model.provider.getActiveFieldNames();
     model.needData = true;
 
-    // Fetch Histogram 1D
-    needDataCount += fieldNames.length;
-    fieldNames.forEach(name => {
-      if (model.provider.loadHistogram1D(name)) {
-        needDataCount--;
-      }
-    });
-
     // Fetch mutual information
     needDataCount += 1;
     if (model.provider.loadMutualInformation(fieldNames)) {
@@ -177,13 +169,9 @@ function informationDiagram(publicAPI, model) {
   publicAPI.render = () => {
     // Extract provider data for local access
     const getLegend = model.provider.isA('LegendProvider') ? model.provider.getLegend : null;
-    const histogram1DnumberOfBins = model.provider.getHistogram1DNumberOfBins();
+    const histogram1DnumberOfBins = model.numberOfBins;
     const variableList = model.provider.getActiveFieldNames();
     const mutualInformationData = model.provider.getMutualInformation();
-    const histogramData = {};
-    variableList.forEach(name => {
-      histogramData[name] = model.provider.getHistogram1D(name);
-    });
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
@@ -202,7 +190,7 @@ function informationDiagram(publicAPI, model) {
     const height = model.clientRect.height;
 
     // Make sure we have all the data we need
-    if (model.needData) {
+    if (model.needData || !model.histogramData) {
       fetchData();
       return;
     }
@@ -276,7 +264,7 @@ function informationDiagram(publicAPI, model) {
         const groupData = layout.groups()[groupIdx];
         const groupName = mutualInformationData.vmap[groupData.index].name;
         if (angle > groupData.startAngle && angle <= groupData.endAngle) {
-          const binSizeRadians = (groupData.endAngle - groupData.startAngle) / model.provider.getHistogram1DNumberOfBins();
+          const binSizeRadians = (groupData.endAngle - groupData.startAngle) / model.numberOfBins;
           const binIndex = Math.floor((angle - groupData.startAngle) / binSizeRadians);
           result.found = true;
           result.group = groupName;
@@ -737,7 +725,7 @@ function informationDiagram(publicAPI, model) {
     svg.selectAll('g.group')
       .each(function buildHistogram(groupData) {
         const gname = mutualInformationData.vmap[groupData.index].name;
-        const gvar = histogramData[gname];
+        const gvar = model.histogramData[gname];
 
         if (!gvar) return;
 
@@ -977,6 +965,36 @@ function informationDiagram(publicAPI, model) {
     publicAPI.render();
   }));
 
+  if (model.provider.isA('Histogram1DProvider')) {
+    model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
+      data => {
+        if (!model.histogramData) {
+          model.histogramData = {};
+        }
+
+        // Convert data
+        Object.keys(data).forEach(xName => {
+          const histoPayload = data[xName];
+          model.histogramData[xName] = {
+            counts: histoPayload.bins.map(b => b.count),
+            min: histoPayload.x.extent[0],
+            max: histoPayload.x.extent[1],
+          };
+        });
+
+        publicAPI.render();
+      },
+      model.provider.getFieldNames(),
+      {
+        numberOfBins: model.numberOfBins,
+        partial: false,
+      }
+    );
+
+    model.subscriptions.push(model.histogram1DDataSubscription);
+  }
+
+
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
@@ -1013,6 +1031,8 @@ const DEFAULT_VALUES = {
   useAnnotation: false,
   defaultScore: 0,
   defaultWeight: 1,
+
+  numberOfBins: 32,
 };
 
 // ----------------------------------------------------------------------------
