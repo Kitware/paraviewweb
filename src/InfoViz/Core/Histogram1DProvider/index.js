@@ -4,6 +4,17 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // Histogram 1D Provider
 // ----------------------------------------------------------------------------
 
+/*
+  Data Format: Below is an example of the expected histogram 1D data format
+
+  {
+    "name": "points per game",
+    "min": 0,
+    "max": 32,
+    "counts": [10, 4, 0, 0, 13, ... ]
+  }
+*/
+
 export function extend(publicAPI, model, initialValues = {}) {
   Object.assign(model, initialValues);
 
@@ -15,8 +26,8 @@ export function extend(publicAPI, model, initialValues = {}) {
       partial: true,
     },
     set(storage, data) {
-      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(storage[data.x.name]));
-      storage[data.x.name] = data;
+      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(storage[data.name]));
+      storage[data.name] = data;
       return sameAsBefore;
     },
     get(storage, request, dataChanged) {

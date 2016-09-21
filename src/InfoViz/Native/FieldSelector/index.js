@@ -204,11 +204,10 @@ function fieldSelector(publicAPI, model) {
 
           // only do work if histogram is displayed.
           if (!hideField.hist) {
-            const counts = hobj.bins.map(item => item.count);
-            const cmax = 1.0 * d3.max(counts);
-            const hsize = counts.length;
+            const cmax = 1.0 * d3.max(hobj.counts);
+            const hsize = hobj.counts.length;
             const hdata = histCell.select('svg')
-              .selectAll(`.${style.jsHistRect}`).data(counts);
+              .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
 
             hdata.enter().append('rect');
             // changes apply to both enter and update data join:
@@ -240,9 +239,9 @@ function fieldSelector(publicAPI, model) {
           }
 
           const formatter = d3.format('.3s');
-          minCell.text(formatter(hobj.x.extent[0]))
+          minCell.text(formatter(hobj.min))
             .style('display', hideField.minMax ? 'none' : null);
-          maxCell.text(formatter(hobj.x.extent[1]))
+          maxCell.text(formatter(hobj.max))
             .style('display', hideField.minMax ? 'none' : null);
         }
       }

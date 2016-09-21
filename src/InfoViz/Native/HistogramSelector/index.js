@@ -749,20 +749,7 @@ function histogramSelector(publicAPI, model) {
   if (model.provider.isA('Histogram1DProvider')) {
     model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
       data => {
-        if (!model.histograms) {
-          model.histograms = {};
-        }
-
-        // Convert data
-        Object.keys(data).forEach(xName => {
-          const histoPayload = data[xName];
-          model.histograms[xName] = {
-            counts: histoPayload.bins.map(b => b.count),
-            min: histoPayload.x.extent[0],
-            max: histoPayload.x.extent[1],
-          };
-        });
-
+        model.histograms = data;
         publicAPI.render();
       },
       Object.keys(model.fieldData),
