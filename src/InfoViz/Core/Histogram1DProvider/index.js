@@ -41,7 +41,7 @@ export function extend(publicAPI, model, initialValues = {}) {
       const returnedData = {};
       let count = 0;
       request.variables.forEach(name => {
-        if (binStorage[name]) {
+        if (binStorage && binStorage[name]) {
           count++;
           returnedData[name] = binStorage[name];
         }
