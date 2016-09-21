@@ -314,8 +314,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram']);
-  CompositeClosureHelper.set(publicAPI, model, ['fieldShowHistogram']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['fieldShowHistogram', 'numberOfBins']);
 
   fieldSelector(publicAPI, model);
 }
