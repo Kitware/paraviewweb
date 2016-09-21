@@ -739,6 +739,7 @@ function histogramSelector(publicAPI, model) {
 
     model.subscriptions.push(model.provider.onFieldChange(field => {
       Object.assign(model.fieldData[field.name], field);
+      publicAPI.render();
     }));
   }
 
