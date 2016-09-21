@@ -95,7 +95,7 @@ export function extend(publicAPI, model, initialValues = {}) {
         if (!returnedData[axisPair[0]]) {
           returnedData[axisPair[0]] = {};
         }
-        if (binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
+        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
           const hist2d = binStorage[axisPair[0]][axisPair[1]];
           count++;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
