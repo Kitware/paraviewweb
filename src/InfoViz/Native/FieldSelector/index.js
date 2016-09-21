@@ -21,6 +21,11 @@ function fieldSelector(publicAPI, model) {
     histWidth: 0,
   };
 
+  // storage for 1d histograms
+  if (!model.histograms) {
+    model.histograms = {};
+  }
+
   // public API
   publicAPI.resize = () => {
     publicAPI.render();
@@ -196,12 +201,14 @@ function fieldSelector(publicAPI, model) {
         if (hobj) {
           histCell
             .style('display', hideField.hist ? 'none' : null);
+
           // only do work if histogram is displayed.
           if (!hideField.hist) {
-            const cmax = 1.0 * d3.max(hobj.counts);
-            const hsize = hobj.counts.length;
+            const counts = hobj.bins.map(item => item.count);
+            const cmax = 1.0 * d3.max(counts);
+            const hsize = counts.length;
             const hdata = histCell.select('svg')
-              .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
+              .selectAll(`.${style.jsHistRect}`).data(counts);
 
             hdata.enter().append('rect');
             // changes apply to both enter and update data join:
@@ -233,9 +240,9 @@ function fieldSelector(publicAPI, model) {
           }
 
           const formatter = d3.format('.3s');
-          minCell.text(formatter(hobj.min))
+          minCell.text(formatter(hobj.x.extent[0]))
             .style('display', hideField.minMax ? 'none' : null);
-          maxCell.text(formatter(hobj.max))
+          maxCell.text(formatter(hobj.x.extent[1]))
             .style('display', hideField.minMax ? 'none' : null);
         }
       }
@@ -258,14 +265,17 @@ function fieldSelector(publicAPI, model) {
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
-
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
   if (model.fieldShowHistogram) {
     if (model.provider.isA('Histogram1DProvider')) {
       model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
         allHistogram1d => {
-          model.histograms = allHistogram1d;
+          // Below, we're asking for partial updates, so we just update our
+          // cache with anything that came in.
+          Object.keys(allHistogram1d).forEach(paramName => {
+            model.histograms[paramName] = allHistogram1d[paramName];
+          });
           publicAPI.render();
         },
         model.provider.getFieldNames(),
