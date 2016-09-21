@@ -1,6 +1,28 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 // ----------------------------------------------------------------------------
+// Expected Data Format for Histogram2D
+// ----------------------------------------------------------------------------
+//
+// {
+//   "x": {
+//     delta: 3.5,
+//     extent: [0, 35],
+//     name: "Name of X",
+//   },
+//   "y": {
+//     delta: 1,
+//     extent: [0, 10],
+//     name: "Name of Y",
+//   },
+//   "bins": [
+//     { x: 3.5, y: 5, count: 46 }, ...
+//   ]
+// }
+//
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 // Global
 // ----------------------------------------------------------------------------
 
@@ -37,11 +59,16 @@ export function extend(publicAPI, model, initialValues = {}) {
       partial: true,
     },
     set(storage, data) {
-      if (!storage[data.x.name]) {
-        storage[data.x.name] = {};
+      const binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+      if (!storage[binSize]) {
+        storage[binSize] = {};
       }
-      if (!storage[data.y.name]) {
-        storage[data.y.name] = {};
+      const binStorage = storage[binSize];
+      if (!binStorage[data.x.name]) {
+        binStorage[data.x.name] = {};
+      }
+      if (!binStorage[data.y.name]) {
+        binStorage[data.y.name] = {};
       }
 
       // Add maxCount
@@ -51,10 +78,10 @@ export function extend(publicAPI, model, initialValues = {}) {
       });
       data.maxCount = maxCount;
 
-      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(storage[data.x.name][data.y.name]));
+      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]));
 
-      storage[data.x.name][data.y.name] = data;
-      storage[data.y.name][data.x.name] = flipHistogram(data);
+      binStorage[data.x.name][data.y.name] = data;
+      binStorage[data.y.name][data.x.name] = flipHistogram(data);
 
       return sameAsBefore;
     },
@@ -62,12 +89,14 @@ export function extend(publicAPI, model, initialValues = {}) {
       const returnedData = {};
       let count = 0;
       let maxCount = 0;
+      const { numberOfBins } = request.metadata;
+      const binStorage = storage[numberOfBins];
       request.variables.forEach(axisPair => {
         if (!returnedData[axisPair[0]]) {
           returnedData[axisPair[0]] = {};
         }
-        if (storage[axisPair[0]] && storage[axisPair[0]][axisPair[1]]) {
-          const hist2d = storage[axisPair[0]][axisPair[1]];
+        if (binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
+          const hist2d = binStorage[axisPair[0]][axisPair[1]];
           count++;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
           returnedData[axisPair[0]][axisPair[1]] = hist2d;
