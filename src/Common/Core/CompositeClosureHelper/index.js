@@ -184,12 +184,26 @@ function chain(...fn) {
 // ----------------------------------------------------------------------------
 // Data Subscription
 //   => dataHandler = {
+//         // Set of default values you would expect in your metadata
 //         defaultMetadata: {
 //            numberOfBins: 32,
 //         },
+//
+//         // Method used internally to store the data
 //         set(model, data) { return !!sameAsBefore; }, // Return true if nothing has changed
+//
+//         // Method used internally to extract the data from the cache based on a given subscription
+//         // This should return null/undefined if the data is not available (yet).
 //         get(model, request, dataChanged) {},
 //      }
+// ----------------------------------------------------------------------------
+// Methods generated with dataName = 'mutualInformation'
+// => publicAPI
+//     - onMutualInformationSubscriptionChange(callback) => subscription[unsubscribe() + update(variables = [], metadata = {})]
+//     - fireMutualInformationSubscriptionChange(request)
+//     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
+//     - setMutualInformation(data)
+//     - destroy()
 // ----------------------------------------------------------------------------
 
 function dataSubscriber(publicAPI, model, dataName, dataHandler) {
@@ -197,7 +211,7 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
   const dataSubscriptions = [];
   const eventName = `${dataName}SubscriptionChange`;
   const fireMethodName = `fire${capitalize(eventName)}`;
-  const dataContainerName = `${dataName}_model`;
+  const dataContainerName = `${dataName}_storage`;
 
   // Add data container to model if not exist
   if (!model[dataContainerName]) {
@@ -214,6 +228,7 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
     }
   }
 
+  // Internal function that will notify any subscriber with its data in a synchronous manner
   function flushDataToListener(dataListener, dataChanged) {
     try {
       if (dataListener) {
@@ -227,6 +242,9 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
     }
   }
 
+  // onDataReady function will be called each time the setXXX method will be called and
+  // when the actual subscription correspond to the data that has been set.
+  // This is performed synchronously.
   publicAPI[`subscribeTo${capitalize(dataName)}`] = (onDataReady, variables = [], metadata = {}) => {
     const id = dataSubscriptions.length;
     const request = {
