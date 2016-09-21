@@ -21131,6 +21131,112 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Data Subscription
+	//   => dataHandler = {
+	//         // Set of default values you would expect in your metadata
+	//         defaultMetadata: {
+	//            numberOfBins: 32,
+	//         },
+	//
+	//         // Method used internally to store the data
+	//         set(model, data) { return !!sameAsBefore; }, // Return true if nothing has changed
+	//
+	//         // Method used internally to extract the data from the cache based on a given subscription
+	//         // This should return null/undefined if the data is not available (yet).
+	//         get(model, request, dataChanged) {},
+	//      }
+	// ----------------------------------------------------------------------------
+	// Methods generated with dataName = 'mutualInformation'
+	// => publicAPI
+	//     - onMutualInformationSubscriptionChange(callback) => subscription[unsubscribe() + update(variables = [], metadata = {})]
+	//     - fireMutualInformationSubscriptionChange(request)
+	//     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
+	//     - setMutualInformation(data)
+	//     - destroy()
+	// ----------------------------------------------------------------------------
+
+	function dataSubscriber(publicAPI, model, dataName, dataHandler) {
+	  // Private members
+	  var dataSubscriptions = [];
+	  var eventName = dataName + 'SubscriptionChange';
+	  var fireMethodName = 'fire' + capitalize(eventName);
+	  var dataContainerName = dataName + '_storage';
+
+	  // Add data container to model if not exist
+	  if (!model[dataContainerName]) {
+	    model[dataContainerName] = {};
+	  }
+
+	  // Add event handling methods
+	  event(publicAPI, model, eventName);
+
+	  function off() {
+	    var count = dataSubscriptions.length;
+	    while (count--) {
+	      dataSubscriptions[count] = null;
+	    }
+	  }
+
+	  // Internal function that will notify any subscriber with its data in a synchronous manner
+	  function flushDataToListener(dataListener, dataChanged) {
+	    try {
+	      if (dataListener) {
+	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
+	        if (dataToForward) {
+	          dataListener.onDataReady(dataToForward);
+	        }
+	      }
+	    } catch (err) {
+	      console.log('flush ' + dataName + ' error caught:', err);
+	    }
+	  }
+
+	  // onDataReady function will be called each time the setXXX method will be called and
+	  // when the actual subscription correspond to the data that has been set.
+	  // This is performed synchronously.
+	  publicAPI['subscribeTo' + capitalize(dataName)] = function (onDataReady) {
+	    var variables = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var metadata = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	    var id = dataSubscriptions.length;
+	    var request = {
+	      id: id,
+	      variables: variables,
+	      metadata: Object.assign({}, dataHandler.defaultMetadata, metadata)
+	    };
+	    var dataListener = { onDataReady: onDataReady, request: request };
+	    dataSubscriptions.push(dataListener);
+	    publicAPI[fireMethodName](request);
+	    flushDataToListener(dataListener, null);
+	    return {
+	      unsubscribe: function unsubscribe() {
+	        request.action = 'unsubscribe';
+	        publicAPI[fireMethodName](request);
+	        dataSubscriptions[id] = null;
+	      },
+	      update: function update(vars, meta) {
+	        request.variables = [].concat(vars);
+	        request.metadata = Object.assign({}, request.metadata, meta);
+	        publicAPI[fireMethodName](request);
+	        flushDataToListener(dataListener, null);
+	      }
+	    };
+	  };
+
+	  // Method use to store data
+	  publicAPI['set' + capitalize(dataName)] = function (data) {
+	    // Process all subscription to see if we can trigger a notification
+	    if (!dataHandler.set(model[dataContainerName], data)) {
+	      dataSubscriptions.forEach(function (dataListener) {
+	        return flushDataToListener(dataListener, data);
+	      });
+	    }
+	  };
+
+	  publicAPI.destroy = chain(off, publicAPI.destroy);
+	}
+
+	// ----------------------------------------------------------------------------
 	// newInstance
 	// ----------------------------------------------------------------------------
 
@@ -21153,7 +21259,8 @@
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set
+	  set: set,
+	  dataSubscriber: dataSubscriber
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).setImmediate))
 
@@ -22443,71 +22550,57 @@
 	// Histogram 1D Provider
 	// ----------------------------------------------------------------------------
 
-	function histogram1DProvider(publicAPI, model, fetchHelper) {
-	  // Private members
-	  var ready = publicAPI.fireHistogram1DReady;
-	  delete publicAPI.fireHistogram1DReady;
+	/*
+	  Data Format: Below is an example of the expected histogram 1D data format
 
-	  // Protected members
-	  if (!model.histogram1DData) {
-	    model.histogram1DData = {};
+	  {
+	    "name": "points per game",
+	    "min": 0,
+	    "max": 32,
+	    "counts": [10, 4, 0, 0, 13, ... ]
 	  }
-
-	  // Data access
-	  publicAPI.setHistogram1DNumberOfBins = function (bin) {
-	    if (model.histogram1DNumberOfBins !== bin) {
-	      model.histogram1DData = {};
-	      model.histogram1DNumberOfBins = bin;
-	    }
-	  };
-
-	  // Return true if data is available
-	  publicAPI.loadHistogram1D = function (field) {
-	    if (!model.histogram1DData[field]) {
-	      model.histogram1DData[field] = { pending: true };
-	      fetchHelper.addRequest(field);
-	      return false;
-	    }
-
-	    if (model.histogram1DData[field].pending) {
-	      return false;
-	    }
-
-	    return true;
-	  };
-
-	  publicAPI.getHistogram1D = function (field) {
-	    return model.histogram1DData[field];
-	  };
-	  publicAPI.setHistogram1D = function (field, data) {
-	    model.histogram1DData[field] = data;
-	    ready(field, data);
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // histogram1DData: null,
-	  histogram1DNumberOfBins: 32
-	};
-
-	// ----------------------------------------------------------------------------
+	*/
 
 	function extend(publicAPI, model) {
 	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
+	  Object.assign(model, initialValues);
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'Histogram1DProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram1DNumberOfBins']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'histogram1DReady');
-	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Histogram1D');
+	  _CompositeClosureHelper2.default.dataSubscriber(publicAPI, model, 'histogram1D', {
+	    defaultMetadata: {
+	      numberOfBins: 32,
+	      partial: true
+	    },
+	    set: function set(storage, data) {
+	      var numberOfBins = data.counts.length;
+	      if (!storage[numberOfBins]) {
+	        storage[numberOfBins] = {};
+	      }
+	      var binStorage = storage[numberOfBins];
+	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.name]);
+	      binStorage[data.name] = data;
+	      return sameAsBefore;
+	    },
+	    get: function get(storage, request, dataChanged) {
+	      var numberOfBins = request.metadata.numberOfBins;
 
-	  histogram1DProvider(publicAPI, model, fetchHelper);
+	      var binStorage = storage[numberOfBins];
+	      var returnedData = {};
+	      var count = 0;
+	      request.variables.forEach(function (name) {
+	        if (binStorage && binStorage[name]) {
+	          count++;
+	          returnedData[name] = binStorage[name];
+	        }
+	      });
+	      if (count === request.variables.length || request.metadata.partial && count > 0) {
+	        return returnedData;
+	      }
+	      return null;
+	    }
+	  });
 	}
 
 	// ----------------------------------------------------------------------------
@@ -23021,7 +23114,7 @@
 /* 38 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23270,6 +23363,7 @@
 	function getNotificationData(model, request) {
 	  var result = {};
 	  var missingData = false;
+	  var generationNumbers = [];
 
 	  request.variables.forEach(function (axes) {
 	    var histograms = get(model, { axes: axes });
@@ -23278,10 +23372,22 @@
 	        result[axes[0]] = {};
 	      }
 	      result[axes[0]][axes[1]] = histograms;
+	      histograms.forEach(function (hist) {
+	        return generationNumbers.push(hist.annotationInfo.annotationGeneration);
+	      });
 	    } else {
 	      missingData = true;
 	    }
 	  });
+
+	  // Prevent generation mix in result
+	  generationNumbers.sort();
+	  var generation = generationNumbers.shift();
+	  if (generationNumbers.length && generation !== generationNumbers.pop()) {
+	    return null;
+	  }
+
+	  result['##annotationGeneration##'] = generation;
 
 	  return missingData ? null : result;
 	}
@@ -23581,50 +23687,6 @@
 	    return model.histHeight + model.histMargin.top + model.histMargin.bottom;
 	  };
 
-	  function fetchData(field) {
-	    model.needData = true;
-
-	    if (model.provider) {
-	      var dataToLoadCount = 0;
-
-	      var fieldNames = [];
-	      // Initialize fields
-	      if (model.provider.isA('FieldProvider')) {
-	        fieldNames = model.provider.getFieldNames();
-	        if (!model.fieldData) {
-	          model.fieldData = {};
-	          fieldNames.forEach(function (name) {
-	            model.fieldData[name] = Object.assign({}, model.provider.getField(name), scoreHelper.defaultFieldData());
-	          });
-	        } else if (field !== undefined) {
-	          // update of a specific field from the field provider, most likely the 'active' flag.
-	          Object.assign(model.fieldData[field.name], field);
-	        }
-	      }
-
-	      // Fetch 1D Histogram
-	      if (model.provider.isA('Histogram1DProvider')) {
-	        dataToLoadCount += fieldNames.length;
-	        for (var i = 0; i < fieldNames.length; i++) {
-	          // Return true if the data is already loaded
-	          dataToLoadCount -= model.provider.loadHistogram1D(fieldNames[i]) ? 1 : 0;
-	        }
-	      }
-
-	      // Fetch Selection
-	      if (model.provider.isA('SelectionProvider')) {}
-	      // fetchSelectionData();
-
-
-	      // Check if we can render or not
-	      model.needData = !!dataToLoadCount;
-
-	      if (!model.needData) {
-	        publicAPI.render();
-	      }
-	    }
-	  }
-
 	  function getClientArea() {
 	    var clientRect = model.listContainer.getBoundingClientRect();
 	    return [clientRect.width - borderSize - scrollbarWidth, clientRect.height - borderSize];
@@ -23845,10 +23907,10 @@
 	  publicAPI.render = function () {
 	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
-	    if (model.needData) {
-	      fetchData();
+	    if (!model.histograms) {
 	      return;
 	    }
+
 	    if (!model.container || model.container.offsetParent === null) return;
 
 	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
@@ -24031,9 +24093,9 @@
 	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
 
 	      // get the histogram data and rebuild the histogram based on the results
-	      var hobj = model.provider.getHistogram1D(def.name);
+	      var hobj = model.histograms[def.name];
 	      def.hobj = hobj;
-	      if (hobj !== null) {
+	      if (hobj) {
 	        (function () {
 	          var cmax = 1.0 * _d2.default.max(hobj.counts);
 	          var hsize = hobj.counts.length;
@@ -24172,32 +24234,39 @@
 	    });
 	  }
 
+	  // Auto unmount on destroy
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-	  // event from the FieldProvider
-	  // TODO overkill if one field's 'active' flag changes.
-	  model.subscriptions.push(model.provider.onFieldChange(fetchData));
-	  // event from Histogram Provider
-	  model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+
+	  if (model.provider.isA('FieldProvider')) {
+	    var fieldNames = model.provider.getFieldNames();
+	    if (!model.fieldData) {
+	      model.fieldData = {};
+	    }
+
+	    fieldNames.forEach(function (name) {
+	      model.fieldData[name] = Object.assign(model.fieldData[name] || {}, model.provider.getField(name), scoreHelper.defaultFieldData());
+	    });
+
+	    model.subscriptions.push(model.provider.onFieldChange(function (field) {
+	      Object.assign(model.fieldData[field.name], field);
+	      publicAPI.render();
+	    }));
+	  }
 
 	  if (model.provider.isA('HistogramBinHoverProvider')) {
 	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
 	  }
 
-	  if (model.provider.isA('DataUpdateProvider')) {
-	    model.updateSubscription = model.provider.subscribeToDataUpdate('histogram1d', function (data) {
-	      Object.keys(data).forEach(function (xName) {
-	        var histoPayload = data[xName][0];
-	        model.provider.setHistogram1D(xName, {
-	          counts: histoPayload.bins.map(function (b) {
-	            return b.count;
-	          }),
-	          min: histoPayload.x.extent[0],
-	          max: histoPayload.x.extent[1]
-	        });
-	      });
+	  if (model.provider.isA('Histogram1DProvider')) {
+	    model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (data) {
+	      model.histograms = data;
 	      publicAPI.render();
-	    }, model.provider.getFieldNames(), { nbins: 32 });
-	    model.subscriptions.push(model.updateSubscription);
+	    }, Object.keys(model.fieldData), {
+	      numberOfBins: model.numberOfBins,
+	      partial: false
+	    });
+
+	    model.subscriptions.push(model.histogram1DDataSubscription);
 	  }
 
 	  // scoring interface
@@ -24245,7 +24314,9 @@
 	  // scores: [{ name: 'Yes', color: '#00C900' }, ... ],
 	  defaultScore: 0,
 	  dragMargin: 8,
-	  selectedDef: null
+	  selectedDef: null,
+
+	  numberOfBins: 32
 	};
 
 	// ----------------------------------------------------------------------------
@@ -24257,7 +24328,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins']);
 
 	  histogramSelector(publicAPI, model);
 	}
@@ -36165,6 +36237,11 @@
 	    histWidth: 0
 	  };
 
+	  // storage for 1d histograms
+	  if (!model.histograms) {
+	    model.histograms = {};
+	  }
+
 	  // public API
 	  publicAPI.resize = function () {
 	    publicAPI.render();
@@ -36308,51 +36385,50 @@
 	        }
 
 	        // make sure our data is ready. If not, render will be called when loaded.
-	        if (model.provider.loadHistogram1D(fieldName)) {
-	          var hobj = model.provider.getHistogram1D(fieldName);
-	          if (hobj !== null) {
-	            histCell.style('display', hideField.hist ? 'none' : null);
-	            // only do work if histogram is displayed.
-	            if (!hideField.hist) {
-	              (function () {
-	                var cmax = 1.0 * _d2.default.max(hobj.counts);
-	                var hsize = hobj.counts.length;
-	                var hdata = histCell.select('svg').selectAll('.' + _FieldSelector2.default.jsHistRect).data(hobj.counts);
+	        var hobj = model.histograms ? model.histograms[fieldName] : null;
+	        if (hobj) {
+	          histCell.style('display', hideField.hist ? 'none' : null);
 
-	                hdata.enter().append('rect');
-	                // changes apply to both enter and update data join:
-	                hdata.attr('class', function (d, i) {
-	                  return i % 2 === 0 ? _FieldSelector2.default.histRectEven : _FieldSelector2.default.histRectOdd;
-	                }).attr('pname', fieldName).attr('y', function (d) {
-	                  return model.fieldHistHeight * (1.0 - d / cmax);
-	                }).attr('x', function (d, i) {
-	                  return model.fieldHistWidth / hsize * i;
-	                }).attr('height', function (d) {
-	                  return model.fieldHistHeight * (d / cmax);
-	                }).attr('width', model.fieldHistWidth / hsize);
+	          // only do work if histogram is displayed.
+	          if (!hideField.hist) {
+	            (function () {
+	              var cmax = 1.0 * _d2.default.max(hobj.counts);
+	              var hsize = hobj.counts.length;
+	              var hdata = histCell.select('svg').selectAll('.' + _FieldSelector2.default.jsHistRect).data(hobj.counts);
 
-	                hdata.exit().remove();
+	              hdata.enter().append('rect');
+	              // changes apply to both enter and update data join:
+	              hdata.attr('class', function (d, i) {
+	                return i % 2 === 0 ? _FieldSelector2.default.histRectEven : _FieldSelector2.default.histRectOdd;
+	              }).attr('pname', fieldName).attr('y', function (d) {
+	                return model.fieldHistHeight * (1.0 - d / cmax);
+	              }).attr('x', function (d, i) {
+	                return model.fieldHistWidth / hsize * i;
+	              }).attr('height', function (d) {
+	                return model.fieldHistHeight * (d / cmax);
+	              }).attr('width', model.fieldHistWidth / hsize);
 
-	                if (model.provider.isA('HistogramBinHoverProvider')) {
-	                  histCell.select('svg').on('mousemove', function inner(d, i) {
-	                    var mCoords = _d2.default.mouse(this);
-	                    var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
-	                    var state = {};
-	                    state[fieldName] = [binNum];
-	                    model.provider.setHoverState({ state: state });
-	                  }).on('mouseout', function (d, i) {
-	                    var state = {};
-	                    state[fieldName] = [-1];
-	                    model.provider.setHoverState({ state: state });
-	                  });
-	                }
-	              })();
-	            }
+	              hdata.exit().remove();
 
-	            var formatter = _d2.default.format('.3s');
-	            minCell.text(formatter(hobj.min)).style('display', hideField.minMax ? 'none' : null);
-	            maxCell.text(formatter(hobj.max)).style('display', hideField.minMax ? 'none' : null);
+	              if (model.provider.isA('HistogramBinHoverProvider')) {
+	                histCell.select('svg').on('mousemove', function inner(d, i) {
+	                  var mCoords = _d2.default.mouse(this);
+	                  var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
+	                  var state = {};
+	                  state[fieldName] = [binNum];
+	                  model.provider.setHoverState({ state: state });
+	                }).on('mouseout', function (d, i) {
+	                  var state = {};
+	                  state[fieldName] = [-1];
+	                  model.provider.setHoverState({ state: state });
+	                });
+	              }
+	            })();
 	          }
+
+	          var formatter = _d2.default.format('.3s');
+	          minCell.text(formatter(hobj.min)).style('display', hideField.minMax ? 'none' : null);
+	          maxCell.text(formatter(hobj.max)).style('display', hideField.minMax ? 'none' : null);
 	        }
 	      }
 	    }
@@ -36375,12 +36451,24 @@
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
-
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 	  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
 	  if (model.fieldShowHistogram) {
-	    // event from Histogram Provider
-	    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	    if (model.provider.isA('Histogram1DProvider')) {
+	      model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (allHistogram1d) {
+	        // Below, we're asking for partial updates, so we just update our
+	        // cache with anything that came in.
+	        Object.keys(allHistogram1d).forEach(function (paramName) {
+	          model.histograms[paramName] = allHistogram1d[paramName];
+	        });
+	        publicAPI.render();
+	      }, model.provider.getFieldNames(), {
+	        numberOfBins: model.numberOfBins,
+	        partial: true
+	      });
+
+	      model.subscriptions.push(model.histogram1DDataSubscription);
+	    }
 	  }
 
 	  if (model.provider.isA('HistogramBinHoverProvider')) {
@@ -36398,7 +36486,8 @@
 	  displayUnselected: true,
 	  fieldShowHistogram: true,
 	  fieldHistWidth: 120,
-	  fieldHistHeight: 15
+	  fieldHistHeight: 15,
+	  numberOfBins: 32
 	};
 
 	// ----------------------------------------------------------------------------
@@ -36410,8 +36499,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldShowHistogram']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldShowHistogram', 'numberOfBins']);
 
 	  fieldSelector(publicAPI, model);
 	}

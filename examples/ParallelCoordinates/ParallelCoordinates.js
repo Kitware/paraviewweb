@@ -20993,41 +20993,6 @@
 	    return true;
 	  }
 
-	  function fetchData() {
-	    model.needData = true;
-
-	    if (model.provider) {
-	      var dataToLoadCount = 0;
-
-	      // Initialize axes
-	      if (model.provider.isA('FieldProvider')) {
-	        model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
-	          return { name: name, range: model.provider.getField(name).range };
-	        }));
-	      }
-
-	      // Get the axes names
-	      var fieldNames = model.axes.getAxesNames();
-
-	      // Fetch 2D Histogram
-	      if (model.provider.isA('Histogram2DProvider')) {
-	        model.numberOfBins = model.provider.getHistogram2DNumberOfBins();
-	        dataToLoadCount += fieldNames.length - 1;
-	        for (var i = 1; i < fieldNames.length; i++) {
-	          // Return true if the data is already loaded
-	          dataToLoadCount -= model.provider.loadHistogram2D(fieldNames[i - 1], fieldNames[i]) ? 1 : 0;
-	        }
-	      }
-
-	      // Check if we can render or not
-	      model.needData = !!dataToLoadCount;
-
-	      if (!model.needData) {
-	        publicAPI.render();
-	      }
-	    }
-	  }
-
 	  function drawSelectionBars(selectionBarModel) {
 	    var svg = _d2.default.select(model.container).select('svg');
 	    var selBarGroup = svg.select('g.selection-bars');
@@ -21109,7 +21074,6 @@
 	      if (ratio < 0.28) {
 	        // left arrow click
 	        model.axes.swapAxes(i - 1, i);
-	        fetchData();
 	      } else if (ratio < 0.73) {
 	        // up/down click
 	        model.axes.toggleOrientation(i);
@@ -21117,7 +21081,6 @@
 	      } else {
 	        // right arrow click
 	        model.axes.swapAxes(i, i + 1);
-	        fetchData();
 	      }
 	    }).selectAll('.axis-controls-group-container').classed(_ParallelCoordinates2.default.axisControlsGroupContainer, true);
 	  }
@@ -21342,8 +21305,7 @@
 	  }
 
 	  publicAPI.render = function () {
-	    if (model.needData) {
-	      fetchData();
+	    if (!model.allBgHistogram2dData) {
 	      return;
 	    }
 
@@ -21389,7 +21351,7 @@
 	    model.bgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
 
 	    // First lay down the "context" polygons
-	    model.maxBinCountForOpacityCalculation = model.provider.getMaxOfMaxCounts(model.axes.getAxesPairs());
+	    model.maxBinCountForOpacityCalculation = model.allBgHistogram2dData.maxCount;
 
 	    var nbPolyDraw = model.axes.getNumberOf2DHistogram();
 	    var axesCenters = model.axes.extractAxesCenters(model);
@@ -21397,7 +21359,7 @@
 	      for (var j = 0; j < nbPolyDraw; ++j) {
 	        var axisOne = model.axes.getAxis(j);
 	        var axisTwo = model.axes.getAxis(j + 1);
-	        var histo2D = model.provider.getHistogram2D(axisOne.name, axisTwo.name);
+	        var histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
 	        // The histogram has the most up-to-date range information for the parameters,
 	        // use it to set the ranges on the axes.
 	        axisOne.range = histo2D.x.extent;
@@ -21497,8 +21459,8 @@
 
 	  publicAPI.setVisibleScoresForPartitionSelection = function (scoreList) {
 	    model.partitionScores = scoreList;
-	    if (model.dataSubscription && model.partitionScores && model.propagatePartitionScores) {
-	      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
+	    if (model.selectionDataSubscription && model.partitionScores && model.propagatePartitionScores) {
+	      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
 	    }
 	  };
 
@@ -21602,77 +21564,75 @@
 	    });
 	  }
 
-	  // function addSubscriptions() {
-	  //   topicSubscriptions.push(dataProvider.onParameterValueChanged(event => {
-	  //     const aidx = axisList.indexOf(event.value.name);
-	  //     if (aidx >= 0 && !event.value.selected) {
-	  //       updateAxisList(axisList.slice(0, aidx).concat(axisList.slice(aidx + 1, axisList.length)));
-	  //       render();
-	  //     } else if (aidx === -1 && event.value.selected) {
-	  //       updateAxisList(axisList.concat([
-	  //         event.value.name,
-	  //       ]));
-	  //       if (annotationService) {
-	  //         const rangeSel = selection('empty');
-	  //         selnGen = rangeSel.gen;
-	  //         annotationService.setActiveSelection(rangeSel);
-	  //       }
-	  //       render();
-	  //     }
-	  //   }));
-
-	  //   if (annotationService) {
-	  //     topicSubscriptions.push(annotationService.onSelectionChanged((data, envelope) => {
-	  //       handleSelectionChanged(data);
-	  //     }));
-	  //     topicSubscriptions.push(annotationService.onCurrentHoverChanged((data, envelope) => {
-	  //       handleHoverBinUpdate(data);
-	  //     }));
-	  //   }
-	  // }
-
 	  // Attach listener to provider
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-	  ['onFieldChange'].forEach(function (method) {
-	    if (model.provider[method]) {
-	      model.subscriptions.push(model.provider[method](fetchData));
-	    }
-	  });
-	  ['onHoverBinChange'].forEach(function (method) {
-	    if (model.provider[method]) {
-	      model.subscriptions.push(model.provider[method](handleHoverBinUpdate));
-	    }
-	  });
 
-	  if (model.provider.isA('DataUpdateProvider')) {
-	    model.updateSubscription = model.provider.subscribeToDataUpdate('histogram2d', function (data) {
-	      Object.keys(data).forEach(function (xName) {
-	        Object.keys(data[xName]).forEach(function (yName) {
-	          var histoPayload = data[xName][yName][0];
-	          if (histoPayload.role && histoPayload.role.type && histoPayload.role.type === 'alldata') {
-	            model.provider.setHistogram2D(xName, yName, histoPayload);
-	          }
-	        });
-	      });
-	      publicAPI.render();
-	    }, model.axes.getAxesPairs(), { nbins: 32 });
-	    model.subscriptions.push(model.updateSubscription);
+	  // Handle active field change, update axes
+	  if (model.provider.isA('FieldProvider')) {
+	    // Monitor any change
+	    model.subscriptions.push(model.provider.onFieldChange(function () {
+	      model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
+	        return { name: name, range: model.provider.getField(name).range };
+	      }));
+	    }));
+	    // Use initial state
+	    model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
+	      return { name: name, range: model.provider.getField(name).range };
+	    }));
+	  }
+
+	  // Handle bin hovering
+	  if (model.provider.onHoverBinChange) {
+	    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverBinUpdate));
+	  }
+
+	  if (model.provider.isA('Histogram2DProvider')) {
+	    model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(function (allBgHistogram2d) {
+	      if (Object.keys(allBgHistogram2d).length > 1) {
+	        model.allBgHistogram2dData = allBgHistogram2d;
+	        publicAPI.render();
+	      } else {
+	        model.allBgHistogram2dData = null;
+	      }
+	    }, model.axes.getAxesPairs(), {
+	      numberOfBins: model.numberOfBins,
+	      partial: false
+	    });
+
+	    model.subscriptions.push(model.axes.onAxisListChange(function (axisPairs) {
+	      model.histogram2DDataSubscription.update(axisPairs);
+	    }));
+
+	    model.subscriptions.push(model.histogram2DDataSubscription);
 	  }
 
 	  if (model.provider.isA('SelectionProvider')) {
-	    model.dataSubscription = model.provider.subscribeToDataSelection('histogram2d', function (data) {
+	    model.selectionDataSubscription = model.provider.subscribeToDataSelection('histogram2d', function (data) {
 	      model.selectionData = data;
 	      if (model.provider.getAnnotation()) {
 	        model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+	        if (data['##annotationGeneration##'] !== undefined) {
+	          if (model.provider.getAnnotation().generation === data['##annotationGeneration##']) {
+	            // render from selection data change (same generation)
+	            publicAPI.render();
+	          }
+	        } else {
+	          // render from selection data change (no generation)
+	          publicAPI.render();
+	        }
+	      } else {
+	        // render from selection data change (no annotation)
+	        publicAPI.render();
 	      }
-	      publicAPI.render();
 	    }, model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
-	    model.subscriptions.push(model.dataSubscription);
+	    model.subscriptions.push(model.selectionDataSubscription);
 
 	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
-	      model.axes.resetSelections(sel, false);
-	      publicAPI.render();
+	      if (!model.useAnnotation) {
+	        model.axes.resetSelections(sel, false);
+	        publicAPI.render();
+	      }
 	    }));
 	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
 	      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.id === lastAnnotationPushed.id && annotation.generation === lastAnnotationPushed.generation + 1) {
@@ -21683,7 +21643,6 @@
 	        model.defaultScore = lastAnnotationPushed.score[0];
 	      }
 	      model.axes.resetSelections(annotation.selection, false, annotation.score, scoreToColor);
-	      publicAPI.render();
 	    }));
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
 	      if (model.useAnnotation) {
@@ -21714,15 +21673,9 @@
 	      } else {
 	        model.provider.setSelection(model.axes.getSelection());
 	      }
-
-	      publicAPI.render();
 	    }));
 	    model.subscriptions.push(model.axes.onAxisListChange(function (axisPairs) {
-	      model.dataSubscription.update(axisPairs);
-	      if (model.provider.isA('DataUpdateProvider')) {
-	        model.updateSubscription.update(axisPairs);
-	      }
-	      publicAPI.render();
+	      model.selectionDataSubscription.update(axisPairs);
 	    }));
 	  } else {
 	    model.subscriptions.push(model.axes.onSelectionChange(function () {
@@ -21764,7 +21717,7 @@
 	  hoverIndicatorHeight: 10,
 	  hoverIndicatorWidth: 7,
 
-	  numberOfBins: 128,
+	  numberOfBins: 32,
 
 	  useAnnotation: false,
 	  defaultScore: 0,
@@ -21784,8 +21737,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores', 'numberOfBins']);
 
 	  parallelCoordinate(publicAPI, model);
 	}
@@ -32830,6 +32783,112 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Data Subscription
+	//   => dataHandler = {
+	//         // Set of default values you would expect in your metadata
+	//         defaultMetadata: {
+	//            numberOfBins: 32,
+	//         },
+	//
+	//         // Method used internally to store the data
+	//         set(model, data) { return !!sameAsBefore; }, // Return true if nothing has changed
+	//
+	//         // Method used internally to extract the data from the cache based on a given subscription
+	//         // This should return null/undefined if the data is not available (yet).
+	//         get(model, request, dataChanged) {},
+	//      }
+	// ----------------------------------------------------------------------------
+	// Methods generated with dataName = 'mutualInformation'
+	// => publicAPI
+	//     - onMutualInformationSubscriptionChange(callback) => subscription[unsubscribe() + update(variables = [], metadata = {})]
+	//     - fireMutualInformationSubscriptionChange(request)
+	//     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
+	//     - setMutualInformation(data)
+	//     - destroy()
+	// ----------------------------------------------------------------------------
+
+	function dataSubscriber(publicAPI, model, dataName, dataHandler) {
+	  // Private members
+	  var dataSubscriptions = [];
+	  var eventName = dataName + 'SubscriptionChange';
+	  var fireMethodName = 'fire' + capitalize(eventName);
+	  var dataContainerName = dataName + '_storage';
+
+	  // Add data container to model if not exist
+	  if (!model[dataContainerName]) {
+	    model[dataContainerName] = {};
+	  }
+
+	  // Add event handling methods
+	  event(publicAPI, model, eventName);
+
+	  function off() {
+	    var count = dataSubscriptions.length;
+	    while (count--) {
+	      dataSubscriptions[count] = null;
+	    }
+	  }
+
+	  // Internal function that will notify any subscriber with its data in a synchronous manner
+	  function flushDataToListener(dataListener, dataChanged) {
+	    try {
+	      if (dataListener) {
+	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
+	        if (dataToForward) {
+	          dataListener.onDataReady(dataToForward);
+	        }
+	      }
+	    } catch (err) {
+	      console.log('flush ' + dataName + ' error caught:', err);
+	    }
+	  }
+
+	  // onDataReady function will be called each time the setXXX method will be called and
+	  // when the actual subscription correspond to the data that has been set.
+	  // This is performed synchronously.
+	  publicAPI['subscribeTo' + capitalize(dataName)] = function (onDataReady) {
+	    var variables = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var metadata = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	    var id = dataSubscriptions.length;
+	    var request = {
+	      id: id,
+	      variables: variables,
+	      metadata: Object.assign({}, dataHandler.defaultMetadata, metadata)
+	    };
+	    var dataListener = { onDataReady: onDataReady, request: request };
+	    dataSubscriptions.push(dataListener);
+	    publicAPI[fireMethodName](request);
+	    flushDataToListener(dataListener, null);
+	    return {
+	      unsubscribe: function unsubscribe() {
+	        request.action = 'unsubscribe';
+	        publicAPI[fireMethodName](request);
+	        dataSubscriptions[id] = null;
+	      },
+	      update: function update(vars, meta) {
+	        request.variables = [].concat(vars);
+	        request.metadata = Object.assign({}, request.metadata, meta);
+	        publicAPI[fireMethodName](request);
+	        flushDataToListener(dataListener, null);
+	      }
+	    };
+	  };
+
+	  // Method use to store data
+	  publicAPI['set' + capitalize(dataName)] = function (data) {
+	    // Process all subscription to see if we can trigger a notification
+	    if (!dataHandler.set(model[dataContainerName], data)) {
+	      dataSubscriptions.forEach(function (dataListener) {
+	        return flushDataToListener(dataListener, data);
+	      });
+	    }
+	  };
+
+	  publicAPI.destroy = chain(off, publicAPI.destroy);
+	}
+
+	// ----------------------------------------------------------------------------
 	// newInstance
 	// ----------------------------------------------------------------------------
 
@@ -32852,7 +32911,8 @@
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set
+	  set: set,
+	  dataSubscriber: dataSubscriber
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).setImmediate))
 
@@ -32914,6 +32974,11 @@
 	    minMaxWidth: 0,
 	    histWidth: 0
 	  };
+
+	  // storage for 1d histograms
+	  if (!model.histograms) {
+	    model.histograms = {};
+	  }
 
 	  // public API
 	  publicAPI.resize = function () {
@@ -33058,51 +33123,50 @@
 	        }
 
 	        // make sure our data is ready. If not, render will be called when loaded.
-	        if (model.provider.loadHistogram1D(fieldName)) {
-	          var hobj = model.provider.getHistogram1D(fieldName);
-	          if (hobj !== null) {
-	            histCell.style('display', hideField.hist ? 'none' : null);
-	            // only do work if histogram is displayed.
-	            if (!hideField.hist) {
-	              (function () {
-	                var cmax = 1.0 * _d2.default.max(hobj.counts);
-	                var hsize = hobj.counts.length;
-	                var hdata = histCell.select('svg').selectAll('.' + _FieldSelector2.default.jsHistRect).data(hobj.counts);
+	        var hobj = model.histograms ? model.histograms[fieldName] : null;
+	        if (hobj) {
+	          histCell.style('display', hideField.hist ? 'none' : null);
 
-	                hdata.enter().append('rect');
-	                // changes apply to both enter and update data join:
-	                hdata.attr('class', function (d, i) {
-	                  return i % 2 === 0 ? _FieldSelector2.default.histRectEven : _FieldSelector2.default.histRectOdd;
-	                }).attr('pname', fieldName).attr('y', function (d) {
-	                  return model.fieldHistHeight * (1.0 - d / cmax);
-	                }).attr('x', function (d, i) {
-	                  return model.fieldHistWidth / hsize * i;
-	                }).attr('height', function (d) {
-	                  return model.fieldHistHeight * (d / cmax);
-	                }).attr('width', model.fieldHistWidth / hsize);
+	          // only do work if histogram is displayed.
+	          if (!hideField.hist) {
+	            (function () {
+	              var cmax = 1.0 * _d2.default.max(hobj.counts);
+	              var hsize = hobj.counts.length;
+	              var hdata = histCell.select('svg').selectAll('.' + _FieldSelector2.default.jsHistRect).data(hobj.counts);
 
-	                hdata.exit().remove();
+	              hdata.enter().append('rect');
+	              // changes apply to both enter and update data join:
+	              hdata.attr('class', function (d, i) {
+	                return i % 2 === 0 ? _FieldSelector2.default.histRectEven : _FieldSelector2.default.histRectOdd;
+	              }).attr('pname', fieldName).attr('y', function (d) {
+	                return model.fieldHistHeight * (1.0 - d / cmax);
+	              }).attr('x', function (d, i) {
+	                return model.fieldHistWidth / hsize * i;
+	              }).attr('height', function (d) {
+	                return model.fieldHistHeight * (d / cmax);
+	              }).attr('width', model.fieldHistWidth / hsize);
 
-	                if (model.provider.isA('HistogramBinHoverProvider')) {
-	                  histCell.select('svg').on('mousemove', function inner(d, i) {
-	                    var mCoords = _d2.default.mouse(this);
-	                    var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
-	                    var state = {};
-	                    state[fieldName] = [binNum];
-	                    model.provider.setHoverState({ state: state });
-	                  }).on('mouseout', function (d, i) {
-	                    var state = {};
-	                    state[fieldName] = [-1];
-	                    model.provider.setHoverState({ state: state });
-	                  });
-	                }
-	              })();
-	            }
+	              hdata.exit().remove();
 
-	            var formatter = _d2.default.format('.3s');
-	            minCell.text(formatter(hobj.min)).style('display', hideField.minMax ? 'none' : null);
-	            maxCell.text(formatter(hobj.max)).style('display', hideField.minMax ? 'none' : null);
+	              if (model.provider.isA('HistogramBinHoverProvider')) {
+	                histCell.select('svg').on('mousemove', function inner(d, i) {
+	                  var mCoords = _d2.default.mouse(this);
+	                  var binNum = Math.floor(mCoords[0] / model.fieldHistWidth * hsize);
+	                  var state = {};
+	                  state[fieldName] = [binNum];
+	                  model.provider.setHoverState({ state: state });
+	                }).on('mouseout', function (d, i) {
+	                  var state = {};
+	                  state[fieldName] = [-1];
+	                  model.provider.setHoverState({ state: state });
+	                });
+	              }
+	            })();
 	          }
+
+	          var formatter = _d2.default.format('.3s');
+	          minCell.text(formatter(hobj.min)).style('display', hideField.minMax ? 'none' : null);
+	          maxCell.text(formatter(hobj.max)).style('display', hideField.minMax ? 'none' : null);
 	        }
 	      }
 	    }
@@ -33125,12 +33189,24 @@
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
-
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 	  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
 	  if (model.fieldShowHistogram) {
-	    // event from Histogram Provider
-	    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+	    if (model.provider.isA('Histogram1DProvider')) {
+	      model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (allHistogram1d) {
+	        // Below, we're asking for partial updates, so we just update our
+	        // cache with anything that came in.
+	        Object.keys(allHistogram1d).forEach(function (paramName) {
+	          model.histograms[paramName] = allHistogram1d[paramName];
+	        });
+	        publicAPI.render();
+	      }, model.provider.getFieldNames(), {
+	        numberOfBins: model.numberOfBins,
+	        partial: true
+	      });
+
+	      model.subscriptions.push(model.histogram1DDataSubscription);
+	    }
 	  }
 
 	  if (model.provider.isA('HistogramBinHoverProvider')) {
@@ -33148,7 +33224,8 @@
 	  displayUnselected: true,
 	  fieldShowHistogram: true,
 	  fieldHistWidth: 120,
-	  fieldHistHeight: 15
+	  fieldHistHeight: 15,
+	  numberOfBins: 32
 	};
 
 	// ----------------------------------------------------------------------------
@@ -33160,8 +33237,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldShowHistogram']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['fieldShowHistogram', 'numberOfBins']);
 
 	  fieldSelector(publicAPI, model);
 	}
@@ -34183,71 +34260,57 @@
 	// Histogram 1D Provider
 	// ----------------------------------------------------------------------------
 
-	function histogram1DProvider(publicAPI, model, fetchHelper) {
-	  // Private members
-	  var ready = publicAPI.fireHistogram1DReady;
-	  delete publicAPI.fireHistogram1DReady;
+	/*
+	  Data Format: Below is an example of the expected histogram 1D data format
 
-	  // Protected members
-	  if (!model.histogram1DData) {
-	    model.histogram1DData = {};
+	  {
+	    "name": "points per game",
+	    "min": 0,
+	    "max": 32,
+	    "counts": [10, 4, 0, 0, 13, ... ]
 	  }
-
-	  // Data access
-	  publicAPI.setHistogram1DNumberOfBins = function (bin) {
-	    if (model.histogram1DNumberOfBins !== bin) {
-	      model.histogram1DData = {};
-	      model.histogram1DNumberOfBins = bin;
-	    }
-	  };
-
-	  // Return true if data is available
-	  publicAPI.loadHistogram1D = function (field) {
-	    if (!model.histogram1DData[field]) {
-	      model.histogram1DData[field] = { pending: true };
-	      fetchHelper.addRequest(field);
-	      return false;
-	    }
-
-	    if (model.histogram1DData[field].pending) {
-	      return false;
-	    }
-
-	    return true;
-	  };
-
-	  publicAPI.getHistogram1D = function (field) {
-	    return model.histogram1DData[field];
-	  };
-	  publicAPI.setHistogram1D = function (field, data) {
-	    model.histogram1DData[field] = data;
-	    ready(field, data);
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // histogram1DData: null,
-	  histogram1DNumberOfBins: 32
-	};
-
-	// ----------------------------------------------------------------------------
+	*/
 
 	function extend(publicAPI, model) {
 	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
+	  Object.assign(model, initialValues);
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'Histogram1DProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram1DNumberOfBins']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'histogram1DReady');
-	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Histogram1D');
+	  _CompositeClosureHelper2.default.dataSubscriber(publicAPI, model, 'histogram1D', {
+	    defaultMetadata: {
+	      numberOfBins: 32,
+	      partial: true
+	    },
+	    set: function set(storage, data) {
+	      var numberOfBins = data.counts.length;
+	      if (!storage[numberOfBins]) {
+	        storage[numberOfBins] = {};
+	      }
+	      var binStorage = storage[numberOfBins];
+	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.name]);
+	      binStorage[data.name] = data;
+	      return sameAsBefore;
+	    },
+	    get: function get(storage, request, dataChanged) {
+	      var numberOfBins = request.metadata.numberOfBins;
 
-	  histogram1DProvider(publicAPI, model, fetchHelper);
+	      var binStorage = storage[numberOfBins];
+	      var returnedData = {};
+	      var count = 0;
+	      request.variables.forEach(function (name) {
+	        if (binStorage && binStorage[name]) {
+	          count++;
+	          returnedData[name] = binStorage[name];
+	        }
+	      });
+	      if (count === request.variables.length || request.metadata.partial && count > 0) {
+	        return returnedData;
+	      }
+	      return null;
+	    }
+	  });
 	}
 
 	// ----------------------------------------------------------------------------
@@ -34277,6 +34340,28 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// ----------------------------------------------------------------------------
+	// Expected Data Format for Histogram2D
+	// ----------------------------------------------------------------------------
+	//
+	// {
+	//   "x": {
+	//     delta: 3.5,
+	//     extent: [0, 35],
+	//     name: "Name of X",
+	//   },
+	//   "y": {
+	//     delta: 1,
+	//     extent: [0, 10],
+	//     name: "Name of Y",
+	//   },
+	//   "bins": [
+	//     { x: 3.5, y: 5, count: 46 }, ...
+	//   ]
+	// }
+	//
+	// ----------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------
 	// Global
 	// ----------------------------------------------------------------------------
 
@@ -34294,7 +34379,9 @@
 	      };
 	    }),
 	    x: histo2d.y,
-	    y: histo2d.x };
+	    y: histo2d.x,
+	    maxCount: histo2d.maxCount
+	  };
 
 	  return newHisto2d;
 	}
@@ -34303,120 +34390,73 @@
 	// Histogram 2D Provider
 	// ----------------------------------------------------------------------------
 
-	function histogram2DProvider(publicAPI, model, fetchHelper) {
-	  // Private members
-	  var ready = publicAPI.fireHistogram2DReady;
-	  delete publicAPI.fireHistogram2DReady;
-
-	  // Protected members
-	  if (!model.histogram2DData) {
-	    model.histogram2DData = {};
-	  }
-
-	  // Data access
-	  publicAPI.setHistogram2DNumberOfBins = function (bin) {
-	    if (model.histogram2DNumberOfBins !== bin) {
-	      model.histogram2DData = {};
-	      model.histogram2DNumberOfBins = bin;
-	    }
-	  };
-
-	  // Return true if data is available
-	  publicAPI.loadHistogram2D = function (axisA, axisB) {
-	    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
-	      if (model.histogram2DData[axisA][axisB].pending) {
-	        return false;
-	      }
-	      return true;
-	    }
-	    if (model.histogram2DData[axisB] && model.histogram2DData[axisB][axisA] && !model.histogram2DData[axisB][axisA].pending) {
-	      if (!model.histogram2DData[axisA]) {
-	        model.histogram2DData[axisA] = {};
-	      }
-	      model.histogram2DData[axisA][axisB] = flipHistogram(model.histogram2DData[axisB][axisA]);
-	      return true;
-	    }
-
-	    if (!model.histogram2DData[axisA]) {
-	      model.histogram2DData[axisA] = {};
-	    }
-	    model.histogram2DData[axisA][axisB] = { pending: true };
-
-	    // Request data if possible
-	    fetchHelper.addRequest([axisA, axisB]);
-
-	    return false;
-	  };
-
-	  publicAPI.getHistogram2D = function (axisA, axisB) {
-	    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
-	      return model.histogram2DData[axisA][axisB];
-	    }
-	    return null;
-	  };
-
-	  publicAPI.setHistogram2D = function (axisA, axisB, data) {
-	    if (!model.histogram2DData[axisA]) {
-	      model.histogram2DData[axisA] = {};
-	    }
-	    if (!model.histogram2DData[axisB]) {
-	      model.histogram2DData[axisB] = {};
-	    }
-	    model.histogram2DData[axisA][axisB] = data;
-	    model.histogram2DData[axisB][axisA] = flipHistogram(data);
-
-	    ready(axisA, axisB, data);
-	  };
-
-	  publicAPI.getMaxCount = function (axisA, axisB) {
-	    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB] && model.histogram2DData[axisA][axisB].bins) {
-	      if (!model.histogram2DData[axisA][axisB].maxCount) {
-	        (function () {
-	          var count = 0;
-	          model.histogram2DData[axisA][axisB].bins.forEach(function (item) {
-	            count = count < item.count ? item.count : count;
-	          });
-	          model.histogram2DData[axisA][axisB].maxCount = count;
-	        })();
-	      }
-	      return model.histogram2DData[axisA][axisB].maxCount;
-	    }
-	    return 0;
-	  };
-
-	  publicAPI.getMaxCounts = function (listOfAxisPair) {
-	    return listOfAxisPair.map(function (args) {
-	      return publicAPI.getMaxCount(args[0], args[1]);
-	    });
-	  };
-	  publicAPI.getMaxOfMaxCounts = function (listOfAxisPair) {
-	    return Math.max.apply(null, publicAPI.getMaxCounts(listOfAxisPair));
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // histogram2DData: null,
-	  histogram2DNumberOfBins: 32
-	};
-
-	// ----------------------------------------------------------------------------
-
 	function extend(publicAPI, model) {
 	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
+	  Object.assign(model, initialValues);
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'Histogram2DProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram2DNumberOfBins']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'Histogram2DReady');
-	  var fetchHelper = _CompositeClosureHelper2.default.fetch(publicAPI, model, 'Histogram2D');
+	  _CompositeClosureHelper2.default.dataSubscriber(publicAPI, model, 'histogram2D', {
+	    defaultMetadata: {
+	      numberOfBins: 32,
+	      partial: true
+	    },
+	    set: function set(storage, data) {
+	      var binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+	      if (!storage[binSize]) {
+	        storage[binSize] = {};
+	      }
+	      var binStorage = storage[binSize];
+	      if (!binStorage[data.x.name]) {
+	        binStorage[data.x.name] = {};
+	      }
+	      if (!binStorage[data.y.name]) {
+	        binStorage[data.y.name] = {};
+	      }
 
-	  histogram2DProvider(publicAPI, model, fetchHelper);
+	      // Add maxCount
+	      var maxCount = 0;
+	      data.bins.forEach(function (item) {
+	        maxCount = maxCount < item.count ? item.count : maxCount;
+	      });
+	      data.maxCount = maxCount;
+
+	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]);
+
+	      binStorage[data.x.name][data.y.name] = data;
+	      binStorage[data.y.name][data.x.name] = flipHistogram(data);
+
+	      return sameAsBefore;
+	    },
+	    get: function get(storage, request, dataChanged) {
+	      var returnedData = {};
+	      var count = 0;
+	      var maxCount = 0;
+	      var numberOfBins = request.metadata.numberOfBins;
+
+	      var binStorage = storage[numberOfBins];
+	      request.variables.forEach(function (axisPair) {
+	        if (!returnedData[axisPair[0]]) {
+	          returnedData[axisPair[0]] = {};
+	        }
+	        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
+	          var hist2d = binStorage[axisPair[0]][axisPair[1]];
+	          count++;
+	          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
+	          returnedData[axisPair[0]][axisPair[1]] = hist2d;
+	        }
+	      });
+
+	      // Attach global maxCount
+	      returnedData.maxCount = maxCount;
+
+	      if (count === request.variables.length || request.metadata.partial && count > 0) {
+	        return returnedData;
+	      }
+	      return null;
+	    }
+	  });
 	}
 
 	// ----------------------------------------------------------------------------

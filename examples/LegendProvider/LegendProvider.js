@@ -21894,6 +21894,112 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Data Subscription
+	//   => dataHandler = {
+	//         // Set of default values you would expect in your metadata
+	//         defaultMetadata: {
+	//            numberOfBins: 32,
+	//         },
+	//
+	//         // Method used internally to store the data
+	//         set(model, data) { return !!sameAsBefore; }, // Return true if nothing has changed
+	//
+	//         // Method used internally to extract the data from the cache based on a given subscription
+	//         // This should return null/undefined if the data is not available (yet).
+	//         get(model, request, dataChanged) {},
+	//      }
+	// ----------------------------------------------------------------------------
+	// Methods generated with dataName = 'mutualInformation'
+	// => publicAPI
+	//     - onMutualInformationSubscriptionChange(callback) => subscription[unsubscribe() + update(variables = [], metadata = {})]
+	//     - fireMutualInformationSubscriptionChange(request)
+	//     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
+	//     - setMutualInformation(data)
+	//     - destroy()
+	// ----------------------------------------------------------------------------
+
+	function dataSubscriber(publicAPI, model, dataName, dataHandler) {
+	  // Private members
+	  var dataSubscriptions = [];
+	  var eventName = dataName + 'SubscriptionChange';
+	  var fireMethodName = 'fire' + capitalize(eventName);
+	  var dataContainerName = dataName + '_storage';
+
+	  // Add data container to model if not exist
+	  if (!model[dataContainerName]) {
+	    model[dataContainerName] = {};
+	  }
+
+	  // Add event handling methods
+	  event(publicAPI, model, eventName);
+
+	  function off() {
+	    var count = dataSubscriptions.length;
+	    while (count--) {
+	      dataSubscriptions[count] = null;
+	    }
+	  }
+
+	  // Internal function that will notify any subscriber with its data in a synchronous manner
+	  function flushDataToListener(dataListener, dataChanged) {
+	    try {
+	      if (dataListener) {
+	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
+	        if (dataToForward) {
+	          dataListener.onDataReady(dataToForward);
+	        }
+	      }
+	    } catch (err) {
+	      console.log('flush ' + dataName + ' error caught:', err);
+	    }
+	  }
+
+	  // onDataReady function will be called each time the setXXX method will be called and
+	  // when the actual subscription correspond to the data that has been set.
+	  // This is performed synchronously.
+	  publicAPI['subscribeTo' + capitalize(dataName)] = function (onDataReady) {
+	    var variables = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var metadata = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	    var id = dataSubscriptions.length;
+	    var request = {
+	      id: id,
+	      variables: variables,
+	      metadata: Object.assign({}, dataHandler.defaultMetadata, metadata)
+	    };
+	    var dataListener = { onDataReady: onDataReady, request: request };
+	    dataSubscriptions.push(dataListener);
+	    publicAPI[fireMethodName](request);
+	    flushDataToListener(dataListener, null);
+	    return {
+	      unsubscribe: function unsubscribe() {
+	        request.action = 'unsubscribe';
+	        publicAPI[fireMethodName](request);
+	        dataSubscriptions[id] = null;
+	      },
+	      update: function update(vars, meta) {
+	        request.variables = [].concat(vars);
+	        request.metadata = Object.assign({}, request.metadata, meta);
+	        publicAPI[fireMethodName](request);
+	        flushDataToListener(dataListener, null);
+	      }
+	    };
+	  };
+
+	  // Method use to store data
+	  publicAPI['set' + capitalize(dataName)] = function (data) {
+	    // Process all subscription to see if we can trigger a notification
+	    if (!dataHandler.set(model[dataContainerName], data)) {
+	      dataSubscriptions.forEach(function (dataListener) {
+	        return flushDataToListener(dataListener, data);
+	      });
+	    }
+	  };
+
+	  publicAPI.destroy = chain(off, publicAPI.destroy);
+	}
+
+	// ----------------------------------------------------------------------------
 	// newInstance
 	// ----------------------------------------------------------------------------
 
@@ -21916,7 +22022,8 @@
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set
+	  set: set,
+	  dataSubscriber: dataSubscriber
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(174).setImmediate))
 
