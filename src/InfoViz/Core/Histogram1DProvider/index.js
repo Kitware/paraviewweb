@@ -26,17 +26,24 @@ export function extend(publicAPI, model, initialValues = {}) {
       partial: true,
     },
     set(storage, data) {
-      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(storage[data.name]));
-      storage[data.name] = data;
+      const numberOfBins = data.counts.length;
+      if (!storage[numberOfBins]) {
+        storage[numberOfBins] = {};
+      }
+      const binStorage = storage[numberOfBins];
+      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.name]));
+      binStorage[data.name] = data;
       return sameAsBefore;
     },
     get(storage, request, dataChanged) {
+      const { numberOfBins } = request.metadata;
+      const binStorage = storage[numberOfBins];
       const returnedData = {};
       let count = 0;
       request.variables.forEach(name => {
-        if (storage[name]) {
+        if (binStorage[name]) {
           count++;
-          returnedData[name] = storage[name];
+          returnedData[name] = binStorage[name];
         }
       });
       if (count === request.variables.length || (request.metadata.partial && count > 0)) {
