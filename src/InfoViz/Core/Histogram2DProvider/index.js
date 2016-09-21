@@ -1,6 +1,28 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 // ----------------------------------------------------------------------------
+// Expected Data Format for Histogram2D
+// ----------------------------------------------------------------------------
+//
+// {
+//   "x": {
+//     delta: 3.5,
+//     extent: [0, 35],
+//     name: "Name of X",
+//   },
+//   "y": {
+//     delta: 1,
+//     extent: [0, 10],
+//     name: "Name of Y",
+//   },
+//   "bins": [
+//     { x: 3.5, y: 5, count: 46 }, ...
+//   ]
+// }
+//
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 // Global
 // ----------------------------------------------------------------------------
 
@@ -15,7 +37,9 @@ function flipHistogram(histo2d) {
       };
     }),
     x: histo2d.y,
-    y: histo2d.x };
+    y: histo2d.x,
+    maxCount: histo2d.maxCount,
+  };
 
   return newHisto2d;
 }
@@ -24,110 +48,70 @@ function flipHistogram(histo2d) {
 // Histogram 2D Provider
 // ----------------------------------------------------------------------------
 
-function histogram2DProvider(publicAPI, model, fetchHelper) {
-  // Private members
-  const ready = publicAPI.fireHistogram2DReady;
-  delete publicAPI.fireHistogram2DReady;
-
-  // Protected members
-  if (!model.histogram2DData) {
-    model.histogram2DData = {};
-  }
-
-  // Data access
-  publicAPI.setHistogram2DNumberOfBins = bin => {
-    if (model.histogram2DNumberOfBins !== bin) {
-      model.histogram2DData = {};
-      model.histogram2DNumberOfBins = bin;
-    }
-  };
-
-  // Return true if data is available
-  publicAPI.loadHistogram2D = (axisA, axisB) => {
-    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
-      if (model.histogram2DData[axisA][axisB].pending) {
-        return false;
-      }
-      return true;
-    }
-    if (model.histogram2DData[axisB] && model.histogram2DData[axisB][axisA] && !model.histogram2DData[axisB][axisA].pending) {
-      if (!model.histogram2DData[axisA]) {
-        model.histogram2DData[axisA] = {};
-      }
-      model.histogram2DData[axisA][axisB] = flipHistogram(model.histogram2DData[axisB][axisA]);
-      return true;
-    }
-
-    if (!model.histogram2DData[axisA]) {
-      model.histogram2DData[axisA] = {};
-    }
-    model.histogram2DData[axisA][axisB] = { pending: true };
-
-    // Request data if possible
-    fetchHelper.addRequest([axisA, axisB]);
-
-    return false;
-  };
-
-  publicAPI.getHistogram2D = (axisA, axisB) => {
-    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB]) {
-      return model.histogram2DData[axisA][axisB];
-    }
-    return null;
-  };
-
-  publicAPI.setHistogram2D = (axisA, axisB, data) => {
-    if (!model.histogram2DData[axisA]) {
-      model.histogram2DData[axisA] = {};
-    }
-    if (!model.histogram2DData[axisB]) {
-      model.histogram2DData[axisB] = {};
-    }
-    model.histogram2DData[axisA][axisB] = data;
-    model.histogram2DData[axisB][axisA] = flipHistogram(data);
-
-    ready(axisA, axisB, data);
-  };
-
-  publicAPI.getMaxCount = (axisA, axisB) => {
-    if (model.histogram2DData[axisA] && model.histogram2DData[axisA][axisB] && model.histogram2DData[axisA][axisB].bins) {
-      if (!model.histogram2DData[axisA][axisB].maxCount) {
-        let count = 0;
-        model.histogram2DData[axisA][axisB].bins.forEach(item => {
-          count = count < item.count ? item.count : count;
-        });
-        model.histogram2DData[axisA][axisB].maxCount = count;
-      }
-      return model.histogram2DData[axisA][axisB].maxCount;
-    }
-    return 0;
-  };
-
-  publicAPI.getMaxCounts = listOfAxisPair => listOfAxisPair.map(args => publicAPI.getMaxCount(args[0], args[1]));
-  publicAPI.getMaxOfMaxCounts = listOfAxisPair => Math.max.apply(null, publicAPI.getMaxCounts(listOfAxisPair));
-}
-
-// ----------------------------------------------------------------------------
-// Object factory
-// ----------------------------------------------------------------------------
-
-const DEFAULT_VALUES = {
-  // histogram2DData: null,
-  histogram2DNumberOfBins: 32,
-};
-
-// ----------------------------------------------------------------------------
-
 export function extend(publicAPI, model, initialValues = {}) {
-  Object.assign(model, DEFAULT_VALUES, initialValues);
+  Object.assign(model, initialValues);
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'Histogram2DProvider');
-  CompositeClosureHelper.get(publicAPI, model, ['histogram2DNumberOfBins']);
-  CompositeClosureHelper.event(publicAPI, model, 'Histogram2DReady');
-  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'Histogram2D');
+  CompositeClosureHelper.dataSubscriber(publicAPI, model, 'histogram2D', {
+    defaultMetadata: {
+      numberOfBins: 32,
+      partial: true,
+    },
+    set(storage, data) {
+      const binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+      if (!storage[binSize]) {
+        storage[binSize] = {};
+      }
+      const binStorage = storage[binSize];
+      if (!binStorage[data.x.name]) {
+        binStorage[data.x.name] = {};
+      }
+      if (!binStorage[data.y.name]) {
+        binStorage[data.y.name] = {};
+      }
 
-  histogram2DProvider(publicAPI, model, fetchHelper);
+      // Add maxCount
+      let maxCount = 0;
+      data.bins.forEach(item => {
+        maxCount = maxCount < item.count ? item.count : maxCount;
+      });
+      data.maxCount = maxCount;
+
+      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]));
+
+      binStorage[data.x.name][data.y.name] = data;
+      binStorage[data.y.name][data.x.name] = flipHistogram(data);
+
+      return sameAsBefore;
+    },
+    get(storage, request, dataChanged) {
+      const returnedData = {};
+      let count = 0;
+      let maxCount = 0;
+      const { numberOfBins } = request.metadata;
+      const binStorage = storage[numberOfBins];
+      request.variables.forEach(axisPair => {
+        if (!returnedData[axisPair[0]]) {
+          returnedData[axisPair[0]] = {};
+        }
+        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
+          const hist2d = binStorage[axisPair[0]][axisPair[1]];
+          count++;
+          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
+          returnedData[axisPair[0]][axisPair[1]] = hist2d;
+        }
+      });
+
+      // Attach global maxCount
+      returnedData.maxCount = maxCount;
+
+      if (count === request.variables.length || (request.metadata.partial && count > 0)) {
+        return returnedData;
+      }
+      return null;
+    },
+  });
 }
 
 // ----------------------------------------------------------------------------

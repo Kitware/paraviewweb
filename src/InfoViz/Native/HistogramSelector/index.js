@@ -96,55 +96,6 @@ function histogramSelector(publicAPI, model) {
   publicAPI.svgWidth = () => (model.histWidth + model.histMargin.left + model.histMargin.right);
   publicAPI.svgHeight = () => (model.histHeight + model.histMargin.top + model.histMargin.bottom);
 
-  function fetchData(field) {
-    model.needData = true;
-
-    if (model.provider) {
-      let dataToLoadCount = 0;
-
-      let fieldNames = [];
-      // Initialize fields
-      if (model.provider.isA('FieldProvider')) {
-        fieldNames = model.provider.getFieldNames();
-        if (!model.fieldData) {
-          model.fieldData = {};
-          fieldNames.forEach(name => {
-            model.fieldData[name] = Object.assign(
-              {},
-              model.provider.getField(name),
-              scoreHelper.defaultFieldData()
-              );
-          });
-        } else if (field !== undefined) {
-          // update of a specific field from the field provider, most likely the 'active' flag.
-          Object.assign(model.fieldData[field.name], field);
-        }
-      }
-
-      // Fetch 1D Histogram
-      if (model.provider.isA('Histogram1DProvider')) {
-        dataToLoadCount += fieldNames.length;
-        for (let i = 0; i < fieldNames.length; i++) {
-          // Return true if the data is already loaded
-          dataToLoadCount -= model.provider.loadHistogram1D(fieldNames[i])
-            ? 1 : 0;
-        }
-      }
-
-      // Fetch Selection
-      if (model.provider.isA('SelectionProvider')) {
-        // fetchSelectionData();
-      }
-
-      // Check if we can render or not
-      model.needData = !!dataToLoadCount;
-
-      if (!model.needData) {
-        publicAPI.render();
-      }
-    }
-  }
-
   function getClientArea() {
     const clientRect = model.listContainer.getBoundingClientRect();
     return [clientRect.width - borderSize - scrollbarWidth,
@@ -395,10 +346,10 @@ function histogramSelector(publicAPI, model) {
   };
 
   publicAPI.render = (onlyFieldName = null) => {
-    if (model.needData) {
-      fetchData();
+    if (!model.histograms) {
       return;
     }
+
     if (!model.container || model.container.offsetParent === null) return;
 
     const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
@@ -612,9 +563,9 @@ function histogramSelector(publicAPI, model) {
         .attr('height', publicAPI.svgHeight());
 
       // get the histogram data and rebuild the histogram based on the results
-      const hobj = model.provider.getHistogram1D(def.name);
+      const hobj = model.histograms[def.name];
       def.hobj = hobj;
-      if (hobj !== null) {
+      if (hobj) {
         const cmax = 1.0 * d3.max(hobj.counts);
         const hsize = hobj.counts.length;
         const hdata = svgGr.select(`.${style.jsGRect}`)
@@ -770,33 +721,46 @@ function histogramSelector(publicAPI, model) {
     });
   }
 
+  // Auto unmount on destroy
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  // event from the FieldProvider
-  // TODO overkill if one field's 'active' flag changes.
-  model.subscriptions.push(model.provider.onFieldChange(fetchData));
-  // event from Histogram Provider
-  model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+
+  if (model.provider.isA('FieldProvider')) {
+    const fieldNames = model.provider.getFieldNames();
+    if (!model.fieldData) {
+      model.fieldData = {};
+    }
+
+    fieldNames.forEach(name => {
+      model.fieldData[name] = Object.assign(
+        model.fieldData[name] || {},
+        model.provider.getField(name),
+        scoreHelper.defaultFieldData());
+    });
+
+    model.subscriptions.push(model.provider.onFieldChange(field => {
+      Object.assign(model.fieldData[field.name], field);
+      publicAPI.render();
+    }));
+  }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
 
-  if (model.provider.isA('DataUpdateProvider')) {
-    model.updateSubscription = model.provider.subscribeToDataUpdate(
-      'histogram1d',
+  if (model.provider.isA('Histogram1DProvider')) {
+    model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
       data => {
-        Object.keys(data).forEach(xName => {
-          const histoPayload = data[xName][0];
-          model.provider.setHistogram1D(xName, {
-            counts: histoPayload.bins.map(b => b.count),
-            min: histoPayload.x.extent[0],
-            max: histoPayload.x.extent[1],
-          });
-        });
+        model.histograms = data;
         publicAPI.render();
       },
-      model.provider.getFieldNames(), { nbins: 32 });
-    model.subscriptions.push(model.updateSubscription);
+      Object.keys(model.fieldData),
+      {
+        numberOfBins: model.numberOfBins,
+        partial: false,
+      }
+    );
+
+    model.subscriptions.push(model.histogram1DDataSubscription);
   }
 
   // scoring interface
@@ -843,6 +807,8 @@ const DEFAULT_VALUES = {
   defaultScore: 0,
   dragMargin: 8,
   selectedDef: null,
+
+  numberOfBins: 32,
 };
 
 // ----------------------------------------------------------------------------
@@ -852,7 +818,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
 
   histogramSelector(publicAPI, model);
 }

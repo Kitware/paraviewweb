@@ -235,6 +235,7 @@ function get(model, query) {
 function getNotificationData(model, request) {
   const result = {};
   let missingData = false;
+  const generationNumbers = [];
 
   request.variables.forEach(axes => {
     const histograms = get(model, { axes });
@@ -243,10 +244,20 @@ function getNotificationData(model, request) {
         result[axes[0]] = {};
       }
       result[axes[0]][axes[1]] = histograms;
+      histograms.forEach(hist => generationNumbers.push(hist.annotationInfo.annotationGeneration));
     } else {
       missingData = true;
     }
   });
+
+  // Prevent generation mix in result
+  generationNumbers.sort();
+  const generation = generationNumbers.shift();
+  if (generationNumbers.length && generation !== generationNumbers.pop()) {
+    return null;
+  }
+
+  result['##annotationGeneration##'] = generation;
 
   return missingData ? null : result;
 }

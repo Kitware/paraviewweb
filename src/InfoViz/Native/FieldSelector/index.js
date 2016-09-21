@@ -21,6 +21,11 @@ function fieldSelector(publicAPI, model) {
     histWidth: 0,
   };
 
+  // storage for 1d histograms
+  if (!model.histograms) {
+    model.histograms = {};
+  }
+
   // public API
   publicAPI.resize = () => {
     publicAPI.render();
@@ -192,53 +197,52 @@ function fieldSelector(publicAPI, model) {
         }
 
         // make sure our data is ready. If not, render will be called when loaded.
-        if (model.provider.loadHistogram1D(fieldName)) {
-          const hobj = model.provider.getHistogram1D(fieldName);
-          if (hobj !== null) {
-            histCell
-              .style('display', hideField.hist ? 'none' : null);
-            // only do work if histogram is displayed.
-            if (!hideField.hist) {
-              const cmax = 1.0 * d3.max(hobj.counts);
-              const hsize = hobj.counts.length;
-              const hdata = histCell.select('svg')
-                .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
+        const hobj = model.histograms ? model.histograms[fieldName] : null;
+        if (hobj) {
+          histCell
+            .style('display', hideField.hist ? 'none' : null);
 
-              hdata.enter().append('rect');
-              // changes apply to both enter and update data join:
-              hdata
-                .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
-                .attr('pname', fieldName)
-                .attr('y', d => model.fieldHistHeight * (1.0 - (d / cmax)))
-                .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
-                .attr('height', d => model.fieldHistHeight * (d / cmax))
-                .attr('width', model.fieldHistWidth / hsize);
+          // only do work if histogram is displayed.
+          if (!hideField.hist) {
+            const cmax = 1.0 * d3.max(hobj.counts);
+            const hsize = hobj.counts.length;
+            const hdata = histCell.select('svg')
+              .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
 
-              hdata.exit().remove();
+            hdata.enter().append('rect');
+            // changes apply to both enter and update data join:
+            hdata
+              .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
+              .attr('pname', fieldName)
+              .attr('y', d => model.fieldHistHeight * (1.0 - (d / cmax)))
+              .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
+              .attr('height', d => model.fieldHistHeight * (d / cmax))
+              .attr('width', model.fieldHistWidth / hsize);
 
-              if (model.provider.isA('HistogramBinHoverProvider')) {
-                histCell.select('svg')
-                  .on('mousemove', function inner(d, i) {
-                    const mCoords = d3.mouse(this);
-                    const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
-                    const state = {};
-                    state[fieldName] = [binNum];
-                    model.provider.setHoverState({ state });
-                  })
-                  .on('mouseout', (d, i) => {
-                    const state = {};
-                    state[fieldName] = [-1];
-                    model.provider.setHoverState({ state });
-                  });
-              }
+            hdata.exit().remove();
+
+            if (model.provider.isA('HistogramBinHoverProvider')) {
+              histCell.select('svg')
+                .on('mousemove', function inner(d, i) {
+                  const mCoords = d3.mouse(this);
+                  const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
+                  const state = {};
+                  state[fieldName] = [binNum];
+                  model.provider.setHoverState({ state });
+                })
+                .on('mouseout', (d, i) => {
+                  const state = {};
+                  state[fieldName] = [-1];
+                  model.provider.setHoverState({ state });
+                });
             }
-
-            const formatter = d3.format('.3s');
-            minCell.text(formatter(hobj.min))
-              .style('display', hideField.minMax ? 'none' : null);
-            maxCell.text(formatter(hobj.max))
-              .style('display', hideField.minMax ? 'none' : null);
           }
+
+          const formatter = d3.format('.3s');
+          minCell.text(formatter(hobj.min))
+            .style('display', hideField.minMax ? 'none' : null);
+          maxCell.text(formatter(hobj.max))
+            .style('display', hideField.minMax ? 'none' : null);
         }
       }
     }
@@ -260,12 +264,28 @@ function fieldSelector(publicAPI, model) {
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
-
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
   model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
   if (model.fieldShowHistogram) {
-    // event from Histogram Provider
-    model.subscriptions.push(model.provider.onHistogram1DReady(publicAPI.render));
+    if (model.provider.isA('Histogram1DProvider')) {
+      model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
+        allHistogram1d => {
+          // Below, we're asking for partial updates, so we just update our
+          // cache with anything that came in.
+          Object.keys(allHistogram1d).forEach(paramName => {
+            model.histograms[paramName] = allHistogram1d[paramName];
+          });
+          publicAPI.render();
+        },
+        model.provider.getFieldNames(),
+        {
+          numberOfBins: model.numberOfBins,
+          partial: true,
+        }
+      );
+
+      model.subscriptions.push(model.histogram1DDataSubscription);
+    }
   }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
@@ -284,6 +304,7 @@ const DEFAULT_VALUES = {
   fieldShowHistogram: true,
   fieldHistWidth: 120,
   fieldHistHeight: 15,
+  numberOfBins: 32,
 };
 
 // ----------------------------------------------------------------------------
@@ -293,8 +314,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram']);
-  CompositeClosureHelper.set(publicAPI, model, ['fieldShowHistogram']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['fieldShowHistogram', 'numberOfBins']);
 
   fieldSelector(publicAPI, model);
 }

@@ -4,67 +4,54 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // Histogram 1D Provider
 // ----------------------------------------------------------------------------
 
-function histogram1DProvider(publicAPI, model, fetchHelper) {
-  // Private members
-  const ready = publicAPI.fireHistogram1DReady;
-  delete publicAPI.fireHistogram1DReady;
+/*
+  Data Format: Below is an example of the expected histogram 1D data format
 
-  // Protected members
-  if (!model.histogram1DData) {
-    model.histogram1DData = {};
+  {
+    "name": "points per game",
+    "min": 0,
+    "max": 32,
+    "counts": [10, 4, 0, 0, 13, ... ]
   }
-
-  // Data access
-  publicAPI.setHistogram1DNumberOfBins = bin => {
-    if (model.histogram1DNumberOfBins !== bin) {
-      model.histogram1DData = {};
-      model.histogram1DNumberOfBins = bin;
-    }
-  };
-
-  // Return true if data is available
-  publicAPI.loadHistogram1D = field => {
-    if (!model.histogram1DData[field]) {
-      model.histogram1DData[field] = { pending: true };
-      fetchHelper.addRequest(field);
-      return false;
-    }
-
-    if (model.histogram1DData[field].pending) {
-      return false;
-    }
-
-    return true;
-  };
-
-  publicAPI.getHistogram1D = field => model.histogram1DData[field];
-  publicAPI.setHistogram1D = (field, data) => {
-    model.histogram1DData[field] = data;
-    ready(field, data);
-  };
-}
-
-// ----------------------------------------------------------------------------
-// Object factory
-// ----------------------------------------------------------------------------
-
-const DEFAULT_VALUES = {
-  // histogram1DData: null,
-  histogram1DNumberOfBins: 32,
-};
-
-// ----------------------------------------------------------------------------
+*/
 
 export function extend(publicAPI, model, initialValues = {}) {
-  Object.assign(model, DEFAULT_VALUES, initialValues);
+  Object.assign(model, initialValues);
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'Histogram1DProvider');
-  CompositeClosureHelper.get(publicAPI, model, ['histogram1DNumberOfBins']);
-  CompositeClosureHelper.event(publicAPI, model, 'histogram1DReady');
-  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'Histogram1D');
-
-  histogram1DProvider(publicAPI, model, fetchHelper);
+  CompositeClosureHelper.dataSubscriber(publicAPI, model, 'histogram1D', {
+    defaultMetadata: {
+      numberOfBins: 32,
+      partial: true,
+    },
+    set(storage, data) {
+      const numberOfBins = data.counts.length;
+      if (!storage[numberOfBins]) {
+        storage[numberOfBins] = {};
+      }
+      const binStorage = storage[numberOfBins];
+      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.name]));
+      binStorage[data.name] = data;
+      return sameAsBefore;
+    },
+    get(storage, request, dataChanged) {
+      const { numberOfBins } = request.metadata;
+      const binStorage = storage[numberOfBins];
+      const returnedData = {};
+      let count = 0;
+      request.variables.forEach(name => {
+        if (binStorage && binStorage[name]) {
+          count++;
+          returnedData[name] = binStorage[name];
+        }
+      });
+      if (count === request.variables.length || (request.metadata.partial && count > 0)) {
+        return returnedData;
+      }
+      return null;
+    },
+  });
 }
 
 // ----------------------------------------------------------------------------

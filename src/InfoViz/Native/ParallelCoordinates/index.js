@@ -111,42 +111,6 @@ function parallelCoordinate(publicAPI, model) {
     return true;
   }
 
-  function fetchData() {
-    model.needData = true;
-
-    if (model.provider) {
-      let dataToLoadCount = 0;
-
-      // Initialize axes
-      if (model.provider.isA('FieldProvider')) {
-        model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
-          ({ name, range: model.provider.getField(name).range })
-        ));
-      }
-
-      // Get the axes names
-      const fieldNames = model.axes.getAxesNames();
-
-      // Fetch 2D Histogram
-      if (model.provider.isA('Histogram2DProvider')) {
-        model.numberOfBins = model.provider.getHistogram2DNumberOfBins();
-        dataToLoadCount += fieldNames.length - 1;
-        for (let i = 1; i < fieldNames.length; i++) {
-          // Return true if the data is already loaded
-          dataToLoadCount -= model.provider.loadHistogram2D(fieldNames[i - 1], fieldNames[i])
-            ? 1 : 0;
-        }
-      }
-
-      // Check if we can render or not
-      model.needData = !!dataToLoadCount;
-
-      if (!model.needData) {
-        publicAPI.render();
-      }
-    }
-  }
-
   function drawSelectionBars(selectionBarModel) {
     const svg = d3.select(model.container).select('svg');
     const selBarGroup = svg.select('g.selection-bars');
@@ -246,7 +210,6 @@ function parallelCoordinate(publicAPI, model) {
         if (ratio < 0.28) {
           // left arrow click
           model.axes.swapAxes(i - 1, i);
-          fetchData();
         } else if (ratio < 0.73) {
           // up/down click
           model.axes.toggleOrientation(i);
@@ -254,7 +217,6 @@ function parallelCoordinate(publicAPI, model) {
         } else {
           // right arrow click
           model.axes.swapAxes(i, i + 1);
-          fetchData();
         }
       })
       .selectAll('.axis-controls-group-container')
@@ -525,8 +487,7 @@ function parallelCoordinate(publicAPI, model) {
   }
 
   publicAPI.render = () => {
-    if (model.needData) {
-      fetchData();
+    if (!model.allBgHistogram2dData) {
       return;
     }
 
@@ -576,7 +537,7 @@ function parallelCoordinate(publicAPI, model) {
     model.bgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
 
     // First lay down the "context" polygons
-    model.maxBinCountForOpacityCalculation = model.provider.getMaxOfMaxCounts(model.axes.getAxesPairs());
+    model.maxBinCountForOpacityCalculation = model.allBgHistogram2dData.maxCount;
 
     const nbPolyDraw = model.axes.getNumberOf2DHistogram();
     const axesCenters = model.axes.extractAxesCenters(model);
@@ -584,7 +545,7 @@ function parallelCoordinate(publicAPI, model) {
       for (let j = 0; j < nbPolyDraw; ++j) {
         const axisOne = model.axes.getAxis(j);
         const axisTwo = model.axes.getAxis(j + 1);
-        const histo2D = model.provider.getHistogram2D(axisOne.name, axisTwo.name);
+        const histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
         // The histogram has the most up-to-date range information for the parameters,
         // use it to set the ranges on the axes.
         axisOne.range = histo2D.x.extent;
@@ -687,8 +648,8 @@ function parallelCoordinate(publicAPI, model) {
 
   publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
     model.partitionScores = scoreList;
-    if (model.dataSubscription && model.partitionScores && model.propagatePartitionScores) {
-      model.dataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
+    if (model.selectionDataSubscription && model.partitionScores && model.propagatePartitionScores) {
+      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
     }
   };
 
@@ -811,83 +772,82 @@ function parallelCoordinate(publicAPI, model) {
       });
   }
 
-  // function addSubscriptions() {
-  //   topicSubscriptions.push(dataProvider.onParameterValueChanged(event => {
-  //     const aidx = axisList.indexOf(event.value.name);
-  //     if (aidx >= 0 && !event.value.selected) {
-  //       updateAxisList(axisList.slice(0, aidx).concat(axisList.slice(aidx + 1, axisList.length)));
-  //       render();
-  //     } else if (aidx === -1 && event.value.selected) {
-  //       updateAxisList(axisList.concat([
-  //         event.value.name,
-  //       ]));
-  //       if (annotationService) {
-  //         const rangeSel = selection('empty');
-  //         selnGen = rangeSel.gen;
-  //         annotationService.setActiveSelection(rangeSel);
-  //       }
-  //       render();
-  //     }
-  //   }));
-
-  //   if (annotationService) {
-  //     topicSubscriptions.push(annotationService.onSelectionChanged((data, envelope) => {
-  //       handleSelectionChanged(data);
-  //     }));
-  //     topicSubscriptions.push(annotationService.onCurrentHoverChanged((data, envelope) => {
-  //       handleHoverBinUpdate(data);
-  //     }));
-  //   }
-  // }
-
   // Attach listener to provider
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  ['onFieldChange'].forEach(method => {
-    if (model.provider[method]) {
-      model.subscriptions.push(model.provider[method](fetchData));
-    }
-  });
-  ['onHoverBinChange'].forEach(method => {
-    if (model.provider[method]) {
-      model.subscriptions.push(model.provider[method](handleHoverBinUpdate));
-    }
-  });
 
-  if (model.provider.isA('DataUpdateProvider')) {
-    model.updateSubscription = model.provider.subscribeToDataUpdate(
-      'histogram2d',
-      data => {
-        Object.keys(data).forEach(xName => {
-          Object.keys(data[xName]).forEach(yName => {
-            const histoPayload = data[xName][yName][0];
-            if (histoPayload.role && histoPayload.role.type && histoPayload.role.type === 'alldata') {
-              model.provider.setHistogram2D(xName, yName, histoPayload);
-            }
-          });
-        });
-        publicAPI.render();
+  // Handle active field change, update axes
+  if (model.provider.isA('FieldProvider')) {
+    // Monitor any change
+    model.subscriptions.push(model.provider.onFieldChange(() => {
+      model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
+        ({ name, range: model.provider.getField(name).range })
+      ));
+    }));
+    // Use initial state
+    model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
+      ({ name, range: model.provider.getField(name).range })
+    ));
+  }
+
+  // Handle bin hovering
+  if (model.provider.onHoverBinChange) {
+    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverBinUpdate));
+  }
+
+  if (model.provider.isA('Histogram2DProvider')) {
+    model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(
+      allBgHistogram2d => {
+        if (Object.keys(allBgHistogram2d).length > 1) {
+          model.allBgHistogram2dData = allBgHistogram2d;
+          publicAPI.render();
+        } else {
+          model.allBgHistogram2dData = null;
+        }
       },
-      model.axes.getAxesPairs(), { nbins: 32 });
-    model.subscriptions.push(model.updateSubscription);
+      model.axes.getAxesPairs(),
+      {
+        numberOfBins: model.numberOfBins,
+        partial: false,
+      }
+    );
+
+    model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
+      model.histogram2DDataSubscription.update(axisPairs);
+    }));
+
+    model.subscriptions.push(model.histogram2DDataSubscription);
   }
 
   if (model.provider.isA('SelectionProvider')) {
-    model.dataSubscription = model.provider.subscribeToDataSelection(
+    model.selectionDataSubscription = model.provider.subscribeToDataSelection(
       'histogram2d',
       data => {
         model.selectionData = data;
         if (model.provider.getAnnotation()) {
           model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+          if (data['##annotationGeneration##'] !== undefined) {
+            if (model.provider.getAnnotation().generation === data['##annotationGeneration##']) {
+              // render from selection data change (same generation)
+              publicAPI.render();
+            }
+          } else {
+            // render from selection data change (no generation)
+            publicAPI.render();
+          }
+        } else {
+          // render from selection data change (no annotation)
+          publicAPI.render();
         }
-        publicAPI.render();
       },
       model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
 
-    model.subscriptions.push(model.dataSubscription);
+    model.subscriptions.push(model.selectionDataSubscription);
 
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
-      model.axes.resetSelections(sel, false);
-      publicAPI.render();
+      if (!model.useAnnotation) {
+        model.axes.resetSelections(sel, false);
+        publicAPI.render();
+      }
     }));
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
       if (lastAnnotationPushed
@@ -901,7 +861,6 @@ function parallelCoordinate(publicAPI, model) {
         model.defaultScore = lastAnnotationPushed.score[0];
       }
       model.axes.resetSelections(annotation.selection, false, annotation.score, scoreToColor);
-      publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onSelectionChange(() => {
       if (model.useAnnotation) {
@@ -932,15 +891,9 @@ function parallelCoordinate(publicAPI, model) {
       } else {
         model.provider.setSelection(model.axes.getSelection());
       }
-
-      publicAPI.render();
     }));
     model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
-      model.dataSubscription.update(axisPairs);
-      if (model.provider.isA('DataUpdateProvider')) {
-        model.updateSubscription.update(axisPairs);
-      }
-      publicAPI.render();
+      model.selectionDataSubscription.update(axisPairs);
     }));
   } else {
     model.subscriptions.push(model.axes.onSelectionChange(() => {
@@ -982,7 +935,7 @@ const DEFAULT_VALUES = {
   hoverIndicatorHeight: 10,
   hoverIndicatorWidth: 7,
 
-  numberOfBins: 128,
+  numberOfBins: 32,
 
   useAnnotation: false,
   defaultScore: 0,
@@ -1001,8 +954,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores']);
-  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores', 'numberOfBins']);
 
   parallelCoordinate(publicAPI, model);
 }
