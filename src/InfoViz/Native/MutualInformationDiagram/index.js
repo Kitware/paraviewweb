@@ -1029,7 +1029,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
 
   informationDiagram(publicAPI, model);
 }
