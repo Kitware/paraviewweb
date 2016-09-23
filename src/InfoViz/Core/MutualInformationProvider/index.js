@@ -1,52 +1,78 @@
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
+import PMI from './pmi';
+
 // ----------------------------------------------------------------------------
 // Global
 // ----------------------------------------------------------------------------
 
-const SEPARATOR = '--|+|--';
+function listToPair(list = []) {
+  const size = list.length;
+  const pairList = [];
+  list.forEach((name, idx) => {
+    for (let i = idx; i < size; i++) {
+      pairList.push([name, list[i]]);
+    }
+  });
+  return pairList;
+}
 
 // ----------------------------------------------------------------------------
 // Mutual Information Provider
 // ----------------------------------------------------------------------------
 
-function mutualInformationProvider(publicAPI, model, fetchHelper) {
-  // Private members
-  const ready = publicAPI.fireMutualInformationReady;
-  delete publicAPI.fireMutualInformationReady;
+function mutualInformationProvider(publicAPI, model) {
+  const mutualInformationData = PMI.initializeMutualInformationData();
+  const deltaHandling = { added: [], removed: [], modified: [], previousMTime: {}, currentMTime: {} };
 
-  // Return true if data is available
-  publicAPI.loadMutualInformation = names => {
-    const previousRequest = model.mutualInformationParameterNames.join(SEPARATOR);
-    const currentRequest = names.join(SEPARATOR);
+  function updateHistogram2D(histograms) {
+    if (Object.keys(histograms).length > 1) {
+      // Extract mtime
+      deltaHandling.modified = [];
+      deltaHandling.previousMTime = deltaHandling.currentMTime;
+      deltaHandling.currentMTime = {};
+      model.mutualInformationParameterNames.forEach(name => {
+        if (histograms[name] && histograms[name][name]) {
+          deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
 
-    if (previousRequest === currentRequest) {
-      return !!model.mutualInformationData;
+          if (deltaHandling.added.indexOf(name) === -1
+            && deltaHandling.currentMTime[name]
+            && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
+            deltaHandling.modified.push(name);
+          }
+        }
+      });
+
+      // FIXME add var mtime check and update deltaHandling.modified
+      PMI.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), deltaHandling.removed, histograms);
+
+      // Push the new mutual info
+      publicAPI.fireMutualInformationReady(mutualInformationData);
     }
+  }
 
-    // Store request and reset data
+  publicAPI.setHistogram2dProvider = provider => {
+    if (model.histogram2dProviderSubscription) {
+      model.histogram2dProviderSubscription.unsubscribe();
+    }
+    model.histogram2dProvider = provider;
+    if (provider) {
+      model.histogram2dProviderSubscription = provider.subscribeToHistogram2D(
+        updateHistogram2D,
+        listToPair(model.mutualInformationParameterNames),
+        { symmetric: true, partial: false }
+      );
+    }
+  };
+
+  publicAPI.setMutualInformationParameterNames = names => {
+    deltaHandling.added = names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1);
+    deltaHandling.removed = model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1);
+
     model.mutualInformationParameterNames = [].concat(names);
-    model.mutualInformationData = null;
-
-    fetchHelper.addRequest(model.mutualInformationParameterNames);
-
-    return false;
-  };
-
-  publicAPI.getMutualInformation = names => {
-    const previousRequest = model.mutualInformationParameterNames.join(SEPARATOR);
-    const currentRequest = names ? names.join(SEPARATOR) : previousRequest;
-
-    if (previousRequest === currentRequest) {
-      return model.mutualInformationData;
+    if (model.histogram2dProviderSubscription) {
+      model.histogram2dProviderSubscription.update(listToPair(model.mutualInformationParameterNames));
     }
-    return null;
-  };
-
-  publicAPI.setMutualInformation = data => {
-    // FIXME (params can be out of synch)
-    model.mutualInformationData = data;
-    ready(data);
   };
 }
 
@@ -66,11 +92,10 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'MutualInformationProvider');
-  CompositeClosureHelper.get(publicAPI, model, ['mutualInformationParameterNames']);
-  CompositeClosureHelper.event(publicAPI, model, 'MutualInformationReady');
-  const fetchHelper = CompositeClosureHelper.fetch(publicAPI, model, 'MutualInformation');
+  CompositeClosureHelper.get(publicAPI, model, ['histogram2dProvider']);
+  CompositeClosureHelper.event(publicAPI, model, 'mutualInformationReady');
 
-  mutualInformationProvider(publicAPI, model, fetchHelper);
+  mutualInformationProvider(publicAPI, model);
 }
 
 // ----------------------------------------------------------------------------
