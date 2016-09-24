@@ -42,8 +42,8 @@ function histogramSelector(publicAPI, model) {
   // hard coded because I did not figure out how to
   // properly query this value from our container.
   const borderSize = 6;
-  // 8? for linux/firefox, 10 for win10/chrome
-  const scrollbarWidth = 12;
+  // 8? for linux/firefox, 16 for win10/chrome (hi-res screen)
+  let scrollbarWidth = 16;
 
   let displayOnlySelected = false;
 
@@ -310,6 +310,7 @@ function histogramSelector(publicAPI, model) {
       model.containerHidden = false;
       d3.select(model.listContainer)
         .style('height', `${clientRect.height - model.headerSize}px`);
+      // scrollbarWidth = model.listContainer.offsetWidth - clientRect.width;
       publicAPI.render();
     } else {
       model.containerHidden = true;

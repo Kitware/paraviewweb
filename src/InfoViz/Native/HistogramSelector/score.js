@@ -5,7 +5,7 @@ import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
-import downArrowImage from './down_arrow.png';
+// import downArrowImage from './down_arrow.png';
 
 export default function init(inPublicAPI, inModel) {
   const publicAPI = inPublicAPI;
@@ -141,10 +141,37 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  function showScore(def) {
+    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+    return (def.editScore || (typeof def.regions !== 'undefined' &&
+                              ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
+  }
+
+  function setEditScore(def, newEditScore) {
+    def.editScore = newEditScore;
+    // set existing annotation as current if we activate for editing
+    if (def.editScore && showScore(def) && def.annotation) {
+      // TODO special 'active' method to call, instead of an edit?
+      sendScores(def, def.hobj);
+    }
+    publicAPI.render(def.name);
+    // if one histogram is being edited, the others should be inactive.
+    if (newEditScore) {
+      Object.keys(model.fieldData).forEach((key) => {
+        const d = model.fieldData[key];
+        if (d !== def) {
+          if (d.editScore) {
+            d.editScore = false;
+            publicAPI.render(d.name);
+          }
+        }
+      });
+    }
+  }
+
   publicAPI.setDefaultScorePartition = (fieldName) => {
     const def = model.fieldData[fieldName];
     if (def) {
-      def.editScore = true;
       // create a divider halfway through.
       const [minRange, maxRange] = getHistRange(def);
       def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
@@ -153,6 +180,7 @@ export default function init(inPublicAPI, inModel) {
       sendScores(def, def.hobj);
       // set mode that prevents editing the annotation, except for the single divider.
       def.lockAnnot = true;
+      setEditScore(def, true);
     } else {
       def.lockAnnot = false;
     }
@@ -173,8 +201,7 @@ export default function init(inPublicAPI, inModel) {
       .append('i')
         .classed(style.scoreStartIcon, true)
         .on('click', (d) => {
-          d.editScore = !d.editScore;
-          publicAPI.render(d.name);
+          setEditScore(d, !d.editScore);
           if (d3.event) d3.event.stopPropagation();
         });
   }
@@ -768,12 +795,6 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
-  function showScore(def) {
-    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-    return (def.editScore || (typeof def.regions !== 'undefined' &&
-                              ((def.regions.length > 1) || (def.regions[0] !== model.defaultScore))));
-  }
-
   function editingScore(def) {
     return def.editScore;
   }
@@ -935,19 +956,19 @@ export default function init(inPublicAPI, inModel) {
         if (d3.event.defaultPrevented || d3.event.altKey || d3.event.ctrlKey) return; // click suppressed (by drag handling)
         const overCoords = publicAPI.getMouseCoords(tdsl);
         if (overCoords[1] > model.histHeight) {
-          def.editScore = !def.editScore;
-          svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
-          if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
-            const state = {};
-            state[def.name] = [-1];
-            model.provider.setHoverState({ state });
-          }
-          // set existing annotation as current if we activate for editing
-          if (def.editScore && showScore(def) && def.annotation) {
-            // TODO special 'active' method to call, instead of an edit?
-            sendScores(def, def.hobj);
-          }
-          publicAPI.render();
+          // def.editScore = !def.editScore;
+          // svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
+          // if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
+          //   const state = {};
+          //   state[def.name] = [-1];
+          //   model.provider.setHoverState({ state });
+          // }
+          // // set existing annotation as current if we activate for editing
+          // if (def.editScore && showScore(def) && def.annotation) {
+          //   // TODO special 'active' method to call, instead of an edit?
+          //   sendScores(def, def.hobj);
+          // }
+          // publicAPI.render(def.name);
           return;
         }
         if (def.editScore) {
@@ -983,9 +1004,9 @@ export default function init(inPublicAPI, inModel) {
           const [, , hitIndex] = dividerPick(overCoords, def, model.dragMargin, hobj.min);
           let cursor = 'pointer';
           // if we're over the bottom, indicate a click will shrink regions
-          if (overCoords[1] > model.histHeight) cursor = `url(${downArrowImage}) 12 22, auto`;
+          if (overCoords[1] > model.histHeight) { // cursor = `url(${downArrowImage}) 12 22, auto`;
           // if we're over a divider, indicate drag-to-move
-          else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
+          } else if ((def.dragIndex >= 0) || (hitIndex >= 0)) cursor = 'ew-resize';
           // if modifiers are held down, we'll create a divider
           else if (d3.event.altKey || d3.event.ctrlKey) cursor = 'crosshair';
           svgOverlay.style('cursor', cursor);
