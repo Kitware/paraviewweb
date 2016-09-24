@@ -105,7 +105,7 @@ function parallelCoordinate(publicAPI, model) {
   model.selectionData = null;
 
   function drawSelectionData(score) {
-    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScores) {
+    if (model.axes.selection && model.partitionScores) {
       return model.partitionScores.indexOf(score) !== -1;
     }
     return true;
