@@ -22,12 +22,16 @@ function selectionProvider(publicAPI, model) {
     }
   }
 
-  function flushDataToListener(dataListener) {
+  function flushDataToListener(dataListener, dataChanged) {
     try {
       if (dataListener) {
         const event = dataHelper.getNotificationData(model.selectionData, dataListener.request);
         if (event) {
-          dataListener.onDataReady(event);
+          if (dataChanged && dataChanged.type === dataListener.request.type) {
+            dataListener.onDataReady(event);
+          } else if (!dataChanged) {
+            dataListener.onDataReady(event);
+          }
         }
       }
     } catch (err) {
@@ -40,7 +44,7 @@ function selectionProvider(publicAPI, model) {
     dataHelper.set(model.selectionData, data);
 
     // Process all subscription to see if we can trigger a notification
-    dataSubscriptions.forEach(flushDataToListener);
+    dataSubscriptions.forEach(listener => flushDataToListener(listener, data));
   };
 
   // Method use to access cached data. Will return undefined if not available
@@ -97,7 +101,7 @@ function selectionProvider(publicAPI, model) {
     const dataListener = { onDataReady, request };
     dataSubscriptions.push(dataListener);
     publicAPI.fireDataSubscriptionChange(request);
-    flushDataToListener(dataListener);
+    flushDataToListener(dataListener, null);
     return {
       unsubscribe() {
         request.action = 'unsubscribe';
@@ -108,7 +112,7 @@ function selectionProvider(publicAPI, model) {
         request.variables = [].concat(vars);
         request.metadata = Object.assign({}, request.metadata, meta);
         publicAPI.fireDataSubscriptionChange(request);
-        flushDataToListener(dataListener);
+        flushDataToListener(dataListener, null);
       },
     };
   };

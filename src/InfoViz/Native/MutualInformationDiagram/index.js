@@ -66,28 +66,6 @@ function informationDiagram(publicAPI, model) {
     }
   }
 
-  // Fetch needed data
-  function fetchData() {
-    let needDataCount = 0;
-    const fieldNames = model.provider.getActiveFieldNames();
-    model.needData = true;
-
-    // Fetch mutual information
-    needDataCount += 1;
-    if (model.provider.loadMutualInformation(fieldNames)) {
-      needDataCount--;
-    }
-
-    // Do we have all the data?
-    model.needData = !!needDataCount;
-
-    // Render if everything is available
-    if (!model.needData) {
-      // Will trigger render with proper size
-      publicAPI.resize();
-    }
-  }
-
   publicAPI.propagateAnnotationInsteadOfSelection = (useAnnotation = true, defaultScore = 0, defaultWeight = 0) => {
     model.useAnnotation = useAnnotation;
     model.defaultScore = defaultScore;
@@ -158,9 +136,6 @@ function informationDiagram(publicAPI, model) {
       });
 
       updateStatusBarVisibility();
-
-      // Fetch data for rendering
-      fetchData();
     }
   };
 
@@ -171,7 +146,6 @@ function informationDiagram(publicAPI, model) {
     const getLegend = model.provider.isA('LegendProvider') ? model.provider.getLegend : null;
     const histogram1DnumberOfBins = model.numberOfBins;
     const variableList = model.provider.getActiveFieldNames();
-    const mutualInformationData = model.provider.getMutualInformation();
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
@@ -190,8 +164,7 @@ function informationDiagram(publicAPI, model) {
     const height = model.clientRect.height;
 
     // Make sure we have all the data we need
-    if (model.needData || !model.histogramData) {
-      fetchData();
+    if (!model.mutualInformationData || !model.histogramData) {
       return;
     }
 
@@ -262,7 +235,7 @@ function informationDiagram(publicAPI, model) {
       result.radius = radius;
       for (let groupIdx = 0; groupIdx < layout.groups().length; ++groupIdx) {
         const groupData = layout.groups()[groupIdx];
-        const groupName = mutualInformationData.vmap[groupData.index].name;
+        const groupName = model.mutualInformationData.vmap[groupData.index].name;
         if (angle > groupData.startAngle && angle <= groupData.endAngle) {
           const binSizeRadians = (groupData.endAngle - groupData.startAngle) / model.numberOfBins;
           const binIndex = Math.floor((angle - groupData.startAngle) / binSizeRadians);
@@ -426,7 +399,7 @@ function informationDiagram(publicAPI, model) {
     function drawPMIAllBinsTwoVars() {
       const d = model.renderState.pmiAllBinsTwoVars.d;
       if (d.source.index === d.target.index) {
-        console.log('Cannot render self-PMI', mutualInformationData.vmap[d.source.index].name);
+        console.log('Cannot render self-PMI', model.mutualInformationData.vmap[d.source.index].name);
         return;
       }
 
@@ -437,8 +410,8 @@ function informationDiagram(publicAPI, model) {
       // Turn off MI rendering
       chord.classed('fade', true);
       // Turn on PMI rendering
-      let va = mutualInformationData.vmap[d.source.index].name;
-      let vb = mutualInformationData.vmap[d.target.index].name;
+      let va = model.mutualInformationData.vmap[d.source.index].name;
+      let vb = model.mutualInformationData.vmap[d.target.index].name;
       let swap = false;
       if (vb < va) {
         const tmp = vb;
@@ -447,7 +420,7 @@ function informationDiagram(publicAPI, model) {
         swap = true;
       }
 
-      const cAB = downsample(mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
+      const cAB = downsample(model.mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
       const probDict = freqToProb(cAB);
       const linksToDraw = topPmi(probDict, 0.95);
 
@@ -562,7 +535,7 @@ function informationDiagram(publicAPI, model) {
         // highlight all groups if a click will reset to default view (veryOutermostRadius)
         svg
           .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
-          .classed(style.hoverOutline, (data, idx) => highlightAllGroups || mutualInformationData.vmap[idx].name === groupHoverName);
+          .classed(style.hoverOutline, (data, idx) => highlightAllGroups || model.mutualInformationData.vmap[idx].name === groupHoverName);
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');
@@ -616,7 +589,7 @@ function informationDiagram(publicAPI, model) {
     svg.append('g').classed('pmiChords', true);
 
     // Compute the chord layout.
-    layout.matrix(mutualInformationData.matrix);
+    layout.matrix(model.mutualInformationData.matrix);
 
     // Add a group per neighborhood.
     const group = svg
@@ -628,9 +601,9 @@ function informationDiagram(publicAPI, model) {
       .classed(style.group, true);
 
     // Get lookups for pmi chords
-    mutualInformationData.lkup = {};
-    Object.keys(mutualInformationData.vmap).forEach(i => {
-      mutualInformationData.lkup[mutualInformationData.vmap[i].name] = i;
+    model.mutualInformationData.lkup = {};
+    Object.keys(model.mutualInformationData.vmap).forEach(i => {
+      model.mutualInformationData.lkup[model.mutualInformationData.vmap[i].name] = i;
     });
 
     // Only used when there is no legend service
@@ -652,7 +625,7 @@ function informationDiagram(publicAPI, model) {
       .append('textPath')
       .attr('xlink:href', (d, i) => `#${model.instanceID}-group${i}`)
       .attr('startOffset', '25%')
-      .text((d, i) => mutualInformationData.vmap[i].name);
+      .text((d, i) => model.mutualInformationData.vmap[i].name);
 
     // Remove the labels that don't fit. :(
     groupText
@@ -676,7 +649,7 @@ function informationDiagram(publicAPI, model) {
 
         const groupGlyph = group.selectAll('g.glyph');
         groupGlyph.each(function updateColor(glyphData) {
-          const legend = getLegend(mutualInformationData.vmap[glyphData.index].name);
+          const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
           // Add the glyph to the group
           const textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
           const pathLength = groupPath[0][glyphData.index].getTotalLength();
@@ -697,7 +670,7 @@ function informationDiagram(publicAPI, model) {
             .select('use')
             .attr('xlink:href', legend.shape);
 
-          mutualInformationData.vmap[glyphData.index].color = legend.color;
+          model.mutualInformationData.vmap[glyphData.index].color = legend.color;
         });
 
         // Remove the glyphs that don't fit
@@ -724,20 +697,20 @@ function informationDiagram(publicAPI, model) {
     // generated for us).
     svg.selectAll('g.group')
       .each(function buildHistogram(groupData) {
-        const gname = mutualInformationData.vmap[groupData.index].name;
+        const gname = model.mutualInformationData.vmap[groupData.index].name;
         const gvar = model.histogramData[gname];
 
         if (!gvar) return;
 
         // Set the color if it hasn't already been set
         if (!getLegend) {
-          mutualInformationData.vmap[groupData.index].color = cmap(groupData.index);
+          model.mutualInformationData.vmap[groupData.index].color = cmap(groupData.index);
         }
 
         // Add the color to the group arc
         d3.select(this)
           .select('path')
-          .style('fill', mutualInformationData.vmap[groupData.index].color || 'red');
+          .style('fill', model.mutualInformationData.vmap[groupData.index].color || 'red');
 
         groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
 
@@ -804,15 +777,15 @@ function informationDiagram(publicAPI, model) {
     svg
       .select('g.mutualInfoChords')
       .selectAll('.selfchord')
-      .style('fill', d => mutualInformationData.vmap[d.source.index].color);
+      .style('fill', d => model.mutualInformationData.vmap[d.source.index].color);
 
     chord
       .attr('data-details', (d, i) =>
-        `Mutual information: ${mutualInformationData.vmap[d.source.index].name} ↔︎ ${mutualInformationData.vmap[d.target.index].name} `
-        + `${formatMI(mutualInformationData.matrix[d.source.index][d.target.index])}`);
+        `Mutual information: ${model.mutualInformationData.vmap[d.source.index].name} ↔︎ ${model.mutualInformationData.vmap[d.target.index].name} `
+        + `${formatMI(model.mutualInformationData.matrix[d.source.index][d.target.index])}`);
     // The lines below are for the case when the MI matrix has been row-normalized:
-    // mutualInformationData.matrix[d.source.index][d.target.index] *
-    // mutualInformationData.vmap[d.source.index].autoInfo/mutualInformationData.matrix[d.source.index][d.source.index]);
+    // model.mutualInformationData.matrix[d.source.index][d.target.index] *
+    // model.mutualInformationData.vmap[d.source.index].autoInfo/model.mutualInformationData.matrix[d.source.index][d.source.index]);
 
     svg
       .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
@@ -855,8 +828,8 @@ function informationDiagram(publicAPI, model) {
 
         // Turn on PMI rendering
         let linkAccum = [];
-        Object.keys(mutualInformationData.vmap).forEach(iother => {
-          var other = mutualInformationData.vmap[iother];
+        Object.keys(model.mutualInformationData.vmap).forEach(iother => {
+          var other = model.mutualInformationData.vmap[iother];
           let va = binVar;
           let vb = other.name;
           if (!vb || vb === va) {
@@ -870,7 +843,7 @@ function informationDiagram(publicAPI, model) {
             swap = true;
           }
 
-          const cAB = downsample(mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
+          const cAB = downsample(model.mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
           const probDict = freqToProb(cAB);
           const linksToDraw = topBinPmi(probDict, true, binIdx, 0.8);
           linkAccum = linkAccum.concat(
@@ -899,8 +872,8 @@ function informationDiagram(publicAPI, model) {
           .selectAll('path.pmiChord')
           .classed('fade', false)
           .attr('d', (data, index) => {
-            var vaGrp = layout.groups()[mutualInformationData.lkup[data[3][0]]];
-            var vbGrp = layout.groups()[mutualInformationData.lkup[data[3][1]]];
+            var vaGrp = layout.groups()[model.mutualInformationData.lkup[data[3][0]]];
+            var vbGrp = layout.groups()[model.mutualInformationData.lkup[data[3][1]]];
             var vaRange = [vaGrp.startAngle, (vaGrp.endAngle - vaGrp.startAngle), (vaGrp.endAngle - vaGrp.startAngle) / histogram1DnumberOfBins];
             var vbRange = [vbGrp.startAngle, (vbGrp.endAngle - vbGrp.startAngle), (vbGrp.endAngle - vbGrp.startAngle) / histogram1DnumberOfBins];
             return path({
@@ -959,7 +932,9 @@ function informationDiagram(publicAPI, model) {
       pmiOneBinAllVars: null,
       pmiHighlight: null,
     };
-    fetchData();
+    if (model.provider.setMutualInformationParameterNames) {
+      model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
+    }
   }));
   model.subscriptions.push(model.provider.onMutualInformationReady(mutualInfo => {
     publicAPI.render();
@@ -981,6 +956,15 @@ function informationDiagram(publicAPI, model) {
     model.subscriptions.push(model.histogram1DDataSubscription);
   }
 
+  if (model.provider.isA('MutualInformationProvider')) {
+    model.mutualInformationDataSubscription = model.provider.onMutualInformationReady(
+      data => {
+        model.mutualInformationData = data;
+        publicAPI.render();
+      });
+
+    model.subscriptions.push(model.mutualInformationDataSubscription);
+  }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));

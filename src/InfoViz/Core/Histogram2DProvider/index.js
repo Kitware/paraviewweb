@@ -100,6 +100,12 @@ export function extend(publicAPI, model, initialValues = {}) {
           count++;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
           returnedData[axisPair[0]][axisPair[1]] = hist2d;
+          if (request.metadata.symmetric) {
+            if (!returnedData[axisPair[1]]) {
+              returnedData[axisPair[1]] = {};
+            }
+            returnedData[axisPair[1]][axisPair[0]] = binStorage[axisPair[1]][axisPair[0]];
+          }
         }
       });
 
