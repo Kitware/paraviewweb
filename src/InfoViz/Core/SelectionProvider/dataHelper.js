@@ -1,9 +1,7 @@
 import histogram2d from './histogram2d';
-import histogram1d from './histogram1d';
 import counts from './counts';
 
 const dataMapping = {
-  histogram1d,
   histogram2d,
   counts,
 };
