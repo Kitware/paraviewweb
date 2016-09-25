@@ -351,6 +351,7 @@ function histogramSelector(publicAPI, model) {
     }
 
     if (!model.container || model.container.offsetParent === null) return;
+    if (!model.listContainer) return;
 
     const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 

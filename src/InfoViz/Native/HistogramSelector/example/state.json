@@ -1,527 +1,262 @@
 {
-  "defaultEmptyAnnotationName": "Empty",
-  "isA": ["AnnotationStoreProvider", "FieldProvider", "Histogram1DProvider", "Histogram2DProvider", "HistogramBinHoverProvider", "LegendProvider", "MutualInformationProvider"],
   "fields": {
-    "3 point shots percentage": {
-      "range": [0, 1],
-      "active": false,
-      "id": 3,
-      "name": "3 point shots percentage"
-    },
-    "free throw attempts": {
-      "range": [0, 805],
-      "active": false,
-      "id": 7,
-      "name": "free throw attempts"
-    },
     "versatility index": {
-      "range": [0, 12.6],
-      "active": false,
-      "id": 23,
-      "name": "versatility index"
-    },
-    "blocks per game": {
-      "range": [0, 2.82],
-      "active": false,
-      "id": 6,
-      "name": "blocks per game"
-    },
-    "percentage of team minutes": {
-      "range": [7.2, 79.5],
+      "name": "versatility index",
+      "range": [0.0, 12.600000000000001],
       "active": true,
-      "id": 12,
-      "name": "percentage of team minutes"
-    },
-    "true rebound percentage": {
-      "range": [0, 35.2],
-      "active": false,
-      "id": 19,
-      "name": "true rebound percentage"
-    },
-    "steals per game": {
-      "range": [0, 2.48],
-      "active": true,
-      "id": 17,
-      "name": "steals per game"
+      "id": 0
     },
     "true shooting percentage": {
-      "range": [0, 0.82],
-      "active": false,
-      "id": 20,
-      "name": "true shooting percentage"
-    },
-    "cumulative score": {
-      "range": [-2, 1],
-      "active": false,
-      "id": 24,
-      "name": "cumulative score"
-    },
-    "points per game": {
-      "range": [0, 32],
-      "active": false,
-      "id": 14,
-      "name": "points per game"
-    },
-    "turnover per pocession": {
-      "range": [0, 1],
-      "active": false,
-      "id": 21,
-      "name": "turnover per pocession"
-    },
-    "3 point shots attempts": {
-      "range": [0, 615],
-      "active": false,
-      "id": 2,
-      "name": "3 point shots attempts"
-    },
-    "percentage of team assists": {
-      "range": [0, 49.2],
+      "name": "true shooting percentage",
+      "range": [0.0, 0.8200000000000001],
       "active": true,
-      "id": 11,
-      "name": "percentage of team assists"
-    },
-    "assists per game": {
-      "range": [0, 10.7],
-      "active": false,
-      "id": 5,
-      "name": "assists per game"
-    },
-    "2 point shots percentage": {
-      "range": [0, 1],
-      "active": false,
-      "id": 1,
-      "name": "2 point shots percentage"
+      "id": 1
     },
     "rebounds pergame": {
-      "range": [0, 13.6],
+      "name": "rebounds pergame",
+      "range": [0.0, 13.600000000000001],
       "active": false,
-      "id": 16,
-      "name": "rebounds pergame"
+      "id": 2
+    },
+    "blocks per game": {
+      "name": "blocks per game",
+      "range": [0.0, 2.82],
+      "active": true,
+      "id": 3
+    },
+    "points per game": {
+      "name": "points per game",
+      "range": [0.0, 32.0],
+      "active": false,
+      "id": 4
+    },
+    "3 point shots percentage": {
+      "name": "3 point shots percentage",
+      "range": [0.0, 1.0],
+      "active": false,
+      "id": 5
+    },
+    "turnover per pocession": {
+      "name": "turnover per pocession",
+      "range": [0.0, 1.0],
+      "active": false,
+      "id": 6
     },
     "age": {
-      "range": [19, 39],
+      "name": "age",
+      "range": [19.0, 39.0],
       "active": false,
-      "id": 4,
-      "name": "age"
+      "id": 7
+    },
+    "free throw attempts": {
+      "name": "free throw attempts",
+      "range": [0.0, 805.0],
+      "active": false,
+      "id": 8
+    },
+    "true rebound percentage": {
+      "name": "true rebound percentage",
+      "range": [0.0, 35.2],
+      "active": false,
+      "id": 9
     },
     "2 point shots attempts": {
-      "range": [0, 1408],
-      "active": false,
-      "id": 0,
-      "name": "2 point shots attempts"
+      "name": "2 point shots attempts",
+      "range": [0.0, 1408.0],
+      "active": true,
+      "id": 10
     },
-    "usage percent": {
-      "range": [2, 37.6],
+    "3 point shots attempts": {
+      "name": "3 point shots attempts",
+      "range": [0.0, 615.0],
+      "active": true,
+      "id": 11
+    },
+    "percentage of team minutes": {
+      "name": "percentage of team minutes",
+      "range": [7.2, 79.5],
       "active": false,
-      "id": 22,
-      "name": "usage percent"
+      "id": 12
     },
     "games": {
-      "range": [1, 82],
+      "name": "games",
+      "range": [1.0, 82.0],
+      "active": true,
+      "id": 13
+    },
+    "percentage of team assists": {
+      "name": "percentage of team assists",
+      "range": [0.0, 49.2],
+      "active": true,
+      "id": 14
+    },
+    "assists per game": {
+      "name": "assists per game",
+      "range": [0.0, 10.700000000000001],
       "active": false,
-      "id": 9,
-      "name": "games"
+      "id": 15
+    },
+    "steals per game": {
+      "name": "steals per game",
+      "range": [0.0, 2.48],
+      "active": false,
+      "id": 16
+    },
+    "usage percent": {
+      "name": "usage percent",
+      "range": [2.0, 37.6],
+      "active": false,
+      "id": 17
     },
     "minutes": {
-      "range": [5.1, 38.5],
+      "name": "minutes",
+      "range": [5.1000000000000005, 38.5],
       "active": true,
-      "id": 10,
-      "name": "minutes"
+      "id": 18
+    },
+    "2 point shots percentage": {
+      "name": "2 point shots percentage",
+      "range": [0.0, 1.0],
+      "active": true,
+      "id": 19
     },
     "free throw percent": {
-      "range": [0, 1],
-      "active": true,
-      "id": 8,
-      "name": "free throw percent"
+      "name": "free throw percent",
+      "range": [0.0, 1.0],
+      "active": false,
+      "id": 20
     }
+
   },
-  "fieldsSorted": true,
   "histogram1D_storage": {
     "32": {
-      "2 point shots attempts": {
-        "name": "2 point shots attempts",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1408,
-        "counts": [94, 63, 47, 31, 28, 30, 20, 21, 28, 16, 13, 12, 10, 8, 8, 9, 14, 9, 10, 6, 5, 2, 4, 3, 1, 0, 2, 3, 0, 1, 1, 1]
-      },
-      "2 point shots percentage": {
-        "name": "2 point shots percentage",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1,
-        "counts": [6, 0, 0, 0, 0, 1, 1, 2, 6, 7, 14, 12, 32, 55, 103, 89, 90, 42, 19, 7, 4, 7, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1]
-      },
-      "3 point shots attempts": {
-        "name": "3 point shots attempts",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 615,
-        "counts": [201, 33, 33, 26, 22, 17, 22, 12, 11, 15, 14, 12, 15, 8, 3, 11, 6, 6, 6, 2, 4, 4, 3, 2, 1, 3, 5, 1, 1, 0, 0, 1]
-      },
-      "3 point shots percentage": {
-        "name": "3 point shots percentage",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1,
-        "counts": [127, 1, 3, 3, 6, 9, 16, 11, 31, 34, 63, 75, 66, 26, 10, 4, 7, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4]
-      },
-      "age": {
-        "name": "age",
-        "min": 19,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 39,
-        "counts": [2, 17, 0, 19, 39, 0, 51, 0, 50, 53, 0, 46, 42, 0, 38, 0, 31, 19, 0, 21, 14, 0, 23, 0, 8, 10, 0, 6, 7, 0, 2, 2]
-      },
-      "assists per game": {
-        "name": "assists per game",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 10.7,
-        "counts": [67, 72, 89, 40, 48, 36, 18, 19, 16, 13, 13, 12, 8, 3, 8, 4, 4, 8, 8, 0, 3, 0, 3, 1, 0, 2, 3, 0, 0, 1, 0, 1]
-      },
-      "blocks per game": {
-        "name": "blocks per game",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 2.82,
-        "counts": [106, 86, 65, 56, 38, 25, 21, 18, 15, 11, 9, 9, 5, 6, 7, 3, 3, 3, 3, 3, 2, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1]
-      },
-      "cumulative score": {
-        "name": "cumulative score",
-        "min": -2,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1,
-        "counts": [38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 165, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62]
-      },
-      "free throw attempts": {
-        "name": "free throw attempts",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 805,
-        "counts": [152, 62, 63, 33, 29, 31, 11, 23, 11, 15, 10, 11, 10, 11, 8, 4, 4, 2, 1, 0, 0, 1, 0, 2, 0, 3, 2, 0, 0, 0, 0, 1]
-      },
-      "free throw percent": {
-        "name": "free throw percent",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1,
-        "counts": [18, 0, 0, 0, 0, 1, 1, 0, 2, 0, 3, 1, 3, 4, 2, 3, 21, 11, 20, 13, 32, 31, 32, 37, 61, 58, 62, 37, 17, 7, 7, 16]
-      },
-      "games": {
-        "name": "games",
-        "min": 1,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 82,
-        "counts": [13, 14, 9, 18, 4, 13, 10, 18, 20, 16, 11, 17, 4, 8, 7, 15, 13, 12, 9, 6, 20, 14, 5, 12, 18, 9, 19, 16, 33, 13, 35, 69]
-      },
-      "minutes": {
-        "name": "minutes",
-        "min": 5.1,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 38.5,
-        "counts": [14, 22, 20, 26, 20, 15, 14, 15, 19, 21, 19, 12, 15, 27, 19, 11, 9, 8, 18, 12, 16, 16, 13, 15, 15, 23, 16, 12, 16, 13, 3, 6]
-      },
-      "percentage of team assists": {
-        "name": "percentage of team assists",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 49.2,
-        "counts": [18, 12, 37, 55, 47, 61, 34, 41, 26, 20, 18, 21, 12, 8, 17, 6, 9, 12, 5, 9, 7, 6, 8, 0, 2, 1, 4, 1, 0, 1, 0, 2]
-      },
-      "percentage of team minutes": {
-        "name": "percentage of team minutes",
-        "min": 7.2,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 79.5,
-        "counts": [4, 11, 18, 24, 21, 23, 17, 16, 19, 17, 22, 14, 15, 20, 23, 18, 9, 13, 12, 14, 12, 15, 20, 16, 15, 20, 20, 13, 16, 13, 4, 6]
-      },
-      "points per game": {
-        "name": "points per game",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 32,
-        "counts": [9, 29, 53, 54, 45, 29, 38, 23, 28, 29, 20, 24, 13, 23, 15, 12, 9, 12, 6, 8, 7, 4, 2, 1, 2, 1, 1, 2, 0, 0, 0, 1]
-      },
-      "rebounds pergame": {
-        "name": "rebounds pergame",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 13.6,
-        "counts": [3, 25, 39, 38, 59, 43, 44, 35, 44, 22, 17, 21, 22, 7, 12, 9, 14, 5, 5, 4, 8, 5, 6, 4, 0, 2, 2, 1, 1, 1, 0, 2]
-      },
-      "steals per game": {
-        "name": "steals per game",
-        "min": 0,
-        "annotationInfo": [],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 2.48,
-        "counts": [26, 26, 33, 27, 51, 32, 51, 30, 34, 31, 25, 22, 24, 16, 9, 13, 10, 7, 4, 6, 6, 5, 3, 3, 3, 1, 0, 0, 0, 1, 0, 1]
-      },
-      "true rebound percentage": {
-        "name": "true rebound percentage",
-        "min": 0,
-        "annotationInfo": [{
-          "annotationGeneration": 117,
-          "selectionGeneration": 18,
-          "annotation": "b7a474ea-a995-4702-81a1-1c53de5c6533"
-        }, {
-          "annotationGeneration": 110,
-          "selectionGeneration": 6,
-          "annotation": "96904282-ce21-4e92-893f-c9c8133869fe"
-        }, {
-          "annotationGeneration": 116,
-          "selectionGeneration": 14,
-          "annotation": "21b87243-f9fc-4392-af42-7ca80fbc6218"
-        }],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 35.2,
-        "counts": [1, 0, 5, 15, 68, 74, 55, 30, 23, 41, 25, 29, 20, 31, 20, 21, 14, 13, 4, 3, 4, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]
+      "versatility index": {
+        "max": 12.600000000000001,
+        "counts": [17, 0, 0, 0, 0, 0, 1, 4, 5, 12, 11, 33, 45, 35, 49, 65, 28, 45, 31, 29, 26, 22, 13, 7, 7, 2, 4, 4, 3, 0, 0, 2],
+        "name": "versatility index",
+        "min": 0.0
       },
       "true shooting percentage": {
+        "max": 0.8200000000000001,
+        "counts": [3, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 5, 2, 7, 8, 12, 36, 42, 81, 94, 82, 65, 32, 9, 5, 3, 1, 1, 1, 0, 1],
         "name": "true shooting percentage",
-        "min": 0,
-        "annotationInfo": [{
-          "annotationGeneration": 117,
-          "selectionGeneration": 18,
-          "annotation": "b7a474ea-a995-4702-81a1-1c53de5c6533"
-        }, {
-          "annotationGeneration": 110,
-          "selectionGeneration": 6,
-          "annotation": "96904282-ce21-4e92-893f-c9c8133869fe"
-        }, {
-          "annotationGeneration": 116,
-          "selectionGeneration": 14,
-          "annotation": "21b87243-f9fc-4392-af42-7ca80fbc6218"
-        }],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 0.82,
-        "counts": [3, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 3, 5, 2, 7, 8, 12, 36, 42, 81, 94, 82, 65, 32, 9, 5, 3, 1, 1, 1, 0, 1]
+        "min": 0.0
+      },
+      "rebounds pergame": {
+        "max": 13.600000000000001,
+        "counts": [3, 25, 39, 38, 59, 43, 44, 35, 44, 22, 17, 21, 22, 7, 12, 9, 14, 5, 5, 4, 8, 5, 6, 4, 0, 2, 2, 1, 1, 1, 0, 2],
+        "name": "rebounds pergame",
+        "min": 0.0
+      },
+      "blocks per game": {
+        "max": 2.82,
+        "counts": [106, 86, 65, 56, 38, 25, 21, 18, 15, 11, 9, 9, 5, 6, 7, 3, 3, 3, 3, 3, 2, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1],
+        "name": "blocks per game",
+        "min": 0.0
+      },
+      "points per game": {
+        "max": 32.0,
+        "counts": [9, 29, 53, 54, 45, 29, 38, 23, 28, 29, 20, 24, 13, 23, 15, 12, 9, 12, 6, 8, 7, 4, 2, 1, 2, 1, 1, 2, 0, 0, 0, 1],
+        "name": "points per game",
+        "min": 0.0
+      },
+      "3 point shots percentage": {
+        "max": 1.0,
+        "counts": [127, 1, 3, 3, 6, 9, 16, 11, 31, 34, 63, 75, 66, 26, 10, 4, 7, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+        "name": "3 point shots percentage",
+        "min": 0.0
       },
       "turnover per pocession": {
+        "max": 1.0,
+        "counts": [7, 9, 53, 143, 127, 74, 46, 21, 8, 5, 0, 3, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         "name": "turnover per pocession",
-        "min": 0,
-        "annotationInfo": [{
-          "annotationGeneration": 117,
-          "selectionGeneration": 18,
-          "annotation": "b7a474ea-a995-4702-81a1-1c53de5c6533"
-        }, {
-          "annotationGeneration": 110,
-          "selectionGeneration": 6,
-          "annotation": "96904282-ce21-4e92-893f-c9c8133869fe"
-        }, {
-          "annotationGeneration": 116,
-          "selectionGeneration": 14,
-          "annotation": "21b87243-f9fc-4392-af42-7ca80fbc6218"
-        }],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 1,
-        "counts": [7, 9, 53, 143, 127, 74, 46, 21, 8, 5, 0, 3, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+        "min": 0.0
+      },
+      "age": {
+        "max": 39.0,
+        "counts": [2, 17, 0, 19, 39, 0, 51, 0, 50, 53, 0, 46, 42, 0, 38, 0, 31, 19, 0, 21, 14, 0, 23, 0, 8, 10, 0, 6, 7, 0, 2, 2],
+        "name": "age",
+        "min": 19.0
+      },
+      "free throw attempts": {
+        "max": 805.0,
+        "counts": [152, 62, 63, 33, 29, 31, 11, 23, 11, 15, 10, 11, 10, 11, 8, 4, 4, 2, 1, 0, 0, 1, 0, 2, 0, 3, 2, 0, 0, 0, 0, 1],
+        "name": "free throw attempts",
+        "min": 0.0
+      },
+      "true rebound percentage": {
+        "max": 35.2,
+        "counts": [1, 0, 5, 15, 68, 74, 50, 35, 23, 41, 24, 30, 20, 29, 22, 21, 14, 13, 4, 3, 4, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+        "name": "true rebound percentage",
+        "min": 0.0
+      },
+      "2 point shots attempts": {
+        "max": 1408.0,
+        "counts": [94, 63, 47, 31, 28, 30, 20, 21, 28, 16, 13, 12, 10, 8, 8, 9, 14, 9, 10, 6, 5, 2, 4, 3, 1, 0, 2, 3, 0, 1, 1, 1],
+        "name": "2 point shots attempts",
+        "min": 0.0
+      },
+      "3 point shots attempts": {
+        "max": 615.0,
+        "counts": [201, 33, 33, 26, 22, 17, 22, 12, 11, 15, 14, 12, 15, 8, 3, 11, 6, 6, 6, 2, 4, 4, 3, 2, 1, 3, 5, 1, 1, 0, 0, 1],
+        "name": "3 point shots attempts",
+        "min": 0.0
+      },
+      "percentage of team minutes": {
+        "max": 79.5,
+        "counts": [4, 11, 18, 24, 21, 23, 17, 16, 19, 17, 22, 14, 15, 20, 23, 18, 9, 13, 12, 14, 12, 15, 20, 16, 15, 20, 20, 13, 16, 13, 4, 6],
+        "name": "percentage of team minutes",
+        "min": 7.2
+      },
+      "games": {
+        "max": 82.0,
+        "counts": [13, 14, 9, 18, 4, 13, 10, 18, 20, 16, 11, 17, 4, 8, 7, 15, 13, 12, 9, 6, 20, 14, 5, 12, 18, 9, 19, 16, 33, 13, 35, 69],
+        "name": "games",
+        "min": 1.0
+      },
+      "percentage of team assists": {
+        "max": 49.2,
+        "counts": [18, 12, 37, 55, 47, 61, 34, 41, 26, 20, 18, 21, 12, 8, 17, 6, 9, 12, 5, 9, 7, 6, 8, 0, 2, 1, 4, 1, 0, 1, 0, 2],
+        "name": "percentage of team assists",
+        "min": 0.0
+      },
+      "assists per game": {
+        "max": 10.700000000000001,
+        "counts": [67, 72, 89, 40, 48, 36, 18, 19, 16, 13, 13, 12, 8, 3, 8, 4, 4, 8, 8, 0, 3, 0, 3, 1, 0, 2, 3, 0, 0, 1, 0, 1],
+        "name": "assists per game",
+        "min": 0.0
+      },
+      "steals per game": {
+        "max": 2.48,
+        "counts": [26, 26, 33, 27, 51, 32, 51, 30, 34, 31, 25, 22, 24, 16, 9, 13, 10, 7, 4, 6, 6, 5, 3, 3, 3, 1, 0, 0, 0, 1, 0, 1],
+        "name": "steals per game",
+        "min": 0.0
       },
       "usage percent": {
-        "name": "usage percent",
-        "min": 2,
-        "annotationInfo": [{
-          "annotationGeneration": 117,
-          "selectionGeneration": 18,
-          "annotation": "b7a474ea-a995-4702-81a1-1c53de5c6533"
-        }, {
-          "annotationGeneration": 110,
-          "selectionGeneration": 6,
-          "annotation": "96904282-ce21-4e92-893f-c9c8133869fe"
-        }, {
-          "annotationGeneration": 116,
-          "selectionGeneration": 14,
-          "annotation": "21b87243-f9fc-4392-af42-7ca80fbc6218"
-        }],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
         "max": 37.6,
-        "counts": [1, 1, 2, 1, 1, 4, 7, 12, 19, 20, 32, 47, 36, 41, 40, 40, 42, 25, 26, 35, 18, 16, 12, 6, 6, 2, 2, 2, 1, 2, 0, 1]
+        "counts": [1, 1, 2, 1, 1, 4, 7, 12, 19, 20, 32, 47, 36, 41, 40, 40, 42, 25, 26, 35, 18, 16, 12, 6, 6, 2, 2, 2, 1, 2, 0, 1],
+        "name": "usage percent",
+        "min": 2.0
       },
-      "versatility index": {
-        "name": "versatility index",
-        "min": 0,
-        "annotationInfo": [{
-          "annotationGeneration": 117,
-          "selectionGeneration": 18,
-          "annotation": "b7a474ea-a995-4702-81a1-1c53de5c6533"
-        }, {
-          "annotationGeneration": 110,
-          "selectionGeneration": 6,
-          "annotation": "96904282-ce21-4e92-893f-c9c8133869fe"
-        }, {
-          "annotationGeneration": 116,
-          "selectionGeneration": 14,
-          "annotation": "21b87243-f9fc-4392-af42-7ca80fbc6218"
-        }],
-        "role": {
-          "score": -1,
-          "type": "alldata"
-        },
-        "max": 12.6,
-        "counts": [17, 0, 0, 0, 0, 0, 1, 4, 5, 12, 11, 33, 45, 35, 49, 52, 41, 45, 31, 29, 26, 22, 13, 7, 7, 2, 4, 4, 3, 0, 0, 2]
+      "minutes": {
+        "max": 38.5,
+        "counts": [14, 22, 20, 26, 20, 15, 14, 15, 19, 21, 19, 12, 15, 27, 19, 11, 9, 8, 18, 12, 16, 16, 13, 15, 15, 23, 16, 12, 16, 13, 3, 6],
+        "name": "minutes",
+        "min": 5.1000000000000005
+      },
+      "2 point shots percentage": {
+        "max": 1.0,
+        "counts": [6, 0, 0, 0, 0, 1, 1, 2, 6, 7, 14, 12, 32, 55, 103, 89, 90, 42, 19, 7, 4, 7, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+        "name": "2 point shots percentage",
+        "min": 0.0
+      },
+      "free throw percent": {
+        "max": 1.0,
+        "counts": [18, 0, 0, 0, 0, 1, 1, 0, 2, 0, 3, 1, 3, 4, 2, 3, 21, 11, 20, 13, 32, 31, 32, 37, 61, 58, 62, 37, 17, 7, 7, 16],
+        "name": "free throw percent",
+        "min": 0.0
       }
     }
   },
-  "hoverState": {
-    "source": "MutualInformationDiagram",
-    "state": {
-      "steals per game": [-1]
-    }
-  },
-  "legendShapes": {
-    "Circle": "#Circle",
-    "Square": "#Square",
-    "Triangle": "#Triangle",
-    "Diamond": "#Diamond",
-    "X": "#X",
-    "Pentagon": "#Pentagon",
-    "InvertedTriangle": "#InvertedTriangle",
-    "Star": "#Star",
-    "Plus": "#Plus"
-  },
-  "legendColors": ["rgb(166, 206, 227)", "rgb(31, 120, 180)", "rgb(178, 223, 138)", "rgb(51, 160, 44)", "rgb(251, 154, 153)", "rgb(227, 26, 28)", "rgb(253, 191, 111)", "rgb(255, 127, 0)", "rgb(202, 178, 214)", "rgb(106, 61, 154)", "rgb(255, 255, 153)", "rgb(177, 89, 40)"],
-  "legendEntries": ["2 point shots attempts", "2 point shots percentage", "3 point shots attempts", "3 point shots percentage", "age", "assists per game", "blocks per game", "cumulative score", "free throw attempts", "free throw percent", "games", "minutes", "percentage of team assists", "percentage of team minutes", "points per game", "rebounds pergame", "steals per game", "true rebound percentage", "true shooting percentage", "turnover per pocession", "usage percent", "versatility index"],
-  "legendPriorities": ["colors", "shapes"],
-  "legendDirty": true,
-  "mutualInformationParameterNames": ["free throw percent", "minutes", "percentage of team assists", "percentage of team minutes", "steals per game"],
-  "shouldCreateNewAnnotation": false,
-  "selectionData": {},
-  "selectionMetaData": {},
-  "fieldPartitions": {},
-  "scores": [{
-    "name": "no",
-    "color": "#FDAE61",
-    "index": 0,
-    "label": "no",
-    "value": -1,
-    "icon": "fa fa-thumbs-down",
-    "bgColor": "#fedfc0"
-  }, {
-    "name": "maybe",
-    "index": 1,
-    "color": "#FFFFBF",
-    "value": 0,
-    "label": "maybe",
-    "isDefault": true,
-    "icon": "fa fa-minus",
-    "bgColor": "#ffffe5"
-  }, {
-    "name": "yes",
-    "color": "#A6D96A",
-    "index": 2,
-    "label": "yes",
-    "value": 1,
-    "icon": "fa fa-thumbs-up",
-    "bgColor": "#dbf0c3"
-  }],
-  "scoreMapByValue": {
-    "0": {
-      "name": "maybe",
-      "index": 1,
-      "color": "#FFFFBF",
-      "value": 0,
-      "label": "maybe",
-      "isDefault": true,
-      "icon": "fa fa-minus",
-      "bgColor": "#ffffe5"
-    },
-    "1": {
-      "name": "yes",
-      "color": "#A6D96A",
-      "index": 2,
-      "label": "yes",
-      "value": 1,
-      "icon": "fa fa-thumbs-up",
-      "bgColor": "#dbf0c3"
-    },
-    "-1": {
-      "name": "no",
-      "color": "#FDAE61",
-      "index": 0,
-      "label": "no",
-      "value": -1,
-      "icon": "fa fa-thumbs-down",
-      "bgColor": "#fedfc0"
-    }
-  }
+  "dirty": true
 }
