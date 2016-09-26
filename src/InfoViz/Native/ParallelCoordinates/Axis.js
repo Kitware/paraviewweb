@@ -19,7 +19,7 @@ export default class Axis {
   }
 
   updateRange(newRange) {
-    if (this.range[0] !== newRange[0] || this.range[1] !== newRange[1]) {
+    if (this.range[0] !== newRange[0] || this.range[1] !== newRange[1] || this.range[1] === this.range[0]) {
       this.range[0] = newRange[0];
       this.range[1] = newRange[1];
       if (this.range[0] === this.range[1]) {

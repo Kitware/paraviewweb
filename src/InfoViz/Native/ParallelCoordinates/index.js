@@ -436,6 +436,8 @@ function parallelCoordinate(publicAPI, model) {
     let yRightMax = 0;
 
     // Ensure proper range for X
+    console.log('axis x', axisOne.name, axisOne.range.join(', '), histogram.x.delta, histogram.x.extent);
+    console.log('axis y', axisTwo.name, axisTwo.range.join(', '), histogram.y.delta, histogram.y.extent);
     const deltaOne = (axisOne.range[1] - axisOne.range[0]) / model.numberOfBins;
     const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / model.numberOfBins;
 
@@ -799,6 +801,7 @@ function parallelCoordinate(publicAPI, model) {
           }
         });
         const topLevelList = Object.keys(allBgHistogram2d);
+        // We always get a maxCount, anything additional must be histogram2d
         if (topLevelList.length > 1) {
           model.allBgHistogram2dData = allBgHistogram2d;
           // FIXME update range if need be

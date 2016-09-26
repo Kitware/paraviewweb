@@ -59,7 +59,7 @@ export function extend(publicAPI, model, initialValues = {}) {
       partial: true,
     },
     set(storage, data) {
-      const binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+      const binSize = data.numberOfBins || 'default';
       if (!storage[binSize]) {
         storage[binSize] = {};
       }
@@ -79,8 +79,9 @@ export function extend(publicAPI, model, initialValues = {}) {
       data.maxCount = maxCount;
 
       const cleanedData = Object.assign({}, data, { annotationInfo: [] });
+      const previousData = binStorage[data.x.name][data.y.name];
 
-      const sameAsBefore = (JSON.stringify(cleanedData) === JSON.stringify(binStorage[data.x.name][data.y.name]));
+      const sameAsBefore = (JSON.stringify(cleanedData) === JSON.stringify(previousData));
 
       binStorage[data.x.name][data.y.name] = cleanedData;
       binStorage[data.y.name][data.x.name] = flipHistogram(cleanedData);
@@ -127,7 +128,6 @@ export function extend(publicAPI, model, initialValues = {}) {
       returnedData.maxCount = maxCount;
 
       if (count === request.variables.length || (request.metadata.partial && count > 0)) {
-
         // Chech consistency
         let skip = false;
         Object.keys(rangeConsistency).forEach(name => {
@@ -145,6 +145,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
         return skip ? null : returnedData;
       }
+
       return null;
     },
   });
