@@ -58,12 +58,28 @@ export default function init(inPublicAPI, inModel) {
     return [hobj.min].concat(dividers.map((div) => (div.value)), hobj.max);
   }
 
+  function getHistRange(def) {
+    let minRange = def.range[0];
+    let maxRange = def.range[1];
+    if (def.hobj) {
+      minRange = def.hobj.min;
+      maxRange = def.hobj.max;
+    }
+    if (minRange === maxRange) maxRange += 1;
+    return [minRange, maxRange];
+  }
+  function getUncertScale(def) {
+    // handle a zero range (like from the cumulative score histogram)
+    const [minRange, maxRange] = getHistRange(def);
+    return (maxRange - minRange);
+  }
+
   // Translate our dividers and regions into an annotation
   // suitable for scoring this histogram.
   function dividersToPartition(def, scores) {
     if (!def.regions || !def.dividers || !scores) return null;
     if (def.regions.length !== def.dividers.length + 1) return null;
-    const uncertScale = (def.range[1] - def.range[0]);
+    const uncertScale = getUncertScale(def);
 
     const partitionSelection = SelectionBuilder.partition(def.name, def.dividers);
     partitionSelection.partition.dividers.forEach((div, index) => { div.uncertainty *= uncertScale; });
@@ -82,7 +98,7 @@ export default function init(inPublicAPI, inModel) {
   // retrieve annotation, and re-create dividers and regions
   function partitionToDividers(scoreData, def, hobj, scores) {
     // console.log('DBG return', JSON.stringify(scoreData, null, 2));
-    const uncertScale = (def.range[1] - def.range[0]);
+    const uncertScale = getUncertScale(def);
     const regions = scoreData.score;
     const dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
     dividers.forEach((div, index) => { div.uncertainty *= 1 / uncertScale; });
@@ -130,7 +146,8 @@ export default function init(inPublicAPI, inModel) {
     if (def) {
       def.editScore = true;
       // create a divider halfway through.
-      def.dividers = [createDefaultDivider(0.5 * (def.range[0] + def.range[1]), 0)];
+      const [minRange, maxRange] = getHistRange(def);
+      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
       // set regions to 'no' | 'yes'
       def.regions = [0, 2];
       sendScores(def, def.hobj);
@@ -227,7 +244,7 @@ export default function init(inPublicAPI, inModel) {
   function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
     if (hitIndex < 0) return currentUncertainty;
     let maxUncertainty = 0.5;
-    const uncertScale = (def.hobj.max - def.hobj.min);
+    const uncertScale = getUncertScale(def);
     // Note comparison with low/high divider is signed. If val indicates divider has been
     // moved _past_ the neighboring divider, low/high will be negative.
     if (hitIndex > 0) {
@@ -728,6 +745,29 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
+  // when the Histogram1DProvider pushes a new histogram, it may have a new range.
+  // If needed, proportionally scale dividers into the new range.
+  function rescaleDividers(paramName, oldRangeMin, oldRangeMax) {
+    if (model.fieldData[paramName] && model.fieldData[paramName].hobj) {
+      const def = model.fieldData[paramName];
+      const hobj = model.fieldData[paramName].hobj;
+      if (hobj.min !== oldRangeMin || hobj.max !== oldRangeMax) {
+        def.dividers.forEach((divider, index) => {
+          if (oldRangeMax === oldRangeMin) {
+            // space dividers evenly in the middle - i.e. punt.
+            divider.value = (((index + 1) / (def.dividers.length + 1)) *
+                             (hobj.max - hobj.min)) + hobj.min;
+          } else {
+            // this set the divider to hobj.min if the new hobj.min === hobj.max.
+            divider.value = (((divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin)) *
+                             (hobj.max - hobj.min)) + hobj.min;
+          }
+        });
+        sendScores(def, hobj);
+      }
+    }
+  }
+
   function showScore(def) {
     // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
     return (def.editScore || (typeof def.regions !== 'undefined' &&
@@ -778,6 +818,7 @@ export default function init(inPublicAPI, inModel) {
         .attr('stroke', 'black');
       dividers.exit().remove();
 
+      const uncertScale = getUncertScale(def);
       const uncertRegions = gScore.selectAll(`.${style.jsScoreUncertainty}`)
         .data(dividerData);
       uncertRegions.enter().append('rect')
@@ -785,10 +826,10 @@ export default function init(inPublicAPI, inModel) {
         .attr('rx', 8)
         .attr('ry', 8);
       uncertRegions
-        .attr('x', d => def.xScale(d.value - (d.uncertainty * (hobj.max - hobj.min))))
+        .attr('x', d => def.xScale(d.value - (d.uncertainty * uncertScale)))
         .attr('y', 0)
         // to get a width, need to start from 'zero' of this scale, which is hobj.min
-        .attr('width', (d, i) => def.xScale(hobj.min + (2 * d.uncertainty * (hobj.max - hobj.min))))
+        .attr('width', (d, i) => def.xScale(hobj.min + (2 * d.uncertainty * uncertScale)))
         .attr('height', () => model.histHeight)
         .attr('fill', '#000')
         .attr('opacity', (d) => (d.uncertainty > 0 ? '0.2' : '0'));
@@ -1010,8 +1051,10 @@ export default function init(inPublicAPI, inModel) {
     editingScore,
     enabled,
     filterFieldNames,
+    getHistRange,
     init,
     prepareItem,
+    rescaleDividers,
     updateHeader,
     updateFieldAnnotations,
     updateScoreIcon,

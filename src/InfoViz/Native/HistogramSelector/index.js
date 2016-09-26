@@ -346,7 +346,8 @@ function histogramSelector(publicAPI, model) {
   };
 
   publicAPI.render = (onlyFieldName = null) => {
-    if (!model.histograms) {
+    if (!model.fieldData ||
+        (onlyFieldName !== null && !model.fieldData[onlyFieldName])) {
       return;
     }
 
@@ -564,8 +565,7 @@ function histogramSelector(publicAPI, model) {
         .attr('height', publicAPI.svgHeight());
 
       // get the histogram data and rebuild the histogram based on the results
-      const hobj = model.histograms[def.name];
-      def.hobj = hobj;
+      const hobj = def.hobj;
       if (hobj) {
         const cmax = 1.0 * d3.max(hobj.counts);
         const hsize = hobj.counts.length;
@@ -627,9 +627,10 @@ function histogramSelector(publicAPI, model) {
         if (typeof def.xScale === 'undefined') {
           def.xScale = d3.scale.linear();
         }
+        const [minRange, maxRange] = scoreHelper.getHistRange(def);
         def.xScale
           .rangeRound([0, model.histWidth])
-          .domain([hobj.min, hobj.max]);
+          .domain([minRange, maxRange]);
 
         if (typeof def.xAxis === 'undefined') {
           const formatter = d3.format('.3s');
@@ -645,7 +646,7 @@ function histogramSelector(publicAPI, model) {
           // using .ticks() results in skipping min/max values,
           // if they aren't 'nice'. Make exactly 5 ticks.
           const myTicks = d3.range(numTicks).map((d) => (
-            hobj.min + ((d / (numTicks - 1)) * (hobj.max - hobj.min)))
+            minRange + ((d / (numTicks - 1)) * (maxRange - minRange)))
           );
           def.xAxis
             .tickValues(myTicks);
@@ -751,13 +752,26 @@ function histogramSelector(publicAPI, model) {
   if (model.provider.isA('Histogram1DProvider')) {
     model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
       data => {
-        model.histograms = data;
+        // Below, we're asking for partial updates, so we just update our
+        // cache with anything that came in.
+        Object.keys(data).forEach(name => {
+          if (!model.fieldData[name]) model.fieldData[name] = {};
+          if (model.fieldData[name].hobj) {
+            const oldRangeMin = model.fieldData[name].hobj.min;
+            const oldRangeMax = model.fieldData[name].hobj.max;
+            model.fieldData[name].hobj = data[name];
+            scoreHelper.rescaleDividers(name, oldRangeMin, oldRangeMax);
+          } else {
+            model.fieldData[name].hobj = data[name];
+          }
+        });
+
         publicAPI.render();
       },
       Object.keys(model.fieldData),
       {
         numberOfBins: model.numberOfBins,
-        partial: false,
+        partial: true,
       }
     );
 
