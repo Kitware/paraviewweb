@@ -105,8 +105,8 @@ function parallelCoordinate(publicAPI, model) {
   model.selectionData = null;
 
   function drawSelectionData(score) {
-    if (model.axes.selection && model.partitionScores) {
-      return model.partitionScores.indexOf(score) !== -1;
+    if (model.axes.selection && model.visibleScores) {
+      return model.visibleScores.indexOf(score) !== -1;
     }
     return true;
   }
@@ -646,17 +646,17 @@ function parallelCoordinate(publicAPI, model) {
     model.defaultWeight = defaultWeight;
   };
 
-  publicAPI.setVisibleScoresForPartitionSelection = scoreList => {
-    model.partitionScores = scoreList;
-    if (model.selectionDataSubscription && model.partitionScores && model.propagatePartitionScores) {
-      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
+  publicAPI.setVisibleScoresForSelection = scoreList => {
+    model.visibleScores = scoreList;
+    if (model.selectionDataSubscription && model.visibleScores && model.propagatePartitionScores) {
+      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.visibleScores);
     }
   };
 
   publicAPI.setScores = scores => {
     model.scores = scores;
-    if (!model.partitionScores && scores) {
-      publicAPI.setVisibleScoresForPartitionSelection(scores.map((score, idx) => idx));
+    if (!model.visibleScores && scores) {
+      publicAPI.setVisibleScoresForSelection(scores.map((score, idx) => idx));
     }
     if (model.scores) {
       model.scores.forEach((score, idx) => {
@@ -797,8 +797,18 @@ function parallelCoordinate(publicAPI, model) {
   if (model.provider.isA('Histogram2DProvider')) {
     model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(
       allBgHistogram2d => {
-        if (Object.keys(allBgHistogram2d).length > 1) {
+        const topLevelList = Object.keys(allBgHistogram2d);
+        if (topLevelList.length > 1) {
           model.allBgHistogram2dData = allBgHistogram2d;
+          // FIXME update range if need be
+          // topLevelList.forEach(key1 => {
+          //   const obj1 = allBgHistogram2d[key1];
+          //   Object.keys(obj1).forEach(key2 => {
+          //     const histObject = obj1[key2];
+          //     const xParamObj = histObject.x;
+          //     const yParamObj = histObject.y;
+          //   });
+          // });
           publicAPI.render();
         } else {
           model.allBgHistogram2dData = null;
@@ -839,7 +849,7 @@ function parallelCoordinate(publicAPI, model) {
           publicAPI.render();
         }
       },
-      model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
+      model.axes.getAxesPairs(), { partitionScores: model.visibleScores });
 
     model.subscriptions.push(model.selectionDataSubscription);
 
