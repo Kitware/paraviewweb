@@ -41,6 +41,13 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   MutualInformationProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
+// set provider behaviors
+provider.setFieldsSorted(true);
+provider.getFieldNames().forEach(name => {
+  provider.addLegendEntry(name);
+});
+provider.assignLegend(['colors', 'shapes']);
+
 // Create parallel coordinates
 const parallelCoordinates = ParallelCoordinates.newInstance({ provider, container: parallelCoordinatesContainer });
 
