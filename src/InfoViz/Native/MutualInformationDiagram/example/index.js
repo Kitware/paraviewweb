@@ -13,7 +13,7 @@ import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
 import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
 import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
 
-import dataModel from '../../ParallelCoordinates/example/state.json';
+import dataModel from './state.json';
 
 const bodyElt = document.querySelector('body');
 
