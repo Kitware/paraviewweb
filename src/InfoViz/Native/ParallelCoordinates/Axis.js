@@ -1,7 +1,7 @@
 export default class Axis {
   constructor(name, range = [0, 1]) {
     this.name = name;
-    this.range = range;
+    this.range = [].concat(range);
     this.upsideDown = false;
     this.selections = [];
   }
@@ -16,6 +16,17 @@ export default class Axis {
 
   hasSelection() {
     return (this.selections.length > 0);
+  }
+
+  updateRange(newRange) {
+    if (this.range[0] !== newRange[0] || this.range[1] !== newRange[1]) {
+      this.range[0] = newRange[0];
+      this.range[1] = newRange[1];
+      if (this.range[0] === this.range[1]) {
+        this.range[1] += 1;
+      }
+      console.log('update axis range', this.name, this.range);
+    }
   }
 
   updateSelection(selectionIndex, start, end) {
