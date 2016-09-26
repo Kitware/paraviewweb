@@ -23581,11 +23581,14 @@
 	  value: true
 	});
 	exports.newInstance = undefined;
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* global document */
+
 	exports.extend = extend;
 
-	var _d = __webpack_require__(42);
+	var _d2 = __webpack_require__(42);
 
-	var _d2 = _interopRequireDefault(_d);
+	var _d3 = _interopRequireDefault(_d2);
 
 	var _HistogramSelector = __webpack_require__(43);
 
@@ -23829,19 +23832,19 @@
 	  function updateHeader(dataLength) {
 	    if (model.singleModeSticky) {
 	      // header isn't useful for a single histogram.
-	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', 'none');
+	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', 'none');
 	      return;
 	    }
-	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', null);
-	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsFieldsIcon)
+	    _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeader).style('display', null);
+	    _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsFieldsIcon)
 	    // apply class - 'false' should come first to not remove common base class.
 	    .classed(displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, false).classed(!displayOnlySelected ? _HistogramSelector2.default.allFieldsIcon : _HistogramSelector2.default.selectedFieldsIcon, true);
 	    scoreHelper.updateHeader();
 
-	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
-	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
+	    _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxes).style('display', model.singleModeName === null ? 'initial' : 'none');
+	    _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderBoxesNum).text(model.boxesPerRow + ' /row');
 
-	    _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
+	    _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingle).style('display', model.singleModeName === null ? 'none' : 'initial');
 
 	    if (model.provider.isA('LegendProvider') && model.singleModeName) {
 	      var _model$provider$getLe = model.provider.getLegend(model.singleModeName);
@@ -23849,9 +23852,9 @@
 	      var color = _model$provider$getLe.color;
 	      var shape = _model$provider$getLe.shape;
 
-	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
+	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).html('<svg class=\'' + _HistogramSelector2.default.legendSvg + '\' width=\'' + legendSize + '\' height=\'' + legendSize + '\'\n                fill=\'' + color + '\' stroke=\'black\'><use xlink:href=\'' + shape + '\'/></svg>');
 	    } else {
-	      _d2.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
+	      _d3.default.select(model.container).select('.' + _HistogramSelector2.default.jsHeaderSingleField).text(function () {
 	        var name = model.singleModeName;
 	        if (!name) return '';
 	        if (name.length > 10) {
@@ -23864,7 +23867,7 @@
 
 	  publicAPI.getMouseCoords = function (tdsl) {
 	    // y-coordinate is not handled correctly for svg or svgGr or overlay inside scrolling container.
-	    var coord = _d2.default.mouse(tdsl.node());
+	    var coord = _d3.default.mouse(tdsl.node());
 	    return [coord[0] - model.histMargin.left, coord[1] - model.histMargin.top];
 	  };
 
@@ -23874,7 +23877,7 @@
 	    var clientRect = model.container.getBoundingClientRect();
 	    if (clientRect.width !== 0 && clientRect.height !== 0) {
 	      model.containerHidden = false;
-	      _d2.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
+	      _d3.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
 	      publicAPI.render();
 	    } else {
 	      model.containerHidden = true;
@@ -23891,7 +23894,7 @@
 	      model.scrollToName = d.name;
 	      publicAPI.render();
 	    }
-	    if (_d2.default.event) _d2.default.event.stopPropagation();
+	    if (_d3.default.event) _d3.default.event.stopPropagation();
 	  }
 
 	  // Display a single histogram. If disableSwitch is true, switching to
@@ -23913,7 +23916,7 @@
 	  publicAPI.render = function () {
 	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
-	    if (!model.histograms) {
+	    if (!model.fieldData || onlyFieldName !== null && !model.fieldData[onlyFieldName]) {
 	      return;
 	    }
 
@@ -23995,7 +23998,7 @@
 	        reusableNode = exitNodes[0][i];
 	        if (reusableNode) {
 	          exitNodes[0][i] = undefined;
-	          _d2.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
+	          _d3.default.select(reusableNode).selectAll('table').classed(_HistogramSelector2.default.hiddenBox, true);
 	          return reusableNode;
 	        }
 	      }
@@ -24035,7 +24038,7 @@
 	      }
 
 	      // get existing sub elements
-	      var ttab = _d2.default.select(this);
+	      var ttab = _d3.default.select(this);
 	      var trow1 = ttab.select('tr.' + _HistogramSelector2.default.jsLegendRow);
 	      var trow2 = ttab.select('tr.' + _HistogramSelector2.default.jsTr2);
 	      var tdsl = trow2.select('td.' + _HistogramSelector2.default.jsSparkline);
@@ -24100,11 +24103,10 @@
 	      tdsl.select('svg').attr('width', publicAPI.svgWidth()).attr('height', publicAPI.svgHeight());
 
 	      // get the histogram data and rebuild the histogram based on the results
-	      var hobj = model.histograms[def.name];
-	      def.hobj = hobj;
+	      var hobj = def.hobj;
 	      if (hobj) {
 	        (function () {
-	          var cmax = 1.0 * _d2.default.max(hobj.counts);
+	          var cmax = 1.0 * _d3.default.max(hobj.counts);
 	          var hsize = hobj.counts.length;
 	          var hdata = svgGr.select('.' + _HistogramSelector2.default.jsGRect).selectAll('.' + _HistogramSelector2.default.jsHistRect).data(hobj.counts);
 
@@ -24155,13 +24157,21 @@
 	          // Attach scale, axis objects to this box's
 	          // data (the 'def' object) to allow persistence when scrolled.
 	          if (typeof def.xScale === 'undefined') {
-	            def.xScale = _d2.default.scale.linear();
+	            def.xScale = _d3.default.scale.linear();
 	          }
-	          def.xScale.rangeRound([0, model.histWidth]).domain([hobj.min, hobj.max]);
+
+	          var _scoreHelper$getHistR = scoreHelper.getHistRange(def);
+
+	          var _scoreHelper$getHistR2 = _slicedToArray(_scoreHelper$getHistR, 2);
+
+	          var minRange = _scoreHelper$getHistR2[0];
+	          var maxRange = _scoreHelper$getHistR2[1];
+
+	          def.xScale.rangeRound([0, model.histWidth]).domain([minRange, maxRange]);
 
 	          if (typeof def.xAxis === 'undefined') {
-	            var formatter = _d2.default.format('.3s');
-	            def.xAxis = _d2.default.svg.axis().tickFormat(formatter).orient('bottom');
+	            var formatter = _d3.default.format('.3s');
+	            def.xAxis = _d3.default.svg.axis().tickFormat(formatter).orient('bottom');
 	          }
 	          def.xAxis.scale(def.xScale);
 	          var numTicks = 2;
@@ -24169,8 +24179,8 @@
 	            numTicks = 5;
 	            // using .ticks() results in skipping min/max values,
 	            // if they aren't 'nice'. Make exactly 5 ticks.
-	            var myTicks = _d2.default.range(numTicks).map(function (d) {
-	              return hobj.min + d / (numTicks - 1) * (hobj.max - hobj.min);
+	            var myTicks = _d3.default.range(numTicks).map(function (d) {
+	              return minRange + d / (numTicks - 1) * (maxRange - minRange);
 	            });
 	            def.xAxis.tickValues(myTicks);
 	          } else {
@@ -24215,7 +24225,7 @@
 	    model.container = element;
 
 	    if (model.container) {
-	      var cSel = _d2.default.select(model.container);
+	      var cSel = _d3.default.select(model.container);
 	      createHeader(cSel);
 	      // wrapper height is set insize resize()
 	      var wrapper = cSel.append('div').style('overflow-y', 'auto').style('overflow-x', 'hidden').on('scroll', function () {
@@ -24232,7 +24242,7 @@
 	  };
 
 	  function handleHoverUpdate(data) {
-	    var everything = _d2.default.select(model.container);
+	    var everything = _d3.default.select(model.container);
 	    Object.keys(data.state).forEach(function (pName) {
 	      var binList = data.state[pName];
 	      everything.selectAll('rect[pname=\'' + pName + '\']').classed(_HistogramSelector2.default.binHilite, function (d, i) {
@@ -24266,11 +24276,24 @@
 
 	  if (model.provider.isA('Histogram1DProvider')) {
 	    model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (data) {
-	      model.histograms = data;
+	      // Below, we're asking for partial updates, so we just update our
+	      // cache with anything that came in.
+	      Object.keys(data).forEach(function (name) {
+	        if (!model.fieldData[name]) model.fieldData[name] = {};
+	        if (model.fieldData[name].hobj) {
+	          var oldRangeMin = model.fieldData[name].hobj.min;
+	          var oldRangeMax = model.fieldData[name].hobj.max;
+	          model.fieldData[name].hobj = data[name];
+	          scoreHelper.rescaleDividers(name, oldRangeMin, oldRangeMax);
+	        } else {
+	          model.fieldData[name].hobj = data[name];
+	        }
+	      });
+
 	      publicAPI.render();
 	    }, Object.keys(model.fieldData), {
 	      numberOfBins: model.numberOfBins,
-	      partial: false
+	      partial: true
 	    });
 
 	    model.subscriptions.push(model.histogram1DDataSubscription);
@@ -24289,8 +24312,6 @@
 	// ----------------------------------------------------------------------------
 	// Object factory
 	// ----------------------------------------------------------------------------
-
-	/* global document */
 
 	var DEFAULT_VALUES = {
 	  container: null,
@@ -34973,12 +34994,34 @@
 	    }), hobj.max);
 	  }
 
+	  function getHistRange(def) {
+	    var minRange = def.range[0];
+	    var maxRange = def.range[1];
+	    if (def.hobj) {
+	      minRange = def.hobj.min;
+	      maxRange = def.hobj.max;
+	    }
+	    if (minRange === maxRange) maxRange += 1;
+	    return [minRange, maxRange];
+	  }
+	  function getUncertScale(def) {
+	    // handle a zero range (like from the cumulative score histogram)
+	    var _getHistRange = getHistRange(def);
+
+	    var _getHistRange2 = _slicedToArray(_getHistRange, 2);
+
+	    var minRange = _getHistRange2[0];
+	    var maxRange = _getHistRange2[1];
+
+	    return maxRange - minRange;
+	  }
+
 	  // Translate our dividers and regions into an annotation
 	  // suitable for scoring this histogram.
 	  function dividersToPartition(def, scores) {
 	    if (!def.regions || !def.dividers || !scores) return null;
 	    if (def.regions.length !== def.dividers.length + 1) return null;
-	    var uncertScale = def.range[1] - def.range[0];
+	    var uncertScale = getUncertScale(def);
 
 	    var partitionSelection = _SelectionBuilder2.default.partition(def.name, def.dividers);
 	    partitionSelection.partition.dividers.forEach(function (div, index) {
@@ -34999,7 +35042,7 @@
 	  // retrieve annotation, and re-create dividers and regions
 	  function partitionToDividers(scoreData, def, hobj, scores) {
 	    // console.log('DBG return', JSON.stringify(scoreData, null, 2));
-	    var uncertScale = def.range[1] - def.range[0];
+	    var uncertScale = getUncertScale(def);
 	    var regions = scoreData.score;
 	    var dividers = JSON.parse(JSON.stringify(scoreData.selection.partition.dividers));
 	    dividers.forEach(function (div, index) {
@@ -35049,7 +35092,15 @@
 	    if (def) {
 	      def.editScore = true;
 	      // create a divider halfway through.
-	      def.dividers = [createDefaultDivider(0.5 * (def.range[0] + def.range[1]), 0)];
+
+	      var _getHistRange3 = getHistRange(def);
+
+	      var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
+
+	      var minRange = _getHistRange4[0];
+	      var maxRange = _getHistRange4[1];
+
+	      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
 	      // set regions to 'no' | 'yes'
 	      def.regions = [0, 2];
 	      sendScores(def, def.hobj);
@@ -35132,7 +35183,7 @@
 	  function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
 	    if (hitIndex < 0) return currentUncertainty;
 	    var maxUncertainty = 0.5;
-	    var uncertScale = def.hobj.max - def.hobj.min;
+	    var uncertScale = getUncertScale(def);
 	    // Note comparison with low/high divider is signed. If val indicates divider has been
 	    // moved _past_ the neighboring divider, low/high will be negative.
 	    if (hitIndex > 0) {
@@ -35545,6 +35596,29 @@
 	    }
 	  }
 
+	  // when the Histogram1DProvider pushes a new histogram, it may have a new range.
+	  // If needed, proportionally scale dividers into the new range.
+	  function rescaleDividers(paramName, oldRangeMin, oldRangeMax) {
+	    if (model.fieldData[paramName] && model.fieldData[paramName].hobj) {
+	      (function () {
+	        var def = model.fieldData[paramName];
+	        var hobj = model.fieldData[paramName].hobj;
+	        if (hobj.min !== oldRangeMin || hobj.max !== oldRangeMax) {
+	          def.dividers.forEach(function (divider, index) {
+	            if (oldRangeMax === oldRangeMin) {
+	              // space dividers evenly in the middle - i.e. punt.
+	              divider.value = (index + 1) / (def.dividers.length + 1) * (hobj.max - hobj.min) + hobj.min;
+	            } else {
+	              // this set the divider to hobj.min if the new hobj.min === hobj.max.
+	              divider.value = (divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin) * (hobj.max - hobj.min) + hobj.min;
+	            }
+	          });
+	          sendScores(def, hobj);
+	        }
+	      })();
+	    }
+	  }
+
 	  function showScore(def) {
 	    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
 	    return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
@@ -35581,81 +35655,84 @@
 	    var gScore = svgGr.select('.' + _HistogramSelector2.default.jsScore);
 	    var drag = null;
 	    if (def.editScore) {
-	      // add temp dragged divider, if needed.
-	      var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
-	      var dividers = gScore.selectAll('line').data(dividerData);
-	      dividers.enter().append('line');
-	      dividers.attr('x1', function (d) {
-	        return def.xScale(d.value);
-	      }).attr('y1', 0).attr('x2', function (d) {
-	        return def.xScale(d.value);
-	      }).attr('y2', function () {
-	        return model.histHeight;
-	      }).attr('stroke-width', 1).attr('stroke', 'black');
-	      dividers.exit().remove();
+	      (function () {
+	        // add temp dragged divider, if needed.
+	        var dividerData = typeof def.dragDivider !== 'undefined' && def.dragDivider.newDivider.value !== undefined ? def.dividers.concat(def.dragDivider.newDivider) : def.dividers;
+	        var dividers = gScore.selectAll('line').data(dividerData);
+	        dividers.enter().append('line');
+	        dividers.attr('x1', function (d) {
+	          return def.xScale(d.value);
+	        }).attr('y1', 0).attr('x2', function (d) {
+	          return def.xScale(d.value);
+	        }).attr('y2', function () {
+	          return model.histHeight;
+	        }).attr('stroke-width', 1).attr('stroke', 'black');
+	        dividers.exit().remove();
 
-	      var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
-	      uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
-	      uncertRegions.attr('x', function (d) {
-	        return def.xScale(d.value - d.uncertainty * (hobj.max - hobj.min));
-	      }).attr('y', 0)
-	      // to get a width, need to start from 'zero' of this scale, which is hobj.min
-	      .attr('width', function (d, i) {
-	        return def.xScale(hobj.min + 2 * d.uncertainty * (hobj.max - hobj.min));
-	      }).attr('height', function () {
-	        return model.histHeight;
-	      }).attr('fill', '#000').attr('opacity', function (d) {
-	        return d.uncertainty > 0 ? '0.2' : '0';
-	      });
-	      uncertRegions.exit().remove();
+	        var uncertScale = getUncertScale(def);
+	        var uncertRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).data(dividerData);
+	        uncertRegions.enter().append('rect').classed(_HistogramSelector2.default.jsScoreUncertainty, true).attr('rx', 8).attr('ry', 8);
+	        uncertRegions.attr('x', function (d) {
+	          return def.xScale(d.value - d.uncertainty * uncertScale);
+	        }).attr('y', 0)
+	        // to get a width, need to start from 'zero' of this scale, which is hobj.min
+	        .attr('width', function (d, i) {
+	          return def.xScale(hobj.min + 2 * d.uncertainty * uncertScale);
+	        }).attr('height', function () {
+	          return model.histHeight;
+	        }).attr('fill', '#000').attr('opacity', function (d) {
+	          return d.uncertainty > 0 ? '0.2' : '0';
+	        });
+	        uncertRegions.exit().remove();
 
-	      var dragDivLabel = gScore.select('.' + _HistogramSelector2.default.jsScoreDivLabel);
-	      if (typeof def.dragDivider !== 'undefined') {
-	        if (dragDivLabel.empty()) {
-	          dragDivLabel = gScore.append('text').classed(_HistogramSelector2.default.jsScoreDivLabel, true).attr('text-anchor', 'middle').attr('stroke', 'none').attr('background-color', '#fff').attr('dy', '.71em');
+	        var dragDivLabel = gScore.select('.' + _HistogramSelector2.default.jsScoreDivLabel);
+	        if (typeof def.dragDivider !== 'undefined') {
+	          if (dragDivLabel.empty()) {
+	            dragDivLabel = gScore.append('text').classed(_HistogramSelector2.default.jsScoreDivLabel, true).attr('text-anchor', 'middle').attr('stroke', 'none').attr('background-color', '#fff').attr('dy', '.71em');
+	          }
+	          var formatter = _d3.default.format('.3s');
+	          var divVal = def.dragDivider.newDivider.value !== undefined ? def.dragDivider.newDivider.value : def.dividers[def.dragDivider.index].value;
+	          dragDivLabel.text(formatter(divVal)).attr('x', '' + def.xScale(divVal)).attr('y', '' + (model.histHeight + 2));
+	        } else if (!dragDivLabel.empty()) {
+	          dragDivLabel.remove();
 	        }
-	        var formatter = _d3.default.format('.3s');
-	        var divVal = def.dragDivider.newDivider.value !== undefined ? def.dragDivider.newDivider.value : def.dividers[def.dragDivider.index].value;
-	        dragDivLabel.text(formatter(divVal)).attr('x', '' + def.xScale(divVal)).attr('y', '' + (model.histHeight + 2));
-	      } else if (!dragDivLabel.empty()) {
-	        dragDivLabel.remove();
-	      }
 
-	      // divider interaction events.
-	      // Drag flow: drag a divider inside its current neighbors.
-	      // A divider outside its neighbors or a new divider is a temp divider,
-	      // added to the end of the list when rendering. Doesn't affect regions that way.
-	      drag = _d3.default.behavior.drag().on('dragstart', function () {
-	        var overCoords = publicAPI.getMouseCoords(tdsl);
+	        // divider interaction events.
+	        // Drag flow: drag a divider inside its current neighbors.
+	        // A divider outside its neighbors or a new divider is a temp divider,
+	        // added to the end of the list when rendering. Doesn't affect regions that way.
+	        drag = _d3.default.behavior.drag().on('dragstart', function () {
+	          var overCoords = publicAPI.getMouseCoords(tdsl);
 
-	        var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
+	          var _dividerPick = dividerPick(overCoords, def, model.dragMargin, hobj.min);
 
-	        var _dividerPick2 = _slicedToArray(_dividerPick, 3);
+	          var _dividerPick2 = _slicedToArray(_dividerPick, 3);
 
-	        var val = _dividerPick2[0];
-	        var hitIndex = _dividerPick2[2];
+	          var val = _dividerPick2[0];
+	          var hitIndex = _dividerPick2[2];
 
-	        if (!def.lockAnnot && (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey)) {
-	          // create a temp divider to render.
-	          def.dragDivider = createDragDivider(-1, val, def, hobj);
+	          if (!def.lockAnnot && (_d3.default.event.sourceEvent.altKey || _d3.default.event.sourceEvent.ctrlKey)) {
+	            // create a temp divider to render.
+	            def.dragDivider = createDragDivider(-1, val, def, hobj);
+	            publicAPI.render();
+	          } else if (hitIndex >= 0) {
+	            // start dragging existing divider
+	            // it becomes a temporary copy if we go outside our bounds
+	            def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
+	            publicAPI.render();
+	          }
+	        }).on('drag', function () {
+	          var overCoords = publicAPI.getMouseCoords(tdsl);
+	          if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
+	          var val = def.xScale.invert(overCoords[0]);
+	          moveDragDivider(val, def);
+	          publicAPI.render(def.name);
+	        }).on('dragend', function () {
+	          if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
+	          finishDivider(def, hobj);
 	          publicAPI.render();
-	        } else if (hitIndex >= 0) {
-	          // start dragging existing divider
-	          // it becomes a temporary copy if we go outside our bounds
-	          def.dragDivider = createDragDivider(hitIndex, undefined, def, hobj);
-	          publicAPI.render();
-	        }
-	      }).on('drag', function () {
-	        var overCoords = publicAPI.getMouseCoords(tdsl);
-	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
-	        var val = def.xScale.invert(overCoords[0]);
-	        moveDragDivider(val, def);
-	        publicAPI.render(def.name);
-	      }).on('dragend', function () {
-	        if (typeof def.dragDivider === 'undefined' || scorePopupDiv.style('display') !== 'none' || dividerPopupDiv.style('display') !== 'none' || dividerValuePopupDiv.style('display') !== 'none') return;
-	        finishDivider(def, hobj);
-	        publicAPI.render();
-	      });
+	        });
+	      })();
 	    } else {
 	      gScore.selectAll('line').remove();
 	      gScore.selectAll('.' + _HistogramSelector2.default.jsScoreUncertainty).remove();
@@ -35819,8 +35896,10 @@
 	    editingScore: editingScore,
 	    enabled: enabled,
 	    filterFieldNames: filterFieldNames,
+	    getHistRange: getHistRange,
 	    init: init,
 	    prepareItem: prepareItem,
+	    rescaleDividers: rescaleDividers,
 	    updateHeader: updateHeader,
 	    updateFieldAnnotations: updateFieldAnnotations,
 	    updateScoreIcon: updateScoreIcon
