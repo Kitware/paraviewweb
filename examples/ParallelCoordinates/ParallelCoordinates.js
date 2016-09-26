@@ -20994,8 +20994,8 @@
 	  model.selectionData = null;
 
 	  function drawSelectionData(score) {
-	    if (model.axes.selection && model.axes.selection.type === 'partition' && model.partitionScores) {
-	      return model.partitionScores.indexOf(score) !== -1;
+	    if (model.axes.selection && model.visibleScores) {
+	      return model.visibleScores.indexOf(score) !== -1;
 	    }
 	    return true;
 	  }
@@ -21464,17 +21464,17 @@
 	    model.defaultWeight = defaultWeight;
 	  };
 
-	  publicAPI.setVisibleScoresForPartitionSelection = function (scoreList) {
-	    model.partitionScores = scoreList;
-	    if (model.selectionDataSubscription && model.partitionScores && model.propagatePartitionScores) {
-	      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.partitionScores);
+	  publicAPI.setVisibleScoresForSelection = function (scoreList) {
+	    model.visibleScores = scoreList;
+	    if (model.selectionDataSubscription && model.visibleScores && model.propagatePartitionScores) {
+	      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.visibleScores);
 	    }
 	  };
 
 	  publicAPI.setScores = function (scores) {
 	    model.scores = scores;
-	    if (!model.partitionScores && scores) {
-	      publicAPI.setVisibleScoresForPartitionSelection(scores.map(function (score, idx) {
+	    if (!model.visibleScores && scores) {
+	      publicAPI.setVisibleScoresForSelection(scores.map(function (score, idx) {
 	        return idx;
 	      }));
 	    }
@@ -21595,8 +21595,18 @@
 
 	  if (model.provider.isA('Histogram2DProvider')) {
 	    model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(function (allBgHistogram2d) {
-	      if (Object.keys(allBgHistogram2d).length > 1) {
+	      var topLevelList = Object.keys(allBgHistogram2d);
+	      if (topLevelList.length > 1) {
 	        model.allBgHistogram2dData = allBgHistogram2d;
+	        // FIXME update range if need be
+	        // topLevelList.forEach(key1 => {
+	        //   const obj1 = allBgHistogram2d[key1];
+	        //   Object.keys(obj1).forEach(key2 => {
+	        //     const histObject = obj1[key2];
+	        //     const xParamObj = histObject.x;
+	        //     const yParamObj = histObject.y;
+	        //   });
+	        // });
 	        publicAPI.render();
 	      } else {
 	        model.allBgHistogram2dData = null;
@@ -21631,7 +21641,7 @@
 	        // render from selection data change (no annotation)
 	        publicAPI.render();
 	      }
-	    }, model.axes.getAxesPairs(), { partitionScores: model.partitionScores });
+	    }, model.axes.getAxesPairs(), { partitionScores: model.visibleScores });
 
 	    model.subscriptions.push(model.selectionDataSubscription);
 
