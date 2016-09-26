@@ -122,6 +122,13 @@
 	  _MutualInformationProvider2.default.extend(publicAPI, model, initialValues);
 	})(_state2.default);
 
+	// set provider behaviors
+	provider.setFieldsSorted(true);
+	provider.getFieldNames().forEach(function (name) {
+	  provider.addLegendEntry(name);
+	});
+	provider.assignLegend(['colors', 'shapes']);
+
 	// Init Mutual information
 	provider.setMutualInformationParameterNames([]);
 	provider.setHistogram2dProvider(provider);
