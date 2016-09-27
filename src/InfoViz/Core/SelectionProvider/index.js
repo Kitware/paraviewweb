@@ -100,18 +100,18 @@ function selectionProvider(publicAPI, model) {
     const request = { id, type, variables, metadata };
     const dataListener = { onDataReady, request };
     dataSubscriptions.push(dataListener);
-    publicAPI.fireDataSubscriptionChange(request);
+    publicAPI.fireDataSelectionSubscriptionChange(request);
     flushDataToListener(dataListener, null);
     return {
       unsubscribe() {
         request.action = 'unsubscribe';
-        publicAPI.fireDataSubscriptionChange(request);
+        publicAPI.fireDataSelectionSubscriptionChange(request);
         dataSubscriptions[id] = null;
       },
       update(vars, meta) {
         request.variables = [].concat(vars);
         request.metadata = Object.assign({}, request.metadata, meta);
-        publicAPI.fireDataSubscriptionChange(request);
+        publicAPI.fireDataSelectionSubscriptionChange(request);
         flushDataToListener(dataListener, null);
       },
     };
@@ -141,7 +141,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.get(publicAPI, model, ['selection', 'annotation']);
   CompositeClosureHelper.event(publicAPI, model, 'selectionChange');
   CompositeClosureHelper.event(publicAPI, model, 'annotationChange');
-  CompositeClosureHelper.event(publicAPI, model, 'dataSubscriptionChange');
+  CompositeClosureHelper.event(publicAPI, model, 'dataSelectionSubscriptionChange');
 
   selectionProvider(publicAPI, model);
 }

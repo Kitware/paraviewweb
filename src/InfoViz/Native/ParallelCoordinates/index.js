@@ -436,8 +436,8 @@ function parallelCoordinate(publicAPI, model) {
     let yRightMax = 0;
 
     // Ensure proper range for X
-    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / model.numberOfBins;
-    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / model.numberOfBins;
+    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / histogram.numberOfBins;
+    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / histogram.numberOfBins;
 
     for (let i = 0; i < histogram.bins.length; ++i) {
       bin = histogram.bins[i];
@@ -838,7 +838,11 @@ function parallelCoordinate(publicAPI, model) {
           publicAPI.render();
         }
       },
-      model.axes.getAxesPairs(), { partitionScores: model.visibleScores });
+      model.axes.getAxesPairs(),
+      {
+        partitionScores: model.visibleScores,
+        numberOfBins: model.numberOfBins,
+      });
 
     model.subscriptions.push(model.selectionDataSubscription);
 
@@ -902,6 +906,16 @@ function parallelCoordinate(publicAPI, model) {
 
   publicAPI.setContainer(model.container);
   updateSizeInformation();
+
+  publicAPI.setNumberOfBins = (numberOfBins) => {
+    model.numberOfBins = numberOfBins;
+    if (model.selectionDataSubscription) {
+      model.selectionDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins });
+    }
+    if (model.histogram2DDataSubscription) {
+      model.histogram2DDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins });
+    }
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -954,7 +968,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
   CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
-  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
 
   parallelCoordinate(publicAPI, model);
 }
