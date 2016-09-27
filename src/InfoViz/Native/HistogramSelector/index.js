@@ -505,6 +505,7 @@ function histogramSelector(publicAPI, model) {
         iconCell = trow1
           .append('td')
           .classed(style.legendIcons, true);
+        scoreHelper.createSaveIcon(iconCell);
         scoreHelper.createScoreIcon(iconCell);
         iconCell
           .append('i')
@@ -549,9 +550,10 @@ function histogramSelector(publicAPI, model) {
         .classed(dataActive ? style.selectedBox : style.unselectedBox, true);
 
       // Change interaction icons based on state.
-      const numIcons = (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
+      const numIcons = 1 /* save icon */ + (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
       iconCell.style('width', `${numIcons * 19}px`);
       scoreHelper.updateScoreIcon(iconCell, def);
+      scoreHelper.updateSaveIcon(iconCell, def);
       iconCell.select(`.${style.jsExpandIcon}`)
         .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
         .style('display', model.singleModeSticky ? 'none' : null);
@@ -777,6 +779,21 @@ function histogramSelector(publicAPI, model) {
     );
 
     model.subscriptions.push(model.histogram1DDataSubscription);
+  }
+
+  if (model.provider.isA('AnnotationStoreProvider')) {
+    // Preload annotation from store
+    const partitionSelectionToLoad = {};
+    const annotations = model.provider.getStoredAnnotations();
+    Object.keys(annotations).forEach(id => {
+      const annotation = annotations[id];
+      if (annotation && annotation.selection.type === 'partition') {
+        partitionSelectionToLoad[annotation.selection.partition.variable] = annotation;
+      }
+    });
+    if (Object.keys(partitionSelectionToLoad).length) {
+      scoreHelper.updateFieldAnnotations(partitionSelectionToLoad);
+    }
   }
 
   // scoring interface

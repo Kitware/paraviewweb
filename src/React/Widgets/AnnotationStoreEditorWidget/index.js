@@ -37,7 +37,7 @@ export default function annotationStoreEditorWidget(props) {
     if (storedSelectedAnnotation.generation === props.annotation.generation) {
       buttons.push(button('Delete', storeAction('delete')));
     } else {
-      buttons.push(button('Save', storeAction('new')));
+      buttons.push(button('Save as new', storeAction('new')));
       buttons.push(button('Revert', storeAction('reset')));
       buttons.push(button('Update', storeAction('save')));
     }

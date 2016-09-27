@@ -126,6 +126,9 @@ export default function init(inPublicAPI, inModel) {
       // begin using the new data.
     }
     if (model.provider.isA('SelectionProvider')) {
+      if (!scoreData.name) {
+        scoreData.name = `${scoreData.selection.partition.variable} (partition)`;
+      }
       model.provider.setAnnotation(scoreData);
     }
   }
@@ -206,10 +209,48 @@ export default function init(inPublicAPI, inModel) {
         });
   }
 
+  function createSaveIcon(iconCell) {
+    if (!enabled()) return;
+    iconCell
+      .append('i')
+        .classed(style.noSaveIcon, true)
+        .on('click', (d) => {
+          if (model.provider.getStoredAnnotation) {
+            const annotation = d.annotation;
+            const isSame = model.provider.getStoredAnnotation(annotation.id)
+              ? (annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation)
+              : false;
+            if (!isSame) {
+              model.provider.setStoredAnnotation(annotation.id, annotation);
+            }
+            publicAPI.render(d.name);
+            if (d3.event) d3.event.stopPropagation();
+          }
+        });
+  }
+
   function updateScoreIcon(iconCell, def) {
     if (!enabled()) return;
     iconCell.select(`.${style.jsScoreIcon}`)
       .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
+  }
+
+  function updateSaveIcon(iconCell, def) {
+    if (!enabled()) return;
+
+    if (def.annotation && model.provider.getStoredAnnotation) {
+      if (model.provider.getStoredAnnotation(def.annotation.id)) {
+        const isSame = (def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation);
+        iconCell.select(`.${style.jsSaveIcon}`)
+          .attr('class', isSame ? style.unchangedSaveIcon : style.modifiedSaveIcon);
+      } else {
+        iconCell.select(`.${style.jsSaveIcon}`)
+          .attr('class', style.newSaveIcon);
+      }
+    } else {
+      iconCell.select(`.${style.jsSaveIcon}`)
+        .attr('class', style.noSaveIcon);
+    }
   }
 
   function createGroups(svgGr) {
@@ -1068,6 +1109,7 @@ export default function init(inPublicAPI, inModel) {
     createHeader,
     createPopups,
     createScoreIcon,
+    createSaveIcon,
     defaultFieldData,
     editingScore,
     enabled,
@@ -1079,5 +1121,6 @@ export default function init(inPublicAPI, inModel) {
     updateHeader,
     updateFieldAnnotations,
     updateScoreIcon,
+    updateSaveIcon,
   };
 }
