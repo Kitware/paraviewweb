@@ -137,7 +137,6 @@ export function extend(publicAPI, model, initialValues = {}) {
             const a = values.pop();
             const b = values.shift();
             if (a !== b) {
-              console.log('Skip data - [Range consistency]', a, b);
               skip = true;
             }
           }
