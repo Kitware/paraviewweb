@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import SelectionEditorWidget from '..';
 import React                from 'react';
 import ReactDOM             from 'react-dom';

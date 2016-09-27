@@ -1,4 +1,5 @@
 import 'normalize.css';
+import 'babel-polyfill';
 
 import sizeHelper   from '../../../../Common/Misc/SizeHelper';
 
