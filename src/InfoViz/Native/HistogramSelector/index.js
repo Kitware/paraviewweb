@@ -779,6 +779,21 @@ function histogramSelector(publicAPI, model) {
     model.subscriptions.push(model.histogram1DDataSubscription);
   }
 
+  if (model.provider.isA('AnnotationStoreProvider')) {
+    // Preload annotation from store
+    const partitionSelectionToLoad = {};
+    const annotations = model.provider.getStoredAnnotations();
+    Object.keys(annotations).forEach(id => {
+      const annotation = annotations[id];
+      if (annotation && annotation.selection.type === 'partition') {
+        partitionSelectionToLoad[annotation.selection.partition.variable] = annotation;
+      }
+    });
+    if (Object.keys(partitionSelectionToLoad).length) {
+      scoreHelper.updateFieldAnnotations(partitionSelectionToLoad);
+    }
+  }
+
   // scoring interface
   scoreHelper.addSubscriptions();
 
