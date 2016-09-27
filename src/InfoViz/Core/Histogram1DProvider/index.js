@@ -31,8 +31,16 @@ export function extend(publicAPI, model, initialValues = {}) {
         storage[numberOfBins] = {};
       }
       const binStorage = storage[numberOfBins];
+
+      // Ensure that empty range histogram to only fill the first bin
+      if (data.min === data.max) {
+        const totalCount = data.counts.reduce((a, b) => a + b, 0);
+        data.counts = data.counts.map((v, i) => (i ? 0 : totalCount));
+      }
+
       const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.name]));
       binStorage[data.name] = data;
+
       return sameAsBefore;
     },
     get(storage, request, dataChanged) {
