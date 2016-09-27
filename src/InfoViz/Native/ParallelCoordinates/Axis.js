@@ -25,7 +25,6 @@ export default class Axis {
       if (this.range[0] === this.range[1]) {
         this.range[1] += 1;
       }
-      console.log('update axis range', this.name, this.range);
     }
   }
 
