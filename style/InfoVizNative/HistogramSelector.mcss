@@ -28,6 +28,7 @@
 .jsScoreDivLabel,
 .jsScoredHeader,
 .jsScoreIcon,
+.jsSaveIcon,
 .jsScoreLabel,
 .jsScorePopup,
 .jsScoreRect,
@@ -152,17 +153,37 @@
   composes: fa-th-large from 'font-awesome/css/font-awesome.css';
   composes: legendIcon;
 }
+
 .scoreStartIcon {
   composes: jsScoreIcon;
   composes: icon;
   composes: fa-star-o from 'font-awesome/css/font-awesome.css';
   composes: legendIcon;
 }
+
 .scoreEndIcon {
   composes: jsScoreIcon;
   composes: icon;
   composes: fa-star from 'font-awesome/css/font-awesome.css';
   composes: legendIcon;
+}
+
+.noSaveIcon {
+  composes: jsSaveIcon;
+  composes: icon;
+  composes: legendIcon;
+}
+.unchangedSaveIcon {
+  composes: noSaveIcon;
+  composes: fa-bookmark-o from 'font-awesome/css/font-awesome.css';
+}
+.modifiedSaveIcon {
+  composes: noSaveIcon;
+  composes: fa-floppy-o from 'font-awesome/css/font-awesome.css';
+}
+.newSaveIcon {
+  composes: noSaveIcon;
+  composes: fa-plus from 'font-awesome/css/font-awesome.css';
 }
 
 .histogramSelectorCell {
