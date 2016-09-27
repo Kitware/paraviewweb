@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import jsonData                 from '../../../Widgets/QueryDataModelWidget/example/info.js';
 import QueryDataModel           from '../../../../IO/Core/QueryDataModel';
 import QueryDataModelControl    from '..';
