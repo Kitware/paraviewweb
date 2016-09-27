@@ -169,7 +169,7 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
       const v2nam = miData.vmap[v2dx].name;
       const t0nam = miData.vmap[tup[0]].name;
       const t1nam = miData.vmap[tup[1]].name;
-      console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
+      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
 
       const minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
       miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;

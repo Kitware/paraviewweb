@@ -422,8 +422,6 @@ function parallelCoordinate(publicAPI, model) {
   function drawPolygons(axesCenters, gCtx, idxOne, idxTwo, histogram, colors) {
     const axisOne = model.axes.getAxis(idxOne);
     const axisTwo = model.axes.getAxis(idxTwo);
-    let deltaOne = histogram.x.delta;
-    let deltaTwo = histogram.y.delta;
     const xleft = axesCenters[idxOne];
     const xright = axesCenters[idxTwo];
     let bin = null;
@@ -437,15 +435,9 @@ function parallelCoordinate(publicAPI, model) {
     let yRightMin = 0;
     let yRightMax = 0;
 
-    if (deltaOne === 0) {
-      axisOne.range[1] = axisOne.range[0] + 1;
-      deltaOne = 1 / model.numberOfBins;
-    }
-
-    if (deltaTwo === 0) {
-      axisTwo.range[1] = axisTwo.range[0] + 1;
-      deltaTwo = 1 / model.numberOfBins;
-    }
+    // Ensure proper range for X
+    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / model.numberOfBins;
+    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / model.numberOfBins;
 
     for (let i = 0; i < histogram.bins.length; ++i) {
       bin = histogram.bins[i];
@@ -546,10 +538,6 @@ function parallelCoordinate(publicAPI, model) {
         const axisOne = model.axes.getAxis(j);
         const axisTwo = model.axes.getAxis(j + 1);
         const histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
-        // The histogram has the most up-to-date range information for the parameters,
-        // use it to set the ranges on the axes.
-        axisOne.range = histo2D.x.extent;
-        axisTwo.range = histo2D.y.extent;
         drawPolygons(
           axesCenters,
           model.bgCtx,
@@ -797,18 +785,19 @@ function parallelCoordinate(publicAPI, model) {
   if (model.provider.isA('Histogram2DProvider')) {
     model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(
       allBgHistogram2d => {
+        // Update axis range
+        model.axes.getAxesPairs().forEach((pair, idx) => {
+          const hist2d = allBgHistogram2d[pair[0]][pair[1]];
+          if (hist2d) {
+            model.axes.getAxis(idx).updateRange(hist2d.x.extent);
+            model.axes.getAxis(idx + 1).updateRange(hist2d.y.extent);
+          }
+        });
+
         const topLevelList = Object.keys(allBgHistogram2d);
+        // We always get a maxCount, anything additional must be histogram2d
         if (topLevelList.length > 1) {
           model.allBgHistogram2dData = allBgHistogram2d;
-          // FIXME update range if need be
-          // topLevelList.forEach(key1 => {
-          //   const obj1 = allBgHistogram2d[key1];
-          //   Object.keys(obj1).forEach(key2 => {
-          //     const histObject = obj1[key2];
-          //     const xParamObj = histObject.x;
-          //     const yParamObj = histObject.y;
-          //   });
-          // });
           publicAPI.render();
         } else {
           model.allBgHistogram2dData = null;

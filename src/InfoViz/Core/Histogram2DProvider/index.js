@@ -59,7 +59,7 @@ export function extend(publicAPI, model, initialValues = {}) {
       partial: true,
     },
     set(storage, data) {
-      const binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+      const binSize = data.numberOfBins || 'default';
       if (!storage[binSize]) {
         storage[binSize] = {};
       }
@@ -78,10 +78,13 @@ export function extend(publicAPI, model, initialValues = {}) {
       });
       data.maxCount = maxCount;
 
-      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]));
+      const cleanedData = Object.assign({}, data, { annotationInfo: [] });
+      const previousData = binStorage[data.x.name][data.y.name];
 
-      binStorage[data.x.name][data.y.name] = data;
-      binStorage[data.y.name][data.x.name] = flipHistogram(data);
+      const sameAsBefore = (JSON.stringify(cleanedData) === JSON.stringify(previousData));
+
+      binStorage[data.x.name][data.y.name] = cleanedData;
+      binStorage[data.y.name][data.x.name] = flipHistogram(cleanedData);
 
       return sameAsBefore;
     },
@@ -91,12 +94,24 @@ export function extend(publicAPI, model, initialValues = {}) {
       let maxCount = 0;
       const { numberOfBins } = request.metadata;
       const binStorage = storage[numberOfBins];
+      const rangeConsistency = {};
       request.variables.forEach(axisPair => {
         if (!returnedData[axisPair[0]]) {
           returnedData[axisPair[0]] = {};
         }
         if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
           const hist2d = binStorage[axisPair[0]][axisPair[1]];
+
+          // Look for range consistency within data
+          if (!rangeConsistency[hist2d.x.name]) {
+            rangeConsistency[hist2d.x.name] = [];
+          }
+          rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+          if (!rangeConsistency[hist2d.y.name]) {
+            rangeConsistency[hist2d.y.name] = [];
+          }
+          rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
+
           count++;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
           returnedData[axisPair[0]][axisPair[1]] = hist2d;
@@ -113,8 +128,23 @@ export function extend(publicAPI, model, initialValues = {}) {
       returnedData.maxCount = maxCount;
 
       if (count === request.variables.length || (request.metadata.partial && count > 0)) {
-        return returnedData;
+        // Chech consistency
+        let skip = false;
+        Object.keys(rangeConsistency).forEach(name => {
+          const values = rangeConsistency[name];
+          values.sort();
+          if (values.length > 1) {
+            const a = values.pop();
+            const b = values.shift();
+            if (a !== b) {
+              skip = true;
+            }
+          }
+        });
+
+        return skip ? null : returnedData;
       }
+
       return null;
     },
   });

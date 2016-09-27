@@ -233,7 +233,8 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
     try {
       if (dataListener) {
         const dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-        if (dataToForward) {
+        if (dataToForward && JSON.stringify(dataToForward) !== dataListener.request.lastPush) {
+          dataListener.request.lastPush = JSON.stringify(dataToForward);
           dataListener.onDataReady(dataToForward);
         }
       }
