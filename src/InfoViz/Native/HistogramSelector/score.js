@@ -126,6 +126,9 @@ export default function init(inPublicAPI, inModel) {
       // begin using the new data.
     }
     if (model.provider.isA('SelectionProvider')) {
+      if (!scoreData.name) {
+        scoreData.name = `${scoreData.selection.partition.variable} (partition)`;
+      }
       model.provider.setAnnotation(scoreData);
     }
   }
