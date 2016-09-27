@@ -88,11 +88,11 @@
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _FieldSelector = __webpack_require__(57);
+	var _FieldSelector = __webpack_require__(56);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
-	var _state = __webpack_require__(61);
+	var _state = __webpack_require__(60);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -23583,8 +23583,8 @@
 	  // hard coded because I did not figure out how to
 	  // properly query this value from our container.
 	  var borderSize = 6;
-	  // 8? for linux/firefox, 10 for win10/chrome
-	  var scrollbarWidth = 12;
+	  // 8? for linux/firefox, 16 for win10/chrome (hi-res screen)
+	  var scrollbarWidth = 16;
 
 	  var displayOnlySelected = false;
 
@@ -23818,6 +23818,7 @@
 	    if (clientRect.width !== 0 && clientRect.height !== 0) {
 	      model.containerHidden = false;
 	      _d3.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
+	      // scrollbarWidth = model.listContainer.offsetWidth - clientRect.width;
 	      publicAPI.render();
 	    } else {
 	      model.containerHidden = true;
@@ -34875,11 +34876,9 @@
 
 	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
-	var _down_arrow = __webpack_require__(56);
-
-	var _down_arrow2 = _interopRequireDefault(_down_arrow);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// import downArrowImage from './down_arrow.png';
 
 	function init(inPublicAPI, inModel) {
 	  var publicAPI = inPublicAPI;
@@ -35027,12 +35026,37 @@
 	    }
 	  }
 
+	  function showScore(def) {
+	    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
+	    return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
+	  }
+
+	  function setEditScore(def, newEditScore) {
+	    def.editScore = newEditScore;
+	    // set existing annotation as current if we activate for editing
+	    if (def.editScore && showScore(def) && def.annotation) {
+	      // TODO special 'active' method to call, instead of an edit?
+	      sendScores(def, def.hobj);
+	    }
+	    publicAPI.render(def.name);
+	    // if one histogram is being edited, the others should be inactive.
+	    if (newEditScore) {
+	      Object.keys(model.fieldData).forEach(function (key) {
+	        var d = model.fieldData[key];
+	        if (d !== def) {
+	          if (d.editScore) {
+	            d.editScore = false;
+	            publicAPI.render(d.name);
+	          }
+	        }
+	      });
+	    }
+	  }
+
 	  publicAPI.setDefaultScorePartition = function (fieldName) {
 	    var def = model.fieldData[fieldName];
 	    if (def) {
-	      def.editScore = true;
 	      // create a divider halfway through.
-
 	      var _getHistRange3 = getHistRange(def);
 
 	      var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
@@ -35046,6 +35070,7 @@
 	      sendScores(def, def.hobj);
 	      // set mode that prevents editing the annotation, except for the single divider.
 	      def.lockAnnot = true;
+	      setEditScore(def, true);
 	    } else {
 	      def.lockAnnot = false;
 	    }
@@ -35063,8 +35088,7 @@
 	  function createScoreIcon(iconCell) {
 	    if (!enabled()) return;
 	    iconCell.append('i').classed(_HistogramSelector2.default.scoreStartIcon, true).on('click', function (d) {
-	      d.editScore = !d.editScore;
-	      publicAPI.render(d.name);
+	      setEditScore(d, !d.editScore);
 	      if (_d3.default.event) _d3.default.event.stopPropagation();
 	    });
 	  }
@@ -35559,11 +35583,6 @@
 	    }
 	  }
 
-	  function showScore(def) {
-	    // show the regions when: editing, or when they are non-default. CSS rule makes visible on hover.
-	    return def.editScore || typeof def.regions !== 'undefined' && (def.regions.length > 1 || def.regions[0] !== model.defaultScore);
-	  }
-
 	  function editingScore(def) {
 	    return def.editScore;
 	  }
@@ -35710,19 +35729,19 @@
 	      if (_d3.default.event.defaultPrevented || _d3.default.event.altKey || _d3.default.event.ctrlKey) return; // click suppressed (by drag handling)
 	      var overCoords = publicAPI.getMouseCoords(tdsl);
 	      if (overCoords[1] > model.histHeight) {
-	        def.editScore = !def.editScore;
-	        svgOverlay.style('cursor', def.editScore ? 'url(' + _down_arrow2.default + ') 12 22, auto' : 'pointer');
-	        if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
-	          var state = {};
-	          state[def.name] = [-1];
-	          model.provider.setHoverState({ state: state });
-	        }
-	        // set existing annotation as current if we activate for editing
-	        if (def.editScore && showScore(def) && def.annotation) {
-	          // TODO special 'active' method to call, instead of an edit?
-	          sendScores(def, def.hobj);
-	        }
-	        publicAPI.render();
+	        // def.editScore = !def.editScore;
+	        // svgOverlay.style('cursor', def.editScore ? `url(${downArrowImage}) 12 22, auto` : 'pointer');
+	        // if (def.editScore && model.provider.isA('HistogramBinHoverProvider')) {
+	        //   const state = {};
+	        //   state[def.name] = [-1];
+	        //   model.provider.setHoverState({ state });
+	        // }
+	        // // set existing annotation as current if we activate for editing
+	        // if (def.editScore && showScore(def) && def.annotation) {
+	        //   // TODO special 'active' method to call, instead of an edit?
+	        //   sendScores(def, def.hobj);
+	        // }
+	        // publicAPI.render(def.name);
 	        return;
 	      }
 	      if (def.editScore) {
@@ -35768,11 +35787,11 @@
 
 	        var cursor = 'pointer';
 	        // if we're over the bottom, indicate a click will shrink regions
-	        if (overCoords[1] > model.histHeight) cursor = 'url(' + _down_arrow2.default + ') 12 22, auto';
-	        // if we're over a divider, indicate drag-to-move
-	        else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
-	          // if modifiers are held down, we'll create a divider
-	          else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
+	        if (overCoords[1] > model.histHeight) {// cursor = `url(${downArrowImage}) 12 22, auto`;
+	          // if we're over a divider, indicate drag-to-move
+	        } else if (def.dragIndex >= 0 || hitIndex >= 0) cursor = 'ew-resize';
+	        // if modifiers are held down, we'll create a divider
+	        else if (_d3.default.event.altKey || _d3.default.event.ctrlKey) cursor = 'crosshair';
 	        svgOverlay.style('cursor', cursor);
 	      } else {
 	        // over the bottom, indicate we can start editing regions
@@ -36212,12 +36231,6 @@
 
 /***/ },
 /* 56 */
-/***/ function(module, exports) {
-
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAAB3RJTUUH4AcZEBUusuQ9jAAAAPpJREFUSMft1L1KQ0EQhuHHH7RSG1GDhbWd4A2IifES7PVOchcBGxHE1j69raV/lYgoNtqrsdkjEnYPe3KOjfrBsDCz37yzsAx/TYs4wyOecIceppqE9DCMxGaOeTITspzIzzUJqaXfC5nFKhbG7NcK/okUZAMPuMcL9is0n8HxN/8A86OX1vAa+aIHod5PfOGtADiN1AZF8+lwdmNkHAZDmY6wF8m3RxPreEtMOwyNYvmTEs9FbKJtvJeYqsQlllJPb+OjJuCqZEN8qVMDdJ0DqAOqBCi0UwF0g5VxN0I3A3BbB5ADagRQaDcBaDW9TDt4DoDznwD8C3wCdHedNCg8u2UAAAAASUVORK5CYII="
-
-/***/ },
-/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36232,7 +36245,7 @@
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(58);
+	var _FieldSelector = __webpack_require__(57);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -36240,7 +36253,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _template = __webpack_require__(60);
+	var _template = __webpack_require__(59);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -36540,13 +36553,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(59);
+	var content = __webpack_require__(58);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -36566,7 +36579,7 @@
 	}
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -36606,13 +36619,13 @@
 	};
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"field-selector-mode\"><i></i></th><th class=\"field-selector-label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = {
