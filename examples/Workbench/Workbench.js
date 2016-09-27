@@ -21129,7 +21129,7 @@
 
 
 	// module
-	exports.push([module.id, ".Workbench_baseViewport_1HxBD {\n  position: absolute;\n  outline: 1px solid #e0e0e0;\n}\n\n.Workbench_viewport_38YDW {\n  overflow: hidden;\n}\n\n.Workbench_scrollableViewport_2XQZS {\n  overflow: auto;\n}\n", ""]);
+	exports.push([module.id, ".Workbench_baseViewport_1HxBD {\n  position: absolute;\n  outline: 1px solid #aaa;\n}\n\n.Workbench_viewport_38YDW {\n  overflow: hidden;\n}\n\n.Workbench_scrollableViewport_2XQZS {\n  overflow: auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

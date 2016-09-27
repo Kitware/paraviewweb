@@ -22580,8 +22580,22 @@
 	        storage[numberOfBins] = {};
 	      }
 	      var binStorage = storage[numberOfBins];
+
+	      // Ensure that empty range histogram to only fill the first bin
+	      if (data.min === data.max) {
+	        (function () {
+	          var totalCount = data.counts.reduce(function (a, b) {
+	            return a + b;
+	          }, 0);
+	          data.counts = data.counts.map(function (v, i) {
+	            return i ? 0 : totalCount;
+	          });
+	        })();
+	      }
+
 	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.name]);
 	      binStorage[data.name] = data;
+
 	      return sameAsBefore;
 	    },
 	    get: function get(storage, request, dataChanged) {

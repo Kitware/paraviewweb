@@ -21367,7 +21367,7 @@
 	    }
 
 	    // If there is a selection, draw that (the "focus") on top of the polygons
-	    if (model.axes.hasSelection()) {
+	    if (model.selectionData) {
 	      (function () {
 	        // Extract selection histogram2d
 	        var polygonsQueue = [];
@@ -21639,11 +21639,18 @@
 
 	    model.subscriptions.push(model.provider.onSelectionChange(function (sel) {
 	      if (!model.useAnnotation) {
+	        if (sel && sel.type === 'empty') {
+	          model.selectionData = null;
+	        }
 	        model.axes.resetSelections(sel, false);
 	        publicAPI.render();
 	      }
 	    }));
 	    model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
+	      if (annotation && annotation.selection.type === 'empty') {
+	        model.selectionData = null;
+	      }
+
 	      if (lastAnnotationPushed && annotation.selection.type === 'range' && annotation.id === lastAnnotationPushed.id && annotation.generation === lastAnnotationPushed.generation + 1) {
 	        // Assume that it is still ours but edited by someone else
 	        lastAnnotationPushed = annotation;
@@ -34320,8 +34327,22 @@
 	        storage[numberOfBins] = {};
 	      }
 	      var binStorage = storage[numberOfBins];
+
+	      // Ensure that empty range histogram to only fill the first bin
+	      if (data.min === data.max) {
+	        (function () {
+	          var totalCount = data.counts.reduce(function (a, b) {
+	            return a + b;
+	          }, 0);
+	          data.counts = data.counts.map(function (v, i) {
+	            return i ? 0 : totalCount;
+	          });
+	        })();
+	      }
+
 	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.name]);
 	      binStorage[data.name] = data;
+
 	      return sameAsBefore;
 	    },
 	    get: function get(storage, request, dataChanged) {
