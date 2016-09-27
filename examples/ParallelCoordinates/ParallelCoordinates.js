@@ -35475,25 +35475,34 @@
 
 	  function updateHistogram2D(histograms) {
 	    if (Object.keys(histograms).length > 1) {
-	      // Extract mtime
-	      deltaHandling.modified = [];
-	      deltaHandling.previousMTime = deltaHandling.currentMTime;
-	      deltaHandling.currentMTime = {};
-	      model.mutualInformationParameterNames.forEach(function (name) {
-	        if (histograms[name] && histograms[name][name]) {
-	          deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
+	      (function () {
+	        var invalidAxis = [];
+	        // Extract mtime
+	        deltaHandling.modified = [];
+	        deltaHandling.previousMTime = deltaHandling.currentMTime;
+	        deltaHandling.currentMTime = {};
+	        model.mutualInformationParameterNames.forEach(function (name) {
+	          if (histograms[name] && histograms[name][name]) {
+	            // Validate range
+	            if (histograms[name][name].x.delta === 0) {
+	              invalidAxis.push(name);
+	              deltaHandling.currentMTime[name] = 0;
+	            } else {
+	              deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
+	            }
 
-	          if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
-	            deltaHandling.modified.push(name);
+	            if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
+	              deltaHandling.modified.push(name);
+	            }
 	          }
-	        }
-	      });
+	        });
 
-	      // FIXME add var mtime check and update deltaHandling.modified
-	      _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), deltaHandling.removed, histograms);
+	        // FIXME add var mtime check and update deltaHandling.modified
+	        _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
 
-	      // Push the new mutual info
-	      publicAPI.fireMutualInformationReady(mutualInformationData);
+	        // Push the new mutual info
+	        publicAPI.fireMutualInformationReady(mutualInformationData);
+	      })();
 	    }
 	  }
 
