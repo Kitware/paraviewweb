@@ -32497,7 +32497,8 @@
 	    try {
 	      if (dataListener) {
 	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-	        if (dataToForward) {
+	        if (dataToForward && JSON.stringify(dataToForward) !== dataListener.request.lastPush) {
+	          dataListener.request.lastPush = JSON.stringify(dataToForward);
 	          dataListener.onDataReady(dataToForward);
 	        }
 	      }
@@ -34236,7 +34237,7 @@
 	      partial: true
 	    },
 	    set: function set(storage, data) {
-	      var binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+	      var binSize = data.numberOfBins || 'default';
 	      if (!storage[binSize]) {
 	        storage[binSize] = {};
 	      }
@@ -34255,10 +34256,13 @@
 	      });
 	      data.maxCount = maxCount;
 
-	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]);
+	      var cleanedData = Object.assign({}, data, { annotationInfo: [] });
+	      var previousData = binStorage[data.x.name][data.y.name];
 
-	      binStorage[data.x.name][data.y.name] = data;
-	      binStorage[data.y.name][data.x.name] = flipHistogram(data);
+	      var sameAsBefore = JSON.stringify(cleanedData) === JSON.stringify(previousData);
+
+	      binStorage[data.x.name][data.y.name] = cleanedData;
+	      binStorage[data.y.name][data.x.name] = flipHistogram(cleanedData);
 
 	      return sameAsBefore;
 	    },
@@ -34269,12 +34273,24 @@
 	      var numberOfBins = request.metadata.numberOfBins;
 
 	      var binStorage = storage[numberOfBins];
+	      var rangeConsistency = {};
 	      request.variables.forEach(function (axisPair) {
 	        if (!returnedData[axisPair[0]]) {
 	          returnedData[axisPair[0]] = {};
 	        }
 	        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
 	          var hist2d = binStorage[axisPair[0]][axisPair[1]];
+
+	          // Look for range consistency within data
+	          if (!rangeConsistency[hist2d.x.name]) {
+	            rangeConsistency[hist2d.x.name] = [];
+	          }
+	          rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+	          if (!rangeConsistency[hist2d.y.name]) {
+	            rangeConsistency[hist2d.y.name] = [];
+	          }
+	          rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
+
 	          count++;
 	          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
 	          returnedData[axisPair[0]][axisPair[1]] = hist2d;
@@ -34291,8 +34307,23 @@
 	      returnedData.maxCount = maxCount;
 
 	      if (count === request.variables.length || request.metadata.partial && count > 0) {
-	        return returnedData;
+	        // Chech consistency
+	        var skip = false;
+	        Object.keys(rangeConsistency).forEach(function (name) {
+	          var values = rangeConsistency[name];
+	          values.sort();
+	          if (values.length > 1) {
+	            var a = values.pop();
+	            var b = values.shift();
+	            if (a !== b) {
+	              skip = true;
+	            }
+	          }
+	        });
+
+	        return skip ? null : returnedData;
 	      }
+
 	      return null;
 	    }
 	  });
@@ -35309,7 +35340,7 @@
 /* 57 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -35491,7 +35522,7 @@
 	      var v2nam = miData.vmap[v2dx].name;
 	      var t0nam = miData.vmap[tup[0]].name;
 	      var t1nam = miData.vmap[tup[1]].name;
-	      console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
+	      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
 
 	      var minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
 	      miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;

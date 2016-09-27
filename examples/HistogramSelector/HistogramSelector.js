@@ -21182,7 +21182,8 @@
 	    try {
 	      if (dataListener) {
 	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-	        if (dataToForward) {
+	        if (dataToForward && JSON.stringify(dataToForward) !== dataListener.request.lastPush) {
+	          dataListener.request.lastPush = JSON.stringify(dataToForward);
 	          dataListener.onDataReady(dataToForward);
 	        }
 	      }

@@ -21247,8 +21247,6 @@
 	  function drawPolygons(axesCenters, gCtx, idxOne, idxTwo, histogram, colors) {
 	    var axisOne = model.axes.getAxis(idxOne);
 	    var axisTwo = model.axes.getAxis(idxTwo);
-	    var deltaOne = histogram.x.delta;
-	    var deltaTwo = histogram.y.delta;
 	    var xleft = axesCenters[idxOne];
 	    var xright = axesCenters[idxTwo];
 	    var bin = null;
@@ -21262,15 +21260,9 @@
 	    var yRightMin = 0;
 	    var yRightMax = 0;
 
-	    if (deltaOne === 0) {
-	      axisOne.range[1] = axisOne.range[0] + 1;
-	      deltaOne = 1 / model.numberOfBins;
-	    }
-
-	    if (deltaTwo === 0) {
-	      axisTwo.range[1] = axisTwo.range[0] + 1;
-	      deltaTwo = 1 / model.numberOfBins;
-	    }
+	    // Ensure proper range for X
+	    var deltaOne = (axisOne.range[1] - axisOne.range[0]) / model.numberOfBins;
+	    var deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / model.numberOfBins;
 
 	    for (var i = 0; i < histogram.bins.length; ++i) {
 	      bin = histogram.bins[i];
@@ -21367,10 +21359,6 @@
 	        var axisOne = model.axes.getAxis(j);
 	        var axisTwo = model.axes.getAxis(j + 1);
 	        var histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
-	        // The histogram has the most up-to-date range information for the parameters,
-	        // use it to set the ranges on the axes.
-	        axisOne.range = histo2D.x.extent;
-	        axisTwo.range = histo2D.y.extent;
 	        drawPolygons(axesCenters, model.bgCtx, j, j + 1, histo2D, model.polygonColors);
 	      }
 
@@ -21595,18 +21583,19 @@
 
 	  if (model.provider.isA('Histogram2DProvider')) {
 	    model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(function (allBgHistogram2d) {
+	      // Update axis range
+	      model.axes.getAxesPairs().forEach(function (pair, idx) {
+	        var hist2d = allBgHistogram2d[pair[0]][pair[1]];
+	        if (hist2d) {
+	          model.axes.getAxis(idx).updateRange(hist2d.x.extent);
+	          model.axes.getAxis(idx + 1).updateRange(hist2d.y.extent);
+	        }
+	      });
+
 	      var topLevelList = Object.keys(allBgHistogram2d);
+	      // We always get a maxCount, anything additional must be histogram2d
 	      if (topLevelList.length > 1) {
 	        model.allBgHistogram2dData = allBgHistogram2d;
-	        // FIXME update range if need be
-	        // topLevelList.forEach(key1 => {
-	        //   const obj1 = allBgHistogram2d[key1];
-	        //   Object.keys(obj1).forEach(key2 => {
-	        //     const histObject = obj1[key2];
-	        //     const xParamObj = histObject.x;
-	        //     const yParamObj = histObject.y;
-	        //   });
-	        // });
 	        publicAPI.render();
 	      } else {
 	        model.allBgHistogram2dData = null;
@@ -32506,7 +32495,7 @@
 	    _classCallCheck(this, Axis);
 
 	    this.name = name;
-	    this.range = range;
+	    this.range = [].concat(range);
 	    this.upsideDown = false;
 	    this.selections = [];
 	  }
@@ -32525,6 +32514,17 @@
 	    key: 'hasSelection',
 	    value: function hasSelection() {
 	      return this.selections.length > 0;
+	    }
+	  }, {
+	    key: 'updateRange',
+	    value: function updateRange(newRange) {
+	      if (this.range[0] !== newRange[0] || this.range[1] !== newRange[1] || this.range[1] === this.range[0]) {
+	        this.range[0] = newRange[0];
+	        this.range[1] = newRange[1];
+	        if (this.range[0] === this.range[1]) {
+	          this.range[1] += 1;
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'updateSelection',
@@ -32851,7 +32851,8 @@
 	    try {
 	      if (dataListener) {
 	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-	        if (dataToForward) {
+	        if (dataToForward && JSON.stringify(dataToForward) !== dataListener.request.lastPush) {
+	          dataListener.request.lastPush = JSON.stringify(dataToForward);
 	          dataListener.onDataReady(dataToForward);
 	        }
 	      }
@@ -34420,7 +34421,7 @@
 	      partial: true
 	    },
 	    set: function set(storage, data) {
-	      var binSize = (data.x.extent[1] - data.x.extent[0]) / data.x.delta;
+	      var binSize = data.numberOfBins || 'default';
 	      if (!storage[binSize]) {
 	        storage[binSize] = {};
 	      }
@@ -34439,10 +34440,13 @@
 	      });
 	      data.maxCount = maxCount;
 
-	      var sameAsBefore = JSON.stringify(data) === JSON.stringify(binStorage[data.x.name][data.y.name]);
+	      var cleanedData = Object.assign({}, data, { annotationInfo: [] });
+	      var previousData = binStorage[data.x.name][data.y.name];
 
-	      binStorage[data.x.name][data.y.name] = data;
-	      binStorage[data.y.name][data.x.name] = flipHistogram(data);
+	      var sameAsBefore = JSON.stringify(cleanedData) === JSON.stringify(previousData);
+
+	      binStorage[data.x.name][data.y.name] = cleanedData;
+	      binStorage[data.y.name][data.x.name] = flipHistogram(cleanedData);
 
 	      return sameAsBefore;
 	    },
@@ -34453,12 +34457,24 @@
 	      var numberOfBins = request.metadata.numberOfBins;
 
 	      var binStorage = storage[numberOfBins];
+	      var rangeConsistency = {};
 	      request.variables.forEach(function (axisPair) {
 	        if (!returnedData[axisPair[0]]) {
 	          returnedData[axisPair[0]] = {};
 	        }
 	        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
 	          var hist2d = binStorage[axisPair[0]][axisPair[1]];
+
+	          // Look for range consistency within data
+	          if (!rangeConsistency[hist2d.x.name]) {
+	            rangeConsistency[hist2d.x.name] = [];
+	          }
+	          rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+	          if (!rangeConsistency[hist2d.y.name]) {
+	            rangeConsistency[hist2d.y.name] = [];
+	          }
+	          rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
+
 	          count++;
 	          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
 	          returnedData[axisPair[0]][axisPair[1]] = hist2d;
@@ -34475,8 +34491,23 @@
 	      returnedData.maxCount = maxCount;
 
 	      if (count === request.variables.length || request.metadata.partial && count > 0) {
-	        return returnedData;
+	        // Chech consistency
+	        var skip = false;
+	        Object.keys(rangeConsistency).forEach(function (name) {
+	          var values = rangeConsistency[name];
+	          values.sort();
+	          if (values.length > 1) {
+	            var a = values.pop();
+	            var b = values.shift();
+	            if (a !== b) {
+	              skip = true;
+	            }
+	          }
+	        });
+
+	        return skip ? null : returnedData;
 	      }
+
 	      return null;
 	    }
 	  });
@@ -35493,7 +35524,7 @@
 /* 58 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -35675,7 +35706,7 @@
 	      var v2nam = miData.vmap[v2dx].name;
 	      var t0nam = miData.vmap[tup[0]].name;
 	      var t1nam = miData.vmap[tup[1]].name;
-	      console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
+	      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
 
 	      var minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
 	      miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
