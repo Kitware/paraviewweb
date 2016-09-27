@@ -553,7 +553,7 @@ function parallelCoordinate(publicAPI, model) {
     }
 
     // If there is a selection, draw that (the "focus") on top of the polygons
-    if (model.axes.hasSelection()) {
+    if (model.selectionData) {
       // Extract selection histogram2d
       const polygonsQueue = [];
       let maxCount = 0;
@@ -848,11 +848,18 @@ function parallelCoordinate(publicAPI, model) {
 
     model.subscriptions.push(model.provider.onSelectionChange(sel => {
       if (!model.useAnnotation) {
+        if (sel && sel.type === 'empty') {
+          model.selectionData = null;
+        }
         model.axes.resetSelections(sel, false);
         publicAPI.render();
       }
     }));
     model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+      if (annotation && annotation.selection.type === 'empty') {
+        model.selectionData = null;
+      }
+
       if (lastAnnotationPushed
         && annotation.selection.type === 'range'
         && annotation.id === lastAnnotationPushed.id
