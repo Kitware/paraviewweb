@@ -23002,18 +23002,18 @@
 	    var request = { id: id, type: type, variables: variables, metadata: metadata };
 	    var dataListener = { onDataReady: onDataReady, request: request };
 	    dataSubscriptions.push(dataListener);
-	    publicAPI.fireDataSubscriptionChange(request);
+	    publicAPI.fireDataSelectionSubscriptionChange(request);
 	    flushDataToListener(dataListener, null);
 	    return {
 	      unsubscribe: function unsubscribe() {
 	        request.action = 'unsubscribe';
-	        publicAPI.fireDataSubscriptionChange(request);
+	        publicAPI.fireDataSelectionSubscriptionChange(request);
 	        dataSubscriptions[id] = null;
 	      },
 	      update: function update(vars, meta) {
 	        request.variables = [].concat(vars);
 	        request.metadata = Object.assign({}, request.metadata, meta);
-	        publicAPI.fireDataSubscriptionChange(request);
+	        publicAPI.fireDataSelectionSubscriptionChange(request);
 	        flushDataToListener(dataListener, null);
 	      }
 	    };
@@ -23045,7 +23045,7 @@
 	  _CompositeClosureHelper2.default.get(publicAPI, model, ['selection', 'annotation']);
 	  _CompositeClosureHelper2.default.event(publicAPI, model, 'selectionChange');
 	  _CompositeClosureHelper2.default.event(publicAPI, model, 'annotationChange');
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'dataSubscriptionChange');
+	  _CompositeClosureHelper2.default.event(publicAPI, model, 'dataSelectionSubscriptionChange');
 
 	  selectionProvider(publicAPI, model);
 	}

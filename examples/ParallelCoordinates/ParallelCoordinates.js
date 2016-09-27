@@ -21261,8 +21261,8 @@
 	    var yRightMax = 0;
 
 	    // Ensure proper range for X
-	    var deltaOne = (axisOne.range[1] - axisOne.range[0]) / model.numberOfBins;
-	    var deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / model.numberOfBins;
+	    var deltaOne = (axisOne.range[1] - axisOne.range[0]) / histogram.numberOfBins;
+	    var deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / histogram.numberOfBins;
 
 	    for (var i = 0; i < histogram.bins.length; ++i) {
 	      bin = histogram.bins[i];
@@ -21630,7 +21630,10 @@
 	        // render from selection data change (no annotation)
 	        publicAPI.render();
 	      }
-	    }, model.axes.getAxesPairs(), { partitionScores: model.visibleScores });
+	    }, model.axes.getAxesPairs(), {
+	      partitionScores: model.visibleScores,
+	      numberOfBins: model.numberOfBins
+	    });
 
 	    model.subscriptions.push(model.selectionDataSubscription);
 
@@ -21691,6 +21694,16 @@
 
 	  publicAPI.setContainer(model.container);
 	  updateSizeInformation();
+
+	  publicAPI.setNumberOfBins = function (numberOfBins) {
+	    model.numberOfBins = numberOfBins;
+	    if (model.selectionDataSubscription) {
+	      model.selectionDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins: numberOfBins });
+	    }
+	    if (model.histogram2DDataSubscription) {
+	      model.histogram2DDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins: numberOfBins });
+	    }
+	  };
 	}
 
 	// ----------------------------------------------------------------------------
@@ -21744,7 +21757,7 @@
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
 	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
 
 	  parallelCoordinate(publicAPI, model);
 	}
