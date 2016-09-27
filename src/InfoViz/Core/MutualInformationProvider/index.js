@@ -27,13 +27,20 @@ function mutualInformationProvider(publicAPI, model) {
 
   function updateHistogram2D(histograms) {
     if (Object.keys(histograms).length > 1) {
+      const invalidAxis = [];
       // Extract mtime
       deltaHandling.modified = [];
       deltaHandling.previousMTime = deltaHandling.currentMTime;
       deltaHandling.currentMTime = {};
       model.mutualInformationParameterNames.forEach(name => {
         if (histograms[name] && histograms[name][name]) {
-          deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
+          // Validate range
+          if (histograms[name][name].x.delta === 0) {
+            invalidAxis.push(name);
+            deltaHandling.currentMTime[name] = 0;
+          } else {
+            deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
+          }
 
           if (deltaHandling.added.indexOf(name) === -1
             && deltaHandling.currentMTime[name]
@@ -44,7 +51,11 @@ function mutualInformationProvider(publicAPI, model) {
       });
 
       // FIXME add var mtime check and update deltaHandling.modified
-      PMI.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), deltaHandling.removed, histograms);
+      PMI.updateMutualInformation(
+        mutualInformationData,
+        [].concat(deltaHandling.added, deltaHandling.modified),
+        [].concat(deltaHandling.removed, invalidAxis),
+        histograms);
 
       // Push the new mutual info
       publicAPI.fireMutualInformationReady(mutualInformationData);
