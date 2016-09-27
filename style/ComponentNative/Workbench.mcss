@@ -1,6 +1,6 @@
 .baseViewport {
   position: absolute;
-  outline: 1px solid #e0e0e0;
+  outline: 1px solid #aaa;
 }
 
 .viewport {
