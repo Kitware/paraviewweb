@@ -249,6 +249,9 @@
 .legendIcons {
   composes: jsLegendIcons;
   visibility: hidden;
+  padding-right: 1px;
+  padding-left: 0px;
+  text-align: right;
 }
 
 
@@ -297,6 +300,10 @@
   composes: box;
   composes: hidden;
 }
+.jsBox td, .jsBox tr {
+  padding: 1px;
+}
+
 /* When hovering over the box, set the legendRow's styles */
 .jsBox:hover .baseLegendRow {
   background-color: #ccd;

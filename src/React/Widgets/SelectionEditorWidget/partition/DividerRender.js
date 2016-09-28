@@ -84,8 +84,6 @@ export default function dividerRender(props) {
             onChange={onChange}
             onBlur={onBlur}
           />
-          <div className={style.inequality}>%
-          </div>
         </span>
         ) : null
       }
