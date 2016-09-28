@@ -22,6 +22,8 @@ function listToPair(list = []) {
 // ----------------------------------------------------------------------------
 
 function mutualInformationProvider(publicAPI, model) {
+  let hasData = false;
+  const onMutualInformationReady = publicAPI.onMutualInformationReady;
   const mutualInformationData = PMI.initializeMutualInformationData();
   const deltaHandling = { added: [], removed: [], modified: [], previousMTime: {}, currentMTime: {} };
 
@@ -58,9 +60,17 @@ function mutualInformationProvider(publicAPI, model) {
         histograms);
 
       // Push the new mutual info
+      hasData = true;
       publicAPI.fireMutualInformationReady(mutualInformationData);
     }
   }
+
+  publicAPI.onMutualInformationReady = callback => {
+    if (hasData) {
+      callback(mutualInformationData);
+    }
+    return onMutualInformationReady(callback);
+  };
 
   publicAPI.setHistogram2dProvider = provider => {
     if (model.histogram2dProviderSubscription) {
