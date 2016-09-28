@@ -436,8 +436,8 @@ function parallelCoordinate(publicAPI, model) {
     let yRightMax = 0;
 
     // Ensure proper range for X
-    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / histogram.numberOfBins;
-    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / histogram.numberOfBins;
+    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / (histogram.numberOfBins || model.numberOfBins);
+    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / (histogram.numberOfBins || model.numberOfBins);
 
     for (let i = 0; i < histogram.bins.length; ++i) {
       bin = histogram.bins[i];
