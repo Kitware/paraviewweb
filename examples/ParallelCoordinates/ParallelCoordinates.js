@@ -39551,8 +39551,7 @@
 	    score: score,
 	    weight: weight,
 	    rationale: rationale,
-	    name: name,
-	    objective: false
+	    name: name
 	  };
 	}
 
@@ -43416,6 +43415,8 @@
 	// ----------------------------------------------------------------------------
 
 	function mutualInformationProvider(publicAPI, model) {
+	  var hasData = false;
+	  var onMutualInformationReady = publicAPI.onMutualInformationReady;
 	  var mutualInformationData = _pmi2.default.initializeMutualInformationData();
 	  var deltaHandling = { added: [], removed: [], modified: [], previousMTime: {}, currentMTime: {} };
 
@@ -43447,10 +43448,18 @@
 	        _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
 
 	        // Push the new mutual info
+	        hasData = true;
 	        publicAPI.fireMutualInformationReady(mutualInformationData);
 	      })();
 	    }
 	  }
+
+	  publicAPI.onMutualInformationReady = function (callback) {
+	    if (hasData) {
+	      callback(mutualInformationData);
+	    }
+	    return onMutualInformationReady(callback);
+	  };
 
 	  publicAPI.setHistogram2dProvider = function (provider) {
 	    if (model.histogram2dProviderSubscription) {
