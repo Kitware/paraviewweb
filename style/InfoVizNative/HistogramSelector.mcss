@@ -168,6 +168,11 @@
   composes: legendIcon;
 }
 
+.hideScoreIcon {
+  composes: jsScoreIcon;
+  display: none;
+}
+
 .noSaveIcon {
   composes: jsSaveIcon;
   composes: icon;
@@ -184,6 +189,11 @@
 .newSaveIcon {
   composes: noSaveIcon;
   composes: fa-plus from 'font-awesome/css/font-awesome.css';
+}
+
+.hideSaveIcon {
+  composes: jsSaveIcon;
+  display: none;
 }
 
 .histogramSelectorCell {

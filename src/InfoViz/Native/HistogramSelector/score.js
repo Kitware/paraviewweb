@@ -202,10 +202,16 @@ export default function init(inPublicAPI, inModel) {
     return displayOnlyScored;
   }
 
-  function numScoreIcons() {
+  function numScoreIcons(def) {
     if (!enabled()) return 0;
-    if (model.provider.getStoredAnnotation) return 2;
-    return 1;
+    let count = 0;
+    if (model.provider.getStoredAnnotation && !publicAPI.isFieldActionDisabled(def.name, 'save')) {
+      count++;
+    }
+    if (!publicAPI.isFieldActionDisabled(def.name, 'score')) {
+      count++;
+    }
+    return count;
   }
 
   function createScoreIcons(iconCell) {
@@ -262,6 +268,17 @@ export default function init(inPublicAPI, inModel) {
 
     iconCell.select(`.${style.jsScoreIcon}`)
       .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
+
+    // Override icon if disabled
+    if (publicAPI.isFieldActionDisabled(def.name, 'save')) {
+      iconCell.select(`.${style.jsSaveIcon}`)
+        .attr('class', style.hideSaveIcon);
+    }
+
+    if (publicAPI.isFieldActionDisabled(def.name, 'score')) {
+      iconCell.select(`.${style.jsScoreIcon}`)
+        .attr('class', style.hideScoreIcon);
+    }
   }
 
   function createGroups(svgGr) {
