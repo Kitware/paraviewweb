@@ -31949,8 +31949,7 @@
 
 	        fieldCell = trow1.append('td').classed(_HistogramSelector2.default.fieldName, true);
 	        iconCell = trow1.append('td').classed(_HistogramSelector2.default.legendIcons, true);
-	        scoreHelper.createSaveIcon(iconCell);
-	        scoreHelper.createScoreIcon(iconCell);
+	        scoreHelper.createScoreIcons(iconCell);
 	        iconCell.append('i').classed(_HistogramSelector2.default.expandIcon, true).on('click', toggleSingleModeEvt);
 
 	        // Create SVG, and main group created inside the margins for use by axes, title, etc.
@@ -31979,10 +31978,10 @@
 	      ttab.classed(_HistogramSelector2.default.hiddenBox, false).classed(!dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, false).classed(dataActive ? _HistogramSelector2.default.selectedBox : _HistogramSelector2.default.unselectedBox, true);
 
 	      // Change interaction icons based on state.
-	      var numIcons = 1 /* save icon */ + (model.singleModeSticky ? 0 : 1) + (scoreHelper.enabled() ? 1 : 0);
-	      iconCell.style('width', numIcons * 19 + 'px');
-	      scoreHelper.updateScoreIcon(iconCell, def);
-	      scoreHelper.updateSaveIcon(iconCell, def);
+	      // scoreHelper has save icon and score icon.
+	      var numIcons = (model.singleModeSticky ? 0 : 1) + scoreHelper.numScoreIcons();
+	      iconCell.style('width', numIcons * 15 + 6 + 'px');
+	      scoreHelper.updateScoreIcons(iconCell, def);
 	      iconCell.select('.' + _HistogramSelector2.default.jsExpandIcon).attr('class', model.singleModeName === null ? _HistogramSelector2.default.expandIcon : _HistogramSelector2.default.shrinkIcon).style('display', model.singleModeSticky ? 'none' : null);
 	      // Apply field name
 	      fieldCell.style('width', model.histWidth - numIcons * 19 + 'px').text(def.name);
@@ -41870,7 +41869,7 @@
 	exports.i(__webpack_require__(340), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsDividerValuePopup_22hnR,\n.HistogramSelector_jsExpandIcon_3RnGw,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeader_kEqGl,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendIcons_271gr,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreIcon_3FK84,\n.HistogramSelector_jsSaveIcon_1y2mx,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsShowScoredIcon_3H-gL,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_legendIcon_2C3V1 {\n  vertical-align: middle;\n  padding: 1px 2px;\n}\n.HistogramSelector_expandIcon_3Iizu {\n  }\n.HistogramSelector_shrinkIcon_3M4F1 {\n}\n\n.HistogramSelector_scoreStartIcon_32Yu7 {\n}\n\n.HistogramSelector_scoreEndIcon_JU7gc {\n}\n\n.HistogramSelector_noSaveIcon_2fWkG {\n}\n.HistogramSelector_unchangedSaveIcon_3s5aM {\n}\n.HistogramSelector_modifiedSaveIcon_3ayQz {\n}\n.HistogramSelector_newSaveIcon_HxRHq {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: auto;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_legendIcons_2mhe0 {\n  visibility: hidden;\n}\n\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n.HistogramSelector_dividerValuePopup_3piZN {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsDividerValuePopup_22hnR,\n.HistogramSelector_jsExpandIcon_3RnGw,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeader_kEqGl,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendIcons_271gr,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreIcon_3FK84,\n.HistogramSelector_jsSaveIcon_1y2mx,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsShowScoredIcon_3H-gL,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_legendIcon_2C3V1 {\n  vertical-align: middle;\n  padding: 1px 2px;\n}\n.HistogramSelector_expandIcon_3Iizu {\n  }\n.HistogramSelector_shrinkIcon_3M4F1 {\n}\n\n.HistogramSelector_scoreStartIcon_32Yu7 {\n}\n\n.HistogramSelector_scoreEndIcon_JU7gc {\n}\n\n.HistogramSelector_noSaveIcon_2fWkG {\n}\n.HistogramSelector_unchangedSaveIcon_3s5aM {\n}\n.HistogramSelector_modifiedSaveIcon_3ayQz {\n}\n.HistogramSelector_newSaveIcon_HxRHq {\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: auto;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_legendIcons_2mhe0 {\n  visibility: hidden;\n  padding-right: 1px;\n  padding-left: 0px;\n  text-align: right;\n}\n\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n.HistogramSelector_jsBox_3Lo_R td, .HistogramSelector_jsBox_3Lo_R tr {\n  padding: 1px;\n}\n\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n.HistogramSelector_dividerValuePopup_3piZN {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -42914,14 +42913,12 @@
 	  }
 	  function getUncertScale(def) {
 	    // handle a zero range (like from the cumulative score histogram)
-	    var _getHistRange = getHistRange(def);
+	    // const [minRange, maxRange] = getHistRange(def);
+	    // return (maxRange - minRange);
 
-	    var _getHistRange2 = _slicedToArray(_getHistRange, 2);
-
-	    var minRange = _getHistRange2[0];
-	    var maxRange = _getHistRange2[1];
-
-	    return maxRange - minRange;
+	    // We are not going to scale uncertainty - use values in
+	    // the same units as the histogram itself
+	    return 1.0;
 	  }
 
 	  // Translate our dividers and regions into an annotation
@@ -42948,7 +42945,7 @@
 	  }
 
 	  // retrieve annotation, and re-create dividers and regions
-	  function partitionToDividers(scoreData, def, hobj, scores) {
+	  function partitionToDividers(scoreData, def, scores) {
 	    // console.log('DBG return', JSON.stringify(scoreData, null, 2));
 	    var uncertScale = getUncertScale(def);
 	    var regions = scoreData.score;
@@ -42965,7 +42962,7 @@
 	  }
 
 	  // communicate with the server which regions/dividers have changed.
-	  function sendScores(def, hobj) {
+	  function sendScores(def) {
 	    var scoreData = dividersToPartition(def, model.scores);
 	    if (scoreData === null) {
 	      console.error('Cannot translate scores to send to provider');
@@ -42992,7 +42989,7 @@
 	    if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
 	      if (model.provider.loadPartition(def.name)) {
 	        var scoreData = model.provider.getPartition(def.name);
-	        partitionToDividers(scoreData, def, def.hobj, model.scores);
+	        partitionToDividers(scoreData, def, model.scores);
 	        def.scoreDirty = false;
 	      }
 	    }
@@ -43008,7 +43005,7 @@
 	    // set existing annotation as current if we activate for editing
 	    if (def.editScore && showScore(def) && def.annotation) {
 	      // TODO special 'active' method to call, instead of an edit?
-	      sendScores(def, def.hobj);
+	      sendScores(def);
 	    }
 	    publicAPI.render(def.name);
 	    // if one histogram is being edited, the others should be inactive.
@@ -43029,17 +43026,17 @@
 	    var def = model.fieldData[fieldName];
 	    if (def) {
 	      // create a divider halfway through.
-	      var _getHistRange3 = getHistRange(def);
+	      var _getHistRange = getHistRange(def);
 
-	      var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
+	      var _getHistRange2 = _slicedToArray(_getHistRange, 2);
 
-	      var minRange = _getHistRange4[0];
-	      var maxRange = _getHistRange4[1];
+	      var minRange = _getHistRange2[0];
+	      var maxRange = _getHistRange2[1];
 
 	      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
 	      // set regions to 'no' | 'yes'
 	      def.regions = [0, 2];
-	      sendScores(def, def.hobj);
+	      sendScores(def);
 	      // set mode that prevents editing the annotation, except for the single divider.
 	      def.lockAnnot = true;
 	      setEditScore(def, true);
@@ -43057,47 +43054,54 @@
 	    return displayOnlyScored;
 	  }
 
-	  function createScoreIcon(iconCell) {
+	  function numScoreIcons() {
+	    if (!enabled()) return 0;
+	    if (model.provider.getStoredAnnotation) return 2;
+	    return 1;
+	  }
+
+	  function createScoreIcons(iconCell) {
 	    if (!enabled()) return;
+	    // create/save partition annotation
+	    if (model.provider.getStoredAnnotation) {
+	      iconCell.append('i').classed(_HistogramSelector2.default.noSaveIcon, true).on('click', function (d) {
+	        if (model.provider.getStoredAnnotation) {
+	          var annotation = d.annotation;
+	          var isSame = model.provider.getStoredAnnotation(annotation.id) ? annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation : false;
+	          if (!isSame) {
+	            model.provider.setStoredAnnotation(annotation.id, annotation);
+	          }
+	          publicAPI.render(d.name);
+	          if (_d3.default.event) _d3.default.event.stopPropagation();
+	        }
+	      });
+	    }
+
+	    // start/stop scoring
 	    iconCell.append('i').classed(_HistogramSelector2.default.scoreStartIcon, true).on('click', function (d) {
 	      setEditScore(d, !d.editScore);
 	      if (_d3.default.event) _d3.default.event.stopPropagation();
 	    });
 	  }
 
-	  function createSaveIcon(iconCell) {
+	  function updateScoreIcons(iconCell, def) {
 	    if (!enabled()) return;
-	    iconCell.append('i').classed(_HistogramSelector2.default.noSaveIcon, true).on('click', function (d) {
-	      if (model.provider.getStoredAnnotation) {
-	        var annotation = d.annotation;
-	        var isSame = model.provider.getStoredAnnotation(annotation.id) ? annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation : false;
-	        if (!isSame) {
-	          model.provider.setStoredAnnotation(annotation.id, annotation);
+
+	    if (model.provider.getStoredAnnotation) {
+	      // new/modified/unmodified annotation...
+	      if (def.annotation) {
+	        if (model.provider.getStoredAnnotation(def.annotation.id)) {
+	          var isSame = def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation;
+	          iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', isSame ? _HistogramSelector2.default.unchangedSaveIcon : _HistogramSelector2.default.modifiedSaveIcon);
+	        } else {
+	          iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.newSaveIcon);
 	        }
-	        publicAPI.render(d.name);
-	        if (_d3.default.event) _d3.default.event.stopPropagation();
-	      }
-	    });
-	  }
-
-	  function updateScoreIcon(iconCell, def) {
-	    if (!enabled()) return;
-	    iconCell.select('.' + _HistogramSelector2.default.jsScoreIcon).attr('class', def.editScore ? _HistogramSelector2.default.scoreEndIcon : _HistogramSelector2.default.scoreStartIcon);
-	  }
-
-	  function updateSaveIcon(iconCell, def) {
-	    if (!enabled()) return;
-
-	    if (def.annotation && model.provider.getStoredAnnotation) {
-	      if (model.provider.getStoredAnnotation(def.annotation.id)) {
-	        var isSame = def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation;
-	        iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', isSame ? _HistogramSelector2.default.unchangedSaveIcon : _HistogramSelector2.default.modifiedSaveIcon);
 	      } else {
-	        iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.newSaveIcon);
+	        iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.noSaveIcon);
 	      }
-	    } else {
-	      iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.noSaveIcon);
 	    }
+
+	    iconCell.select('.' + _HistogramSelector2.default.jsScoreIcon).attr('class', def.editScore ? _HistogramSelector2.default.scoreEndIcon : _HistogramSelector2.default.scoreStartIcon);
 	  }
 
 	  function createGroups(svgGr) {
@@ -43148,7 +43152,15 @@
 	  // Look at neighboring dividers for boundaries on this divider's uncertainty.
 	  function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
 	    if (hitIndex < 0) return currentUncertainty;
-	    var maxUncertainty = 0.5;
+
+	    var _getHistRange3 = getHistRange(def);
+
+	    var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
+
+	    var minRange = _getHistRange4[0];
+	    var maxRange = _getHistRange4[1];
+
+	    var maxUncertainty = 0.5 * (maxRange - minRange);
 	    var uncertScale = getUncertScale(def);
 	    // Note comparison with low/high divider is signed. If val indicates divider has been
 	    // moved _past_ the neighboring divider, low/high will be negative.
@@ -43285,7 +43297,7 @@
 	    def.dividers.forEach(function (divider, index) {
 	      divider.uncertainty = clampDividerUncertainty(divider.value, def, index, divider.uncertainty);
 	    });
-	    sendScores(def, hobj);
+	    sendScores(def);
 	    def.dragDivider = undefined;
 	  }
 
@@ -43319,6 +43331,7 @@
 	    var rowHeight = 28;
 	    // 's' SI unit label won't work for a number entry field.
 	    var formatter = _d3.default.format('.4g');
+	    var uncertDispScale = 1; // was 100 for uncertainty as a %.
 
 	    dPopupDiv.style('display', 'initial');
 	    positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 2 * rowHeight));
@@ -43341,7 +43354,7 @@
 	      var val = _d3.default.event.target.value;
 	      if (!validateDividerVal(val)) val = savedVal;
 	      moveDragDivider(val, selectedDef);
-	      uncertInput.property('value', formatter(100 * selectedDef.dragDivider.newDivider.uncertainty));
+	      uncertInput.property('value', formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty));
 	      publicAPI.render(selectedDef.name);
 	    }).on('change', function () {
 	      // committed to a value, show feedback.
@@ -43367,13 +43380,13 @@
 	    valInput.node().select();
 	    valInput.node().focus();
 
-	    uncertInput.attr('value', formatter(100 * selDivider.uncertainty)).property('value', formatter(100 * selDivider.uncertainty)).on('input', function () {
+	    uncertInput.attr('value', formatter(uncertDispScale * selDivider.uncertainty)).property('value', formatter(uncertDispScale * selDivider.uncertainty)).on('input', function () {
 	      // typing values, show feedback.
 	      var uncert = _d3.default.event.target.value;
 	      if (!validateDividerVal(uncert)) {
 	        uncert = selectedDef.dragDivider.savedUncert;
 	      } else {
-	        uncert *= 0.01;
+	        uncert /= uncertDispScale;
 	      }
 	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
 	      if (selectedDef.dragDivider.newDivider.value === undefined) {
@@ -43386,8 +43399,15 @@
 	      var uncert = _d3.default.event.target.value;
 	      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
 	        // uncertainty is a % between 0 and 0.5
-	        uncert = Math.min(0.5, Math.max(0, 0.01 * uncert));
-	        _d3.default.event.target.value = formatter(100 * uncert);
+	        var _getHistRange5 = getHistRange(selectedDef);
+
+	        var _getHistRange6 = _slicedToArray(_getHistRange5, 2);
+
+	        var minRange = _getHistRange6[0];
+	        var maxRange = _getHistRange6[1];
+
+	        uncert = Math.min(0.5 * (maxRange - minRange), Math.max(0, uncert / uncertDispScale));
+	        _d3.default.event.target.value = formatter(uncertDispScale * uncert);
 	        selectedDef.dragDivider.savedUncert = uncert;
 	      }
 	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
@@ -43405,7 +43425,7 @@
 	    }).on('blur', function () {
 	      var val = selectedDef.dragDivider.newDivider.value === undefined ? selectedDef.dividers[selectedDef.dragDivider.index].value : selectedDef.dragDivider.newDivider.value;
 	      clampDragDividerUncertainty(val, selectedDef);
-	      _d3.default.event.target.value = formatter(100 * selectedDef.dragDivider.newDivider.uncertainty);
+	      _d3.default.event.target.value = formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty);
 	      publicAPI.render(selectedDef.name);
 	    });
 	  }
@@ -43470,7 +43490,7 @@
 	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Value:');
 	    tr1.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerValueInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
 	    var tr2 = table.append('tr');
-	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('% Uncertainty:');
+	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Uncertainty:');
 	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
 	    dPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
 	    dPopupDiv.append('div').style('text-align', 'center').append('input').classed(_HistogramSelector2.default.scoreButton, true).style('align', 'center').attr('type', 'button').attr('value', 'Delete Divider').on('click', function () {
@@ -43530,7 +43550,7 @@
 	        def.regions[def.hitRegionIndex] = index;
 	        def.dragDivider = undefined;
 	        sPopupDiv.style('display', 'none');
-	        sendScores(def, def.hobj);
+	        sendScores(def);
 	        publicAPI.render();
 	      });
 	    });
@@ -43579,7 +43599,7 @@
 	              divider.value = (divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin) * (hobj.max - hobj.min) + hobj.min;
 	            }
 	          });
-	          sendScores(def, hobj);
+	          sendScores(def);
 	        }
 	      })();
 	    }
@@ -43741,7 +43761,7 @@
 	        // // set existing annotation as current if we activate for editing
 	        // if (def.editScore && showScore(def) && def.annotation) {
 	        //   // TODO special 'active' method to call, instead of an edit?
-	        //   sendScores(def, def.hobj);
+	        //   sendScores(def);
 	        // }
 	        // publicAPI.render(def.name);
 	        return;
@@ -43821,7 +43841,7 @@
 	          var field = annotation.selection.partition.variable;
 	          // respond to annotation.
 	          model.fieldData[field].annotation = annotation;
-	          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+	          partitionToDividers(annotation, model.fieldData[field], model.scores);
 
 	          publicAPI.render(field);
 	        }
@@ -43829,7 +43849,7 @@
 	    }
 	  }
 
-	  // FIXME Aron (talk to Scott and Seb)
+	  // Works if model.fieldData[field].hobj is undefined.
 	  function updateFieldAnnotations(fieldsData) {
 	    var fieldAnnotations = fieldsData;
 	    if (!fieldAnnotations && model.provider.getFieldPartitions) {
@@ -43840,7 +43860,7 @@
 	        var annotation = fieldAnnotations[field];
 	        if (model.fieldData[field]) {
 	          model.fieldData[field].annotation = annotation;
-	          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+	          partitionToDividers(annotation, model.fieldData[field], model.scores);
 	          publicAPI.render(field);
 	        }
 	      });
@@ -43852,20 +43872,19 @@
 	    createGroups: createGroups,
 	    createHeader: createHeader,
 	    createPopups: createPopups,
-	    createScoreIcon: createScoreIcon,
-	    createSaveIcon: createSaveIcon,
+	    createScoreIcons: createScoreIcons,
 	    defaultFieldData: defaultFieldData,
 	    editingScore: editingScore,
 	    enabled: enabled,
 	    filterFieldNames: filterFieldNames,
 	    getHistRange: getHistRange,
 	    init: init,
+	    numScoreIcons: numScoreIcons,
 	    prepareItem: prepareItem,
 	    rescaleDividers: rescaleDividers,
 	    updateHeader: updateHeader,
 	    updateFieldAnnotations: updateFieldAnnotations,
-	    updateScoreIcon: updateScoreIcon,
-	    updateSaveIcon: updateSaveIcon
+	    updateScoreIcons: updateScoreIcons
 	  };
 	}
 

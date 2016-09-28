@@ -14799,12 +14799,7 @@
 	        value: divider.uncertainty,
 	        onChange: onChange,
 	        onBlur: onBlur
-	      }),
-	      _react2.default.createElement(
-	        'div',
-	        { className: _SelectionEditorWidget2.default.inequality },
-	        '%'
-	      )
+	      })
 	    ) : null,
 	    _react2.default.createElement('i', { className: _SelectionEditorWidget2.default.deleteButton, onClick: onDelete })
 	  );
