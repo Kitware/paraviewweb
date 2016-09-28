@@ -70,8 +70,12 @@ export default function init(inPublicAPI, inModel) {
   }
   function getUncertScale(def) {
     // handle a zero range (like from the cumulative score histogram)
-    const [minRange, maxRange] = getHistRange(def);
-    return (maxRange - minRange);
+    // const [minRange, maxRange] = getHistRange(def);
+    // return (maxRange - minRange);
+
+    // We are not going to scale uncertainty - use values in
+    // the same units as the histogram itself
+    return 1.0;
   }
 
   // Translate our dividers and regions into an annotation
@@ -96,7 +100,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   // retrieve annotation, and re-create dividers and regions
-  function partitionToDividers(scoreData, def, hobj, scores) {
+  function partitionToDividers(scoreData, def, scores) {
     // console.log('DBG return', JSON.stringify(scoreData, null, 2));
     const uncertScale = getUncertScale(def);
     const regions = scoreData.score;
@@ -111,7 +115,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   // communicate with the server which regions/dividers have changed.
-  function sendScores(def, hobj) {
+  function sendScores(def) {
     const scoreData = dividersToPartition(def, model.scores);
     if (scoreData === null) {
       console.error('Cannot translate scores to send to provider');
@@ -138,7 +142,7 @@ export default function init(inPublicAPI, inModel) {
     if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
       if (model.provider.loadPartition(def.name)) {
         const scoreData = model.provider.getPartition(def.name);
-        partitionToDividers(scoreData, def, def.hobj, model.scores);
+        partitionToDividers(scoreData, def, model.scores);
         def.scoreDirty = false;
       }
     }
@@ -155,7 +159,7 @@ export default function init(inPublicAPI, inModel) {
     // set existing annotation as current if we activate for editing
     if (def.editScore && showScore(def) && def.annotation) {
       // TODO special 'active' method to call, instead of an edit?
-      sendScores(def, def.hobj);
+      sendScores(def);
     }
     publicAPI.render(def.name);
     // if one histogram is being edited, the others should be inactive.
@@ -180,7 +184,7 @@ export default function init(inPublicAPI, inModel) {
       def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
       // set regions to 'no' | 'yes'
       def.regions = [0, 2];
-      sendScores(def, def.hobj);
+      sendScores(def);
       // set mode that prevents editing the annotation, except for the single divider.
       def.lockAnnot = true;
       setEditScore(def, true);
@@ -198,8 +202,35 @@ export default function init(inPublicAPI, inModel) {
     return displayOnlyScored;
   }
 
-  function createScoreIcon(iconCell) {
+  function numScoreIcons() {
+    if (!enabled()) return 0;
+    if (model.provider.getStoredAnnotation) return 2;
+    return 1;
+  }
+
+  function createScoreIcons(iconCell) {
     if (!enabled()) return;
+    // create/save partition annotation
+    if (model.provider.getStoredAnnotation) {
+      iconCell
+        .append('i')
+          .classed(style.noSaveIcon, true)
+          .on('click', (d) => {
+            if (model.provider.getStoredAnnotation) {
+              const annotation = d.annotation;
+              const isSame = model.provider.getStoredAnnotation(annotation.id)
+                ? (annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation)
+                : false;
+              if (!isSame) {
+                model.provider.setStoredAnnotation(annotation.id, annotation);
+              }
+              publicAPI.render(d.name);
+              if (d3.event) d3.event.stopPropagation();
+            }
+          });
+    }
+
+    // start/stop scoring
     iconCell
       .append('i')
         .classed(style.scoreStartIcon, true)
@@ -209,48 +240,28 @@ export default function init(inPublicAPI, inModel) {
         });
   }
 
-  function createSaveIcon(iconCell) {
-    if (!enabled()) return;
-    iconCell
-      .append('i')
-        .classed(style.noSaveIcon, true)
-        .on('click', (d) => {
-          if (model.provider.getStoredAnnotation) {
-            const annotation = d.annotation;
-            const isSame = model.provider.getStoredAnnotation(annotation.id)
-              ? (annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation)
-              : false;
-            if (!isSame) {
-              model.provider.setStoredAnnotation(annotation.id, annotation);
-            }
-            publicAPI.render(d.name);
-            if (d3.event) d3.event.stopPropagation();
-          }
-        });
-  }
-
-  function updateScoreIcon(iconCell, def) {
-    if (!enabled()) return;
-    iconCell.select(`.${style.jsScoreIcon}`)
-      .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
-  }
-
-  function updateSaveIcon(iconCell, def) {
+  function updateScoreIcons(iconCell, def) {
     if (!enabled()) return;
 
-    if (def.annotation && model.provider.getStoredAnnotation) {
-      if (model.provider.getStoredAnnotation(def.annotation.id)) {
-        const isSame = (def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation);
-        iconCell.select(`.${style.jsSaveIcon}`)
-          .attr('class', isSame ? style.unchangedSaveIcon : style.modifiedSaveIcon);
+    if (model.provider.getStoredAnnotation) {
+      // new/modified/unmodified annotation...
+      if (def.annotation) {
+        if (model.provider.getStoredAnnotation(def.annotation.id)) {
+          const isSame = (def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation);
+          iconCell.select(`.${style.jsSaveIcon}`)
+            .attr('class', isSame ? style.unchangedSaveIcon : style.modifiedSaveIcon);
+        } else {
+          iconCell.select(`.${style.jsSaveIcon}`)
+            .attr('class', style.newSaveIcon);
+        }
       } else {
         iconCell.select(`.${style.jsSaveIcon}`)
-          .attr('class', style.newSaveIcon);
+          .attr('class', style.noSaveIcon);
       }
-    } else {
-      iconCell.select(`.${style.jsSaveIcon}`)
-        .attr('class', style.noSaveIcon);
     }
+
+    iconCell.select(`.${style.jsScoreIcon}`)
+      .attr('class', def.editScore ? style.scoreEndIcon : style.scoreStartIcon);
   }
 
   function createGroups(svgGr) {
@@ -311,7 +322,8 @@ export default function init(inPublicAPI, inModel) {
   // Look at neighboring dividers for boundaries on this divider's uncertainty.
   function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
     if (hitIndex < 0) return currentUncertainty;
-    let maxUncertainty = 0.5;
+    const [minRange, maxRange] = getHistRange(def);
+    let maxUncertainty = 0.5 * (maxRange - minRange);
     const uncertScale = getUncertScale(def);
     // Note comparison with low/high divider is signed. If val indicates divider has been
     // moved _past_ the neighboring divider, low/high will be negative.
@@ -448,7 +460,7 @@ export default function init(inPublicAPI, inModel) {
     def.dividers.forEach((divider, index) => {
       divider.uncertainty = clampDividerUncertainty(divider.value, def, index, divider.uncertainty);
     });
-    sendScores(def, hobj);
+    sendScores(def);
     def.dragDivider = undefined;
   }
 
@@ -482,6 +494,7 @@ export default function init(inPublicAPI, inModel) {
     const rowHeight = 28;
     // 's' SI unit label won't work for a number entry field.
     const formatter = d3.format('.4g');
+    const uncertDispScale = 1; // was 100 for uncertainty as a %.
 
     dPopupDiv
       .style('display', 'initial');
@@ -511,7 +524,7 @@ export default function init(inPublicAPI, inModel) {
         let val = d3.event.target.value;
         if (!validateDividerVal(val)) val = savedVal;
         moveDragDivider(val, selectedDef);
-        uncertInput.property('value', formatter(100 * selectedDef.dragDivider.newDivider.uncertainty));
+        uncertInput.property('value', formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty));
         publicAPI.render(selectedDef.name);
       })
       .on('change', () => {
@@ -541,15 +554,15 @@ export default function init(inPublicAPI, inModel) {
     valInput.node().focus();
 
     uncertInput
-      .attr('value', formatter(100 * selDivider.uncertainty))
-      .property('value', formatter(100 * selDivider.uncertainty))
+      .attr('value', formatter(uncertDispScale * selDivider.uncertainty))
+      .property('value', formatter(uncertDispScale * selDivider.uncertainty))
       .on('input', () => {
         // typing values, show feedback.
         let uncert = d3.event.target.value;
         if (!validateDividerVal(uncert)) {
           uncert = selectedDef.dragDivider.savedUncert;
         } else {
-          uncert *= 0.01;
+          uncert /= uncertDispScale;
         }
         selectedDef.dragDivider.newDivider.uncertainty = uncert;
         if (selectedDef.dragDivider.newDivider.value === undefined) {
@@ -564,8 +577,10 @@ export default function init(inPublicAPI, inModel) {
         if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;
         else {
           // uncertainty is a % between 0 and 0.5
-          uncert = Math.min(0.5, Math.max(0, 0.01 * uncert));
-          d3.event.target.value = formatter(100 * uncert);
+          // uncert = Math.min(0.5, Math.max(0, uncert / uncertDispScale));
+          const [minRange, maxRange] = getHistRange(selectedDef);
+          uncert = Math.min(0.5 * (maxRange - minRange), Math.max(0, uncert / uncertDispScale));
+          d3.event.target.value = formatter(uncertDispScale * uncert);
           selectedDef.dragDivider.savedUncert = uncert;
         }
         selectedDef.dragDivider.newDivider.uncertainty = uncert;
@@ -587,7 +602,7 @@ export default function init(inPublicAPI, inModel) {
                      selectedDef.dividers[selectedDef.dragDivider.index].value :
                      selectedDef.dragDivider.newDivider.value);
         clampDragDividerUncertainty(val, selectedDef);
-        d3.event.target.value = formatter(100 * selectedDef.dragDivider.newDivider.uncertainty);
+        d3.event.target.value = formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty);
         publicAPI.render(selectedDef.name);
       });
   }
@@ -675,7 +690,7 @@ export default function init(inPublicAPI, inModel) {
     const tr2 = table.append('tr');
     tr2.append('td')
       .classed(style.popupCell, true)
-      .text('% Uncertainty:');
+      .text('Uncertainty:');
     tr2.append('td')
       .classed(style.popupCell, true)
       .append('input')
@@ -774,7 +789,7 @@ export default function init(inPublicAPI, inModel) {
               def.dragDivider = undefined;
               sPopupDiv
                 .style('display', 'none');
-              sendScores(def, def.hobj);
+              sendScores(def);
               publicAPI.render();
             });
         });
@@ -831,7 +846,7 @@ export default function init(inPublicAPI, inModel) {
                              (hobj.max - hobj.min)) + hobj.min;
           }
         });
-        sendScores(def, hobj);
+        sendScores(def);
       }
     }
   }
@@ -1007,7 +1022,7 @@ export default function init(inPublicAPI, inModel) {
           // // set existing annotation as current if we activate for editing
           // if (def.editScore && showScore(def) && def.annotation) {
           //   // TODO special 'active' method to call, instead of an edit?
-          //   sendScores(def, def.hobj);
+          //   sendScores(def);
           // }
           // publicAPI.render(def.name);
           return;
@@ -1077,7 +1092,7 @@ export default function init(inPublicAPI, inModel) {
           const field = annotation.selection.partition.variable;
           // respond to annotation.
           model.fieldData[field].annotation = annotation;
-          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+          partitionToDividers(annotation, model.fieldData[field], model.scores);
 
           publicAPI.render(field);
         }
@@ -1085,7 +1100,7 @@ export default function init(inPublicAPI, inModel) {
     }
   }
 
-  // FIXME Aron (talk to Scott and Seb)
+  // Works if model.fieldData[field].hobj is undefined.
   function updateFieldAnnotations(fieldsData) {
     let fieldAnnotations = fieldsData;
     if (!fieldAnnotations && model.provider.getFieldPartitions) {
@@ -1096,7 +1111,7 @@ export default function init(inPublicAPI, inModel) {
         const annotation = fieldAnnotations[field];
         if (model.fieldData[field]) {
           model.fieldData[field].annotation = annotation;
-          partitionToDividers(annotation, model.fieldData[field], model.fieldData[field].hobj, model.scores);
+          partitionToDividers(annotation, model.fieldData[field], model.scores);
           publicAPI.render(field);
         }
       });
@@ -1108,19 +1123,18 @@ export default function init(inPublicAPI, inModel) {
     createGroups,
     createHeader,
     createPopups,
-    createScoreIcon,
-    createSaveIcon,
+    createScoreIcons,
     defaultFieldData,
     editingScore,
     enabled,
     filterFieldNames,
     getHistRange,
     init,
+    numScoreIcons,
     prepareItem,
     rescaleDividers,
     updateHeader,
     updateFieldAnnotations,
-    updateScoreIcon,
-    updateSaveIcon,
+    updateScoreIcons,
   };
 }
