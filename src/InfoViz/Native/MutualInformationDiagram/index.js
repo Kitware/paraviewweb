@@ -964,6 +964,7 @@ function informationDiagram(publicAPI, model) {
       });
 
     model.subscriptions.push(model.mutualInformationDataSubscription);
+    model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
   }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {

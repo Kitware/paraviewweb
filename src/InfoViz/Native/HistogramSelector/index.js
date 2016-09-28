@@ -43,7 +43,7 @@ function histogramSelector(publicAPI, model) {
   // properly query this value from our container.
   const borderSize = 6;
   // 8? for linux/firefox, 16 for win10/chrome (hi-res screen)
-  let scrollbarWidth = 16;
+  const scrollbarWidth = 16;
 
   let displayOnlySelected = false;
 
