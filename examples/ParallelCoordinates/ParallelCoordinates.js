@@ -43692,7 +43692,8 @@
 	      if (tup[0] in alreadyDone && tup[1] in alreadyDone[tup[0]]) {
 	        continue;
 	      }
-	      var v2nam = miData.vmap[v2dx].name;
+	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug
+	      // const v2nam = miData.vmap[v2dx].name;
 	      var t0nam = miData.vmap[tup[0]].name;
 	      var t1nam = miData.vmap[tup[1]].name;
 	      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
