@@ -41,7 +41,7 @@ export default function annotationStoreEditorWidget(props) {
       buttons.push(button('Revert', storeAction('reset')));
       buttons.push(button('Update', storeAction('save')));
     }
-  } else if (props.annotation && props.annotation.selection.type !== 'empty') {
+  } else if (props.annotation && props.annotation.selection.type !== 'empty' && !props.annotation.readOnly) {
     buttons.push(button('Save', storeAction('new')));
   }
 
