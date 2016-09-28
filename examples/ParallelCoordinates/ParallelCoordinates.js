@@ -29372,8 +29372,8 @@
 	    var yRightMax = 0;
 
 	    // Ensure proper range for X
-	    var deltaOne = (axisOne.range[1] - axisOne.range[0]) / histogram.numberOfBins;
-	    var deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / histogram.numberOfBins;
+	    var deltaOne = (axisOne.range[1] - axisOne.range[0]) / (histogram.numberOfBins || model.numberOfBins);
+	    var deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / (histogram.numberOfBins || model.numberOfBins);
 
 	    for (var i = 0; i < histogram.bins.length; ++i) {
 	      bin = histogram.bins[i];
@@ -42377,7 +42377,8 @@
 	    }),
 	    x: histo2d.y,
 	    y: histo2d.x,
-	    maxCount: histo2d.maxCount
+	    maxCount: histo2d.maxCount,
+	    numberOfBins: histo2d.numberOfBins
 	  };
 
 	  return newHisto2d;

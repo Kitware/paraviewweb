@@ -42173,7 +42173,8 @@
 	    }),
 	    x: histo2d.y,
 	    y: histo2d.x,
-	    maxCount: histo2d.maxCount
+	    maxCount: histo2d.maxCount,
+	    numberOfBins: histo2d.numberOfBins
 	  };
 
 	  return newHisto2d;
