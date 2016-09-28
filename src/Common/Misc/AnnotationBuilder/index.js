@@ -26,7 +26,6 @@ function annotation(selection, score, weight = 1, rationale = '', name = '') {
     weight,
     rationale,
     name,
-    objective: false,
   };
 }
 

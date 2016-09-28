@@ -346,6 +346,48 @@ function histogramSelector(publicAPI, model) {
     }
   };
 
+  publicAPI.disableFieldActions = (fieldName, actionNames) => {
+    if (!model.disabledFieldsActions) {
+      model.disabledFieldsActions = {};
+    }
+    if (!model.disabledFieldsActions[fieldName]) {
+      model.disabledFieldsActions[fieldName] = [];
+    }
+    const disableActionList = model.disabledFieldsActions[fieldName];
+    [].concat(actionNames).forEach(action => {
+      if (disableActionList.indexOf(action) === -1) {
+        disableActionList.push(action);
+      }
+    });
+  };
+
+  publicAPI.enableFieldActions = (fieldName, actionNames) => {
+    if (!model.disabledFieldsActions) {
+      return;
+    }
+    if (!model.disabledFieldsActions[fieldName]) {
+      return;
+    }
+    const disableActionList = model.disabledFieldsActions[fieldName];
+    [].concat(actionNames).forEach(action => {
+      const idx = disableActionList.indexOf(action);
+      if (idx !== -1) {
+        disableActionList.splice(idx, 1);
+      }
+    });
+  };
+
+  publicAPI.isFieldActionDisabled = (fieldName, actionName) => {
+    if (!model.disabledFieldsActions) {
+      return false;
+    }
+    if (!model.disabledFieldsActions[fieldName]) {
+      return false;
+    }
+    const disableActionList = model.disabledFieldsActions[fieldName];
+    return (disableActionList.indexOf(actionName) !== -1);
+  };
+
   publicAPI.render = (onlyFieldName = null) => {
     if (!model.fieldData ||
         (onlyFieldName !== null && !model.fieldData[onlyFieldName])) {
@@ -550,7 +592,7 @@ function histogramSelector(publicAPI, model) {
 
       // Change interaction icons based on state.
       // scoreHelper has save icon and score icon.
-      const numIcons = (model.singleModeSticky ? 0 : 1) + scoreHelper.numScoreIcons();
+      const numIcons = (model.singleModeSticky ? 0 : 1) + scoreHelper.numScoreIcons(def);
       iconCell.style('width', `${(numIcons * 15) + 6}px`);
       scoreHelper.updateScoreIcons(iconCell, def);
       iconCell.select(`.${style.jsExpandIcon}`)
@@ -841,6 +883,8 @@ const DEFAULT_VALUES = {
   selectedDef: null,
 
   numberOfBins: 32,
+
+  annotationToReadOnly: false,
 };
 
 // ----------------------------------------------------------------------------
@@ -850,8 +894,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
-  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins', 'annotationToReadOnly']);
+  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins', 'annotationToReadOnly']);
 
   histogramSelector(publicAPI, model);
 }

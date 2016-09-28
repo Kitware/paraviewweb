@@ -4,6 +4,12 @@
   margin: 10px auto;
 }
 
+.disabledTopContainer {
+  composes: topContainer;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
 .scoreContainer {
   min-width: 100px;
   display: flex;

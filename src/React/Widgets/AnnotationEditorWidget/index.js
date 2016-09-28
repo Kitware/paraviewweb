@@ -76,7 +76,7 @@ export default function annotationEditorWidget(props) {
   }
 
   return (
-    <div className={style.topContainer}>
+    <div className={props.annotation && props.annotation.readOnly ? style.disabledTopContainer : style.topContainer}>
       <Render
         {...props}
         onSelectionChange={onSelectionChange}
