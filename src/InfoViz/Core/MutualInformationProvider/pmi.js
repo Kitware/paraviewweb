@@ -172,6 +172,18 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
       const t1nam = miData.vmap[tup[1]].name;
       // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
 
+      if (!histogramData[t0nam]) {
+        // Data not ready yet for given axis
+        console.log('Can not compute PMI for', t0nam);
+        continue;
+      }
+
+      if (!histogramData[t0nam][t1nam]) {
+        // Data not ready yet for given axis
+        console.log('Can not compute PMI for', t1nam);
+        continue;
+      }
+
       const minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
       miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
       miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;

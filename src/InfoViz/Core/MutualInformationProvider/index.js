@@ -17,6 +17,10 @@ function listToPair(list = []) {
   return pairList;
 }
 
+function unique(list) {
+  return list.sort().filter((item, index, array) => !index || item !== array[index - 1]);
+}
+
 // ----------------------------------------------------------------------------
 // Mutual Information Provider
 // ----------------------------------------------------------------------------
@@ -25,7 +29,14 @@ function mutualInformationProvider(publicAPI, model) {
   let hasData = false;
   const onMutualInformationReady = publicAPI.onMutualInformationReady;
   const mutualInformationData = PMI.initializeMutualInformationData();
-  const deltaHandling = { added: [], removed: [], modified: [], previousMTime: {}, currentMTime: {} };
+  const deltaHandling = {
+    added: [],
+    removed: [],
+    modified: [],
+    previousMTime: {},
+    currentMTime: {},
+    processed: true,
+  };
 
   function updateHistogram2D(histograms) {
     if (Object.keys(histograms).length > 1) {
@@ -52,15 +63,22 @@ function mutualInformationProvider(publicAPI, model) {
         }
       });
 
-      PMI.updateMutualInformation(
-        mutualInformationData,
-        [].concat(deltaHandling.added, deltaHandling.modified),
-        [].concat(deltaHandling.removed, invalidAxis),
-        histograms);
+      // Check mutualInformationParameterNames are consitent with the current set of data
+      // if not just for the next notification...
+      try {
+        PMI.updateMutualInformation(
+          mutualInformationData,
+          [].concat(deltaHandling.added, deltaHandling.modified),
+          [].concat(deltaHandling.removed, invalidAxis),
+          histograms);
 
-      // Push the new mutual info
-      hasData = true;
-      publicAPI.fireMutualInformationReady(mutualInformationData);
+        // Push the new mutual info
+        deltaHandling.processed = true;
+        hasData = true;
+        publicAPI.fireMutualInformationReady(mutualInformationData);
+      } catch (e) {
+        console.log('PMI error', e);
+      }
     }
   }
 
@@ -86,10 +104,22 @@ function mutualInformationProvider(publicAPI, model) {
   };
 
   publicAPI.setMutualInformationParameterNames = names => {
-    deltaHandling.added = names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1);
-    deltaHandling.removed = model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1);
+    if (deltaHandling.processed) {
+      deltaHandling.added = names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1);
+      deltaHandling.removed = model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1);
+    } else {
+      // We need to add to it
+      deltaHandling.added = [].concat(deltaHandling.added, names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1));
+      deltaHandling.removed = [].concat(deltaHandling.removed, model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1));
+    }
 
+    // Ensure uniqueness
+    deltaHandling.added = unique(deltaHandling.added);
+    deltaHandling.removed = unique(deltaHandling.removed);
+
+    deltaHandling.processed = false;
     model.mutualInformationParameterNames = [].concat(names);
+
     if (model.histogram2dProviderSubscription) {
       model.histogram2dProviderSubscription.update(listToPair(model.mutualInformationParameterNames));
     }
