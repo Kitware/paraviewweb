@@ -29817,6 +29817,41 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Dynamic array handler
+	//   - add${xxx}(item)
+	//   - remove${xxx}(item)
+	//   - get${xxx}() => [items...]
+	//   - removeAll${xxx}()
+	// ----------------------------------------------------------------------------
+
+	function dynamicArray(publicAPI, model, name) {
+	  if (!model[name]) {
+	    model[name] = [];
+	  }
+
+	  publicAPI['set' + capitalize(name)] = function (items) {
+	    model[name] = [].concat(items);
+	  };
+
+	  publicAPI['add' + capitalize(name)] = function (item) {
+	    model[name].push(item);
+	  };
+
+	  publicAPI['remove' + capitalize(name)] = function (item) {
+	    var index = model[name].indexOf(item);
+	    model[name].splice(index, 1);
+	  };
+
+	  publicAPI['get' + capitalize(name)] = function () {
+	    return model[name];
+	  };
+
+	  publicAPI['removeAll' + capitalize(name)] = function () {
+	    return model[name] = [];
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
 	// Chain function calls
 	// ----------------------------------------------------------------------------
 
@@ -29962,14 +29997,15 @@
 
 	exports.default = {
 	  chain: chain,
+	  dataSubscriber: dataSubscriber,
 	  destroy: destroy,
+	  dynamicArray: dynamicArray,
 	  event: event,
 	  fetch: fetch,
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set,
-	  dataSubscriber: dataSubscriber
+	  set: set
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(470).setImmediate))
 

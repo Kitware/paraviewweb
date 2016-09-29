@@ -29220,6 +29220,41 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Dynamic array handler
+	//   - add${xxx}(item)
+	//   - remove${xxx}(item)
+	//   - get${xxx}() => [items...]
+	//   - removeAll${xxx}()
+	// ----------------------------------------------------------------------------
+
+	function dynamicArray(publicAPI, model, name) {
+	  if (!model[name]) {
+	    model[name] = [];
+	  }
+
+	  publicAPI['set' + capitalize(name)] = function (items) {
+	    model[name] = [].concat(items);
+	  };
+
+	  publicAPI['add' + capitalize(name)] = function (item) {
+	    model[name].push(item);
+	  };
+
+	  publicAPI['remove' + capitalize(name)] = function (item) {
+	    var index = model[name].indexOf(item);
+	    model[name].splice(index, 1);
+	  };
+
+	  publicAPI['get' + capitalize(name)] = function () {
+	    return model[name];
+	  };
+
+	  publicAPI['removeAll' + capitalize(name)] = function () {
+	    return model[name] = [];
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
 	// Chain function calls
 	// ----------------------------------------------------------------------------
 
@@ -29365,14 +29400,15 @@
 
 	exports.default = {
 	  chain: chain,
+	  dataSubscriber: dataSubscriber,
 	  destroy: destroy,
+	  dynamicArray: dynamicArray,
 	  event: event,
 	  fetch: fetch,
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set,
-	  dataSubscriber: dataSubscriber
+	  set: set
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(311).setImmediate))
 
@@ -32290,9 +32326,7 @@
 	  dragMargin: 8,
 	  selectedDef: null,
 
-	  numberOfBins: 32,
-
-	  annotationToReadOnly: false
+	  numberOfBins: 32
 	};
 
 	// ----------------------------------------------------------------------------
@@ -32304,8 +32338,9 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins', 'annotationToReadOnly']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins', 'annotationToReadOnly']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins']);
+	  _CompositeClosureHelper2.default.dynamicArray(publicAPI, model, 'readOnlyFields');
 
 	  histogramSelector(publicAPI, model);
 	}
@@ -41913,7 +41948,7 @@
 	exports.i(__webpack_require__(340), undefined);
 
 	// module
-	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsDividerValuePopup_22hnR,\n.HistogramSelector_jsExpandIcon_3RnGw,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeader_kEqGl,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendIcons_271gr,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreIcon_3FK84,\n.HistogramSelector_jsSaveIcon_1y2mx,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsShowScoredIcon_3H-gL,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_legendIcon_2C3V1 {\n  vertical-align: middle;\n  padding: 1px 2px;\n}\n.HistogramSelector_expandIcon_3Iizu {\n  }\n.HistogramSelector_shrinkIcon_3M4F1 {\n}\n\n.HistogramSelector_scoreStartIcon_32Yu7 {\n}\n\n.HistogramSelector_scoreEndIcon_JU7gc {\n}\n\n.HistogramSelector_hideScoreIcon_1MCR2 {\n  display: none;\n}\n\n.HistogramSelector_noSaveIcon_2fWkG {\n}\n.HistogramSelector_unchangedSaveIcon_3s5aM {\n}\n.HistogramSelector_modifiedSaveIcon_3ayQz {\n}\n.HistogramSelector_newSaveIcon_HxRHq {\n}\n\n.HistogramSelector_hideSaveIcon_3BhbS {\n  display: none;\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: auto;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_legendIcons_2mhe0 {\n  visibility: hidden;\n  padding-right: 1px;\n  padding-left: 0px;\n  text-align: right;\n}\n\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n.HistogramSelector_jsBox_3Lo_R td, .HistogramSelector_jsBox_3Lo_R tr {\n  padding: 1px;\n}\n\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n.HistogramSelector_dividerValuePopup_3piZN {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
+	exports.push([module.id, "/*empty styles allow for d3 selection in javascript*/\n.HistogramSelector_jsAxis_3kY6B,\n.HistogramSelector_jsBox_3Lo_R,\n.HistogramSelector_jsBrush_1IvpA,\n.HistogramSelector_jsDividerPopup_2t15b,\n.HistogramSelector_jsDividerUncertaintyInput_2b0at,\n.HistogramSelector_jsDividerValueInput_2O_Nf,\n.HistogramSelector_jsDividerValuePopup_22hnR,\n.HistogramSelector_jsExpandIcon_3RnGw,\n.HistogramSelector_jsFieldName_1yNQB,\n.HistogramSelector_jsFieldsIcon_lhO9n,\n.HistogramSelector_jsGHist_ZQa9E,\n.HistogramSelector_jsGRect_2e6-V,\n.HistogramSelector_jsHeader_kEqGl,\n.HistogramSelector_jsHeaderBoxes_oN8YB,\n.HistogramSelector_jsHeaderBoxesNum_2ceRh,\n.HistogramSelector_jsHeaderLabel_3vSys,\n.HistogramSelector_jsHeaderSingle_2vVqV,\n.HistogramSelector_jsHeaderSingleField_hXcin,\n.HistogramSelector_jsHistRect_2uU6Y,\n.HistogramSelector_jsLegend_2mIDN,\n.HistogramSelector_jsLegendIcons_271gr,\n.HistogramSelector_jsLegendRow_38X9b,\n.HistogramSelector_jsOverlay_352at,\n.HistogramSelector_jsScore_1gbB8,\n.HistogramSelector_jsScoreBackground_2-WfA,\n.HistogramSelector_jsScoreChoice_2vuVI,\n.HistogramSelector_jsScoreDivLabel_1luPi,\n.HistogramSelector_jsScoredHeader_2xv_q,\n.HistogramSelector_jsScoreIcon_3FK84,\n.HistogramSelector_jsSaveIcon_1y2mx,\n.HistogramSelector_jsScoreLabel_A3Ijp,\n.HistogramSelector_jsScorePopup_3i0QG,\n.HistogramSelector_jsScoreRect_24LOm,\n.HistogramSelector_jsScoreUncertainty_3Q1FA,\n.HistogramSelector_jsShowScoredIcon_3H-gL,\n.HistogramSelector_jsSparkline_1zBX0,\n.HistogramSelector_jsTr2_hFTsm {\n\n}\n\n.HistogramSelector_histogramSelector_1OZH8 {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 8pt;\n  position: relative;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n}\n\n.HistogramSelector_header_Pm09R {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  font-size: 10pt;\n  font-weight: bold;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n\n.HistogramSelector_hidden_2YiXo {\n  opacity: 0;\n}\n\n.HistogramSelector_icon_3dnwb {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n  padding: 1px 5px;\n}\n\n.HistogramSelector_selectedIcon_2MKqG {\n}\n\n.HistogramSelector_allIcon_3FiMu {\n}\n\n.HistogramSelector_selectedFieldsIcon_kN5eK {\n}\n.HistogramSelector_allFieldsIcon_3PkXB {\n}\n.HistogramSelector_onlyScoredIcon_2S3Yj {\n}\n.HistogramSelector_allScoredIcon_37-rI {\n}\n\n.HistogramSelector_headerIcon_2IzMj {\n  vertical-align: middle;\n}\n\n.HistogramSelector_headerBoxesPlus_QvfiZ {\n  padding-right: 2px;\n}\n.HistogramSelector_headerBoxesMinus_3OpiA {\n  padding-left: 2px;\n}\n\n.HistogramSelector_headerBoxes_2SlD3 {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_headerSingleIcon_2a2Sv {\n}\n.HistogramSelector_headerSingleNext_3AS8U {\n}\n.HistogramSelector_headerSinglePrev_LqQ5h {\n}\n.HistogramSelector_headerSingle_9NqJf {\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n.HistogramSelector_legendIcon_2C3V1 {\n  vertical-align: middle;\n  padding: 1px 2px;\n}\n.HistogramSelector_expandIcon_3Iizu {\n  }\n.HistogramSelector_shrinkIcon_3M4F1 {\n}\n\n.HistogramSelector_scoreStartIcon_32Yu7 {\n}\n\n.HistogramSelector_scoreEndIcon_JU7gc {\n}\n\n.HistogramSelector_hideScoreIcon_1MCR2 {\n  display: none;\n}\n\n.HistogramSelector_noSaveIcon_2fWkG {\n}\n.HistogramSelector_unchangedSaveIcon_3s5aM {\n}\n.HistogramSelector_unchangedActiveSaveIcon_aXVqA {\n}\n.HistogramSelector_modifiedSaveIcon_3ayQz {\n}\n.HistogramSelector_newSaveIcon_HxRHq {\n}\n\n.HistogramSelector_hideSaveIcon_3BhbS {\n  display: none;\n}\n\n.HistogramSelector_histogramSelectorCell_21EUK {\n  padding: 0px;\n}\n\n.HistogramSelector_baseLegend_259om {\n  text-align: center;\n  border-bottom: 1px solid #fff;\n  width: 19px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_legend_2EcSH {\n}\n.HistogramSelector_legendSvg_1KRHo {\n  padding: 3px 3px 2px 3px;\n  vertical-align: middle;\n}\n\n.HistogramSelector_baseFieldName_3JnbI {\n  width: auto;\n  white-space: nowrap;\n  overflow: hidden;\n  text-align: left;\n  text-overflow: ellipsis;\n  border-bottom: 1px solid #fff;\n  padding: 2px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_fieldName_2O_ba {\n}\n\n.HistogramSelector_row_3iVOH {\n  position: absolute;\n  width: 100%;\n}\n\n.HistogramSelector_baseLegendRow_3sCqn {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer;\n}\n.HistogramSelector_legendRow_2eR5o {\n}\n\n.HistogramSelector_unselectedLegendRow_1la5i {\n  opacity: 0.5;\n}\n\n.HistogramSelector_selectedLegendRow_30XXV {\n  opacity: 1;\n}\n\n.HistogramSelector_legendIcons_2mhe0 {\n  visibility: hidden;\n  padding-right: 1px;\n  padding-left: 0px;\n  text-align: right;\n}\n\n\n.HistogramSelector_baseLegendRow_3sCqn:hover {\n  background-color: #ccd;\n}\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n\n.HistogramSelector_jsLegendRow_38X9b:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n.HistogramSelector_sparkline_1A_M8 {\n}\n.HistogramSelector_sparklineSvg_1dxDG {\n  vertical-align: middle;\n}\n\n.HistogramSelector_box_1PC6n {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /*cursor: crosshair;*/\n  padding: 0px;\n  margin: 3px;\n  border-width: 3px;\n  border-spacing: 0;\n  border-collapse: separate;\n  border-radius: 6px;\n  border-style: solid;\n  background-color: #fff;\n  float: left;\n  table-layout: fixed;\n}\n.HistogramSelector_unselectedBox_62DZG {\n  border-color: #bbb;\n}\n.HistogramSelector_selectedBox_3cFIE {\n  border-color: #222;\n}\n.HistogramSelector_hiddenBox_3qZYG {\n}\n.HistogramSelector_jsBox_3Lo_R td, .HistogramSelector_jsBox_3Lo_R tr {\n  padding: 1px;\n}\n\n/* When hovering over the box, set the legendRow's styles */\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegendRow_3sCqn {\n  background-color: #ccd;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseLegend_259om, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_baseFieldName_3JnbI, .HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_legendIcons_2mhe0 {\n  border-bottom: 1px solid #000;\n}\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_jsLegendIcons_271gr {\n  visibility: visible;\n}\n\n.HistogramSelector_histRect_3JG0Y {\n  stroke: none;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_histRectEven_1GX7B {\n  fill: #8089B8;\n}\n.HistogramSelector_histRectOdd_29_FO {\n  fill: #7780AB;\n}\n\n.HistogramSelector_hmax_1DC0C {\n  text-align: right;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.HistogramSelector_hmin_HkUIc {\n  text-align: left;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.HistogramSelector_axis_d5IqH {\n}\n.HistogramSelector_axisPath_1m5d-,\n.HistogramSelector_axisLine_13cKc {\n  fill: none;\n  stroke: #000;\n  shape-rendering: crispEdges;\n}\n.HistogramSelector_axisText_36DE2 {\n  cursor: default;\n}\n\n.HistogramSelector_overlay_23S6L {\n  fill: none;\n  pointer-events: all;\n}\n\n.HistogramSelector_binHilite_2Ty2e {\n  fill: #001EB8;\n}\n\n/* Scoring gui */\n.HistogramSelector_score_1UBQx {\n  stroke: #fff;\n  shape-rendering: crispEdges;\n}\n\n.HistogramSelector_scoreRegionBg_telOG {\n\n}\n\n.HistogramSelector_jsBox_3Lo_R:hover .HistogramSelector_scoreRegion_26Y3L {\n  opacity: 0.2;\n}\n\n.HistogramSelector_scoreRegionFg_14uUs {\n}\n\n.HistogramSelector_popup_1VCrN {\n  position: absolute;\n  background-color: #fff;\n  border: 1px #ccc solid;\n  border-radius: 6px;\n  padding: 3px;\n  font-size: 8pt;\n}\n.HistogramSelector_scorePopup_1LiN9 {\n}\n.HistogramSelector_dividerPopup_kMlSD {\n}\n.HistogramSelector_dividerValuePopup_3piZN {\n}\n\n.HistogramSelector_popupCell_19GVJ {\n  padding: 2px;\n}\n\n.HistogramSelector_scoreChoice_2GMeV {\n  float: left;\n  display: none;\n}\n\n.HistogramSelector_scoreLabel_2z-Hg {\n  display: block;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n  line-height: 16px;\n}\n\n.HistogramSelector_scoreSwatch_LFSSQ {\n  float: left;\n  width: 14px;\n  height: 14px;\n  margin-right: 8px;\n  border: 1px #707070 solid;\n  border-radius: 3px;\n}\n\n.HistogramSelector_scoreButton_2GtBV {\n  border: 1px #4C4CA3 solid;\n  border-radius: 5px;\n  padding: 4px;\n  margin: 2px;\n}\n\n.HistogramSelector_scoreDashSpacer_3JUvi {\n  border-bottom: 1px #bbb solid;\n  width: 95%;\n  height: 1px;\n  margin: 2px auto 3px auto;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -41980,6 +42015,7 @@
 		"hideScoreIcon": "HistogramSelector_hideScoreIcon_1MCR2 HistogramSelector_jsScoreIcon_3FK84",
 		"noSaveIcon": "HistogramSelector_noSaveIcon_2fWkG HistogramSelector_jsSaveIcon_1y2mx HistogramSelector_icon_3dnwb " + __webpack_require__(340).locals["fa"] + " " + __webpack_require__(340).locals["fa-fw"] + " HistogramSelector_legendIcon_2C3V1",
 		"unchangedSaveIcon": "HistogramSelector_unchangedSaveIcon_3s5aM HistogramSelector_noSaveIcon_2fWkG HistogramSelector_jsSaveIcon_1y2mx HistogramSelector_icon_3dnwb " + __webpack_require__(340).locals["fa"] + " " + __webpack_require__(340).locals["fa-fw"] + " HistogramSelector_legendIcon_2C3V1 " + __webpack_require__(340).locals["fa-bookmark-o"] + "",
+		"unchangedActiveSaveIcon": "HistogramSelector_unchangedActiveSaveIcon_aXVqA HistogramSelector_noSaveIcon_2fWkG HistogramSelector_jsSaveIcon_1y2mx HistogramSelector_icon_3dnwb " + __webpack_require__(340).locals["fa"] + " " + __webpack_require__(340).locals["fa-fw"] + " HistogramSelector_legendIcon_2C3V1 " + __webpack_require__(340).locals["fa-bookmark"] + "",
 		"modifiedSaveIcon": "HistogramSelector_modifiedSaveIcon_3ayQz HistogramSelector_noSaveIcon_2fWkG HistogramSelector_jsSaveIcon_1y2mx HistogramSelector_icon_3dnwb " + __webpack_require__(340).locals["fa"] + " " + __webpack_require__(340).locals["fa-fw"] + " HistogramSelector_legendIcon_2C3V1 " + __webpack_require__(340).locals["fa-floppy-o"] + "",
 		"newSaveIcon": "HistogramSelector_newSaveIcon_HxRHq HistogramSelector_noSaveIcon_2fWkG HistogramSelector_jsSaveIcon_1y2mx HistogramSelector_icon_3dnwb " + __webpack_require__(340).locals["fa"] + " " + __webpack_require__(340).locals["fa-fw"] + " HistogramSelector_legendIcon_2C3V1 " + __webpack_require__(340).locals["fa-plus"] + "",
 		"hideSaveIcon": "HistogramSelector_hideSaveIcon_3BhbS HistogramSelector_jsSaveIcon_1y2mx",
@@ -42987,7 +43023,7 @@
 	    } else {
 	      partitionAnnotation = _AnnotationBuilder2.default.annotation(partitionSelection, def.regions, 1, '');
 	    }
-	    partitionAnnotation.readOnly = model.annotationToReadOnly;
+	    _AnnotationBuilder2.default.updateReadOnlyFlag(partitionAnnotation, model.readOnlyFields);
 	    return partitionAnnotation;
 	  }
 
@@ -43123,6 +43159,8 @@
 	          var isSame = model.provider.getStoredAnnotation(annotation.id) ? annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation : false;
 	          if (!isSame) {
 	            model.provider.setStoredAnnotation(annotation.id, annotation);
+	          } else {
+	            model.provider.setAnnotation(annotation);
 	          }
 	          publicAPI.render(d.name);
 	          if (_d3.default.event) _d3.default.event.stopPropagation();
@@ -43145,7 +43183,12 @@
 	      if (def.annotation) {
 	        if (model.provider.getStoredAnnotation(def.annotation.id)) {
 	          var isSame = def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation;
-	          iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', isSame ? _HistogramSelector2.default.unchangedSaveIcon : _HistogramSelector2.default.modifiedSaveIcon);
+	          if (isSame) {
+	            var isActive = def.annotation === model.provider.getAnnotation();
+	            iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', isActive ? _HistogramSelector2.default.unchangedActiveSaveIcon : _HistogramSelector2.default.unchangedSaveIcon);
+	          } else {
+	            iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.modifiedSaveIcon);
+	          }
 	        } else {
 	          iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', _HistogramSelector2.default.newSaveIcon);
 	        }
@@ -43969,6 +44012,24 @@
 	  generation = genNum;
 	}
 
+	function intersect(a, b) {
+	  var result = [];
+	  a.sort();
+	  b.sort();
+
+	  while (a.length && b.length) {
+	    if (a[0] < b[0]) {
+	      a.shift();
+	    } else if (a[0] > b[0]) {
+	      b.shift();
+	    } else {
+	      result.push(a.shift());
+	      b.shift();
+	    }
+	  }
+	  return result;
+	}
+
 	function clone(obj, fieldList, defaults) {
 	  var clonedObj = {};
 	  fieldList.forEach(function (name) {
@@ -44163,20 +44224,43 @@
 	}
 
 	// ----------------------------------------------------------------------------
+
+	function hasField(selection, fieldNames) {
+	  if (!selection || selection.type === 'empty') {
+	    return false;
+	  }
+	  var fieldsToLookup = [].concat(fieldNames);
+
+	  if (selection.type === 'range') {
+	    var fields = Object.keys(selection.range.variables);
+	    var match = intersect(fieldsToLookup, fields);
+	    return match.length > 0;
+	  }
+	  if (selection.type === 'partition') {
+	    return fieldsToLookup.indexOf(selection.partition.variable) !== -1;
+	  }
+
+	  console.log('SelectionBuilder::hasField does not handle selection of type', selection.type);
+
+	  return false;
+	}
+
+	// ----------------------------------------------------------------------------
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
 	var EMPTY_SELECTION = empty();
 
 	exports.default = {
-	  markModified: markModified,
+	  convertToRuleSelection: convertToRuleSelection,
 	  empty: empty,
+	  EMPTY_SELECTION: EMPTY_SELECTION,
+	  hasField: hasField,
+	  markModified: markModified,
 	  partition: partition,
 	  range: range,
 	  rule: rule,
-	  convertToRuleSelection: convertToRuleSelection,
-	  setInitialGenerationNumber: setInitialGenerationNumber,
-	  EMPTY_SELECTION: EMPTY_SELECTION
+	  setInitialGenerationNumber: setInitialGenerationNumber
 	};
 
 /***/ },
@@ -44250,6 +44334,16 @@
 
 	// ----------------------------------------------------------------------------
 
+	function updateReadOnlyFlag(annotationToEdit, readOnlyFields) {
+	  if (!annotationToEdit || !annotationToEdit.selection || !readOnlyFields) {
+	    return;
+	  }
+
+	  annotationToEdit.readOnly = _SelectionBuilder2.default.hasField(annotationToEdit.selection, readOnlyFields);
+	}
+
+	// ----------------------------------------------------------------------------
+
 	function fork(annotationObj) {
 	  var id = (0, _UUID.generateUUID)();
 	  generation++;
@@ -44271,11 +44365,12 @@
 
 	exports.default = {
 	  annotation: annotation,
-	  update: update,
-	  markModified: markModified,
+	  EMPTY_ANNOTATION: EMPTY_ANNOTATION,
 	  fork: fork,
+	  markModified: markModified,
 	  setInitialGenerationNumber: setInitialGenerationNumber,
-	  EMPTY_ANNOTATION: EMPTY_ANNOTATION
+	  update: update,
+	  updateReadOnlyFlag: updateReadOnlyFlag
 	};
 
 /***/ },

@@ -29308,6 +29308,7 @@
 	              weight: model.defaultWeight
 	            });
 	          }
+	          _AnnotationBuilder2.default.updateReadOnlyFlag(lastAnnotationPushed, model.readOnlyFields);
 	          model.provider.setAnnotation(lastAnnotationPushed);
 	        } else {
 	          model.provider.setSelection(selection);
@@ -29927,6 +29928,7 @@
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
 	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
 	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins']);
+	  _CompositeClosureHelper2.default.dynamicArray(publicAPI, model, 'readOnlyFields');
 
 	  informationDiagram(publicAPI, model);
 	}
@@ -40536,6 +40538,41 @@
 	}
 
 	// ----------------------------------------------------------------------------
+	// Dynamic array handler
+	//   - add${xxx}(item)
+	//   - remove${xxx}(item)
+	//   - get${xxx}() => [items...]
+	//   - removeAll${xxx}()
+	// ----------------------------------------------------------------------------
+
+	function dynamicArray(publicAPI, model, name) {
+	  if (!model[name]) {
+	    model[name] = [];
+	  }
+
+	  publicAPI['set' + capitalize(name)] = function (items) {
+	    model[name] = [].concat(items);
+	  };
+
+	  publicAPI['add' + capitalize(name)] = function (item) {
+	    model[name].push(item);
+	  };
+
+	  publicAPI['remove' + capitalize(name)] = function (item) {
+	    var index = model[name].indexOf(item);
+	    model[name].splice(index, 1);
+	  };
+
+	  publicAPI['get' + capitalize(name)] = function () {
+	    return model[name];
+	  };
+
+	  publicAPI['removeAll' + capitalize(name)] = function () {
+	    return model[name] = [];
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
 	// Chain function calls
 	// ----------------------------------------------------------------------------
 
@@ -40681,14 +40718,15 @@
 
 	exports.default = {
 	  chain: chain,
+	  dataSubscriber: dataSubscriber,
 	  destroy: destroy,
+	  dynamicArray: dynamicArray,
 	  event: event,
 	  fetch: fetch,
 	  get: get,
 	  isA: isA,
 	  newInstance: newInstance,
-	  set: set,
-	  dataSubscriber: dataSubscriber
+	  set: set
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(322).setImmediate))
 
@@ -40865,6 +40903,24 @@
 
 	function setInitialGenerationNumber(genNum) {
 	  generation = genNum;
+	}
+
+	function intersect(a, b) {
+	  var result = [];
+	  a.sort();
+	  b.sort();
+
+	  while (a.length && b.length) {
+	    if (a[0] < b[0]) {
+	      a.shift();
+	    } else if (a[0] > b[0]) {
+	      b.shift();
+	    } else {
+	      result.push(a.shift());
+	      b.shift();
+	    }
+	  }
+	  return result;
 	}
 
 	function clone(obj, fieldList, defaults) {
@@ -41061,20 +41117,43 @@
 	}
 
 	// ----------------------------------------------------------------------------
+
+	function hasField(selection, fieldNames) {
+	  if (!selection || selection.type === 'empty') {
+	    return false;
+	  }
+	  var fieldsToLookup = [].concat(fieldNames);
+
+	  if (selection.type === 'range') {
+	    var fields = Object.keys(selection.range.variables);
+	    var match = intersect(fieldsToLookup, fields);
+	    return match.length > 0;
+	  }
+	  if (selection.type === 'partition') {
+	    return fieldsToLookup.indexOf(selection.partition.variable) !== -1;
+	  }
+
+	  console.log('SelectionBuilder::hasField does not handle selection of type', selection.type);
+
+	  return false;
+	}
+
+	// ----------------------------------------------------------------------------
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
 	var EMPTY_SELECTION = empty();
 
 	exports.default = {
-	  markModified: markModified,
+	  convertToRuleSelection: convertToRuleSelection,
 	  empty: empty,
+	  EMPTY_SELECTION: EMPTY_SELECTION,
+	  hasField: hasField,
+	  markModified: markModified,
 	  partition: partition,
 	  range: range,
 	  rule: rule,
-	  convertToRuleSelection: convertToRuleSelection,
-	  setInitialGenerationNumber: setInitialGenerationNumber,
-	  EMPTY_SELECTION: EMPTY_SELECTION
+	  setInitialGenerationNumber: setInitialGenerationNumber
 	};
 
 /***/ },
@@ -41148,6 +41227,16 @@
 
 	// ----------------------------------------------------------------------------
 
+	function updateReadOnlyFlag(annotationToEdit, readOnlyFields) {
+	  if (!annotationToEdit || !annotationToEdit.selection || !readOnlyFields) {
+	    return;
+	  }
+
+	  annotationToEdit.readOnly = _SelectionBuilder2.default.hasField(annotationToEdit.selection, readOnlyFields);
+	}
+
+	// ----------------------------------------------------------------------------
+
 	function fork(annotationObj) {
 	  var id = (0, _UUID.generateUUID)();
 	  generation++;
@@ -41169,11 +41258,12 @@
 
 	exports.default = {
 	  annotation: annotation,
-	  update: update,
-	  markModified: markModified,
+	  EMPTY_ANNOTATION: EMPTY_ANNOTATION,
 	  fork: fork,
+	  markModified: markModified,
 	  setInitialGenerationNumber: setInitialGenerationNumber,
-	  EMPTY_ANNOTATION: EMPTY_ANNOTATION
+	  update: update,
+	  updateReadOnlyFlag: updateReadOnlyFlag
 	};
 
 /***/ },
