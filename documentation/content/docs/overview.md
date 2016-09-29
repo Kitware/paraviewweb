@@ -2,15 +2,15 @@
 
 The release of __ParaViewWeb__ version 2.2+, the JavaScript library, represents a major restructuring of past offerings, while offering enhanced capabilities and loads of new features. Although ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure, it was primarily viewed as a single application, __Visualizer__, which provided a majority of the ParaView Qt application features within a Web user interface (UI). Much of the confusion centered around the fact that developing new ParaViewWeb-based applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes along way in making the development of Web-based application with scientific visualization easier.
 
-To provide a more Web-centric software process, ParaViewWeb has left the [ParaViewWeb][1] repository becoming independent, but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern environment Web developers expect including: continuous integration via Travis CI; linting to capture potential errors and enforce style guidelines, browser-based testing with karma, tape and nightmare; WebPack module bundling; next-generation javascript (ES6, ES7)  transpiling to version ES5; automatic publication on NPM, and a dedicated documentation Web site on [Github.io][2].
+To provide a more Web-centric software process, ParaViewWeb has left the ParaView repository becoming [independent][1], but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern environment Web developers expect including: continuous integration via Travis CI; linting to capture potential errors and enforce style guidelines, browser-based testing with karma, tape and nightmare; WebPack module bundling; next-generation javascript (ES6, ES7) transpiling to ES5; automatic publication on NPM, and a dedicated documentation Web site on [Github.io][2].
 
 ## A modern approach
 
-The all new ParaViewWeb has embraced the next-generation of JavaScript specifications, which allow better code reuse across projects without forcing unnecessary code bloat in a developers application. This reuse without bloat capability allows ParaViewWeb contributors to gather all expertise in the form of components, UI, data handling and algorithms for Web-based scientific visualization within ParaViewWeb, the JavaScript library, without a cost to the end applications leveraging the library. The developer simply extracts the capabilities and features they need, and discard the rest in quickly building their next-generation Web-based application with scientific visualization.
+The all new ParaViewWeb has embraced the next-generation of JavaScript specifications, which allow better code reuse across projects without forcing unnecessary code bloat into the developers application. This capability allows ParaViewWeb contributors to gather all expertise in the form of components, UI, data handling and algorithms for Web-based scientific visualization within ParaViewWeb, the JavaScript library, without any unwanted cost to the end applications leveraging the library. The developer simply extracts the capabilities and features they need, and discard the rest in quickly building their next-generation Web-based application with scientific visualization.
 
 ## Capabilities and Features
 
-ParaViewWeb provides several modules that application developers will find extremely useful for building a modern Web-based application with scientific visualization. 
+ParaViewWeb provides several modules that application developers will find useful for building a modern Web-based application with scientific visualization. 
 
 ### Common: Data Model and Helpers
 
@@ -21,7 +21,7 @@ The data model defines how data and components are associated with each other. I
 
 ### Visualization Components
 
-ParaViewWeb offers a collection of visualization components to illustrate patterns and structure in large data sets. Each component highlights one of the many possible ways of viewing data sets like the one presented in Figure 1. These visualization components can be integrated into a Web-based workbench-like environment that provides new interfaces to support discovery, exploration, filtering and analysis. The visualization components module is a set of interactive tools for exploring and visualizing data that share the same API (setContainer/resize/render/destroy). Currently, these visualization components demonstrate various types of information visualization. ParaViewWeb has a mutual information diagram (depicted in Figure 1). The mutual information of two random variables is a measure of the mutual dependence between the two variables. It implies the knowledge obtained about one random variable via the other random variable. The visualization components also includes:  a field selector, one-dimensional (1D) histograms, and parallel coordinates. Expect to see a Sankey diagram, a specific type of flow diagram in which the width of the arrows is shown proportionally to the flow quantity, as well as other tools for annotating data in the near future.
+ParaViewWeb offers a collection of visualization components to illustrate patterns and structure in large data sets. Each component highlights one of the many possible ways of viewing datasets like the one presented in Figure 1. These visualization components can be integrated into a Web-based workbench-like environment that provides new interfaces to support discovery, exploration, filtering and analysis. The visualization components module is a set of interactive tools for exploring and visualizing data that share the same API (setContainer/resize/render/destroy). Currently, these visualization components demonstrate various types of information visualization. ParaViewWeb has a mutual information diagram (depicted in Figure 1). The mutual information of two random variables is a measure of the mutual dependence between the two variables. It implies the knowledge obtained about one random variable via the other random variable. The visualization components also includes:  a field selector, one-dimensional (1D) histograms, and parallel coordinates. Expect to see a Sankey diagram, a specific type of flow diagram in which the width of the arrows is shown proportionally to the flow quantity, as well as other tools for annotating data in the near future.
 
 ![Figure 2: (a) a collapsable field selector capable of displaying field name, min value, max value and a 1D histogram, (b) 1D/2D Histograms, and (c) parallel coordinates.][VisualizationComponents]
 > Figure 2: (a) a collapsable field selector capable of displaying field name, min value, max value and a 1D histogram, (b) 1D/2D Histograms, and (c) parallel coordinates.
@@ -36,13 +36,13 @@ The IO module of ParaViewWeb aims to provide connectivity to various sources of 
 
 * __Core:__ Core provides several download helpers to deal with pattern-based data querying of various type of data (binary array, image, text, csv, json, etc.).
 * __WebSocket:__ WebSocket provides communication helpers for the VTK and/or ParaView Web backends.
-* __Girder:__ Girder provides data management system helpers, currently Kitware’s Girder, for interacting with a data management system as a backend.
+* __Girder:__ Girder provides a composable network client that simplify the interaction with Kitware’s Girder a data management system as a backend.
 
-ParaViewWeb helpers use only XHR and WebSocket from the new JavaScript specification. 
+ParaViewWeb helpers use only XHR and WebSocket for the Client based JavaScript (Web browsers). 
 
 XHR is the main HTTP client built into browsers. XHR (specifically XHR version 2) is implemented in native (C++) code in the browser and exposed as a JavaScript API. For XHR, ParaViewWeb relies on the standard request to fetch data of any kind, but provides a higher-level API for access (i.e. ```manager.fetchData({ time: 21, field: ‘temperature’ }))```.
 
-WebSockets are a message based protocol on top of TCP, and are supported in most browsers today. ParaViewWeb relies on WebSockets to provide an simple interface with Python-based VTK and /or ParaView servers for producing interactive data, geometry and images.
+WebSockets provides a network connection between the server and the client over HTTP which allow bidirectional communication, and are supported in most browsers today. ParaViewWeb relies on WebSockets to provide an simple interface with Python-based VTK and/or ParaView servers for producing interactive data, geometry and images.
 
 Finally ParaViewWeb provides a client for Kitware’s data management system, __Girder__, to provide a consistent interface to it from within the JavaScript code base.
 
@@ -55,7 +55,7 @@ Finally ParaViewWeb provides a client for Kitware’s data management system, __
 ParaViewWeb provides two forms of UI widgets:
 
 * __Native UI__ - Native UI widgets are composed of various UI pieces with no dependencies, and
-* __React UI__ - React UI widgets are composed of React, from Facebook, pieces.
+* __React UI__ - React UI widgets are composed of React, from the OpenSource projects of Facebook developer team.
 
 ParaViewWeb’s NativeUI and React modules provide the various UI widgets.
 
@@ -66,7 +66,7 @@ The selection editor in Figure 3a, can be used to perform a multiple range, mult
 ### Rendering viewers
 
 The Rendering module gathers both rendering viewers and data processing algorithms used for generating images or other types of data structures. This module may be renamed and restructure in the near future since more data processing algorithms are generated as opposed to actual rendering code.
-ParaViewWeb has image viewers, JavaScript or WebGL image compositing viewers, and WebGL viewers for geometry data structures (see Figure 4). Up to know ParaViewWeb has been using Three.js for handling the 3D scene for WebGL. However, we will begin to migrate away from Three.js and to vtk.js as time permits because vtk.js natively supports dynamic geometry data structures.
+ParaViewWeb has image viewers, JavaScript or WebGL image compositing viewers, and WebGL viewers for geometry data structures (see Figure 4). Up to now ParaViewWeb has been using Three.js for handling the 3D scene for WebGL. However, we will begin to migrate away from Three.js to vtk.js as time permits because vtk.js natively supports dynamic geometry data structures.
 
 ![Figure 4: ParaViewWeb’s example image viewer, JavaScript or WebGL image compositing viewer, and WebGL viewer for geometry.][Viewers]
 > Figure 4: ParaViewWeb’s example image viewer, JavaScript or WebGL image compositing viewer, and WebGL viewer for geometry.
@@ -78,7 +78,7 @@ An example of the data processing algorithms in this module is an algorithm that
 
 ## Conclusion
 
-ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server.
+ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server or even locally with command line based application using your browser.
 
 # ParaViewWeb Applications
 
@@ -95,7 +95,7 @@ In addition to running Visualizer remotely through as a service, ParaViewWeb pro
 
 ## LightViz
 
-The LightViz application aims to provide a simpiler, more intuitive and interactive scientific visualization utility, which could be easily adapted specific data and tasks. Have we succeeded? It probably needs an few iterations between user studies and re-engineering. What it currently does is provide the end-user with about eight simplified modules to ParaView’s most utilized visualization techniques or filters. Modules can be exposed or removed through a ison configuration file, and creating new modules from existing ParaView filters is trivial.
+The LightViz application aims to provide a simpiler, more intuitive and interactive scientific visualization utility, which could be easily adapted to specific data and tasks. Have we succeeded? It probably needs few iterations between user studies and re-engineering. What it currently does is providing the end-user with about eight simplified modules to ParaView’s most utilized visualization techniques or filters. Modules can be exposed or removed through a json configuration file, and creating new modules from existing ParaView filters is trivial.
 
 All the components LightViz requires to build the UI as well as the WebSocket connectivity to the ParaView server is delivered through ParaViewWeb, the JavaScript library. 
 
@@ -106,18 +106,18 @@ In Figure 7 a and b, We illustrate how easy it is to recast the LightViz scienti
 
 ## ArcticViewer
 
-The ArcticViewer scientific visualization application breaks the pattern by not requiring a processing/rendering server like VTK or ParaView. In fact, ArcticView relies on the data being pre-processed to allow it to be directly read by the Web client. In this use case, ParaViewWeb provides the various data handlers, UI widgets, data access, and rendering viewers to drive the the application. 
+The ArcticViewer scientific visualization application breaks the pattern by not requiring a processing/rendering server like VTK or ParaView. In fact, ArcticViewer relies on the data being pre-processed to allow it to be directly read by the Web client. In this use case, ParaViewWeb provides the various data handlers, UI widgets, data access, and rendering algorithms and viewers to drive the application. 
 
 ![Figure 8: ArcticViewer with (a) compositing opaque visualization objects from images, (b) compositing transparent objects from images, and (c) using two rendering passes to expose a magic hole in the compositing of transparent visualization objects from images. ][ArcticViewer]
 > Figure 8: ArcticViewer with (a) compositing opaque visualization objects from images, (b) compositing transparent objects from images, and (c) using two rendering passes to expose a magic hole in the compositing of transparent visualization objects from images. 
 
-Like Visualizer, ArcticViewer can be run for scientific visualization directly from a command line. The various types of data are implicitly understood via a son file, and the appropriate components are instantiated based on the particular type of data. If there isn’t a set of components for a type of data, they can be simply created and added to the ParaViewWeb JavaScript library.
+Like Visualizer, ArcticViewer can be run for scientific visualization directly from a command line. The various types of data are implicitly understood via a json file, and the appropriate components are instantiated based on the particular type of data. If there isn’t a set of components for a type of data, they can be simply created and added to the ParaViewWeb JavaScript library.
 
 ArcticViewer allows the end-user to browse through data products that have been generated in situ or in batch mode to produce interactive scientific visualization. It provides viewing methods for images, composite opaque and transparent visualization objects from images, visualization objects as geometry, and complete 3D volumes.
 
 ## SimPut
 
-SimPut, as opposed to the previous presented applications, does not provide scientific  visualization (it does use some charts). SimPut provides an environment for dynamically generating a UI with various forms of inputs in order to produce a templated output file for a simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build UI widgets. In addition, parts of the SimPut UI are also used inside Visualizer to create the Proxy Editor Panels.
+SimPut, as opposed to the previous presented applications, does not provide scientific visualization (it does use some charts). SimPut provides an environment for dynamically generating a UI with various forms of inputs in order to produce a templated output file for a simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build UI widgets. In addition, parts of the SimPut UI are also used inside Visualizer to create the Proxy Editor Panels.
 
 ![Figure 9: SimPut setting input parameters for the PyFR simulator.][Simput]
 > Figure 9: SimPut setting input parameters for the PyFR simulator.
