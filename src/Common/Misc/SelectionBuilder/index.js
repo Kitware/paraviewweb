@@ -8,6 +8,24 @@ function setInitialGenerationNumber(genNum) {
   generation = genNum;
 }
 
+function intersect(a, b) {
+  const result = [];
+  a.sort();
+  b.sort();
+
+  while (a.length && b.length) {
+    if (a[0] < b[0]) {
+      a.shift();
+    } else if (a[0] > b[0]) {
+      b.shift();
+    } else {
+      result.push(a.shift());
+      b.shift();
+    }
+  }
+  return result;
+}
+
 function clone(obj, fieldList, defaults) {
   const clonedObj = {};
   fieldList.forEach(name => {
@@ -215,18 +233,41 @@ function markModified(selection) {
 }
 
 // ----------------------------------------------------------------------------
+
+function hasField(selection, fieldNames) {
+  if (!selection || selection.type === 'empty') {
+    return false;
+  }
+  const fieldsToLookup = [].concat(fieldNames);
+
+  if (selection.type === 'range') {
+    const fields = Object.keys(selection.range.variables);
+    const match = intersect(fieldsToLookup, fields);
+    return (match.length > 0);
+  }
+  if (selection.type === 'partition') {
+    return (fieldsToLookup.indexOf(selection.partition.variable) !== -1);
+  }
+
+  console.log('SelectionBuilder::hasField does not handle selection of type', selection.type);
+
+  return false;
+}
+
+// ----------------------------------------------------------------------------
 // Exposed object
 // ----------------------------------------------------------------------------
 
 const EMPTY_SELECTION = empty();
 
 export default {
-  markModified,
+  convertToRuleSelection,
   empty,
+  EMPTY_SELECTION,
+  hasField,
+  markModified,
   partition,
   range,
   rule,
-  convertToRuleSelection,
   setInitialGenerationNumber,
-  EMPTY_SELECTION,
 };
