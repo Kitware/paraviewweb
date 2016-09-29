@@ -84,7 +84,7 @@ ParaViewWeb, the JavaScript library, is a Web framework to build applications wi
 
 ParaViewWeb is used in many Kitware, Inc. Web projects.
 
-## Visualizer
+## Visualizer ([git][Visualizer_REPO]/[io][Visualizer_io])
 
 The Visualizer Web application provides a ParaView-like, the Qt application, experience inside the Web browser. The ParaViewWeb library contains all the components needed to build the UI and the data access (I/O) routines to communicate to the ParaView server using WebSocket connectivity. Visualizer is simply connecting all the components together in a meaningful way. 
 
@@ -93,7 +93,7 @@ The Visualizer Web application provides a ParaView-like, the Qt application, exp
 
 In addition to running Visualizer remotely through as a service, ParaViewWeb provides a nice command line interface so that end-user might utilize Visualizer locally with their locally installed version of ParaView.
 
-## LightViz
+## LightViz ([git][LightViz_REPO]/[io][LightViz_io])
 
 The LightViz application aims to provide a simpiler, more intuitive and interactive scientific visualization utility, which could be easily adapted to specific data and tasks. Have we succeeded? It probably needs few iterations between user studies and re-engineering. What it currently does is providing the end-user with about eight simplified modules to ParaView’s most utilized visualization techniques or filters. Modules can be exposed or removed through a json configuration file, and creating new modules from existing ParaView filters is trivial.
 
@@ -104,7 +104,7 @@ All the components LightViz requires to build the UI as well as the WebSocket co
 
 In Figure 7 a and b, We illustrate how easy it is to recast the LightViz scientific visualization application with a new UI courtesy of ParaViewWeb.
 
-## ArcticViewer
+## ArcticViewer ([git][ArcticViewer_REPO]/[io][ArcticViewer_io])
 
 The ArcticViewer scientific visualization application breaks the pattern by not requiring a processing/rendering server like VTK or ParaView. In fact, ArcticViewer relies on the data being pre-processed to allow it to be directly read by the Web client. In this use case, ParaViewWeb provides the various data handlers, UI widgets, data access, and rendering algorithms and viewers to drive the application. 
 
@@ -115,14 +115,14 @@ Like Visualizer, ArcticViewer can be run for scientific visualization directly f
 
 ArcticViewer allows the end-user to browse through data products that have been generated in situ or in batch mode to produce interactive scientific visualization. It provides viewing methods for images, composite opaque and transparent visualization objects from images, visualization objects as geometry, and complete 3D volumes.
 
-## SimPut
+## SimPut ([git][SimPut_REPO]/io)
 
 SimPut, as opposed to the previous presented applications, does not provide scientific visualization (it does use some charts). SimPut provides an environment for dynamically generating a UI with various forms of inputs in order to produce a templated output file for a simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build UI widgets. In addition, parts of the SimPut UI are also used inside Visualizer to create the Proxy Editor Panels.
 
 ![Figure 9: SimPut setting input parameters for the PyFR simulator.][Simput]
 > Figure 9: SimPut setting input parameters for the PyFR simulator.
 
-## HPCCloud
+## HPCCloud ([git][HPCCloud_REPO]/io)
 
 HPCCloud is a web-based simulation environment that utilizes web technologies to deliver an innovative Software as a Service (SaaS) advanced modeling and simulation environment. The platform allows the user to take existing computational code that is designed to run on a high-performance computing (HPC) resource and develop an end-to-end simulation workflow, from input generation right through to post-processing. HPCCloud presents the workflows through a simple, intuitive user interface (UI), which shields the user from much of the complexity that comes with running a simulation code on an HPC resource.
 
@@ -146,6 +146,19 @@ Finally, there is DataViewer that is a work in progress that allows the end-user
 
 [1]: https://github.com/Kitware/paraviewweb
 [2]: http://kitware.github.io/paraviewweb/
+
+[Visualizer_REPO]: https://github.com/kitware/visualizer
+[Visualizer_io]: https://kitware.github.io/visualizer/
+
+[LightViz_REPO]: https://github.com/kitware/light-viz
+[LightViz_io]: https://kitware.github.io/light-viz/
+
+[ArcticViewer_REPO]: https://github.com/kitware/arctic-viewer
+[ArcticViewer_io]: https://kitware.github.io/arctic-viewer/
+
+[HPCCloud_REPO]: https://github.com/kitware/hpccloud
+
+[SimPut_REPO]: https://github.com/kitware/simput
 
 [Prober]: ./overview/ArcticViewer-Prober.jpg
 [ArcticViewer]: ./overview/ArcticViewer.png
