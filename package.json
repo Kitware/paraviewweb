@@ -68,12 +68,13 @@
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
 
-        "bin:pvw-doc"      : "node ./tools/doc-generator/doc-generator-cli.js",
         "bin:fix-autobahn" : "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
 
         "doc"           : "kw-doc -c ./documentation/config.js",
         "doc:www"       : "kw-doc -c ./documentation/config.js -s",
+        "predoc:publish": "./tools/install-data/install-sample-data-cli.js",
         "doc:publish"   : "kw-doc -c ./documentation/config.js -p",
+
 
         "build"         : "npm run bin:fix-autobahn && webpack --progress --colors",
         "build:release" : "npm run bin:fix-autobahn && export NODE_ENV=production && npm run build -- -p",
