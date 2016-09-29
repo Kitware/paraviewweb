@@ -897,6 +897,7 @@ function parallelCoordinate(publicAPI, model) {
             weight: model.defaultWeight,
           });
         }
+        AnnotationBuilder.updateReadOnlyFlag(lastAnnotationPushed, model.readOnlyFields);
         model.provider.setAnnotation(lastAnnotationPushed);
       } else {
         model.provider.setSelection(model.axes.getSelection());
@@ -976,6 +977,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
   CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
   CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
+  CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 
   parallelCoordinate(publicAPI, model);
 }
