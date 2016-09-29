@@ -1,0 +1,40 @@
+{
+    "type": ["tonic-query-data-model"],
+    "arguments": {
+        "phi": {
+        	"ui": "slider",
+        	"values": ["0", "15", "30", "45", "60", "75", "90", "105", "120", "135", "150", "165", "180", "195", "210", "225", "240", "255", "270", "285", "300", "315", "330", "345"],
+            "loop": "modulo",
+            "bind": {
+                "mouse" : {
+                    "drag" : { "modifier": 0, "coordinate": 0, "step": 10, "orientation": 1 }
+                }
+            }
+        },
+        "theta": {
+        	"default": 1,
+        	"ui": "slider",
+        	"values": ["60", "90", "120"],
+            "loop": "reverse",
+            "bind": {
+                "mouse" : {
+                    "scroll" : { "modifier": 0, "coordinate": 1, "step": 0 },
+                    "drag" : { "modifier": 0, "coordinate": 1, "step": 10 , "orientation": 1}
+                }
+            }
+        }
+    },
+    "arguments_order": [ "theta", "phi" ],
+    "data": [
+        {
+            "name": "image",
+            "type": "blob",
+            "mimeType": "image/jpg",
+            "pattern": "{theta}_{phi}.jpg"
+        }
+    ],
+    "metadata": {
+    	"title": "Earth iso-contours",
+        "description": "Show the computational mesh with temperature and salinity iso-lines for the 40 layers and 120 time steps."
+    }
+}

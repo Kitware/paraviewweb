@@ -1,0 +1,167 @@
+{
+  "CompositePipeline": {
+    "default_pipeline": "ACBACADAEAFAG_H_I_J_K_",
+    "layers": [ "A", "B", "C", "D", "E", "F" ],
+    "dimensions": [ 500, 500 ],
+    "fields": {
+      "A": "Temp",
+      "B": "nX",
+      "C": "nY",
+      "D": "nZ",
+      "E": "Velocity",
+      "F": "Pres"
+    },
+    "layer_fields": {
+      "A": [ "E", "F", "A" ],
+      "C": [ "E", "F", "A" ],
+      "B": [ "E", "F", "A" ],
+      "E": [ "E", "F", "A" ],
+      "D": [ "E", "F", "A" ],
+      "F": [ "E", "F", "A" ]
+    },
+    "offset": {
+      "BD": 12,
+      "BE": 7,
+      "BF": 8,
+      "BA": 9,
+      "BB": 10,
+      "BC": 11,
+      "DF": 20,
+      "DD": 24,
+      "DE": 19,
+      "DB": 22,
+      "DC": 23,
+      "DA": 21,
+      "FA": 33,
+      "FB": 34,
+      "FC": 35,
+      "FD": 36,
+      "FE": 31,
+      "FF": 32,
+      "EE": 25,
+      "ED": 30,
+      "AA": 3,
+      "AC": 5,
+      "AB": 4,
+      "AE": 1,
+      "AD": 6,
+      "AF": 2,
+      "CC": 17,
+      "CB": 16,
+      "CA": 15,
+      "EF": 26,
+      "EA": 27,
+      "CF": 14,
+      "CE": 13,
+      "CD": 18,
+      "EC": 29,
+      "EB": 28
+    },
+    "color_by_dependencies": {
+      "A": {
+        "normal": [ "B", "C", "D" ]
+      },
+      "E": {
+        "normal": [ "B", "C", "D" ]
+      },
+      "F": {
+        "normal": [ "B", "C", "D" ]
+      }
+    },
+    "ranges": {
+      "Temp": [
+        293.1499938964844,
+        913.1500244140625
+      ],
+      "Velocity": [
+        0.0,
+        22.418820167105352
+      ],
+      "Pres": [
+        0.006785521749407053,
+        0.028818512335419655
+      ]
+    },
+    "pipeline": [
+      {
+        "children": [
+          {
+            "type": "layer",
+            "name": "iso=300.0",
+            "ids": [
+              "A"
+            ]
+          },
+          {
+            "type": "layer",
+            "name": "iso=600.0",
+            "ids": [
+              "B"
+            ]
+          },
+          {
+            "type": "layer",
+            "name": "iso=900.0",
+            "ids": [
+              "C"
+            ]
+          }
+        ],
+        "type": "directory",
+        "name": "Contour by temperature",
+        "ids": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      {
+        "type": "layer",
+        "name": "Stream Tubes",
+        "ids": [
+          "D"
+        ]
+      },
+      {
+        "type": "layer",
+        "name": "Clip One",
+        "ids": [
+          "E"
+        ]
+      },
+      {
+        "type": "layer",
+        "name": "Clip Two",
+        "ids": [
+          "F"
+        ]
+      }
+    ]
+  },
+  "type": [
+    "tonic-query-data-model",
+    "webgl-composite",
+    "sxyz-light"
+  ],
+  "arguments_order": [],
+  "arguments": {
+    "theta": {
+      "values": [ "90.0" ]
+    },
+    "phi": {
+      "values": [ "0.0" ]
+    }
+  },
+  "data": [
+    {
+      "name": "sxyzSprite",
+      "type": "blob",
+      "mimeType": "image/png",
+      "pattern": "rgbd.png"
+    }
+  ],
+  "metadata": {
+    "description": "contour set",
+    "title": "3D composite"
+  }
+}

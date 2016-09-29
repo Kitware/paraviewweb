@@ -1,0 +1,337 @@
+{
+    "CompositePipeline": {
+        "default_pipeline": "AAB_C_DAE_F_GAH_I_JA",
+        "dimensions": [
+            500,
+            500
+        ],
+        "fields": {
+            "A": "RTData"
+        },
+        "layer_fields": {
+            "A": [
+                "A"
+            ],
+            "B": [
+                "A"
+            ],
+            "C": [
+                "A"
+            ],
+            "D": [
+                "A"
+            ],
+            "E": [
+                "A"
+            ],
+            "F": [
+                "A"
+            ],
+            "G": [
+                "A"
+            ],
+            "H": [
+                "A"
+            ],
+            "I": [
+                "A"
+            ],
+            "J": [
+                "A"
+            ]
+        },
+        "layers": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J"
+        ],
+        "pipeline": [
+            {
+                "children": [
+                    {
+                        "ids": [
+                            "A"
+                        ],
+                        "name": "volume_1"
+                    },
+                    {
+                        "ids": [
+                            "B"
+                        ],
+                        "name": "volume_2"
+                    },
+                    {
+                        "ids": [
+                            "C"
+                        ],
+                        "name": "volume_3"
+                    },
+                    {
+                        "ids": [
+                            "D"
+                        ],
+                        "name": "volume_4"
+                    },
+                    {
+                        "ids": [
+                            "E"
+                        ],
+                        "name": "volume_5"
+                    },
+                    {
+                        "ids": [
+                            "F"
+                        ],
+                        "name": "volume_6"
+                    },
+                    {
+                        "ids": [
+                            "G"
+                        ],
+                        "name": "volume_7"
+                    },
+                    {
+                        "ids": [
+                            "H"
+                        ],
+                        "name": "volume_8"
+                    },
+                    {
+                        "ids": [
+                            "I"
+                        ],
+                        "name": "volume_9"
+                    },
+                    {
+                        "ids": [
+                            "J"
+                        ],
+                        "name": "volume_10"
+                    }
+                ],
+                "ids": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I",
+                    "J"
+                ],
+                "name": "Volumes"
+            }
+        ]
+    },
+    "arguments": {},
+    "arguments_order": [],
+    "data": [
+        {
+            "categories": [
+                "AA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "AA_rgb",
+            "pattern": "AA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "E"
+            ],
+            "metadata": {},
+            "name": "E_depth",
+            "pattern": "E_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "HA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "HA_rgb",
+            "pattern": "HA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "A"
+            ],
+            "metadata": {},
+            "name": "A_depth",
+            "pattern": "A_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "GA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "GA_rgb",
+            "pattern": "GA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "IA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "IA_rgb",
+            "pattern": "IA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "H"
+            ],
+            "metadata": {},
+            "name": "H_depth",
+            "pattern": "H_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "B"
+            ],
+            "metadata": {},
+            "name": "B_depth",
+            "pattern": "B_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "I"
+            ],
+            "metadata": {},
+            "name": "I_depth",
+            "pattern": "I_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "BA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "BA_rgb",
+            "pattern": "BA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "C"
+            ],
+            "metadata": {},
+            "name": "C_depth",
+            "pattern": "C_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "FA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "FA_rgb",
+            "pattern": "FA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "CA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "CA_rgb",
+            "pattern": "CA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "J"
+            ],
+            "metadata": {},
+            "name": "J_depth",
+            "pattern": "J_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "JA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "JA_rgb",
+            "pattern": "JA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "F"
+            ],
+            "metadata": {},
+            "name": "F_depth",
+            "pattern": "F_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "EA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "EA_rgb",
+            "pattern": "EA_rgb.png",
+            "type": "blob"
+        },
+        {
+            "categories": [
+                "G"
+            ],
+            "metadata": {},
+            "name": "G_depth",
+            "pattern": "G_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "D"
+            ],
+            "metadata": {},
+            "name": "D_depth",
+            "pattern": "D_depth.uint8",
+            "type": "array"
+        },
+        {
+            "categories": [
+                "DA"
+            ],
+            "metadata": {},
+            "mimeType": "image/png",
+            "name": "DA_rgb",
+            "pattern": "DA_rgb.png",
+            "type": "blob"
+        }
+    ],
+    "metadata": {
+        "backgroundColor": "rgb(127, 127, 153)"
+    },
+    "type": [
+        "tonic-query-data-model",
+        "volume-composite",
+        "rgba+depth"
+    ]
+}

@@ -1,0 +1,146 @@
+{
+    "CompositePipeline": {
+        "layers": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+        "dimensions": [ 1000, 1000 ],
+        "fields": {
+            "A": "salinity",
+            "B": "temperature",
+            "C": "bottomDepth"
+        },
+        "layer_fields": {
+            "A": [ "C" ],
+            "B": [ "B", "A" ],
+            "C": [ "B", "A" ],
+            "D": [ "B", "A" ],
+            "E": [ "B", "A" ],
+            "F": [ "B", "A" ],
+            "G": [ "B", "A" ],
+            "H": [ "B", "A" ],
+            "I": [ "B", "A" ],
+            "J": [ "B", "A" ],
+            "K": [ "B", "A" ]
+        },
+        "offset": {
+            "AC": 1,
+            "BA": 3,
+            "BB": 2,
+            "CA": 5,
+            "CB": 4,
+            "DA": 7,
+            "DB": 6,
+            "EA": 9,
+            "EB": 8,
+            "FA": 11,
+            "FB": 10,
+            "GA": 13,
+            "GB": 12,
+            "HA": 15,
+            "HB": 14,
+            "IA": 17,
+            "IB": 16,
+            "JA": 19,
+            "JB": 18,
+            "KA": 21,
+            "KB": 20
+        },
+        "pipeline": [
+            {
+                "ids": [ "A" ],
+                "name": "Earth core",
+                "type": "layer"
+            },
+            {
+                "children": [
+                    {
+                        "ids": [ "B" ],
+                        "name": "t=5.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "C" ],
+                        "name": "t=10.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "D" ],
+                        "name": "t=15.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "E" ],
+                        "name": "t=20.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "F" ],
+                        "name": "t=25.0",
+                        "type": "layer"
+                    }
+                ],
+                "ids": [ "B", "C", "D", "E", "F" ],
+                "name": "Contour by temperature",
+                "type": "directory"
+            },
+            {
+                "children": [
+                    {
+                        "ids": [ "G" ],
+                        "name": "s=34.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "H" ],
+                        "name": "s=35.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "I" ],
+                        "name": "s=35.5",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "J" ],
+                        "name": "s=36.0",
+                        "type": "layer"
+                    },
+                    {
+                        "ids": [ "K" ],
+                        "name": "s=36.5",
+                        "type": "layer"
+                    }
+                ],
+                "ids": [ "G", "H", "I", "J", "K" ],
+                "name": "Contour by salinity",
+                "type": "directory"
+            }
+        ]
+    },
+    "type": [
+        "tonic-query-data-model",
+        "composite-pipeline"
+    ],
+    "arguments_order": [],
+    "arguments": {},
+    "data": [
+        {
+            "name": "sprite",
+            "type": "blob",
+            "mimeType": "image/jpg",
+            "pattern": "rgb.jpg"
+        },{
+            "name": "composite",
+            "type": "json",
+            "pattern": "composite.json"
+        }
+    ],
+    "metadata": {
+        "title": "Ocean simulation data",
+        "description": "Some simulation data from MPAS",
+        "cost": {
+            "image-width": 500,
+            "images": 1386,
+            "space": 2971263922,
+            "time": 13566.501937627792
+        }
+    }
+}

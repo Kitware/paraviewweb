@@ -1,0 +1,243 @@
+{
+    "FloatImage": {
+        "dimensions": [
+            400,
+            400
+        ],
+        "layers": [
+            {
+                "active": true,
+                "array": "RTData",
+                "arrays": [
+                    "RTData",
+                    "x"
+                ],
+                "hasMesh": false,
+                "name": "core 1",
+                "type": "Float32Array"
+            },
+            {
+                "active": true,
+                "array": "RTData",
+                "arrays": [
+                    "RTData",
+                    "x"
+                ],
+                "hasMesh": true,
+                "name": "core 2",
+                "type": "Float32Array"
+            },
+            {
+                "active": true,
+                "array": "RTData",
+                "arrays": [
+                    "RTData",
+                    "x"
+                ],
+                "hasMesh": true,
+                "name": "core 3",
+                "type": "Float32Array"
+            },
+            {
+                "active": true,
+                "array": "RTData",
+                "arrays": [
+                    "RTData",
+                    "x"
+                ],
+                "hasMesh": true,
+                "name": "core 4",
+                "type": "Float32Array"
+            },
+            {
+                "active": true,
+                "array": "RTData",
+                "arrays": [
+                    "RTData",
+                    "x"
+                ],
+                "hasMesh": true,
+                "name": "core 5",
+                "type": "Float32Array"
+            }
+        ],
+        "ranges": {
+            "RTData": [
+                77.260002136230469,
+                236.91999816894531
+            ],
+            "x": [
+                -10.000000000000002,
+                10.0
+            ]
+        }
+    },
+    "arguments": {
+        "phi": {
+            "bind": {
+                "mouse": {
+                    "drag": {
+                        "coordinate": 0,
+                        "modifier": 0,
+                        "orientation": 1,
+                        "step": 30
+                    }
+                }
+            },
+            "name": "phi",
+            "ui": "slider",
+            "values": [
+                "-10",
+                "0",
+                "10"
+            ]
+        },
+        "theta": {
+            "bind": {
+                "mouse": {
+                    "drag": {
+                        "coordinate": 1,
+                        "modifier": 0,
+                        "orientation": 1,
+                        "step": 30
+                    }
+                }
+            },
+            "default": 1,
+            "name": "theta",
+            "ui": "slider",
+            "values": [
+                "80",
+                "90",
+                "100"
+            ]
+        }
+    },
+    "arguments_order": [
+        "phi",
+        "theta"
+    ],
+    "data": [
+        {
+            "metadata": {},
+            "name": "core 5__mesh",
+            "pattern": "{theta}_{phi}/core 5__mesh.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 4_RTData",
+            "pattern": "{theta}_{phi}/core 4_RTData.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 5_RTData",
+            "pattern": "{theta}_{phi}/core 5_RTData.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 2__mesh",
+            "pattern": "{theta}_{phi}/core 2__mesh.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 3__light",
+            "pattern": "{theta}_{phi}/core 3__light.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 1_RTData",
+            "pattern": "{theta}_{phi}/core 1_RTData.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 4__mesh",
+            "pattern": "{theta}_{phi}/core 4__mesh.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 2__light",
+            "pattern": "{theta}_{phi}/core 2__light.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 3__mesh",
+            "pattern": "{theta}_{phi}/core 3__mesh.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 4_x",
+            "pattern": "{theta}_{phi}/core 4_x.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 2_RTData",
+            "pattern": "{theta}_{phi}/core 2_RTData.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 1_x",
+            "pattern": "{theta}_{phi}/core 1_x.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 5_x",
+            "pattern": "{theta}_{phi}/core 5_x.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 2_x",
+            "pattern": "{theta}_{phi}/core 2_x.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 1__light",
+            "pattern": "{theta}_{phi}/core 1__light.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 5__light",
+            "pattern": "{theta}_{phi}/core 5__light.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 4__light",
+            "pattern": "{theta}_{phi}/core 4__light.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 3_RTData",
+            "pattern": "{theta}_{phi}/core 3_RTData.array",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "core 3_x",
+            "pattern": "{theta}_{phi}/core 3_x.array",
+            "type": "array"
+        }
+    ],
+    "metadata": {
+        "backgroundColor": "rgb(0, 0, 0)"
+    },
+    "type": [
+        "tonic-query-data-model",
+        "float-image"
+    ]
+}

@@ -1,0 +1,60 @@
+{
+    "SortedComposite": {
+        "dimensions": [
+            500,
+            500
+        ],
+        "layers": 5,
+        "scalars": [
+            409.5,
+            1228.5,
+            2047.5,
+            2866.5,
+            3685.5
+        ],
+        "textures": {
+            "alpha": {
+                "size": 1119
+            },
+            "intensity": {
+                "size": 1119
+            },
+            "order": {
+                "size": 1119
+            }
+        }
+    },
+    "arguments": {},
+    "arguments_order": [],
+    "data": [
+        {
+            "categories": [
+                "intensity"
+            ],
+            "metadata": {},
+            "name": "intensity",
+            "pattern": "{theta}_{phi}/intensity.uint8",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "alpha",
+            "pattern": "{theta}_{phi}/alpha.uint8",
+            "type": "array"
+        },
+        {
+            "metadata": {},
+            "name": "order",
+            "pattern": "{theta}_{phi}/order.uint8",
+            "type": "array"
+        }
+    ],
+    "metadata": {
+        "backgroundColor": "rgb(0, 0, 0)"
+    },
+    "type": [
+        "tonic-query-data-model",
+        "sorted-composite",
+        "alpha"
+    ]
+}
