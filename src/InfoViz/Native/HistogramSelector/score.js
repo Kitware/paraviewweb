@@ -96,7 +96,7 @@ export default function init(inPublicAPI, inModel) {
     } else {
       partitionAnnotation = AnnotationBuilder.annotation(partitionSelection, def.regions, 1, '');
     }
-    partitionAnnotation.readOnly = model.annotationToReadOnly;
+    AnnotationBuilder.updateReadOnlyFlag(partitionAnnotation, model.readOnlyFields);
     return partitionAnnotation;
   }
 

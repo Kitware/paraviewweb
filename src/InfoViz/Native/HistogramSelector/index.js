@@ -883,8 +883,6 @@ const DEFAULT_VALUES = {
   selectedDef: null,
 
   numberOfBins: 32,
-
-  annotationToReadOnly: false,
 };
 
 // ----------------------------------------------------------------------------
@@ -894,8 +892,9 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins', 'annotationToReadOnly']);
-  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins', 'annotationToReadOnly']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+  CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
+  CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 
   histogramSelector(publicAPI, model);
 }
