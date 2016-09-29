@@ -479,11 +479,7 @@ function parallelCoordinate(publicAPI, model) {
   }
 
   publicAPI.render = () => {
-    if (!model.allBgHistogram2dData) {
-      return;
-    }
-
-    if (!model.axes.canRender() || !model.container || model.containerHidden === true) {
+    if (!model.allBgHistogram2dData || !model.axes.canRender() || !model.container || model.containerHidden === true) {
       d3.select(model.container).select('svg.parallel-coords-overlay').classed(style.hidden, true);
       d3.select(model.container).select('canvas').classed(style.hidden, true);
       d3.select(model.container).select('div.parallel-coords-placeholder').classed(style.hidden, false);
