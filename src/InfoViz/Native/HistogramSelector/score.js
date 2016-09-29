@@ -53,11 +53,6 @@ export default function init(inPublicAPI, inModel) {
     };
   }
 
-  // add implicit bounds for the histogram min/max to dividers list
-  function getRegionBounds(dividers, hobj) {
-    return [hobj.min].concat(dividers.map((div) => (div.value)), hobj.max);
-  }
-
   function getHistRange(def) {
     let minRange = def.range[0];
     let maxRange = def.range[1];
@@ -68,6 +63,12 @@ export default function init(inPublicAPI, inModel) {
     if (minRange === maxRange) maxRange += 1;
     return [minRange, maxRange];
   }
+  // add implicit bounds for the histogram min/max to dividers list
+  function getRegionBounds(def) {
+    const [minRange, maxRange] = getHistRange(def);
+    return [minRange].concat(def.dividers.map((div) => (div.value)), maxRange);
+  }
+
   function getUncertScale(def) {
     // handle a zero range (like from the cumulative score histogram)
     // const [minRange, maxRange] = getHistRange(def);
@@ -1004,7 +1005,7 @@ export default function init(inPublicAPI, inModel) {
 
     // score regions
     // there are implicit bounds at the min and max.
-    const regionBounds = getRegionBounds(def.dividers, hobj);
+    const regionBounds = getRegionBounds(def);
     const scoreRegions = gScore.selectAll(`.${style.jsScoreRect}`)
       .data(def.regions);
     // duplicate background regions are opaque, for a solid bright color.
