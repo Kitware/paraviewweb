@@ -174,6 +174,37 @@ function fetch(publicAPI, model, name) {
 }
 
 // ----------------------------------------------------------------------------
+// Dynamic array handler
+//   - add${xxx}(item)
+//   - remove${xxx}(item)
+//   - get${xxx}() => [items...]
+//   - removeAll${xxx}()
+// ----------------------------------------------------------------------------
+
+function dynamicArray(publicAPI, model, name) {
+  if (!model[name]) {
+    model[name] = [];
+  }
+
+  publicAPI[`set${capitalize(name)}`] = items => {
+    model[name] = [].concat(items);
+  };
+
+  publicAPI[`add${capitalize(name)}`] = item => {
+    model[name].push(item);
+  };
+
+  publicAPI[`remove${capitalize(name)}`] = item => {
+    const index = model[name].indexOf(item);
+    model[name].splice(index, 1);
+  };
+
+  publicAPI[`get${capitalize(name)}`] = () => model[name];
+
+  publicAPI[`removeAll${capitalize(name)}`] = () => (model[name] = []);
+}
+
+// ----------------------------------------------------------------------------
 // Chain function calls
 // ----------------------------------------------------------------------------
 
@@ -298,12 +329,13 @@ function newInstance(extend) {
 
 export default {
   chain,
+  dataSubscriber,
   destroy,
+  dynamicArray,
   event,
   fetch,
   get,
   isA,
   newInstance,
   set,
-  dataSubscriber,
 };
