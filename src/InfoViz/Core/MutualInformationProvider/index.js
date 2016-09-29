@@ -52,7 +52,6 @@ function mutualInformationProvider(publicAPI, model) {
         }
       });
 
-      // FIXME add var mtime check and update deltaHandling.modified
       PMI.updateMutualInformation(
         mutualInformationData,
         [].concat(deltaHandling.added, deltaHandling.modified),

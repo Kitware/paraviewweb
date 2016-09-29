@@ -179,7 +179,7 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
         miData.joint[t0nam] = {};
         miData.joint[t0nam][t1nam] = {};
       } else if (!(t1nam in miData.joint[t0nam])) {
-        miData.joint[t1nam] = {};
+        miData.joint[t0nam][t1nam] = {};
       }
       miData.joint[t0nam][t1nam] = minfo.joint;
       // miData.joint[t1nam][t0nam] = transposed(minfo.pmi);
