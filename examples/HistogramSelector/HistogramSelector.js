@@ -42976,13 +42976,6 @@
 	    };
 	  }
 
-	  // add implicit bounds for the histogram min/max to dividers list
-	  function getRegionBounds(dividers, hobj) {
-	    return [hobj.min].concat(dividers.map(function (div) {
-	      return div.value;
-	    }), hobj.max);
-	  }
-
 	  function getHistRange(def) {
 	    var minRange = def.range[0];
 	    var maxRange = def.range[1];
@@ -42993,6 +42986,20 @@
 	    if (minRange === maxRange) maxRange += 1;
 	    return [minRange, maxRange];
 	  }
+	  // add implicit bounds for the histogram min/max to dividers list
+	  function getRegionBounds(def) {
+	    var _getHistRange = getHistRange(def);
+
+	    var _getHistRange2 = _slicedToArray(_getHistRange, 2);
+
+	    var minRange = _getHistRange2[0];
+	    var maxRange = _getHistRange2[1];
+
+	    return [minRange].concat(def.dividers.map(function (div) {
+	      return div.value;
+	    }), maxRange);
+	  }
+
 	  function getUncertScale(def) {
 	    // handle a zero range (like from the cumulative score histogram)
 	    // const [minRange, maxRange] = getHistRange(def);
@@ -43109,12 +43116,12 @@
 	    var def = model.fieldData[fieldName];
 	    if (def) {
 	      // create a divider halfway through.
-	      var _getHistRange = getHistRange(def);
+	      var _getHistRange3 = getHistRange(def);
 
-	      var _getHistRange2 = _slicedToArray(_getHistRange, 2);
+	      var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
 
-	      var minRange = _getHistRange2[0];
-	      var maxRange = _getHistRange2[1];
+	      var minRange = _getHistRange4[0];
+	      var maxRange = _getHistRange4[1];
 
 	      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
 	      // set regions to 'no' | 'yes'
@@ -43258,12 +43265,12 @@
 	  function clampDividerUncertainty(val, def, hitIndex, currentUncertainty) {
 	    if (hitIndex < 0) return currentUncertainty;
 
-	    var _getHistRange3 = getHistRange(def);
+	    var _getHistRange5 = getHistRange(def);
 
-	    var _getHistRange4 = _slicedToArray(_getHistRange3, 2);
+	    var _getHistRange6 = _slicedToArray(_getHistRange5, 2);
 
-	    var minRange = _getHistRange4[0];
-	    var maxRange = _getHistRange4[1];
+	    var minRange = _getHistRange6[0];
+	    var maxRange = _getHistRange6[1];
 
 	    var maxUncertainty = 0.5 * (maxRange - minRange);
 	    var uncertScale = getUncertScale(def);
@@ -43504,12 +43511,12 @@
 	      var uncert = _d3.default.event.target.value;
 	      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
 	        // uncertainty is a % between 0 and 0.5
-	        var _getHistRange5 = getHistRange(selectedDef);
+	        var _getHistRange7 = getHistRange(selectedDef);
 
-	        var _getHistRange6 = _slicedToArray(_getHistRange5, 2);
+	        var _getHistRange8 = _slicedToArray(_getHistRange7, 2);
 
-	        var minRange = _getHistRange6[0];
-	        var maxRange = _getHistRange6[1];
+	        var minRange = _getHistRange8[0];
+	        var maxRange = _getHistRange8[1];
 
 	        uncert = Math.min(0.5 * (maxRange - minRange), Math.max(0, uncert / uncertDispScale));
 	        _d3.default.event.target.value = formatter(uncertDispScale * uncert);
@@ -43826,7 +43833,7 @@
 
 	    // score regions
 	    // there are implicit bounds at the min and max.
-	    var regionBounds = getRegionBounds(def.dividers, hobj);
+	    var regionBounds = getRegionBounds(def);
 	    var scoreRegions = gScore.selectAll('.' + _HistogramSelector2.default.jsScoreRect).data(def.regions);
 	    // duplicate background regions are opaque, for a solid bright color.
 	    var scoreBgRegions = svgGr.select('.' + _HistogramSelector2.default.jsScoreBackground).selectAll('rect').data(def.regions);
