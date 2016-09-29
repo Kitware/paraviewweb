@@ -230,6 +230,8 @@ export default function init(inPublicAPI, inModel) {
                 : false;
               if (!isSame) {
                 model.provider.setStoredAnnotation(annotation.id, annotation);
+              } else {
+                model.provider.setAnnotation(annotation);
               }
               publicAPI.render(d.name);
               if (d3.event) d3.event.stopPropagation();
@@ -255,8 +257,14 @@ export default function init(inPublicAPI, inModel) {
       if (def.annotation) {
         if (model.provider.getStoredAnnotation(def.annotation.id)) {
           const isSame = (def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation);
-          iconCell.select(`.${style.jsSaveIcon}`)
-            .attr('class', isSame ? style.unchangedSaveIcon : style.modifiedSaveIcon);
+          if (isSame) {
+            const isActive = (def.annotation === model.provider.getAnnotation());
+            iconCell.select(`.${style.jsSaveIcon}`)
+              .attr('class', isActive ? style.unchangedActiveSaveIcon : style.unchangedSaveIcon);
+          } else {
+            iconCell.select(`.${style.jsSaveIcon}`)
+              .attr('class', style.modifiedSaveIcon);
+          }
         } else {
           iconCell.select(`.${style.jsSaveIcon}`)
             .attr('class', style.newSaveIcon);
