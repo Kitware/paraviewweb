@@ -306,6 +306,7 @@ function informationDiagram(publicAPI, model) {
               weight: model.defaultWeight,
             });
           }
+          AnnotationBuilder.updateReadOnlyFlag(lastAnnotationPushed, model.readOnlyFields);
           model.provider.setAnnotation(lastAnnotationPushed);
         } else {
           model.provider.setSelection(selection);
@@ -1016,6 +1017,7 @@ export function extend(publicAPI, model, initialValues = {}) {
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
   CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
   CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
+  CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 
   informationDiagram(publicAPI, model);
 }
