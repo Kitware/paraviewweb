@@ -420,6 +420,9 @@ function parallelCoordinate(publicAPI, model) {
   }
 
   function drawPolygons(axesCenters, gCtx, idxOne, idxTwo, histogram, colors) {
+    if (!histogram) {
+      return;
+    }
     const axisOne = model.axes.getAxis(idxOne);
     const axisTwo = model.axes.getAxis(idxTwo);
     const xleft = axesCenters[idxOne];
@@ -533,7 +536,7 @@ function parallelCoordinate(publicAPI, model) {
       for (let j = 0; j < nbPolyDraw; ++j) {
         const axisOne = model.axes.getAxis(j);
         const axisTwo = model.axes.getAxis(j + 1);
-        const histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
+        const histo2D = model.allBgHistogram2dData[axisOne.name] ? model.allBgHistogram2dData[axisOne.name][axisTwo.name] : null;
         drawPolygons(
           axesCenters,
           model.bgCtx,
