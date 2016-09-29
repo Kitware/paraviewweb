@@ -29356,6 +29356,9 @@
 	  }
 
 	  function drawPolygons(axesCenters, gCtx, idxOne, idxTwo, histogram, colors) {
+	    if (!histogram) {
+	      return;
+	    }
 	    var axisOne = model.axes.getAxis(idxOne);
 	    var axisTwo = model.axes.getAxis(idxTwo);
 	    var xleft = axesCenters[idxOne];
@@ -29415,11 +29418,7 @@
 	  }
 
 	  publicAPI.render = function () {
-	    if (!model.allBgHistogram2dData) {
-	      return;
-	    }
-
-	    if (!model.axes.canRender() || !model.container || model.containerHidden === true) {
+	    if (!model.allBgHistogram2dData || !model.axes.canRender() || !model.container || model.containerHidden === true) {
 	      _d2.default.select(model.container).select('svg.parallel-coords-overlay').classed(_ParallelCoordinates2.default.hidden, true);
 	      _d2.default.select(model.container).select('canvas').classed(_ParallelCoordinates2.default.hidden, true);
 	      _d2.default.select(model.container).select('div.parallel-coords-placeholder').classed(_ParallelCoordinates2.default.hidden, false);
@@ -29469,7 +29468,7 @@
 	      for (var j = 0; j < nbPolyDraw; ++j) {
 	        var axisOne = model.axes.getAxis(j);
 	        var axisTwo = model.axes.getAxis(j + 1);
-	        var histo2D = model.allBgHistogram2dData[axisOne.name][axisTwo.name];
+	        var histo2D = model.allBgHistogram2dData[axisOne.name] ? model.allBgHistogram2dData[axisOne.name][axisTwo.name] : null;
 	        drawPolygons(axesCenters, model.bgCtx, j, j + 1, histo2D, model.polygonColors);
 	      }
 
@@ -43500,6 +43499,12 @@
 	  return pairList;
 	}
 
+	function unique(list) {
+	  return list.sort().filter(function (item, index, array) {
+	    return !index || item !== array[index - 1];
+	  });
+	}
+
 	// ----------------------------------------------------------------------------
 	// Mutual Information Provider
 	// ----------------------------------------------------------------------------
@@ -43508,7 +43513,14 @@
 	  var hasData = false;
 	  var onMutualInformationReady = publicAPI.onMutualInformationReady;
 	  var mutualInformationData = _pmi2.default.initializeMutualInformationData();
-	  var deltaHandling = { added: [], removed: [], modified: [], previousMTime: {}, currentMTime: {} };
+	  var deltaHandling = {
+	    added: [],
+	    removed: [],
+	    modified: [],
+	    previousMTime: {},
+	    currentMTime: {},
+	    processed: true
+	  };
 
 	  function updateHistogram2D(histograms) {
 	    if (Object.keys(histograms).length > 1) {
@@ -43534,12 +43546,18 @@
 	          }
 	        });
 
-	        // FIXME add var mtime check and update deltaHandling.modified
-	        _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
+	        // Check mutualInformationParameterNames are consitent with the current set of data
+	        // if not just for the next notification...
+	        try {
+	          _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
 
-	        // Push the new mutual info
-	        hasData = true;
-	        publicAPI.fireMutualInformationReady(mutualInformationData);
+	          // Push the new mutual info
+	          deltaHandling.processed = true;
+	          hasData = true;
+	          publicAPI.fireMutualInformationReady(mutualInformationData);
+	        } catch (e) {
+	          console.log('PMI error', e);
+	        }
 	      })();
 	    }
 	  }
@@ -43562,14 +43580,30 @@
 	  };
 
 	  publicAPI.setMutualInformationParameterNames = function (names) {
-	    deltaHandling.added = names.filter(function (name) {
-	      return model.mutualInformationParameterNames.indexOf(name) === -1;
-	    });
-	    deltaHandling.removed = model.mutualInformationParameterNames.filter(function (name) {
-	      return names.indexOf(name) === -1;
-	    });
+	    if (deltaHandling.processed) {
+	      deltaHandling.added = names.filter(function (name) {
+	        return model.mutualInformationParameterNames.indexOf(name) === -1;
+	      });
+	      deltaHandling.removed = model.mutualInformationParameterNames.filter(function (name) {
+	        return names.indexOf(name) === -1;
+	      });
+	    } else {
+	      // We need to add to it
+	      deltaHandling.added = [].concat(deltaHandling.added, names.filter(function (name) {
+	        return model.mutualInformationParameterNames.indexOf(name) === -1;
+	      }));
+	      deltaHandling.removed = [].concat(deltaHandling.removed, model.mutualInformationParameterNames.filter(function (name) {
+	        return names.indexOf(name) === -1;
+	      }));
+	    }
 
+	    // Ensure uniqueness
+	    deltaHandling.added = unique(deltaHandling.added);
+	    deltaHandling.removed = unique(deltaHandling.removed);
+
+	    deltaHandling.processed = false;
 	    model.mutualInformationParameterNames = [].concat(names);
+
 	    if (model.histogram2dProviderSubscription) {
 	      model.histogram2dProviderSubscription.update(listToPair(model.mutualInformationParameterNames));
 	    }
@@ -43612,7 +43646,7 @@
 /* 354 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -43797,6 +43831,18 @@
 	      var t1nam = miData.vmap[tup[1]].name;
 	      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
 
+	      if (!histogramData[t0nam]) {
+	        // Data not ready yet for given axis
+	        console.log('Can not compute PMI for', t0nam);
+	        continue;
+	      }
+
+	      if (!histogramData[t0nam][t1nam]) {
+	        // Data not ready yet for given axis
+	        console.log('Can not compute PMI for', t1nam);
+	        continue;
+	      }
+
 	      var minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
 	      miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
 	      miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;
@@ -43804,7 +43850,7 @@
 	        miData.joint[t0nam] = {};
 	        miData.joint[t0nam][t1nam] = {};
 	      } else if (!(t1nam in miData.joint[t0nam])) {
-	        miData.joint[t1nam] = {};
+	        miData.joint[t0nam][t1nam] = {};
 	      }
 	      miData.joint[t0nam][t1nam] = minfo.joint;
 	      // miData.joint[t1nam][t0nam] = transposed(minfo.pmi);
