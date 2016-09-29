@@ -182,6 +182,10 @@
   composes: noSaveIcon;
   composes: fa-bookmark-o from 'font-awesome/css/font-awesome.css';
 }
+.unchangedActiveSaveIcon {
+  composes: noSaveIcon;
+  composes: fa-bookmark from 'font-awesome/css/font-awesome.css';
+}
 .modifiedSaveIcon {
   composes: noSaveIcon;
   composes: fa-floppy-o from 'font-awesome/css/font-awesome.css';

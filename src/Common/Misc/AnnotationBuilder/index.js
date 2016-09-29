@@ -51,6 +51,16 @@ function update(annotationObject, changeSet) {
 
 // ----------------------------------------------------------------------------
 
+function updateReadOnlyFlag(annotationToEdit, readOnlyFields) {
+  if (!annotationToEdit || !annotationToEdit.selection || !readOnlyFields) {
+    return;
+  }
+
+  annotationToEdit.readOnly = SelectionBuilder.hasField(annotationToEdit.selection, readOnlyFields);
+}
+
+// ----------------------------------------------------------------------------
+
 function fork(annotationObj) {
   const id = generateUUID();
   generation++;
@@ -73,9 +83,10 @@ const EMPTY_ANNOTATION = annotation(SelectionBuilder.EMPTY_SELECTION, 0);
 
 export default {
   annotation,
-  update,
-  markModified,
-  fork,
-  setInitialGenerationNumber,
   EMPTY_ANNOTATION,
+  fork,
+  markModified,
+  setInitialGenerationNumber,
+  update,
+  updateReadOnlyFlag,
 };
