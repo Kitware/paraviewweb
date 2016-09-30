@@ -520,6 +520,7 @@ function histogramSelector(publicAPI, model) {
       let legendCell = trow1.select(`.${style.jsLegend}`);
       let fieldCell = trow1.select(`.${style.jsFieldName}`);
       let iconCell = trow1.select(`.${style.jsLegendIcons}`);
+      let iconCellViz = iconCell.select(`.${style.jsLegendIconsViz}`);
       let svgGr = tdsl.select('svg').select(`.${style.jsGHist}`);
       // let svgOverlay = svgGr.select(`.${style.jsOverlay}`);
 
@@ -547,8 +548,11 @@ function histogramSelector(publicAPI, model) {
         iconCell = trow1
           .append('td')
           .classed(style.legendIcons, true);
-        scoreHelper.createScoreIcons(iconCell);
-        iconCell
+        iconCellViz = iconCell
+          .append('span')
+          .classed(style.legendIconsViz, true);
+        scoreHelper.createScoreIcons(iconCellViz);
+        iconCellViz
           .append('i')
             .classed(style.expandIcon, true)
             .on('click', toggleSingleModeEvt);
@@ -594,8 +598,8 @@ function histogramSelector(publicAPI, model) {
       // scoreHelper has save icon and score icon.
       const numIcons = (model.singleModeSticky ? 0 : 1) + scoreHelper.numScoreIcons(def);
       iconCell.style('width', `${(numIcons * 15) + 6}px`);
-      scoreHelper.updateScoreIcons(iconCell, def);
-      iconCell.select(`.${style.jsExpandIcon}`)
+      scoreHelper.updateScoreIcons(iconCellViz, def);
+      iconCellViz.select(`.${style.jsExpandIcon}`)
         .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
         .style('display', model.singleModeSticky ? 'none' : null);
       // Apply field name
