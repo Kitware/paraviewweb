@@ -29103,6 +29103,7 @@
 
 	  // Local cache of the selection data
 	  model.selectionData = null;
+	  model.visibleScores = [0, 1, 2];
 
 	  function drawSelectionData(score) {
 	    if (model.axes.selection && model.visibleScores) {
@@ -29464,7 +29465,7 @@
 
 	    var nbPolyDraw = model.axes.getNumberOf2DHistogram();
 	    var axesCenters = model.axes.extractAxesCenters(model);
-	    if (!(model.axes.hasSelection() && model.showOnlySelection)) {
+	    if (!model.showOnlySelection) {
 	      for (var j = 0; j < nbPolyDraw; ++j) {
 	        var axisOne = model.axes.getAxis(j);
 	        var axisTwo = model.axes.getAxis(j + 1);
@@ -29862,6 +29863,7 @@
 
 	  showOnlySelection: false,
 
+	  visibleScores: [],
 	  propagatePartitionScores: false
 	};
 
@@ -29874,7 +29876,7 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'visibleScores', 'propagatePartitionScores', 'numberOfBins']);
 	  _CompositeClosureHelper2.default.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
 	  _CompositeClosureHelper2.default.dynamicArray(publicAPI, model, 'readOnlyFields');
 
