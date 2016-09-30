@@ -43050,7 +43050,7 @@
 
 	    // don't replace the default region with an empty region, so UI can display the default region.
 	    if (regions.length > 0 && !(regions.length === 1 && regions[0] === model.defaultScore)) {
-	      def.regions = regions;
+	      def.regions = [].concat(regions);
 	      def.dividers = dividers;
 	    }
 	  }
