@@ -1,8 +1,8 @@
 # ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization
 
-The release of __ParaViewWeb__ version 2.2+, the JavaScript library, represents a major restructuring of past offerings, while offering enhanced capabilities and loads of new features. Although ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure, it was primarily viewed as a single application, __Visualizer__, which provided a majority of the ParaView Qt application features within a Web user interface (UI). Much of the confusion centered around the fact that developing new ParaViewWeb-based applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes along way in making the development of Web-based application with scientific visualization easier.
+The release of [ParaViewWeb][ParaViewWeb_REPO], the JavaScript library, represents a major restructuring of past offerings, while enhancing its capabilities and bringing a load of new features. Although ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure, it was primarily viewed as a single application, [Visualizer][Visualizer_io], which provided a majority of the ParaView Qt application features within a Web user interface (UI). Much of the confusion centered around the fact that developing new ParaViewWeb-based applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes a long way in making the development of Web-based application with scientific visualization easier.
 
-To provide a more Web-centric software process, ParaViewWeb has left the ParaView repository becoming [independent][1], but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern environment Web developers expect including: continuous integration via Travis CI; linting to capture potential errors and enforce style guidelines, browser-based testing with karma, tape and nightmare; WebPack module bundling; next-generation javascript (ES6, ES7) transpiling to ES5; automatic publication on NPM, and a dedicated documentation Web site on [Github.io][2].
+To provide a more Web-centric software process, ParaViewWeb has left the ParaView repository to become [independent][ParaViewWeb_REPO], but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern Web environment that developers expect: continuous integration via [Travis CI]; [linting] to capture potential errors and enforce [style guidelines], browser-based testing with [Karma], [tape] and [nightmare]; [WebPack] module bundling; next-generation javascript (ES6, ES7) [transpiling] to ES5; automatic publication on [NPM], and a dedicated documentation Web site on [Github.io][ParaViewWeb_io].
 
 ## A modern approach
 
@@ -10,7 +10,7 @@ The all new ParaViewWeb has embraced the next-generation of JavaScript specifica
 
 ## Capabilities and Features
 
-ParaViewWeb provides several modules that application developers will find useful for building a modern Web-based application with scientific visualization. 
+ParaViewWeb provides several modules that application developers will find useful for building a modern Web-based application with scientific data and visualization. 
 
 ### Common: Data Model and Helpers
 
@@ -42,7 +42,7 @@ ParaViewWeb helpers use only XHR and WebSocket for the Client based JavaScript (
 
 XHR is the main HTTP client built into browsers. XHR (specifically XHR version 2) is implemented in native (C++) code in the browser and exposed as a JavaScript API. For XHR, ParaViewWeb relies on the standard request to fetch data of any kind, but provides a higher-level API for access (i.e. ```manager.fetchData({ time: 21, field: ‘temperature’ }))```.
 
-WebSockets provides a network connection between the server and the client over HTTP which allow bidirectional communication, and are supported in most browsers today. ParaViewWeb relies on WebSockets to provide an simple interface with Python-based VTK and/or ParaView servers for producing interactive data, geometry and images.
+WebSockets provides a network connection between the server and the client over HTTP which allow bidirectional communication, and are supported in most browsers today. ParaViewWeb relies on WebSockets to provide a simple interface with Python-based VTK and/or ParaView servers for producing interactive data, geometry and images.
 
 Finally ParaViewWeb provides a client for Kitware’s data management system, __Girder__, to provide a consistent interface to it from within the JavaScript code base.
 
@@ -144,8 +144,8 @@ Finally, there is DataViewer that is a work in progress that allows the end-user
 > Figure 11: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.
 
 
-[1]: https://github.com/Kitware/paraviewweb
-[2]: http://kitware.github.io/paraviewweb/
+[ParaViewWeb_REPO]: https://github.com/Kitware/paraviewweb
+[ParaViewWeb_io]: http://kitware.github.io/paraviewweb/
 
 [Visualizer_REPO]: https://github.com/kitware/visualizer
 [Visualizer_io]: https://kitware.github.io/visualizer/
@@ -157,8 +157,20 @@ Finally, there is DataViewer that is a work in progress that allows the end-user
 [ArcticViewer_io]: https://kitware.github.io/arctic-viewer/
 
 [HPCCloud_REPO]: https://github.com/kitware/hpccloud
+[HPCCloud_io]: https://kitware.github.io/kitware/hpccloud
 
 [SimPut_REPO]: https://github.com/kitware/simput
+[SimPut_io]: https://kitware.github.io/kitware/simput
+
+[nightmare]: https://www.npmjs.com/package/nightmare
+[style guidelines]: https://github.com/airbnb/javascript
+[Travis CI]: https://travis-ci.org/
+[linting]: http://eslint.org/
+[Karma]: http://karma-runner.github.io
+[WebPack]: https://webpack.github.io/
+[tape]: https://github.com/substack/tape
+[transpiling]: https://babeljs.io/
+[NPM]: https://www.npmjs.com/package/paraviewweb
 
 [Prober]: ./overview/ArcticViewer-Prober.jpg
 [ArcticViewer]: ./overview/ArcticViewer.png
