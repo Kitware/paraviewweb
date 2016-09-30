@@ -257,6 +257,7 @@
 
 .selectedLegendRow {
   composes: legendRow;
+  background-color: #ccd;
   opacity: 1;
 }
 

@@ -540,7 +540,7 @@ export default function init(inPublicAPI, inModel) {
         dPopupDiv
           .style('display', 'none');
         selectedDef.dragDivider = undefined;
-        publicAPI.render();
+        publicAPI.render(selectedDef.name);
       });
     const uncertInput = dPopupDiv.select(`.${style.jsDividerUncertaintyInput}`);
     const valInput = dPopupDiv.select(`.${style.jsDividerValueInput}`)
@@ -618,18 +618,22 @@ export default function init(inPublicAPI, inModel) {
       })
       .on('keyup', () => {
         if (d3.event.key === 'Escape') {
-          selectedDef.dragDivider.newDivider.uncertainty = selectedDef.dragDivider.savedUncert;
+          if (selectedDef.dragDivider) {
+            selectedDef.dragDivider.newDivider.uncertainty = selectedDef.dragDivider.savedUncert;
+          }
           dPopupDiv.on('mouseleave')();
         } else if (d3.event.key === 'Enter' || d3.event.key === 'Return') {
           dPopupDiv.on('mouseleave')();
         }
       })
       .on('blur', () => {
-        const val = (selectedDef.dragDivider.newDivider.value === undefined ?
-                     selectedDef.dividers[selectedDef.dragDivider.index].value :
-                     selectedDef.dragDivider.newDivider.value);
-        clampDragDividerUncertainty(val, selectedDef);
-        d3.event.target.value = formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty);
+        if (selectedDef.dragDivider) {
+          const val = (selectedDef.dragDivider.newDivider.value === undefined ?
+                       selectedDef.dividers[selectedDef.dragDivider.index].value :
+                       selectedDef.dragDivider.newDivider.value);
+          clampDragDividerUncertainty(val, selectedDef);
+          d3.event.target.value = formatter(uncertDispScale * selectedDef.dragDivider.newDivider.uncertainty);
+        }
         publicAPI.render(selectedDef.name);
       });
   }
