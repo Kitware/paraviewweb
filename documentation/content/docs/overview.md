@@ -1,8 +1,6 @@
 # ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization
 
-The release of [ParaViewWeb][ParaViewWeb_REPO], the JavaScript library, represents a major restructuring of past offerings, while enhancing its capabilities and bringing a load of new features. ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure but, it was primarily viewed as a single application, [Visualizer][Visualizer_io], which provided a majority of the ParaView Qt application features within a Web user interface (UI). New applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes a long way in making the development of Web-based application with scientific visualization easier.
-
-To provide a more Web-centric software process, ParaViewWeb has left the ParaView repository to become [independent][ParaViewWeb_REPO], but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern Web environment that developers expect: continuous integration via [Travis CI]; [linting] to capture potential errors and enforce [style guidelines], browser-based testing with [Karma], [tape] and [nightmare]; [WebPack] module bundling; next-generation javascript (ES6, ES7) [transpiling] to ES5; automatic publication on [NPM], and a dedicated documentation Web site on [Github.io][ParaViewWeb_io].
+ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server or even locally with command line based application using your browser.
 
 ## A modern approach
 
@@ -75,10 +73,6 @@ An example of the data processing algorithms in this module is an algorithm that
 
 ![Figure 5: ArcticViewer’s layout component and slices the 3D floating point value, temperature, volume with three orthogonal slices and a probe plot in time.][Prober]
 > Figure 5: ArcticViewer’s layout component and slices the 3D floating point value, temperature, volume with three orthogonal slices and a probe plot in time.
-
-## Conclusion
-
-ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server or even locally with command line based application using your browser.
 
 # ParaViewWeb Applications
 
