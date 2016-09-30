@@ -2,7 +2,7 @@
 <html lang="en">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>Documentation | ParaViewWeb</title>
+  <title>ParaViewWeb</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
@@ -39,16 +39,28 @@
   <!-- RSS -->
   <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
   <!-- Open Graph -->
-  <meta name="description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
+  <meta name="description" content="ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific VisualizationParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scient">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Documentation">
+<meta property="og:title" content="ParaViewWeb">
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/index.html">
 <meta property="og:site_name" content="ParaViewWeb">
-<meta property="og:description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
-<meta property="og:updated_time" content="2016-09-30T16:10:37.159Z">
+<meta property="og:description" content="ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific VisualizationParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scient">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/MutualInformation.jpeg">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/Visualizationcomponents.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/Widgets.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/Viewers.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/ArcticViewer-Prober.jpg">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/Visualizer.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/LightViz.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/ArcticViewer.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/DataViewer.jpeg">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/Simput.png">
+<meta property="og:image" content="https://kitware.github.io/paraviewweb/./overview/HPCCloud.png">
+<meta property="og:updated_time" content="2016-09-30T17:18:19.596Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Documentation">
-<meta name="twitter:description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific VisualizationParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scient">
+<meta name="twitter:image" content="https://kitware.github.io/paraviewweb/./overview/MutualInformation.jpeg">
   <!-- Google Analytics -->
   
 </head>
@@ -86,43 +98,98 @@
           <div class="article">
             <div class="inner">
               <header class="article-header">
-                <h1 class="article-title" itemprop="name">Documentation</h1>
+                <h1 class="article-title" itemprop="name"></h1>
               </header>
               <div class="article-content" itemprop="articleBody">
-                <p>Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  <a href="troubleshooting.html">troubleshooting guide</a>, raise an issue on <a href="https://github.com/kitware/paraviewweb/issues" target="_blank" rel="external">GitHub</a> or start a topic on the <a href="http://www.paraview.org/mailman/listinfo/paraview" target="_blank" rel="external">Mailing list</a>.</p>
-<h2 id="What-is-ParaViewWeb" class="article-heading"><a href="#What-is-ParaViewWeb" class="headerlink" title="What is ParaViewWeb?"></a>What is ParaViewWeb?<a class="article-anchor" href="#What-is-ParaViewWeb" aria-hidden="true"></a></h2><p>ParaViewWeb is a Web framework that can leverage ParaView and VTK to build interactive application<br>inside your Web browser.</p>
-<h2 id="Installation" class="article-heading"><a href="#Installation" class="headerlink" title="Installation"></a>Installation<a class="article-anchor" href="#Installation" aria-hidden="true"></a></h2><p>It only takes few minutes to set up ParaViewWeb. If you encounter a problem and can’t find the solution here, please <a href="https://github.com/kitware/paraviewweb/issues" target="_blank" rel="external">submit a GitHub issue</a> and I’ll try to solve it.</p>
-<h3 id="Requirements" class="article-heading"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements<a class="article-anchor" href="#Requirements" aria-hidden="true"></a></h3><p>Installing ParaViewWeb as a dependency inside your Web project is quite easy. However, you do need to have a couple of other things installed first:</p>
-<ul>
-<li><a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a></li>
-<li><a href="http://git-scm.com/" target="_blank" rel="external">Git</a></li>
-</ul>
-<p>If your computer already has these, congratulations! Just install ParaViewWeb with npm:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ npm install paraviewweb --save</div></pre></td></tr></table></figure>
-<p>If not, please follow the following instructions to install all the requirements.</p>
-<blockquote class="note warn"><strong class="note-title">For Mac users</strong><p>You may encounter some problems when compiling. Please install Xcode from App Store first. After Xcode is installed, open Xcode and go to <strong>Preferences -&gt; Download -&gt; Command Line Tools -&gt; Install</strong> to install command line tools.</p>
+                <h1 id="ParaViewWeb-A-JavaScript-Library-for-Building-Web-based-Applications-with-Scientific-Visualization" class="article-heading"><a href="#ParaViewWeb-A-JavaScript-Library-for-Building-Web-based-Applications-with-Scientific-Visualization" class="headerlink" title="ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization"></a>ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization<a class="article-anchor" href="#ParaViewWeb-A-JavaScript-Library-for-Building-Web-based-Applications-with-Scientific-Visualization" aria-hidden="true"></a></h1><p>ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server or even locally with command line based application using your browser.</p>
+<h2 id="A-modern-approach" class="article-heading"><a href="#A-modern-approach" class="headerlink" title="A modern approach"></a>A modern approach<a class="article-anchor" href="#A-modern-approach" aria-hidden="true"></a></h2><p>The all new ParaViewWeb has embraced the next-generation of JavaScript specifications, which allow better code reuse across projects without forcing unnecessary code bloat into the developers application. This capability allows ParaViewWeb contributors to gather all expertise in the form of components, UI, data handling and algorithms for Web-based scientific visualization within ParaViewWeb, the JavaScript library, without any unwanted cost to the end applications leveraging the library. The developer simply extracts the capabilities and features they need, and discard the rest in quickly building their next-generation Web-based application with scientific visualization.</p>
+<h2 id="Capabilities-and-Features" class="article-heading"><a href="#Capabilities-and-Features" class="headerlink" title="Capabilities and Features"></a>Capabilities and Features<a class="article-anchor" href="#Capabilities-and-Features" aria-hidden="true"></a></h2><p>ParaViewWeb provides several modules that application developers will find useful for building a modern Web-based application with scientific data and visualization. </p>
+<h3 id="Common-Data-Model-and-Helpers" class="article-heading"><a href="#Common-Data-Model-and-Helpers" class="headerlink" title="Common: Data Model and Helpers"></a>Common: Data Model and Helpers<a class="article-anchor" href="#Common-Data-Model-and-Helpers" aria-hidden="true"></a></h3><p>The data model defines how data and components are associated with each other. In ParaViewWeb, we aim to make the simplest, most general data model that satisfy the concrete requirements of the Web-based application with scientific visualization. The common module provides core data model and helpers to intelligently enhance the data model in the presence of certain components and capabilities, which include: color handling, offscreen canvas, WebGL utilities and the various data model extensions to hold the state for a number of visualization components and UI widgets. </p>
+<p><img src="./overview/MutualInformation.jpeg" alt="Figure 1: Mutual information Chord Diagram for the 2014 - 2015 NBA season player statistics."></p>
+<blockquote>
+<p>Figure 1: Mutual information Chord Diagram for the 2014 - 2015 NBA season player statistics.</p>
 </blockquote>
-<h3 id="Install-Git" class="article-heading"><a href="#Install-Git" class="headerlink" title="Install Git"></a>Install Git<a class="article-anchor" href="#Install-Git" aria-hidden="true"></a></h3><ul>
-<li>Windows: Download &amp; install <a href="https://git-scm.com/download/win" target="_blank" rel="external">git</a>.</li>
-<li>Mac: Install it with <a href="http://mxcl.github.com/homebrew/" target="_blank" rel="external">Homebrew</a>, <a href="http://www.macports.org/" target="_blank" rel="external">MacPorts</a> or <a href="http://sourceforge.net/projects/git-osx-installer/" target="_blank" rel="external">installer</a>.</li>
-<li>Linux (Ubuntu, Debian): <code>sudo apt-get install git-core</code></li>
-<li>Linux (Fedora, Red Hat, CentOS): <code>sudo yum install git-core</code></li>
+<h3 id="Visualization-Components" class="article-heading"><a href="#Visualization-Components" class="headerlink" title="Visualization Components"></a>Visualization Components<a class="article-anchor" href="#Visualization-Components" aria-hidden="true"></a></h3><p>ParaViewWeb offers a collection of visualization components to illustrate patterns and structure in large data sets. Each component highlights one of the many possible ways of viewing datasets like the one presented in Figure 1. These visualization components can be integrated into a Web-based workbench-like environment that provides new interfaces to support discovery, exploration, filtering and analysis. The visualization components module is a set of interactive tools for exploring and visualizing data that share the same API (setContainer/resize/render/destroy). Currently, these visualization components demonstrate various types of information visualization. ParaViewWeb has a mutual information diagram (depicted in Figure 1). The mutual information of two random variables is a measure of the mutual dependence between the two variables. It implies the knowledge obtained about one random variable via the other random variable. The visualization components also includes:  a field selector, one-dimensional (1D) histograms, and parallel coordinates. Expect to see a Sankey diagram, a specific type of flow diagram in which the width of the arrows is shown proportionally to the flow quantity, as well as other tools for annotating data in the near future.</p>
+<p><img src="./overview/Visualizationcomponents.png" alt="Figure 2: (a) a collapsable field selector capable of displaying field name, min value, max value and a 1D histogram, (b) 1D/2D Histograms, and (c) parallel coordinates."></p>
+<blockquote>
+<p>Figure 2: (a) a collapsable field selector capable of displaying field name, min value, max value and a 1D histogram, (b) 1D/2D Histograms, and (c) parallel coordinates.</p>
+</blockquote>
+<h3 id="Interaction" class="article-heading"><a href="#Interaction" class="headerlink" title="Interaction"></a>Interaction<a class="article-anchor" href="#Interaction" aria-hidden="true"></a></h3><p>Interactive visualizations are a crucial mechanism for discovery in science, engineering and medical research. These tools enable end-users to: focus on interesting details; customize the content; and modify the visualization, all while enhancing the exploration of large amounts of data. At their best, they facilitate an engaging environment for inquiry. ParaViewWeb’s interaction module, consisting of utilities to aid with user input/interaction, mouse and touch handling, makes it easier for the developer in creating captivating Web-based applications with scientific visualization.</p>
+<h3 id="Data-access-I-O" class="article-heading"><a href="#Data-access-I-O" class="headerlink" title="Data access (I/O)"></a>Data access (I/O)<a class="article-anchor" href="#Data-access-I-O" aria-hidden="true"></a></h3><p>The IO module of ParaViewWeb aims to provide connectivity to various sources of data including the following three main types:</p>
+<ul>
+<li><strong>Core:</strong> Core provides several download helpers to deal with pattern-based data querying of various type of data (binary array, image, text, csv, json, etc.).</li>
+<li><strong>WebSocket:</strong> WebSocket provides communication helpers for the VTK and/or ParaView Web backends.</li>
+<li><strong>Girder:</strong> Girder provides a composable network client that simplify the interaction with Kitware’s Girder a data management system as a backend.</li>
 </ul>
-<h3 id="Install-Node-js" class="article-heading"><a href="#Install-Node-js" class="headerlink" title="Install Node.js"></a>Install Node.js<a class="article-anchor" href="#Install-Node-js" aria-hidden="true"></a></h3><p>The best way to install Node.js is with <a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a>.</p>
-<p>cURL:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh</div></pre></td></tr></table></figure>
-<p>Wget:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</div></pre></td></tr></table></figure>
-<p>Once nvm is installed, restart the terminal and run the following command to install Node.js.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ nvm install 4</div></pre></td></tr></table></figure>
-<p>Alternatively, download and run <a href="http://nodejs.org/" target="_blank" rel="external">the installer</a>.</p>
-<h3 id="Install-ParaViewWeb" class="article-heading"><a href="#Install-ParaViewWeb" class="headerlink" title="Install ParaViewWeb"></a>Install ParaViewWeb<a class="article-anchor" href="#Install-ParaViewWeb" aria-hidden="true"></a></h3><p>Once all the requirements are installed, you can install Hexo with npm.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ npm install paraviewweb --save</div></pre></td></tr></table></figure>
-<h3 id="Getting-ParaViewWeb-source-code-for-contributing" class="article-heading"><a href="#Getting-ParaViewWeb-source-code-for-contributing" class="headerlink" title="Getting ParaViewWeb source code for contributing"></a>Getting ParaViewWeb source code for contributing<a class="article-anchor" href="#Getting-ParaViewWeb-source-code-for-contributing" aria-hidden="true"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/kitware/paraviewweb.git</div><div class="line">$ <span class="built_in">cd</span> paraviewweb</div><div class="line">$ npm install</div></pre></td></tr></table></figure>
+<p>ParaViewWeb helpers use only XHR and WebSocket for the Client based JavaScript (Web browsers). </p>
+<p>XHR is the main HTTP client built into browsers. XHR (specifically XHR version 2) is implemented in native (C++) code in the browser and exposed as a JavaScript API. For XHR, ParaViewWeb relies on the standard request to fetch data of any kind, but provides a higher-level API for access (i.e. <code>manager.fetchData({ time: 21, field: ‘temperature’ }))</code>.</p>
+<p>WebSockets provides a network connection between the server and the client over HTTP which allow bidirectional communication, and are supported in most browsers today. ParaViewWeb relies on WebSockets to provide a simple interface with Python-based VTK and/or ParaView servers for producing interactive data, geometry and images.</p>
+<p>Finally ParaViewWeb provides a client for Kitware’s data management system, <strong>Girder</strong>, to provide a consistent interface to it from within the JavaScript code base.</p>
+<p><img src="./overview/Widgets.png" alt="Figure 3: (a) selection editor, (b) lookup table editor, (c) equalizer editor, (d) light properties editor, and (e) transfer function editor.
+"></p>
+<blockquote>
+<p>Figure 3: (a) selection editor, (b) lookup table editor, (c) equalizer editor, (d) light properties editor, and (e) transfer function editor.</p>
+</blockquote>
+<h3 id="UI-widgets" class="article-heading"><a href="#UI-widgets" class="headerlink" title="UI widgets"></a>UI widgets<a class="article-anchor" href="#UI-widgets" aria-hidden="true"></a></h3><p>ParaViewWeb provides two forms of UI widgets:</p>
+<ul>
+<li><strong>Native UI</strong> - Native UI widgets are composed of various UI pieces with no dependencies, and</li>
+<li><strong>React UI</strong> - React UI widgets are composed of React, from the OpenSource projects of Facebook developer team.</li>
+</ul>
+<p>ParaViewWeb’s NativeUI and React modules provide the various UI widgets.</p>
+<p>The developers of ParaViewWeb have found React makes it easy to create complex interactive UIs from small, encapsulated React components. ParaViewWeb, the JavaScript library, provides many of the known UI components (e,g, TextInput, …), but it also contains some amazing widgets more suitable to scientific visualization interaction (see Figure 3).</p>
+<p>The selection editor in Figure 3a, can be used to perform a multiple range, multiple field selection. The creation of a lookup table (depicted Figure 3b) is a common task for rendering scientific visualization techniques. We have used the equalizer editor, presented in Figure 3c, as an opacity control for scientific visualization elements such as computer-aided design (CAD) parts or layered iso-contours in a three-dimensional (3D) data set. The light properties, editor displayed in Figure 3d, of a scene is crucial in rendering for VTK and ParaView, WebGL scientific visualization elements, or JavaScript or WebGL composite scientific visualization elements from images. Finally, a transfer function editor, shown in Figure 3e, is used in both opacity mapping for scientific visualization elements and volume visualization.</p>
+<h3 id="Rendering-viewers" class="article-heading"><a href="#Rendering-viewers" class="headerlink" title="Rendering viewers"></a>Rendering viewers<a class="article-anchor" href="#Rendering-viewers" aria-hidden="true"></a></h3><p>The Rendering module gathers both rendering viewers and data processing algorithms used for generating images or other types of data structures. This module may be renamed and restructure in the near future since more data processing algorithms are generated as opposed to actual rendering code.<br>ParaViewWeb has image viewers, JavaScript or WebGL image compositing viewers, and WebGL viewers for geometry data structures (see Figure 4). Up to now ParaViewWeb has been using Three.js for handling the 3D scene for WebGL. However, we will begin to migrate away from Three.js to vtk.js as time permits because vtk.js natively supports dynamic geometry data structures.</p>
+<p><img src="./overview/Viewers.png" alt="Figure 4: ParaViewWeb’s example image viewer, JavaScript or WebGL image compositing viewer, and WebGL viewer for geometry."></p>
+<blockquote>
+<p>Figure 4: ParaViewWeb’s example image viewer, JavaScript or WebGL image compositing viewer, and WebGL viewer for geometry.</p>
+</blockquote>
+<p>An example of the data processing algorithms in this module is an algorithm that allows the application developer to slice a 3D floating point value volume to produce an image using a lookup table to convert the numerical values into an actual color. In Figure 5, the application developer uses a multi-view layout component and slices the 3D volume in x, y and z and colors the slices by the temperature field using a spectral lookup table.</p>
+<p><img src="./overview/ArcticViewer-Prober.jpg" alt="Figure 5: ArcticViewer’s layout component and slices the 3D floating point value, temperature, volume with three orthogonal slices and a probe plot in time."></p>
+<blockquote>
+<p>Figure 5: ArcticViewer’s layout component and slices the 3D floating point value, temperature, volume with three orthogonal slices and a probe plot in time.</p>
+</blockquote>
+<h1 id="ParaViewWeb-Applications" class="article-heading"><a href="#ParaViewWeb-Applications" class="headerlink" title="ParaViewWeb Applications"></a>ParaViewWeb Applications<a class="article-anchor" href="#ParaViewWeb-Applications" aria-hidden="true"></a></h1><p>ParaViewWeb is used in many Kitware, Inc. Web projects.</p>
+<h2 id="Visualizer-git-io" class="article-heading"><a href="#Visualizer-git-io" class="headerlink" title="Visualizer (git/io)"></a>Visualizer (<a href="https://github.com/kitware/visualizer" target="_blank" rel="external">git</a>/<a href="https://kitware.github.io/visualizer/">io</a>)<a class="article-anchor" href="#Visualizer-git-io" aria-hidden="true"></a></h2><p>The Visualizer Web application provides a ParaView-like, the Qt application, experience inside the Web browser. The ParaViewWeb library contains all the components needed to build the UI and the data access (I/O) routines to communicate to the ParaView server using WebSocket connectivity. Visualizer is simply connecting all the components together in a meaningful way. </p>
+<p><img src="./overview/Visualizer.png" alt="Figure 6: Visualizer, displaying the visualization pipelines and color map editor with similar functionality to the ParaView Qt application."></p>
+<blockquote>
+<p>Figure 6: Visualizer, displaying the visualization pipelines and color map editor with similar functionality to the ParaView Qt application.</p>
+</blockquote>
+<p>In addition to running Visualizer remotely through as a service, ParaViewWeb provides a nice command line interface so that end-user might utilize Visualizer locally with their locally installed version of ParaView.</p>
+<h2 id="LightViz-git-io" class="article-heading"><a href="#LightViz-git-io" class="headerlink" title="LightViz (git/io)"></a>LightViz (<a href="https://github.com/kitware/light-viz" target="_blank" rel="external">git</a>/<a href="https://kitware.github.io/light-viz/">io</a>)<a class="article-anchor" href="#LightViz-git-io" aria-hidden="true"></a></h2><p>The LightViz application aims to provide a simpiler, more intuitive and interactive scientific visualization utility, which could be easily adapted to specific data and tasks. Have we succeeded? It probably needs few iterations between user studies and re-engineering. What it currently does is providing the end-user with about eight simplified modules to ParaView’s most utilized visualization techniques or filters. Modules can be exposed or removed through a json configuration file, and creating new modules from existing ParaView filters is trivial.</p>
+<p>All the components LightViz requires to build the UI as well as the WebSocket connectivity to the ParaView server is delivered through ParaViewWeb, the JavaScript library. </p>
+<p><img src="./overview/LightViz.png" alt="Figure 7: (a) LightViz with the new default user interface, and (b) LightViz with the ArcticViewer interface."></p>
+<blockquote>
+<p>Figure 7: (a) LightViz with the new default user interface, and (b) LightViz with the ArcticViewer interface.</p>
+</blockquote>
+<p>In Figure 7 a and b, We illustrate how easy it is to recast the LightViz scientific visualization application with a new UI courtesy of ParaViewWeb.</p>
+<h2 id="ArcticViewer-git-io" class="article-heading"><a href="#ArcticViewer-git-io" class="headerlink" title="ArcticViewer (git/io)"></a>ArcticViewer (<a href="https://github.com/kitware/arctic-viewer" target="_blank" rel="external">git</a>/<a href="https://kitware.github.io/arctic-viewer/">io</a>)<a class="article-anchor" href="#ArcticViewer-git-io" aria-hidden="true"></a></h2><p>The ArcticViewer scientific visualization application breaks the pattern by not requiring a processing/rendering server like VTK or ParaView. In fact, ArcticViewer relies on the data being pre-processed to allow it to be directly read by the Web client. In this use case, ParaViewWeb provides the various data handlers, UI widgets, data access, and rendering algorithms and viewers to drive the application. </p>
+<p><img src="./overview/ArcticViewer.png" alt="Figure 8: ArcticViewer with (a) compositing opaque visualization objects from images, (b) compositing transparent objects from images, and (c) using two rendering passes to expose a magic hole in the compositing of transparent visualization objects from images. "></p>
+<blockquote>
+<p>Figure 8: ArcticViewer with (a) compositing opaque visualization objects from images, (b) compositing transparent objects from images, and (c) using two rendering passes to expose a magic hole in the compositing of transparent visualization objects from images. </p>
+</blockquote>
+<p>Like Visualizer, ArcticViewer can be run for scientific visualization directly from a command line. The various types of data are implicitly understood via a json file, and the appropriate components are instantiated based on the particular type of data. If there isn’t a set of components for a type of data, they can be simply created and added to the ParaViewWeb JavaScript library.</p>
+<p>ArcticViewer allows the end-user to browse through data products that have been generated in situ or in batch mode to produce interactive scientific visualization this includes data produced with ParaView <a href="http://www.paraview.org/in-situ/" target="_blank" rel="external">Catalyst</a> with the <a href="http://cinemascience.org/" target="_blank" rel="external">Cinema</a> format. It provides viewing methods for images, composite opaque and transparent visualization objects from images, visualization objects as geometry, and complete 3D volumes.</p>
+<h2 id="DataViewer" class="article-heading"><a href="#DataViewer" class="headerlink" title="DataViewer"></a>DataViewer<a class="article-anchor" href="#DataViewer" aria-hidden="true"></a></h2><p>Finally, there is DataViewer that is a work in progress that allows the end-user to interact with BigData with ParaViewWeb’s information visualization components and UI widgets.</p>
+<p><img src="./overview/DataViewer.jpeg" alt="Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates."></p>
+<blockquote>
+<p>Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.</p>
+</blockquote>
+<h2 id="SimPut-git-io" class="article-heading"><a href="#SimPut-git-io" class="headerlink" title="SimPut (git/io)"></a>SimPut (<a href="https://github.com/kitware/simput" target="_blank" rel="external">git</a>/io)<a class="article-anchor" href="#SimPut-git-io" aria-hidden="true"></a></h2><p>SimPut, as opposed to the previous presented applications, does not provide scientific visualization (it does use some charts). SimPut provides an environment for dynamically generating a UI with various forms of inputs in order to produce a templated output file for a simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build UI widgets. In addition, parts of the SimPut UI are also used inside Visualizer to create the Proxy Editor Panels.</p>
+<p><img src="./overview/Simput.png" alt="Figure 10: SimPut setting input parameters for the PyFR simulator."></p>
+<blockquote>
+<p>Figure 10: SimPut setting input parameters for the PyFR simulator.</p>
+</blockquote>
+<h2 id="HPCCloud-git-io" class="article-heading"><a href="#HPCCloud-git-io" class="headerlink" title="HPCCloud (git/io)"></a>HPCCloud (<a href="https://github.com/kitware/hpccloud" target="_blank" rel="external">git</a>/io)<a class="article-anchor" href="#HPCCloud-git-io" aria-hidden="true"></a></h2><p>HPCCloud is a web-based simulation environment that utilizes web technologies to deliver an innovative Software as a Service (SaaS) advanced modeling and simulation environment. The platform allows the user to take existing computational code that is designed to run on a high-performance computing (HPC) resource and develop an end-to-end simulation workflow, from input generation right through to post-processing. HPCCloud presents the workflows through a simple, intuitive user interface (UI), which shields the user from much of the complexity that comes with running a simulation code on an HPC resource.</p>
+<p>HPCCloud utilizes several embedded  Kitware, Inc. frameworks. For an example PyFR workflow with three stages, HPCCloud uses:</p>
+<p>1) <strong>Input generation</strong> - <strong>Simput</strong>, based on ParaViewWeb, will generate an input deck for the simulation.<br>2) <strong>Simulation</strong> - The simulation code will run on the Cloud-based HPC or traditional HPC cluster.<br>3) <strong>Visualization</strong> - Visualizer, based on ParaViewWeb, will provide the scientific visualization infrastructure.</p>
+<p><img src="./overview/HPCCloud.png" alt="Figure 11: Results visualized with Visualizer within the HPCCloud application."></p>
+<blockquote>
+<p>Figure 11: Results visualized with Visualizer within the HPCCloud application.</p>
+</blockquote>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2016-09-30T16:10:37.159Z" itemprop="dateModified">Last updated: 2016-09-30</time>
+                <time class="article-footer-updated" datetime="2016-09-30T17:18:19.596Z" itemprop="dateModified">Last updated: 2016-09-30</time>
                 <a href="/paraviewweb/docs/index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -131,7 +198,7 @@
           <aside id="article-toc" role="navigation">
             <div id="article-toc-inner">
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-ParaViewWeb"><span class="toc-text">What is ParaViewWeb?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Installation"><span class="toc-text">Installation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Requirements"><span class="toc-text">Requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-Git"><span class="toc-text">Install Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-Node-js"><span class="toc-text">Install Node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-ParaViewWeb"><span class="toc-text">Install ParaViewWeb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getting-ParaViewWeb-source-code-for-contributing"><span class="toc-text">Getting ParaViewWeb source code for contributing</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ParaViewWeb-A-JavaScript-Library-for-Building-Web-based-Applications-with-Scientific-Visualization"><span class="toc-text">ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-modern-approach"><span class="toc-text">A modern approach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Capabilities-and-Features"><span class="toc-text">Capabilities and Features</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Common-Data-Model-and-Helpers"><span class="toc-text">Common: Data Model and Helpers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visualization-Components"><span class="toc-text">Visualization Components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interaction"><span class="toc-text">Interaction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-access-I-O"><span class="toc-text">Data access (I/O)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI-widgets"><span class="toc-text">UI widgets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rendering-viewers"><span class="toc-text">Rendering viewers</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ParaViewWeb-Applications"><span class="toc-text">ParaViewWeb Applications</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Visualizer-git-io"><span class="toc-text">Visualizer (git/io)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LightViz-git-io"><span class="toc-text">LightViz (git/io)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArcticViewer-git-io"><span class="toc-text">ArcticViewer (git/io)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DataViewer"><span class="toc-text">DataViewer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SimPut-git-io"><span class="toc-text">SimPut (git/io)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HPCCloud-git-io"><span class="toc-text">HPCCloud (git/io)</span></a></li></ol></li></ol>
               <a href="#" id="article-toc-top">Back to Top</a>
             </div>
           </aside>
