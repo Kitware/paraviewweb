@@ -103,6 +103,7 @@ function parallelCoordinate(publicAPI, model) {
 
   // Local cache of the selection data
   model.selectionData = null;
+  model.visibleScores = [0, 1, 2];
 
   function drawSelectionData(score) {
     if (model.axes.selection && model.visibleScores) {
@@ -963,6 +964,7 @@ const DEFAULT_VALUES = {
 
   showOnlySelection: false,
 
+  visibleScores: [],
   propagatePartitionScores: false,
   // scores: [{ name: 'Yes', color: '#00C900', value: 1 }, ...]
 };
@@ -974,7 +976,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'partitionScores', 'propagatePartitionScores', 'numberOfBins']);
+  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'visibleScores', 'propagatePartitionScores', 'numberOfBins']);
   CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
   CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 
