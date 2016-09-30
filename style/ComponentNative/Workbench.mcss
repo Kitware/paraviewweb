@@ -1,6 +1,7 @@
 .baseViewport {
   position: absolute;
   outline: 1px solid #aaa;
+  user-select: none;
 }
 
 .viewport {
