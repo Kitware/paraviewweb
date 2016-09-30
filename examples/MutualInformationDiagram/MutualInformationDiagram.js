@@ -124,17 +124,10 @@
 	  _MutualInformationProvider2.default.extend(publicAPI, model, initialValues);
 	})(_state2.default);
 
-	// set provider behaviors
-	provider.setFieldsSorted(true);
-	provider.getFieldNames().forEach(function (name) {
-	  provider.addLegendEntry(name);
-	});
-	provider.assignLegend(['colors', 'shapes']);
-
 	// Init Mutual information
-	provider.setMutualInformationParameterNames([]);
+	// provider.setMutualInformationParameterNames([]);
 	provider.setHistogram2dProvider(provider);
-	provider.setMutualInformationParameterNames(provider.getActiveFieldNames());
+	// provider.setMutualInformationParameterNames(provider.getFieldNames());
 
 	// Create parallel coordinates
 	var diag = _MutualInformationDiagram2.default.newInstance({ provider: provider, container: container });
@@ -43757,7 +43750,7 @@
 					7.2,
 					79.5
 				],
-				"active": true,
+				"active": false,
 				"id": 12,
 				"name": "percentage of team minutes"
 			},
@@ -43766,7 +43759,7 @@
 					0,
 					2.48
 				],
-				"active": true,
+				"active": false,
 				"id": 17,
 				"name": "steals per game"
 			},
@@ -43775,7 +43768,7 @@
 					0,
 					49.2
 				],
-				"active": true,
+				"active": false,
 				"id": 11,
 				"name": "percentage of team assists"
 			},
@@ -43784,7 +43777,7 @@
 					5.1,
 					38.5
 				],
-				"active": true,
+				"active": false,
 				"id": 10,
 				"name": "minutes"
 			},
@@ -43793,7 +43786,7 @@
 					0,
 					1
 				],
-				"active": true,
+				"active": false,
 				"id": 8,
 				"name": "free throw percent"
 			}
