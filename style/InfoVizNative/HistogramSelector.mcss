@@ -20,6 +20,7 @@
 .jsHistRect,
 .jsLegend,
 .jsLegendIcons,
+.jsLegendIconsViz,
 .jsLegendRow,
 .jsOverlay,
 .jsScore,
@@ -263,12 +264,16 @@
 
 .legendIcons {
   composes: jsLegendIcons;
-  visibility: hidden;
   padding-right: 1px;
   padding-left: 0px;
   text-align: right;
+  border-bottom: 1px solid #fff;
 }
 
+.legendIconsViz {
+  composes: jsLegendIconsViz;
+  visibility: hidden;
+}
 
 .baseLegendRow:hover {
   background-color: #ccd;
@@ -277,7 +282,7 @@
   border-bottom: 1px solid #000;
 }
 
-.jsLegendRow:hover .jsLegendIcons {
+.jsLegendRow:hover .jsLegendIconsViz {
   visibility: visible;
 }
 .sparkline {
@@ -326,7 +331,7 @@
 .jsBox:hover .baseLegend, .jsBox:hover .baseFieldName, .jsBox:hover .legendIcons {
   border-bottom: 1px solid #000;
 }
-.jsBox:hover .jsLegendIcons {
+.jsBox:hover .jsLegendIconsViz {
   visibility: visible;
 }
 
