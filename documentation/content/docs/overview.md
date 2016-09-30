@@ -1,6 +1,6 @@
 # ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization
 
-The release of [ParaViewWeb][ParaViewWeb_REPO], the JavaScript library, represents a major restructuring of past offerings, while enhancing its capabilities and bringing a load of new features. Although ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure, it was primarily viewed as a single application, [Visualizer][Visualizer_io], which provided a majority of the ParaView Qt application features within a Web user interface (UI). Much of the confusion centered around the fact that developing new ParaViewWeb-based applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes a long way in making the development of Web-based application with scientific visualization easier.
+The release of [ParaViewWeb][ParaViewWeb_REPO], the JavaScript library, represents a major restructuring of past offerings, while enhancing its capabilities and bringing a load of new features. ParaViewWeb has always been a development framework for Web-based scientific visualization applications that leveraged ParaView for their back-end infrastructure but, it was primarily viewed as a single application, [Visualizer][Visualizer_io], which provided a majority of the ParaView Qt application features within a Web user interface (UI). New applications required a significant amount of Web UI development. With Web ready: common data model, visualization components, interaction, UI widgets, data access, and a variety of rendering viewers, this version of ParaViewWeb goes a long way in making the development of Web-based application with scientific visualization easier.
 
 To provide a more Web-centric software process, ParaViewWeb has left the ParaView repository to become [independent][ParaViewWeb_REPO], but still capable of leveraging the state-of-the-art features contained within the ParaView framework. With this separation, ParaViewWeb is able to offer the modern Web environment that developers expect: continuous integration via [Travis CI]; [linting] to capture potential errors and enforce [style guidelines], browser-based testing with [Karma], [tape] and [nightmare]; [WebPack] module bundling; next-generation javascript (ES6, ES7) [transpiling] to ES5; automatic publication on [NPM], and a dedicated documentation Web site on [Github.io][ParaViewWeb_io].
 
@@ -113,14 +113,21 @@ The ArcticViewer scientific visualization application breaks the pattern by not 
 
 Like Visualizer, ArcticViewer can be run for scientific visualization directly from a command line. The various types of data are implicitly understood via a json file, and the appropriate components are instantiated based on the particular type of data. If there isn’t a set of components for a type of data, they can be simply created and added to the ParaViewWeb JavaScript library.
 
-ArcticViewer allows the end-user to browse through data products that have been generated in situ or in batch mode to produce interactive scientific visualization. It provides viewing methods for images, composite opaque and transparent visualization objects from images, visualization objects as geometry, and complete 3D volumes.
+ArcticViewer allows the end-user to browse through data products that have been generated in situ or in batch mode to produce interactive scientific visualization this includes data produced with ParaView [Catalyst] with the [Cinema] format. It provides viewing methods for images, composite opaque and transparent visualization objects from images, visualization objects as geometry, and complete 3D volumes.
+
+## DataViewer
+
+Finally, there is DataViewer that is a work in progress that allows the end-user to interact with BigData with ParaViewWeb’s information visualization components and UI widgets.
+
+![Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.][DataViewer]
+> Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.
 
 ## SimPut ([git][SimPut_REPO]/io)
 
 SimPut, as opposed to the previous presented applications, does not provide scientific visualization (it does use some charts). SimPut provides an environment for dynamically generating a UI with various forms of inputs in order to produce a templated output file for a simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build UI widgets. In addition, parts of the SimPut UI are also used inside Visualizer to create the Proxy Editor Panels.
 
-![Figure 9: SimPut setting input parameters for the PyFR simulator.][Simput]
-> Figure 9: SimPut setting input parameters for the PyFR simulator.
+![Figure 10: SimPut setting input parameters for the PyFR simulator.][Simput]
+> Figure 10: SimPut setting input parameters for the PyFR simulator.
 
 ## HPCCloud ([git][HPCCloud_REPO]/io)
 
@@ -133,16 +140,8 @@ HPCCloud utilizes several embedded  Kitware, Inc. frameworks. For an example PyF
 3) __Visualization__ - Visualizer, based on ParaViewWeb, will provide the scientific visualization infrastructure.
 
 
-![Figure 10: Results visualized with Visualizer within the HPCCloud application.][HPCCloud]
-> Figure 10: Results visualized with Visualizer within the HPCCloud application.
-
-## DataViewer
-
-Finally, there is DataViewer that is a work in progress that allows the end-user to interact with BigData with ParaViewWeb’s information visualization components and UI widgets.
-
-![Figure 11: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.][DataViewer]
-> Figure 11: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.
-
+![Figure 11: Results visualized with Visualizer within the HPCCloud application.][HPCCloud]
+> Figure 11: Results visualized with Visualizer within the HPCCloud application.
 
 [ParaViewWeb_REPO]: https://github.com/Kitware/paraviewweb
 [ParaViewWeb_io]: http://kitware.github.io/paraviewweb/
@@ -171,6 +170,9 @@ Finally, there is DataViewer that is a work in progress that allows the end-user
 [tape]: https://github.com/substack/tape
 [transpiling]: https://babeljs.io/
 [NPM]: https://www.npmjs.com/package/paraviewweb
+
+[Catalyst]: http://www.paraview.org/in-situ/
+[Cinema]: http://cinemascience.org/
 
 [Prober]: ./overview/ArcticViewer-Prober.jpg
 [ArcticViewer]: ./overview/ArcticViewer.png
