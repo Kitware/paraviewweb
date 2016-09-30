@@ -42,17 +42,10 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   MutualInformationProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
-// set provider behaviors
-provider.setFieldsSorted(true);
-provider.getFieldNames().forEach(name => {
-  provider.addLegendEntry(name);
-});
-provider.assignLegend(['colors', 'shapes']);
-
 // Init Mutual information
-provider.setMutualInformationParameterNames([]);
+// provider.setMutualInformationParameterNames([]);
 provider.setHistogram2dProvider(provider);
-provider.setMutualInformationParameterNames(provider.getActiveFieldNames());
+// provider.setMutualInformationParameterNames(provider.getFieldNames());
 
 // Create parallel coordinates
 const diag = MutualInformationDiagram.newInstance({ provider, container });

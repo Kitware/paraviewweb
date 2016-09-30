@@ -4,31 +4,31 @@
   "fields": {
     "percentage of team minutes": {
       "range": [7.2, 79.5],
-      "active": true,
+      "active": false,
       "id": 12,
       "name": "percentage of team minutes"
     },
     "steals per game": {
       "range": [0, 2.48],
-      "active": true,
+      "active": false,
       "id": 17,
       "name": "steals per game"
     },
     "percentage of team assists": {
       "range": [0, 49.2],
-      "active": true,
+      "active": false,
       "id": 11,
       "name": "percentage of team assists"
     },
     "minutes": {
       "range": [5.1, 38.5],
-      "active": true,
+      "active": false,
       "id": 10,
       "name": "minutes"
     },
     "free throw percent": {
       "range": [0, 1],
-      "active": true,
+      "active": false,
       "id": 8,
       "name": "free throw percent"
     }
