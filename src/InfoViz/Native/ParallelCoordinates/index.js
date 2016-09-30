@@ -533,7 +533,7 @@ function parallelCoordinate(publicAPI, model) {
 
     const nbPolyDraw = model.axes.getNumberOf2DHistogram();
     const axesCenters = model.axes.extractAxesCenters(model);
-    if (!(model.axes.hasSelection() && model.showOnlySelection)) {
+    if (!model.showOnlySelection) {
       for (let j = 0; j < nbPolyDraw; ++j) {
         const axisOne = model.axes.getAxis(j);
         const axisTwo = model.axes.getAxis(j + 1);
