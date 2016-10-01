@@ -111,7 +111,7 @@ ArcticViewer allows the end-user to browse through data products that have been 
 
 ## DataViewer
 
-Finally, there is DataViewer that is a work in progress that allows the end-user to interact with BigData with ParaViewWeb’s information visualization components and UI widgets.
+In a recent project, we created DataViewer, a work in progress, which allows the end-user to interact with BigData with ParaViewWeb’s information visualization components and UI widgets.
 
 ![Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.][DataViewer]
 > Figure 9: DataViewer showing histograms, mutual information chord diagram, selection editor, workbench layout editor and parallel coordinates.
