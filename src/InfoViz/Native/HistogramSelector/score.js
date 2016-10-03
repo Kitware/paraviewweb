@@ -524,7 +524,7 @@ export default function init(inPublicAPI, inModel) {
     const uncertDispScale = 1; // was 100 for uncertainty as a %.
 
     dPopupDiv
-      .style('display', 'initial');
+      .style('display', null);
     positionPopup(dPopupDiv, coord[0] - topMargin - (0.5 * rowHeight),
                   (coord[1] + model.headerSize) - (topMargin + (2 * rowHeight)));
 
@@ -645,7 +645,7 @@ export default function init(inPublicAPI, inModel) {
     const formatter = d3.format('.4g');
 
     dPopupDiv
-      .style('display', 'initial');
+      .style('display', null);
     positionPopup(dPopupDiv, coord[0] - topMargin - (0.5 * rowHeight),
                   (coord[1] + model.headerSize) - (topMargin + (0.5 * rowHeight)));
 
@@ -775,7 +775,7 @@ export default function init(inPublicAPI, inModel) {
     const rowHeight = 26;
 
     sPopupDiv
-      .style('display', 'initial');
+      .style('display', null);
     positionPopup(sPopupDiv, coord[0] - topMargin - (0.6 * rowHeight),
                   (coord[1] + model.headerSize) - (topMargin + ((0.6 + selRow) * rowHeight)));
 

@@ -177,25 +177,27 @@ function parallelCoordinate(publicAPI, model) {
 
   function drawAxisControls(controlsDataModel) {
     // Manipulate the control widgets svg DOM
-    const svg = d3
+    const svgGr = d3
       .select(model.container)
       .select('svg')
       .select('g.axis-control-elements');
 
-    const axisControlNodes = svg
-      .selectAll('g.axis-control-elements')
+    const axisControlNodes = svgGr
+      .selectAll('g.axis-control-element')
       .data(controlsDataModel);
 
     axisControlNodes.enter()
       .append('g')
-      .classed('axis-control-elements', true)
+      .classed('axis-control-element', true)
       .classed(style.axisControlElements, true)
+      // TODO Can't use .html on svg without polyfill: https://github.com/d3/d3-3.x-api-reference/blob/master/Selections.md#html
+      // fails in IE11
       .html(axisControlSvg);
 
     axisControlNodes.exit().remove();
 
     const scale = 0.5;
-    svg.selectAll('g.axis-control-elements')
+    axisControlNodes
       .classed(style.upsideDown, (d, i) => !d.orient)
       .classed(style.rightsideUp, (d, i) => d.orient)
       .attr('transform', function inner(d, i) {

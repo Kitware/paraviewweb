@@ -65,7 +65,7 @@
 }
 
 .flexItem {
-  flex: 1;
+  flex: 1 0 auto;
   min-width: 10px;
   z-index: 1;
 }
