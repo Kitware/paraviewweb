@@ -13523,12 +13523,7 @@
 	      selection.partition.dividers.splice(deleteIndex, 1);
 	    }
 
-	    // If we still have at least one divider, selection isn't empty.
-	    if (selection.partition.dividers.length !== 0) {
-	      props.onChange(_SelectionBuilder2.default.markModified(selection), true);
-	    } else {
-	      props.onChange(_SelectionBuilder2.default.empty(), true);
-	    }
+	    props.onChange(_SelectionBuilder2.default.markModified(selection), true);
 	  };
 
 	  return _react2.default.createElement(

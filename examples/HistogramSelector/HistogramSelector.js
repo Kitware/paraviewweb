@@ -29583,7 +29583,7 @@
 	    var hasChange = false;
 
 	    Object.keys(changeSet).forEach(function (key) {
-	      hasChange = hasChange || field[key] !== changeSet[key];
+	      hasChange = hasChange || JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
 	      // Set changes
 	      field[key] = changeSet[key];
 	    });
@@ -32280,6 +32280,21 @@
 	      if (Object.keys(partitionSelectionToLoad).length) {
 	        scoreHelper.updateFieldAnnotations(partitionSelectionToLoad);
 	      }
+
+	      model.subscriptions.push(model.provider.onStoreAnnotationChange(function (event) {
+	        if (event.action === 'delete' && event.annotation) {
+	          var annotation = event.annotation;
+	          if (annotation.selection.type === 'partition') {
+	            var fieldName = annotation.selection.partition.variable;
+	            if (model.fieldData[fieldName]) {
+	              model.fieldData[fieldName].annotation = null;
+	              model.fieldData[fieldName].dividers = undefined;
+	              model.fieldData[fieldName].editScore = false;
+	              publicAPI.render(fieldName);
+	            }
+	          }
+	        }
+	      }));
 	    })();
 	  }
 

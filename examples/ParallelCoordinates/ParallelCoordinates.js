@@ -40564,7 +40564,7 @@
 	  }, {
 	    key: 'addSelection',
 	    value: function addSelection(start, end) {
-	      var endpoints = arguments.length <= 2 || arguments[2] === undefined ? 'oo' : arguments[2];
+	      var endpoints = arguments.length <= 2 || arguments[2] === undefined ? '**' : arguments[2];
 	      var uncertainty = arguments[3];
 
 	      var interval = [start < this.range[0] ? this.range[0] : start, end < this.range[1] ? end : this.range[1]];
@@ -42255,7 +42255,7 @@
 	    var hasChange = false;
 
 	    Object.keys(changeSet).forEach(function (key) {
-	      hasChange = hasChange || field[key] !== changeSet[key];
+	      hasChange = hasChange || JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
 	      // Set changes
 	      field[key] = changeSet[key];
 	    });

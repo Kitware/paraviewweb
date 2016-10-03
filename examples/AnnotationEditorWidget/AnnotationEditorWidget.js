@@ -8306,7 +8306,6 @@
 	        var removedIdx = 0;
 	        props.annotation.selection.partition.dividers.forEach(function (divider, idx) {
 	          if (selection.partition.dividers.indexOf(divider) === -1) {
-	            console.log('not inside...');
 	            removedIdx = idx;
 	          }
 	        });
@@ -14032,12 +14031,7 @@
 	      selection.partition.dividers.splice(deleteIndex, 1);
 	    }
 
-	    // If we still have at least one divider, selection isn't empty.
-	    if (selection.partition.dividers.length !== 0) {
-	      props.onChange(_SelectionBuilder2.default.markModified(selection), true);
-	    } else {
-	      props.onChange(_SelectionBuilder2.default.empty(), true);
-	    }
+	    props.onChange(_SelectionBuilder2.default.markModified(selection), true);
 	  };
 
 	  return _react2.default.createElement(
@@ -25904,10 +25898,11 @@
 	          getLegend: props.getLegend,
 	          onChange: props.onSelectionChange
 	        },
-	        props.annotation.score.map(function (score, idx) {
+	        props.annotation.score.map(function (score, idx, array) {
 	          return _react2.default.createElement(_BackgroundScore2.default, {
 	            key: 'bgscore-' + idx,
 	            index: idx,
+	            fullHeight: array.length === 1,
 	            color: props.scores[score].color
 	          });
 	        })
@@ -26014,7 +26009,7 @@
 	    style: {
 	      background: props.color,
 	      top: props.index * props.step + props.margin + 'px',
-	      height: props.step - 2 * props.margin + 'px'
+	      height: props.fullHeight ? 'calc(100% - ' + 2 * props.margin + 'px)' : props.step - 2 * props.margin + 'px'
 	    }
 	  });
 	}
@@ -26023,13 +26018,15 @@
 	  color: _react2.default.PropTypes.string,
 	  index: _react2.default.PropTypes.number,
 	  step: _react2.default.PropTypes.number,
-	  margin: _react2.default.PropTypes.number
+	  margin: _react2.default.PropTypes.number,
+	  fullHeight: _react2.default.PropTypes.bool
 	};
 
 	bgScore.defaultProps = {
 	  index: 0,
 	  step: 28,
-	  margin: 1
+	  margin: 1,
+	  fullHeight: false
 	};
 
 /***/ },
