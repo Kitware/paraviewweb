@@ -30,10 +30,11 @@ export default function manyScoreAnnotationEditorWidget(props) {
           getLegend={props.getLegend}
           onChange={props.onSelectionChange}
         >
-          {props.annotation.score.map((score, idx) =>
+          {props.annotation.score.map((score, idx, array) =>
             <BGSelector
               key={`bgscore-${idx}`}
               index={idx}
+              fullHeight={array.length === 1}
               color={props.scores[score].color}
             />
           )}

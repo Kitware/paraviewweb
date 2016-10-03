@@ -33,7 +33,6 @@ export default function annotationEditorWidget(props) {
       let removedIdx = 0;
       props.annotation.selection.partition.dividers.forEach((divider, idx) => {
         if (selection.partition.dividers.indexOf(divider) === -1) {
-          console.log('not inside...');
           removedIdx = idx;
         }
       });

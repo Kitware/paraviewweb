@@ -8,7 +8,7 @@ export default function bgScore(props) {
       style={{
         background: props.color,
         top: `${(props.index * props.step) + props.margin}px`,
-        height: `${props.step - (2 * props.margin)}px`,
+        height: props.fullHeight ? `calc(100% - ${(2 * props.margin)}px)` : `${props.step - (2 * props.margin)}px`,
       }}
     />);
 }
@@ -18,10 +18,12 @@ bgScore.propTypes = {
   index: React.PropTypes.number,
   step: React.PropTypes.number,
   margin: React.PropTypes.number,
+  fullHeight: React.PropTypes.bool,
 };
 
 bgScore.defaultProps = {
   index: 0,
   step: 28,
   margin: 1,
+  fullHeight: false,
 };
