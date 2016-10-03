@@ -33,12 +33,7 @@ export default function partitionSelection(props) {
       selection.partition.dividers.splice(deleteIndex, 1);
     }
 
-    // If we still have at least one divider, selection isn't empty.
-    if (selection.partition.dividers.length !== 0) {
-      props.onChange(SelectionBuilder.markModified(selection), true);
-    } else {
-      props.onChange(SelectionBuilder.empty(), true);
-    }
+    props.onChange(SelectionBuilder.markModified(selection), true);
   };
 
   return (

@@ -61,7 +61,7 @@ function fieldProvider(publicAPI, model) {
     let hasChange = false;
 
     Object.keys(changeSet).forEach(key => {
-      hasChange = hasChange || field[key] !== changeSet[key];
+      hasChange = hasChange || JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
       // Set changes
       field[key] = changeSet[key];
     });

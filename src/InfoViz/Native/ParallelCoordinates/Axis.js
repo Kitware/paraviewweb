@@ -43,7 +43,7 @@ export default class Axis {
     // FIXME trigger notification
   }
 
-  addSelection(start, end, endpoints = 'oo', uncertainty) {
+  addSelection(start, end, endpoints = '**', uncertainty) {
     const interval = [
       start < this.range[0] ? this.range[0] : start,
       end < this.range[1] ? end : this.range[1],
