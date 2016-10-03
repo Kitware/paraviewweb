@@ -96,6 +96,7 @@ function annotationStoreProvider(publicAPI, model) {
     const changeSet = {
       id,
       action: 'delete',
+      annotation: model.annotationStore[id],
     };
     delete model.annotationStore[id];
     if (publicAPI.isA('PersistentStateProvider')) {
