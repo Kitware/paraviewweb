@@ -839,6 +839,21 @@ function histogramSelector(publicAPI, model) {
     if (Object.keys(partitionSelectionToLoad).length) {
       scoreHelper.updateFieldAnnotations(partitionSelectionToLoad);
     }
+
+    model.subscriptions.push(model.provider.onStoreAnnotationChange(event => {
+      if (event.action === 'delete' && event.annotation) {
+        const annotation = event.annotation;
+        if (annotation.selection.type === 'partition') {
+          const fieldName = annotation.selection.partition.variable;
+          if (model.fieldData[fieldName]) {
+            model.fieldData[fieldName].annotation = null;
+            model.fieldData[fieldName].dividers = undefined;
+            model.fieldData[fieldName].editScore = false;
+            publicAPI.render(fieldName);
+          }
+        }
+      }
+    }));
   }
 
   // scoring interface
