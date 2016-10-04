@@ -24406,9 +24406,10 @@
 
 	      xhr.open('POST', url, true);
 	      xhr.responseType = 'json';
+	      var supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
 	      xhr.onload = function (e) {
-	        var response = xhr.response;
+	        var response = supportsJson ? xhr.response : JSON.parse(xhr.response);
 	        if (xhr.status === 200 && !response.error) {
 	          // Add connection to our global list
 	          connections.push(response);
@@ -24434,10 +24435,11 @@
 
 	      xhr.open('GET', url, true);
 	      xhr.responseType = 'json';
+	      var supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
 	      xhr.onload = function (e) {
 	        if (_this2.status === 200) {
-	          _this2.emit(CONNECTION_INFO_TOPIC, xhr.response);
+	          _this2.emit(CONNECTION_INFO_TOPIC, supportsJson ? xhr.response : JSON.parse(xhr.response));
 	          return;
 	        }
 	        _this2.emit(ERROR_TOPIC, xhr.response);
@@ -24459,10 +24461,11 @@
 
 	      xhr.open('DELETE', url, true);
 	      xhr.responseType = 'json';
+	      var supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
 	      xhr.onload = function (e) {
 	        if (_this3.status === 200) {
-	          var response = xhr.response;
+	          var response = supportsJson ? xhr.response : JSON.parse(xhr.response);
 	          // Remove connection from the list
 	          // FIXME / TODO
 	          _this3.emit(PROCESS_STOPPED_TOPIC, response);

@@ -220,7 +220,7 @@
 
 
 	// module
-	exports.push([module.id, ".Composite_container_3jlMF {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.Composite_viewport_3MdRA {\n  -ms-flex: 1;\n      flex: 1;\n  position: relative;\n}\n\n.Composite_fixViewport_1o2I5 {\n  -ms-flex: none;\n      flex: none;\n  position: relative;\n}\n", ""]);
+	exports.push([module.id, ".Composite_container_3jlMF {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.Composite_viewport_3MdRA {\n  -ms-flex: 1 0 auto;\n      flex: 1 0 auto;\n  position: relative;\n}\n\n.Composite_fixViewport_1o2I5 {\n  -ms-flex: none;\n      flex: none;\n  position: relative;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

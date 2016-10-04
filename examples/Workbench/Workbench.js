@@ -22643,7 +22643,7 @@
 
 
 	// module
-	exports.push([module.id, ".Composite_container_3jlMF {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.Composite_viewport_3MdRA {\n  -ms-flex: 1;\n      flex: 1;\n  position: relative;\n}\n\n.Composite_fixViewport_1o2I5 {\n  -ms-flex: none;\n      flex: none;\n  position: relative;\n}\n", ""]);
+	exports.push([module.id, ".Composite_container_3jlMF {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n}\n\n.Composite_viewport_3MdRA {\n  -ms-flex: 1 0 auto;\n      flex: 1 0 auto;\n  position: relative;\n}\n\n.Composite_fixViewport_1o2I5 {\n  -ms-flex: none;\n      flex: none;\n  position: relative;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -44622,7 +44622,7 @@
 
 
 	// module
-	exports.push([module.id, ".WorkbenchController_container_3TtVG {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  width: 100%;\n}\n\n.WorkbenchController_line_1IzZ9 {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n  padding: 5px;\n}\n\n.WorkbenchController_label_2Mmgh {\n  font-weight: bold;\n  padding: 0 10px 0 5px;\n}\n\n.WorkbenchController_stretch_2hVXJ {\n  -ms-flex: 1;\n      flex: 1;\n}\n\n.WorkbenchController_layout_4v3xm {\n  width: 100%;\n  padding: 5px;\n}\n", ""]);
+	exports.push([module.id, ".WorkbenchController_container_3TtVG {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  width: 100%;\n}\n\n.WorkbenchController_line_1IzZ9 {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-align: center;\n      align-items: center;\n  padding: 5px;\n}\n\n.WorkbenchController_label_2Mmgh {\n  font-weight: bold;\n  padding: 0 10px 0 5px;\n}\n\n.WorkbenchController_stretch_2hVXJ {\n  -ms-flex: 1 0 auto;\n      flex: 1 0 auto;\n}\n\n.WorkbenchController_layout_4v3xm {\n  width: 100%;\n  padding: 5px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

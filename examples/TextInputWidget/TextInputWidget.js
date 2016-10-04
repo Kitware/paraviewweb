@@ -4358,7 +4358,7 @@
 	exports.i(__webpack_require__(38), undefined);
 
 	// module
-	exports.push([module.id, ".TextInputWidget_container_3VM_x {\n    width: 100%;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: center;\n        align-items: center;\n}\n\n.TextInputWidget_entry_3jWRS {\n    -ms-flex: 1;\n        flex: 1;\n}\n\n.TextInputWidget_button_1TtFv {\n\n    margin-left: 10px;\n    -ms-flex: none;\n        flex: none;\n    cursor: pointer;\n    color: #ccc;\n}\n\n.TextInputWidget_editingButton_HVjK4 {\n    color: #000;\n}\n", ""]);
+	exports.push([module.id, ".TextInputWidget_container_3VM_x {\n    width: 100%;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: center;\n        align-items: center;\n}\n\n.TextInputWidget_entry_3jWRS {\n    -ms-flex: 1 0 auto;\n        flex: 1 0 auto;\n}\n\n.TextInputWidget_button_1TtFv {\n\n    margin-left: 10px;\n    -ms-flex: none;\n        flex: none;\n    cursor: pointer;\n    color: #ccc;\n}\n\n.TextInputWidget_editingButton_HVjK4 {\n    color: #000;\n}\n", ""]);
 
 	// exports
 	exports.locals = {

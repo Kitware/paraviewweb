@@ -29168,16 +29168,19 @@
 
 	  function drawAxisControls(controlsDataModel) {
 	    // Manipulate the control widgets svg DOM
-	    var svg = _d2.default.select(model.container).select('svg').select('g.axis-control-elements');
+	    var svgGr = _d2.default.select(model.container).select('svg').select('g.axis-control-elements');
 
-	    var axisControlNodes = svg.selectAll('g.axis-control-elements').data(controlsDataModel);
+	    var axisControlNodes = svgGr.selectAll('g.axis-control-element').data(controlsDataModel);
 
-	    axisControlNodes.enter().append('g').classed('axis-control-elements', true).classed(_ParallelCoordinates2.default.axisControlElements, true).html(_AxisControlSvg2.default);
+	    axisControlNodes.enter().append('g').classed('axis-control-element', true).classed(_ParallelCoordinates2.default.axisControlElements, true)
+	    // TODO Can't use .html on svg without polyfill: https://github.com/d3/d3-3.x-api-reference/blob/master/Selections.md#html
+	    // fails in IE11
+	    .html(_AxisControlSvg2.default);
 
 	    axisControlNodes.exit().remove();
 
 	    var scale = 0.5;
-	    svg.selectAll('g.axis-control-elements').classed(_ParallelCoordinates2.default.upsideDown, function (d, i) {
+	    axisControlNodes.classed(_ParallelCoordinates2.default.upsideDown, function (d, i) {
 	      return !d.orient;
 	    }).classed(_ParallelCoordinates2.default.rightsideUp, function (d, i) {
 	      return d.orient;

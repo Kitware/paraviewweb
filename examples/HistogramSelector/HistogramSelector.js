@@ -43464,7 +43464,7 @@
 	    var formatter = _d3.default.format('.4g');
 	    var uncertDispScale = 1; // was 100 for uncertainty as a %.
 
-	    dPopupDiv.style('display', 'initial');
+	    dPopupDiv.style('display', null);
 	    positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 2 * rowHeight));
 
 	    var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
@@ -43571,7 +43571,7 @@
 	    // 's' SI unit label won't work for a number entry field.
 	    var formatter = _d3.default.format('.4g');
 
-	    dPopupDiv.style('display', 'initial');
+	    dPopupDiv.style('display', null);
 	    positionPopup(dPopupDiv, coord[0] - topMargin - 0.5 * rowHeight, coord[1] + model.headerSize - (topMargin + 0.5 * rowHeight));
 
 	    var selDivider = selectedDef.dividers[selectedDef.dragDivider.index];
@@ -43651,7 +43651,7 @@
 	    var topMargin = 4;
 	    var rowHeight = 26;
 
-	    sPopupDiv.style('display', 'initial');
+	    sPopupDiv.style('display', null);
 	    positionPopup(sPopupDiv, coord[0] - topMargin - 0.6 * rowHeight, coord[1] + model.headerSize - (topMargin + (0.6 + selRow) * rowHeight));
 
 	    sPopupDiv.selectAll('.' + _HistogramSelector2.default.jsScoreLabel).style('background-color', function (d, i) {
