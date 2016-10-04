@@ -22,9 +22,10 @@ export default class ProcessLauncher {
 
     xhr.open('POST', url, true);
     xhr.responseType = 'json';
+    const supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
     xhr.onload = (e) => {
-      var response = xhr.response;
+      const response = supportsJson ? xhr.response : JSON.parse(xhr.response);
       if (xhr.status === 200 && !response.error) {
         // Add connection to our global list
         connections.push(response);
@@ -47,10 +48,11 @@ export default class ProcessLauncher {
 
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
+    const supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
     xhr.onload = (e) => {
       if (this.status === 200) {
-        this.emit(CONNECTION_INFO_TOPIC, xhr.response);
+        this.emit(CONNECTION_INFO_TOPIC, supportsJson ? xhr.response : JSON.parse(xhr.response));
         return;
       }
       this.emit(ERROR_TOPIC, xhr.response);
@@ -69,10 +71,11 @@ export default class ProcessLauncher {
 
     xhr.open('DELETE', url, true);
     xhr.responseType = 'json';
+    const supportsJson = 'response' in xhr && xhr.responseType === 'json';
 
     xhr.onload = (e) => {
       if (this.status === 200) {
-        const response = xhr.response;
+        const response = supportsJson ? xhr.response : JSON.parse(xhr.response);
         // Remove connection from the list
         // FIXME / TODO
         this.emit(PROCESS_STOPPED_TOPIC, response);

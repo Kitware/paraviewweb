@@ -65,7 +65,7 @@
 }
 
 .flexItem {
-  flex: 1;
+  flex: 1 0 auto;
   min-width: 10px;
   z-index: 1;
 }
@@ -76,11 +76,11 @@
 
 .nameInput {
   min-width: 10px;
-  flex: 2;
+  flex: 2 0 auto;
 }
 
 .label {
-  flex: 1;
+  flex: 1 0 auto;
   font-weight: bold;
   margin-right: 20px;
 }

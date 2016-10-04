@@ -43,7 +43,7 @@
 }
 
 .editor {
-  flex: 1;
+  flex: 1 0 auto;
   border: 1px solid #aaa;
   overflow-y: auto;
   margin: 10px;
