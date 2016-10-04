@@ -11,7 +11,7 @@
 
 .label {
     font-weight: bold;
-    flex: 1;
+    flex: 1 0 auto;
     text-align: left;
     margin-left: 5px;
     align-self: center;
@@ -127,7 +127,7 @@
 }
 
 .input {
-  flex: 1;
+  flex: 1 0 auto;
   box-shadow: none;
   border: 1px solid #aaa;
   min-width: 30%;
