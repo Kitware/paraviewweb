@@ -35,7 +35,7 @@
 }
 
 .advancedViewContent {
-  flex: 1;
+  flex: 1 0 auto;
   max-width: calc(100% - 1.28571em - 4px);
   height: 6em;
 }
@@ -45,7 +45,7 @@
 }
 
 .input {
-  flex: 1;
+  flex: 1 0 auto;
 
   height: 28px;
   border-radius: 5px;

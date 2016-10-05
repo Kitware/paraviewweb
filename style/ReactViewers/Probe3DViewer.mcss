@@ -17,7 +17,7 @@
 }
 
 .button {
-    flex: 1;
+    flex: 1 0 auto;
    border: 1px solid grey;
    border-radius: 3px;
    margin: 0 2px;

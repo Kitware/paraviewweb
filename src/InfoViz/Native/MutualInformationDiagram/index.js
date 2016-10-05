@@ -633,51 +633,51 @@ function informationDiagram(publicAPI, model) {
       .filter(function removeLongLabel(d, i) {
         return ((groupPath[0][i].getTotalLength() / 2) - deltaRadius) < (this.getComputedTextLength() + model.glyphSize);
       })
-      .remove();
+      // .remove(); ie11 throws errors if we use .remove() - hide instead.
+      .attr('display', 'none');
+
 
     // Add group for glyph
     if (getLegend) {
-      group.each(function addLegend() {
-        const glyph = d3.select(this).select('g.glyph');
+      group.each(function addLegend(glyphData) {
+        let glyph = d3.select(this).select('g.glyph');
         if (glyph.empty()) {
-          d3.select(this)
+          glyph = d3.select(this)
             .append('g')
             .classed('glyph', true)
-            .classed(style.glyph, true)
+            .classed(style.glyph, true);
+          glyph
             .append('svg')
             .append('use');
         }
 
-        const groupGlyph = group.selectAll('g.glyph');
-        groupGlyph.each(function updateColor(glyphData) {
-          const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
-          // Add the glyph to the group
-          const textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
-          const pathLength = groupPath[0][glyphData.index].getTotalLength();
-          const avgRadius = (innerRadius + outerRadius) / 2;
-          // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-          const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - ((textLength + model.glyphSize) / 2 / avgRadius));
+        const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
+        // Add the glyph to the group
+        const textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
+        const pathLength = groupPath[0][glyphData.index].getTotalLength();
+        const avgRadius = (innerRadius + outerRadius) / 2;
+        // Start at edge of arc, move to text anchor, back up half of text length and glyph size
+        const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - ((textLength + model.glyphSize) / 2 / avgRadius));
 
-          const currGlyph = d3.select(this);
-          currGlyph
-            .attr('transform', `translate(
-              ${(avgRadius * Math.sin(glyphAngle)) - (model.glyphSize / 2)},
-              ${(-avgRadius * Math.cos(glyphAngle)) - (model.glyphSize / 2)})`)
-            .select('svg')
-            .attr('width', model.glyphSize)
-            .attr('height', model.glyphSize)
-            .attr('stroke', 'black')
-            .attr('fill', legend.color)
-            .select('use')
-            .attr('xlink:href', legend.shape);
+        glyph
+          .attr('transform', `translate(
+            ${(avgRadius * Math.sin(glyphAngle)) - (model.glyphSize / 2)},
+            ${(-avgRadius * Math.cos(glyphAngle)) - (model.glyphSize / 2)})`)
+          .select('svg')
+          .attr('width', model.glyphSize)
+          .attr('height', model.glyphSize)
+          .attr('stroke', 'black')
+          .attr('fill', legend.color)
+          .select('use')
+          .attr('xlink:href', legend.shape);
 
-          model.mutualInformationData.vmap[glyphData.index].color = legend.color;
-        });
+        model.mutualInformationData.vmap[glyphData.index].color = legend.color;
 
         // Remove the glyphs that don't fit
-        groupGlyph
-          .filter((d, i) => (groupPath[0][i].getTotalLength() / 2) - deltaRadius < model.glyphSize)
-          .remove();
+        if ((groupPath[0][glyphData.index].getTotalLength() / 2) - deltaRadius < model.glyphSize) {
+          // glyph.remove(); ie11 objects, hide instead.
+          glyph.attr('display', 'none');
+        }
       });
     }
 

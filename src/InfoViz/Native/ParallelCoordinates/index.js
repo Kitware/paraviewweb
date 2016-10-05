@@ -5,7 +5,7 @@ import style from 'PVWStyle/InfoVizNative/ParallelCoordinates.mcss';
 
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 import AxesManager from './AxesManager';
-import axisControlSvg from './AxisControl-svg.html';
+// import axisControlSvg from './AxisControl-svg.html';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import htmlContent from './body.html';
 import iconImage from './ParallelCoordsIconSmall.png';
@@ -186,13 +186,61 @@ function parallelCoordinate(publicAPI, model) {
       .selectAll('g.axis-control-element')
       .data(controlsDataModel);
 
-    axisControlNodes.enter()
+    const axisControls = axisControlNodes.enter()
       .append('g')
       .classed('axis-control-element', true)
       .classed(style.axisControlElements, true)
-      // TODO Can't use .html on svg without polyfill: https://github.com/d3/d3-3.x-api-reference/blob/master/Selections.md#html
-      // fails in IE11
-      .html(axisControlSvg);
+      // Can't use .html on svg without polyfill: https://github.com/d3/d3-3.x-api-reference/blob/master/Selections.md#html
+      // fails in IE11. Replace by explicit DOM manipulation.
+      // .html(axisControlSvg);
+      .append('g')
+        .classed('axis-controls-group-container', true)
+        .attr('width', 108)
+        .attr('height', 50)
+        .attr('viewBox', '0 0 108 50')
+      .append('g')
+        .classed('axis-controls-group', true);
+
+    axisControls
+      .append('rect')
+        .classed('center-rect', true)
+        .attr('x', 28)
+        .attr('y', 1)
+        .attr('width', 52)
+        .attr('height', 48);
+    axisControls
+      .append('rect')
+        .classed('right-rect', true)
+        .attr('x', 82)
+        .attr('y', 1)
+        .attr('width', 25)
+        .attr('height', 48);
+    axisControls
+      .append('rect')
+        .classed('left-rect', true)
+        .attr('x', 1)
+        .attr('y', 1)
+        .attr('width', 25)
+        .attr('height', 48);
+    axisControls
+      .append('polygon')
+        .classed('top', true)
+        .attr('points', '54 1 78 23 30 23 ');
+    axisControls
+      .append('polygon')
+        .classed('right', true)
+        .attr('points', '94 14 118 36 70 36 ')
+        .attr('transform', 'translate(94.0, 25.0) rotate(-270.0) translate(-94.0, -25.0) ');
+    axisControls
+      .append('polygon')
+        .classed('left', true)
+        .attr('points', '14 14 38 36 -10 36 ')
+        .attr('transform', 'translate(14.0, 25.0) scale(-1, 1) rotate(-270.0) translate(-14.0, -25.0) ');
+    axisControls
+      .append('polygon')
+        .classed('bottom', true)
+        .attr('points', '54 27 78 49 30 49 ')
+        .attr('transform', 'translate(54.0, 38.0) scale(1, -1) translate(-54.0, -38.0) ');
 
     axisControlNodes.exit().remove();
 

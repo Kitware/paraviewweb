@@ -24,7 +24,7 @@
 
 .label {
     font-weight: bold;
-    flex: 1;
+    flex: 1 0 auto;
     text-align: left;
     margin-left: 5px;
     align-self: center;
@@ -129,7 +129,7 @@
 
 
 .opacity {
-    flex: 1;
+    flex: 1 0 auto;
 }
 
 .children {

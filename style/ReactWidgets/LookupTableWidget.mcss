@@ -9,7 +9,7 @@
 .line {
     position: relative;
     display: flex;
-    flex: 1;
+    flex: 1 0 auto;
     flex-direction: row;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -23,7 +23,7 @@
 }
 
 .label {
-    flex: 1;
+    flex: 1 0 auto;
     white-space: nowrap;
     font-weight: bold;
     padding-top: 0.25em;
@@ -127,7 +127,7 @@
 }
 
 .preset {
-    flex: 1;
+    flex: 1 0 auto;
 
     margin-top: 5px;
     margin-bottom: 5px;
@@ -151,7 +151,7 @@
 }
 
 .input {
-    flex: 1;
+    flex: 1 0 auto;
     border: none;
     box-shadow: none;
     text-align: left;

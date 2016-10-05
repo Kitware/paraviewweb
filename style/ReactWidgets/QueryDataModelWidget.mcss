@@ -8,7 +8,7 @@
 
 .item {
     display: flex;
-    flex: 1;
+    flex: 1 0 auto;
     flex-direction: column;
     box-sizing: border-box;
     margin-top: 10px;
@@ -28,13 +28,13 @@
 .row {
     position: relative;
     display: flex;
-    flex: 1;
+    flex: 1 0 auto;
     flex-direction: row;
     margin-top: 5px;
 }
 
 .label {
-    flex: 1;
+    flex: 1 0 auto;
 
     /* bold */
     font-weight: bold;
@@ -108,7 +108,7 @@
 
 
 .slider {
-    flex: 1;
+    flex: 1 0 auto;
 }
 
 .input {
@@ -122,7 +122,7 @@ screen and (orientation: landscape) and (max-device-width: 400px) {
     }
 
     .itemControl {
-        flex: 1;
+        flex: 1 0 auto;
         justify-content: center;
     }
 
@@ -163,7 +163,7 @@ screen and (orientation: landscape) and (max-device-width: 400px) {
 }
 
 :global(.is-ios-device) .itemControl {
-    flex: 1;
+    flex: 1 0 auto;
     justify-content: center;
 }
 
