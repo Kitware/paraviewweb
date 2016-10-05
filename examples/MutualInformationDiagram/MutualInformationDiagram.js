@@ -29292,7 +29292,7 @@
 	        var selection = _SelectionBuilder2.default.range(vars);
 	        if (model.useAnnotation) {
 	          lastAnnotationPushed = model.provider.getAnnotation();
-	          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation()) {
+	          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
 	            lastAnnotationPushed = _AnnotationBuilder2.default.annotation(selection, [model.defaultScore], model.defaultWeight);
 	          } else {
 	            lastAnnotationPushed = _AnnotationBuilder2.default.update(lastAnnotationPushed, {

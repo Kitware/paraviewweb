@@ -31796,9 +31796,10 @@
 	    if (!model.container) return;
 
 	    var clientRect = model.container.getBoundingClientRect();
-	    if (clientRect.width !== 0 && clientRect.height !== 0) {
+	    var deltaHeader = model.singleModeSticky ? 0 : model.headerSize;
+	    if (clientRect.width !== 0 && clientRect.height > deltaHeader) {
 	      model.containerHidden = false;
-	      _d3.default.select(model.listContainer).style('height', clientRect.height - model.headerSize + 'px');
+	      _d3.default.select(model.listContainer).style('height', clientRect.height - deltaHeader + 'px');
 	      // scrollbarWidth = model.listContainer.offsetWidth - clientRect.width;
 	      publicAPI.render();
 	    } else {
@@ -31833,6 +31834,7 @@
 	    } else {
 	      model.singleModeSticky = false;
 	    }
+	    publicAPI.resize();
 	  };
 
 	  publicAPI.disableFieldActions = function (fieldName, actionNames) {
@@ -31886,6 +31888,10 @@
 
 	    if (!model.container || model.container.offsetParent === null) return;
 	    if (!model.listContainer) return;
+	    if (model.containerHidden) {
+	      publicAPI.resize();
+	      return;
+	    }
 
 	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
