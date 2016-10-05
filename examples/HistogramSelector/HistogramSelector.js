@@ -32312,6 +32312,10 @@
 
 	  // Expose update fields partitions
 	  publicAPI.updateFieldAnnotations = scoreHelper.updateFieldAnnotations;
+
+	  publicAPI.getAnnotationForField = function (fieldName) {
+	    return model.fieldData[fieldName].annotation;
+	  };
 	}
 
 	// ----------------------------------------------------------------------------
