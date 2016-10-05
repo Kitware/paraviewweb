@@ -297,7 +297,7 @@ function informationDiagram(publicAPI, model) {
         const selection = SelectionBuilder.range(vars);
         if (model.useAnnotation) {
           lastAnnotationPushed = model.provider.getAnnotation();
-          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation()) {
+          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
             lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
           } else {
             lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {

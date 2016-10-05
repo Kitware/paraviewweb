@@ -306,10 +306,11 @@ function histogramSelector(publicAPI, model) {
     if (!model.container) return;
 
     const clientRect = model.container.getBoundingClientRect();
-    if (clientRect.width !== 0 && clientRect.height !== 0) {
+    const deltaHeader = model.singleModeSticky ? 0 : model.headerSize;
+    if (clientRect.width !== 0 && clientRect.height > deltaHeader) {
       model.containerHidden = false;
       d3.select(model.listContainer)
-        .style('height', `${clientRect.height - model.headerSize}px`);
+        .style('height', `${clientRect.height - deltaHeader}px`);
       // scrollbarWidth = model.listContainer.offsetWidth - clientRect.width;
       publicAPI.render();
     } else {
@@ -344,6 +345,7 @@ function histogramSelector(publicAPI, model) {
     } else {
       model.singleModeSticky = false;
     }
+    publicAPI.resize();
   };
 
   publicAPI.disableFieldActions = (fieldName, actionNames) => {
@@ -396,6 +398,10 @@ function histogramSelector(publicAPI, model) {
 
     if (!model.container || model.container.offsetParent === null) return;
     if (!model.listContainer) return;
+    if (model.containerHidden) {
+      publicAPI.resize();
+      return;
+    }
 
     const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
 
