@@ -870,6 +870,8 @@ function histogramSelector(publicAPI, model) {
 
   // Expose update fields partitions
   publicAPI.updateFieldAnnotations = scoreHelper.updateFieldAnnotations;
+
+  publicAPI.getAnnotationForField = fieldName => model.fieldData[fieldName].annotation;
 }
 
 // ----------------------------------------------------------------------------
