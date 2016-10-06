@@ -42,11 +42,11 @@
 
         "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
 
-        "kw-web-suite": "2.1.1",
+        "kw-web-suite": "2.2.1",
         "kw-doc": "1.0.15",
 
         "babel-plugin-istanbul": "2.0.0",
-        "babel-polyfill": "6.13.0",
+        "babel-polyfill": "6.16.0",
 
         "karma": "1.2.0",
         "karma-chrome-launcher": "2.0.0",
