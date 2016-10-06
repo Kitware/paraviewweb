@@ -619,19 +619,36 @@ function informationDiagram(publicAPI, model) {
     // Add a text label.
     const groupText = group
       .append('text')
-      .attr('x', 6)
+      // .attr('x', 6) // prevents ie11 from seeing text-anchor and startOffset.
       .attr('dy', 15);
 
-    groupText
-      .append('textPath')
-      .attr('xlink:href', (d, i) => `#${model.instanceID}-group${i}`)
-      .attr('startOffset', '25%')
-      .text((d, i) => model.mutualInformationData.vmap[i].name);
+    // add a straight path so IE/Edge can measure text lengths usefully.
+    // Otherwise, along a curved path, they return the horizontal space covered.
+    svg.append('defs').append('path')
+      .attr('id', 'straight-text-path')
+      .attr('d', `M0,0L${width},0`);
 
-    // Remove the labels that don't fit. :(
+    const textLengthMap = [];
+    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
+    const textPath = groupText
+      .append('textPath')
+      .attr('xlink:href', '#straight-text-path')
+      .attr('startOffset', '25%')
+      .text((d, i) => model.mutualInformationData.vmap[i].name)
+      .each(function textLen(d, i) {
+        textLengthMap[i] = this.getComputedTextLength();
+      });
+
+    textPath
+      .attr('xlink:href', (d, i) => `#${model.instanceID}-group${i}`);
+
+    // Remove the labels that don't fit. Set length to zero. :(
+    // TODO shorten label, use ... ?
     groupText
-      .filter(function removeLongLabel(d, i) {
-        return ((groupPath[0][i].getTotalLength() / 2) - deltaRadius) < (this.getComputedTextLength() + model.glyphSize);
+      .filter((d, i) => {
+        const shouldRemove = (((groupPath[0][i].getTotalLength() / 2) - deltaRadius) < (textLengthMap[i] + model.glyphSize));
+        if (shouldRemove) textLengthMap[i] = 0;
+        return shouldRemove;
       })
       // .remove(); ie11 throws errors if we use .remove() - hide instead.
       .attr('display', 'none');
@@ -653,11 +670,12 @@ function informationDiagram(publicAPI, model) {
 
         const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
         // Add the glyph to the group
-        const textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
+        const textLength = textLengthMap[glyphData.index];
         const pathLength = groupPath[0][glyphData.index].getTotalLength();
         const avgRadius = (innerRadius + outerRadius) / 2;
         // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-        const glyphAngle = (glyphData.startAngle + (pathLength / 4 / outerRadius) - ((textLength + model.glyphSize) / 2 / avgRadius));
+        const glyphAngle = (glyphData.startAngle + (pathLength * 0.25 / outerRadius) - ((textLength + model.glyphSize) * 0.5 / avgRadius));
+        // console.log(model.mutualInformationData.vmap[glyphData.index].name, textLength, pathLength, glyphAngle);
 
         glyph
           .attr('transform', `translate(
@@ -936,9 +954,6 @@ function informationDiagram(publicAPI, model) {
     if (model.provider.setMutualInformationParameterNames) {
       model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
     }
-  }));
-  model.subscriptions.push(model.provider.onMutualInformationReady(mutualInfo => {
-    publicAPI.render();
   }));
 
   if (model.provider.isA('Histogram1DProvider')) {

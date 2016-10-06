@@ -98,7 +98,7 @@
     font-size: 45px;
 }
 
-.group textPath {
+.group textPath, .group text {
   user-select: none;
   fill: black;
   text-anchor: middle;

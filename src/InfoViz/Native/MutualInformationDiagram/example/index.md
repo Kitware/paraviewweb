@@ -3,8 +3,8 @@
 This is a visualization component that illustrates the relationships between pairs of variables.
 It uses 1-d and 2-d histograms to compute and present
 
-1. the amount of [mutual information]() (MI) between pairs of variables;
-2. the [pointwise mutual information]() (PMI) between values of one variable and another; and
+1. the amount of [mutual information][] (MI) between pairs of variables;
+2. the [pointwise mutual information][] (PMI) between values of one variable and another; and
 3. the approximate probability distribution of each variable (for reference).
 
 The diagram consists of an annular region for each variable indicated by a field provider.
@@ -44,9 +44,9 @@ The center of the diagram contains an illustration of either MI or PMI, dependin
 ## Providers
 
 The diagram requires the data model to be
-a field provider,
-1-d histogram provider, and
-a mutual information provider.
++ a field provider,
++ 1-d histogram provider, and
++ a mutual information provider.
 The mutual information provider in turn requires a data model that is a 2-d histogram provider.
 
 The mutual information diagram behaves differently depending on the API provided by the data model.
