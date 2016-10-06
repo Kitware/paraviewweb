@@ -376,6 +376,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function moveDragDivider(val, def) {
+    if (!def.dragDivider) return;
     if (def.dragDivider.index >= 0) {
       // if we drag outside our bounds, make this a 'temporary' extra divider.
       if (val < def.dragDivider.low) {
@@ -435,6 +436,7 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function finishDivider(def, hobj, forceDelete = false) {
+    if (!def.dragDivider) return;
     const val = def.dragDivider.newDivider.value;
     // if val is defined, we moved an existing divider inside
     // its region, and we just need to render. Otherwise...
@@ -572,6 +574,11 @@ export default function init(inPublicAPI, inModel) {
           moveDragDivider(savedVal, selectedDef);
           dPopupDiv.on('mouseleave')();
         } else if (d3.event.key === 'Enter' || d3.event.key === 'Return') {
+          if (selectedDef.dragDivider) {
+            savedVal = (selectedDef.dragDivider.newDivider.value === undefined ?
+                        selectedDef.dividers[selectedDef.dragDivider.index].value :
+                        selectedDef.dragDivider.newDivider.value);
+          }
           // commit current value
           dPopupDiv.on('mouseleave')();
         }
@@ -587,32 +594,37 @@ export default function init(inPublicAPI, inModel) {
         // typing values, show feedback.
         let uncert = d3.event.target.value;
         if (!validateDividerVal(uncert)) {
-          uncert = selectedDef.dragDivider.savedUncert;
+          if (selectedDef.dragDivider) uncert = selectedDef.dragDivider.savedUncert;
         } else {
           uncert /= uncertDispScale;
         }
-        selectedDef.dragDivider.newDivider.uncertainty = uncert;
-        if (selectedDef.dragDivider.newDivider.value === undefined) {
-          // don't use selDivider, might be out-of-date if the server sent us dividers.
-          selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+        if (selectedDef.dragDivider) {
+          selectedDef.dragDivider.newDivider.uncertainty = uncert;
+          if (selectedDef.dragDivider.newDivider.value === undefined) {
+            // don't use selDivider, might be out-of-date if the server sent us dividers.
+            selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+          }
         }
         publicAPI.render(selectedDef.name);
       })
       .on('change', () => {
         // committed to a value, show feedback.
         let uncert = d3.event.target.value;
-        if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;
-        else {
+        if (!validateDividerVal(uncert)) {
+          if (selectedDef.dragDivider) uncert = selectedDef.dragDivider.savedUncert;
+        } else {
           // uncertainty is a % between 0 and 0.5
           // uncert = Math.min(0.5, Math.max(0, uncert / uncertDispScale));
           const [minRange, maxRange] = getHistRange(selectedDef);
           uncert = Math.min(0.5 * (maxRange - minRange), Math.max(0, uncert / uncertDispScale));
           d3.event.target.value = formatter(uncertDispScale * uncert);
-          selectedDef.dragDivider.savedUncert = uncert;
+          if (selectedDef.dragDivider) selectedDef.dragDivider.savedUncert = uncert;
         }
-        selectedDef.dragDivider.newDivider.uncertainty = uncert;
-        if (selectedDef.dragDivider.newDivider.value === undefined) {
-          selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+        if (selectedDef.dragDivider) {
+          selectedDef.dragDivider.newDivider.uncertainty = uncert;
+          if (selectedDef.dragDivider.newDivider.value === undefined) {
+            selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+          }
         }
         publicAPI.render(selectedDef.name);
       })
@@ -623,6 +635,9 @@ export default function init(inPublicAPI, inModel) {
           }
           dPopupDiv.on('mouseleave')();
         } else if (d3.event.key === 'Enter' || d3.event.key === 'Return') {
+          if (selectedDef.dragDivider) {
+            selectedDef.dragDivider.savedUncert = selectedDef.dragDivider.newDivider.uncertainty;
+          }
           dPopupDiv.on('mouseleave')();
         }
       })
