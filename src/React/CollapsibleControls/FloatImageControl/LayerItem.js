@@ -49,10 +49,10 @@ export default React.createClass({
 
     return (
       <div className={style.item}>
-        <div className={style.label}>
+        <div className={style.sceneLabel}>
             {layer.name}
         </div>
-        <div className={style.actions}>
+        <div className={style.sceneActions}>
           <i
             className={(meshAvailable ? (meshVisible ? style.meshButtonOn : style.meshButtonOff) : style.hidden)}
             onClick={this.toggleMesh}

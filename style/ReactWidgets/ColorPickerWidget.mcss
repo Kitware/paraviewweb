@@ -21,7 +21,7 @@
 }
 
 .colorRGB {
-    flex: 1 0 auto;
+    flex: 1 0 0%;
     min-width: 1em;
     margin-left: 5px;
     margin-right: 5px;
