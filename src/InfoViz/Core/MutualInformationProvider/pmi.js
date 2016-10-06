@@ -148,6 +148,7 @@ function mutualInformationPair(miData, indices, histdata) {
 }
 
 function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemoved, histogramData) {
+  // console.log('Upd MI ', variablesAddedOrUpdated, 'remove', variablesRemoved);
   variablesAddedOrUpdated.forEach(vname => insertVariable(miData, vname));
   variablesRemoved.forEach(vname => removeVariable(miData, vname));
   // Now that all the miData maps have been updated, we can recompute only the
@@ -159,14 +160,14 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
     if (vidx === undefined) {
       return;
     }
-    // console.log('Refreshing ', vname, vidx );
+    // console.log('Refreshing ', vname, vidx);
     for (let v2dx = 0; v2dx < nv; ++v2dx) {
       // tup always has the smaller index first so we don't redo symmetric entries:
       const tup = v2dx < vidx ? [v2dx, vidx] : [vidx, v2dx];
       if (tup[0] in alreadyDone && tup[1] in alreadyDone[tup[0]]) {
         continue;
       }
-      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug
+      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug. console.log use only, perhaps?
       // const v2nam = miData.vmap[v2dx].name;
       const t0nam = miData.vmap[tup[0]].name;
       const t1nam = miData.vmap[tup[1]].name;

@@ -39,12 +39,14 @@ function mutualInformationProvider(publicAPI, model) {
   };
 
   function updateHistogram2D(histograms) {
+    // even if histograms only has maxCount = 0, run through PMI.updateMI
+    // so deltaHandling.removed array is handled properly.
+    const invalidAxis = [];
+    // Extract mtime
+    deltaHandling.modified = [];
+    deltaHandling.previousMTime = deltaHandling.currentMTime;
+    deltaHandling.currentMTime = {};
     if (Object.keys(histograms).length > 1) {
-      const invalidAxis = [];
-      // Extract mtime
-      deltaHandling.modified = [];
-      deltaHandling.previousMTime = deltaHandling.currentMTime;
-      deltaHandling.currentMTime = {};
       model.mutualInformationParameterNames.forEach(name => {
         if (histograms[name] && histograms[name][name]) {
           // Validate range
@@ -62,23 +64,22 @@ function mutualInformationProvider(publicAPI, model) {
           }
         }
       });
+    }
+    // Check mutualInformationParameterNames are consitent with the current set of data
+    // if not just for the next notification...
+    try {
+      PMI.updateMutualInformation(
+        mutualInformationData,
+        [].concat(deltaHandling.added, deltaHandling.modified),
+        [].concat(deltaHandling.removed, invalidAxis),
+        histograms);
 
-      // Check mutualInformationParameterNames are consitent with the current set of data
-      // if not just for the next notification...
-      try {
-        PMI.updateMutualInformation(
-          mutualInformationData,
-          [].concat(deltaHandling.added, deltaHandling.modified),
-          [].concat(deltaHandling.removed, invalidAxis),
-          histograms);
-
-        // Push the new mutual info
-        deltaHandling.processed = true;
-        hasData = true;
-        publicAPI.fireMutualInformationReady(mutualInformationData);
-      } catch (e) {
-        console.log('PMI error', e);
-      }
+      // Push the new mutual info
+      deltaHandling.processed = true;
+      hasData = true;
+      publicAPI.fireMutualInformationReady(mutualInformationData);
+    } catch (e) {
+      console.log('PMI error', e);
     }
   }
 
