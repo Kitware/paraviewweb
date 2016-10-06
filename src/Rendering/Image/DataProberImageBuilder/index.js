@@ -448,14 +448,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       dimensions = this.metadata.dimensions,
       spacing = this.metadata.spacing;
 
-    this.getImage(this.probeXYZ[2], () => {
+    function drawThisImage() {
       var image = this;
       ctx.drawImage(image, 0, dimensions[1] * offset, dimensions[0], dimensions[1], 0, 0, dimensions[0], dimensions[1]);
 
       self.extractNumericalValues(dimensions[0], dimensions[1]);
       self.applyLookupTable(dimensions[0], dimensions[1]);
       self.pushToFront(dimensions[0], dimensions[1], spacing[0], spacing[1], xyz[0], xyz[1]);
-    });
+    }
+
+    this.getImage(this.probeXYZ[2], drawThisImage);
   }
 
   // ------------------------------------------------------------------------
