@@ -5822,12 +5822,18 @@
 
 	    // ------------------------------------------------------------------------
 
-	  }, {
-	    key: 'triggerChange',
+	    /* eslint-disable class-methods-use-this */
 
+	  }, {
+	    key: 'TopicChange',
+	    value: function TopicChange() {
+	      return CHANGE_TOPIC;
+	    }
 
 	    // ------------------------------------------------------------------------
 
+	  }, {
+	    key: 'triggerChange',
 	    value: function triggerChange() {
 	      if (this.noTrigger) {
 	        return;
@@ -6034,11 +6040,6 @@
 	      }
 
 	      this.emit(OPACITY_CHANGE_TOPIC, opacityArray);
-	    }
-	  }], [{
-	    key: 'TopicChange',
-	    value: function TopicChange() {
-	      return CHANGE_TOPIC;
 	    }
 	  }]);
 

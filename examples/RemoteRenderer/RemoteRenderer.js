@@ -24481,6 +24481,14 @@
 	      };
 	      xhr.send();
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'listConnections',
+	    value: function listConnections() {
+	      return connections;
+	    }
 	  }, {
 	    key: 'onProcessReady',
 	    value: function onProcessReady(callback) {
@@ -24506,11 +24514,6 @@
 	    value: function destroy() {
 	      this.off();
 	      this.endPoint = null;
-	    }
-	  }], [{
-	    key: 'listConnections',
-	    value: function listConnections() {
-	      return connections;
 	    }
 	  }]);
 

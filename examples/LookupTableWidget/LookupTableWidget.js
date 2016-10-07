@@ -20770,6 +20770,14 @@
 	    value: function getName() {
 	      return this.name;
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'getPresets',
+	    value: function getPresets() {
+	      return Object.keys(_Presets2.default.lookuptables);
+	    }
 	  }, {
 	    key: 'setPreset',
 	    value: function setPreset(name) {
@@ -20999,11 +21007,6 @@
 	    key: 'onChange',
 	    value: function onChange(callback) {
 	      return this.on(CHANGE_TOPIC, callback);
-	    }
-	  }], [{
-	    key: 'getPresets',
-	    value: function getPresets() {
-	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }]);
 

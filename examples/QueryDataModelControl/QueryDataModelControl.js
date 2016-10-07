@@ -9113,6 +9113,24 @@
 	      }
 	      return this.exploreState.animate;
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'setCacheSize',
+	    value: function setCacheSize(sizeBeforeGC) {
+	      dataManager.cacheSize = sizeBeforeGC;
+	    }
+	  }, {
+	    key: 'getCacheSize',
+	    value: function getCacheSize() {
+	      return dataManager.cacheSize;
+	    }
+	  }, {
+	    key: 'getMemoryUsage',
+	    value: function getMemoryUsage() {
+	      return dataManager.cacheData.size;
+	    }
 	  }, {
 	    key: 'link',
 	    value: function link(queryDataModel) {
@@ -9130,21 +9148,6 @@
 	          }
 	        }
 	      });
-	    }
-	  }], [{
-	    key: 'setCacheSize',
-	    value: function setCacheSize(sizeBeforeGC) {
-	      dataManager.cacheSize = sizeBeforeGC;
-	    }
-	  }, {
-	    key: 'getCacheSize',
-	    value: function getCacheSize() {
-	      return dataManager.cacheSize;
-	    }
-	  }, {
-	    key: 'getMemoryUsage',
-	    value: function getMemoryUsage() {
-	      return dataManager.cacheData.size;
 	    }
 	  }]);
 

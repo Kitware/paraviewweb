@@ -46265,6 +46265,14 @@
 	    value: function getName() {
 	      return this.name;
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'getPresets',
+	    value: function getPresets() {
+	      return Object.keys(_Presets2.default.lookuptables);
+	    }
 	  }, {
 	    key: 'setPreset',
 	    value: function setPreset(name) {
@@ -46494,11 +46502,6 @@
 	    key: 'onChange',
 	    value: function onChange(callback) {
 	      return this.on(CHANGE_TOPIC, callback);
-	    }
-	  }], [{
-	    key: 'getPresets',
-	    value: function getPresets() {
-	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }]);
 
@@ -47460,6 +47463,24 @@
 	      }
 	      return this.exploreState.animate;
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'setCacheSize',
+	    value: function setCacheSize(sizeBeforeGC) {
+	      dataManager.cacheSize = sizeBeforeGC;
+	    }
+	  }, {
+	    key: 'getCacheSize',
+	    value: function getCacheSize() {
+	      return dataManager.cacheSize;
+	    }
+	  }, {
+	    key: 'getMemoryUsage',
+	    value: function getMemoryUsage() {
+	      return dataManager.cacheData.size;
+	    }
 	  }, {
 	    key: 'link',
 	    value: function link(queryDataModel) {
@@ -47477,21 +47498,6 @@
 	          }
 	        }
 	      });
-	    }
-	  }], [{
-	    key: 'setCacheSize',
-	    value: function setCacheSize(sizeBeforeGC) {
-	      dataManager.cacheSize = sizeBeforeGC;
-	    }
-	  }, {
-	    key: 'getCacheSize',
-	    value: function getCacheSize() {
-	      return dataManager.cacheSize;
-	    }
-	  }, {
-	    key: 'getMemoryUsage',
-	    value: function getMemoryUsage() {
-	      return dataManager.cacheData.size;
 	    }
 	  }]);
 
@@ -49358,12 +49364,18 @@
 
 	    // ------------------------------------------------------------------------
 
-	  }, {
-	    key: 'isRenderMethodMutable',
+	    /* eslint-disable class-methods-use-this */
 
+	  }, {
+	    key: 'getRenderMethods',
+	    value: function getRenderMethods() {
+	      return ['XY', 'ZY', 'XZ'];
+	    }
 
 	    // ------------------------------------------------------------------------
 
+	  }, {
+	    key: 'isRenderMethodMutable',
 	    value: function isRenderMethodMutable() {
 	      return this.renderMethodMutable;
 	    }
@@ -49474,11 +49486,6 @@
 	        originalRange: this.metadata.ranges[this.getField()],
 	        lookupTableManager: this.lookupTableManager
 	      };
-	    }
-	  }], [{
-	    key: 'getRenderMethods',
-	    value: function getRenderMethods() {
-	      return ['XY', 'ZY', 'XZ'];
 	    }
 	  }]);
 

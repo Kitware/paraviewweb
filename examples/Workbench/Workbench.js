@@ -726,6 +726,16 @@
 	        this.render();
 	      }
 	    }
+
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'checkIndex',
+	    value: function checkIndex(idx) {
+	      if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
+	        throw new Error('The only available indices are in the range [0, 3]');
+	      }
+	    }
 	  }, {
 	    key: 'setViewport',
 	    value: function setViewport(index, instance) {
@@ -795,15 +805,23 @@
 	      this.checkIndex(index);
 	      return this.viewportList[index].renderer;
 	    }
-	  }, {
-	    key: 'setLayout',
 
+	    /* eslint-disable class-methods-use-this */
+
+	  }, {
+	    key: 'getLayoutLabels',
+	    value: function getLayoutLabels() {
+	      return Object.keys(_Layouts2.default);
+	    }
 
 	    /*
 	     * Parameter 'layout' should be one of the layout keys:
 	     *
 	     * "2x2", "1x1", "1x2", "2x1", "3xT", "3xL", "3xR", "3xB"
 	     */
+
+	  }, {
+	    key: 'setLayout',
 	    value: function setLayout(layout) {
 	      if (_Layouts2.default[layout]) {
 	        this.activeLayout = layout;
@@ -874,18 +892,6 @@
 	          viewport.renderer = null;
 	        }
 	      });
-	    }
-	  }], [{
-	    key: 'checkIndex',
-	    value: function checkIndex(idx) {
-	      if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
-	        throw new Error('The only available indices are in the range [0, 3]');
-	      }
-	    }
-	  }, {
-	    key: 'getLayoutLabels',
-	    value: function getLayoutLabels() {
-	      return Object.keys(_Layouts2.default);
 	    }
 	  }]);
 
