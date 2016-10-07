@@ -57,7 +57,8 @@ export default class LookupTable {
     return this.name;
   }
 
-  static getPresets() {
+  /* eslint-disable class-methods-use-this */
+  getPresets() {
     return Object.keys(Presets.lookuptables);
   }
 

@@ -89,7 +89,8 @@ export default class ProcessLauncher {
     xhr.send();
   }
 
-  static listConnections() {
+  /* eslint-disable class-methods-use-this */
+  listConnections() {
     return connections;
   }
 

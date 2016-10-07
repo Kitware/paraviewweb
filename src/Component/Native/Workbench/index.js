@@ -186,7 +186,8 @@ export default class ComponentWorkbench {
     }
   }
 
-  static checkIndex(idx) {
+  /* eslint-disable class-methods-use-this */
+  checkIndex(idx) {
     if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
       throw new Error('The only available indices are in the range [0, 3]');
     }
@@ -252,7 +253,8 @@ export default class ComponentWorkbench {
     return this.viewportList[index].renderer;
   }
 
-  static getLayoutLabels() {
+  /* eslint-disable class-methods-use-this */
+  getLayoutLabels() {
     return Object.keys(Layouts);
   }
 

@@ -73,7 +73,8 @@ export default class PipelineState {
 
   // ------------------------------------------------------------------------
 
-  static TopicChange() {
+  /* eslint-disable class-methods-use-this */
+  TopicChange() {
     return CHANGE_TOPIC;
   }
 

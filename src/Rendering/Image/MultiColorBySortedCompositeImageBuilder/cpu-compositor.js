@@ -128,13 +128,14 @@ export default class CPUCompositor {
   // Lighting Widget called methods
   // --------------------------------------------------------------------------
 
-  static getLightProperties() {
+  /* eslint-disable class-methods-use-this */
+  getLightProperties() {
     return {};
   }
 
   // --------------------------------------------------------------------------
 
-  static setLightProperties(lightProps) {
+  setLightProperties(lightProps) {
     // this.lightProperties = merge(this.lightProperties, lightProps);
   }
 }

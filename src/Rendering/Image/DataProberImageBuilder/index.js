@@ -638,7 +638,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  static getRenderMethods() {
+  /* eslint-disable class-methods-use-this */
+  getRenderMethods() {
     return ['XY', 'ZY', 'XZ'];
   }
 
