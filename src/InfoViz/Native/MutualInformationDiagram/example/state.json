@@ -4,31 +4,31 @@
   "fields": {
     "percentage of team minutes": {
       "range": [7.2, 79.5],
-      "active": false,
+      "active": true,
       "id": 12,
       "name": "percentage of team minutes"
     },
     "steals per game": {
       "range": [0, 2.48],
-      "active": false,
+      "active": true,
       "id": 17,
       "name": "steals per game"
     },
     "percentage of team assists": {
       "range": [0, 49.2],
-      "active": false,
+      "active": true,
       "id": 11,
       "name": "percentage of team assists"
     },
     "minutes": {
       "range": [5.1, 38.5],
-      "active": false,
+      "active": true,
       "id": 10,
       "name": "minutes"
     },
     "free throw percent": {
       "range": [0, 1],
-      "active": false,
+      "active": true,
       "id": 8,
       "name": "free throw percent"
     }
@@ -21595,7 +21595,7 @@
   "legendEntries": ["2 point shots attempts", "2 point shots percentage", "3 point shots attempts", "3 point shots percentage", "age", "assists per game", "blocks per game", "cumulative score", "free throw attempts", "free throw percent", "games", "minutes", "percentage of team assists", "percentage of team minutes", "points per game", "rebounds pergame", "steals per game", "true rebound percentage", "true shooting percentage", "turnover per pocession", "usage percent", "versatility index"],
   "legendPriorities": ["colors", "shapes"],
   "legendDirty": true,
-  "mutualInformationParameterNames": ["free throw percent", "minutes", "percentage of team assists", "percentage of team minutes", "steals per game"],
+  "mutualInformationParameterNames": [],
   "shouldCreateNewAnnotation": false,
   "selectionData": {},
   "selectionMetaData": {},
