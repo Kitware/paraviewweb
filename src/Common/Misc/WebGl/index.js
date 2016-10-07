@@ -118,14 +118,15 @@ function freeGLResources(glResources) {
   var gl = glResources.gl;
 
   // Delete each program
-  Object.keys(glResources.programs).forEach(programName => {
+  Object.keys(glResources.programs).forEach((programName) => {
     const program = glResources.programs[programName];
     const shaders = program.shaders;
 
     let count = shaders.length;
 
     // Delete shaders
-    while (count--) {
+    while (count) {
+      count -= 1;
       gl.deleteShader(shaders[count]);
     }
 
@@ -134,17 +135,17 @@ function freeGLResources(glResources) {
   });
 
   // Delete framebuffers
-  Object.keys(glResources.framebuffers).forEach(fbName => {
+  Object.keys(glResources.framebuffers).forEach((fbName) => {
     gl.deleteFramebuffer(glResources.framebuffers[fbName]);
   });
 
   // Delete textures
-  Object.keys(glResources.textures).forEach(textureName => {
+  Object.keys(glResources.textures).forEach((textureName) => {
     gl.deleteTexture(glResources.textures[textureName]);
   });
 
   // Delete buffers
-  Object.keys(glResources.buffers).forEach(bufferName => {
+  Object.keys(glResources.buffers).forEach((bufferName) => {
     gl.deleteBuffer(glResources.buffers[bufferName]);
   });
 }
@@ -193,7 +194,7 @@ function createGLResources(gl, glConfig) {
   });
 
   // Create programs
-  Object.keys(glConfig.programs).forEach(programName => {
+  Object.keys(glConfig.programs).forEach((programName) => {
     buildShaderProgram(gl, programName, glConfig, resources);
   });
 
@@ -211,7 +212,7 @@ function transformShader(shaderContent, variableDict, config) {
   var shaderString = shaderContent;
 
   // First do all the variable replacements
-  Object.keys(variableDict).forEach(vname => {
+  Object.keys(variableDict).forEach((vname) => {
     const value = variableDict[vname];
     const r = new RegExp(`\\$\\{${vname}\\}`, 'g');
     shaderString = shaderString.replace(r, value);

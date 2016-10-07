@@ -89,7 +89,7 @@ export default class ProcessLauncher {
     xhr.send();
   }
 
-  listConnections() {
+  static listConnections() {
     return connections;
   }
 

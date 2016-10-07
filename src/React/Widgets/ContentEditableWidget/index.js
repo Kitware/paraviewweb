@@ -69,7 +69,7 @@ export default React.createClass({
   render() {
     return (
       <div
-        ref={c => { this.rootContainer = c; }}
+        ref={c => (this.rootContainer = c)}
         className={this.props.className}
         onInput={this.emitChange}
         onBlur={this.emitChange}

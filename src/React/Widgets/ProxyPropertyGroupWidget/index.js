@@ -67,7 +67,7 @@ export default React.createClass({
     const properties = {};
     const ctx = { advanced: this.props.advanced, filter: this.props.filter, properties };
     const changeSetCount = Object.keys(this.state.changeSet).length;
-    this.state.properties.forEach(p => {
+    this.state.properties.forEach((p) => {
       properties[p.data.id] = p.data.value;
     });
 

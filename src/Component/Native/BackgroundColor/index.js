@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+
 export default class NativeBackgroundColorComponent {
   constructor(color, el) {
     this.color = color;

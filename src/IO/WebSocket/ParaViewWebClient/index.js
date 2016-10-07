@@ -30,12 +30,13 @@ export function createClient(connection, protocols = [], customProtocols = {}) {
     },
     count = protocols.length;
 
-  while (count--) {
+  while (count) {
+    count -= 1;
     const name = protocols[count];
     result[name] = protocolsMap[name](session);
   }
 
-  Object.keys(customProtocols).forEach(key => {
+  Object.keys(customProtocols).forEach((key) => {
     result[key] = customProtocols[key](session);
   });
 

@@ -57,7 +57,7 @@ const MultiViewRenderer = React.createClass({
     }
 
     // Init viewports from props
-    Object.keys(this.props.renderers).forEach(name => {
+    Object.keys(this.props.renderers).forEach((name) => {
       const item = this.props.renderers[name],
         imageBuilder = item.builder,
         painter = item.painter;
@@ -155,7 +155,7 @@ const MultiViewRenderer = React.createClass({
 
   getActiveRenderMethod() {
     var name = 'No render method';
-    this.viewports.forEach(viewport => {
+    this.viewports.forEach((viewport) => {
       if (viewport.active) {
         name = viewport.name;
       }
@@ -168,12 +168,14 @@ const MultiViewRenderer = React.createClass({
       x = event.relative.x,
       y = event.relative.y;
 
-    while (count--) {
+    while (count) {
+      count -= 1;
       const area = this.viewports[count].activeArea || this.viewports[count].region;
       if (x >= area[0] && y >= area[1] && x <= (area[0] + area[2]) && y <= (area[1] + area[3])) {
         return this.viewports[count];
       }
     }
+
     return null;
   },
 
@@ -232,7 +234,7 @@ const MultiViewRenderer = React.createClass({
     const viewport = this.getViewPort(event);
 
     if (viewport) {
-      this.viewports.forEach(item => {
+      this.viewports.forEach((item) => {
         item.active = false;
       });
       viewport.active = true;

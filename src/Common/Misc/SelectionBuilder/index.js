@@ -28,7 +28,7 @@ function intersect(a, b) {
 
 function clone(obj, fieldList, defaults) {
   const clonedObj = {};
-  fieldList.forEach(name => {
+  fieldList.forEach((name) => {
     if (defaults && obj[name] === undefined && defaults[name] !== undefined) {
       clonedObj[name] = defaults[name];
     } else {
@@ -60,7 +60,7 @@ export const ruleTypes = {
 // ----------------------------------------------------------------------------
 
 function empty() {
-  generation++;
+  generation += 1;
   return {
     type: 'empty',
     generation,
@@ -70,7 +70,7 @@ function empty() {
 // ----------------------------------------------------------------------------
 
 function partition(variable, dividers) {
-  generation++;
+  generation += 1;
   return {
     type: 'partition',
     generation,
@@ -87,7 +87,7 @@ function partition(variable, dividers) {
 // ----------------------------------------------------------------------------
 
 function range(vars) {
-  generation++;
+  generation += 1;
   const variables = {};
   const selection = {
     type: 'range',
@@ -98,7 +98,7 @@ function range(vars) {
   };
 
   // Fill variables
-  Object.keys(vars).forEach(name => {
+  Object.keys(vars).forEach((name) => {
     variables[name] = vars[name].map(interval =>
       clone(interval,
         ['interval', 'endpoints', 'uncertainty'],
@@ -114,7 +114,7 @@ function range(vars) {
 // ----------------------------------------------------------------------------
 
 function rule(type = 'multi', terms = [], roles = []) {
-  generation++;
+  generation += 1;
   // FIXME ?? deepClone ??
   return {
     type: 'rule',
@@ -131,7 +131,7 @@ function rule(type = 'multi', terms = [], roles = []) {
 
 function variableToRule(name, ranges) {
   const terms = ['or'];
-  ranges.forEach(clause => {
+  ranges.forEach((clause) => {
     terms.push({
       type: '5C',
       terms: [
@@ -158,7 +158,7 @@ function variableToRule(name, ranges) {
 function rangeToRule(selection) {
   const terms = ['and'];
   const vars = selection.range.variables;
-  Object.keys(vars).forEach(name => {
+  Object.keys(vars).forEach((name) => {
     terms.push(variableToRule(name, vars[name]));
   });
   return rule('logical', terms);
@@ -228,7 +228,7 @@ function convertToRuleSelection(selection) {
 // ----------------------------------------------------------------------------
 
 function markModified(selection) {
-  generation++;
+  generation += 1;
   return Object.assign({}, selection, { generation });
 }
 

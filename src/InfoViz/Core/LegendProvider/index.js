@@ -20,7 +20,7 @@ export function createSortedIterator(priorityOrder, propertyChoices, defaultValu
 
   const get = () => {
     const item = {};
-    propertyKeys.forEach(name => {
+    propertyKeys.forEach((name) => {
       const idx = priorityOrder.indexOf(name);
       if (idx === -1) {
         item[name] = defaultValues[name];
@@ -33,12 +33,13 @@ export function createSortedIterator(priorityOrder, propertyChoices, defaultValu
 
   const next = () => {
     let overflowIdx = 0;
-    priorityIndex[overflowIdx]++;
+    priorityIndex[overflowIdx] += 1;
     while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
       // Handle overflow
       priorityIndex[overflowIdx] = 0;
       if (overflowIdx < priorityIndex.length) {
-        priorityIndex[++overflowIdx]++;
+        overflowIdx += 1;
+        priorityIndex[overflowIdx] += 1;
       }
     }
   };
@@ -60,14 +61,14 @@ export const STATIC = {
 // ----------------------------------------------------------------------------
 
 function legendProvider(publicAPI, model) {
-  publicAPI.addLegendEntry = name => {
+  publicAPI.addLegendEntry = (name) => {
     if (model.legendEntries.indexOf(name) === -1 && name) {
       model.legendEntries.push(name);
       model.legendDirty = true;
     }
   };
 
-  publicAPI.removeLegendEntry = name => {
+  publicAPI.removeLegendEntry = (name) => {
     if (model.legendEntries.indexOf(name) !== -1 && name) {
       model.legendEntries.splice(model.legendEntries.indexOf(name), 1);
       model.legendDirty = true;
@@ -97,7 +98,7 @@ function legendProvider(publicAPI, model) {
           { colors: model.legendColors, shapes: shapesArray },
           { colors: defaultColor, shapes: defaultShape });
 
-        model.legendEntries.forEach(name => {
+        model.legendEntries.forEach((name) => {
           model.legendMapping[name] = convert(iterator.get(), model);
           iterator.next();
         });
@@ -112,7 +113,7 @@ function legendProvider(publicAPI, model) {
     }
   };
 
-  publicAPI.useLegendPalette = name => {
+  publicAPI.useLegendPalette = (name) => {
     const colorSet = palettes[name];
     if (colorSet) {
       model.legendColors = [].concat(colorSet);
@@ -120,8 +121,8 @@ function legendProvider(publicAPI, model) {
     }
   };
 
-  publicAPI.updateLegendSettings = settings => {
-    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach(key => {
+  publicAPI.updateLegendSettings = (settings) => {
+    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach((key) => {
       if (settings[key]) {
         model[key] = [].concat(settings.key);
         model.legendDirty = true;
@@ -131,7 +132,7 @@ function legendProvider(publicAPI, model) {
 
   publicAPI.listLegendColorPalettes = () => Object.keys(palettes);
 
-  publicAPI.getLegend = name => {
+  publicAPI.getLegend = (name) => {
     if (model.legendDirty) {
       publicAPI.assignLegend();
     }

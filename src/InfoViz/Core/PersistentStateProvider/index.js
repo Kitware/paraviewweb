@@ -29,7 +29,7 @@ function persistentStateProvider(publicAPI, model) {
   if (!model.persistentStateImpl) {
     if (localStorageAvailable()) {
       model.persistentStateImpl = {
-        getState: key => {
+        getState: (key) => {
           const strVal = window.localStorage[key];
           if (strVal === undefined) {
             return null;
@@ -52,7 +52,7 @@ function persistentStateProvider(publicAPI, model) {
   }
 
   // Provide this method an object that implements getState(key) and setState(key, value)
-  publicAPI.setImplementation = impl => {
+  publicAPI.setImplementation = (impl) => {
     model.persistentStateImpl = impl;
   };
 

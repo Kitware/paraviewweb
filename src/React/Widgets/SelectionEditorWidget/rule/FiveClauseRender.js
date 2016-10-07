@@ -18,6 +18,8 @@ const NEXT_VALUE = {
   '<=': '<',
 };
 
+/* eslint-disable react/no-unused-prop-types */
+
 export default function fiveClauseRender(props) {
   const { rule } = props;
   const terms = rule.terms;

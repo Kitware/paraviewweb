@@ -5,22 +5,22 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // ----------------------------------------------------------------------------
 
 function scoresProvider(publicAPI, model) {
-  publicAPI.setScores = scores => {
+  publicAPI.setScores = (scores) => {
     model.scores = [].concat(scores);
     const scoreMapByValue = {};
-    model.scores.forEach(score => {
+    model.scores.forEach((score) => {
       scoreMapByValue[score.value] = score;
     });
     model.scoreMapByValue = scoreMapByValue;
     publicAPI.fireScoresChange(model.scores);
   };
 
-  publicAPI.getScoreColor = value => {
+  publicAPI.getScoreColor = (value) => {
     const score = model.scoreMapByValue[value];
     return score ? score.color : undefined;
   };
 
-  publicAPI.getScoreName = value => {
+  publicAPI.getScoreName = (value) => {
     const score = model.scoreMapByValue[value];
     return score ? score.name : undefined;
   };
@@ -31,7 +31,7 @@ function scoresProvider(publicAPI, model) {
     }
     return 0;
   };
-  publicAPI.setDefaultScore = value => {
+  publicAPI.setDefaultScore = (value) => {
     if (model.scores) {
       model.scores[publicAPI.getDefaultScore()].isDefault = false;
       model.scores[value].isDefault = true;

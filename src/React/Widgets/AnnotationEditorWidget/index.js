@@ -46,7 +46,7 @@ export default function annotationEditorWidget(props) {
     props.onChange(annotation, isEditDone);
   };
 
-  const onAnnotationChange = event => {
+  const onAnnotationChange = (event) => {
     const value = event.target.value;
     const name = event.target.name;
     const type = event.type;

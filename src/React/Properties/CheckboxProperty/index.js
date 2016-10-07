@@ -6,6 +6,8 @@ import Checkbox         from './Checkbox';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
+/* eslint-disable react/no-unused-prop-types */
+
 export default React.createClass({
 
   displayName: 'CheckboxProperty',

@@ -22,6 +22,8 @@ function stringToValue(str) {
 }
 
 /* eslint-disable react/no-danger */
+/* eslint-disable react/no-unused-prop-types */
+
 export default React.createClass({
 
   displayName: 'EnumProperty',
@@ -72,7 +74,7 @@ export default React.createClass({
           ret.push(<option key="empty-value" value={null} />);
         }
 
-        Object.keys(this.props.ui.domain).forEach(key => {
+        Object.keys(this.props.ui.domain).forEach((key) => {
           ret.push(
             <option
               value={valueToString(this.props.ui.domain[key])}

@@ -1,7 +1,7 @@
 import max from 'mout/object/max';
 import merge from 'mout/src/object/merge';
-import vec3 from 'gl-matrix/src/gl-matrix/vec3.js';
-import vec4 from 'gl-matrix/src/gl-matrix/vec4.js';
+import vec3 from 'gl-matrix/src/gl-matrix/vec3';
+import vec4 from 'gl-matrix/src/gl-matrix/vec4';
 
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
@@ -112,7 +112,7 @@ export default class SXYZLightCompositor {
     this.numLutSamples = 1024;
     this.lutMap = {};
 
-    Object.keys(this.compositePipeline.ranges).forEach(key => {
+    Object.keys(this.compositePipeline.ranges).forEach((key) => {
       this.lutMap[key] = new Uint8Array(this.numLutSamples * 4);
       this.resampleLookupTable(key);
     });

@@ -195,7 +195,7 @@ export default React.createClass({
     const activePointOpacity = this.state.activePoint !== -1 ?
       this.props.points[this.state.activePoint].y : 0.5;
     return (
-      <div className={style.pieceWiseFunctionEditorWidget} ref={c => { this.rootContainer = c; }}>
+      <div className={style.pieceWiseFunctionEditorWidget} ref={c => (this.rootContainer = c)}>
         <canvas
           className={style.canvas}
           width={this.state.width}

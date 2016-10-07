@@ -52,7 +52,7 @@ export default class PatternMap {
     var result = this.keyPatternMap[key],
       keyPattern = ['{', '}'];
 
-    Object.keys(options).forEach(opt => {
+    Object.keys(options).forEach((opt) => {
       result = result.replace(new RegExp(keyPattern.join(opt), 'g'), options[opt]);
     });
 

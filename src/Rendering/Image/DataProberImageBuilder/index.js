@@ -106,7 +106,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       };
       let canRenderNow = true;
 
-      Object.keys(data).forEach(key => {
+      Object.keys(data).forEach((key) => {
         const img = data[key].image;
         img.addEventListener('load', renderCallback);
         canRenderNow = canRenderNow && img.complete;
@@ -479,7 +479,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         1, dimensions[1],
         activeColumn, 0, 1, dimensions[1]);
 
-      if (activeColumn--) {
+      if (activeColumn) {
+        activeColumn -= 1;
         self.getImage(activeColumn, processLine);
       } else {
         // Rendering is done
@@ -489,7 +490,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       }
     }
 
-    if (activeColumn--) {
+    if (activeColumn) {
+      activeColumn -= 1;
       self.getImage(activeColumn, processLine);
     }
   }
@@ -513,7 +515,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         dimensions[0], 1,
         0, activeLine, dimensions[0], 1);
 
-      if (activeLine--) {
+      if (activeLine) {
+        activeLine -= 1;
         self.getImage(activeLine, processLine);
       } else {
         // Rendering is done
@@ -523,7 +526,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       }
     }
 
-    if (activeLine--) {
+    if (activeLine) {
+      activeLine -= 1;
       self.getImage(activeLine, processLine);
     }
   }
@@ -560,7 +564,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
     while (idx < size) {
       const value = (((pixBuffer[idx] + (256 * pixBuffer[idx + 1]) + (65536 * pixBuffer[idx + 2])) / 16777216) * delta) + fieldRange[0];
-      array[arrayIdx++] = value;
+      array[arrayIdx] = value;
+      arrayIdx += 1;
 
       // Move to next pixel
       idx += 4;
@@ -583,7 +588,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
     if (lut) {
       while (idx < size) {
-        const color = lut.getColor(array[arrayIdx++]);
+        const color = lut.getColor(array[arrayIdx]);
+        arrayIdx += 1;
 
         pixBuffer[idx] = Math.floor(255 * color[0]);
         pixBuffer[idx + 1] = Math.floor(255 * color[1]);
@@ -632,7 +638,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  getRenderMethods() {
+  static getRenderMethods() {
     return ['XY', 'ZY', 'XZ'];
   }
 

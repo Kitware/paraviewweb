@@ -56,55 +56,55 @@ export default React.createClass({
 
     return (
       <div className={style.container}>
-          {this.props.options.map((obj, idx) => {
-            const isActive = (currentActive === idx),
-              background = isActive ? this.props.activeColor : this.props.defaultColor,
-              className = (idx === 0) ?
-                isActive ? 'activeFirst' : 'first' :
-                (idx === this.props.options.length - 1) ?
-                  (isActive ? 'activeLast' : 'last') :
-                  (isActive ? 'activeMiddle' : 'middle');
-            if (obj.label) {
-              return (
-                <button
-                  style={{ lineHeight, fontSize, background }}
-                  key={idx}
-                  onClick={this.activateButton}
+        {this.props.options.map((obj, idx) => {
+          const isActive = (currentActive === idx),
+            background = isActive ? this.props.activeColor : this.props.defaultColor,
+            className = (idx === 0) ?
+              isActive ? 'activeFirst' : 'first' :
+              (idx === this.props.options.length - 1) ?
+                (isActive ? 'activeLast' : 'last') :
+                (isActive ? 'activeMiddle' : 'middle');
+          if (obj.label) {
+            return (
+              <button
+                style={{ lineHeight, fontSize, background }}
+                key={idx}
+                onClick={this.activateButton}
+                data-idx={idx}
+                className={style[className]}
+              >{obj.label}
+              </button>);
+          }
+          if (obj.img) {
+            return (
+              <div
+                style={{ lineHeight, height, fontSize, background }}
+                key={idx}
+                onClick={this.activateButton}
+                data-idx={idx}
+                className={style[className]}
+              >
+                <img
                   data-idx={idx}
-                  className={style[className]}
-                >{obj.label}
-                </button>);
-            }
-            if (obj.img) {
-              return (
-                <div
-                  style={{ lineHeight, height, fontSize, background }}
-                  key={idx}
                   onClick={this.activateButton}
-                  data-idx={idx}
-                  className={style[className]}
-                >
-                  <img
-                    data-idx={idx}
-                    onClick={this.activateButton}
-                    height="100%"
-                    src={obj.img}
-                    alt="ToggleButton"
-                  />
-                </div>);
-            }
-            if (obj.icon) {
-              return (
-                <i
-                  key={idx}
-                  style={{ lineHeight, fontSize, background }}
-                  onClick={this.activateButton}
-                  data-idx={idx}
-                  className={[style[className], obj.icon].join(' ')}
-                />);
-            }
-            return null;
-          })}
+                  height="100%"
+                  src={obj.img}
+                  alt="ToggleButton"
+                />
+              </div>);
+          }
+          if (obj.icon) {
+            return (
+              <i
+                key={idx}
+                style={{ lineHeight, fontSize, background }}
+                onClick={this.activateButton}
+                data-idx={idx}
+                className={[style[className], obj.icon].join(' ')}
+              />);
+          }
+          return null;
+        })}
       </div>);
   },
 });

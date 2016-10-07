@@ -17,7 +17,8 @@ function selectionProvider(publicAPI, model) {
 
   function off() {
     let count = dataSubscriptions.length;
-    while (count--) {
+    while (count) {
+      count -= 1;
       dataSubscriptions[count] = null;
     }
   }
@@ -40,7 +41,7 @@ function selectionProvider(publicAPI, model) {
   }
 
   // Method use to store received data
-  publicAPI.setSelectionData = data => {
+  publicAPI.setSelectionData = (data) => {
     dataHelper.set(model.selectionData, data);
 
     // Process all subscription to see if we can trigger a notification
@@ -51,7 +52,7 @@ function selectionProvider(publicAPI, model) {
   publicAPI.getSelectionData = query => dataHelper.get(model.selectionData, query);
 
   // Use to extend data subscription
-  publicAPI.updateSelectionMetadata = addon => {
+  publicAPI.updateSelectionMetadata = (addon) => {
     model.selectionMetaData[addon.type] = Object.assign({}, model.selectionMetaData[addon.type], addon.metadata);
   };
 
@@ -88,7 +89,7 @@ function selectionProvider(publicAPI, model) {
   // --------------------------------
 
   publicAPI.shouldCreateNewAnnotation = () => model.shouldCreateNewAnnotation;
-  publicAPI.setCreateNewAnnotationFlag = (shouldCreate) => (model.shouldCreateNewAnnotation = shouldCreate);
+  publicAPI.setCreateNewAnnotationFlag = shouldCreate => (model.shouldCreateNewAnnotation = shouldCreate);
 
   // --------------------------------
   // When a new selection is made, data dependent on that selection will be pushed

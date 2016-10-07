@@ -157,7 +157,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     this.timeProbe.query = query;
 
     // Synch the time query data model
-    Object.keys(query).forEach(key => {
+    Object.keys(query).forEach((key) => {
       this.timeDataQueryDataModel.setValue(key, query[key]);
     });
 
@@ -460,7 +460,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     var array = this.layers,
       count = array.length;
 
-    while (count--) {
+    while (count) {
+      count -= 1;
       if (array[count].name === name) {
         array[count].active = visible;
         this.update();
@@ -479,7 +480,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     var array = this.layers,
       count = array.length;
 
-    while (count--) {
+    while (count) {
+      count -= 1;
       if (array[count].name === name) {
         array[count].meshActive = visible;
         this.update();
@@ -494,7 +496,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     var array = this.layers,
       count = array.length;
 
-    while (count--) {
+    while (count) {
+      count -= 1;
       if (array[count].name === name) {
         array[count].array = arrayName;
         this.update();

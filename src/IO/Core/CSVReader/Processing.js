@@ -6,7 +6,7 @@
  */
 function uniqueValues(categorical) {
   const countMap = {};
-  categorical.forEach(val => {
+  categorical.forEach((val) => {
     if (!(val in countMap)) {
       countMap[val] = 0;
     }
@@ -14,7 +14,7 @@ function uniqueValues(categorical) {
   });
   const uniques = [];
   const counts = [];
-  Object.keys(countMap).forEach(uniqueVal => {
+  Object.keys(countMap).forEach((uniqueVal) => {
     uniques.push(uniqueVal);
     counts.push(countMap[uniqueVal]);
   });
@@ -41,7 +41,7 @@ function averageValues(categorical, numeric) {
   }
   const u = [];
   const a = [];
-  Object.keys(sumMap).forEach(uniqueKey => {
+  Object.keys(sumMap).forEach((uniqueKey) => {
     u.push(uniqueKey);
     a.push(sumMap[uniqueKey].sum / sumMap[uniqueKey].count);
   });

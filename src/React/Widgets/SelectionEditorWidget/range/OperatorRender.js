@@ -24,13 +24,13 @@ export default function operatorRender(props) {
           <td>
             <table className={style.table}>
               <tbody>
-              {React.Children.map(props.children, (r, idx) =>
-                <tr key={idx}>
-                  <td className={style.tableCell}>
-                  {r}
-                  </td>
-                </tr>
-              )}
+                {React.Children.map(props.children, (r, idx) =>
+                  <tr key={idx}>
+                    <td className={style.tableCell}>
+                      {r}
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </td>

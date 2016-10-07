@@ -17,7 +17,7 @@ function setInitialGenerationNumber(genNum) {
 // ----------------------------------------------------------------------------
 
 function annotation(selection, score, weight = 1, rationale = '', name = '') {
-  generation++;
+  generation += 1;
   return {
     id: generateUUID(),
     generation,
@@ -35,14 +35,14 @@ function update(annotationObject, changeSet) {
   const updatedAnnotation = Object.assign({}, annotationObject, changeSet);
 
   let changeDetected = false;
-  Object.keys(updatedAnnotation).forEach(key => {
+  Object.keys(updatedAnnotation).forEach((key) => {
     if (updatedAnnotation[key] !== annotationObject[key]) {
       changeDetected = true;
     }
   });
 
   if (changeDetected) {
-    generation++;
+    generation += 1;
     updatedAnnotation.generation = generation;
   }
 
@@ -63,14 +63,14 @@ function updateReadOnlyFlag(annotationToEdit, readOnlyFields) {
 
 function fork(annotationObj) {
   const id = generateUUID();
-  generation++;
+  generation += 1;
   return Object.assign({}, annotationObj, { generation, id });
 }
 
 // ----------------------------------------------------------------------------
 
 function markModified(annotationObject) {
-  generation++;
+  generation += 1;
   return Object.assign({}, annotationObject, { generation });
 }
 

@@ -21,7 +21,7 @@ function annotationStoreProvider(publicAPI, model) {
       // their generation number count.
       let maxAnnoGen = 0;
       let maxSelGen = 0;
-      Object.keys(model.annotationStore).forEach(annoId => {
+      Object.keys(model.annotationStore).forEach((annoId) => {
         const anno = model.annotationStore[annoId];
         if (anno.generation > maxAnnoGen) {
           maxAnnoGen = anno.generation;
@@ -41,7 +41,7 @@ function annotationStoreProvider(publicAPI, model) {
     return val;
   };
 
-  publicAPI.getNextStoredAnnotationName = name => {
+  publicAPI.getNextStoredAnnotationName = (name) => {
     const allNames = publicAPI.getStoredAnnotationNames();
     let newName = name;
     if (!name || name.length === 0) {
@@ -56,13 +56,14 @@ function annotationStoreProvider(publicAPI, model) {
     let count = Number(countStr) || 0;
 
     while (allNames.indexOf(newName) !== -1) {
-      newName = `${base} (${++count})`;
+      count += 1;
+      newName = `${base} (${count})`;
     }
 
     return newName;
   };
 
-  publicAPI.getStoredAnnotation = (id) => model.annotationStore[id];
+  publicAPI.getStoredAnnotation = id => model.annotationStore[id];
 
   publicAPI.getStoredAnnotations = () => model.annotationStore;
 
@@ -82,8 +83,8 @@ function annotationStoreProvider(publicAPI, model) {
     publicAPI.fireStoreAnnotationChange(changeSet);
   };
 
-  publicAPI.updateStoredAnnotations = updates => {
-    Object.keys(updates).forEach(annoId => {
+  publicAPI.updateStoredAnnotations = (updates) => {
+    Object.keys(updates).forEach((annoId) => {
       model.annotationStore[annoId] = updates[annoId];
     });
     if (publicAPI.isA('PersistentStateProvider')) {
@@ -92,7 +93,7 @@ function annotationStoreProvider(publicAPI, model) {
     publicAPI.fireStoreAnnotationChange({ action: 'updates' });
   };
 
-  publicAPI.deleteStoredAnnotation = id => {
+  publicAPI.deleteStoredAnnotation = (id) => {
     const changeSet = {
       id,
       action: 'delete',

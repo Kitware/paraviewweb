@@ -2,7 +2,7 @@ import React from 'react';
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function scoreSelector(props) {
-  const click = event => {
+  const click = (event) => {
     props.onChange(props.name, Number(event.target.getAttribute('data-score')));
   };
 

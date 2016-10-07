@@ -42,17 +42,17 @@ export default class PipelineState {
 
     // Fill visibility and activate all layers
     const isRoot = {};
-    jsonData.CompositePipeline.pipeline.forEach(item => {
+    jsonData.CompositePipeline.pipeline.forEach((item) => {
       isRoot[item.ids.join('')] = true;
       this.setLayerVisible(item.ids.join(''), isLayerVisible(item.ids.join('')));
     });
-    jsonData.CompositePipeline.layers.forEach(item => {
+    jsonData.CompositePipeline.layers.forEach((item) => {
       this.activeState[item] = isRoot[item] ? true : isLayerVisible(item);
       this.activeColors[item] = getColorCode(item);
 
       // Initialize opacity
       this.opacityMap[item] = 100.0;
-      this.nbLayers++;
+      this.nbLayers += 1;
     });
 
     this.noTrigger = false;
@@ -73,7 +73,7 @@ export default class PipelineState {
 
   // ------------------------------------------------------------------------
 
-  TopicChange() {
+  static TopicChange() {
     return CHANGE_TOPIC;
   }
 
@@ -122,7 +122,8 @@ export default class PipelineState {
     if (this.visibilityState[layerId] !== visible) {
       this.visibilityState[layerId] = visible;
       let count = layerId.length;
-      while (count--) {
+      while (count) {
+        count -= 1;
         this.visibilityState[layerId[count]] = visible;
       }
       this.triggerChange();
@@ -146,7 +147,7 @@ export default class PipelineState {
 
   isLayerInEditMode(layerId) {
     let found = false;
-    Object.keys(this.editMode).forEach(key => {
+    Object.keys(this.editMode).forEach((key) => {
       if (this.editMode[key] && key.indexOf(layerId) !== -1) {
         found = true;
       }
@@ -176,7 +177,8 @@ export default class PipelineState {
 
   setActiveColor(layerId, colorCode) {
     let count = layerId.length;
-    while (count--) {
+    while (count) {
+      count -= 1;
       this.activeColors[layerId[count]] = colorCode;
     }
     this.triggerChange();
@@ -187,7 +189,7 @@ export default class PipelineState {
 
   getPipelineQuery() {
     let query = '';
-    this.originalData.CompositePipeline.layers.forEach(item => {
+    this.originalData.CompositePipeline.layers.forEach((item) => {
       const color = this.isLayerActive(item) && this.isLayerVisible(item) ? this.activeColors[item] : '_';
       query += item;
       query += color;
@@ -231,7 +233,7 @@ export default class PipelineState {
   // ------------------------------------------------------------------------
 
   resetOpacity(alpha) {
-    Object.keys(this.opacityMap).forEach(key => {
+    Object.keys(this.opacityMap).forEach((key) => {
       this.opacityMap[key] = alpha;
     });
 

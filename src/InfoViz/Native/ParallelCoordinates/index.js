@@ -19,7 +19,9 @@ export function affine(inMin, val, inMax, outMin, outMax) {
 }
 
 export function perfRound(val) {
+  /* eslint-disable no-bitwise */
   return (0.5 + val) | 0;
+  /* eslint-enable no-bitwise */
 }
 
 export function dataToScreen(model, dataY, axis) {
@@ -282,12 +284,12 @@ function parallelCoordinate(publicAPI, model) {
 
     if (model.provider && model.provider.isA('LegendProvider')) {
       // Add legend key
-      labelDataModel.forEach(entry => {
+      labelDataModel.forEach((entry) => {
         entry.legend = model.provider.getLegend(entry.name);
       });
       let glyphSize = glyphRegion - glyphPadding - glyphPadding;
       if (glyphSize % 2 !== 0) {
-        glyphSize++;
+        glyphSize += 1;
       }
 
       const glyphGroup = svg
@@ -684,14 +686,14 @@ function parallelCoordinate(publicAPI, model) {
     model.defaultWeight = defaultWeight;
   };
 
-  publicAPI.setVisibleScoresForSelection = scoreList => {
+  publicAPI.setVisibleScoresForSelection = (scoreList) => {
     model.visibleScores = scoreList;
     if (model.selectionDataSubscription && model.visibleScores && model.propagatePartitionScores) {
       model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.visibleScores);
     }
   };
 
-  publicAPI.setScores = scores => {
+  publicAPI.setScores = (scores) => {
     model.scores = scores;
     if (!model.visibleScores && scores) {
       publicAPI.setVisibleScoresForSelection(scores.map((score, idx) => idx));
@@ -768,7 +770,7 @@ function parallelCoordinate(publicAPI, model) {
 
     // First update our internal data model
     model.hoverBinData = [];
-    Object.keys(data.state).forEach(pName => {
+    Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
       if (model.axes.getAxisByName(pName) && binList.indexOf(-1) === -1) {
         for (let i = 0; i < binList.length; ++i) {
@@ -834,7 +836,7 @@ function parallelCoordinate(publicAPI, model) {
 
   if (model.provider.isA('Histogram2DProvider')) {
     model.histogram2DDataSubscription = model.provider.subscribeToHistogram2D(
-      allBgHistogram2d => {
+      (allBgHistogram2d) => {
         // Update axis range
         model.axes.getAxesPairs().forEach((pair, idx) => {
           const hist2d = allBgHistogram2d[pair[0]][pair[1]];
@@ -860,7 +862,7 @@ function parallelCoordinate(publicAPI, model) {
       }
     );
 
-    model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
+    model.subscriptions.push(model.axes.onAxisListChange((axisPairs) => {
       model.histogram2DDataSubscription.update(axisPairs);
     }));
 
@@ -870,7 +872,7 @@ function parallelCoordinate(publicAPI, model) {
   if (model.provider.isA('SelectionProvider')) {
     model.selectionDataSubscription = model.provider.subscribeToDataSelection(
       'histogram2d',
-      data => {
+      (data) => {
         model.selectionData = data;
         if (model.provider.getAnnotation()) {
           model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
@@ -896,7 +898,7 @@ function parallelCoordinate(publicAPI, model) {
 
     model.subscriptions.push(model.selectionDataSubscription);
 
-    model.subscriptions.push(model.provider.onSelectionChange(sel => {
+    model.subscriptions.push(model.provider.onSelectionChange((sel) => {
       if (!model.useAnnotation) {
         if (sel && sel.type === 'empty') {
           model.selectionData = null;
@@ -905,7 +907,7 @@ function parallelCoordinate(publicAPI, model) {
         publicAPI.render();
       }
     }));
-    model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+    model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
       if (annotation && annotation.selection.type === 'empty') {
         model.selectionData = null;
       }
@@ -953,7 +955,7 @@ function parallelCoordinate(publicAPI, model) {
         model.provider.setSelection(model.axes.getSelection());
       }
     }));
-    model.subscriptions.push(model.axes.onAxisListChange(axisPairs => {
+    model.subscriptions.push(model.axes.onAxisListChange((axisPairs) => {
       model.selectionDataSubscription.update(axisPairs);
     }));
   } else {

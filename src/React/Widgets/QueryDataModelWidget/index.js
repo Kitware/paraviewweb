@@ -31,7 +31,7 @@ export default React.createClass({
 
     return (
       <div className={style.container}>
-        {orderList.map(name => {
+        {orderList.map((name) => {
           if (model.getUiType(name) === 'list') {
             return (
               <ListWidget

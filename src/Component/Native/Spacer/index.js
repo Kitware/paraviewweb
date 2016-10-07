@@ -1,4 +1,5 @@
 /* global document */
+/* eslint-disable class-methods-use-this */
 
 export default class NativeSpacerComponent {
   constructor(size = '30px') {

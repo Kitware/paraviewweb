@@ -16,7 +16,7 @@ function fieldProvider(publicAPI, model) {
     model.fields = {};
   }
 
-  const triggerFieldChange = field => {
+  const triggerFieldChange = (field) => {
     if (publicAPI.isA('PersistentStateProvider')) {
       publicAPI.setPersistentState(PROVIDER_NAME, model.fields);
     }
@@ -27,7 +27,7 @@ function fieldProvider(publicAPI, model) {
     let count = 0;
     if (publicAPI.isA('PersistentStateProvider')) {
       const storageItems = publicAPI.getPersistentState(PROVIDER_NAME);
-      Object.keys(storageItems).forEach(storeKey => {
+      Object.keys(storageItems).forEach((storeKey) => {
         publicAPI.updateField(storeKey, storageItems[storeKey]);
         count += 1;
       });
@@ -54,13 +54,13 @@ function fieldProvider(publicAPI, model) {
     triggerFieldChange(field);
   };
 
-  publicAPI.getField = (name) => (model.fields[name]);
+  publicAPI.getField = name => model.fields[name];
 
   publicAPI.updateField = (name, changeSet = {}) => {
     const field = model.fields[name] || {};
     let hasChange = false;
 
-    Object.keys(changeSet).forEach(key => {
+    Object.keys(changeSet).forEach((key) => {
       hasChange = hasChange || JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
       // Set changes
       field[key] = changeSet[key];

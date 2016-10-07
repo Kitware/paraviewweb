@@ -15,7 +15,7 @@ function partitionProvider(publicAPI, model, fetchHelper) {
   }
 
   // Return true if data is available
-  publicAPI.loadPartition = field => {
+  publicAPI.loadPartition = (field) => {
     if (!model.partitionData[field]) {
       model.partitionData[field] = { pending: true };
       fetchHelper.addRequest(field);

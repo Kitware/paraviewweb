@@ -5,7 +5,8 @@ var offscreenCanvasCount = 0;
 export default class CanvasOffscreenBuffer {
 
   constructor(width, height) {
-    this.id = `CanvasOffscreenBuffer_${++offscreenCanvasCount}`;
+    offscreenCanvasCount += 1;
+    this.id = `CanvasOffscreenBuffer_${offscreenCanvasCount}`;
     this.el = document.createElement('canvas');
     this.width = width;
     this.height = height;

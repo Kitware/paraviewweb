@@ -22,7 +22,8 @@ function paintField(ctx, location, field, range) {
 
   // Compute xValues and min/max
   count = size;
-  while (count--) {
+  while (count) {
+    count -= 1;
     const value = values[count];
     min = Math.min(min, value);
     max = Math.max(max, value);
@@ -111,6 +112,7 @@ export default class LineChartPainter {
     this.showMarker = true;
     this.title = title;
     this.fillBackground = null;
+    this.controlWidgets = [];
   }
 
   // ----------------------------------------------------------------------------
@@ -132,7 +134,8 @@ export default class LineChartPainter {
     // Assign color if no color
     data.fields.forEach((field) => {
       if (!field.color) {
-        field.color = this.colors[colorIdx++ % this.colors.length];
+        field.color = this.colors[colorIdx % this.colors.length];
+        colorIdx += 1;
       }
     });
 
@@ -226,7 +229,7 @@ export default class LineChartPainter {
   // Method meant to be used with the WidgetFactory
 
   getControlWidgets() {
-    return [];
+    return this.controlWidgets;
   }
 
 }

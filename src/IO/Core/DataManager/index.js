@@ -3,8 +3,8 @@
 import Monologue from 'monologue.js';
 
 // Module dependencies and constants
-import request from './request.js';
-import PatternMap from './pattern.js';
+import request from './request';
+import PatternMap from './pattern';
 
 const
   typeFnMap = {
@@ -80,7 +80,8 @@ export default class DataManager {
 
           delete dataCached.keysToNotify;
 
-          while (count--) {
+          while (count) {
+            count -= 1;
             this.emit(array[count], dataCached);
           }
 
@@ -151,7 +152,8 @@ export default class DataManager {
           // Store it in the cache
           self.cacheData.cache[url] = dataCached;
 
-          while (count--) {
+          while (count) {
+            count -= 1;
             self.emit(array[count], dataCached);
           }
         };
@@ -211,12 +213,13 @@ export default class DataManager {
   // Empty cache
   clear() {
     var urlToDelete = [];
-    Object.keys(this.cacheData.cache).forEach(url => {
+    Object.keys(this.cacheData.cache).forEach((url) => {
       urlToDelete.push(url);
     });
 
     let count = urlToDelete.length;
-    while (count--) {
+    while (count) {
+      count -= 1;
       this.free(urlToDelete[count]);
     }
     this.cacheData.size = 0;

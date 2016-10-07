@@ -125,7 +125,7 @@ export default class RemoteRenderer {
       // Trigger remote call
       this.client.ViewPortImageDelivery.stillRender(this.options)
         .then(
-          resp => {
+          (resp) => {
             this.renderPending = false;
 
             // stats
@@ -155,7 +155,7 @@ export default class RemoteRenderer {
               this.emit(IMAGE_READY_TOPIC, this);
             }
           },
-          err => {
+          (err) => {
             this.renderPending = false;
             this.lastError = err;
           });

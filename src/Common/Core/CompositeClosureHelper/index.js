@@ -29,8 +29,8 @@ function isA(publicAPI, model = {}, name = null) {
 // ----------------------------------------------------------------------------
 
 function set(publicAPI, model = {}, names = []) {
-  names.forEach(name => {
-    publicAPI[`set${capitalize(name)}`] = value => {
+  names.forEach((name) => {
+    publicAPI[`set${capitalize(name)}`] = (value) => {
       model[name] = value;
     };
   });
@@ -41,7 +41,7 @@ function set(publicAPI, model = {}, names = []) {
 // ----------------------------------------------------------------------------
 
 function get(publicAPI, model = {}, names = []) {
-  names.forEach(name => {
+  names.forEach((name) => {
     publicAPI[`get${capitalize(name)}`] = () => model[name];
   });
 }
@@ -64,7 +64,7 @@ function destroy(publicAPI, model = {}) {
     while (model.subscriptions && model.subscriptions.length) {
       model.subscriptions.pop().unsubscribe();
     }
-    Object.keys(model).forEach(field => {
+    Object.keys(model).forEach((field) => {
       delete model[field];
     });
 
@@ -99,7 +99,7 @@ function event(publicAPI, model, eventName, asynchrounous = true) {
     }
 
     function processCallbacks() {
-      callbacks.forEach(callback => {
+      callbacks.forEach((callback) => {
         if (callback) {
           try {
             callback.apply(publicAPI, args);
@@ -117,7 +117,7 @@ function event(publicAPI, model, eventName, asynchrounous = true) {
     }
   };
 
-  publicAPI[`on${capitalize(eventName)}`] = callback => {
+  publicAPI[`on${capitalize(eventName)}`] = (callback) => {
     if (model.deleted) {
       console.log('instance deleted - can not call any method');
       return null;
@@ -141,7 +141,7 @@ function fetch(publicAPI, model, name) {
   let fetchCallback = null;
   const requestQueue = [];
 
-  publicAPI[`set${capitalize(name)}FetchCallback`] = fetchMethod => {
+  publicAPI[`set${capitalize(name)}FetchCallback`] = (fetchMethod) => {
     if (requestQueue.length) {
       fetchMethod(requestQueue);
     }
@@ -161,7 +161,7 @@ function fetch(publicAPI, model, name) {
       }
       if (requestList) {
         // Rebuild request list
-        requestList.forEach(req => {
+        requestList.forEach((req) => {
           requestQueue.push(req);
         });
         // Also trigger a request
@@ -186,15 +186,15 @@ function dynamicArray(publicAPI, model, name) {
     model[name] = [];
   }
 
-  publicAPI[`set${capitalize(name)}`] = items => {
+  publicAPI[`set${capitalize(name)}`] = (items) => {
     model[name] = [].concat(items);
   };
 
-  publicAPI[`add${capitalize(name)}`] = item => {
+  publicAPI[`add${capitalize(name)}`] = (item) => {
     model[name].push(item);
   };
 
-  publicAPI[`remove${capitalize(name)}`] = item => {
+  publicAPI[`remove${capitalize(name)}`] = (item) => {
     const index = model[name].indexOf(item);
     model[name].splice(index, 1);
   };
@@ -254,7 +254,8 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
 
   function off() {
     let count = dataSubscriptions.length;
-    while (count--) {
+    while (count) {
+      count -= 1;
       dataSubscriptions[count] = null;
     }
   }
@@ -304,7 +305,7 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
   };
 
   // Method use to store data
-  publicAPI[`set${capitalize(dataName)}`] = data => {
+  publicAPI[`set${capitalize(dataName)}`] = (data) => {
     // Process all subscription to see if we can trigger a notification
     if (!dataHandler.set(model[dataContainerName], data)) {
       dataSubscriptions.forEach(dataListener => flushDataToListener(dataListener, data));

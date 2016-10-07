@@ -12,7 +12,7 @@ var geometryDataModelCounter = 0;
 export default class GeometryDataModel {
 
   constructor(basepath) {
-    geometryDataModelCounter++;
+    geometryDataModelCounter += 1;
 
     this.basepath = basepath; // Needed for cloning
     this.id = ['GeometryDataModel', geometryDataModelCounter].join('_');
@@ -31,7 +31,7 @@ export default class GeometryDataModel {
 
         this.sceneData[dataDescription.name][dataDescription.field] = new window[dataDescription.type](data.data);
 
-        Object.keys(obj).forEach(key => {
+        Object.keys(obj).forEach((key) => {
           if (obj[key] === null) {
             objectComplete = false;
           }
@@ -118,7 +118,7 @@ export default class GeometryDataModel {
         }
 
         // Make the requests
-        urls.forEach(urlToFecth => {
+        urls.forEach((urlToFecth) => {
           dataManager.fetchURL(urlToFecth, 'array', null, this.id);
         });
       });
