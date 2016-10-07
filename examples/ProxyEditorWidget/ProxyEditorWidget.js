@@ -33302,7 +33302,7 @@
 	  var depStatus = depList ? Boolean(Number(depList.pop())) : true;
 	  var depValue = depList ? depList.pop() : null;
 	  var depId = depList ? depList.join(':') : null;
-	  var searchString = [ui.name, ui.doc].concat(property.value).join(' ').toLowerCase();
+	  var searchString = [ui.name].concat(property.value).join(' ').toLowerCase();
 
 	  return {
 	    show: function show(ctx) {
