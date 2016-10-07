@@ -158,7 +158,7 @@ function getWidgets(obj) {
   const widgetDesc = obj.getControlWidgets(),
     widgetList = [];
 
-  widgetDesc.forEach(desc => {
+  widgetDesc.forEach((desc) => {
     var widget = createWidget(desc.name, desc);
     if (widget) {
       widgetList.push(widget);

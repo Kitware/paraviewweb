@@ -53,10 +53,10 @@ export default React.createClass({
 
   processProps(props) {
     const list = [];
-    props.directories.forEach(name => {
+    props.directories.forEach((name) => {
       list.push({ name, icon: style.folderIcon, action: 'directory' });
     });
-    props.groups.forEach(g => {
+    props.groups.forEach((g) => {
       list.push({
         name: g.label,
         icon: style.groupIcon,
@@ -64,7 +64,7 @@ export default React.createClass({
         data: btoa(JSON.stringify(g.files)),
       });
     });
-    props.files.forEach(name => {
+    props.files.forEach((name) => {
       list.push({ name, icon: style.fileIcon, action: 'file' });
     });
     this.setState({ list });

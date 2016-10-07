@@ -66,7 +66,7 @@ export default function init(inPublicAPI, inModel) {
   // add implicit bounds for the histogram min/max to dividers list
   function getRegionBounds(def) {
     const [minRange, maxRange] = getHistRange(def);
-    return [minRange].concat(def.dividers.map((div) => (div.value)), maxRange);
+    return [minRange].concat(def.dividers.map(div => div.value), maxRange);
   }
 
   function getUncertScale(def) {
@@ -208,10 +208,10 @@ export default function init(inPublicAPI, inModel) {
     if (!enabled()) return 0;
     let count = 0;
     if (model.provider.getStoredAnnotation && !publicAPI.isFieldActionDisabled(def.name, 'save')) {
-      count++;
+      count += 1;
     }
     if (!publicAPI.isFieldActionDisabled(def.name, 'score')) {
-      count++;
+      count += 1;
     }
     return count;
   }
@@ -814,20 +814,20 @@ export default function init(inPublicAPI, inModel) {
     scoreChoices.enter()
       .append('label')
         .classed(style.scoreLabel, true)
-        .text((d) => d.name)
+        .text(d => d.name)
         .each(function myLabel(data, index) {
           // because we use 'each' and re-select the label, need to use parent 'index'
           // instead of 'i' in the (d, i) => functions below - i is always zero.
           const label = d3.select(this);
           label.append('span')
             .classed(style.scoreSwatch, true)
-            .style('background-color', (d) => (d.color));
+            .style('background-color', d => d.color);
           label.append('input')
             .classed(style.scoreChoice, true)
             .attr('name', 'score_choice_rb')
             .attr('type', 'radio')
-            .attr('value', (d) => (d.name))
-            .property('checked', (d) => (index === model.defaultScore))
+            .attr('value', d => d.name)
+            .property('checked', d => (index === model.defaultScore))
             .on('click', (d) => {
               // use click, not change, so we get notified even when current value is chosen.
               const def = model.selectedDef;
@@ -904,7 +904,7 @@ export default function init(inPublicAPI, inModel) {
   function filterFieldNames(fieldNames) {
     if (getDisplayOnlyScored()) {
       // filter for fields that have scores
-      return fieldNames.filter((name) => (showScore(model.fieldData[name])));
+      return fieldNames.filter(name => showScore(model.fieldData[name]));
     }
     return fieldNames;
   }
@@ -955,7 +955,7 @@ export default function init(inPublicAPI, inModel) {
         .attr('width', (d, i) => def.xScale(hobj.min + (2 * d.uncertainty * uncertScale)))
         .attr('height', () => model.histHeight)
         .attr('fill', '#000')
-        .attr('opacity', (d) => (d.uncertainty > 0 ? '0.2' : '0'));
+        .attr('opacity', d => (d.uncertainty > 0 ? '0.2' : '0'));
       uncertRegions.exit().remove();
 
       let dragDivLabel = gScore.select(`.${style.jsScoreDivLabel}`);
@@ -1045,7 +1045,7 @@ export default function init(inPublicAPI, inModel) {
                                     (i === 0 ? overhang : 0) + (i === numRegions - 1 ? overhang : 0))
           // extend over the x-axis when editing.
           .attr('height', def.editScore ? (model.histHeight + model.histMargin.bottom) - 3 : model.histMargin.bottom - 3)
-          .attr('fill', (d) => (model.scores[d].color))
+          .attr('fill', d => model.scores[d].color)
           .attr('opacity', showScore(def) ? reg.opacity : '0');
         reg.sel.exit().remove();
       });
@@ -1153,7 +1153,7 @@ export default function init(inPublicAPI, inModel) {
       fieldAnnotations = model.provider.getFieldPartitions();
     }
     if (fieldAnnotations) {
-      Object.keys(fieldAnnotations).forEach(field => {
+      Object.keys(fieldAnnotations).forEach((field) => {
         const annotation = fieldAnnotations[field];
         if (model.fieldData[field]) {
           model.fieldData[field].annotation = annotation;

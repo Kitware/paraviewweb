@@ -14,13 +14,13 @@ export default function fieldRender(props) {
           <td>
             <table className={style.table}>
               <tbody>
-              {React.Children.map(props.children, (r, idx) =>
-                <tr key={idx}>
-                  <td className={style.tableCell}>
-                  {r}
-                  </td>
-                </tr>
-              )}
+                {React.Children.map(props.children, (r, idx) =>
+                  <tr key={idx}>
+                    <td className={style.tableCell}>
+                      {r}
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </td>
@@ -30,7 +30,7 @@ export default function fieldRender(props) {
 }
 
 fieldRender.propTypes = {
-  children: React.PropTypes.array,
+  children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
   getLegend: React.PropTypes.func,
   fieldName: React.PropTypes.string,
   depth: React.PropTypes.number,

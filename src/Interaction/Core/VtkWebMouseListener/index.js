@@ -26,10 +26,12 @@ export default class VtkMouseListener {
           buttonLeft: !event.isFinal,
           buttonMiddle: false,
           buttonRight: false,
+          /* eslint-disable no-bitwise */
           shiftKey: event.modifier & modifier.SHIFT,
           ctrlKey: event.modifier & modifier.CTRL,
           altKey: event.modifier & modifier.ALT,
           metaKey: event.modifier & modifier.META,
+          /* eslint-enable no-bitwise */
           x: event.relative.x / this.width,
           y: 1.0 - (event.relative.y / this.height),
         };
@@ -49,11 +51,11 @@ export default class VtkMouseListener {
             this.ready = false;
             this.client.MouseHandler.interaction(vtkEvent)
               .then(
-                resp => {
+                (resp) => {
                   this.ready = true;
                   this.doneCallback(vtkEvent.action !== 'up');
                 },
-                err => {
+                (err) => {
                   console.log('event err', err);
                   this.doneCallback(vtkEvent.action !== 'up');
                 });
@@ -87,10 +89,10 @@ export default class VtkMouseListener {
         if (this.client) {
           this.client.MouseHandler.interaction(vtkEvent)
             .then(
-              resp => {
+              (resp) => {
                 this.doneCallback(vtkEvent.action !== 'up');
               },
-              err => {
+              (err) => {
                 this.doneCallback(vtkEvent.action !== 'up');
               });
         }

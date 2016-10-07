@@ -172,7 +172,8 @@ export default React.createClass({
       xValues = new Uint16Array(count);
 
     // Compute xValues and min/max
-    while (count--) {
+    while (count) {
+      count -= 1;
       const value = values[count];
       min = Math.min(min, value);
       max = Math.max(max, value);
@@ -215,7 +216,7 @@ export default React.createClass({
   render() {
     var legend = [];
 
-    Object.keys(this.state.fieldsColors).forEach(name => {
+    Object.keys(this.state.fieldsColors).forEach((name) => {
       const color = this.state.fieldsColors[name];
       legend.push(
         <li className={style.legendItem} key={name}>
@@ -226,7 +227,7 @@ export default React.createClass({
     });
 
     return (
-      <div className={style.container} ref={c => { this.rootContainer = c; }}>
+      <div className={style.container} ref={c => (this.rootContainer = c)}>
         <canvas
           className={style.canvas}
           ref={(c) => { this.canvas = c; }}

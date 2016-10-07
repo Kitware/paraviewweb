@@ -13,7 +13,7 @@ export default class PingPong {
   }
 
   swap() {
-    this.idx++;
+    this.idx += 1;
     this.idx %= 2;
   }
 

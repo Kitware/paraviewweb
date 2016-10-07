@@ -63,7 +63,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     // Handle events
     this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
       this.dataFields = {};
-      Object.keys(data).forEach(field => {
+      Object.keys(data).forEach((field) => {
         this.dataFields[field] = new window[this.metadata.types[field]](data[field].data);
       });
       this.render();
@@ -440,7 +440,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         pixels[(idx * 4) + 1] = 255 * color[1];
         pixels[(idx * 4) + 2] = 255 * color[2];
         pixels[(idx * 4) + 3] = 255;
-        idx++;
+        idx += 1;
       }
     }
 
@@ -474,7 +474,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         pixels[(idx * 4) + 1] = 255 * color[1];
         pixels[(idx * 4) + 2] = 255 * color[2];
         pixels[(idx * 4) + 3] = 255;
-        idx++;
+        idx += 1;
       }
     }
     ctx.putImageData(imageBuffer, 0, 0);
@@ -505,7 +505,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         pixels[(idx * 4) + 1] = 255 * color[1];
         pixels[(idx * 4) + 2] = 255 * color[2];
         pixels[(idx * 4) + 3] = 255;
-        idx++;
+        idx += 1;
       }
     }
 
@@ -565,7 +565,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
 
-  getRenderMethods() {
+  static getRenderMethods() {
     return ['XY', 'ZY', 'XZ'];
   }
 

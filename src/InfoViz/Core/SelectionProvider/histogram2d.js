@@ -209,7 +209,7 @@ export function set(model, payload) {
 
   // Attach max count
   let count = 0;
-  payload.data.bins.forEach(item => {
+  payload.data.bins.forEach((item) => {
     count = count < item.count ? item.count : count;
   });
   payload.data.maxCount = count;
@@ -237,7 +237,7 @@ function getNotificationData(model, request) {
   let missingData = false;
   const generationNumbers = [];
 
-  request.variables.forEach(axes => {
+  request.variables.forEach((axes) => {
     const histograms = get(model, { axes });
     if (histograms && histograms.length) {
       if (!result[axes[0]]) {

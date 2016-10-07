@@ -153,7 +153,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div className={style.container} ref={c => { this.rootContainer = c; }}>
+      <div className={style.container} ref={c => (this.rootContainer = c)}>
         <canvas
           className={style.canvas}
           ref={(c) => { this.canvas = c; }}

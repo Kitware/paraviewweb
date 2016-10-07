@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyPieChartWidget = props => {
+const PlotlyPieChartWidget = (props) => {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newLabelArray = rootContainer.querySelector('.jsLabels').value;

@@ -26,21 +26,21 @@ export default function operatorRender(props) {
           <td>
             <table className={style.table}>
               <tbody>
-              {subRules.map((r, idx) =>
-                <tr key={idx}>
-                  <td className={style.tableCell}>
-                    <RuleRender
-                      rule={r}
-                      path={[].concat(props.path, idx + 1)}
-                      depth={props.depth + 1}
-                      maxDepth={props.maxDepth}
-                      onChange={props.onChange}
-                      onDelete={props.onDelete}
-                      getLegend={props.getLegend}
-                    />
-                  </td>
-                </tr>
-              )}
+                {subRules.map((r, idx) =>
+                  <tr key={idx}>
+                    <td className={style.tableCell}>
+                      <RuleRender
+                        rule={r}
+                        path={[].concat(props.path, idx + 1)}
+                        depth={props.depth + 1}
+                        maxDepth={props.maxDepth}
+                        onChange={props.onChange}
+                        onDelete={props.onDelete}
+                        getLegend={props.getLegend}
+                      />
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </td>

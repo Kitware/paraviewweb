@@ -56,7 +56,7 @@ export default class ComponentWorkbench {
     this.activeLayout = Object.keys(Layouts)[0];
     this.layoutFn = Layouts[this.activeLayout];
     this.mouseHandlers = {
-      mousedown: event => {
+      mousedown: (event) => {
         if (this.getClickedViewport(event.clientX - this.boundingRect.left,
             event.clientY - this.boundingRect.top) === -1 && event.target === this.el) {
           this.dragging = true;
@@ -67,10 +67,10 @@ export default class ComponentWorkbench {
           event.preventDefault();
         }
       },
-      mouseup: event => {
+      mouseup: (event) => {
         this.dragging = false;
       },
-      mousemove: event => {
+      mousemove: (event) => {
         if (this.dragging) {
           event.stopPropagation();
           event.preventDefault();
@@ -114,7 +114,7 @@ export default class ComponentWorkbench {
   setComponents(componentDict) {
     this.componentMap = componentDict;
 
-    Object.keys(componentDict).forEach(k => {
+    Object.keys(componentDict).forEach((k) => {
       if (componentDict[k].viewport !== -1) {
         // set the viewport as well
         this.setViewport(componentDict[k].viewport, componentDict[k].component, false);
@@ -186,7 +186,7 @@ export default class ComponentWorkbench {
     }
   }
 
-  checkIndex(idx) {
+  static checkIndex(idx) {
     if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
       throw new Error('The only available indices are in the range [0, 3]');
     }
@@ -197,7 +197,8 @@ export default class ComponentWorkbench {
     this.checkIndex(index);
 
     // Find out if this instance is in another viewport
-    while (count--) {
+    while (count) {
+      count -= 1;
       if (this.viewportList[count].renderer === instance) {
         this.viewportList[count].renderer = null;
       }
@@ -214,7 +215,7 @@ export default class ComponentWorkbench {
     if (instance !== null) {
       instance.setContainer(this.viewportList[index].el);
       instance.resize();
-      Object.keys(this.componentMap).forEach(name => {
+      Object.keys(this.componentMap).forEach((name) => {
         if (this.componentMap[name].component === instance && this.componentMap[name].scroll) {
           this.viewportList[index].el.setAttribute('class', style.scrollableViewport);
         }
@@ -228,7 +229,7 @@ export default class ComponentWorkbench {
 
   setContainer(el) {
     if (this.el) {
-      this.viewportList.forEach(viewport => {
+      this.viewportList.forEach((viewport) => {
         this.el.removeChild(viewport.el);
       });
       this.removeMouseListeners();
@@ -236,7 +237,7 @@ export default class ComponentWorkbench {
 
     this.el = el;
     if (this.el) {
-      this.viewportList.forEach(viewport => {
+      this.viewportList.forEach((viewport) => {
         this.el.appendChild(viewport.el);
       });
       if (this.useMouse) {
@@ -251,7 +252,7 @@ export default class ComponentWorkbench {
     return this.viewportList[index].renderer;
   }
 
-  getLayoutLabels() {
+  static getLayoutLabels() {
     return Object.keys(Layouts);
   }
 
@@ -272,7 +273,7 @@ export default class ComponentWorkbench {
 
   getViewportMapping() {
     const viewportMapping = this.viewportList.map(viewport => viewport.renderer);
-    Object.keys(this.componentMap).forEach(name => {
+    Object.keys(this.componentMap).forEach((name) => {
       this.componentMap[name].viewport = viewportMapping.indexOf(this.componentMap[name].component);
     });
     return this.componentMap;
@@ -311,7 +312,7 @@ export default class ComponentWorkbench {
   destroy() {
     this.off();
     this.setContainer(null);
-    this.viewportList.forEach(viewport => {
+    this.viewportList.forEach((viewport) => {
       viewport.el = null;
       if (viewport.renderer && viewport.renderer.destroy) {
         viewport.renderer.destroy();

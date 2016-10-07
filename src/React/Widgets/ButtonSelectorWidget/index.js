@@ -16,7 +16,8 @@ export default React.createClass({
       count = array.length;
 
     if (this.props.onChange) {
-      while (count--) {
+      while (count) {
+        count -= 1;
         if (array[count].name === name) {
           this.props.onChange(count, array);
         }

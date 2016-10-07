@@ -15,7 +15,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     setSettings(keyValueMap) {
-      const list = Object.keys(keyValueMap).map(key => {
+      const list = Object.keys(keyValueMap).map((key) => {
         const value = keyValueMap[key];
         return {
           key, value,

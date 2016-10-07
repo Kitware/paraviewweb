@@ -1,7 +1,7 @@
 import React                    from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyHistogramWidget = props => {
+const PlotlyHistogramWidget = (props) => {
   function handleChange(event) {
     const newXArray = event.target.value;
     const forceNewPlot = props.arrays[props.chartState.x] !== props.arrays[newXArray];

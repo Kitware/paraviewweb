@@ -65,11 +65,13 @@ function histogramSelector(publicAPI, model) {
       return property.toLowerCase();
     }
 
+    /* eslint-disable no-plusplus */
     while (++i < n) {
       if (prefixes[i] + property in s) {
         return `-${prefixes[i].toLowerCase()}${property.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
       }
     }
+    /* eslint-enable no-plusplus */
 
     return false;
   }('Transform'));
@@ -143,7 +145,7 @@ function histogramSelector(publicAPI, model) {
   function getFieldRow(name) {
     if (model.nest === null) return 0;
     const foundRow = model.nest.reduce((prev, item, i) => {
-      const val = item.value.filter((def) => (def.name === name));
+      const val = item.value.filter(def => (def.name === name));
       if (val.length > 0) {
         return item.key;
       }
@@ -356,7 +358,7 @@ function histogramSelector(publicAPI, model) {
       model.disabledFieldsActions[fieldName] = [];
     }
     const disableActionList = model.disabledFieldsActions[fieldName];
-    [].concat(actionNames).forEach(action => {
+    [].concat(actionNames).forEach((action) => {
       if (disableActionList.indexOf(action) === -1) {
         disableActionList.push(action);
       }
@@ -371,7 +373,7 @@ function histogramSelector(publicAPI, model) {
       return;
     }
     const disableActionList = model.disabledFieldsActions[fieldName];
-    [].concat(actionNames).forEach(action => {
+    [].concat(actionNames).forEach((action) => {
       const idx = disableActionList.indexOf(action);
       if (idx !== -1) {
         disableActionList.splice(idx, 1);
@@ -418,7 +420,7 @@ function histogramSelector(publicAPI, model) {
 
       // get the data and put it into the nest based on the
       // number of boxesPerRow
-      const mungedData = fieldNames.map(name => {
+      const mungedData = fieldNames.map((name) => {
         const d = model.fieldData[name];
         return d;
       });
@@ -464,7 +466,7 @@ function histogramSelector(publicAPI, model) {
 
     // attach our slice of data to the rows
     const rows = model.parameterList.selectAll('div')
-      .data(dataSlice, (d) => d.key);
+      .data(dataSlice, d => d.key);
 
     // here is the code that reuses the exit nodes to fill entry
     // nodes. If there are not enough exit nodes then additional ones
@@ -492,7 +494,7 @@ function histogramSelector(publicAPI, model) {
     rows.exit().remove();
 
     // now put the data into the boxes
-    const boxes = rows.selectAll('table').data((d) => d.value);
+    const boxes = rows.selectAll('table').data(d => d.value);
     boxes.enter()
       .append('table')
       .classed(style.hiddenBox, true);
@@ -699,7 +701,7 @@ function histogramSelector(publicAPI, model) {
           numTicks = 5;
           // using .ticks() results in skipping min/max values,
           // if they aren't 'nice'. Make exactly 5 ticks.
-          const myTicks = d3.range(numTicks).map((d) => (
+          const myTicks = d3.range(numTicks).map(d => (
             minRange + ((d / (numTicks - 1)) * (maxRange - minRange)))
           );
           def.xAxis
@@ -734,7 +736,7 @@ function histogramSelector(publicAPI, model) {
       boxes
         .call(styleBoxes, model);
     } else {
-      boxes.filter((def) => (def.name === onlyFieldName)).each(prepareItem);
+      boxes.filter(def => (def.name === onlyFieldName)).each(prepareItem);
     }
   };
 
@@ -770,7 +772,7 @@ function histogramSelector(publicAPI, model) {
 
   function handleHoverUpdate(data) {
     const everything = d3.select(model.container);
-    Object.keys(data.state).forEach(pName => {
+    Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
       everything.selectAll(`rect[pname='${pName}']`)
         .classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
@@ -786,14 +788,14 @@ function histogramSelector(publicAPI, model) {
       model.fieldData = {};
     }
 
-    fieldNames.forEach(name => {
+    fieldNames.forEach((name) => {
       model.fieldData[name] = Object.assign(
         model.fieldData[name] || {},
         model.provider.getField(name),
         scoreHelper.defaultFieldData());
     });
 
-    model.subscriptions.push(model.provider.onFieldChange(field => {
+    model.subscriptions.push(model.provider.onFieldChange((field) => {
       Object.assign(model.fieldData[field.name], field);
       publicAPI.render();
     }));
@@ -805,10 +807,10 @@ function histogramSelector(publicAPI, model) {
 
   if (model.provider.isA('Histogram1DProvider')) {
     model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
-      data => {
+      (data) => {
         // Below, we're asking for partial updates, so we just update our
         // cache with anything that came in.
-        Object.keys(data).forEach(name => {
+        Object.keys(data).forEach((name) => {
           if (!model.fieldData[name]) model.fieldData[name] = {};
           if (model.fieldData[name].hobj) {
             const oldRangeMin = model.fieldData[name].hobj.min;
@@ -836,7 +838,7 @@ function histogramSelector(publicAPI, model) {
     // Preload annotation from store
     const partitionSelectionToLoad = {};
     const annotations = model.provider.getStoredAnnotations();
-    Object.keys(annotations).forEach(id => {
+    Object.keys(annotations).forEach((id) => {
       const annotation = annotations[id];
       if (annotation && annotation.selection.type === 'partition') {
         partitionSelectionToLoad[annotation.selection.partition.variable] = annotation;
@@ -846,7 +848,7 @@ function histogramSelector(publicAPI, model) {
       scoreHelper.updateFieldAnnotations(partitionSelectionToLoad);
     }
 
-    model.subscriptions.push(model.provider.onStoreAnnotationChange(event => {
+    model.subscriptions.push(model.provider.onStoreAnnotationChange((event) => {
       if (event.action === 'delete' && event.annotation) {
         const annotation = event.annotation;
         if (annotation.selection.type === 'partition') {

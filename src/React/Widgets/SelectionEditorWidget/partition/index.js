@@ -24,7 +24,7 @@ export default function partitionSelection(props) {
     props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
   };
 
-  const onDelete = pathToDelete => {
+  const onDelete = (pathToDelete) => {
     // clone, so we don't step on whatever is current.
     const selection = JSON.parse(JSON.stringify(props.selection));
     if (pathToDelete[0] === 'dividers') {
@@ -39,7 +39,7 @@ export default function partitionSelection(props) {
   return (
     <div style={{ position: 'relative' }}>
       <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}>
-        { props.children }
+        {props.children}
       </div>
       <FieldRender className={props.className} fieldName={fieldName} getLegend={props.getLegend} depth={0} >
         {dividers.map((divider, idx) =>
@@ -57,6 +57,7 @@ export default function partitionSelection(props) {
 }
 
 partitionSelection.propTypes = {
+  children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
   selection: React.PropTypes.object,
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,

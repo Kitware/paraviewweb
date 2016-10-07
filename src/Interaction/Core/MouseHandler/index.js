@@ -65,7 +65,8 @@ export default class MouseHandler {
 
     this.Modifier = Modifier;
 
-    this.id = `mouse_handler_${++handlerCount}`;
+    handlerCount += 1;
+    this.id = `mouse_handler_${handlerCount}`;
     this.el = domElement;
     this.modifier = 0;
     this.toggleModifiers = [0];
@@ -242,7 +243,7 @@ export default class MouseHandler {
 
   attach(listeners) {
     var subscriptions = {};
-    Object.keys(listeners).forEach(key => {
+    Object.keys(listeners).forEach((key) => {
       subscriptions[key] = this.on(key, listeners[key]);
     });
     return subscriptions;

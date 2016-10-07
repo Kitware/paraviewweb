@@ -27,7 +27,7 @@ export default class AxesManager {
 
   updateAxes(axisList) {
     if (this.axes.length === 0) {
-      axisList.forEach(entry => {
+      axisList.forEach((entry) => {
         this.addAxis(new Axis(entry.name, entry.range));
       });
     } else {
@@ -36,11 +36,11 @@ export default class AxesManager {
 
       // index axes
       const nameToAxisMap = {};
-      this.axes.forEach(axis => {
+      this.axes.forEach((axis) => {
         nameToAxisMap[axis.name] = axis;
       });
 
-      axisList.forEach(entry => {
+      axisList.forEach((entry) => {
         targetList.push(entry.name);
         if (!nameToAxisMap[entry.name]) {
           toAdd.push(new Axis(entry.name, entry.range));
@@ -103,7 +103,7 @@ export default class AxesManager {
 
     // index axes
     const nameToAxisMap = {};
-    this.axes.forEach(axis => {
+    this.axes.forEach((axis) => {
       nameToAxisMap[axis.name] = axis;
     });
 
@@ -111,11 +111,11 @@ export default class AxesManager {
     if (selection) {
       if (selection.type === 'range') {
         this.selection = selection;
-        Object.keys(selection.range.variables).forEach(axisName => {
+        Object.keys(selection.range.variables).forEach((axisName) => {
           if (nameToAxisMap[axisName]) {
             nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
             if (scoreMapping && scoreMapping.length === 1) {
-              nameToAxisMap[axisName].selections.forEach(axisSelection => {
+              nameToAxisMap[axisName].selections.forEach((axisSelection) => {
                 axisSelection.score = scoreMapping[0];
                 axisSelection.color = scoreColorMap[scoreMapping[0]]
                   ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
@@ -237,7 +237,7 @@ export default class AxesManager {
       }
       const selection = this.getSelection();
       // Notify listeners
-      this.listeners.forEach(listener => {
+      this.listeners.forEach((listener) => {
         if (listener) {
           listener(selection);
         }
@@ -257,7 +257,7 @@ export default class AxesManager {
   triggerAxisListChange() {
     setImmediate(() => {
       // Notify listeners
-      this.axisListChangeListeners.forEach(listener => {
+      this.axisListChangeListeners.forEach((listener) => {
         if (listener) {
           listener(this.getAxesPairs());
         }
@@ -269,10 +269,10 @@ export default class AxesManager {
     if (!this.selection) {
       const vars = {};
       let selectionCount = 0;
-      this.axes.forEach(axis => {
+      this.axes.forEach((axis) => {
         if (axis.hasSelection()) {
           vars[axis.name] = [].concat(axis.selections);
-          selectionCount++;
+          selectionCount += 1;
         }
       });
       this.selection = selectionCount ? SelectionBuilder.range(vars) : SelectionBuilder.EMPTY_SELECTION;

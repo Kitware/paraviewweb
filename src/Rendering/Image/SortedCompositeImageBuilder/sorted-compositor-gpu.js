@@ -201,7 +201,7 @@ export default class WebGLSortedVolumeCompositor {
     this.pingPong.clearFbo();
 
     // Just iterate through all the layers in the data for now
-    loop(!this.reverseCompositePass, this.numLayers, layerIdx => {
+    loop(!this.reverseCompositePass, this.numLayers, (layerIdx) => {
       this.drawColorPass(this.extractLayerData(this.orderData, layerIdx),
         this.extractLayerData(this.alphaData, layerIdx),
         this.extractLayerData(this.intensityData, layerIdx));

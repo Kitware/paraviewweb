@@ -47,7 +47,7 @@ function mutualInformationProvider(publicAPI, model) {
     deltaHandling.previousMTime = deltaHandling.currentMTime;
     deltaHandling.currentMTime = {};
     if (Object.keys(histograms).length > 1) {
-      model.mutualInformationParameterNames.forEach(name => {
+      model.mutualInformationParameterNames.forEach((name) => {
         if (histograms[name] && histograms[name][name]) {
           // Validate range
           if (histograms[name][name].x.delta === 0) {
@@ -83,14 +83,14 @@ function mutualInformationProvider(publicAPI, model) {
     }
   }
 
-  publicAPI.onMutualInformationReady = callback => {
+  publicAPI.onMutualInformationReady = (callback) => {
     if (hasData) {
       callback(mutualInformationData);
     }
     return onMutualInformationReady(callback);
   };
 
-  publicAPI.setHistogram2dProvider = provider => {
+  publicAPI.setHistogram2dProvider = (provider) => {
     if (model.histogram2dProviderSubscription) {
       model.histogram2dProviderSubscription.unsubscribe();
     }
@@ -104,7 +104,7 @@ function mutualInformationProvider(publicAPI, model) {
     }
   };
 
-  publicAPI.setMutualInformationParameterNames = names => {
+  publicAPI.setMutualInformationParameterNames = (names) => {
     if (deltaHandling.processed) {
       deltaHandling.added = names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1);
       deltaHandling.removed = model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1);

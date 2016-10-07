@@ -1,7 +1,7 @@
 import React                    from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyHistogram2DWidget = props => {
+const PlotlyHistogram2DWidget = (props) => {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newXArray = rootContainer.querySelector('.jsX').value;

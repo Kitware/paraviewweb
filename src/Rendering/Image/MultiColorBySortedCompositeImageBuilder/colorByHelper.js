@@ -5,7 +5,7 @@ function createColorLookupConst(lut, value) {
 }
 
 function createColorLookup(lut, floatMap, layer, color) {
-  return (idx) => lut.getColor(floatMap[layer][color][idx]);
+  return idx => lut.getColor(floatMap[layer][color][idx]);
 }
 
 export default class ColorByHelper {
@@ -29,11 +29,12 @@ export default class ColorByHelper {
 
       const array = layers[layerIdx].colorBy;
       let count = array.length;
-      while (count--) {
-        const colorBy = array[count],
-          layerCode = encoding[layerIdx],
-          colorName = colorBy.name,
-          lut = this.lookupTableManager.getLookupTable(colorBy.name);
+      while (count) {
+        count -= 1;
+        const colorBy = array[count];
+        const layerCode = encoding[layerIdx];
+        const colorName = colorBy.name;
+        const lut = this.lookupTableManager.getLookupTable(colorBy.name);
 
         if (colorBy.type === 'const') {
           this.layerGetColor[layerCode][colorName] = createColorLookupConst(lut, colorBy.value);
@@ -45,11 +46,11 @@ export default class ColorByHelper {
   }
 
   updateData(data) {
-    Object.keys(data).forEach(name => {
+    Object.keys(data).forEach((name) => {
       if (name.indexOf('_') !== -1) {
-        const splitName = name.split('_'),
-          layerName = encoding[Number(splitName.shift())],
-          colorBy = splitName.join('_');
+        const splitName = name.split('_');
+        const layerName = encoding[Number(splitName.shift())];
+        const colorBy = splitName.join('_');
 
         this.layerFloatData[layerName][colorBy] = new Float32Array(data[name].data);
       }

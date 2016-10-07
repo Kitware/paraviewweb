@@ -65,7 +65,8 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
       map = this.compositeMap;
 
     let count = compositeArray.length;
-    while (count--) {
+    while (count) {
+      count -= 1;
       const key = compositeArray[count];
       if (key[0] === '@') {
         // Skip pixels

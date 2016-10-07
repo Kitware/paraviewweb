@@ -61,7 +61,7 @@ export default React.createClass({
 
     setImmediate(() => {
       if (this.props.imageBuilders) {
-        Object.keys(this.props.imageBuilders).forEach(key => {
+        Object.keys(this.props.imageBuilders).forEach((key) => {
           const builder = this.props.imageBuilders[key].builder;
           builder.setCrossHairEnable(isProbeOpen);
           builder.render();

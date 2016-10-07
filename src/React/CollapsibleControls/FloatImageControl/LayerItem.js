@@ -50,7 +50,7 @@ export default React.createClass({
     return (
       <div className={style.item}>
         <div className={style.sceneLabel}>
-            {layer.name}
+          {layer.name}
         </div>
         <div className={style.sceneActions}>
           <i

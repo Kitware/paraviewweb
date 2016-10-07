@@ -31,7 +31,7 @@ function fieldSelector(publicAPI, model) {
     publicAPI.render();
   };
 
-  publicAPI.setContainer = el => {
+  publicAPI.setContainer = (el) => {
     if (model.container) {
       while (model.container.firstChild) {
         model.container.removeChild(model.container.firstChild);
@@ -69,7 +69,7 @@ function fieldSelector(publicAPI, model) {
     d3.select(model.container).select('tbody').classed(style.tbody, true);
     d3.select(model.container)
       .select('th.field-selector-mode')
-      .on('click', d => {
+      .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();
       })
@@ -87,7 +87,7 @@ function fieldSelector(publicAPI, model) {
       .select('th.field-selector-label')
       .style('text-align', 'left')
       .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
-      .on('click', d => {
+      .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();
       });
@@ -149,7 +149,7 @@ function fieldSelector(publicAPI, model) {
       fieldContainer
         .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
-        .on('click', name => {
+        .on('click', (name) => {
           model.provider.toggleFieldSelection(name);
         });
 
@@ -254,7 +254,7 @@ function fieldSelector(publicAPI, model) {
 
   function handleHoverUpdate(data) {
     const svg = d3.select(model.container);
-    Object.keys(data.state).forEach(pName => {
+    Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
       svg.selectAll(`rect[pname='${pName}']`)
         .classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1)
@@ -269,10 +269,10 @@ function fieldSelector(publicAPI, model) {
   if (model.fieldShowHistogram) {
     if (model.provider.isA('Histogram1DProvider')) {
       model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
-        allHistogram1d => {
+        (allHistogram1d) => {
           // Below, we're asking for partial updates, so we just update our
           // cache with anything that came in.
-          Object.keys(allHistogram1d).forEach(paramName => {
+          Object.keys(allHistogram1d).forEach((paramName) => {
             model.histograms[paramName] = allHistogram1d[paramName];
           });
           publicAPI.render();

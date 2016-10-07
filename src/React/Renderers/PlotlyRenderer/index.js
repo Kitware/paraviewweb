@@ -24,7 +24,7 @@ export default React.createClass({
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
 
-    this.dataSubscription = this.props.chartBuilder.onDataReady(data => {
+    this.dataSubscription = this.props.chartBuilder.onDataReady((data) => {
       const container = this.chartRenderer;
       if (!container) {
         return;

@@ -67,7 +67,7 @@ function stopListening() {
 // ------ internal functions ------
 
 function invalidateSize() {
-  timestamp++;
+  timestamp += 1;
   triggerChange();
 }
 

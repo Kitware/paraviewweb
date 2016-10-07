@@ -48,13 +48,14 @@ export default class CPUCompositor {
       pixels.fill(0);
     } else {
       let count = width * height * 4;
-      while (count--) {
+      while (count) {
+        count -= 1;
         pixels[count] = 0;
       }
     }
 
     // Just iterate through all the layers in the data for now
-    loop(!!this.reverseCompositePass, this.numLayers, drawIdx => {
+    loop(!!this.reverseCompositePass, this.numLayers, (drawIdx) => {
       for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
           const idx = (this.width * y) + x,
@@ -127,13 +128,13 @@ export default class CPUCompositor {
   // Lighting Widget called methods
   // --------------------------------------------------------------------------
 
-  getLightProperties() {
+  static getLightProperties() {
     return {};
   }
 
   // --------------------------------------------------------------------------
 
-  setLightProperties(lightProps) {
+  static setLightProperties(lightProps) {
     // this.lightProperties = merge(this.lightProperties, lightProps);
   }
 }

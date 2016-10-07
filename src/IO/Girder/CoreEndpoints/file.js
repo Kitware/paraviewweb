@@ -22,20 +22,20 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         };
       }
 
-      xhr.addEventListener('progress', event => {
+      xhr.addEventListener('progress', (event) => {
         if (event.lengthComputable) {
           const complete = event.loaded / event.total;
           console.log('chunk progress', complete);
         }
       });
-      xhr.addEventListener('load', event => {
+      xhr.addEventListener('load', (event) => {
         resolve(extractResponse('load'));
       });
-      xhr.addEventListener('error', event => {
+      xhr.addEventListener('error', (event) => {
         console.log('Transfer as failed', event);
         reject(extractResponse('error'));
       });
-      xhr.addEventListener('abort', event => {
+      xhr.addEventListener('abort', (event) => {
         console.log('Transfer as been canceled', event);
         reject(extractResponse('abort'));
       });
@@ -53,7 +53,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     // upload file to item
     return new Promise((resolve, reject) => {
       busy(client._.post(`/file${encodeQueryAsString(params)}`))
-        .then(upload => {
+        .then((upload) => {
           var chunkSize = 10 * 1024 * 1024,
             uploadNextChunk;
 
@@ -87,7 +87,7 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
           };
           uploadNextChunk(0);
         })
-        .catch(error => {
+        .catch((error) => {
           console.warn('Could not upload file');
           console.warn(error);
           reject(error);

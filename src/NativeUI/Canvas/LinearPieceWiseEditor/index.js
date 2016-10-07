@@ -234,7 +234,7 @@ export default class LinearPieceWiseEditor {
     this.ctx.fillRect(margin, margin, width, height);
 
     const linearPath = [];
-    this.controlPoints.forEach(point => {
+    this.controlPoints.forEach((point) => {
       linearPath.push(getCanvasCoordinates(this.ctx, point, this.radius));
     });
 

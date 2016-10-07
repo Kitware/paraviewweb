@@ -86,7 +86,7 @@ function informationDiagram(publicAPI, model) {
     publicAPI.render();
   };
 
-  publicAPI.setContainer = el => {
+  publicAPI.setContainer = (el) => {
     if (model.container) {
       while (model.container.firstChild) {
         model.container.removeChild(model.container.firstChild);
@@ -276,7 +276,7 @@ function informationDiagram(publicAPI, model) {
       const vars = {};
       let proceed = false;
 
-      Object.keys(binMap).forEach(pName => {
+      Object.keys(binMap).forEach((pName) => {
         const paramRange = model.provider.getField(pName).range;
         const binList = binMap[pName];
         const rangeList = [];
@@ -603,7 +603,7 @@ function informationDiagram(publicAPI, model) {
 
     // Get lookups for pmi chords
     model.mutualInformationData.lkup = {};
-    Object.keys(model.mutualInformationData.vmap).forEach(i => {
+    Object.keys(model.mutualInformationData.vmap).forEach((i) => {
       model.mutualInformationData.lkup[model.mutualInformationData.vmap[i].name] = i;
     });
 
@@ -847,7 +847,7 @@ function informationDiagram(publicAPI, model) {
 
         // Turn on PMI rendering
         let linkAccum = [];
-        Object.keys(model.mutualInformationData.vmap).forEach(iother => {
+        Object.keys(model.mutualInformationData.vmap).forEach((iother) => {
           var other = model.mutualInformationData.vmap[iother];
           let va = binVar;
           let vb = other.name;
@@ -913,7 +913,7 @@ function informationDiagram(publicAPI, model) {
           .classed('highlight-pmi', false)
           .classed('positive', data => data[1] >= 0.0)
           .classed('negative', data => data[1] < 0.0)
-          .attr('data-details', data => {
+          .attr('data-details', (data) => {
             const sourceBinRange = getParamBinRange(data[0][0], histogram1DnumberOfBins, data[3][0]);
             const targetBinRange = getParamBinRange(data[0][1], histogram1DnumberOfBins, data[3][1]);
             return 'PMI: '
@@ -932,7 +932,7 @@ function informationDiagram(publicAPI, model) {
 
   function handleHoverUpdate(data) {
     const svg = d3.select(model.container);
-    Object.keys(data.state).forEach(pName => {
+    Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
       svg.selectAll(`g.group[param-name='${pName}'] > path.htile`)
         .classed('hilite', (d, i) =>
@@ -958,7 +958,7 @@ function informationDiagram(publicAPI, model) {
 
   if (model.provider.isA('Histogram1DProvider')) {
     model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
-      data => {
+      (data) => {
         model.histogramData = data;
         publicAPI.render();
       },
@@ -974,7 +974,7 @@ function informationDiagram(publicAPI, model) {
 
   if (model.provider.isA('MutualInformationProvider')) {
     model.mutualInformationDataSubscription = model.provider.onMutualInformationReady(
-      data => {
+      (data) => {
         model.mutualInformationData = data;
         publicAPI.render();
       });
@@ -988,7 +988,7 @@ function informationDiagram(publicAPI, model) {
   }
 
   if (model.provider.isA('SelectionProvider')) {
-    model.subscriptions.push(model.provider.onAnnotationChange(annotation => {
+    model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
       if (lastAnnotationPushed
         && annotation.selection.type === 'range'
         && annotation.id === lastAnnotationPushed.id

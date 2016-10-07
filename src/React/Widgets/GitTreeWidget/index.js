@@ -24,7 +24,7 @@ function generateModel(list, rootId) {
     actives: [],
   };
 
-  list.forEach(el => {
+  list.forEach((el) => {
     // Make sure we don't share the same reference
     // with the outside world.
     var node = Object.assign({}, el);
@@ -53,7 +53,8 @@ function assignNodePosition(model, node, x) {
 
   // Expand node with position information
   node.x = x;
-  node.y = model.y++;
+  node.y = model.y;
+  model.y += 1;
 
   // Register node in the list
   model.nodes.push(node);
@@ -105,7 +106,7 @@ function fillActives(model, activeIds = []) {
   const { nodes, actives } = model;
 
   // Fill the actives list with the position instead of ids
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     if (activeIds.indexOf(node.id) !== -1) {
       actives.push(node.y);
     }
@@ -235,7 +236,7 @@ export default React.createClass({
         const changeSet = [],
           active = true;
 
-        actives.forEach(idx => {
+        actives.forEach((idx) => {
           const { id, parent, name, visible } = nodes[idx];
           changeSet.push({ id, parent, name, visible, active });
         });
@@ -417,7 +418,7 @@ export default React.createClass({
   render() {
     return (
       <svg
-        ref={c => { this.rootContainer = c; }}
+        ref={c => (this.rootContainer = c)}
         style={this.props.style}
         width={this.props.width}
         height={`${this.props.deltaY * this.state.nodes.length}px`}

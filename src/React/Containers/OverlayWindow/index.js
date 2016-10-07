@@ -1,6 +1,8 @@
 import React     from 'react';
 import style     from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
+/* eslint-disable react/no-unused-prop-types */
+
 // Clamp, but also let us know how much we cut off
 function diffClamp(value, min, max) {
   if (value > max) {
@@ -33,7 +35,7 @@ function createDragHandlers(thisObj) {
     };
   }
   return {
-    topLeft: event => {
+    topLeft: (event) => {
       const { delX, delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
@@ -48,7 +50,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    topRight: event => {
+    topRight: (event) => {
       const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
@@ -63,7 +65,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    bottomLeft: event => {
+    bottomLeft: (event) => {
       const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
@@ -78,7 +80,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    bottomRight: event => {
+    bottomRight: (event) => {
       const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
@@ -93,7 +95,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    top: event => {
+    top: (event) => {
       const { delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
       const dy = diffClamp(thisObj.state.y + delY, 0, maxY);
@@ -104,7 +106,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    right: event => {
+    right: (event) => {
       const { delX, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
@@ -115,7 +117,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    bottom: event => {
+    bottom: (event) => {
       const { delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
@@ -126,7 +128,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    left: event => {
+    left: (event) => {
       const { delX } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
@@ -137,7 +139,7 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenX(event.screenX);
       thisObj.setLastScreenY(event.screenY);
     },
-    move: event => {
+    move: (event) => {
       const { eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = eltBounds.width - thisObj.state.width;
       const maxY = eltBounds.height - thisObj.state.height;
@@ -212,8 +214,8 @@ export default React.createClass({
     this.lastScreenX = 0;
     this.getLastScreenX = () => this.lastScreenX;
     this.getLastScreenY = () => this.lastScreenY;
-    this.setLastScreenX = x => { this.lastScreenX = x; };
-    this.setLastScreenY = y => { this.lastScreenY = y; };
+    this.setLastScreenX = (x) => { this.lastScreenX = x; };
+    this.setLastScreenY = (y) => { this.lastScreenY = y; };
     this.handlerMap = createDragHandlers(this);
     this.dragHandler = this.mouseMove;
   },
@@ -424,7 +426,7 @@ export default React.createClass({
             {this.props.title}
           </div>
           <div {...contentDivProps}>
-          {children}
+            {children}
           </div>
         </div>
       </div>);

@@ -12,7 +12,7 @@ const
 
 function createCompositor(dataType, options) {
   let instance = null;
-  Object.keys(CompositorMap).forEach(type => {
+  Object.keys(CompositorMap).forEach((type) => {
     if (!instance && contains(dataType, type)) {
       instance = new CompositorMap[type](options);
     }

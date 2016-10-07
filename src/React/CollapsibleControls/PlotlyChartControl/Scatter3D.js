@@ -1,7 +1,9 @@
 import React                    from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyScatter3Didget = props => {
+/* eslint-disable react/no-unused-prop-types */
+
+const PlotlyScatter3Didget = (props) => {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newXArray = rootContainer.querySelector('.jsX').value;

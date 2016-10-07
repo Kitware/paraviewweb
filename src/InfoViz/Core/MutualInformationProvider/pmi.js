@@ -27,7 +27,7 @@ function removeRow(mtx, irow) {
 // }
 
 function removeCol(mtx, icol) {
-  mtx.forEach(o => { o.splice(icol, 1); });
+  mtx.forEach(o => o.splice(icol, 1));
 }
 
 // Eliminate a row and column from a matrix.
@@ -39,7 +39,7 @@ function removeRowAndCol(mtx, irow, icol) {
 // Insert a new row and column into a matrix, filling new entries with \a val.
 function insertRowAndCol(mtx, irow, icol, val) {
   const nv = mtx.length + 1;
-  mtx.forEach(row => { row.splice(icol, 0, val); });
+  mtx.forEach(row => row.splice(icol, 0, val));
   mtx.splice(irow, 0,
     Array.apply(null, Array(nv)).map(
       Number.prototype.valueOf, val));
@@ -155,7 +155,7 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
   // entries for pairs whose variables have been updated.
   const alreadyDone = {}; // keep track of which entries have already been processed
   const nv = miData.matrix.length;
-  variablesAddedOrUpdated.forEach(vname => {
+  variablesAddedOrUpdated.forEach((vname) => {
     const vidx = miData.vset[vname];
     if (vidx === undefined) {
       return;

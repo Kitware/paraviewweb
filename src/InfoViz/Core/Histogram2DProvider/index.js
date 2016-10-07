@@ -28,7 +28,7 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 
 function flipHistogram(histo2d) {
   const newHisto2d = {
-    bins: histo2d.bins.map(bin => {
+    bins: histo2d.bins.map((bin) => {
       const { x, y, count } = bin;
       return {
         x: y,
@@ -74,7 +74,7 @@ export function extend(publicAPI, model, initialValues = {}) {
 
       // Add maxCount
       let maxCount = 0;
-      data.bins.forEach(item => {
+      data.bins.forEach((item) => {
         maxCount = maxCount < item.count ? item.count : maxCount;
       });
       data.maxCount = maxCount;
@@ -96,7 +96,7 @@ export function extend(publicAPI, model, initialValues = {}) {
       const { numberOfBins } = request.metadata;
       const binStorage = storage[numberOfBins];
       const rangeConsistency = {};
-      request.variables.forEach(axisPair => {
+      request.variables.forEach((axisPair) => {
         if (!returnedData[axisPair[0]]) {
           returnedData[axisPair[0]] = {};
         }
@@ -113,7 +113,7 @@ export function extend(publicAPI, model, initialValues = {}) {
           }
           rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
 
-          count++;
+          count += 1;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
           returnedData[axisPair[0]][axisPair[1]] = hist2d;
           if (request.metadata.symmetric) {
@@ -131,7 +131,7 @@ export function extend(publicAPI, model, initialValues = {}) {
       if (count === request.variables.length || (request.metadata.partial && count > 0)) {
         // Chech consistency
         let skip = false;
-        Object.keys(rangeConsistency).forEach(name => {
+        Object.keys(rangeConsistency).forEach((name) => {
           const values = rangeConsistency[name];
           values.sort();
           if (values.length > 1) {

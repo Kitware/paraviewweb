@@ -8,6 +8,7 @@ module.exports = {
     'no-unused-vars': ["error", { args: 'none' }],
     'react/jsx-filename-extension': ["error", { "extensions": [".js"] }],
     'no-mixed-operators': ["error", {"allowSamePrecedence": true}],
+    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
 
     // Should fix that at some point but too much work...
     'react/no-is-mounted': "warn",
@@ -15,6 +16,9 @@ module.exports = {
     'one-var': 0,
     'react/prefer-es6-class': 0,
     'no-nested-ternary': 0,
+    'react/forbid-prop-types': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'react/no-unused-prop-types': 0,
 
     // Not for us ;-)
     'jsx-a11y/label-has-for': 0,
