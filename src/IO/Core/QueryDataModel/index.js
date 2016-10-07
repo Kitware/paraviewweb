@@ -707,15 +707,16 @@ export default class QueryDataModel {
     return this.exploreState.animate;
   }
 
-  static setCacheSize(sizeBeforeGC) {
+  /* eslint-disable class-methods-use-this */
+  setCacheSize(sizeBeforeGC) {
     dataManager.cacheSize = sizeBeforeGC;
   }
 
-  static getCacheSize() {
+  getCacheSize() {
     return dataManager.cacheSize;
   }
 
-  static getMemoryUsage() {
+  getMemoryUsage() {
     return dataManager.cacheData.size;
   }
 
