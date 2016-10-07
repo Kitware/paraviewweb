@@ -426,25 +426,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -465,6 +480,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -4514,7 +4534,7 @@
 	exports.i(__webpack_require__(38), undefined);
 
 	// module
-	exports.push([module.id, ".FloatImageControl_container_2paFu {\n}\n\n.FloatImageControl_item_14TQ3 {\n    width: 100%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    display: -ms-flexbox;\n    display: flex;\n    box-sizing: border-box;\n    line-height: 2em;\n}\n\n.FloatImageControl_label_1jYrW {\n    font-weight: bold;\n    -ms-flex: none;\n        flex: none;\n    text-align: left;\n    margin-left: 5px;\n    margin-right: 10px;\n    -ms-flex-item-align: center;\n        align-self: center;\n}\n\n.FloatImageControl_sceneLabel_25doz {\n  font-weight: bold;\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  text-align: left;\n  margin-left: 5px;\n  -ms-flex-item-align: center;\n      align-self: center;\n}\n\n.FloatImageControl_smallLabel_1DID2 {\n  font-weight: bold;\n  -ms-flex: none;\n      flex: none;\n  text-align: left;\n  margin-left: 5px;\n  -ms-flex-item-align: center;\n      align-self: center;\n  max-width: 25%;\n  min-width: 50px;\n}\n\n.FloatImageControl_actions_3u5vR {\n  position: relative;\n  right: 0;\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  display: -ms-flexbox;\n  display: flex;\n}\n\n.FloatImageControl_sceneActions_3v8Aj {\n  position: relative;\n  right: 0;\n}\n\n.FloatImageControl_lightSlider_O0ud2 {\n  width: 100%;\n  vertical-align: middle;\n}\n\n/* ----- LayerItem ------- */\n\n.FloatImageControl_hidden_3UU5j {\n    display: none;\n}\n\n.FloatImageControl_iconButton_2gpTX {\n    -ms-flex: none;\n        flex: none;\n    margin-right: 5px;\n    -ms-flex-item-align: center;\n        align-self: center;\n    cursor: pointer;\n    font-style: normal;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.FloatImageControl_fadeButton_2clJN {\n    color: #aaa;\n}\n\n.FloatImageControl_meshButtonOn_1rGu_ {\n}\n\n.FloatImageControl_meshButtonOff_3Qx4g {\n}\n\n.FloatImageControl_visibleButtonOn_3GQhp {\n}\n\n.FloatImageControl_visibleButtonOff_3yyXp {\n}\n\n.FloatImageControl_dropDownButtonOn_X_DEG {\n}\n\n.FloatImageControl_dropDownButtonOff_1IFCW {\n}\n\n.FloatImageControl_addProbeIcon_gm7ns {\n}\n\n.FloatImageControl_removeProbeIcon_2kkAH {\n}\n\n.FloatImageControl_menu_QqpsU {\n    position: absolute;\n    top: 2em;\n    right: 5px;\n    border: solid 1px black;\n    padding: 5px 10px;\n    background: #fff;\n    border-radius: 5px;\n    z-index: 2;\n}\n\n.FloatImageControl_menuItem_1hyEJ {\n    cursor: pointer;\n}\n\n.FloatImageControl_selectedMenuItem_1ewoo {\n    font-weight: bold;\n}\n\n.FloatImageControl_input_vA54U {\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  box-shadow: none;\n  border: 1px solid #aaa;\n  min-width: 30%;\n  margin: 2px;\n  border-radius: 2px;\n  height: calc(2em - 8px);\n}\n\n.FloatImageControl_dropDown_3l-ZF {\n  -ms-flex: none;\n      flex: none;\n  width: 15px;\n  height: calc(2em - 4px);\n  margin: 2px;\n  border: 1px solid #aaa !important;\n  box-shadow: none !important;\n  padding-left: 8px !important;\n}\n\n.FloatImageControl_dropDown_3l-ZF:-moz-focusring {\n  color: transparent;\n  text-shadow: 0 0 0 #000;\n}\n\n.FloatImageControl_imageViewIcon_anEtR {\n  cursor: pointer;\n}\n\n.FloatImageControl_chartViewIcon_Y8YZD {\n  cursor: pointer;\n}\n\n.FloatImageControl_bothViewIcon_hJavC {\n  cursor: pointer;\n}\n\n.FloatImageControl_enableLegendIcon_vIG-l {\n}\n\n.FloatImageControl_disableLegendIcon_3yKqn {\n}\n\n.FloatImageControl_sortProbeIcon_UjKkH {\n  cursor: pointer;\n}\n\n.FloatImageControl_value_f3Zwb {\n  text-align: right;\n  font-style: italic;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 40%;\n  cursor: pointer;\n}\n\n@media screen and (max-device-width: 400px) {\n    .FloatImageControl_iconButton_2gpTX {\n        font-size: 1.45em;\n    }\n}\n\n.is-ios-device.FloatImageControl_iconButton_2gpTX {\n    font-size: 1.45em;\n}\n", ""]);
+	exports.push([module.id, ".FloatImageControl_container_2paFu {\n}\n\n.FloatImageControl_item_14TQ3 {\n    width: 100%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    display: -ms-flexbox;\n    display: flex;\n    box-sizing: border-box;\n    line-height: 2em;\n}\n\n.FloatImageControl_label_1jYrW {\n    font-weight: bold;\n    -ms-flex: none;\n        flex: none;\n    text-align: left;\n    margin-left: 5px;\n    margin-right: 10px;\n    -ms-flex-item-align: center;\n        -ms-grid-row-align: center;\n        align-self: center;\n}\n\n.FloatImageControl_sceneLabel_25doz {\n  font-weight: bold;\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  text-align: left;\n  margin-left: 5px;\n  -ms-flex-item-align: center;\n      -ms-grid-row-align: center;\n      align-self: center;\n}\n\n.FloatImageControl_smallLabel_1DID2 {\n  font-weight: bold;\n  -ms-flex: none;\n      flex: none;\n  text-align: left;\n  margin-left: 5px;\n  -ms-flex-item-align: center;\n      -ms-grid-row-align: center;\n      align-self: center;\n  max-width: 25%;\n  min-width: 50px;\n}\n\n.FloatImageControl_actions_3u5vR {\n  position: relative;\n  right: 0;\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  display: -ms-flexbox;\n  display: flex;\n}\n\n.FloatImageControl_sceneActions_3v8Aj {\n  position: relative;\n  right: 0;\n}\n\n.FloatImageControl_lightSlider_O0ud2 {\n  width: 100%;\n  vertical-align: middle;\n}\n\n/* ----- LayerItem ------- */\n\n.FloatImageControl_hidden_3UU5j {\n    display: none;\n}\n\n.FloatImageControl_iconButton_2gpTX {\n    -ms-flex: none;\n        flex: none;\n    margin-right: 5px;\n    -ms-flex-item-align: center;\n        -ms-grid-row-align: center;\n        align-self: center;\n    cursor: pointer;\n    font-style: normal;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.FloatImageControl_fadeButton_2clJN {\n    color: #aaa;\n}\n\n.FloatImageControl_meshButtonOn_1rGu_ {\n}\n\n.FloatImageControl_meshButtonOff_3Qx4g {\n}\n\n.FloatImageControl_visibleButtonOn_3GQhp {\n}\n\n.FloatImageControl_visibleButtonOff_3yyXp {\n}\n\n.FloatImageControl_dropDownButtonOn_X_DEG {\n}\n\n.FloatImageControl_dropDownButtonOff_1IFCW {\n}\n\n.FloatImageControl_addProbeIcon_gm7ns {\n}\n\n.FloatImageControl_removeProbeIcon_2kkAH {\n}\n\n.FloatImageControl_menu_QqpsU {\n    position: absolute;\n    top: 2em;\n    right: 5px;\n    border: solid 1px black;\n    padding: 5px 10px;\n    background: #fff;\n    border-radius: 5px;\n    z-index: 2;\n}\n\n.FloatImageControl_menuItem_1hyEJ {\n    cursor: pointer;\n}\n\n.FloatImageControl_selectedMenuItem_1ewoo {\n    font-weight: bold;\n}\n\n.FloatImageControl_input_vA54U {\n  -ms-flex: 1 0 0%;\n      flex: 1 0 0%;\n  box-shadow: none;\n  border: 1px solid #aaa;\n  min-width: 30%;\n  margin: 2px;\n  border-radius: 2px;\n  height: calc(2em - 8px);\n}\n\n.FloatImageControl_dropDown_3l-ZF {\n  -ms-flex: none;\n      flex: none;\n  width: 15px;\n  height: calc(2em - 4px);\n  margin: 2px;\n  border: 1px solid #aaa !important;\n  box-shadow: none !important;\n  padding-left: 8px !important;\n}\n\n.FloatImageControl_dropDown_3l-ZF:-moz-focusring {\n  color: transparent;\n  text-shadow: 0 0 0 #000;\n}\n\n.FloatImageControl_imageViewIcon_anEtR {\n  cursor: pointer;\n}\n\n.FloatImageControl_chartViewIcon_Y8YZD {\n  cursor: pointer;\n}\n\n.FloatImageControl_bothViewIcon_hJavC {\n  cursor: pointer;\n}\n\n.FloatImageControl_enableLegendIcon_vIG-l {\n}\n\n.FloatImageControl_disableLegendIcon_3yKqn {\n}\n\n.FloatImageControl_sortProbeIcon_UjKkH {\n  cursor: pointer;\n}\n\n.FloatImageControl_value_f3Zwb {\n  text-align: right;\n  font-style: italic;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 40%;\n  cursor: pointer;\n}\n\n@media screen and (max-device-width: 400px) {\n    .FloatImageControl_iconButton_2gpTX {\n        font-size: 1.45em;\n    }\n}\n\n.is-ios-device.FloatImageControl_iconButton_2gpTX {\n    font-size: 1.45em;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -5956,8 +5976,9 @@
 	    return value;
 	  },
 	  render: function render() {
-	    var min = this.props.min;
-	    var max = this.props.max;
+	    var _ref = [this.props.min, this.props.max];
+	    var min = _ref[0];
+	    var max = _ref[1];
 
 
 	    return _react2.default.createElement(

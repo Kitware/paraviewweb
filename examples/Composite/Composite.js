@@ -110,7 +110,7 @@
 	  _createClass(NativeCompositeComponent, [{
 	    key: 'addViewport',
 	    value: function addViewport(viewport) {
-	      var expand = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	      var expand = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	      this.viewports.push(viewport);
 	      var css = expand ? _Composite2.default.viewport : _Composite2.default.fixViewport;
@@ -550,6 +550,8 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/* eslint-disable class-methods-use-this */
 
 	var NativeBackgroundColorComponent = function () {
 	  function NativeBackgroundColorComponent(color, el) {

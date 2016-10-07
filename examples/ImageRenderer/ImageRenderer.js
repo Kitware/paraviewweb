@@ -256,25 +256,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -295,6 +310,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -21816,7 +21836,7 @@
 	    return this.canvasRenderer;
 	  },
 	  enableLocalRendering: function enableLocalRendering() {
-	    var enable = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var enable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	    this.enableRendering = enable;
 	  },
@@ -42724,7 +42744,7 @@
 
 	    return _react2.default.createElement('div', {
 	      ref: function ref(c) {
-	        _this.rootContainer = c;
+	        return _this.rootContainer = c;
 	      },
 	      className: this.props.className,
 	      onInput: this.emitChange,
@@ -42758,8 +42778,8 @@
 
 	var ImageExporter = function () {
 	  function ImageExporter() {
-	    var format = arguments.length <= 0 || arguments[0] === undefined ? 'image/jpeg' : arguments[0];
-	    var padding = arguments.length <= 1 || arguments[1] === undefined ? 3 : arguments[1];
+	    var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'image/jpeg';
+	    var padding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
 
 	    _classCallCheck(this, ImageExporter);
 
@@ -42775,7 +42795,8 @@
 	    value: function exportImage(data) {
 	      var xhr = new XMLHttpRequest();
 	      var dataToSend = {};
-	      var ts = Number(this.counter++).toString();
+	      var ts = Number(this.counter).toString();
+	      this.counter += 1;
 
 	      if (!data.canvas || !data.arguments) {
 	        return;
@@ -42847,7 +42868,7 @@
 	  }, {
 	    key: 'extractCanvasRegion',
 	    value: function extractCanvasRegion(canvas, region, outputSize) {
-	      var format = arguments.length <= 3 || arguments[3] === undefined ? 'image/png' : arguments[3];
+	      var format = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'image/png';
 
 	      if (!this.bgCanvas) {
 	        this.bgCanvas = new _CanvasOffscreenBuffer2.default(100, 100);
@@ -42887,7 +42908,8 @@
 	  function CanvasOffscreenBuffer(width, height) {
 	    _classCallCheck(this, CanvasOffscreenBuffer);
 
-	    this.id = 'CanvasOffscreenBuffer_' + ++offscreenCanvasCount;
+	    offscreenCanvasCount += 1;
+	    this.id = 'CanvasOffscreenBuffer_' + offscreenCanvasCount;
 	    this.el = document.createElement('canvas');
 	    this.width = width;
 	    this.height = height;
@@ -42918,7 +42940,7 @@
 	  }, {
 	    key: 'get3DContext',
 	    value: function get3DContext() {
-	      var options = arguments.length <= 0 || arguments[0] === undefined ? { preserveDrawingBuffer: true, premultipliedAlpha: false } : arguments[0];
+	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { preserveDrawingBuffer: true, premultipliedAlpha: false };
 
 	      return this.el.getContext('webgl', options) || this.el.getContext('experimental-webgl', options);
 	    }
@@ -42990,7 +43012,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -43031,7 +43053,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 
@@ -43223,7 +43245,8 @@
 
 	    this.Modifier = Modifier;
 
-	    this.id = 'mouse_handler_' + ++handlerCount;
+	    handlerCount += 1;
+	    this.id = 'mouse_handler_' + handlerCount;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];

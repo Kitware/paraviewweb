@@ -278,25 +278,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -317,6 +332,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -22109,12 +22129,14 @@
 	        x = event.relative.x,
 	        y = event.relative.y;
 
-	    while (count--) {
+	    while (count) {
+	      count -= 1;
 	      var area = this.viewports[count].activeArea || this.viewports[count].region;
 	      if (x >= area[0] && y >= area[1] && x <= area[0] + area[2] && y <= area[1] + area[3]) {
 	        return this.viewports[count];
 	      }
 	    }
+
 	    return null;
 	  },
 	  updateDimensions: function updateDimensions() {
@@ -42628,7 +42650,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -42669,7 +42691,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 
@@ -42861,7 +42883,8 @@
 
 	    this.Modifier = Modifier;
 
-	    this.id = 'mouse_handler_' + ++handlerCount;
+	    handlerCount += 1;
+	    this.id = 'mouse_handler_' + handlerCount;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -46218,7 +46241,7 @@
 
 	var LookupTable = function () {
 	  function LookupTable(name) {
-	    var discrete = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	    var discrete = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	    _classCallCheck(this, LookupTable);
 
@@ -46241,11 +46264,6 @@
 	    key: 'getName',
 	    value: function getName() {
 	      return this.name;
-	    }
-	  }, {
-	    key: 'getPresets',
-	    value: function getPresets() {
-	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }, {
 	    key: 'setPreset',
@@ -46295,10 +46313,10 @@
 	  }, {
 	    key: 'setColorForNaN',
 	    value: function setColorForNaN() {
-	      var r = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	      var g = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	      var b = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-	      var a = arguments.length <= 3 || arguments[3] === undefined ? 0 : arguments[3];
+	      var r = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+	      var g = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	      var b = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+	      var a = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
 	      this.colorNaN = [r, g, b, a];
 	    }
@@ -46476,6 +46494,11 @@
 	    key: 'onChange',
 	    value: function onChange(callback) {
 	      return this.on(CHANGE_TOPIC, callback);
+	    }
+	  }], [{
+	    key: 'getPresets',
+	    value: function getPresets() {
+	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }]);
 
@@ -46691,7 +46714,8 @@
 
 	    this.originalData = jsonData;
 	    this.basepath = basepath; // Needed for cloning
-	    this.id = 'QueryDataModel_' + ++queryDataModelCounter + ' :';
+	    queryDataModelCounter += 1;
+	    this.id = 'QueryDataModel_' + queryDataModelCounter + ' :';
 	    this.args = {};
 	    this.externalArgs = {};
 	    this.dataCount = {};
@@ -46746,7 +46770,8 @@
 	        _this.animationTimerId = 0;
 	      }
 
-	      while (count--) {
+	      while (count) {
+	        count -= 1;
 	        var item = request.urls[count];
 	        dataToBroadcast[item.key] = dataManager.get(item.url);
 	        if (dataToBroadcast[item.key]) {
@@ -46781,7 +46806,7 @@
 	    };
 
 	    var dataHandler = function dataHandler(data, envelope) {
-	      _this.dataCount[envelope.topic]++;
+	      _this.dataCount[envelope.topic] += 1;
 
 	      // Pre-decode image urls
 	      if (data.url && data.type === 'blob' && data.data.type.indexOf('image') !== -1 && data.image === undefined) {
@@ -46905,7 +46930,7 @@
 	    value: function fetchData() {
 	      var _this3 = this;
 
-	      var category = arguments.length <= 0 || arguments[0] === undefined ? DEFAULT_KEY_NAME : arguments[0];
+	      var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_KEY_NAME;
 
 	      var dataToFetch = [],
 	          query = this.getQuery(),
@@ -46932,7 +46957,7 @@
 	      }
 
 	      dataToFetch.forEach(function (dataId) {
-	        _this3.dataCount[dataId]--;
+	        _this3.dataCount[dataId] -= 1;
 	        request.urls.push({
 	          key: dataId.slice(_this3.id.length),
 	          url: dataManager.fetch(dataId, query)
@@ -46942,7 +46967,7 @@
 	  }, {
 	    key: 'lazyFetchData',
 	    value: function lazyFetchData() {
-	      var category = arguments.length <= 0 || arguments[0] === undefined ? DEFAULT_KEY_NAME : arguments[0];
+	      var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_KEY_NAME;
 
 	      if (this.lazyFetchRequest || this.requests.length > 0) {
 	        this.lazyFetchRequest = category;
@@ -47222,7 +47247,7 @@
 	  }, {
 	    key: 'animate',
 	    value: function animate(start) {
-	      var deltaT = arguments.length <= 1 || arguments[1] === undefined ? 500 : arguments[1];
+	      var deltaT = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
 
 	      // Update deltaT
 	      this.deltaT = deltaT;
@@ -47282,7 +47307,8 @@
 	            eventHandled = false;
 
 	        // Check all associated actions
-	        while (count--) {
+	        while (count) {
+	          count -= 1;
 	          var item = array[count],
 	              deltaName = item.coordinate === 0 ? 'deltaX' : 'deltaY';
 
@@ -47290,6 +47316,7 @@
 	            item.lastCoord = 0;
 	          }
 
+	          /* eslint-disable no-bitwise */
 	          if (item.modifier & event.modifier || item.modifier === event.modifier) {
 	            eventHandled = true;
 	            var delta = event[deltaName] - item.lastCoord;
@@ -47358,12 +47385,12 @@
 	  }, {
 	    key: 'exploreQuery',
 	    value: function exploreQuery() {
-	      var start = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	      var start = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	      var _this6 = this;
 
-	      var fromBeguining = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-	      var onDataReady = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	      var fromBeguining = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	      var onDataReady = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
 	      if (fromBeguining) {
 	        this.exploreState.idxs = this.exploreState.order.map(function (i) {
@@ -47404,10 +47431,11 @@
 	        var count = idxs.length;
 
 	        // May overshoot
-	        idxs[count - 1]++;
+	        idxs[count - 1] += 1;
 
 	        // Handle overshoot
-	        while (count--) {
+	        while (count) {
+	          count -= 1;
 	          if (idxs[count] < sizes[count]) {
 	            // We are good
 	            /* eslint-disable no-continue */
@@ -47416,7 +47444,7 @@
 	          } else if (count > 0) {
 	            // We need to move the index back up
 	            idxs[count] = 0;
-	            idxs[count - 1]++;
+	            idxs[count - 1] += 1;
 	          } else {
 	            this.exploreState.animate = false;
 	            this.emit('state.change.exploration', {
@@ -47433,6 +47461,24 @@
 	      return this.exploreState.animate;
 	    }
 	  }, {
+	    key: 'link',
+	    value: function link(queryDataModel) {
+	      var _this8 = this;
+
+	      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var fetch = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	      return queryDataModel.onStateChange(function (data, envelope) {
+	        if (data.name !== undefined && data.value !== undefined) {
+	          if (args === null || args.indexOf(data.name) !== -1) {
+	            if (_this8.setValue(data.name, data.value) && fetch) {
+	              _this8.lazyFetchData();
+	            }
+	          }
+	        }
+	      });
+	    }
+	  }], [{
 	    key: 'setCacheSize',
 	    value: function setCacheSize(sizeBeforeGC) {
 	      dataManager.cacheSize = sizeBeforeGC;
@@ -47446,24 +47492,6 @@
 	    key: 'getMemoryUsage',
 	    value: function getMemoryUsage() {
 	      return dataManager.cacheData.size;
-	    }
-	  }, {
-	    key: 'link',
-	    value: function link(queryDataModel) {
-	      var _this8 = this;
-
-	      var args = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	      var fetch = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	      return queryDataModel.onStateChange(function (data, envelope) {
-	        if (data.name !== undefined && data.value !== undefined) {
-	          if (args === null || args.indexOf(data.name) !== -1) {
-	            if (_this8.setValue(data.name, data.value) && fetch) {
-	              _this8.lazyFetchData();
-	            }
-	          }
-	        }
-	      });
 	    }
 	  }]);
 
@@ -48168,7 +48196,7 @@
 
 	var DataManager = function () {
 	  function DataManager() {
-	    var cacheSize = arguments.length <= 0 || arguments[0] === undefined ? 1000000000 : arguments[0];
+	    var cacheSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000000000;
 
 	    _classCallCheck(this, DataManager);
 
@@ -48198,7 +48226,7 @@
 	    value: function fetch(key, options) {
 	      var _this = this;
 
-	      var notificationTopic = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	      var notificationTopic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	      var url = options ? this.pattern.getValue(key, options) : key,
 	          dataCached = this.cacheData.cache[url];
@@ -48214,7 +48242,8 @@
 
 	            delete dataCached.keysToNotify;
 
-	            while (count--) {
+	            while (count) {
+	              count -= 1;
 	              _this.emit(array[count], dataCached);
 	            }
 
@@ -48286,7 +48315,8 @@
 	            // Store it in the cache
 	            self.cacheData.cache[url] = dataCached;
 
-	            while (count--) {
+	            while (count) {
+	              count -= 1;
 	              self.emit(array[count], dataCached);
 	            }
 	          };
@@ -48307,7 +48337,7 @@
 	  }, {
 	    key: 'fetchURL',
 	    value: function fetchURL(url, type, mimeType) {
-	      var notificationTopic = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+	      var notificationTopic = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 	      this.keyToTypeMap[url] = [type, typeFnMap[type], mimeType];
 	      return this.fetch(url, null, notificationTopic);
@@ -48372,7 +48402,8 @@
 	      });
 
 	      var count = urlToDelete.length;
-	      while (count--) {
+	      while (count) {
+	        count -= 1;
 	        this.free(urlToDelete[count]);
 	      }
 	      this.cacheData.size = 0;
@@ -49151,7 +49182,8 @@
 
 	        ctx.drawImage(image, xyz[0], dimensions[1] * offset, 1, dimensions[1], activeColumn, 0, 1, dimensions[1]);
 
-	        if (activeColumn--) {
+	        if (activeColumn) {
+	          activeColumn -= 1;
 	          self.getImage(activeColumn, processLine);
 	        } else {
 	          // Rendering is done
@@ -49161,7 +49193,8 @@
 	        }
 	      }
 
-	      if (activeColumn--) {
+	      if (activeColumn) {
+	        activeColumn -= 1;
 	        self.getImage(activeColumn, processLine);
 	      }
 	    }
@@ -49184,7 +49217,8 @@
 
 	        ctx.drawImage(image, 0, dimensions[1] * offset + xyz[1], dimensions[0], 1, 0, activeLine, dimensions[0], 1);
 
-	        if (activeLine--) {
+	        if (activeLine) {
+	          activeLine -= 1;
 	          self.getImage(activeLine, processLine);
 	        } else {
 	          // Rendering is done
@@ -49194,7 +49228,8 @@
 	        }
 	      }
 
-	      if (activeLine--) {
+	      if (activeLine) {
+	        activeLine -= 1;
 	        self.getImage(activeLine, processLine);
 	      }
 	    }
@@ -49237,7 +49272,8 @@
 
 	      while (idx < size) {
 	        var value = (pixBuffer[idx] + 256 * pixBuffer[idx + 1] + 65536 * pixBuffer[idx + 2]) / 16777216 * delta + fieldRange[0];
-	        array[arrayIdx++] = value;
+	        array[arrayIdx] = value;
+	        arrayIdx += 1;
 
 	        // Move to next pixel
 	        idx += 4;
@@ -49262,7 +49298,8 @@
 
 	      if (lut) {
 	        while (idx < size) {
-	          var color = lut.getColor(array[arrayIdx++]);
+	          var color = lut.getColor(array[arrayIdx]);
+	          arrayIdx += 1;
 
 	          pixBuffer[idx] = Math.floor(255 * color[0]);
 	          pixBuffer[idx + 1] = Math.floor(255 * color[1]);
@@ -49322,15 +49359,11 @@
 	    // ------------------------------------------------------------------------
 
 	  }, {
-	    key: 'getRenderMethods',
-	    value: function getRenderMethods() {
-	      return ['XY', 'ZY', 'XZ'];
-	    }
+	    key: 'isRenderMethodMutable',
+
 
 	    // ------------------------------------------------------------------------
 
-	  }, {
-	    key: 'isRenderMethodMutable',
 	    value: function isRenderMethodMutable() {
 	      return this.renderMethodMutable;
 	    }
@@ -49441,6 +49474,11 @@
 	        originalRange: this.metadata.ranges[this.getField()],
 	        lookupTableManager: this.lookupTableManager
 	      };
+	    }
+	  }], [{
+	    key: 'getRenderMethods',
+	    value: function getRenderMethods() {
+	      return ['XY', 'ZY', 'XZ'];
 	    }
 	  }]);
 
@@ -49643,7 +49681,8 @@
 	  function CanvasOffscreenBuffer(width, height) {
 	    _classCallCheck(this, CanvasOffscreenBuffer);
 
-	    this.id = 'CanvasOffscreenBuffer_' + ++offscreenCanvasCount;
+	    offscreenCanvasCount += 1;
+	    this.id = 'CanvasOffscreenBuffer_' + offscreenCanvasCount;
 	    this.el = document.createElement('canvas');
 	    this.width = width;
 	    this.height = height;
@@ -49674,7 +49713,7 @@
 	  }, {
 	    key: 'get3DContext',
 	    value: function get3DContext() {
-	      var options = arguments.length <= 0 || arguments[0] === undefined ? { preserveDrawingBuffer: true, premultipliedAlpha: false } : arguments[0];
+	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { preserveDrawingBuffer: true, premultipliedAlpha: false };
 
 	      return this.el.getContext('webgl', options) || this.el.getContext('experimental-webgl', options);
 	    }

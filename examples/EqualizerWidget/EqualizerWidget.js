@@ -244,7 +244,7 @@
 	    return _react2.default.createElement(
 	      'div',
 	      { className: _EqualizerWidget2.default.container, ref: function ref(c) {
-	          _this.rootContainer = c;
+	          return _this.rootContainer = c;
 	        } },
 	      _react2.default.createElement('canvas', {
 	        className: _EqualizerWidget2.default.canvas,
@@ -789,25 +789,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -828,6 +843,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -5286,7 +5306,8 @@
 
 	    this.Modifier = Modifier;
 
-	    this.id = 'mouse_handler_' + ++handlerCount;
+	    handlerCount += 1;
+	    this.id = 'mouse_handler_' + handlerCount;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -28606,7 +28627,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -28647,7 +28668,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 

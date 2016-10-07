@@ -86,14 +86,10 @@
 
 	__webpack_require__(295);
 
-	/* eslint max-len: 0 */
-
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-
-	// Should be removed in the next major release:
 
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -8001,25 +7997,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8040,6 +8051,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -29445,7 +29461,8 @@
 
 	  // Expand node with position information
 	  node.x = x;
-	  node.y = model.y++;
+	  node.y = model.y;
+	  model.y += 1;
 
 	  // Register node in the list
 	  model.nodes.push(node);
@@ -29498,7 +29515,7 @@
 	}
 
 	function fillActives(model) {
-	  var activeIds = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	  var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	  var nodes = model.nodes;
 	  var actives = model.actives;
 
@@ -29575,7 +29592,7 @@
 	    this.processData(nextProps.nodes, nextProps.actives);
 	  },
 	  processData: function processData(list) {
-	    var activeIds = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	    var model = generateModel(list, this.props.rootId);
 	    var tree = model.tree;
 	    var leaves = model.leaves;
@@ -29861,7 +29878,7 @@
 	      'svg',
 	      {
 	        ref: function ref(c) {
-	          _this5.rootContainer = c;
+	          return _this5.rootContainer = c;
 	        },
 	        style: this.props.style,
 	        width: this.props.width,
@@ -30274,7 +30291,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -30315,7 +30332,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 

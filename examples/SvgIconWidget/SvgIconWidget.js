@@ -108,14 +108,10 @@
 
 	__webpack_require__(295);
 
-	/* eslint max-len: 0 */
-
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-
-	// Should be removed in the next major release:
 
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -8023,25 +8019,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8062,6 +8073,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -29640,8 +29656,8 @@
 
 	Sprite.styles = ['position:absolute', 'width:0', 'height:0', 'visibility:hidden'];
 
-	Sprite.spriteTemplate = svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing;
-	Sprite.symbolTemplate = svgOpening + '>' + contentPlaceHolder + svgClosing;
+	Sprite.spriteTemplate = function(){ return svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing; }
+	Sprite.symbolTemplate = function() { return svgOpening + '>' + contentPlaceHolder + svgClosing; }
 
 	/**
 	 * @type {Array<String>}
@@ -29690,7 +29706,7 @@
 	};
 
 	Sprite.prototype.appendSymbol = function (content) {
-	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate).childNodes[0];
+	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate()).childNodes[0];
 
 	  this.svg.querySelector('defs').appendChild(symbol);
 	  if (this.browser.name === 'firefox') {
@@ -29716,7 +29732,7 @@
 	  target = target || null;
 	  prepend = typeof prepend === 'boolean' ? prepend : true;
 
-	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate);
+	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate());
 
 	  if (this.browser.name === 'firefox') {
 	    FirefoxSymbolBugWorkaround(svg);

@@ -97,8 +97,8 @@
 	}
 
 	function clamp(value) {
-	  var min = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	  var max = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	  var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	  var max = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
 	  return value < min ? min : value > max ? max : value;
 	}
@@ -115,7 +115,7 @@
 	}
 
 	function getCanvasSize(ctx) {
-	  var margin = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	  var margin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 	  var _ctx$canvas = ctx.canvas;
 	  var width = _ctx$canvas.width;
 	  var height = _ctx$canvas.height;
@@ -276,7 +276,7 @@
 	    value: function setControlPoints(points) {
 	      var _this2 = this;
 
-	      var activeIndex = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
+	      var activeIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
 
 	      this.controlPoints = points.map(function (pt) {
 	        return pointBuilder(pt.x, pt.y);
@@ -307,7 +307,7 @@
 	  }, {
 	    key: 'setStyle',
 	    value: function setStyle() {
-	      var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	      var _ref$radius = _ref.radius;
 	      var radius = _ref$radius === undefined ? 6 : _ref$radius;

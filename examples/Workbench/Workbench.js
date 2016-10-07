@@ -575,7 +575,7 @@
 	  function ComponentWorkbench(el) {
 	    var _this = this;
 
-	    var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var _ref$useMouse = _ref.useMouse;
 	    var useMouse = _ref$useMouse === undefined ? true : _ref$useMouse;
@@ -727,24 +727,18 @@
 	      }
 	    }
 	  }, {
-	    key: 'checkIndex',
-	    value: function checkIndex(idx) {
-	      if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
-	        throw new Error('The only available indices are in the range [0, 3]');
-	      }
-	    }
-	  }, {
 	    key: 'setViewport',
 	    value: function setViewport(index, instance) {
 	      var _this3 = this;
 
-	      var shouldTriggerChange = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	      var shouldTriggerChange = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
 	      var count = NUMBER_OF_VIEWPORTS;
 	      this.checkIndex(index);
 
 	      // Find out if this instance is in another viewport
-	      while (count--) {
+	      while (count) {
+	        count -= 1;
 	        if (this.viewportList[count].renderer === instance) {
 	          this.viewportList[count].renderer = null;
 	        }
@@ -802,19 +796,14 @@
 	      return this.viewportList[index].renderer;
 	    }
 	  }, {
-	    key: 'getLayoutLabels',
-	    value: function getLayoutLabels() {
-	      return Object.keys(_Layouts2.default);
-	    }
+	    key: 'setLayout',
+
 
 	    /*
 	     * Parameter 'layout' should be one of the layout keys:
 	     *
 	     * "2x2", "1x1", "1x2", "2x1", "3xT", "3xL", "3xR", "3xB"
 	     */
-
-	  }, {
-	    key: 'setLayout',
 	    value: function setLayout(layout) {
 	      if (_Layouts2.default[layout]) {
 	        this.activeLayout = layout;
@@ -885,6 +874,18 @@
 	          viewport.renderer = null;
 	        }
 	      });
+	    }
+	  }], [{
+	    key: 'checkIndex',
+	    value: function checkIndex(idx) {
+	      if (idx < 0 || idx >= NUMBER_OF_VIEWPORTS) {
+	        throw new Error('The only available indices are in the range [0, 3]');
+	      }
+	    }
+	  }, {
+	    key: 'getLayoutLabels',
+	    value: function getLayoutLabels() {
+	      return Object.keys(_Layouts2.default);
 	    }
 	  }]);
 
@@ -21202,7 +21203,7 @@
 	  function CompositeControlContainer(mainViewport, controlViewport) {
 	    var _this = this;
 
-	    var width = arguments.length <= 2 || arguments[2] === undefined ? 350 : arguments[2];
+	    var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 350;
 
 	    _classCallCheck(this, CompositeControlContainer);
 
@@ -21410,25 +21411,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -21449,6 +21465,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -22392,6 +22413,8 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/* eslint-disable class-methods-use-this */
+
 	var NativeBackgroundColorComponent = function () {
 	  function NativeBackgroundColorComponent(color, el) {
 	    _classCallCheck(this, NativeBackgroundColorComponent);
@@ -22454,10 +22477,11 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/* global document */
+	/* eslint-disable class-methods-use-this */
 
 	var NativeSpacerComponent = function () {
 	  function NativeSpacerComponent() {
-	    var size = arguments.length <= 0 || arguments[0] === undefined ? '30px' : arguments[0];
+	    var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '30px';
 
 	    _classCallCheck(this, NativeSpacerComponent);
 
@@ -22533,7 +22557,7 @@
 	  _createClass(NativeCompositeComponent, [{
 	    key: 'addViewport',
 	    value: function addViewport(viewport) {
-	      var expand = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	      var expand = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	      this.viewports.push(viewport);
 	      var css = expand ? _Composite2.default.viewport : _Composite2.default.fixViewport;

@@ -131,8 +131,8 @@
 	  function RemoteRenderer(pvwClient) {
 	    var _this = this;
 
-	    var container = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	    var id = arguments.length <= 2 || arguments[2] === undefined ? -1 : arguments[2];
+	    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	    var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
 
 	    _classCallCheck(this, RemoteRenderer);
 
@@ -164,7 +164,7 @@
 	    };
 
 	    this.renderOnIdle = function () {
-	      var force = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      if (_this.__timeout === null) {
 	        _this.__timeout = setTimeout(function () {
@@ -189,8 +189,8 @@
 	  _createClass(RemoteRenderer, [{
 	    key: 'setQuality',
 	    value: function setQuality() {
-	      var interactive = arguments.length <= 0 || arguments[0] === undefined ? 50 : arguments[0];
-	      var still = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+	      var interactive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
+	      var still = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
 	      this.stillQuality = still;
 	      this.interactiveQuality = interactive;
@@ -203,7 +203,7 @@
 	  }, {
 	    key: 'setContainer',
 	    value: function setContainer() {
-	      var container = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	      var container = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
 	      if (this.container && this.container !== container) {
 	        // Clean previous container
@@ -229,7 +229,7 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var force = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      // Skip rendering if we are not visible
 	      if (this.size && this.size.clientWidth === 0) {
@@ -20627,7 +20627,8 @@
 
 	    this.Modifier = Modifier;
 
-	    this.id = 'mouse_handler_' + ++handlerCount;
+	    handlerCount += 1;
+	    this.id = 'mouse_handler_' + handlerCount;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -23905,8 +23906,8 @@
 	  function VtkMouseListener(vtkWebClient) {
 	    var _this = this;
 
-	    var width = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
-	    var height = arguments.length <= 2 || arguments[2] === undefined ? 100 : arguments[2];
+	    var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+	    var height = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
 
 	    _classCallCheck(this, VtkMouseListener);
 
@@ -23922,10 +23923,12 @@
 	          buttonLeft: !event.isFinal,
 	          buttonMiddle: false,
 	          buttonRight: false,
+	          /* eslint-disable no-bitwise */
 	          shiftKey: event.modifier & modifier.SHIFT,
 	          ctrlKey: event.modifier & modifier.CTRL,
 	          altKey: event.modifier & modifier.ALT,
 	          metaKey: event.modifier & modifier.META,
+	          /* eslint-enable no-bitwise */
 	          x: event.relative.x / _this.width,
 	          y: 1.0 - event.relative.y / _this.height
 	        };
@@ -24071,7 +24074,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -24112,7 +24115,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 
@@ -24479,11 +24482,6 @@
 	      xhr.send();
 	    }
 	  }, {
-	    key: 'listConnections',
-	    value: function listConnections() {
-	      return connections;
-	    }
-	  }, {
 	    key: 'onProcessReady',
 	    value: function onProcessReady(callback) {
 	      return this.on(PROCESS_READY_TOPIC, callback);
@@ -24508,6 +24506,11 @@
 	    value: function destroy() {
 	      this.off();
 	      this.endPoint = null;
+	    }
+	  }], [{
+	    key: 'listConnections',
+	    value: function listConnections() {
+	      return connections;
 	    }
 	  }]);
 
@@ -24566,8 +24569,8 @@
 
 	var AutobahnConnection = function () {
 	  function AutobahnConnection(urls) {
-	    var secret = arguments.length <= 1 || arguments[1] === undefined ? 'vtkweb-secret' : arguments[1];
-	    var retry = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	    var secret = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'vtkweb-secret';
+	    var retry = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 	    _classCallCheck(this, AutobahnConnection);
 
@@ -24644,7 +24647,7 @@
 	  }, {
 	    key: 'destroy',
 	    value: function destroy() {
-	      var timeout = arguments.length <= 0 || arguments[0] === undefined ? 10 : arguments[0];
+	      var timeout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
 
 	      this.off();
 	      if (this.session) {
@@ -27266,25 +27269,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -27305,6 +27323,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -39467,8 +39490,8 @@
 	};
 
 	function createClient(connection) {
-	  var protocols = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-	  var customProtocols = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var protocols = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+	  var customProtocols = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  var session = connection.getSession(),
 	      result = {
@@ -39476,7 +39499,8 @@
 	  },
 	      count = protocols.length;
 
-	  while (count--) {
+	  while (count) {
+	    count -= 1;
 	    var name = protocols[count];
 	    result[name] = protocolsMap[name](session);
 	  }
@@ -39518,11 +39542,11 @@
 	      return session.call('pv.color.manager.scalar.range.get', [proxyId]);
 	    },
 	    colorBy: function colorBy(representation, colorMode) {
-	      var arrayLocation = arguments.length <= 2 || arguments[2] === undefined ? 'POINTS' : arguments[2];
-	      var arrayName = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
-	      var vectorMode = arguments.length <= 4 || arguments[4] === undefined ? 'Magnitude' : arguments[4];
-	      var vectorComponent = arguments.length <= 5 || arguments[5] === undefined ? 0 : arguments[5];
-	      var rescale = arguments.length <= 6 || arguments[6] === undefined ? false : arguments[6];
+	      var arrayLocation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'POINTS';
+	      var arrayName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+	      var vectorMode = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'Magnitude';
+	      var vectorComponent = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+	      var rescale = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
 
 	      return session.call('pv.color.manager.color.by', [representation, colorMode, arrayLocation, arrayName, vectorMode, vectorComponent, rescale]);
 	    },
@@ -39539,7 +39563,7 @@
 	      return session.call('pv.color.manager.rgb.points.set', [arrayName, rgbInfo]);
 	    },
 	    getLutImage: function getLutImage(representation, numSamples) {
-	      var customRange = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	      var customRange = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	      return session.call('pv.color.manager.lut.image.get', [representation, numSamples, customRange]);
 	    },
@@ -39556,7 +39580,7 @@
 	      return session.call('pv.color.manager.list.preset', []);
 	    },
 	    listColorMapImages: function listColorMapImages() {
-	      var numSamples = arguments.length <= 0 || arguments[0] === undefined ? 256 : arguments[0];
+	      var numSamples = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 256;
 
 	      return session.call('pv.color.manager.lut.image.all', [numSamples]);
 	    }
@@ -39577,7 +39601,7 @@
 	function createMethods(session) {
 	  return {
 	    listServerDirectory: function listServerDirectory() {
-	      var path = arguments.length <= 0 || arguments[0] === undefined ? '.' : arguments[0];
+	      var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.';
 
 	      return session.call('file.server.directory.list', [path]);
 	    }
@@ -39639,7 +39663,7 @@
 	function createMethods(session) {
 	  return {
 	    create: function create(functionName) {
-	      var parentId = arguments.length <= 1 || arguments[1] === undefined ? '0' : arguments[1];
+	      var parentId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '0';
 
 	      return session.call('pv.proxy.manager.create', [functionName, parentId]);
 	    },
@@ -39647,7 +39671,7 @@
 	      return session.call('pv.proxy.manager.create.reader', [relativePath]);
 	    },
 	    get: function get(proxyId) {
-	      var ui = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	      var ui = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	      return session.call('pv.proxy.manager.get', [proxyId, ui]);
 	    },
@@ -39661,12 +39685,12 @@
 	      return session.call('pv.proxy.manager.delete', [proxyId]);
 	    },
 	    list: function list() {
-	      var viewId = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var viewId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
 	      return session.call('pv.proxy.manager.list', [viewId]);
 	    },
 	    available: function available() {
-	      var type = arguments.length <= 0 || arguments[0] === undefined ? 'sources' : arguments[0];
+	      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'sources';
 
 	      return session.call('pv.proxy.manager.available', [type]);
 	    },
@@ -39693,7 +39717,7 @@
 	function createMethods(session) {
 	  return {
 	    saveData: function saveData(filePath) {
-	      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	      return session.call('pv.data.save', [filePath, options]);
 	    }
@@ -39750,7 +39774,7 @@
 	    },
 
 	    play: function play() {
-	      var deltaT = arguments.length <= 0 || arguments[0] === undefined ? 0.1 : arguments[0];
+	      var deltaT = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.1;
 
 	      return session.call('pv.time.play', [deltaT]);
 	    },
@@ -39776,39 +39800,39 @@
 	function createMethods(session) {
 	  return {
 	    resetCamera: function resetCamera() {
-	      var view = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
 	      return session.call('viewport.camera.reset', [view]);
 	    },
 	    updateOrientationAxesVisibility: function updateOrientationAxesVisibility() {
-	      var view = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
-	      var showAxis = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	      var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+	      var showAxis = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	      return session.call('viewport.axes.orientation.visibility.update', [view, showAxis]);
 	    },
 	    updateCenterAxesVisibility: function updateCenterAxesVisibility() {
-	      var view = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
-	      var showAxis = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	      var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+	      var showAxis = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	      return session.call('viewport.axes.center.visibility.update', [view, showAxis]);
 	    },
 	    updateCamera: function updateCamera() {
-	      var view_id = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
-	      var focal_point = arguments.length <= 1 || arguments[1] === undefined ? [0, 0, 0] : arguments[1];
-	      var view_up = arguments.length <= 2 || arguments[2] === undefined ? [0, 1, 0] : arguments[2];
-	      var position = arguments.length <= 3 || arguments[3] === undefined ? [0, 0, 1] : arguments[3];
+	      var view_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+	      var focal_point = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0, 0];
+	      var view_up = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 1, 0];
+	      var position = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [0, 0, 1];
 
 	      return session.call('viewport.camera.update', [view_id, focal_point, view_up, position]);
 	    },
 	    getCamera: function getCamera() {
-	      var view_id = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var view_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
 	      return session.call('viewport.camera.get', [view_id]);
 	    },
 	    updateSize: function updateSize() {
-	      var view_id = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
-	      var width = arguments.length <= 1 || arguments[1] === undefined ? 500 : arguments[1];
-	      var height = arguments.length <= 2 || arguments[2] === undefined ? 500 : arguments[2];
+	      var view_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+	      var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
+	      var height = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
 
 	      return session.call('viewport.size.update', [view_id, width, height]);
 	    }
@@ -39830,14 +39854,14 @@
 	function createMethods(session) {
 	  return {
 	    getSceneMetaData: function getSceneMetaData() {
-	      var view = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
 	      return session.call('viewport.webgl.metadata', [view]);
 	    },
 	    getWebGLData: function getWebGLData() {
-	      var view_id = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var view_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 	      var object_id = arguments[1];
-	      var part = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+	      var part = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
 	      return session.call('viewport.webgl.data', [view_id, object_id, part]);
 	    },
@@ -39845,7 +39869,7 @@
 	      return session.call('viewport.webgl.cached.data', [sha]);
 	    },
 	    getSceneMetaDataAllTimesteps: function getSceneMetaDataAllTimesteps() {
-	      var view = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+	      var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
 	      return session.call('viewport.webgl.metadata.alltimesteps', [view]);
 	    }
@@ -39866,7 +39890,7 @@
 	function createMethods(session) {
 	  return {
 	    stillRender: function stillRender() {
-	      var options = arguments.length <= 0 || arguments[0] === undefined ? { size: [400, 400], view: -1 } : arguments[0];
+	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { size: [400, 400], view: -1 };
 
 	      return session.call('viewport.image.render', [options]);
 	    }

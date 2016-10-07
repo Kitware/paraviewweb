@@ -92,14 +92,10 @@
 
 	__webpack_require__(295);
 
-	/* eslint max-len: 0 */
-
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-
-	// Should be removed in the next major release:
 
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -8007,25 +8003,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8046,6 +8057,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -8351,7 +8367,8 @@
 
 	    this.originalData = jsonData;
 	    this.basepath = basepath; // Needed for cloning
-	    this.id = 'QueryDataModel_' + ++queryDataModelCounter + ' :';
+	    queryDataModelCounter += 1;
+	    this.id = 'QueryDataModel_' + queryDataModelCounter + ' :';
 	    this.args = {};
 	    this.externalArgs = {};
 	    this.dataCount = {};
@@ -8406,7 +8423,8 @@
 	        _this.animationTimerId = 0;
 	      }
 
-	      while (count--) {
+	      while (count) {
+	        count -= 1;
 	        var item = request.urls[count];
 	        dataToBroadcast[item.key] = dataManager.get(item.url);
 	        if (dataToBroadcast[item.key]) {
@@ -8441,7 +8459,7 @@
 	    };
 
 	    var dataHandler = function dataHandler(data, envelope) {
-	      _this.dataCount[envelope.topic]++;
+	      _this.dataCount[envelope.topic] += 1;
 
 	      // Pre-decode image urls
 	      if (data.url && data.type === 'blob' && data.data.type.indexOf('image') !== -1 && data.image === undefined) {
@@ -8565,7 +8583,7 @@
 	    value: function fetchData() {
 	      var _this3 = this;
 
-	      var category = arguments.length <= 0 || arguments[0] === undefined ? DEFAULT_KEY_NAME : arguments[0];
+	      var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_KEY_NAME;
 
 	      var dataToFetch = [],
 	          query = this.getQuery(),
@@ -8592,7 +8610,7 @@
 	      }
 
 	      dataToFetch.forEach(function (dataId) {
-	        _this3.dataCount[dataId]--;
+	        _this3.dataCount[dataId] -= 1;
 	        request.urls.push({
 	          key: dataId.slice(_this3.id.length),
 	          url: dataManager.fetch(dataId, query)
@@ -8602,7 +8620,7 @@
 	  }, {
 	    key: 'lazyFetchData',
 	    value: function lazyFetchData() {
-	      var category = arguments.length <= 0 || arguments[0] === undefined ? DEFAULT_KEY_NAME : arguments[0];
+	      var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_KEY_NAME;
 
 	      if (this.lazyFetchRequest || this.requests.length > 0) {
 	        this.lazyFetchRequest = category;
@@ -8882,7 +8900,7 @@
 	  }, {
 	    key: 'animate',
 	    value: function animate(start) {
-	      var deltaT = arguments.length <= 1 || arguments[1] === undefined ? 500 : arguments[1];
+	      var deltaT = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
 
 	      // Update deltaT
 	      this.deltaT = deltaT;
@@ -8942,7 +8960,8 @@
 	            eventHandled = false;
 
 	        // Check all associated actions
-	        while (count--) {
+	        while (count) {
+	          count -= 1;
 	          var item = array[count],
 	              deltaName = item.coordinate === 0 ? 'deltaX' : 'deltaY';
 
@@ -8950,6 +8969,7 @@
 	            item.lastCoord = 0;
 	          }
 
+	          /* eslint-disable no-bitwise */
 	          if (item.modifier & event.modifier || item.modifier === event.modifier) {
 	            eventHandled = true;
 	            var delta = event[deltaName] - item.lastCoord;
@@ -9018,12 +9038,12 @@
 	  }, {
 	    key: 'exploreQuery',
 	    value: function exploreQuery() {
-	      var start = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	      var start = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	      var _this6 = this;
 
-	      var fromBeguining = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-	      var onDataReady = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	      var fromBeguining = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	      var onDataReady = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
 	      if (fromBeguining) {
 	        this.exploreState.idxs = this.exploreState.order.map(function (i) {
@@ -9064,10 +9084,11 @@
 	        var count = idxs.length;
 
 	        // May overshoot
-	        idxs[count - 1]++;
+	        idxs[count - 1] += 1;
 
 	        // Handle overshoot
-	        while (count--) {
+	        while (count) {
+	          count -= 1;
 	          if (idxs[count] < sizes[count]) {
 	            // We are good
 	            /* eslint-disable no-continue */
@@ -9076,7 +9097,7 @@
 	          } else if (count > 0) {
 	            // We need to move the index back up
 	            idxs[count] = 0;
-	            idxs[count - 1]++;
+	            idxs[count - 1] += 1;
 	          } else {
 	            this.exploreState.animate = false;
 	            this.emit('state.change.exploration', {
@@ -9093,6 +9114,24 @@
 	      return this.exploreState.animate;
 	    }
 	  }, {
+	    key: 'link',
+	    value: function link(queryDataModel) {
+	      var _this8 = this;
+
+	      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var fetch = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	      return queryDataModel.onStateChange(function (data, envelope) {
+	        if (data.name !== undefined && data.value !== undefined) {
+	          if (args === null || args.indexOf(data.name) !== -1) {
+	            if (_this8.setValue(data.name, data.value) && fetch) {
+	              _this8.lazyFetchData();
+	            }
+	          }
+	        }
+	      });
+	    }
+	  }], [{
 	    key: 'setCacheSize',
 	    value: function setCacheSize(sizeBeforeGC) {
 	      dataManager.cacheSize = sizeBeforeGC;
@@ -9106,24 +9145,6 @@
 	    key: 'getMemoryUsage',
 	    value: function getMemoryUsage() {
 	      return dataManager.cacheData.size;
-	    }
-	  }, {
-	    key: 'link',
-	    value: function link(queryDataModel) {
-	      var _this8 = this;
-
-	      var args = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	      var fetch = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	      return queryDataModel.onStateChange(function (data, envelope) {
-	        if (data.name !== undefined && data.value !== undefined) {
-	          if (args === null || args.indexOf(data.name) !== -1) {
-	            if (_this8.setValue(data.name, data.value) && fetch) {
-	              _this8.lazyFetchData();
-	            }
-	          }
-	        }
-	      });
 	    }
 	  }]);
 
@@ -30107,7 +30128,7 @@
 
 	var DataManager = function () {
 	  function DataManager() {
-	    var cacheSize = arguments.length <= 0 || arguments[0] === undefined ? 1000000000 : arguments[0];
+	    var cacheSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000000000;
 
 	    _classCallCheck(this, DataManager);
 
@@ -30137,7 +30158,7 @@
 	    value: function fetch(key, options) {
 	      var _this = this;
 
-	      var notificationTopic = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	      var notificationTopic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	      var url = options ? this.pattern.getValue(key, options) : key,
 	          dataCached = this.cacheData.cache[url];
@@ -30153,7 +30174,8 @@
 
 	            delete dataCached.keysToNotify;
 
-	            while (count--) {
+	            while (count) {
+	              count -= 1;
 	              _this.emit(array[count], dataCached);
 	            }
 
@@ -30225,7 +30247,8 @@
 	            // Store it in the cache
 	            self.cacheData.cache[url] = dataCached;
 
-	            while (count--) {
+	            while (count) {
+	              count -= 1;
 	              self.emit(array[count], dataCached);
 	            }
 	          };
@@ -30246,7 +30269,7 @@
 	  }, {
 	    key: 'fetchURL',
 	    value: function fetchURL(url, type, mimeType) {
-	      var notificationTopic = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+	      var notificationTopic = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 	      this.keyToTypeMap[url] = [type, typeFnMap[type], mimeType];
 	      return this.fetch(url, null, notificationTopic);
@@ -30311,7 +30334,8 @@
 	      });
 
 	      var count = urlToDelete.length;
-	      while (count--) {
+	      while (count) {
+	        count -= 1;
 	        this.free(urlToDelete[count]);
 	      }
 	      this.cacheData.size = 0;

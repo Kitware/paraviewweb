@@ -120,7 +120,7 @@
 	bodyElt.appendChild(fieldSelectorContainer);
 
 	var provider = _CompositeClosureHelper2.default.newInstance(function (publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, initialValues);
 	  _FieldProvider2.default.extend(publicAPI, model, initialValues);
@@ -532,14 +532,10 @@
 
 	__webpack_require__(299);
 
-	/* eslint max-len: 0 */
-
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-
-	// Should be removed in the next major release:
 
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -8447,25 +8443,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8486,6 +8497,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -8674,7 +8690,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -8715,7 +8731,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 
@@ -29034,8 +29050,8 @@
 	// ----------------------------------------------------------------------------
 
 	function isA(publicAPI) {
-	  var model = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	  var name = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	  var name = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	  if (!model.isA) {
 	    model.isA = [];
@@ -29057,8 +29073,8 @@
 	// ----------------------------------------------------------------------------
 
 	function set(publicAPI) {
-	  var model = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	  var names = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	  var names = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
 	  names.forEach(function (name) {
 	    publicAPI['set' + capitalize(name)] = function (value) {
@@ -29072,8 +29088,8 @@
 	// ----------------------------------------------------------------------------
 
 	function get(publicAPI) {
-	  var model = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	  var names = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	  var names = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
 	  names.forEach(function (name) {
 	    publicAPI['get' + capitalize(name)] = function () {
@@ -29087,7 +29103,7 @@
 	// ----------------------------------------------------------------------------
 
 	function destroy(publicAPI) {
-	  var model = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	  var previousDestroy = publicAPI.destroy;
 
@@ -29116,7 +29132,7 @@
 	// ----------------------------------------------------------------------------
 
 	function event(publicAPI, model, eventName) {
-	  var asynchrounous = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+	  var asynchrounous = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
 	  var callbacks = [];
 	  var previousDestroy = publicAPI.destroy;
@@ -29318,7 +29334,8 @@
 
 	  function off() {
 	    var count = dataSubscriptions.length;
-	    while (count--) {
+	    while (count) {
+	      count -= 1;
 	      dataSubscriptions[count] = null;
 	    }
 	  }
@@ -29342,8 +29359,8 @@
 	  // when the actual subscription correspond to the data that has been set.
 	  // This is performed synchronously.
 	  publicAPI['subscribeTo' + capitalize(dataName)] = function (onDataReady) {
-	    var variables = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-	    var metadata = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	    var variables = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+	    var metadata = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	    var id = dataSubscriptions.length;
 	    var request = {
@@ -29389,7 +29406,7 @@
 
 	function newInstance(extend) {
 	  return function () {
-	    var initialValues = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	    var model = {};
 	    var publicAPI = {};
@@ -29564,7 +29581,7 @@
 	  };
 
 	  publicAPI.addField = function (name) {
-	    var initialState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var initialState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name: name });
 	    field.range = [].concat(field.range); // Make sure we copy the array
@@ -29577,7 +29594,7 @@
 	  };
 
 	  publicAPI.updateField = function (name) {
-	    var changeSet = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var changeSet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var field = model.fields[name] || {};
 	    var hasChange = false;
@@ -29618,7 +29635,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -29701,12 +29718,13 @@
 
 	  var next = function next() {
 	    var overflowIdx = 0;
-	    priorityIndex[overflowIdx]++;
+	    priorityIndex[overflowIdx] += 1;
 	    while (priorityIndex[overflowIdx] === prioritySizes[overflowIdx]) {
 	      // Handle overflow
 	      priorityIndex[overflowIdx] = 0;
 	      if (overflowIdx < priorityIndex.length) {
-	        priorityIndex[++overflowIdx]++;
+	        overflowIdx += 1;
+	        priorityIndex[overflowIdx] += 1;
 	      }
 	    }
 	  };
@@ -29747,7 +29765,7 @@
 	  };
 
 	  publicAPI.assignLegend = function () {
-	    var newPriority = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	    var newPriority = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
 	    if (newPriority) {
 	      model.legendPriorities = newPriority;
@@ -29828,7 +29846,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -30099,8 +30117,8 @@
 
 	Sprite.styles = ['position:absolute', 'width:0', 'height:0', 'visibility:hidden'];
 
-	Sprite.spriteTemplate = svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing;
-	Sprite.symbolTemplate = svgOpening + '>' + contentPlaceHolder + svgClosing;
+	Sprite.spriteTemplate = function(){ return svgOpening + ' style="'+ Sprite.styles.join(';') +'"><defs>' + contentPlaceHolder + '</defs>' + svgClosing; }
+	Sprite.symbolTemplate = function() { return svgOpening + '>' + contentPlaceHolder + svgClosing; }
 
 	/**
 	 * @type {Array<String>}
@@ -30149,7 +30167,7 @@
 	};
 
 	Sprite.prototype.appendSymbol = function (content) {
-	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate).childNodes[0];
+	  var symbol = this.wrapSVG(content, Sprite.symbolTemplate()).childNodes[0];
 
 	  this.svg.querySelector('defs').appendChild(symbol);
 	  if (this.browser.name === 'firefox') {
@@ -30175,7 +30193,7 @@
 	  target = target || null;
 	  prepend = typeof prepend === 'boolean' ? prepend : true;
 
-	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate);
+	  var svg = this.wrapSVG(this.content.join(''), Sprite.spriteTemplate());
 
 	  if (this.browser.name === 'firefox') {
 	    FirefoxSymbolBugWorkaround(svg);
@@ -30544,7 +30562,7 @@
 	*/
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, initialValues);
 
@@ -30587,7 +30605,7 @@
 	      var count = 0;
 	      request.variables.forEach(function (name) {
 	        if (binStorage && binStorage[name]) {
-	          count++;
+	          count += 1;
 	          returnedData[name] = binStorage[name];
 	        }
 	      });
@@ -30649,7 +30667,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -30751,7 +30769,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -30843,7 +30861,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -30901,7 +30919,8 @@
 
 	  function off() {
 	    var count = dataSubscriptions.length;
-	    while (count--) {
+	    while (count) {
+	      count -= 1;
 	      dataSubscriptions[count] = null;
 	    }
 	  }
@@ -30990,8 +31009,8 @@
 	  // A subscriber should save the return value and call update() when they need to
 	  // change the variables or meta data which is pushed to them.
 	  publicAPI.subscribeToDataSelection = function (type, onDataReady) {
-	    var variables = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-	    var metadata = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	    var variables = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+	    var metadata = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
 	    var id = dataSubscriptions.length;
 	    var request = { id: id, type: type, variables: variables, metadata: metadata };
@@ -31031,7 +31050,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -31587,11 +31606,13 @@
 	      return property.toLowerCase();
 	    }
 
+	    /* eslint-disable no-plusplus */
 	    while (++i < n) {
 	      if (prefixes[i] + property in s) {
 	        return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
 	      }
 	    }
+	    /* eslint-enable no-plusplus */
 
 	    return false;
 	  }('Transform');
@@ -31880,7 +31901,7 @@
 	  };
 
 	  publicAPI.render = function () {
-	    var onlyFieldName = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	    var onlyFieldName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
 	    if (!model.fieldData || onlyFieldName !== null && !model.fieldData[onlyFieldName]) {
 	      return;
@@ -32359,7 +32380,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 
@@ -43177,10 +43198,10 @@
 	    if (!enabled()) return 0;
 	    var count = 0;
 	    if (model.provider.getStoredAnnotation && !publicAPI.isFieldActionDisabled(def.name, 'save')) {
-	      count++;
+	      count += 1;
 	    }
 	    if (!publicAPI.isFieldActionDisabled(def.name, 'score')) {
-	      count++;
+	      count += 1;
 	    }
 	    return count;
 	  }
@@ -43388,7 +43409,7 @@
 	  }
 
 	  function finishDivider(def, hobj) {
-	    var forceDelete = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	    var forceDelete = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 	    if (!def.dragDivider) return;
 	    var val = def.dragDivider.newDivider.value;
@@ -44120,7 +44141,7 @@
 	// ----------------------------------------------------------------------------
 
 	function empty() {
-	  generation++;
+	  generation += 1;
 	  return {
 	    type: 'empty',
 	    generation: generation
@@ -44130,7 +44151,7 @@
 	// ----------------------------------------------------------------------------
 
 	function partition(variable, dividers) {
-	  generation++;
+	  generation += 1;
 	  return {
 	    type: 'partition',
 	    generation: generation,
@@ -44146,7 +44167,7 @@
 	// ----------------------------------------------------------------------------
 
 	function range(vars) {
-	  generation++;
+	  generation += 1;
 	  var variables = {};
 	  var selection = {
 	    type: 'range',
@@ -44172,11 +44193,11 @@
 	// ----------------------------------------------------------------------------
 
 	function rule() {
-	  var type = arguments.length <= 0 || arguments[0] === undefined ? 'multi' : arguments[0];
-	  var terms = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-	  var roles = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'multi';
+	  var terms = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+	  var roles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
-	  generation++;
+	  generation += 1;
 	  // FIXME ?? deepClone ??
 	  return {
 	    type: 'rule',
@@ -44273,7 +44294,7 @@
 	// ----------------------------------------------------------------------------
 
 	function markModified(selection) {
-	  generation++;
+	  generation += 1;
 	  return Object.assign({}, selection, { generation: generation });
 	}
 
@@ -44350,11 +44371,11 @@
 	// ----------------------------------------------------------------------------
 
 	function annotation(selection, score) {
-	  var weight = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-	  var rationale = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
-	  var name = arguments.length <= 4 || arguments[4] === undefined ? '' : arguments[4];
+	  var weight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+	  var rationale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+	  var name = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
 
-	  generation++;
+	  generation += 1;
 	  return {
 	    id: (0, _UUID.generateUUID)(),
 	    generation: generation,
@@ -44379,7 +44400,7 @@
 	  });
 
 	  if (changeDetected) {
-	    generation++;
+	    generation += 1;
 	    updatedAnnotation.generation = generation;
 	  }
 
@@ -44400,14 +44421,14 @@
 
 	function fork(annotationObj) {
 	  var id = (0, _UUID.generateUUID)();
-	  generation++;
+	  generation += 1;
 	  return Object.assign({}, annotationObj, { generation: generation, id: id });
 	}
 
 	// ----------------------------------------------------------------------------
 
 	function markModified(annotationObject) {
-	  generation++;
+	  generation += 1;
 	  return Object.assign({}, annotationObject, { generation: generation });
 	}
 
@@ -44444,6 +44465,7 @@
 	 */
 
 	/* global window */
+	/* eslint-disable no-bitwise */
 
 	function generateUUID() {
 	  var d = Date.now();
@@ -44765,7 +44787,7 @@
 	// ----------------------------------------------------------------------------
 
 	function extend(publicAPI, model) {
-	  var initialValues = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	  Object.assign(model, DEFAULT_VALUES, initialValues);
 

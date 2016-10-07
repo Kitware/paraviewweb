@@ -20681,25 +20681,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -20720,6 +20735,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -20881,7 +20901,7 @@
 
 	var LookupTable = function () {
 	  function LookupTable(name) {
-	    var discrete = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	    var discrete = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	    _classCallCheck(this, LookupTable);
 
@@ -20904,11 +20924,6 @@
 	    key: 'getName',
 	    value: function getName() {
 	      return this.name;
-	    }
-	  }, {
-	    key: 'getPresets',
-	    value: function getPresets() {
-	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }, {
 	    key: 'setPreset',
@@ -20958,10 +20973,10 @@
 	  }, {
 	    key: 'setColorForNaN',
 	    value: function setColorForNaN() {
-	      var r = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	      var g = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	      var b = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-	      var a = arguments.length <= 3 || arguments[3] === undefined ? 0 : arguments[3];
+	      var r = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+	      var g = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	      var b = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+	      var a = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
 	      this.colorNaN = [r, g, b, a];
 	    }
@@ -21139,6 +21154,11 @@
 	    key: 'onChange',
 	    value: function onChange(callback) {
 	      return this.on(CHANGE_TOPIC, callback);
+	    }
+	  }], [{
+	    key: 'getPresets',
+	    value: function getPresets() {
+	      return Object.keys(_Presets2.default.lookuptables);
 	    }
 	  }]);
 
@@ -42457,7 +42477,7 @@
 	  function ToggleState() {
 	    var _this = this;
 
-	    var initialState = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	    _classCallCheck(this, ToggleState);
 
@@ -44089,7 +44109,7 @@
 	    return _react2.default.createElement(
 	      'div',
 	      { className: _EqualizerWidget2.default.container, ref: function ref(c) {
-	          _this.rootContainer = c;
+	          return _this.rootContainer = c;
 	        } },
 	      _react2.default.createElement('canvas', {
 	        className: _EqualizerWidget2.default.canvas,
@@ -44651,7 +44671,8 @@
 
 	    this.Modifier = Modifier;
 
-	    this.id = 'mouse_handler_' + ++handlerCount;
+	    handlerCount += 1;
+	    this.id = 'mouse_handler_' + handlerCount;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -47774,7 +47795,7 @@
 	// ------ New API ------
 
 	function getSize(domElement) {
-	  var clearCache = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	  var cachedSize = domSizes.get(domElement);
 	  if (!cachedSize || clearCache) {
@@ -47815,7 +47836,7 @@
 	// ------ internal functions ------
 
 	function invalidateSize() {
-	  timestamp++;
+	  timestamp += 1;
 	  triggerChange();
 	}
 
@@ -48458,7 +48479,7 @@
 	exports.i(__webpack_require__(187), undefined);
 
 	// module
-	exports.push([module.id, ".LookupTableWidget_container_3a6VN {\n    min-width: 5em;\n    width: 100%;\n    box-sizing: border-box;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.LookupTableWidget_line_1JjcW {\n    position: relative;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    margin-top: 5px;\n    margin-bottom: 5px;\n    height: 1.5em;\n}\n\n.LookupTableWidget_line_1JjcW > .LookupTableWidget_button_17bpd {\n    padding-top: 0.25em;\n    padding-bottom: 0.25em;\n    text-align: center;\n}\n\n.LookupTableWidget_label_1hspD {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    white-space: nowrap;\n    font-weight: bold;\n    padding-top: 0.25em;\n    padding-bottom: 0.25em;\n    text-align: center;\n}\n\n.LookupTableWidget_button_17bpd {\n    cursor: pointer;\n    -ms-flex: none;\n        flex: none;\n    width: 1.5em;\n}\n\n.LookupTableWidget_editButton_1gc4S {\n}\n\n.LookupTableWidget_presetButton_1Tn1C {\n}\n\n.LookupTableWidget_resetRangeButton_utbkU {\n}\n\n.LookupTableWidget_previousButton_1ejSH {\n}\n\n.LookupTableWidget_disablePreviousButton_3gV4Z {\n    color: #ccc;\n}\n\n.LookupTableWidget_nextButton_2GC8q {\n    text-align: right;\n}\n\n.LookupTableWidget_disableNextButton_3O3ZA {\n    color: #ccc;\n}\n\n.LookupTableWidget_addButton_2TC0n {\n    text-align: right;\n}\n\n.LookupTableWidget_deleteButton_3-OXf {\n}\n\n.LookupTableWidget_canvas_3LWIO {\n    width: calc(100% - 3em);\n    height: 1.5em;\n}\n\n.LookupTableWidget_range_NPW5B {\n    display: none;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    -ms-flex-pack: justify;\n        justify-content: space-between;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -ms-flex-align: stretch;\n        -ms-grid-row-align: stretch;\n        align-items: stretch;\n}\n\n.LookupTableWidget_range_NPW5B > .LookupTableWidget_button_17bpd {\n    -ms-flex: none;\n        flex: none;\n}\n\n.LookupTableWidget_editContent__mocK {\n    width: 100%;\n    box-sizing: border-box;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    display: none;\n}\n\n.LookupTableWidget_presets_2aSa8 {\n    display: none;\n}\n\n.LookupTableWidget_preset_2alXx {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n\n    margin-top: 5px;\n    margin-bottom: 5px;\n\n    padding: 5px 10px;\n\n    border: 1px solid #ccc;\n    text-align: center;\n\n    cursor: pointer;\n    border-radius: 5px;\n}\n\n.LookupTableWidget_hiddenPreset_NugPG {\n    display: none;\n}\n\n.LookupTableWidget_presets_2aSa8 > i {\n    padding-top: 0.3em;\n    font-size: 150%;\n}\n\n.LookupTableWidget_input_386RK {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    border: none;\n    box-shadow: none;\n    text-align: left;\n    min-width: 2em;\n}\n\n.LookupTableWidget_inputRight_3i4L_ {\n    text-align: right;\n}\n", ""]);
+	exports.push([module.id, ".LookupTableWidget_container_3a6VN {\n    min-width: 5em;\n    width: 100%;\n    box-sizing: border-box;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.LookupTableWidget_line_1JjcW {\n    position: relative;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    margin-top: 5px;\n    margin-bottom: 5px;\n    height: 1.5em;\n}\n\n.LookupTableWidget_line_1JjcW > .LookupTableWidget_button_17bpd {\n    padding-top: 0.25em;\n    padding-bottom: 0.25em;\n    text-align: center;\n}\n\n.LookupTableWidget_label_1hspD {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    white-space: nowrap;\n    font-weight: bold;\n    padding-top: 0.25em;\n    padding-bottom: 0.25em;\n    text-align: center;\n}\n\n.LookupTableWidget_button_17bpd {\n    cursor: pointer;\n    -ms-flex: none;\n        flex: none;\n    width: 1.5em;\n}\n\n.LookupTableWidget_editButton_1gc4S {\n}\n\n.LookupTableWidget_presetButton_1Tn1C {\n}\n\n.LookupTableWidget_resetRangeButton_utbkU {\n}\n\n.LookupTableWidget_previousButton_1ejSH {\n}\n\n.LookupTableWidget_disablePreviousButton_3gV4Z {\n    color: #ccc;\n}\n\n.LookupTableWidget_nextButton_2GC8q {\n    text-align: right;\n}\n\n.LookupTableWidget_disableNextButton_3O3ZA {\n    color: #ccc;\n}\n\n.LookupTableWidget_addButton_2TC0n {\n    text-align: right;\n}\n\n.LookupTableWidget_deleteButton_3-OXf {\n}\n\n.LookupTableWidget_canvas_3LWIO {\n    width: calc(100% - 3em);\n    height: 1.5em;\n}\n\n.LookupTableWidget_range_NPW5B {\n    display: none;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    -ms-flex-pack: justify;\n        justify-content: space-between;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -ms-flex-align: stretch;\n        align-items: stretch;\n}\n\n.LookupTableWidget_range_NPW5B > .LookupTableWidget_button_17bpd {\n    -ms-flex: none;\n        flex: none;\n}\n\n.LookupTableWidget_editContent__mocK {\n    width: 100%;\n    box-sizing: border-box;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    display: none;\n}\n\n.LookupTableWidget_presets_2aSa8 {\n    display: none;\n}\n\n.LookupTableWidget_preset_2alXx {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n\n    margin-top: 5px;\n    margin-bottom: 5px;\n\n    padding: 5px 10px;\n\n    border: 1px solid #ccc;\n    text-align: center;\n\n    cursor: pointer;\n    border-radius: 5px;\n}\n\n.LookupTableWidget_hiddenPreset_NugPG {\n    display: none;\n}\n\n.LookupTableWidget_presets_2aSa8 > i {\n    padding-top: 0.3em;\n    font-size: 150%;\n}\n\n.LookupTableWidget_input_386RK {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    border: none;\n    box-shadow: none;\n    text-align: left;\n    min-width: 2em;\n}\n\n.LookupTableWidget_inputRight_3i4L_ {\n    text-align: right;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
