@@ -48607,7 +48607,7 @@
 	          keyPattern = ['{', '}'];
 
 	      Object.keys(options).forEach(function (opt) {
-	        result = result.replace(keyPattern.join(opt), options[opt]);
+	        result = result.replace(new RegExp(keyPattern.join(opt), 'g'), options[opt]);
 	      });
 
 	      return result;
@@ -49114,8 +49114,6 @@
 	  }, {
 	    key: 'renderXY',
 	    value: function renderXY() {
-	      var _this2 = this;
-
 	      var self = this,
 	          ctx = this.bgCanvas.get2DContext(),
 	          offset = this.getYOffset(),
@@ -49123,14 +49121,16 @@
 	          dimensions = this.metadata.dimensions,
 	          spacing = this.metadata.spacing;
 
-	      this.getImage(this.probeXYZ[2], function () {
-	        var image = _this2;
+	      function drawThisImage() {
+	        var image = this;
 	        ctx.drawImage(image, 0, dimensions[1] * offset, dimensions[0], dimensions[1], 0, 0, dimensions[0], dimensions[1]);
 
 	        self.extractNumericalValues(dimensions[0], dimensions[1]);
 	        self.applyLookupTable(dimensions[0], dimensions[1]);
 	        self.pushToFront(dimensions[0], dimensions[1], spacing[0], spacing[1], xyz[0], xyz[1]);
-	      });
+	      }
+
+	      this.getImage(this.probeXYZ[2], drawThisImage);
 	    }
 
 	    // ------------------------------------------------------------------------
