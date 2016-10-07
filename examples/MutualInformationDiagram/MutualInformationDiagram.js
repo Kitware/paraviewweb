@@ -29578,17 +29578,32 @@
 	    }).attr('d', arc);
 
 	    // Add a text label.
-	    var groupText = group.append('text').attr('x', 6).attr('dy', 15);
+	    var groupText = group.append('text')
+	    // .attr('x', 6) // prevents ie11 from seeing text-anchor and startOffset.
+	    .attr('dy', 15);
 
-	    groupText.append('textPath').attr('xlink:href', function (d, i) {
-	      return '#' + model.instanceID + '-group' + i;
-	    }).attr('startOffset', '25%').text(function (d, i) {
+	    // add a straight path so IE/Edge can measure text lengths usefully.
+	    // Otherwise, along a curved path, they return the horizontal space covered.
+	    svg.append('defs').append('path').attr('id', 'straight-text-path').attr('d', 'M0,0L' + width + ',0');
+
+	    var textLengthMap = [];
+	    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
+	    var textPath = groupText.append('textPath').attr('xlink:href', '#straight-text-path').attr('startOffset', '25%').text(function (d, i) {
 	      return model.mutualInformationData.vmap[i].name;
+	    }).each(function textLen(d, i) {
+	      textLengthMap[i] = this.getComputedTextLength();
 	    });
 
-	    // Remove the labels that don't fit. :(
-	    groupText.filter(function removeLongLabel(d, i) {
-	      return groupPath[0][i].getTotalLength() / 2 - deltaRadius < this.getComputedTextLength() + model.glyphSize;
+	    textPath.attr('xlink:href', function (d, i) {
+	      return '#' + model.instanceID + '-group' + i;
+	    });
+
+	    // Remove the labels that don't fit. Set length to zero. :(
+	    // TODO shorten label, use ... ?
+	    groupText.filter(function (d, i) {
+	      var shouldRemove = groupPath[0][i].getTotalLength() / 2 - deltaRadius < textLengthMap[i] + model.glyphSize;
+	      if (shouldRemove) textLengthMap[i] = 0;
+	      return shouldRemove;
 	    })
 	    // .remove(); ie11 throws errors if we use .remove() - hide instead.
 	    .attr('display', 'none');
@@ -29604,11 +29619,12 @@
 
 	        var legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
 	        // Add the glyph to the group
-	        var textLength = groupText[0][glyphData.index].firstChild.getComputedTextLength();
+	        var textLength = textLengthMap[glyphData.index];
 	        var pathLength = groupPath[0][glyphData.index].getTotalLength();
 	        var avgRadius = (innerRadius + outerRadius) / 2;
 	        // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-	        var glyphAngle = glyphData.startAngle + pathLength / 4 / outerRadius - (textLength + model.glyphSize) / 2 / avgRadius;
+	        var glyphAngle = glyphData.startAngle + pathLength * 0.25 / outerRadius - (textLength + model.glyphSize) * 0.5 / avgRadius;
+	        // console.log(model.mutualInformationData.vmap[glyphData.index].name, textLength, pathLength, glyphAngle);
 
 	        glyph.attr('transform', 'translate(\n            ' + (avgRadius * Math.sin(glyphAngle) - model.glyphSize / 2) + ',\n            ' + (-avgRadius * Math.cos(glyphAngle) - model.glyphSize / 2) + ')').select('svg').attr('width', model.glyphSize).attr('height', model.glyphSize).attr('stroke', 'black').attr('fill', legend.color).select('use').attr('xlink:href', legend.shape);
 
@@ -29846,9 +29862,6 @@
 	    if (model.provider.setMutualInformationParameterNames) {
 	      model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
 	    }
-	  }));
-	  model.subscriptions.push(model.provider.onMutualInformationReady(function (mutualInfo) {
-	    publicAPI.render();
 	  }));
 
 	  if (model.provider.isA('Histogram1DProvider')) {
@@ -39528,7 +39541,7 @@
 	exports.i(__webpack_require__(314), undefined);
 
 	// module
-	exports.push([module.id, ".InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  top: 10px;\n  left: 20px;\n  transition: opacity 1s;\n}\n\n.InformationDiagram_statusBarText_dgXGJ, .InformationDiagram_infoDiagramContainer_3cx2M text {\n    font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n    text-align: center;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
+	exports.push([module.id, ".InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  top: 10px;\n  left: 20px;\n  transition: opacity 1s;\n}\n\n.InformationDiagram_statusBarText_dgXGJ, .InformationDiagram_infoDiagramContainer_3cx2M text {\n    font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n    text-align: center;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath, .InformationDiagram_group_12rpU text {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -43314,42 +43327,41 @@
 	  };
 
 	  function updateHistogram2D(histograms) {
+	    // even if histograms only has maxCount = 0, run through PMI.updateMI
+	    // so deltaHandling.removed array is handled properly.
+	    var invalidAxis = [];
+	    // Extract mtime
+	    deltaHandling.modified = [];
+	    deltaHandling.previousMTime = deltaHandling.currentMTime;
+	    deltaHandling.currentMTime = {};
 	    if (Object.keys(histograms).length > 1) {
-	      (function () {
-	        var invalidAxis = [];
-	        // Extract mtime
-	        deltaHandling.modified = [];
-	        deltaHandling.previousMTime = deltaHandling.currentMTime;
-	        deltaHandling.currentMTime = {};
-	        model.mutualInformationParameterNames.forEach(function (name) {
-	          if (histograms[name] && histograms[name][name]) {
-	            // Validate range
-	            if (histograms[name][name].x.delta === 0) {
-	              invalidAxis.push(name);
-	              deltaHandling.currentMTime[name] = 0;
-	            } else {
-	              deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
-	            }
-
-	            if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
-	              deltaHandling.modified.push(name);
-	            }
+	      model.mutualInformationParameterNames.forEach(function (name) {
+	        if (histograms[name] && histograms[name][name]) {
+	          // Validate range
+	          if (histograms[name][name].x.delta === 0) {
+	            invalidAxis.push(name);
+	            deltaHandling.currentMTime[name] = 0;
+	          } else {
+	            deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
 	          }
-	        });
 
-	        // Check mutualInformationParameterNames are consitent with the current set of data
-	        // if not just for the next notification...
-	        try {
-	          _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
-
-	          // Push the new mutual info
-	          deltaHandling.processed = true;
-	          hasData = true;
-	          publicAPI.fireMutualInformationReady(mutualInformationData);
-	        } catch (e) {
-	          console.log('PMI error', e);
+	          if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
+	            deltaHandling.modified.push(name);
+	          }
 	        }
-	      })();
+	      });
+	    }
+	    // Check mutualInformationParameterNames are consitent with the current set of data
+	    // if not just for the next notification...
+	    try {
+	      _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
+
+	      // Push the new mutual info
+	      deltaHandling.processed = true;
+	      hasData = true;
+	      publicAPI.fireMutualInformationReady(mutualInformationData);
+	    } catch (e) {
+	      console.log('PMI error', e);
 	    }
 	  }
 
@@ -43594,6 +43606,7 @@
 	}
 
 	function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemoved, histogramData) {
+	  // console.log('Upd MI ', variablesAddedOrUpdated, 'remove', variablesRemoved);
 	  variablesAddedOrUpdated.forEach(function (vname) {
 	    return insertVariable(miData, vname);
 	  });
@@ -43609,14 +43622,14 @@
 	    if (vidx === undefined) {
 	      return;
 	    }
-	    // console.log('Refreshing ', vname, vidx );
+	    // console.log('Refreshing ', vname, vidx);
 	    for (var v2dx = 0; v2dx < nv; ++v2dx) {
 	      // tup always has the smaller index first so we don't redo symmetric entries:
 	      var tup = v2dx < vidx ? [v2dx, vidx] : [vidx, v2dx];
 	      if (tup[0] in alreadyDone && tup[1] in alreadyDone[tup[0]]) {
 	        continue;
 	      }
-	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug
+	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug. console.log use only, perhaps?
 	      // const v2nam = miData.vmap[v2dx].name;
 	      var t0nam = miData.vmap[tup[0]].name;
 	      var t1nam = miData.vmap[tup[1]].name;
@@ -43750,7 +43763,7 @@
 					7.2,
 					79.5
 				],
-				"active": false,
+				"active": true,
 				"id": 12,
 				"name": "percentage of team minutes"
 			},
@@ -43759,7 +43772,7 @@
 					0,
 					2.48
 				],
-				"active": false,
+				"active": true,
 				"id": 17,
 				"name": "steals per game"
 			},
@@ -43768,7 +43781,7 @@
 					0,
 					49.2
 				],
-				"active": false,
+				"active": true,
 				"id": 11,
 				"name": "percentage of team assists"
 			},
@@ -43777,7 +43790,7 @@
 					5.1,
 					38.5
 				],
-				"active": false,
+				"active": true,
 				"id": 10,
 				"name": "minutes"
 			},
@@ -43786,7 +43799,7 @@
 					0,
 					1
 				],
-				"active": false,
+				"active": true,
 				"id": 8,
 				"name": "free throw percent"
 			}
@@ -71530,13 +71543,7 @@
 			"shapes"
 		],
 		"legendDirty": true,
-		"mutualInformationParameterNames": [
-			"free throw percent",
-			"minutes",
-			"percentage of team assists",
-			"percentage of team minutes",
-			"steals per game"
-		],
+		"mutualInformationParameterNames": [],
 		"shouldCreateNewAnnotation": false,
 		"selectionData": {},
 		"selectionMetaData": {},

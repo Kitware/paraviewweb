@@ -43530,42 +43530,41 @@
 	  };
 
 	  function updateHistogram2D(histograms) {
+	    // even if histograms only has maxCount = 0, run through PMI.updateMI
+	    // so deltaHandling.removed array is handled properly.
+	    var invalidAxis = [];
+	    // Extract mtime
+	    deltaHandling.modified = [];
+	    deltaHandling.previousMTime = deltaHandling.currentMTime;
+	    deltaHandling.currentMTime = {};
 	    if (Object.keys(histograms).length > 1) {
-	      (function () {
-	        var invalidAxis = [];
-	        // Extract mtime
-	        deltaHandling.modified = [];
-	        deltaHandling.previousMTime = deltaHandling.currentMTime;
-	        deltaHandling.currentMTime = {};
-	        model.mutualInformationParameterNames.forEach(function (name) {
-	          if (histograms[name] && histograms[name][name]) {
-	            // Validate range
-	            if (histograms[name][name].x.delta === 0) {
-	              invalidAxis.push(name);
-	              deltaHandling.currentMTime[name] = 0;
-	            } else {
-	              deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
-	            }
-
-	            if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
-	              deltaHandling.modified.push(name);
-	            }
+	      model.mutualInformationParameterNames.forEach(function (name) {
+	        if (histograms[name] && histograms[name][name]) {
+	          // Validate range
+	          if (histograms[name][name].x.delta === 0) {
+	            invalidAxis.push(name);
+	            deltaHandling.currentMTime[name] = 0;
+	          } else {
+	            deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
 	          }
-	        });
 
-	        // Check mutualInformationParameterNames are consitent with the current set of data
-	        // if not just for the next notification...
-	        try {
-	          _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
-
-	          // Push the new mutual info
-	          deltaHandling.processed = true;
-	          hasData = true;
-	          publicAPI.fireMutualInformationReady(mutualInformationData);
-	        } catch (e) {
-	          console.log('PMI error', e);
+	          if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
+	            deltaHandling.modified.push(name);
+	          }
 	        }
-	      })();
+	      });
+	    }
+	    // Check mutualInformationParameterNames are consitent with the current set of data
+	    // if not just for the next notification...
+	    try {
+	      _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
+
+	      // Push the new mutual info
+	      deltaHandling.processed = true;
+	      hasData = true;
+	      publicAPI.fireMutualInformationReady(mutualInformationData);
+	    } catch (e) {
+	      console.log('PMI error', e);
 	    }
 	  }
 
@@ -43810,6 +43809,7 @@
 	}
 
 	function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemoved, histogramData) {
+	  // console.log('Upd MI ', variablesAddedOrUpdated, 'remove', variablesRemoved);
 	  variablesAddedOrUpdated.forEach(function (vname) {
 	    return insertVariable(miData, vname);
 	  });
@@ -43825,14 +43825,14 @@
 	    if (vidx === undefined) {
 	      return;
 	    }
-	    // console.log('Refreshing ', vname, vidx );
+	    // console.log('Refreshing ', vname, vidx);
 	    for (var v2dx = 0; v2dx < nv; ++v2dx) {
 	      // tup always has the smaller index first so we don't redo symmetric entries:
 	      var tup = v2dx < vidx ? [v2dx, vidx] : [vidx, v2dx];
 	      if (tup[0] in alreadyDone && tup[1] in alreadyDone[tup[0]]) {
 	        continue;
 	      }
-	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug
+	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug. console.log use only, perhaps?
 	      // const v2nam = miData.vmap[v2dx].name;
 	      var t0nam = miData.vmap[tup[0]].name;
 	      var t1nam = miData.vmap[tup[1]].name;

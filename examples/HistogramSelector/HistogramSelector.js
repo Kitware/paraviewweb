@@ -43327,6 +43327,7 @@
 	  }
 
 	  function moveDragDivider(val, def) {
+	    if (!def.dragDivider) return;
 	    if (def.dragDivider.index >= 0) {
 	      // if we drag outside our bounds, make this a 'temporary' extra divider.
 	      if (val < def.dragDivider.low) {
@@ -43389,6 +43390,7 @@
 	  function finishDivider(def, hobj) {
 	    var forceDelete = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
+	    if (!def.dragDivider) return;
 	    var val = def.dragDivider.newDivider.value;
 	    // if val is defined, we moved an existing divider inside
 	    // its region, and we just need to render. Otherwise...
@@ -43513,6 +43515,9 @@
 	        moveDragDivider(savedVal, selectedDef);
 	        dPopupDiv.on('mouseleave')();
 	      } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	        if (selectedDef.dragDivider) {
+	          savedVal = selectedDef.dragDivider.newDivider.value === undefined ? selectedDef.dividers[selectedDef.dragDivider.index].value : selectedDef.dragDivider.newDivider.value;
+	        }
 	        // commit current value
 	        dPopupDiv.on('mouseleave')();
 	      }
@@ -43525,20 +43530,24 @@
 	      // typing values, show feedback.
 	      var uncert = _d3.default.event.target.value;
 	      if (!validateDividerVal(uncert)) {
-	        uncert = selectedDef.dragDivider.savedUncert;
+	        if (selectedDef.dragDivider) uncert = selectedDef.dragDivider.savedUncert;
 	      } else {
 	        uncert /= uncertDispScale;
 	      }
-	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	      if (selectedDef.dragDivider.newDivider.value === undefined) {
-	        // don't use selDivider, might be out-of-date if the server sent us dividers.
-	        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	      if (selectedDef.dragDivider) {
+	        selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	        if (selectedDef.dragDivider.newDivider.value === undefined) {
+	          // don't use selDivider, might be out-of-date if the server sent us dividers.
+	          selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	        }
 	      }
 	      publicAPI.render(selectedDef.name);
 	    }).on('change', function () {
 	      // committed to a value, show feedback.
 	      var uncert = _d3.default.event.target.value;
-	      if (!validateDividerVal(uncert)) uncert = selectedDef.dragDivider.savedUncert;else {
+	      if (!validateDividerVal(uncert)) {
+	        if (selectedDef.dragDivider) uncert = selectedDef.dragDivider.savedUncert;
+	      } else {
 	        // uncertainty is a % between 0 and 0.5
 	        var _getHistRange7 = getHistRange(selectedDef);
 
@@ -43549,11 +43558,13 @@
 
 	        uncert = Math.min(0.5 * (maxRange - minRange), Math.max(0, uncert / uncertDispScale));
 	        _d3.default.event.target.value = formatter(uncertDispScale * uncert);
-	        selectedDef.dragDivider.savedUncert = uncert;
+	        if (selectedDef.dragDivider) selectedDef.dragDivider.savedUncert = uncert;
 	      }
-	      selectedDef.dragDivider.newDivider.uncertainty = uncert;
-	      if (selectedDef.dragDivider.newDivider.value === undefined) {
-	        selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	      if (selectedDef.dragDivider) {
+	        selectedDef.dragDivider.newDivider.uncertainty = uncert;
+	        if (selectedDef.dragDivider.newDivider.value === undefined) {
+	          selectedDef.dividers[selectedDef.dragDivider.index].uncertainty = uncert;
+	        }
 	      }
 	      publicAPI.render(selectedDef.name);
 	    }).on('keyup', function () {
@@ -43563,6 +43574,9 @@
 	        }
 	        dPopupDiv.on('mouseleave')();
 	      } else if (_d3.default.event.key === 'Enter' || _d3.default.event.key === 'Return') {
+	        if (selectedDef.dragDivider) {
+	          selectedDef.dragDivider.savedUncert = selectedDef.dragDivider.newDivider.uncertainty;
+	        }
 	        dPopupDiv.on('mouseleave')();
 	      }
 	    }).on('blur', function () {
