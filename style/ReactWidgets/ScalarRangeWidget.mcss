@@ -7,14 +7,14 @@
 }
 
 .rangeInput {
-  flex: 1 0 auto;
+  flex: 1 0 0%;
   box-sizing: border-box;
   width: 100%;
   margin-bottom: 5px;
 }
 
 .actionLine {
-  flex: 1 0 auto;
+  flex: 1 0 0%;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-around;

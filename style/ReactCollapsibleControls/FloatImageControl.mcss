@@ -11,10 +11,19 @@
 
 .label {
     font-weight: bold;
-    flex: 1 0 auto;
+    flex: none;
     text-align: left;
     margin-left: 5px;
+    margin-right: 10px;
     align-self: center;
+}
+
+.sceneLabel {
+  font-weight: bold;
+  flex: 1 0 0%;
+  text-align: left;
+  margin-left: 5px;
+  align-self: center;
 }
 
 .smallLabel {
@@ -28,11 +37,20 @@
 }
 
 .actions {
-    position: relative;
-    right: 0;
+  position: relative;
+  right: 0;
+  flex: 1 0 0%;
+  display: flex;
+}
+
+.sceneActions {
+  position: relative;
+  right: 0;
 }
 
 .lightSlider {
+  width: 100%;
+  vertical-align: middle;
 }
 
 /* ----- LayerItem ------- */
@@ -127,7 +145,7 @@
 }
 
 .input {
-  flex: 1 0 auto;
+  flex: 1 0 0%;
   box-shadow: none;
   border: 1px solid #aaa;
   min-width: 30%;

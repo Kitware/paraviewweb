@@ -52,7 +52,7 @@
 .filter {
     border-radius: 15px;
     padding: 2px 15px;
-    flex: 1 0 auto;
+    flex: 1 0 0%;
     border: 1px solid #ddd;
     line-height: normal;
     min-width: 10px;
