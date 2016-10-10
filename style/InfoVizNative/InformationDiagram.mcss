@@ -5,6 +5,7 @@
 }
 
 .infoDiagramContainer {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
   position: absolute;
   top: 0;
   right: 0;
@@ -54,15 +55,15 @@
 
 .statusBarText {
   position: relative;
+  pointer-events: all;
+  text-align: center;
   top: 10px;
   left: 20px;
   transition: opacity 1s;
 }
-
-.statusBarText, .infoDiagramContainer text {
-    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
-    text-align: center;
-    user-select: none;
+.infoDiagramContainer text {
+  text-align: center;
+  user-select: none;
 }
 
 .informationDiagramSvg {

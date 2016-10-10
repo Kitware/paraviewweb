@@ -1,3 +1,4 @@
+/* global document, window */
 import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
@@ -5,7 +6,7 @@ import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import htmlContent from './body.html';
 import iconImage from './InfoDiagramIconSmall.png';
-import multiClicker from '../../Core/D3MultiClick';
+// import multiClicker from '../../Core/D3MultiClick';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
@@ -20,6 +21,8 @@ import {
 const PMI_CHORD_MODE_NONE = 0;
 const PMI_CHORD_MODE_ONE_BIN_ALL_VARS = 1;
 const PMI_CHORD_MODE_ALL_BINS_TWO_VARS = 2;
+
+let miCount = 0;
 
 /* eslint-disable no-use-before-define */
 
@@ -46,8 +49,9 @@ function informationDiagram(publicAPI, model) {
 
   model.clientRect = null;
 
-  // FIXME: Make some attempt at unique id, for now just use millis timestamp
-  model.instanceID = `informationDiagram-${Date.now()}`;
+  miCount += 1;
+  // unique id, based on count
+  model.instanceID = `pvwInformationDiagram-${miCount}`;
 
   // Handle style for status bar
   function updateStatusBarVisibility() {
@@ -139,7 +143,20 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  publicAPI.updateStatusBarText = msg => d3.select(model.container).select('span.status-bar-text').text(msg);
+  publicAPI.updateStatusBarText = (msg) => d3.select(model.container).select('span.status-bar-text').text(msg);
+
+  publicAPI.selectStatusBarText = () => {
+    // select text so user can press ctrl-c if desired.
+    if (model.statusBarVisible) {
+      // https://www.sitepoint.com/javascript-copy-to-clipboard/
+      const range = document.createRange();
+      range.selectNode(d3.select(model.container).select('span.status-bar-text').node());
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      // Copy-to-clipboard doesn't work unless status bar text is an 'input':
+      // document.execCommand('copy');
+    }
+  };
 
   publicAPI.render = () => {
     // Extract provider data for local access
@@ -446,8 +463,7 @@ function informationDiagram(publicAPI, model) {
       const vaRange = [vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle), (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
       const vbRange = [vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle), (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
 
-      svg.select('g.pmiChords')
-        .selectAll('path.pmiChord')
+      linkData
         .classed('fade', false)
         .attr('d', (data, index) =>
           path({
@@ -482,7 +498,8 @@ function informationDiagram(publicAPI, model) {
         })
         .on('mouseout', () => {
           publicAPI.updateStatusBarText('');
-        });
+        })
+        .on('click', () => { publicAPI.selectStatusBarText(); });
     }
 
     // Mouse move handling ----------------------------------------------------
@@ -491,7 +508,7 @@ function informationDiagram(publicAPI, model) {
       /* eslint-disable prefer-arrow-callback */
       // need d3 provided 'this', below.
       .on('mousemove', function mouseMove(d, i) {
-        /* eslint-enable prefer-arrow-callback */
+        /* xxeslint-enable prefer-arrow-callback */
         const overCoords = d3.mouse(model.container);
         const info = findGroupAndBin(overCoords);
         let clearStatusBar = false;
@@ -547,7 +564,7 @@ function informationDiagram(publicAPI, model) {
           unHoverBin(variableList[idx]);
         }
       })
-      .on('click', multiClicker([
+      .on('click', // multiClicker([
         function singleClick(d, i) { // single click handler
           const overCoords = d3.mouse(model.container);
           const info = findGroupAndBin(overCoords);
@@ -561,9 +578,12 @@ function informationDiagram(publicAPI, model) {
               model.renderState.pmiAllBinsTwoVars = null;
               model.renderState.pmiOneBinAllVars = { group: info.group, bin: info.bin, d, i };
               drawPMIOneBinAllVars()(d, i);
+              publicAPI.selectStatusBarText();
             }
           }
-        },
+        // },
+        })
+      .on('dblclick',
         function doubleClick(d, i) { // double click handler
           const overCoords = d3.mouse(model.container);
           const info = findGroupAndBin(overCoords);
@@ -582,8 +602,9 @@ function informationDiagram(publicAPI, model) {
           }
 
           d3.event.stopPropagation();
-        },
-      ]));
+      //   },
+      // ])
+        });
 
     svg.append('circle').attr('r', outerRadius);
     svg.append('g').classed('mutualInfoChords', true);
@@ -785,6 +806,7 @@ function informationDiagram(publicAPI, model) {
         model.renderState.pmiOneBinAllVars = null;
         model.renderState.pmiAllBinsTwoVars = { d, i };
         drawPMIAllBinsTwoVars();
+        publicAPI.selectStatusBarText();
       })
       .on('mouseover', function inner(d, i) {
         publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
@@ -925,7 +947,8 @@ function informationDiagram(publicAPI, model) {
           })
           .on('mouseout', () => {
             publicAPI.updateStatusBarText('');
-          });
+          })
+          .on('click', () => { publicAPI.selectStatusBarText(); });
       };
     }
   };
