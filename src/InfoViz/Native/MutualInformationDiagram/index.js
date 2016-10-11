@@ -143,18 +143,19 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  publicAPI.updateStatusBarText = (msg) => d3.select(model.container).select('span.status-bar-text').text(msg);
+  publicAPI.updateStatusBarText = (msg) => d3.select(model.container).select('input.status-bar-text').attr('value', msg);
 
   publicAPI.selectStatusBarText = () => {
     // select text so user can press ctrl-c if desired.
     if (model.statusBarVisible) {
       // https://www.sitepoint.com/javascript-copy-to-clipboard/
-      const range = document.createRange();
-      range.selectNode(d3.select(model.container).select('span.status-bar-text').node());
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      // Copy-to-clipboard doesn't work unless status bar text is an 'input':
-      // document.execCommand('copy');
+      d3.select(model.container).select('input.status-bar-text').node().select();
+      // Copy-to-clipboard works because status bar text is an 'input':
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.log('Copy to clipboard failed. Press Ctrl-C to copy');
+      }
     }
   };
 

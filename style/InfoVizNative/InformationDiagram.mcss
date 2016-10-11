@@ -56,9 +56,13 @@
 .statusBarText {
   position: relative;
   pointer-events: all;
-  text-align: center;
+  text-align: left;
   top: 10px;
   left: 20px;
+  width: calc(100% - 22px);
+  border: none;
+  background: transparent;
+  outline: none;
   transition: opacity 1s;
 }
 .infoDiagramContainer text {
