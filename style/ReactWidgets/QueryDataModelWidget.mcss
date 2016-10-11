@@ -44,6 +44,8 @@
 
     /* click pointer */
     cursor: pointer;
+
+    text-align: left;
 }
 
 .label::first-letter {
