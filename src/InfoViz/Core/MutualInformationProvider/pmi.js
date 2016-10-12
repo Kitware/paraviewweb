@@ -195,8 +195,6 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
       const minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
       miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
       miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;
-      //miData.varinf[tup[0]][tup[1]] = minfo.variation_of_information;
-      //miData.varinf[tup[1]][tup[0]] = minfo.variation_of_information;
       miData.varinf[tup[0]][tup[1]] = minfo.normalized_distance_metric;
       miData.varinf[tup[1]][tup[0]] = minfo.normalized_distance_metric;
       if (!(t0nam in miData.joint)) {
