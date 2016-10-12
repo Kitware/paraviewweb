@@ -72,3 +72,8 @@ to relax into a shape more indicative of the strongest relationships.
    editing.
 
 5. Should we have a "focus node" that is pinned to the center of the tile?
+
+6. Should we show "objective function" variables?
+
+7. Should we have a "show only selected" button to illustrate relationships between
+   a smaller (and probably more manageable) set of variables?

@@ -171,7 +171,6 @@
 }
 
 .node {
-  fill: #e79;
-  stroke: #fff;
-  stroke-width: 3px;
+  stroke: #000;
+  stroke-width: 1px;
 }

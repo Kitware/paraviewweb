@@ -212,15 +212,15 @@ function informationGraph(publicAPI, model) {
           append('line').
           classed('link', true).
           classed(style.link, true).
-          style('stroke-width', d => Math.sqrt(1 + d.length)), 0.01);
+          style('stroke-width', d => 3 * (1 - d.length/75.0) + 1), 0.01);
       }
     }
 
     function updatePositions(nodeMarks, linkMarks, duration) {
       console.log('updatePosns');
-      //console.log('updatePosns ', typeof nodeMarks === 'undefined' ? -1 : nodeMarks.length, typeof linkMarks === 'undefined' ? -1 : linkMarks.length, duration);
       if (typeof nodeMarks !== 'undefined' && nodeMarks) {
-        nodeMarks.transition().duration(duration).attr('cx', d => d.x).attr('cy', d => d.y);
+        nodeMarks.transition().duration(duration).attr('transform',
+          d => `translate(${d.x - model.glyphSize / 2}, ${d.y - model.glyphSize / 2})`);
       }
       if (typeof linkMarks !== 'undefined' && linkMarks) {
         linkMarks.transition().duration(duration).
@@ -231,12 +231,19 @@ function informationGraph(publicAPI, model) {
     const node =
       ngroup.selectAll('.node').
         data(nodes).enter().
-          append('circle').
+          append('g').
           classed('node', true).
           classed(style.node, true).
           attr('r', 5).
           call(d3cola.drag);
     node.append('title').text(d => d.name);
+    const suse =
+      node.append('svg').
+        attr('width', model.glyphSize).
+        attr('height', model.glyphSize).
+        attr('fill', vinfo => getLegend(vinfo.name).color).
+          append('use').
+            attr('xlink:href', vinfo => getLegend(vinfo.name).shape);
     console.log('Nodes ', node);
     d3cola.on('tick', () => updatePositions(node, linkSelection, 0.01));
     changeEdgeCutoff(model.edgeSlider);
