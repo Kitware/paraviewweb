@@ -47,7 +47,8 @@ function insertRowAndCol(mtx, irow, icol, val) {
 
 function initializeMutualInformationData() {
   return {
-    matrix: [],
+    matrix: [], // bivariate mutual information matrix
+    varinf: [], // variation of information (a distance metric)
     vmap: {},
     vset: {},
     joint: {},
@@ -61,6 +62,7 @@ function removeVariable(miData, variable) {
   const ii = miData.vset[variable];
   const nv = miData.matrix.length;
   removeRowAndCol(miData.matrix, ii, ii);
+  removeRowAndCol(miData.varinf, ii, ii);
   delete miData.vset[variable];
   for (let jj = ii + 1; jj < nv; ++jj) {
     const vname = miData.vmap[jj].name;
@@ -85,6 +87,7 @@ function insertVariableAt(miData, variable, ii) {
   miData.vset[variable] = ii;
   // Now insert a row and column into the MI matrix:
   insertRowAndCol(miData.matrix, ii, ii, 0);
+  insertRowAndCol(miData.varinf, ii, ii, 0);
 }
 
 function insertVariable(miData, variable) {
@@ -129,6 +132,7 @@ function mutualInformationPair(miData, indices, histdata) {
     totCount += bb.count;
   }
   let minfo = 0;
+  let jent = 0; // variation of information, an actual distance metric based on information entropy
   const jointFreq = filledMatrix(inbins, jnbins, 0);
   for (let ib = 0; ib < histdata.bins.length; ++ib) {
     const bb = histdata.bins[ib];
@@ -139,10 +143,13 @@ function mutualInformationPair(miData, indices, histdata) {
     const py = yMarginFreq[iy] / totCount;
     const pmiXy = Math.log(pxy / px / py);
     jointFreq[ix][iy] = bb.count;
-    minfo += pxy * pmiXy;
+    minfo += pxy * pmiXy; /* = p(x,y) * log( p(x,y) / p(x) / p(y)) = I(x,y) */
+    jent += -pxy * Math.log(pxy); /* = H(x,y) */
   }
   return {
     mutual_information: minfo,
+    variation_of_information: jent - minfo,
+    normalized_distance_metric: 1.0 - minfo / jent,
     joint: jointFreq,
   };
 }
@@ -188,6 +195,10 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
       const minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
       miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
       miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;
+      //miData.varinf[tup[0]][tup[1]] = minfo.variation_of_information;
+      //miData.varinf[tup[1]][tup[0]] = minfo.variation_of_information;
+      miData.varinf[tup[0]][tup[1]] = minfo.normalized_distance_metric;
+      miData.varinf[tup[1]][tup[0]] = minfo.normalized_distance_metric;
       if (!(t0nam in miData.joint)) {
         miData.joint[t0nam] = {};
         miData.joint[t0nam][t1nam] = {};

@@ -32,6 +32,7 @@
         "react-dom": "15.3.1",
 
         "d3": "3.5.17",
+        "cola": "tgdwyer/WebCola#master",
 
         "axios": "0.14.0",
         "gl-matrix": "2.3.1",

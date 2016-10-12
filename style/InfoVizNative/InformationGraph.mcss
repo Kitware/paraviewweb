@@ -1,0 +1,177 @@
+.hidden {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.infoGraphContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.statusBarContainer {
+  position: absolute;
+  /*left: 10px;*/
+  right: 10px;
+  height: 40px;
+  bottom: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: rgba(200, 200, 200, 0.5);
+  z-index: 4;
+  transition: width 0.5s;
+}
+
+.button {
+  position: absolute;
+  pointer-events: all;
+  cursor: pointer;
+  color: gray;
+  left: 3px;
+  top: 4px;
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-2x from 'font-awesome/css/font-awesome.css';
+}
+
+.button:hover {
+  color: black;
+}
+
+.showButton {
+  composes: button;
+  composes: fa-caret-left from 'font-awesome/css/font-awesome.css';
+}
+
+.hideButton {
+  composes: button;
+  composes: fa-caret-right from 'font-awesome/css/font-awesome.css';
+}
+
+.statusBarText {
+  position: relative;
+  top: 10px;
+  left: 20px;
+  transition: opacity 1s;
+}
+
+.statusBarText, .infoGraphContainer text {
+    font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+    text-align: center;
+    user-select: none;
+}
+
+.informationGraphSvg {
+  float: left;
+  vertical-align: top;
+}
+
+.informationGraphSvgShow {
+  composes: informationGraphSvg;
+  display: inline;
+  opacity: 1.0;
+  transition: opacity 0.5s;
+}
+.informationGraphSvgHide {
+  composes: informationGraphSvg;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.infoGraphPlaceholder {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25%;
+}
+
+.infoGraphPlaceholder :global(.id-placeholder-row) {
+  text-align: center;
+}
+
+.infoGraphPlaceholder :global(.id-placeholder-title) {
+    font-size: 45px;
+}
+
+.group textPath, .group text {
+  user-select: none;
+  fill: black;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.glyph {
+    pointer-events: none;
+}
+
+.mainCircle {
+  fill: none;
+  pointer-events: all;
+}
+
+.group path {
+  fill-opacity: .5;
+}
+
+.hoverOutline {
+  stroke-width: 0.5px;
+  stroke: #333;
+}
+
+.chord {
+  fill: #bbb;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+}
+
+.pmiChord {
+  fill: #ccc;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+  transition: fill 0.5s;
+}
+
+.pmiChord:global(.positive) {
+  fill: #33b733;
+}
+
+.pmiChord:global(.negative) {
+  fill: #b73333;
+}
+
+.pmiChord:global(.highlight-pmi) {
+  fill: #ffff00;
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-width: .25px;
+  transition: fill 0.3s;
+}
+
+.chord:hover, .pmichord:hover {
+  fill: #b73333;
+}
+
+.informationGraphSvg path:global(.fade) {
+  display: none;
+}
+
+.informationGraphSvg path:global(.htile.hilite) {
+  fill: blue;
+}
+
+.link {
+  stroke: #bbb;
+}
+
+.node {
+  fill: #e79;
+  stroke: #fff;
+  stroke-width: 3px;
+}
