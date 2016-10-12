@@ -679,16 +679,48 @@ function informationDiagram(publicAPI, model) {
     // enter + update items.
     const groupPath = group.select('path')
       .attr('d', arc);
-    // Remove the labels that don't fit. Set length to zero. :(
-    // TODO shorten label, use ... ?
+    // Remove the labels that don't fit, or shorten label, using ...
     group
       .select('text').select('textPath')
-      .attr('display', (d, i) => {
-        const textLength = model.textLengthMap[model.mutualInformationData.vmap[d.index].name];
-        const shown = !(((groupPath[0][d.index].getTotalLength() / 2) - deltaRadius) < (textLength + model.glyphSize));
-        d.textShown = shown;
-        return shown ? null : 'none';
-      });
+      .each(function truncate(d, i) {
+        d.textShown = true;
+        const availLength = ((groupPath[0][d.index].getTotalLength() / 2) - deltaRadius - model.glyphSize);
+        // shorten text based on string length vs initial total length.
+        const fullText = model.mutualInformationData.vmap[d.index].name;
+        const textLength = model.textLengthMap[fullText];
+        const strLength = fullText.length;
+        // we fit! done.
+        if (textLength <= availLength) {
+          d.textLength = textLength;
+          return;
+        }
+        // if we don't have 15 pixels left, or short string, don't show label.
+        if (availLength < 15 || strLength < 9) {
+          d.textShown = false;
+          return;
+        }
+        // drop the middle 50%.
+        let testStrLen = Math.floor(strLength * 0.25);
+        // estimate new length, +2 to account for adding '...'
+        d.textLength = (((testStrLen * 2) + 2) / strLength) * textLength;
+        if (d.textLength < availLength) {
+          d3.select(this).text(`${fullText.slice(0, testStrLen)}...${fullText.slice(-testStrLen)}`);
+          return;
+        }
+        // start at 1/3 of the string, go down to 3 chars plus ...
+        testStrLen = Math.floor(strLength / 2.99);
+        while (testStrLen >= 3) {
+          d.textLength = ((testStrLen + 2) / strLength) * textLength;
+          if (d.textLength < availLength) {
+            d3.select(this).text(`${fullText.slice(0, testStrLen)}...`);
+            return;
+          }
+          testStrLen -= 1;
+        }
+        // small string doesn't fit - hide.
+        d.textShown = false;
+      })
+      .attr('display', (d, i) => (d.textShown ? null : 'none'));
       // .remove(); ie11 throws errors if we use .remove() - hide instead.
 
 
@@ -708,7 +740,7 @@ function informationDiagram(publicAPI, model) {
 
         const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
         // Add the glyph to the group
-        const textLength = glyphData.textShown ? model.textLengthMap[model.mutualInformationData.vmap[glyphData.index].name] : 0;
+        const textLength = glyphData.textShown ? glyphData.textLength : 0;
         const pathLength = groupPath[0][glyphData.index].getTotalLength();
         const avgRadius = (innerRadius + outerRadius) / 2;
         // Start at edge of arc, move to text anchor, back up half of text length and glyph size
