@@ -58,7 +58,7 @@
 
 	var _MutualInformationDiagram2 = _interopRequireDefault(_MutualInformationDiagram);
 
-	var _FieldSelector = __webpack_require__(330);
+	var _FieldSelector = __webpack_require__(329);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -66,31 +66,31 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _FieldProvider = __webpack_require__(334);
+	var _FieldProvider = __webpack_require__(333);
 
 	var _FieldProvider2 = _interopRequireDefault(_FieldProvider);
 
-	var _Histogram1DProvider = __webpack_require__(335);
+	var _Histogram1DProvider = __webpack_require__(334);
 
 	var _Histogram1DProvider2 = _interopRequireDefault(_Histogram1DProvider);
 
-	var _Histogram2DProvider = __webpack_require__(336);
+	var _Histogram2DProvider = __webpack_require__(335);
 
 	var _Histogram2DProvider2 = _interopRequireDefault(_Histogram2DProvider);
 
-	var _LegendProvider = __webpack_require__(337);
+	var _LegendProvider = __webpack_require__(336);
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _MutualInformationProvider = __webpack_require__(352);
+	var _MutualInformationProvider = __webpack_require__(351);
 
 	var _MutualInformationProvider2 = _interopRequireDefault(_MutualInformationProvider);
 
-	var _HistogramBinHoverProvider = __webpack_require__(354);
+	var _HistogramBinHoverProvider = __webpack_require__(353);
 
 	var _HistogramBinHoverProvider2 = _interopRequireDefault(_HistogramBinHoverProvider);
 
-	var _state = __webpack_require__(355);
+	var _state = __webpack_require__(354);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -29010,7 +29010,10 @@
 	});
 	exports.newInstance = undefined;
 
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* global document, window */
+
+	// import multiClicker from '../../Core/D3MultiClick';
+
 
 	exports.extend = extend;
 
@@ -29034,25 +29037,23 @@
 
 	var _InfoDiagramIconSmall2 = _interopRequireDefault(_InfoDiagramIconSmall);
 
-	var _D3MultiClick = __webpack_require__(325);
-
-	var _D3MultiClick2 = _interopRequireDefault(_D3MultiClick);
-
-	var _SelectionBuilder = __webpack_require__(326);
+	var _SelectionBuilder = __webpack_require__(325);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
-	var _AnnotationBuilder = __webpack_require__(327);
+	var _AnnotationBuilder = __webpack_require__(326);
 
 	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
-	var _utils = __webpack_require__(329);
+	var _utils = __webpack_require__(328);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var PMI_CHORD_MODE_NONE = 0;
 	var PMI_CHORD_MODE_ONE_BIN_ALL_VARS = 1;
 	var PMI_CHORD_MODE_ALL_BINS_TWO_VARS = 2;
+
+	var miCount = 0;
 
 	/* eslint-disable no-use-before-define */
 
@@ -29076,8 +29077,9 @@
 
 	  model.clientRect = null;
 
-	  // FIXME: Make some attempt at unique id, for now just use millis timestamp
-	  model.instanceID = 'informationDiagram-' + Date.now();
+	  miCount += 1;
+	  // unique id, based on count
+	  model.instanceID = 'pvwInformationDiagram-' + miCount;
 
 	  // Handle style for status bar
 	  function updateStatusBarVisibility() {
@@ -29158,8 +29160,25 @@
 	  };
 
 	  publicAPI.updateStatusBarText = function (msg) {
-	    return _d3.default.select(model.container).select('span.status-bar-text').text(msg);
+	    return _d3.default.select(model.container).select('input.status-bar-text').attr('value', msg);
 	  };
+
+	  publicAPI.selectStatusBarText = function () {
+	    // select text so user can press ctrl-c if desired.
+	    if (model.statusBarVisible) {
+	      // https://www.sitepoint.com/javascript-copy-to-clipboard/
+	      _d3.default.select(model.container).select('input.status-bar-text').node().select();
+	      // Copy-to-clipboard works because status bar text is an 'input':
+	      try {
+	        document.execCommand('copy');
+	      } catch (err) {
+	        console.log('Copy to clipboard failed. Press Ctrl-C to copy');
+	      }
+	    }
+	  };
+
+	  // need a unique groupID whenever a group is added.
+	  var groupID = 0;
 
 	  publicAPI.render = function () {
 	    // Extract provider data for local access
@@ -29169,8 +29188,9 @@
 
 	    if (variableList.length < 2 || !model.container) {
 	      // Select the main circle and hide it and unhide placeholder
-	      _d3.default.select(model.container).select('svg.information-diagram').attr('class', _InformationDiagram2.default.informationDiagramSvgHide);
+	      _d3.default.select(model.container).select('svg.information-diagram').classed(_InformationDiagram2.default.informationDiagramSvgShow, false).classed(_InformationDiagram2.default.informationDiagramSvgHide, true);
 	      _d3.default.select(model.container).select('div.info-diagram-placeholder').classed(_InformationDiagram2.default.hidden, false);
+	      publicAPI.updateStatusBarText('');
 	      return;
 	    }
 
@@ -29192,6 +29212,7 @@
 	    updateStatusBarVisibility();
 
 	    _d3.default.select(model.container).select('div.info-diagram-placeholder').classed(_InformationDiagram2.default.hidden, true);
+	    _d3.default.select(model.container).select('svg.information-diagram').classed(_InformationDiagram2.default.informationDiagramSvgHide, false).classed(_InformationDiagram2.default.informationDiagramSvgShow, true);
 
 	    var pmiChordMode = {
 	      mode: PMI_CHORD_MODE_NONE,
@@ -29220,13 +29241,15 @@
 	    var path = _d3.default.svg.chord().radius(innerRadius);
 
 	    // Remove previous SVG
-	    var old = _d3.default.select(model.container).select('svg');
-	    if (!old.empty()) {
-	      old.remove();
+	    var svgParent = _d3.default.select(model.container).select('svg');
+	    var svg = svgParent.select('.main-circle');
+	    if (svgParent.empty()) {
+	      svgParent = _d3.default.select(model.container).append('svg').style('float', 'left').attr('class', _InformationDiagram2.default.informationDiagramSvgShow).classed('information-diagram', true);
+	      svg = svgParent.append('g').classed('main-circle', true).classed(_InformationDiagram2.default.mainCircle, true);
 	    }
 
-	    // Setup our SVG container
-	    var svg = _d3.default.select(model.container).append('svg').attr('width', width).attr('height', height).style('float', 'left').attr('class', _InformationDiagram2.default.informationDiagramSvgShow).classed('information-diagram', true).append('g').classed('main-circle', true).classed(_InformationDiagram2.default.mainCircle, true).attr('transform', 'translate(' + width / 2 + ', ' + height / 2 + ')');
+	    svgParent.attr('width', width).attr('height', height);
+	    svg.attr('transform', 'translate(' + width / 2 + ', ' + height / 2 + ')');
 
 	    function findGroupAndBin(relCoords) {
 	      var result = {
@@ -29445,7 +29468,7 @@
 	      var vaRange = [vaGroup.startAngle, vaGroup.endAngle - vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
 	      var vbRange = [vbGroup.startAngle, vbGroup.endAngle - vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
 
-	      svg.select('g.pmiChords').selectAll('path.pmiChord').classed('fade', false).attr('d', function (data, index) {
+	      linkData.classed('fade', false).attr('d', function (data, index) {
 	        return path({
 	          source: {
 	            startAngle: vaRange[0] + data[0][0] * vaRange[2],
@@ -29474,16 +29497,18 @@
 	        publicAPI.updateStatusBarText(_d3.default.select(this).attr('data-details'));
 	      }).on('mouseout', function () {
 	        publicAPI.updateStatusBarText('');
+	      }).on('click', function () {
+	        publicAPI.selectStatusBarText();
 	      });
 	    }
 
 	    // Mouse move handling ----------------------------------------------------
 
-	    _d3.default.select(model.container).select('svg')
+	    svgParent
 	    /* eslint-disable prefer-arrow-callback */
 	    // need d3 provided 'this', below.
 	    .on('mousemove', function mouseMove(d, i) {
-	      /* eslint-enable prefer-arrow-callback */
+	      /* xxeslint-enable prefer-arrow-callback */
 	      var overCoords = _d3.default.mouse(model.container);
 	      var info = findGroupAndBin(overCoords);
 	      var clearStatusBar = false;
@@ -29535,7 +29560,8 @@
 	      for (var idx = 0; idx < variableList.length; ++idx) {
 	        unHoverBin(variableList[idx]);
 	      }
-	    }).on('click', (0, _D3MultiClick2.default)([function singleClick(d, i) {
+	    }).on('click', // multiClicker([
+	    function singleClick(d, i) {
 	      // single click handler
 	      var overCoords = _d3.default.mouse(model.container);
 	      var info = findGroupAndBin(overCoords);
@@ -29546,9 +29572,11 @@
 	          model.renderState.pmiAllBinsTwoVars = null;
 	          model.renderState.pmiOneBinAllVars = { group: info.group, bin: info.bin, d: d, i: i };
 	          drawPMIOneBinAllVars()(d, i);
+	          publicAPI.selectStatusBarText();
 	        }
 	      }
-	    }, function doubleClick(d, i) {
+	      // },
+	    }).on('dblclick', function doubleClick(d, i) {
 	      // double click handler
 	      var overCoords = _d3.default.mouse(model.container);
 	      var info = findGroupAndBin(overCoords);
@@ -29567,17 +29595,21 @@
 	      }
 
 	      _d3.default.event.stopPropagation();
-	    }]));
+	      //   },
+	      // ])
+	    });
+	    var miChordsG = svg.select('g.mutualInfoChords');
+	    if (miChordsG.empty()) {
+	      svg.append('circle').attr('r', outerRadius);
+	      miChordsG = svg.append('g').classed('mutualInfoChords', true);
+	      svg.append('g').classed('pmiChords', true);
 
-	    svg.append('circle').attr('r', outerRadius);
-	    svg.append('g').classed('mutualInfoChords', true);
-	    svg.append('g').classed('pmiChords', true);
-
+	      // add a straight path so IE/Edge can measure text lengths usefully.
+	      // Otherwise, along a curved path, they return the horizontal space covered.
+	      svg.append('defs').append('path').attr('id', 'straight-text-path').attr('d', 'M0,0L' + width + ',0');
+	    }
 	    // Compute the chord layout.
 	    layout.matrix(model.mutualInformationData.matrix);
-
-	    // Add a group per neighborhood.
-	    var group = svg.selectAll('.group').data(layout.groups).enter().append('g').classed('group', true).classed(_InformationDiagram2.default.group, true);
 
 	    // Get lookups for pmi chords
 	    model.mutualInformationData.lkup = {};
@@ -29588,41 +29620,79 @@
 	    // Only used when there is no legend service
 	    var cmap = _d3.default.scale.category20();
 
+	    // Add a group per neighborhood.
+	    var group = svg.selectAll('.group').data(layout.groups, function () {
+	      groupID += 1;return groupID;
+	    });
+	    var groupEnter = group.enter().append('g').classed('group', true).classed(_InformationDiagram2.default.group, true);
+
 	    // Add the group arc.
-	    var groupPath = group.append('path').attr('id', function (d, i) {
+	    groupEnter.append('path').attr('id', function (d, i) {
 	      return model.instanceID + '-group' + i;
-	    }).attr('d', arc);
+	    });
 
 	    // Add a text label.
-	    var groupText = group.append('text')
+	    var groupText = groupEnter.append('text')
 	    // .attr('x', 6) // prevents ie11 from seeing text-anchor and startOffset.
 	    .attr('dy', 15);
 
-	    // add a straight path so IE/Edge can measure text lengths usefully.
-	    // Otherwise, along a curved path, they return the horizontal space covered.
-	    svg.append('defs').append('path').attr('id', 'straight-text-path').attr('d', 'M0,0L' + width + ',0');
-
-	    var textLengthMap = [];
+	    if (!model.textLengthMap) model.textLengthMap = {};
 	    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
 	    var textPath = groupText.append('textPath').attr('xlink:href', '#straight-text-path').attr('startOffset', '25%').text(function (d, i) {
 	      return model.mutualInformationData.vmap[i].name;
 	    }).each(function textLen(d, i) {
-	      textLengthMap[i] = this.getComputedTextLength();
+	      model.textLengthMap[model.mutualInformationData.vmap[i].name] = this.getComputedTextLength();
 	    });
 
 	    textPath.attr('xlink:href', function (d, i) {
 	      return '#' + model.instanceID + '-group' + i;
 	    });
 
-	    // Remove the labels that don't fit. Set length to zero. :(
-	    // TODO shorten label, use ... ?
-	    groupText.filter(function (d, i) {
-	      var shouldRemove = groupPath[0][i].getTotalLength() / 2 - deltaRadius < textLengthMap[i] + model.glyphSize;
-	      if (shouldRemove) textLengthMap[i] = 0;
-	      return shouldRemove;
-	    })
+	    // enter + update items.
+	    var groupPath = group.select('path').attr('d', arc);
+	    // Remove the labels that don't fit, or shorten label, using ...
+	    group.select('text').select('textPath').each(function truncate(d, i) {
+	      d.textShown = true;
+	      var availLength = groupPath[0][d.index].getTotalLength() / 2 - deltaRadius - model.glyphSize;
+	      // shorten text based on string length vs initial total length.
+	      var fullText = model.mutualInformationData.vmap[d.index].name;
+	      var textLength = model.textLengthMap[fullText];
+	      var strLength = fullText.length;
+	      // we fit! done.
+	      if (textLength <= availLength) {
+	        d.textLength = textLength;
+	        return;
+	      }
+	      // if we don't have 15 pixels left, or short string, don't show label.
+	      if (availLength < 15 || strLength < 9) {
+	        d.textShown = false;
+	        return;
+	      }
+	      // drop the middle 50%.
+	      var testStrLen = Math.floor(strLength * 0.25);
+	      // estimate new length, +2 to account for adding '...'
+	      d.textLength = (testStrLen * 2 + 2) / strLength * textLength;
+	      if (d.textLength < availLength) {
+	        _d3.default.select(this).text(fullText.slice(0, testStrLen) + '...' + fullText.slice(-testStrLen));
+	        return;
+	      }
+	      // start at 1/3 of the string, go down to 3 chars plus ...
+	      testStrLen = Math.floor(strLength / 2.99);
+	      while (testStrLen >= 3) {
+	        d.textLength = (testStrLen + 2) / strLength * textLength;
+	        if (d.textLength < availLength) {
+	          _d3.default.select(this).text(fullText.slice(0, testStrLen) + '...');
+	          return;
+	        }
+	        testStrLen -= 1;
+	      }
+	      // small string doesn't fit - hide.
+	      d.textShown = false;
+	    }).attr('display', function (d, i) {
+	      return d.textShown ? null : 'none';
+	    });
 	    // .remove(); ie11 throws errors if we use .remove() - hide instead.
-	    .attr('display', 'none');
+
 
 	    // Add group for glyph
 	    if (getLegend) {
@@ -29635,7 +29705,7 @@
 
 	        var legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
 	        // Add the glyph to the group
-	        var textLength = textLengthMap[glyphData.index];
+	        var textLength = glyphData.textShown ? glyphData.textLength : 0;
 	        var pathLength = groupPath[0][glyphData.index].getTotalLength();
 	        var avgRadius = (innerRadius + outerRadius) / 2;
 	        // Start at edge of arc, move to text anchor, back up half of text length and glyph size
@@ -29665,7 +29735,7 @@
 
 	    // Zip histogram info into layout.groups() (which we initially have no control over as it is
 	    // generated for us).
-	    svg.selectAll('g.group').each(function buildHistogram(groupData) {
+	    group.each(function buildHistogram(groupData) {
 	      var gname = model.mutualInformationData.vmap[groupData.index].name;
 	      var gvar = model.histogramData[gname];
 
@@ -29701,7 +29771,9 @@
 	        };
 	      });
 
-	      _d3.default.select(this).attr('param-name', gname).selectAll('path.htile').data(groupData.histo).enter().append('path').classed('htile', true).attr('d', function (d, i) {
+	      var htile = _d3.default.select(this).attr('param-name', gname).selectAll('path.htile').data(groupData.histo);
+	      htile.enter().append('path').classed('htile', true);
+	      htile.attr('d', function (d, i) {
 	        return histoArc.outerRadius(d.outerRadius)(d);
 	      }).attr('data-details', function (d, i) {
 	        var binRange = getBinRange(i, histogram1DnumberOfBins, groupData.range);
@@ -29718,20 +29790,31 @@
 	      pmiChordMode.miIndex = -1;
 	      updateChordVisibility({ mi: { show: true } });
 	    }
+	    // do we need to reset?
+	    var groupExit = group.exit();
+	    var needReset = !groupEnter.empty() || !groupExit.empty();
+	    groupExit.remove();
+
 	    // Add the chords. Color only chords that show self-mutual-information.
-	    var chord = svg.select('g.mutualInfoChords').selectAll('.chord').data(layout.chords).enter().append('path').classed('chord', true).classed(_InformationDiagram2.default.chord, true).classed('selfchord', function (d) {
+	    var chord = miChordsG.selectAll('.chord').data(layout.chords);
+	    chord.enter().append('path').classed('chord', true).classed(_InformationDiagram2.default.chord, true);
+
+	    chord.exit().remove();
+
+	    chord.classed('selfchord', function (d) {
 	      return d.source.index === d.target.index;
-	    }).attr('d', path).on('click', function (d, i) {
+	    }).attr('d', path).style('fill', null).on('click', function (d, i) {
 	      model.renderState.pmiOneBinAllVars = null;
 	      model.renderState.pmiAllBinsTwoVars = { d: d, i: i };
 	      drawPMIAllBinsTwoVars();
+	      publicAPI.selectStatusBarText();
 	    }).on('mouseover', function inner(d, i) {
 	      publicAPI.updateStatusBarText(_d3.default.select(this).attr('data-details'));
 	    }).on('mouseout', function () {
 	      publicAPI.updateStatusBarText('');
 	    });
 
-	    svg.select('g.mutualInfoChords').selectAll('.selfchord').style('fill', function (d) {
+	    miChordsG.selectAll('.selfchord').style('fill', function (d) {
 	      return model.mutualInformationData.vmap[d.source.index].color;
 	    });
 
@@ -29741,6 +29824,12 @@
 	    // The lines below are for the case when the MI matrix has been row-normalized:
 	    // model.mutualInformationData.matrix[d.source.index][d.target.index] *
 	    // model.mutualInformationData.vmap[d.source.index].autoInfo/model.mutualInformationData.matrix[d.source.index][d.source.index]);
+
+	    // after chord is defined.
+	    if (needReset) {
+	      showAllChords();
+	      publicAPI.updateStatusBarText('');
+	    }
 
 	    svg.selectAll('g.group path[id^=\'' + model.instanceID + '-group\']').on('click', function (d, i) {
 	      if (pmiChordMode.mode !== PMI_CHORD_MODE_NONE || pmiChordMode.miIndex !== i) {
@@ -29815,7 +29904,7 @@
 	        linkData.enter().append('path').classed('pmiChord', true).classed(_InformationDiagram2.default.pmiChord, true);
 	        linkData.exit().remove();
 
-	        svg.select('g.pmiChords').selectAll('path.pmiChord').classed('fade', false).attr('d', function (data, index) {
+	        linkData.classed('fade', false).attr('d', function (data, index) {
 	          var vaGrp = layout.groups()[model.mutualInformationData.lkup[data[3][0]]];
 	          var vbGrp = layout.groups()[model.mutualInformationData.lkup[data[3][1]]];
 	          var vaRange = [vaGrp.startAngle, vaGrp.endAngle - vaGrp.startAngle, (vaGrp.endAngle - vaGrp.startAngle) / histogram1DnumberOfBins];
@@ -29850,6 +29939,8 @@
 	          publicAPI.updateStatusBarText(_d3.default.select(this).attr('data-details'));
 	        }).on('mouseout', function () {
 	          publicAPI.updateStatusBarText('');
+	        }).on('click', function () {
+	          publicAPI.selectStatusBarText();
 	        });
 	      };
 	    }
@@ -39557,7 +39648,7 @@
 	exports.i(__webpack_require__(314), undefined);
 
 	// module
-	exports.push([module.id, ".InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  top: 10px;\n  left: 20px;\n  transition: opacity 1s;\n}\n\n.InformationDiagram_statusBarText_dgXGJ, .InformationDiagram_infoDiagramContainer_3cx2M text {\n    font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n    text-align: center;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath, .InformationDiagram_group_12rpU text {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
+	exports.push([module.id, ".InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  pointer-events: all;\n  text-align: left;\n  top: 10px;\n  left: 20px;\n  width: calc(100% - 22px);\n  border: none;\n  background: transparent;\n  outline: none;\n  transition: opacity 1s;\n}\n.InformationDiagram_infoDiagramContainer_3cx2M text {\n  text-align: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath, .InformationDiagram_group_12rpU text {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -40839,7 +40930,7 @@
 /* 323 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"info-diagram-container\">\n  <div class=\"info-diagram-placeholder\">\n    <div class=\"id-placeholder-row\">\n      <span class=\"id-placeholder-title\">Information Diagram</span>\n    </div>\n    <div class=\"id-placeholder-row\">\n      <img class=\"id-placeholder-image\"/>\n    </div>\n    <div class=\"id-placeholder-row\">\n      <span class=\"id-placeholder-info\">Please select two or more variables</span>\n    </div>\n  </div>\n  <div class=\"status-bar-container\">\n    <div class=\"status-bar\">\n      <i class=\"show-button\"></i>\n      <i class=\"hide-button\"></i>\n      <span class=\"status-bar-text\"></span>\n    </div>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"info-diagram-container\">\n  <div class=\"info-diagram-placeholder\">\n    <div class=\"id-placeholder-row\">\n      <span class=\"id-placeholder-title\">Information Diagram</span>\n    </div>\n    <div class=\"id-placeholder-row\">\n      <img class=\"id-placeholder-image\"/>\n    </div>\n    <div class=\"id-placeholder-row\">\n      <span class=\"id-placeholder-info\">Please select two or more variables</span>\n    </div>\n  </div>\n  <div class=\"status-bar-container\">\n    <div class=\"status-bar\">\n      <i class=\"show-button\"></i>\n      <i class=\"hide-button\"></i>\n      <input type=\"text\" class=\"status-bar-text\" readonly=\"true\" />\n    </div>\n  </div>\n</div>\n";
 
 /***/ },
 /* 324 */
@@ -40849,68 +40940,6 @@
 
 /***/ },
 /* 325 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = multiClicker;
-
-	var _d = __webpack_require__(311);
-
-	var _d2 = _interopRequireDefault(_d);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var DOUBLE_CLICK_TIMEOUT = 300; // win7 default is 500 ms
-
-	/*
-	 * Use this function if you need both single-click and double-click handlers on
-	 * a node.  If you only need one or the other, simply listen to the 'click' and
-	 * 'dblclick' events.  Otherwise, you can use this function as follows:
-	 *
-	 * d3.select('.someclass').
-	 *   on('click', multiClicker([
-	 *     function(d, i) { // single click handler
-	 *       // do single-click stuff with "d", "i", or "d3.select(this)", as usual
-	 *     },
-	 *     function(d, i) { // double click handler
-	 *       // do double-click stuff with "d", "i", or "d3.select(this)", as usual
-	 *     },
-	 *   ]));
-	 *
-	 */
-	function multiClicker(handlers) {
-	  var timer = null;
-	  var singleClick = handlers[0];
-	  var doubleClick = handlers[1];
-	  var clickEvent = null;
-
-	  return function inner() {
-	    var _this = this;
-
-	    clearTimeout(timer);
-	    /* eslint-disable prefer-rest-params */
-	    var args = Array.prototype.slice.call(arguments, 0);
-	    /* eslint-enable prefer-rest-params */
-	    if (timer === null) {
-	      clickEvent = _d2.default.event;
-	      timer = setTimeout(function () {
-	        timer = null;
-	        _d2.default.event = clickEvent;
-	        singleClick.apply(_this, args);
-	      }, DOUBLE_CLICK_TIMEOUT);
-	    } else {
-	      timer = null;
-	      doubleClick.apply(this, args);
-	    }
-	  };
-	}
-
-/***/ },
-/* 326 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41180,7 +41209,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41189,9 +41218,9 @@
 	  value: true
 	});
 
-	var _UUID = __webpack_require__(328);
+	var _UUID = __webpack_require__(327);
 
-	var _SelectionBuilder = __webpack_require__(326);
+	var _SelectionBuilder = __webpack_require__(325);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
@@ -41290,7 +41319,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41326,7 +41355,7 @@
 	};
 
 /***/ },
-/* 329 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41592,7 +41621,7 @@
 	};
 
 /***/ },
-/* 330 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41607,7 +41636,7 @@
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(331);
+	var _FieldSelector = __webpack_require__(330);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -41615,7 +41644,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _template = __webpack_require__(333);
+	var _template = __webpack_require__(332);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -41915,13 +41944,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 331 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(332);
+	var content = __webpack_require__(331);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -41941,7 +41970,7 @@
 	}
 
 /***/ },
-/* 332 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -41981,13 +42010,13 @@
 	};
 
 /***/ },
-/* 333 */
+/* 332 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"field-selector-mode\"><i></i></th><th class=\"field-selector-label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 334 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42132,7 +42161,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 335 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42229,7 +42258,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 336 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42412,7 +42441,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 337 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42428,11 +42457,11 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _shapes = __webpack_require__(338);
+	var _shapes = __webpack_require__(337);
 
 	var _shapes2 = _interopRequireDefault(_shapes);
 
-	var _ColorPalettes = __webpack_require__(351);
+	var _ColorPalettes = __webpack_require__(350);
 
 	var _ColorPalettes2 = _interopRequireDefault(_ColorPalettes);
 
@@ -42620,7 +42649,7 @@
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 338 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42629,39 +42658,39 @@
 	  value: true
 	});
 
-	var _Circle = __webpack_require__(339);
+	var _Circle = __webpack_require__(338);
 
 	var _Circle2 = _interopRequireDefault(_Circle);
 
-	var _Square = __webpack_require__(343);
+	var _Square = __webpack_require__(342);
 
 	var _Square2 = _interopRequireDefault(_Square);
 
-	var _Triangle = __webpack_require__(344);
+	var _Triangle = __webpack_require__(343);
 
 	var _Triangle2 = _interopRequireDefault(_Triangle);
 
-	var _Diamond = __webpack_require__(345);
+	var _Diamond = __webpack_require__(344);
 
 	var _Diamond2 = _interopRequireDefault(_Diamond);
 
-	var _X = __webpack_require__(346);
+	var _X = __webpack_require__(345);
 
 	var _X2 = _interopRequireDefault(_X);
 
-	var _Pentagon = __webpack_require__(347);
+	var _Pentagon = __webpack_require__(346);
 
 	var _Pentagon2 = _interopRequireDefault(_Pentagon);
 
-	var _InvertedTriangle = __webpack_require__(348);
+	var _InvertedTriangle = __webpack_require__(347);
 
 	var _InvertedTriangle2 = _interopRequireDefault(_InvertedTriangle);
 
-	var _Star = __webpack_require__(349);
+	var _Star = __webpack_require__(348);
 
 	var _Star2 = _interopRequireDefault(_Star);
 
-	var _Plus = __webpack_require__(350);
+	var _Plus = __webpack_require__(349);
 
 	var _Plus2 = _interopRequireDefault(_Plus);
 
@@ -42680,19 +42709,19 @@
 	};
 
 /***/ },
-/* 339 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
+	var sprite = __webpack_require__(339);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Circle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <circle cx=\"7.5\" cy=\"7.5\" r=\"6\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Circle");
 
 /***/ },
-/* 340 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(341);
+	var Sprite = __webpack_require__(340);
 	var globalSprite = new Sprite();
 
 	if (document.body) {
@@ -42707,10 +42736,10 @@
 
 
 /***/ },
-/* 341 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sniffr = __webpack_require__(342);
+	var Sniffr = __webpack_require__(341);
 
 	/**
 	 * List of SVG attributes to fix url target in them
@@ -42971,7 +43000,7 @@
 
 
 /***/ },
-/* 342 */
+/* 341 */
 /***/ function(module, exports) {
 
 	(function(host) {
@@ -43095,79 +43124,79 @@
 
 
 /***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Square");
+
+/***/ },
 /* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Square\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <rect x=\"2\" y=\"2\" width=\"12\" height=\"12\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Square");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Triangle");
 
 /***/ },
 /* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Triangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"7.5,1 14,14 1,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Triangle");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Diamond");
 
 /***/ },
 /* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Diamond\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,7.5 7.5,1 14,7.5 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Diamond");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "X");
 
 /***/ },
 /* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"X\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"4.0,1.0 7.5,4.5 11.0,1.0 14.0,4.0 10.5,7.5 14.0,11.0 11.0,14.0 7.5,10.5 4.0,14.0 1.0,11.0 4.5,7.5 1.0,4.0\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "X");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Pentagon");
 
 /***/ },
 /* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Pentagon\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 13.21,5.65 7.50,1.50 1.79,5.65 3.97,12.35\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Pentagon");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "InvertedTriangle");
 
 /***/ },
 /* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"InvertedTriangle\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"1,1 14,1 7.5,14\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "InvertedTriangle");
+	var sprite = __webpack_require__(339);
+	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
+	module.exports = sprite.add(image, "Star");
 
 /***/ },
 /* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var sprite = __webpack_require__(340);
-	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Star\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"11.03,12.35 9.78,8.24 13.21,5.65 8.91,5.56 7.50,1.50 6.09,5.56 1.79,5.65 5.22,8.24 3.97,12.35 7.50,9.90\"/> </g> </symbol>";
-	module.exports = sprite.add(image, "Star");
-
-/***/ },
-/* 350 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	var sprite = __webpack_require__(340);
+	var sprite = __webpack_require__(339);
 	var image = "<symbol viewBox=\"0 0 15 15\" id=\"Plus\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <g> <polygon points=\"5.5,1.0 9.5,1.0 9.5,5.5 14.0,5.5 14.0,9.5 9.5,9.5 9.5,14.0 5.5,14.0 5.5,9.5 1,9.5 1,5.5 5.5,5.5\"/> </g> </symbol>";
 	module.exports = sprite.add(image, "Plus");
 
 /***/ },
-/* 351 */
+/* 350 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -43284,7 +43313,7 @@
 	};
 
 /***/ },
-/* 352 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43299,7 +43328,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _pmi = __webpack_require__(353);
+	var _pmi = __webpack_require__(352);
 
 	var _pmi2 = _interopRequireDefault(_pmi);
 
@@ -43465,7 +43494,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 353 */
+/* 352 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -43701,7 +43730,7 @@
 	// updateMutualInformation(miData, ['c'], [], histogramData);
 
 /***/ },
-/* 354 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43762,7 +43791,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 355 */
+/* 354 */
 /***/ function(module, exports) {
 
 	module.exports = {
