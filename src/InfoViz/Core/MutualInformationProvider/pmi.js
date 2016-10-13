@@ -11,23 +11,31 @@ function filledMatrix(nrow, ncol, val) {
 }
 
 // Return a new matrix that is a copy of \a mtx with row \a irow removed.
-// function rowRemoved(mtx, irow) {
-//   const res = mtx.filter((o, i) => i !== irow);
-//   return res;
-// }
+function rowRemoved(mtx, irow) {
+  const res = mtx.filter((o, i) => i !== irow);
+  return res;
+}
 
+// Eliminate row \a irow from \a mtx.
 function removeRow(mtx, irow) {
   mtx.splice(irow, 1);
 }
 
-// Eliminate a column from a matrix.
-// function colRemoved(mtx, icol) {
-//   const res = mtx.map(o => o.filter((p, j) => j !== icol));
-//   return res;
-// }
+// Return a new matrix that is a copy of \a mtx with column \a icol removed.
+function colRemoved(mtx, icol) {
+  const res = mtx.map(o => o.filter((p, j) => j !== icol));
+  return res;
+}
 
+// Eliminate column \a icol from matrix \a mtx.
 function removeCol(mtx, icol) {
   mtx.forEach(o => o.splice(icol, 1));
+}
+
+// Return a new matrix that is a copy of \a mtx with row \a irow and column \a icol removed.
+function rowAndColRemoved(mtx, irow, icol) {
+  const res = colRemoved(rowRemoved(mtx, irow), icol);
+  return res;
 }
 
 // Eliminate a row and column from a matrix.
