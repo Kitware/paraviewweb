@@ -1,4 +1,4 @@
-/* global document, window */
+/* global document */
 import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
@@ -9,6 +9,7 @@ import iconImage from './InfoDiagramIconSmall.png';
 // import multiClicker from '../../Core/D3MultiClick';
 import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+import { removeVariable } from '../../Core/MutualInformationProvider/pmi';
 
 import {
   calculateAngleAndRadius,
@@ -143,7 +144,7 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  publicAPI.updateStatusBarText = (msg) => d3.select(model.container).select('input.status-bar-text').attr('value', msg);
+  publicAPI.updateStatusBarText = msg => (d3.select(model.container).select('input.status-bar-text').attr('value', msg));
 
   publicAPI.selectStatusBarText = () => {
     // select text so user can press ctrl-c if desired.
@@ -1030,6 +1031,19 @@ function informationDiagram(publicAPI, model) {
     });
   }
 
+  function filterToActive(miData) {
+    const allFields = model.provider.getFieldNames();
+    const activeFields = model.provider.getActiveFieldNames();
+    if (activeFields.length < miData.matrix.length) {
+      const newMI = JSON.parse(JSON.stringify(miData));
+      allFields.forEach((name) => {
+        if (activeFields.indexOf(name) === -1) removeVariable(newMI, name);
+      });
+      return newMI;
+    }
+    return miData;
+  }
+
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
 
@@ -1041,7 +1055,11 @@ function informationDiagram(publicAPI, model) {
       pmiHighlight: null,
     };
     if (model.provider.setMutualInformationParameterNames) {
-      model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
+      model.provider.setMutualInformationParameterNames(model.provider.getFieldNames());
+      if (model.mutualInformationDataFull) {
+        model.mutualInformationData = filterToActive(model.mutualInformationDataFull);
+        publicAPI.render();
+      }
     }
   }));
 
@@ -1064,12 +1082,13 @@ function informationDiagram(publicAPI, model) {
   if (model.provider.isA('MutualInformationProvider')) {
     model.mutualInformationDataSubscription = model.provider.onMutualInformationReady(
       (data) => {
-        model.mutualInformationData = data;
+        model.mutualInformationDataFull = data;
+        model.mutualInformationData = filterToActive(data);
         publicAPI.render();
       });
 
     model.subscriptions.push(model.mutualInformationDataSubscription);
-    model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
+    model.provider.setMutualInformationParameterNames(model.provider.getFieldNames());
   }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {

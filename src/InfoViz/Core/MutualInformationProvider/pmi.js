@@ -62,7 +62,7 @@ function initializeMutualInformationData() {
   };
 }
 
-function removeVariable(miData, variable) {
+export function removeVariable(miData, variable) {
   if (!(variable in miData.vset)) {
     return false;
   }
@@ -216,6 +216,7 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
 export default {
   updateMutualInformation,
   initializeMutualInformationData,
+  removeVariable,
 };
 
 // ----------------------------------------------------------------------------
