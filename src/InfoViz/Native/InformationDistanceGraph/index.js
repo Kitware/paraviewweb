@@ -115,11 +115,10 @@ function informationGraph(publicAPI, model) {
 
     if (model.container) {
       // Create placeholder
-      model.container.innerHTML = htmlContent;
-
       // Apply style
       const d3Container = d3
         .select(model.container)
+        .html(htmlContent)
         .select('.info-graph-container')
         .classed(style.infoGraphContainer, true);
 
@@ -170,7 +169,7 @@ function informationGraph(publicAPI, model) {
     }
 
     const width = model.clientRect.width;
-    const height = model.clientRect.height;
+    const height = model.clientRect.height - 20;
 
     // Make sure we have all the data we need
     if (!model.mutualInformationData || !model.histogramData) {
@@ -186,13 +185,13 @@ function informationGraph(publicAPI, model) {
       .size([width, height]);
 
     // Remove previous SVG
-    const old = d3.select(model.container).select('svg');
+    const old = d3.select(model.container).select('.info-graph-view').select('svg');
     if (!old.empty()) {
       old.remove();
     }
 
     // Setup our SVG container
-    const svg = d3.select(model.container).append('svg')
+    const svg = d3.select(model.container).select('.info-graph-view').append('svg')
       .attr('width', width)
       .attr('height', height)
       .style('float', 'left')
@@ -200,8 +199,7 @@ function informationGraph(publicAPI, model) {
       .classed('information-graph', true);
 
     // Mouse move handling ----------------------------------------------------
-
-    d3.select(model.container).select('svg')
+    svg
       /* eslint-disable prefer-arrow-callback */
       // need d3 provided 'this', below.
       .on('mousemove', function mouseMove(d, i) {
