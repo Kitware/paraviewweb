@@ -853,6 +853,7 @@ function parallelCoordinate(publicAPI, model) {
           publicAPI.render();
         } else {
           model.allBgHistogram2dData = null;
+          publicAPI.render();
         }
       },
       model.axes.getAxesPairs(),
