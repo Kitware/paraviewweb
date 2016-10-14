@@ -8,6 +8,70 @@ import htmlContent from './body.html';
 import iconImage from './InfoDistGraphIconSmall.png';
 import multiClicker from '../../Core/D3MultiClick';
 
+/** Compute a tree of variables given a mutual information matrix (\a mi) relating them.
+  *
+  * The root of the tree will be the variable with the highest entropy (self-information).
+  * After the root is identified, children of existing nodes are determined
+  * by finding the highest mutual information joining any node already in the
+  * tree to any node not in the tree.
+  *
+  * Thus, the tree is a spanning tree with the shortest edges possible
+  * (assuming length is proportional to mutual information).
+  *
+  * This method returns a dictionary whose keys are integer matrix row numbers
+  * and whose values are arrays of column numbers attached to the row, such
+  * that no entry in the value array is smaller than the key (e.g., if the tree
+  * has root 5 and edges (5, 2), (5, 1), (2, 3), (3, 4), then the dictionary
+  * will be { 1: [5], 2: [5, 3], 3: [4] }. This is done so that testing
+  * whether an edge is in the tree is a fast operation.
+  */
+function computeVariableTree(mi) {
+  // I. Find the root, r:
+  const nv = mi.length;
+  let r = 0;
+  let ri = mi[r][r];
+  for (let ii = 1; ii < nv; ++ii) {
+    if (mi[ii][ii] > ri) {
+      ri = mi[ii][ii];
+      r = ii;
+    }
+  }
+  console.log('Root ', r);
+  // II. Find descendants.
+  const nodes = new Set([r]);
+  const missing = new Set();
+  const tree = {};
+  for (let ii = 0; ii < nv; ++ii) { if (ii != r) { missing.add(ii); } }
+  while (nodes.size < nv) {
+    let max = -1;
+    let mrow = -1;
+    let mcol = -1;
+    for (const row of nodes.values()) {
+      for (const col of missing.values()) {
+        const vv = mi[row][col];
+        if (max < vv) {
+          mrow = row;
+          mcol = col;
+          max = vv;
+        }
+      }
+    }
+    missing.delete(mcol);
+    nodes.add(mcol);
+    console.log('  Add ', mrow, mcol);
+    if (mrow < mcol) {
+      if (!(mrow in tree)) { tree[mrow] = {}; }
+      tree[mrow][mcol] = true;
+    } else {
+      if (!(mcol in tree)) { tree[mcol] = {}; }
+      tree[mcol][mrow] = true;
+    }
+  }
+  console.log('Tree ', tree);
+  return tree;
+}
+
+
 /* eslint-disable no-use-before-define */
 
 // ----------------------------------------------------------------------------
@@ -117,6 +181,7 @@ function informationGraph(publicAPI, model) {
     d3.select(model.container).select('div.info-graph-placeholder').classed(style.hidden, true);
 
     const d3cola = cola.d3adaptor()
+      .avoidOverlaps(true)
       .linkDistance(30)
       .size([width, height]);
 
@@ -143,11 +208,12 @@ function informationGraph(publicAPI, model) {
         /* eslint-enable prefer-arrow-callback */
         const overCoords = d3.mouse(model.container);
         //const info = findGroupAndBin(overCoords);
-        console.log('mousemove', overCoords);
-      })
+        //console.log('mousemove', overCoords);
+      }); /*
       .on('mouseout', (d, i) => {
         console.log('mouseout');
       });
+      */
 
     const lgroup = svg.append('g').classed('links', true).classed(style.links, true);
     const ngroup = svg.append('g').classed('nodes', true).classed(style.nodes, true);
@@ -155,11 +221,12 @@ function informationGraph(publicAPI, model) {
     // Convert vmap into an array:
     const vm = model.mutualInformationData.vmap;
     const nodes = Object.keys(vm).map(k => vm[k]);
-    const distm = model.mutualInformationData.varinf.map(row => row.map(dd => 75 * dd));
-    d3cola
-      .distanceMatrix(distm)
-      .nodes(nodes)
-      .start(100);
+    const ds = model.mutualInformationData.varinf;
+
+    // Keep a nice minimal spanning tree around:
+    const mstree = computeVariableTree(model.mutualInformationData.matrix);
+
+    d3cola.nodes(nodes);
 
     let links = [];
     let linkSelection = null;
@@ -188,9 +255,9 @@ function informationGraph(publicAPI, model) {
         for (let ii = 0; ii < nn - 1; ++ii) {
           for (let jj = ii + 1; jj < nn; ++jj) {
             let val = model.mutualInformationData.varinf[ii][jj];
-            distm[ii][jj] = val < thresh ? val * 75 : 250;
-            distm[jj][ii] = distm[ii][jj];
-            if (val >= previousThreshold && val < thresh) {
+            if (
+              (ii in mstree && jj in mstree[ii]) ||
+              (val >= previousThreshold && val < thresh)) {
               links.push({
                 source: nodes[ii],
                 target: nodes[jj],
@@ -201,8 +268,8 @@ function informationGraph(publicAPI, model) {
           }
         }
         d3cola
-          .distanceMatrix(distm)
-          .start(100);
+          .links(links)
+          .start(1);
         console.log('  Links ', links);
         // TODO: Disable update if there are no edges.
         previousThreshold = thresh;
