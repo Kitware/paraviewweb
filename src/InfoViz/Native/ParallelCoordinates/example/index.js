@@ -11,7 +11,7 @@ import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
 import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
 import Histogram2DProvider from '../../../../../src/InfoViz/Core/Histogram2DProvider';
 import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
-import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
+// import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
 import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
 
 import dataModel from './state.json';
@@ -39,7 +39,7 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   Histogram2DProvider.extend(publicAPI, model, initialValues);
   HistogramBinHoverProvider.extend(publicAPI, model);
   LegendProvider.extend(publicAPI, model, initialValues);
-  MutualInformationProvider.extend(publicAPI, model, initialValues);
+  // MutualInformationProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
 // set provider behaviors

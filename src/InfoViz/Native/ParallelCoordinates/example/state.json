@@ -70,10 +70,12 @@
       "versatility index": {
         "rebounds pergame": {
           "y": {
+            "name": "rebounds pergame",
             "extent": [0, 13.600000000000001],
             "delta": 0.42500000000000004
           },
           "x": {
+            "name": "versatility index",
             "extent": [0, 12.600000000000001],
             "delta": 0.39375000000000004
           },
@@ -984,10 +986,12 @@
       "rebounds pergame": {
         "points per game": {
           "y": {
+            "name": "points per game",
             "extent": [0, 32],
             "delta": 1
           },
           "x": {
+            "name": "rebounds pergame",
             "extent": [0, 13.600000000000001],
             "delta": 0.42500000000000004
           },
@@ -1887,6 +1891,16 @@
           "maxCount": 13
         },
         "versatility index": {
+          "x": {
+            "name": "rebounds pergame",
+            "extent": [0, 13.600000000000001],
+            "delta": 0.42500000000000004
+          },
+          "y": {
+            "name": "versatility index",
+            "extent": [0, 12.600000000000001],
+            "delta": 0.39375000000000004
+          },
           "bins": [{
             "x": 0,
             "y": 0,
@@ -2787,24 +2801,18 @@
             "x": 13.175,
             "y": 5.512500000000001,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 13.600000000000001],
-            "delta": 0.42500000000000004
-          },
-          "y": {
-            "extent": [0, 12.600000000000001],
-            "delta": 0.39375000000000004
-          }
+          }]
         }
       },
       "points per game": {
         "turnover per pocession": {
           "y": {
+            "name": "turnover per pocession",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "x": {
+            "name": "points per game",
             "extent": [0, 32],
             "delta": 1
           },
@@ -3348,6 +3356,16 @@
           "maxCount": 14
         },
         "rebounds pergame": {
+          "x": {
+            "name": "points per game",
+            "extent": [0, 32],
+            "delta": 1
+          },
+          "y": {
+            "name": "rebounds pergame",
+            "extent": [0, 13.600000000000001],
+            "delta": 0.42500000000000004
+          },
           "bins": [{
             "x": 0,
             "y": 0.42500000000000004,
@@ -4240,24 +4258,18 @@
             "x": 31,
             "y": 7.2250000000000005,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 32],
-            "delta": 1
-          },
-          "y": {
-            "extent": [0, 13.600000000000001],
-            "delta": 0.42500000000000004
-          }
+          }]
         }
       },
       "turnover per pocession": {
         "free throw attempts": {
           "y": {
+            "name": "free throw attempts",
             "extent": [0, 805],
             "delta": 25.15625
           },
           "x": {
+            "name": "turnover per pocession",
             "extent": [0, 1],
             "delta": 0.03125
           },
@@ -4649,6 +4661,16 @@
           "maxCount": 26
         },
         "points per game": {
+          "x": {
+            "name": "turnover per pocession",
+            "extent": [0, 1],
+            "delta": 0.03125
+          },
+          "y": {
+            "name": "points per game",
+            "extent": [0, 32],
+            "delta": 1
+          },
           "bins": [{
             "x": 0,
             "y": 0,
@@ -5185,24 +5207,18 @@
             "x": 0.96875,
             "y": 0,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 1],
-            "delta": 0.03125
-          },
-          "y": {
-            "extent": [0, 32],
-            "delta": 1
-          }
+          }]
         }
       },
       "free throw attempts": {
         "2 point shots attempts": {
           "y": {
+            "name": "2 point shots attempts",
             "extent": [0, 1408],
             "delta": 44
           },
           "x": {
+            "name": "free throw attempts",
             "extent": [0, 805],
             "delta": 25.15625
           },
@@ -5794,6 +5810,16 @@
           "maxCount": 93
         },
         "turnover per pocession": {
+          "x": {
+            "name": "free throw attempts",
+            "extent": [0, 805],
+            "delta": 25.15625
+          },
+          "y": {
+            "name": "turnover per pocession",
+            "extent": [0, 1],
+            "delta": 0.03125
+          },
           "bins": [{
             "x": 0,
             "y": 0,
@@ -6178,24 +6204,18 @@
             "x": 779.84375,
             "y": 0.09375,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 805],
-            "delta": 25.15625
-          },
-          "y": {
-            "extent": [0, 1],
-            "delta": 0.03125
-          }
+          }]
         }
       },
       "2 point shots attempts": {
         "percentage of team minutes": {
           "y": {
+            "name": "percentage of team minutes",
             "extent": [7.2, 79.5],
             "delta": 2.259375
           },
           "x": {
+            "name": "2 point shots attempts",
             "extent": [0, 1408],
             "delta": 44
           },
@@ -7159,6 +7179,16 @@
           "maxCount": 17
         },
         "free throw attempts": {
+          "x": {
+            "name": "2 point shots attempts",
+            "extent": [0, 1408],
+            "delta": 44
+          },
+          "y": {
+            "name": "free throw attempts",
+            "extent": [0, 805],
+            "delta": 25.15625
+          },
           "bins": [{
             "x": 0,
             "y": 0,
@@ -7743,24 +7773,18 @@
             "x": 1364,
             "y": 352.1875,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 1408],
-            "delta": 44
-          },
-          "y": {
-            "extent": [0, 805],
-            "delta": 25.15625
-          }
+          }]
         }
       },
       "percentage of team minutes": {
         "percentage of team assists": {
           "y": {
+            "name": "percentage of team assists",
             "extent": [0, 49.2],
             "delta": 1.5375
           },
           "x": {
+            "name": "percentage of team minutes",
             "extent": [7.2, 79.5],
             "delta": 2.259375
           },
@@ -8992,6 +9016,16 @@
           "maxCount": 6
         },
         "2 point shots attempts": {
+          "x": {
+            "name": "percentage of team minutes",
+            "extent": [7.2, 79.5],
+            "delta": 2.259375
+          },
+          "y": {
+            "name": "2 point shots attempts",
+            "extent": [0, 1408],
+            "delta": 44
+          },
           "bins": [{
             "x": 7.2,
             "y": 0,
@@ -9948,22 +9982,16 @@
             "x": 77.240625,
             "y": 1188,
             "count": 3
-          }],
-          "x": {
-            "extent": [7.2, 79.5],
-            "delta": 2.259375
-          },
-          "y": {
-            "extent": [0, 1408],
-            "delta": 44
-          }
+          }]
         },
         "steals per game": {
           "y": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
           "x": {
+            "name": "percentage of team minutes",
             "extent": [7.2, 79.5],
             "delta": 2.259375
           },
@@ -11064,10 +11092,12 @@
         },
         "minutes": {
           "y": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
           "x": {
+            "name": "percentage of team minutes",
             "extent": [7.2, 79.5],
             "delta": 2.259375
           },
@@ -11408,10 +11438,12 @@
         },
         "free throw percent": {
           "y": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "x": {
+            "name": "percentage of team minutes",
             "extent": [7.2, 79.5],
             "delta": 2.259375
           },
@@ -12550,10 +12582,12 @@
       "percentage of team assists": {
         "steals per game": {
           "y": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
           "x": {
+            "name": "percentage of team assists",
             "extent": [0, 49.2],
             "delta": 1.5375
           },
@@ -13525,6 +13559,16 @@
           "maxCount": 9
         },
         "percentage of team minutes": {
+          "x": {
+            "name": "percentage of team assists",
+            "extent": [0, 49.2],
+            "delta": 1.5375
+          },
+          "y": {
+            "name": "percentage of team minutes",
+            "extent": [7.2, 79.5],
+            "delta": 2.259375
+          },
           "bins": [{
             "x": 0,
             "y": 7.2,
@@ -14750,22 +14794,16 @@
             "y": 70.46249999999999,
             "count": 1
           }],
-          "x": {
-            "extent": [0, 49.2],
-            "delta": 1.5375
-          },
-          "y": {
-            "extent": [7.2, 79.5],
-            "delta": 2.259375
-          },
           "maxCount": 6
         },
         "free throw percent": {
           "y": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "x": {
+            "name": "percentage of team assists",
             "extent": [0, 49.2],
             "delta": 1.5375
           },
@@ -15710,10 +15748,12 @@
         },
         "minutes": {
           "y": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
           "x": {
+            "name": "percentage of team assists",
             "extent": [0, 49.2],
             "delta": 1.5375
           },
@@ -16936,10 +16976,12 @@
       "steals per game": {
         "minutes": {
           "y": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
           "x": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
@@ -18051,6 +18093,16 @@
           "maxCount": 8
         },
         "percentage of team assists": {
+          "x": {
+            "name": "steals per game",
+            "extent": [0, 2.48],
+            "delta": 0.0775
+          },
+          "y": {
+            "name": "percentage of team assists",
+            "extent": [0, 49.2],
+            "delta": 1.5375
+          },
           "bins": [{
             "x": 0,
             "y": 0,
@@ -19016,17 +19068,19 @@
             "y": 47.6625,
             "count": 1
           }],
+          "maxCount": 9
+        },
+        "percentage of team minutes": {
           "x": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
           "y": {
-            "extent": [0, 49.2],
-            "delta": 1.5375
+            "name": "percentage of team minutes",
+            "extent": [7.2, 79.5],
+            "delta": 2.259375
           },
-          "maxCount": 9
-        },
-        "percentage of team minutes": {
           "bins": [{
             "x": 0,
             "y": 7.2,
@@ -20120,22 +20174,16 @@
             "y": 70.46249999999999,
             "count": 1
           }],
-          "x": {
-            "extent": [0, 2.48],
-            "delta": 0.0775
-          },
-          "y": {
-            "extent": [7.2, 79.5],
-            "delta": 2.259375
-          },
           "maxCount": 8
         },
         "free throw percent": {
           "y": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "x": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
@@ -21060,10 +21108,12 @@
         },
         "true shooting percentage": {
           "y": {
+            "name": "true shooting percentage",
             "extent": [0, 0.8200000000000001],
             "delta": 0.025625000000000002
           },
           "x": {
+            "name": "steals per game",
             "extent": [0, 2.48],
             "delta": 0.0775
           },
@@ -21814,10 +21864,12 @@
       "minutes": {
         "free throw percent": {
           "y": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "x": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
@@ -22973,6 +23025,16 @@
           "maxCount": 6
         },
         "steals per game": {
+          "x": {
+            "name": "minutes",
+            "extent": [5.1000000000000005, 38.5],
+            "delta": 1.04375
+          },
+          "y": {
+            "name": "steals per game",
+            "extent": [0, 2.48],
+            "delta": 0.0775
+          },
           "bins": [{
             "x": 5.1000000000000005,
             "y": 0,
@@ -24078,17 +24140,19 @@
             "y": 1.8599999999999999,
             "count": 1
           }],
+          "maxCount": 8
+        },
+        "percentage of team minutes": {
           "x": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
           "y": {
-            "extent": [0, 2.48],
-            "delta": 0.0775
+            "name": "percentage of team minutes",
+            "extent": [7.2, 79.5],
+            "delta": 2.259375
           },
-          "maxCount": 8
-        },
-        "percentage of team minutes": {
           "bins": [{
             "x": 5.1000000000000005,
             "y": 7.2,
@@ -24422,17 +24486,19 @@
             "y": 77.240625,
             "count": 6
           }],
+          "maxCount": 18
+        },
+        "percentage of team assists": {
           "x": {
+            "name": "minutes",
             "extent": [5.1000000000000005, 38.5],
             "delta": 1.04375
           },
           "y": {
-            "extent": [7.2, 79.5],
-            "delta": 2.259375
+            "name": "percentage of team assists",
+            "extent": [0, 49.2],
+            "delta": 1.5375
           },
-          "maxCount": 18
-        },
-        "percentage of team assists": {
           "bins": [{
             "x": 5.1000000000000005,
             "y": 0,
@@ -25646,19 +25712,21 @@
             "y": 30.75,
             "count": 1
           }],
-          "x": {
-            "extent": [5.1000000000000005, 38.5],
-            "delta": 1.04375
-          },
-          "y": {
-            "extent": [0, 49.2],
-            "delta": 1.5375
-          },
           "maxCount": 5
         }
       },
       "free throw percent": {
         "minutes": {
+          "x": {
+            "name": "free throw percent",
+            "extent": [0, 1],
+            "delta": 0.03125
+          },
+          "y": {
+            "name": "minutes",
+            "extent": [5.1000000000000005, 38.5],
+            "delta": 1.04375
+          },
           "bins": [{
             "x": 0,
             "y": 5.1000000000000005,
@@ -26808,17 +26876,19 @@
             "y": 23.8875,
             "count": 1
           }],
+          "maxCount": 6
+        },
+        "percentage of team minutes": {
           "x": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "y": {
-            "extent": [5.1000000000000005, 38.5],
-            "delta": 1.04375
+            "name": "percentage of team minutes",
+            "extent": [7.2, 79.5],
+            "delta": 2.259375
           },
-          "maxCount": 6
-        },
-        "percentage of team minutes": {
           "bins": [{
             "x": 0,
             "y": 7.2,
@@ -27948,17 +28018,19 @@
             "y": 47.86875,
             "count": 1
           }],
+          "maxCount": 7
+        },
+        "steals per game": {
           "x": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "y": {
-            "extent": [7.2, 79.5],
-            "delta": 2.259375
+            "name": "steals per game",
+            "extent": [0, 2.48],
+            "delta": 0.0775
           },
-          "maxCount": 7
-        },
-        "steals per game": {
           "bins": [{
             "x": 0,
             "y": 0,
@@ -28876,17 +28948,19 @@
             "y": 0.62,
             "count": 1
           }],
+          "maxCount": 9
+        },
+        "percentage of team assists": {
           "x": {
+            "name": "free throw percent",
             "extent": [0, 1],
             "delta": 0.03125
           },
           "y": {
-            "extent": [0, 2.48],
-            "delta": 0.0775
+            "name": "percentage of team assists",
+            "extent": [0, 49.2],
+            "delta": 1.5375
           },
-          "maxCount": 9
-        },
-        "percentage of team assists": {
           "bins": [{
             "x": 0,
             "y": 0,
@@ -29824,19 +29898,21 @@
             "y": 26.137500000000003,
             "count": 1
           }],
-          "x": {
-            "extent": [0, 1],
-            "delta": 0.03125
-          },
-          "y": {
-            "extent": [0, 49.2],
-            "delta": 1.5375
-          },
           "maxCount": 11
         }
       },
       "true shooting percentage": {
         "steals per game": {
+          "x": {
+            "name": "true shooting percentage",
+            "extent": [0, 0.8200000000000001],
+            "delta": 0.025625000000000002
+          },
+          "y": {
+            "name": "steals per game",
+            "extent": [0, 2.48],
+            "delta": 0.0775
+          },
           "bins": [{
             "x": 0,
             "y": 0.23249999999999998,
@@ -30577,15 +30653,7 @@
             "x": 0.794375,
             "y": 0.155,
             "count": 1
-          }],
-          "x": {
-            "extent": [0, 0.8200000000000001],
-            "delta": 0.025625000000000002
-          },
-          "y": {
-            "extent": [0, 2.48],
-            "delta": 0.0775
-          }
+          }]
         }
       }
     }
