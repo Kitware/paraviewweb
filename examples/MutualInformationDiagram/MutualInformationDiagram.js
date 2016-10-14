@@ -42385,15 +42385,16 @@
 	          var hist2d = binStorage[axisPair[0]][axisPair[1]];
 
 	          // Look for range consistency within data
-	          if (!rangeConsistency[hist2d.x.name]) {
-	            rangeConsistency[hist2d.x.name] = [];
+	          if (hist2d.x.name && hist2d.y.name) {
+	            if (!rangeConsistency[hist2d.x.name]) {
+	              rangeConsistency[hist2d.x.name] = [];
+	            }
+	            rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+	            if (!rangeConsistency[hist2d.y.name]) {
+	              rangeConsistency[hist2d.y.name] = [];
+	            }
+	            rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
 	          }
-	          rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
-	          if (!rangeConsistency[hist2d.y.name]) {
-	            rangeConsistency[hist2d.y.name] = [];
-	          }
-	          rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
-
 	          count += 1;
 	          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
 	          returnedData[axisPair[0]][axisPair[1]] = hist2d;

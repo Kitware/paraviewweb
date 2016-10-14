@@ -82,20 +82,17 @@
 
 	var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
-	var _MutualInformationProvider = __webpack_require__(352);
-
-	var _MutualInformationProvider2 = _interopRequireDefault(_MutualInformationProvider);
-
-	var _HistogramBinHoverProvider = __webpack_require__(354);
+	var _HistogramBinHoverProvider = __webpack_require__(352);
 
 	var _HistogramBinHoverProvider2 = _interopRequireDefault(_HistogramBinHoverProvider);
 
-	var _state = __webpack_require__(355);
+	var _state = __webpack_require__(353);
 
 	var _state2 = _interopRequireDefault(_state);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
 	var bodyElt = document.querySelector('body');
 
 	var parallelCoordinatesContainer = document.createElement('div');
@@ -121,7 +118,7 @@
 	  _Histogram2DProvider2.default.extend(publicAPI, model, initialValues);
 	  _HistogramBinHoverProvider2.default.extend(publicAPI, model);
 	  _LegendProvider2.default.extend(publicAPI, model, initialValues);
-	  _MutualInformationProvider2.default.extend(publicAPI, model, initialValues);
+	  // MutualInformationProvider.extend(publicAPI, model, initialValues);
 	})(_state2.default);
 
 	// set provider behaviors
@@ -29739,6 +29736,7 @@
 	        publicAPI.render();
 	      } else {
 	        model.allBgHistogram2dData = null;
+	        publicAPI.render();
 	      }
 	    }, model.axes.getAxesPairs(), {
 	      numberOfBins: model.numberOfBins,
@@ -42561,15 +42559,16 @@
 	          var hist2d = binStorage[axisPair[0]][axisPair[1]];
 
 	          // Look for range consistency within data
-	          if (!rangeConsistency[hist2d.x.name]) {
-	            rangeConsistency[hist2d.x.name] = [];
+	          if (hist2d.x.name && hist2d.y.name) {
+	            if (!rangeConsistency[hist2d.x.name]) {
+	              rangeConsistency[hist2d.x.name] = [];
+	            }
+	            rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+	            if (!rangeConsistency[hist2d.y.name]) {
+	              rangeConsistency[hist2d.y.name] = [];
+	            }
+	            rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
 	          }
-	          rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
-	          if (!rangeConsistency[hist2d.y.name]) {
-	            rangeConsistency[hist2d.y.name] = [];
-	          }
-	          rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
-
 	          count += 1;
 	          maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
 	          returnedData[axisPair[0]][axisPair[1]] = hist2d;
@@ -43504,423 +43503,6 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _pmi = __webpack_require__(353);
-
-	var _pmi2 = _interopRequireDefault(_pmi);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// ----------------------------------------------------------------------------
-	// Global
-	// ----------------------------------------------------------------------------
-
-	function listToPair() {
-	  var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-	  var size = list.length;
-	  var pairList = [];
-	  list.forEach(function (name, idx) {
-	    for (var i = idx; i < size; i++) {
-	      pairList.push([name, list[i]]);
-	    }
-	  });
-	  return pairList;
-	}
-
-	function unique(list) {
-	  return list.sort().filter(function (item, index, array) {
-	    return !index || item !== array[index - 1];
-	  });
-	}
-
-	// ----------------------------------------------------------------------------
-	// Mutual Information Provider
-	// ----------------------------------------------------------------------------
-
-	function mutualInformationProvider(publicAPI, model) {
-	  var hasData = false;
-	  var onMutualInformationReady = publicAPI.onMutualInformationReady;
-	  var mutualInformationData = _pmi2.default.initializeMutualInformationData();
-	  var deltaHandling = {
-	    added: [],
-	    removed: [],
-	    modified: [],
-	    previousMTime: {},
-	    currentMTime: {},
-	    processed: true
-	  };
-
-	  function updateHistogram2D(histograms) {
-	    // even if histograms only has maxCount = 0, run through PMI.updateMI
-	    // so deltaHandling.removed array is handled properly.
-	    var invalidAxis = [];
-	    // Extract mtime
-	    deltaHandling.modified = [];
-	    deltaHandling.previousMTime = deltaHandling.currentMTime;
-	    deltaHandling.currentMTime = {};
-	    if (Object.keys(histograms).length > 1) {
-	      model.mutualInformationParameterNames.forEach(function (name) {
-	        if (histograms[name] && histograms[name][name]) {
-	          // Validate range
-	          if (histograms[name][name].x.delta === 0) {
-	            invalidAxis.push(name);
-	            deltaHandling.currentMTime[name] = 0;
-	          } else {
-	            deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
-	          }
-
-	          if (deltaHandling.added.indexOf(name) === -1 && deltaHandling.currentMTime[name] && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
-	            deltaHandling.modified.push(name);
-	          }
-	        }
-	      });
-	    }
-	    // Check mutualInformationParameterNames are consitent with the current set of data
-	    // if not just for the next notification...
-	    try {
-	      _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);
-
-	      // Push the new mutual info
-	      deltaHandling.processed = true;
-	      hasData = true;
-	      publicAPI.fireMutualInformationReady(mutualInformationData);
-	    } catch (e) {
-	      console.log('PMI error', e);
-	    }
-	  }
-
-	  publicAPI.onMutualInformationReady = function (callback) {
-	    if (hasData) {
-	      callback(mutualInformationData);
-	    }
-	    return onMutualInformationReady(callback);
-	  };
-
-	  publicAPI.setHistogram2dProvider = function (provider) {
-	    if (model.histogram2dProviderSubscription) {
-	      model.histogram2dProviderSubscription.unsubscribe();
-	    }
-	    model.histogram2dProvider = provider;
-	    if (provider) {
-	      model.histogram2dProviderSubscription = provider.subscribeToHistogram2D(updateHistogram2D, listToPair(model.mutualInformationParameterNames), { symmetric: true, partial: false });
-	    }
-	  };
-
-	  publicAPI.setMutualInformationParameterNames = function (names) {
-	    if (deltaHandling.processed) {
-	      deltaHandling.added = names.filter(function (name) {
-	        return model.mutualInformationParameterNames.indexOf(name) === -1;
-	      });
-	      deltaHandling.removed = model.mutualInformationParameterNames.filter(function (name) {
-	        return names.indexOf(name) === -1;
-	      });
-	    } else {
-	      // We need to add to it
-	      deltaHandling.added = [].concat(deltaHandling.added, names.filter(function (name) {
-	        return model.mutualInformationParameterNames.indexOf(name) === -1;
-	      }));
-	      deltaHandling.removed = [].concat(deltaHandling.removed, model.mutualInformationParameterNames.filter(function (name) {
-	        return names.indexOf(name) === -1;
-	      }));
-	    }
-
-	    // Ensure uniqueness
-	    deltaHandling.added = unique(deltaHandling.added);
-	    deltaHandling.removed = unique(deltaHandling.removed);
-
-	    deltaHandling.processed = false;
-	    model.mutualInformationParameterNames = [].concat(names);
-
-	    if (model.histogram2dProviderSubscription) {
-	      model.histogram2dProviderSubscription.update(listToPair(model.mutualInformationParameterNames));
-	    }
-	  };
-	}
-
-	// ----------------------------------------------------------------------------
-	// Object factory
-	// ----------------------------------------------------------------------------
-
-	var DEFAULT_VALUES = {
-	  // mutualInformationData: null,
-	  mutualInformationParameterNames: []
-	};
-
-	// ----------------------------------------------------------------------------
-
-	function extend(publicAPI, model) {
-	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-	  Object.assign(model, DEFAULT_VALUES, initialValues);
-
-	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
-	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'MutualInformationProvider');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['histogram2dProvider']);
-	  _CompositeClosureHelper2.default.event(publicAPI, model, 'mutualInformationReady');
-
-	  mutualInformationProvider(publicAPI, model);
-	}
-
-	// ----------------------------------------------------------------------------
-
-	var newInstance = exports.newInstance = _CompositeClosureHelper2.default.newInstance(extend);
-
-	// ----------------------------------------------------------------------------
-
-	exports.default = { newInstance: newInstance, extend: extend };
-
-/***/ },
-/* 353 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/* global Array */
-	/* eslint-disable no-continue */
-	/* eslint-disable prefer-spread */
-
-	// Generate a matrix of numbers (an array of arrays) with the given size and initial value.
-	function filledMatrix(nrow, ncol, val) {
-	  var mm = Array.apply(null, Array(nrow)).map(function (o) {
-	    return Array.apply(null, Array(ncol)).map(Number.prototype.valueOf, val);
-	  });
-	  return mm;
-	}
-
-	// Return a new matrix that is a copy of \a mtx with row \a irow removed.
-	// function rowRemoved(mtx, irow) {
-	//   const res = mtx.filter((o, i) => i !== irow);
-	//   return res;
-	// }
-
-	function removeRow(mtx, irow) {
-	  mtx.splice(irow, 1);
-	}
-
-	// Eliminate a column from a matrix.
-	// function colRemoved(mtx, icol) {
-	//   const res = mtx.map(o => o.filter((p, j) => j !== icol));
-	//   return res;
-	// }
-
-	function removeCol(mtx, icol) {
-	  mtx.forEach(function (o) {
-	    return o.splice(icol, 1);
-	  });
-	}
-
-	// Eliminate a row and column from a matrix.
-	function removeRowAndCol(mtx, irow, icol) {
-	  removeRow(mtx, irow);
-	  removeCol(mtx, icol);
-	}
-
-	// Insert a new row and column into a matrix, filling new entries with \a val.
-	function insertRowAndCol(mtx, irow, icol, val) {
-	  var nv = mtx.length + 1;
-	  mtx.forEach(function (row) {
-	    return row.splice(icol, 0, val);
-	  });
-	  mtx.splice(irow, 0, Array.apply(null, Array(nv)).map(Number.prototype.valueOf, val));
-	}
-
-	function initializeMutualInformationData() {
-	  return {
-	    matrix: [],
-	    vmap: {},
-	    vset: {},
-	    joint: {}
-	  };
-	}
-
-	function removeVariable(miData, variable) {
-	  if (!(variable in miData.vset)) {
-	    return false;
-	  }
-	  var ii = miData.vset[variable];
-	  var nv = miData.matrix.length;
-	  removeRowAndCol(miData.matrix, ii, ii);
-	  delete miData.vset[variable];
-	  for (var jj = ii + 1; jj < nv; ++jj) {
-	    var vname = miData.vmap[jj].name;
-	    miData.vmap[jj - 1] = miData.vmap[jj];
-	    miData.vset[vname] = jj - 1;
-	  }
-	  delete miData.vmap[nv - 1];
-	  return true;
-	}
-
-	function insertVariableAt(miData, variable, ii) {
-	  var nv = miData.matrix.length;
-	  if (nv > 0) {
-	    // Found where to insert. Update vmap and vset:
-	    for (var jj = nv; jj > ii; --jj) {
-	      miData.vmap[jj] = miData.vmap[jj - 1];
-	      var vname = miData.vmap[jj - 1].name;
-	      miData.vset[vname] += 1;
-	    }
-	  }
-	  miData.vmap[ii] = { name: variable };
-	  miData.vset[variable] = ii;
-	  // Now insert a row and column into the MI matrix:
-	  insertRowAndCol(miData.matrix, ii, ii, 0);
-	}
-
-	function insertVariable(miData, variable) {
-	  if (variable in miData.vset) {
-	    return -1;
-	  }
-	  var ii = 0;
-	  var nv = miData.matrix.length;
-	  // TODO: We could do a bisection search instead of this loop:
-	  for (; ii < nv; ++ii) {
-	    if (miData.vmap[ii].name > variable) {
-	      insertVariableAt(miData, variable, ii);
-	      return ii;
-	    }
-	  }
-	  insertVariableAt(miData, variable, nv);
-	  return nv;
-	}
-
-	function mutualInformationPair(miData, indices, histdata) {
-	  var totCount = 0;
-	  var rx = histdata.x.extent;
-	  var dx = histdata.x.delta;
-	  var ry = histdata.y.extent;
-	  var dy = histdata.y.delta;
-	  var inbins = Math.round((rx[1] - rx[0]) / dx);
-	  var jnbins = Math.round((ry[1] - ry[0]) / dy);
-	  var xMarginFreq = [];
-	  var yMarginFreq = [];
-	  for (var ii = 0; ii < inbins; ++ii) {
-	    xMarginFreq[ii] = 0;
-	  }
-	  for (var jj = 0; jj < jnbins; ++jj) {
-	    yMarginFreq[jj] = 0;
-	  }
-	  for (var ib = 0; ib < histdata.bins.length; ++ib) {
-	    var bb = histdata.bins[ib];
-	    var ix = Math.round((bb.x - rx[0]) / dx);
-	    var iy = Math.round((bb.y - ry[0]) / dy);
-	    xMarginFreq[ix] += bb.count;
-	    yMarginFreq[iy] += bb.count;
-	    totCount += bb.count;
-	  }
-	  var minfo = 0;
-	  var jointFreq = filledMatrix(inbins, jnbins, 0);
-	  for (var _ib = 0; _ib < histdata.bins.length; ++_ib) {
-	    var _bb = histdata.bins[_ib];
-	    var _ix = Math.round((_bb.x - rx[0]) / dx);
-	    var _iy = Math.round((_bb.y - ry[0]) / dy);
-	    var pxy = _bb.count / totCount;
-	    var px = xMarginFreq[_ix] / totCount;
-	    var py = yMarginFreq[_iy] / totCount;
-	    var pmiXy = Math.log(pxy / px / py);
-	    jointFreq[_ix][_iy] = _bb.count;
-	    minfo += pxy * pmiXy;
-	  }
-	  return {
-	    mutual_information: minfo,
-	    joint: jointFreq
-	  };
-	}
-
-	function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemoved, histogramData) {
-	  // console.log('Upd MI ', variablesAddedOrUpdated, 'remove', variablesRemoved);
-	  variablesAddedOrUpdated.forEach(function (vname) {
-	    return insertVariable(miData, vname);
-	  });
-	  variablesRemoved.forEach(function (vname) {
-	    return removeVariable(miData, vname);
-	  });
-	  // Now that all the miData maps have been updated, we can recompute only the
-	  // entries for pairs whose variables have been updated.
-	  var alreadyDone = {}; // keep track of which entries have already been processed
-	  var nv = miData.matrix.length;
-	  variablesAddedOrUpdated.forEach(function (vname) {
-	    var vidx = miData.vset[vname];
-	    if (vidx === undefined) {
-	      return;
-	    }
-	    // console.log('Refreshing ', vname, vidx);
-	    for (var v2dx = 0; v2dx < nv; ++v2dx) {
-	      // tup always has the smaller index first so we don't redo symmetric entries:
-	      var tup = v2dx < vidx ? [v2dx, vidx] : [vidx, v2dx];
-	      if (tup[0] in alreadyDone && tup[1] in alreadyDone[tup[0]]) {
-	        continue;
-	      }
-	      // FIXME: commented line below to make linter happy, but missing v2nam could be a bug. console.log use only, perhaps?
-	      // const v2nam = miData.vmap[v2dx].name;
-	      var t0nam = miData.vmap[tup[0]].name;
-	      var t1nam = miData.vmap[tup[1]].name;
-	      // console.log('    Recompute ', tup, ' where ', v2dx, ' = ', v2nam, ' tupnames ', t0nam, t1nam);
-
-	      if (!histogramData[t0nam]) {
-	        // Data not ready yet for given axis
-	        console.log('Can not compute PMI for', t0nam);
-	        continue;
-	      }
-
-	      if (!histogramData[t0nam][t1nam]) {
-	        // Data not ready yet for given axis
-	        console.log('Can not compute PMI for', t1nam);
-	        continue;
-	      }
-
-	      var minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
-	      miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
-	      miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;
-	      if (!(t0nam in miData.joint)) {
-	        miData.joint[t0nam] = {};
-	        miData.joint[t0nam][t1nam] = {};
-	      } else if (!(t1nam in miData.joint[t0nam])) {
-	        miData.joint[t0nam][t1nam] = {};
-	      }
-	      miData.joint[t0nam][t1nam] = minfo.joint;
-	      // miData.joint[t1nam][t0nam] = transposed(minfo.pmi);
-
-	      if (!(tup[0] in alreadyDone)) {
-	        alreadyDone[tup[0]] = {};
-	      }
-	      alreadyDone[tup[0]][tup[1]] = true;
-	    }
-	  });
-	}
-
-	exports.default = {
-	  updateMutualInformation: updateMutualInformation,
-	  initializeMutualInformationData: initializeMutualInformationData
-	};
-
-	// ----------------------------------------------------------------------------
-	// Usage
-	// ----------------------------------------------------------------------------
-	// histogramData = {};
-	// miData = initializeMutualInformationData();
-	// updateMutualInformation(miData, ['a', 'b', 'd', 'c'], ['b'], histogramData);
-	// updateMutualInformation(miData, ['b'], [], histogramData);
-	// updateMutualInformation(miData, ['c'], [], histogramData);
-
-/***/ },
-/* 354 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.newInstance = undefined;
-	exports.extend = extend;
-
-	var _CompositeClosureHelper = __webpack_require__(320);
-
-	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// ----------------------------------------------------------------------------
@@ -43967,7 +43549,7 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 355 */
+/* 353 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -44222,6 +43804,7 @@
 				"versatility index": {
 					"rebounds pergame": {
 						"y": {
+							"name": "rebounds pergame",
 							"extent": [
 								0,
 								13.600000000000001
@@ -44229,6 +43812,7 @@
 							"delta": 0.42500000000000004
 						},
 						"x": {
+							"name": "versatility index",
 							"extent": [
 								0,
 								12.600000000000001
@@ -45368,6 +44952,7 @@
 				"rebounds pergame": {
 					"points per game": {
 						"y": {
+							"name": "points per game",
 							"extent": [
 								0,
 								32
@@ -45375,6 +44960,7 @@
 							"delta": 1
 						},
 						"x": {
+							"name": "rebounds pergame",
 							"extent": [
 								0,
 								13.600000000000001
@@ -46501,6 +46087,22 @@
 						"maxCount": 13
 					},
 					"versatility index": {
+						"x": {
+							"name": "rebounds pergame",
+							"extent": [
+								0,
+								13.600000000000001
+							],
+							"delta": 0.42500000000000004
+						},
+						"y": {
+							"name": "versatility index",
+							"extent": [
+								0,
+								12.600000000000001
+							],
+							"delta": 0.39375000000000004
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -47627,26 +47229,13 @@
 								"y": 5.512500000000001,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								13.600000000000001
-							],
-							"delta": 0.42500000000000004
-						},
-						"y": {
-							"extent": [
-								0,
-								12.600000000000001
-							],
-							"delta": 0.39375000000000004
-						}
+						]
 					}
 				},
 				"points per game": {
 					"turnover per pocession": {
 						"y": {
+							"name": "turnover per pocession",
 							"extent": [
 								0,
 								1
@@ -47654,6 +47243,7 @@
 							"delta": 0.03125
 						},
 						"x": {
+							"name": "points per game",
 							"extent": [
 								0,
 								32
@@ -48335,6 +47925,22 @@
 						"maxCount": 14
 					},
 					"rebounds pergame": {
+						"x": {
+							"name": "points per game",
+							"extent": [
+								0,
+								32
+							],
+							"delta": 1
+						},
+						"y": {
+							"name": "rebounds pergame",
+							"extent": [
+								0,
+								13.600000000000001
+							],
+							"delta": 0.42500000000000004
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -49451,26 +49057,13 @@
 								"y": 7.2250000000000005,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								32
-							],
-							"delta": 1
-						},
-						"y": {
-							"extent": [
-								0,
-								13.600000000000001
-							],
-							"delta": 0.42500000000000004
-						}
+						]
 					}
 				},
 				"turnover per pocession": {
 					"free throw attempts": {
 						"y": {
+							"name": "free throw attempts",
 							"extent": [
 								0,
 								805
@@ -49478,6 +49071,7 @@
 							"delta": 25.15625
 						},
 						"x": {
+							"name": "turnover per pocession",
 							"extent": [
 								0,
 								1
@@ -49969,6 +49563,22 @@
 						"maxCount": 26
 					},
 					"points per game": {
+						"x": {
+							"name": "turnover per pocession",
+							"extent": [
+								0,
+								1
+							],
+							"delta": 0.03125
+						},
+						"y": {
+							"name": "points per game",
+							"extent": [
+								0,
+								32
+							],
+							"delta": 1
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -50640,26 +50250,13 @@
 								"y": 0,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								1
-							],
-							"delta": 0.03125
-						},
-						"y": {
-							"extent": [
-								0,
-								32
-							],
-							"delta": 1
-						}
+						]
 					}
 				},
 				"free throw attempts": {
 					"2 point shots attempts": {
 						"y": {
+							"name": "2 point shots attempts",
 							"extent": [
 								0,
 								1408
@@ -50667,6 +50264,7 @@
 							"delta": 44
 						},
 						"x": {
+							"name": "free throw attempts",
 							"extent": [
 								0,
 								805
@@ -51408,6 +51006,22 @@
 						"maxCount": 93
 					},
 					"turnover per pocession": {
+						"x": {
+							"name": "free throw attempts",
+							"extent": [
+								0,
+								805
+							],
+							"delta": 25.15625
+						},
+						"y": {
+							"name": "turnover per pocession",
+							"extent": [
+								0,
+								1
+							],
+							"delta": 0.03125
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -51889,26 +51503,13 @@
 								"y": 0.09375,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								805
-							],
-							"delta": 25.15625
-						},
-						"y": {
-							"extent": [
-								0,
-								1
-							],
-							"delta": 0.03125
-						}
+						]
 					}
 				},
 				"2 point shots attempts": {
 					"percentage of team minutes": {
 						"y": {
+							"name": "percentage of team minutes",
 							"extent": [
 								7.2,
 								79.5
@@ -51916,6 +51517,7 @@
 							"delta": 2.259375
 						},
 						"x": {
+							"name": "2 point shots attempts",
 							"extent": [
 								0,
 								1408
@@ -53122,6 +52724,22 @@
 						"maxCount": 17
 					},
 					"free throw attempts": {
+						"x": {
+							"name": "2 point shots attempts",
+							"extent": [
+								0,
+								1408
+							],
+							"delta": 44
+						},
+						"y": {
+							"name": "free throw attempts",
+							"extent": [
+								0,
+								805
+							],
+							"delta": 25.15625
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -53853,26 +53471,13 @@
 								"y": 352.1875,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								1408
-							],
-							"delta": 44
-						},
-						"y": {
-							"extent": [
-								0,
-								805
-							],
-							"delta": 25.15625
-						}
+						]
 					}
 				},
 				"percentage of team minutes": {
 					"percentage of team assists": {
 						"y": {
+							"name": "percentage of team assists",
 							"extent": [
 								0,
 								49.2
@@ -53880,6 +53485,7 @@
 							"delta": 1.5375
 						},
 						"x": {
+							"name": "percentage of team minutes",
 							"extent": [
 								7.2,
 								79.5
@@ -55421,6 +55027,22 @@
 						"maxCount": 6
 					},
 					"2 point shots attempts": {
+						"x": {
+							"name": "percentage of team minutes",
+							"extent": [
+								7.2,
+								79.5
+							],
+							"delta": 2.259375
+						},
+						"y": {
+							"name": "2 point shots attempts",
+							"extent": [
+								0,
+								1408
+							],
+							"delta": 44
+						},
 						"bins": [
 							{
 								"x": 7.2,
@@ -56617,24 +56239,11 @@
 								"y": 1188,
 								"count": 3
 							}
-						],
-						"x": {
-							"extent": [
-								7.2,
-								79.5
-							],
-							"delta": 2.259375
-						},
-						"y": {
-							"extent": [
-								0,
-								1408
-							],
-							"delta": 44
-						}
+						]
 					},
 					"steals per game": {
 						"y": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -56642,6 +56251,7 @@
 							"delta": 0.0775
 						},
 						"x": {
+							"name": "percentage of team minutes",
 							"extent": [
 								7.2,
 								79.5
@@ -58019,6 +57629,7 @@
 					},
 					"minutes": {
 						"y": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -58026,6 +57637,7 @@
 							"delta": 1.04375
 						},
 						"x": {
+							"name": "percentage of team minutes",
 							"extent": [
 								7.2,
 								79.5
@@ -58453,6 +58065,7 @@
 					},
 					"free throw percent": {
 						"y": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -58460,6 +58073,7 @@
 							"delta": 0.03125
 						},
 						"x": {
+							"name": "percentage of team minutes",
 							"extent": [
 								7.2,
 								79.5
@@ -59884,6 +59498,7 @@
 				"percentage of team assists": {
 					"steals per game": {
 						"y": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -59891,6 +59506,7 @@
 							"delta": 0.0775
 						},
 						"x": {
+							"name": "percentage of team assists",
 							"extent": [
 								0,
 								49.2
@@ -61107,6 +60723,22 @@
 						"maxCount": 9
 					},
 					"percentage of team minutes": {
+						"x": {
+							"name": "percentage of team assists",
+							"extent": [
+								0,
+								49.2
+							],
+							"delta": 1.5375
+						},
+						"y": {
+							"name": "percentage of team minutes",
+							"extent": [
+								7.2,
+								79.5
+							],
+							"delta": 2.259375
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -62639,24 +62271,11 @@
 								"count": 1
 							}
 						],
-						"x": {
-							"extent": [
-								0,
-								49.2
-							],
-							"delta": 1.5375
-						},
-						"y": {
-							"extent": [
-								7.2,
-								79.5
-							],
-							"delta": 2.259375
-						},
 						"maxCount": 6
 					},
 					"free throw percent": {
 						"y": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -62664,6 +62283,7 @@
 							"delta": 0.03125
 						},
 						"x": {
+							"name": "percentage of team assists",
 							"extent": [
 								0,
 								49.2
@@ -63846,6 +63466,7 @@
 					},
 					"minutes": {
 						"y": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -63853,6 +63474,7 @@
 							"delta": 1.04375
 						},
 						"x": {
+							"name": "percentage of team assists",
 							"extent": [
 								0,
 								49.2
@@ -65382,6 +65004,7 @@
 				"steals per game": {
 					"minutes": {
 						"y": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -65389,6 +65012,7 @@
 							"delta": 1.04375
 						},
 						"x": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -66780,6 +66404,22 @@
 						"maxCount": 8
 					},
 					"percentage of team assists": {
+						"x": {
+							"name": "steals per game",
+							"extent": [
+								0,
+								2.48
+							],
+							"delta": 0.0775
+						},
+						"y": {
+							"name": "percentage of team assists",
+							"extent": [
+								0,
+								49.2
+							],
+							"delta": 1.5375
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -67987,7 +67627,11 @@
 								"count": 1
 							}
 						],
+						"maxCount": 9
+					},
+					"percentage of team minutes": {
 						"x": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -67995,15 +67639,13 @@
 							"delta": 0.0775
 						},
 						"y": {
+							"name": "percentage of team minutes",
 							"extent": [
-								0,
-								49.2
+								7.2,
+								79.5
 							],
-							"delta": 1.5375
+							"delta": 2.259375
 						},
-						"maxCount": 9
-					},
-					"percentage of team minutes": {
 						"bins": [
 							{
 								"x": 0,
@@ -69371,24 +69013,11 @@
 								"count": 1
 							}
 						],
-						"x": {
-							"extent": [
-								0,
-								2.48
-							],
-							"delta": 0.0775
-						},
-						"y": {
-							"extent": [
-								7.2,
-								79.5
-							],
-							"delta": 2.259375
-						},
 						"maxCount": 8
 					},
 					"free throw percent": {
 						"y": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -69396,6 +69025,7 @@
 							"delta": 0.03125
 						},
 						"x": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -70553,6 +70183,7 @@
 					},
 					"true shooting percentage": {
 						"y": {
+							"name": "true shooting percentage",
 							"extent": [
 								0,
 								0.8200000000000001
@@ -70560,6 +70191,7 @@
 							"delta": 0.025625000000000002
 						},
 						"x": {
+							"name": "steals per game",
 							"extent": [
 								0,
 								2.48
@@ -71499,6 +71131,7 @@
 				"minutes": {
 					"free throw percent": {
 						"y": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -71506,6 +71139,7 @@
 							"delta": 0.03125
 						},
 						"x": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -72952,6 +72586,22 @@
 						"maxCount": 6
 					},
 					"steals per game": {
+						"x": {
+							"name": "minutes",
+							"extent": [
+								5.1000000000000005,
+								38.5
+							],
+							"delta": 1.04375
+						},
+						"y": {
+							"name": "steals per game",
+							"extent": [
+								0,
+								2.48
+							],
+							"delta": 0.0775
+						},
 						"bins": [
 							{
 								"x": 5.1000000000000005,
@@ -74334,7 +73984,11 @@
 								"count": 1
 							}
 						],
+						"maxCount": 8
+					},
+					"percentage of team minutes": {
 						"x": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -74342,15 +73996,13 @@
 							"delta": 1.04375
 						},
 						"y": {
+							"name": "percentage of team minutes",
 							"extent": [
-								0,
-								2.48
+								7.2,
+								79.5
 							],
-							"delta": 0.0775
+							"delta": 2.259375
 						},
-						"maxCount": 8
-					},
-					"percentage of team minutes": {
 						"bins": [
 							{
 								"x": 5.1000000000000005,
@@ -74768,7 +74420,11 @@
 								"count": 6
 							}
 						],
+						"maxCount": 18
+					},
+					"percentage of team assists": {
 						"x": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
@@ -74776,15 +74432,13 @@
 							"delta": 1.04375
 						},
 						"y": {
+							"name": "percentage of team assists",
 							"extent": [
-								7.2,
-								79.5
+								0,
+								49.2
 							],
-							"delta": 2.259375
+							"delta": 1.5375
 						},
-						"maxCount": 18
-					},
-					"percentage of team assists": {
 						"bins": [
 							{
 								"x": 5.1000000000000005,
@@ -76302,25 +75956,27 @@
 								"count": 1
 							}
 						],
+						"maxCount": 5
+					}
+				},
+				"free throw percent": {
+					"minutes": {
 						"x": {
+							"name": "free throw percent",
+							"extent": [
+								0,
+								1
+							],
+							"delta": 0.03125
+						},
+						"y": {
+							"name": "minutes",
 							"extent": [
 								5.1000000000000005,
 								38.5
 							],
 							"delta": 1.04375
 						},
-						"y": {
-							"extent": [
-								0,
-								49.2
-							],
-							"delta": 1.5375
-						},
-						"maxCount": 5
-					}
-				},
-				"free throw percent": {
-					"minutes": {
 						"bins": [
 							{
 								"x": 0,
@@ -77758,7 +77414,11 @@
 								"count": 1
 							}
 						],
+						"maxCount": 6
+					},
+					"percentage of team minutes": {
 						"x": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -77766,15 +77426,13 @@
 							"delta": 0.03125
 						},
 						"y": {
+							"name": "percentage of team minutes",
 							"extent": [
-								5.1000000000000005,
-								38.5
+								7.2,
+								79.5
 							],
-							"delta": 1.04375
+							"delta": 2.259375
 						},
-						"maxCount": 6
-					},
-					"percentage of team minutes": {
 						"bins": [
 							{
 								"x": 0,
@@ -79187,7 +78845,11 @@
 								"count": 1
 							}
 						],
+						"maxCount": 7
+					},
+					"steals per game": {
 						"x": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -79195,15 +78857,13 @@
 							"delta": 0.03125
 						},
 						"y": {
+							"name": "steals per game",
 							"extent": [
-								7.2,
-								79.5
+								0,
+								2.48
 							],
-							"delta": 2.259375
+							"delta": 0.0775
 						},
-						"maxCount": 7
-					},
-					"steals per game": {
 						"bins": [
 							{
 								"x": 0,
@@ -80351,7 +80011,11 @@
 								"count": 1
 							}
 						],
+						"maxCount": 9
+					},
+					"percentage of team assists": {
 						"x": {
+							"name": "free throw percent",
 							"extent": [
 								0,
 								1
@@ -80359,15 +80023,13 @@
 							"delta": 0.03125
 						},
 						"y": {
+							"name": "percentage of team assists",
 							"extent": [
 								0,
-								2.48
+								49.2
 							],
-							"delta": 0.0775
+							"delta": 1.5375
 						},
-						"maxCount": 9
-					},
-					"percentage of team assists": {
 						"bins": [
 							{
 								"x": 0,
@@ -81540,25 +81202,27 @@
 								"count": 1
 							}
 						],
-						"x": {
-							"extent": [
-								0,
-								1
-							],
-							"delta": 0.03125
-						},
-						"y": {
-							"extent": [
-								0,
-								49.2
-							],
-							"delta": 1.5375
-						},
 						"maxCount": 11
 					}
 				},
 				"true shooting percentage": {
 					"steals per game": {
+						"x": {
+							"name": "true shooting percentage",
+							"extent": [
+								0,
+								0.8200000000000001
+							],
+							"delta": 0.025625000000000002
+						},
+						"y": {
+							"name": "steals per game",
+							"extent": [
+								0,
+								2.48
+							],
+							"delta": 0.0775
+						},
 						"bins": [
 							{
 								"x": 0,
@@ -82485,21 +82149,7 @@
 								"y": 0.155,
 								"count": 1
 							}
-						],
-						"x": {
-							"extent": [
-								0,
-								0.8200000000000001
-							],
-							"delta": 0.025625000000000002
-						},
-						"y": {
-							"extent": [
-								0,
-								2.48
-							],
-							"delta": 0.0775
-						}
+						]
 					}
 				}
 			}
