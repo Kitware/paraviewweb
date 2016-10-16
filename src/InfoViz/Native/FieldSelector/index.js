@@ -138,6 +138,25 @@ function fieldSelector(publicAPI, model) {
     variablesContainer.enter().append('tr');
     variablesContainer.exit().remove();
 
+    // Hovering anywhere over a row (except its histogram, when
+    // bin-hovering is enabled) triggers a field-hover event that
+    // can provide context for the field.
+    if (model.provider.isA('FieldHoverProvider')) {
+      variablesContainer
+        .select(model.container)
+        .select('tbody.fields')
+        .selectAll('tr')
+        .on('mousemove', function inner(d, i) {
+          const state = { fields: {}, };
+          state[d.name] = d;
+          model.provider.setFieldHoverState({ state });
+        })
+        .on('mouseout', (d, i) => {
+          const state = { fields: {}, };
+          model.provider.setHoverState({ state });
+        });
+    }
+
     // Apply on each data item
     function renderField(fieldName, index) {
       const field = model.provider.getField(fieldName);
