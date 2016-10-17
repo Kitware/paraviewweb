@@ -8,13 +8,13 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 // ----------------------------------------------------------------------------
 
 function fieldHoverProvider(publicAPI, model) {
-  if (!model.hoverState) {
-    model.hoverState = {};
+  if (!model.fieldHoverState) {
+    model.fieldHoverState = {};
   }
 
-  publicAPI.setHoverState = (hoverState) => {
-    model.hoverState = hoverState;
-    publicAPI.fireHoverFieldChange(model.hoverState);
+  publicAPI.setFieldHoverState = (fieldHoverState) => {
+    model.fieldHoverState = fieldHoverState;
+    publicAPI.fireHoverFieldChange(model.fieldHoverState);
   };
 }
 
