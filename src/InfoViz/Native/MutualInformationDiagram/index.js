@@ -1,4 +1,4 @@
-/* global document, window */
+/* global document */
 import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
@@ -143,7 +143,7 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  publicAPI.updateStatusBarText = (msg) => d3.select(model.container).select('input.status-bar-text').attr('value', msg);
+  publicAPI.updateStatusBarText = msg => d3.select(model.container).select('input.status-bar-text').attr('value', msg);
 
   publicAPI.selectStatusBarText = () => {
     // select text so user can press ctrl-c if desired.
