@@ -67,7 +67,11 @@ function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResou
     program[bufferMapping.name] = gl.getAttribLocation(program, bufferMapping.attribute);
     gl.enableVertexAttribArray(program[bufferMapping.name]);
     gl.vertexAttribPointer(program[bufferMapping.name], ...bufferMapping.format);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    // FIXME: Remove this check when Apple fixes this bug
+    /* global navigator */
+    if (navigator.userAgent.indexOf('AppleWebKit/602.1.50') === -1) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
   });
 }
 
