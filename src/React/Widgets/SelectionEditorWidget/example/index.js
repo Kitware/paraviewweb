@@ -1,7 +1,8 @@
+/* global document */
 import 'babel-polyfill';
-import SelectionEditorWidget from '..';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
+import SelectionEditorWidget from '..';
 import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
 
 import LegendProvider from '../../../../InfoViz/Core/LegendProvider';
@@ -21,9 +22,14 @@ const rangeSelection = SelectionBuilder.range({
 
 const partitionSelection = SelectionBuilder.partition('pressure', [
   { value: 90, uncertainty: 0 },
-  { value: 101.3, uncertainty: 20 },
+  { value: 101.3, uncertainty: 10 },
   { value: 200, uncertainty: 40, closeToLeft: true },
 ]);
+const ranges = {
+  pressure: [0, 600],
+  temperature: [-270, 1000],
+};
+
 
 const selectionTypes = [rangeSelection, partitionSelection, SelectionBuilder.convertToRuleSelection(rangeSelection)];
 const legendService = LegendProvider.newInstance({ legendEntries: ['pressure', 'temperature'] });
@@ -38,6 +44,7 @@ function render() {
         <SelectionEditorWidget
           key={idx}
           selection={selection}
+          ranges={ranges}
           getLegend={legendService.getLegend}
           onChange={(newSelection, save) => {
             selectionTypes[idx] = newSelection;

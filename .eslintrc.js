@@ -23,6 +23,7 @@ module.exports = {
     // Not for us ;-)
     'jsx-a11y/label-has-for': 0,
     'no-console': 0,
+    'import/no-named-as-default-member': 0,
   },
   'settings': {
     'import/resolver': 'webpack'
