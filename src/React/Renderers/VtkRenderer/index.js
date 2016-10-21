@@ -66,10 +66,12 @@ export default React.createClass({
     // Establish image stream connection
     this.binaryImageStream.connect({
       view_id: this.props.viewId,
-    });
-
-    // Update size
-    sizeHelper.triggerChange();
+    }).then(
+      () => {
+        // Update size and do a force push
+        this.binaryImageStream.invalidateCache();
+        sizeHelper.triggerChange();
+      });
   },
 
   componentWillUnmount() {
