@@ -29492,7 +29492,7 @@
 	        var tIdx = swap ? 0 : 1;
 	        var sourceBinRange = getParamBinRange(data[0][sIdx], histogram1DnumberOfBins, data[2][0]);
 	        var targetBinRange = getParamBinRange(data[0][tIdx], histogram1DnumberOfBins, data[2][1]);
-	        return 'PMI: ' + (data[2][0] + ' ∈ [ ' + formatVal(sourceBinRange[0]) + ', ' + formatVal(sourceBinRange[1]) + '] ↔︎ ') + (data[2][1] + ' ∈ [ ' + formatVal(targetBinRange[0]) + ', ' + formatVal(targetBinRange[1]) + '] ' + formatMI(data[1]));
+	        return 'PMI: ' + (data[2][0] + ' \u2208 [ ' + formatVal(sourceBinRange[0]) + ', ' + formatVal(sourceBinRange[1]) + '] \u2194\uFE0E ') + (data[2][1] + ' \u2208 [ ' + formatVal(targetBinRange[0]) + ', ' + formatVal(targetBinRange[1]) + '] ' + formatMI(data[1]));
 	      }).on('mouseover', function mouseOver() {
 	        publicAPI.updateStatusBarText(_d3.default.select(this).attr('data-details'));
 	      }).on('mouseout', function () {
@@ -29777,7 +29777,7 @@
 	        return histoArc.outerRadius(d.outerRadius)(d);
 	      }).attr('data-details', function (d, i) {
 	        var binRange = getBinRange(i, histogram1DnumberOfBins, groupData.range);
-	        return 'p(' + gname + ' ∈ [' + formatVal(binRange[0]) + ', ' + formatVal(binRange[1]) + ']) = ' + formatPercent(d.value);
+	        return 'p(' + gname + ' \u2208 [' + formatVal(binRange[0]) + ', ' + formatVal(binRange[1]) + ']) = ' + formatPercent(d.value);
 	      }).attr('fill', function (d, i) {
 	        return i % 2 ? '#bebebe' : '#a9a9a9';
 	      });
@@ -29819,7 +29819,7 @@
 	    });
 
 	    chord.attr('data-details', function (d, i) {
-	      return 'Mutual information: ' + model.mutualInformationData.vmap[d.source.index].name + ' ↔︎ ' + model.mutualInformationData.vmap[d.target.index].name + ' ' + ('' + formatMI(model.mutualInformationData.matrix[d.source.index][d.target.index]));
+	      return 'Mutual information: ' + model.mutualInformationData.vmap[d.source.index].name + ' \u2194\uFE0E ' + model.mutualInformationData.vmap[d.target.index].name + ' ' + ('' + formatMI(model.mutualInformationData.matrix[d.source.index][d.target.index]));
 	    });
 	    // The lines below are for the case when the MI matrix has been row-normalized:
 	    // model.mutualInformationData.matrix[d.source.index][d.target.index] *
@@ -29934,7 +29934,7 @@
 	        }).attr('data-details', function (data) {
 	          var sourceBinRange = getParamBinRange(data[0][0], histogram1DnumberOfBins, data[3][0]);
 	          var targetBinRange = getParamBinRange(data[0][1], histogram1DnumberOfBins, data[3][1]);
-	          return 'PMI: ' + (data[3][0] + ' ∈ [ ' + formatVal(sourceBinRange[0]) + ', ' + formatVal(sourceBinRange[1]) + '] ↔︎ ') + (data[3][1] + ' ∈ [ ' + formatVal(targetBinRange[0]) + ', ' + formatVal(targetBinRange[1]) + '] ' + formatMI(data[1]));
+	          return 'PMI: ' + (data[3][0] + ' \u2208 [ ' + formatVal(sourceBinRange[0]) + ', ' + formatVal(sourceBinRange[1]) + '] \u2194\uFE0E ') + (data[3][1] + ' \u2208 [ ' + formatVal(targetBinRange[0]) + ', ' + formatVal(targetBinRange[1]) + '] ' + formatMI(data[1]));
 	        }).on('mouseover', function mouseOver() {
 	          publicAPI.updateStatusBarText(_d3.default.select(this).attr('data-details'));
 	        }).on('mouseout', function () {

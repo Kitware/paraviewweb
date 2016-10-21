@@ -26785,7 +26785,6 @@
 		"_from": "autobahn@0.9.6",
 		"_id": "autobahn@0.9.6",
 		"_inCache": true,
-		"_installable": true,
 		"_location": "/autobahn",
 		"_npmUser": {
 			"name": "oberstet",
@@ -32809,7 +32808,7 @@
 		                }
 
 		                // Create default initializer
-		                if (!subtype.hasOwnProperty('init')) {
+		                if (!subtype.hasOwnProperty('init') || this.init === subtype.init) {
 		                    subtype.init = function () {
 		                        subtype.$super.init.apply(this, arguments);
 		                    };
