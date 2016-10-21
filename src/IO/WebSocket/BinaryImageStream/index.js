@@ -57,47 +57,50 @@ export default class BinaryImageStream {
 
   /* eslint-disable camelcase */
   connect({ view_id = -1, size = [500, 500] }) {
-    if (!this.ws) {
-      this.ws = new WebSocket(this.endpoint);
-      this.textMode = true;
+    return new Promise((resolve, reject) => {
+      if (!this.ws) {
+        this.ws = new WebSocket(this.endpoint);
+        this.textMode = true;
 
-      this.view_id = view_id;
-      this.width = size[0];
-      this.height = size[1];
+        this.view_id = view_id;
+        this.width = size[0];
+        this.height = size[1];
 
-      this.ws.onopen = () => {
-        this.ws.send(JSON.stringify({
-          view_id,
-        }));
-      };
+        this.ws.onopen = () => {
+          this.ws.send(JSON.stringify({
+            view_id,
+          }));
+          resolve();
+        };
 
-      this.ws.onmessage = (msg) => {
-        if (this.textMode) {
-          this.metadata = JSON.parse(msg.data);
-        } else {
-          const imgBlob = new Blob([msg.data], {
-            type: this.mimeType,
-          });
-          if (this.activeURL) {
-            window.URL.revokeObjectURL(this.activeURL);
-            this.activeURL = null;
+        this.ws.onmessage = (msg) => {
+          if (this.textMode) {
+            this.metadata = JSON.parse(msg.data);
+          } else {
+            const imgBlob = new Blob([msg.data], {
+              type: this.mimeType,
+            });
+            if (this.activeURL) {
+              window.URL.revokeObjectURL(this.activeURL);
+              this.activeURL = null;
+            }
+            this.activeURL = URL.createObjectURL(imgBlob);
+            const time = +(new Date());
+            this.fps = Math.floor(10000 / (time - this.lastTime)) / 10;
+            this.lastTime = time;
+
+            this.lastImageReadyEvent = {
+              url: this.activeURL,
+              fps: this.fps,
+              metadata: this.metadata,
+            };
+
+            this.emit(IMAGE_READY, this.lastImageReadyEvent);
           }
-          this.activeURL = URL.createObjectURL(imgBlob);
-          const time = +(new Date());
-          this.fps = Math.floor(10000 / (time - this.lastTime)) / 10;
-          this.lastTime = time;
-
-          this.lastImageReadyEvent = {
-            url: this.activeURL,
-            fps: this.fps,
-            metadata: this.metadata,
-          };
-
-          this.emit(IMAGE_READY, this.lastImageReadyEvent);
-        }
-        this.textMode = !this.textMode;
-      };
-    }
+          this.textMode = !this.textMode;
+        };
+      }
+    });
   }
   /* eslint-enable camelcase */
 
