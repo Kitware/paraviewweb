@@ -54,6 +54,7 @@
 
 .presetList {
   max-height: 85px;
+  height: 85px;
 }
 
 .pieceWiseEditor {
