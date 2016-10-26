@@ -117,11 +117,18 @@
 	      valueRep: this.props.value
 	    };
 	  },
+	  getValue: function getValue() {
+	    var propVal = parseFloat(this.newVal);
+	    if (!isNaN(propVal)) {
+	      return propVal;
+	    }
+	    return undefined;
+	  },
 	  valueChange: function valueChange(e) {
-	    var newVal = e.target.value;
-	    this.setState({ editing: true, valueRep: newVal });
+	    this.newVal = e.target.value;
+	    this.setState({ editing: true, valueRep: this.newVal });
 
-	    var propVal = parseFloat(newVal);
+	    var propVal = parseFloat(this.newVal);
 	    if (!isNaN(propVal) && this.props.onChange) {
 	      if (this.props.name) {
 	        this.props.onChange(propVal, this.props.name);

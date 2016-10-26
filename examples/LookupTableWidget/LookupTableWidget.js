@@ -21256,8 +21256,10 @@
 	    this.togglePresetMode();
 	  },
 	  updateScalarRange: function updateScalarRange() {
-	    var minValue = this.min.value,
-	        maxValue = this.max.value;
+	    var originalRange = this.props.lookupTable.getScalarRange();
+	    var minValue = this.min.getValue() || originalRange[0];
+	    var maxValue = this.max.getValue() || originalRange[1];
+
 	    this.props.lookupTable.setScalarRange(minValue, minValue === maxValue ? maxValue + 1 : maxValue);
 	    this.forceUpdate();
 	  },
@@ -26956,11 +26958,18 @@
 	      valueRep: this.props.value
 	    };
 	  },
+	  getValue: function getValue() {
+	    var propVal = parseFloat(this.newVal);
+	    if (!isNaN(propVal)) {
+	      return propVal;
+	    }
+	    return undefined;
+	  },
 	  valueChange: function valueChange(e) {
-	    var newVal = e.target.value;
-	    this.setState({ editing: true, valueRep: newVal });
+	    this.newVal = e.target.value;
+	    this.setState({ editing: true, valueRep: this.newVal });
 
-	    var propVal = parseFloat(newVal);
+	    var propVal = parseFloat(this.newVal);
 	    if (!isNaN(propVal) && this.props.onChange) {
 	      if (this.props.name) {
 	        this.props.onChange(propVal, this.props.name);
