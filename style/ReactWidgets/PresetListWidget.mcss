@@ -4,6 +4,7 @@
     justify-content: flex-start;
     align-items: stretch;
     height: 100%;
+    max-height: inherit;
     overflow-y: auto;
     border: solid 1px black;
     box-sizing: border-box;
