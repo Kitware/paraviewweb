@@ -128,8 +128,10 @@ export default React.createClass({
   },
 
   updateScalarRange() {
-    var minValue = this.min.value,
-      maxValue = this.max.value;
+    const originalRange = this.props.lookupTable.getScalarRange();
+    const minValue = this.min.getValue() || originalRange[0];
+    const maxValue = this.max.getValue() || originalRange[1];
+
     this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
     this.forceUpdate();
   },
