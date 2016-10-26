@@ -69,7 +69,8 @@ function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResou
     gl.vertexAttribPointer(program[bufferMapping.name], ...bufferMapping.format);
     // FIXME: Remove this check when Apple fixes this bug
     /* global navigator */
-    if (navigator.userAgent.indexOf('AppleWebKit/602.1.50') === -1) {
+    // const buggyBrowserVersion = ['AppleWebKit/602.1.50', 'AppleWebKit/602.2.14'];
+    if (navigator.userAgent.indexOf('AppleWebKit/602') === -1) {
       gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
   });
