@@ -24,6 +24,7 @@
   height: 1em;
   width: 1em;
   cursor: pointer;
+  pointer-events: all;
 }
 
 .rangeControls {
