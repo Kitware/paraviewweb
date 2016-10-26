@@ -30,11 +30,19 @@ export default React.createClass({
     };
   },
 
-  valueChange(e) {
-    var newVal = e.target.value;
-    this.setState({ editing: true, valueRep: newVal });
+  getValue() {
+    const propVal = parseFloat(this.newVal);
+    if (!isNaN(propVal)) {
+      return propVal;
+    }
+    return undefined;
+  },
 
-    const propVal = parseFloat(newVal);
+  valueChange(e) {
+    this.newVal = e.target.value;
+    this.setState({ editing: true, valueRep: this.newVal });
+
+    const propVal = parseFloat(this.newVal);
     if (!isNaN(propVal) && this.props.onChange) {
       if (this.props.name) {
         this.props.onChange(propVal, this.props.name);
