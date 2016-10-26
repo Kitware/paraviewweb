@@ -9,7 +9,7 @@
 .line {
     position: relative;
     display: flex;
-    flex: 1 0 0%;
+    flex: 1;
     flex-direction: row;
     margin-top: 5px;
     margin-bottom: 5px;
