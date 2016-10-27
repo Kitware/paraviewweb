@@ -5,6 +5,7 @@ import DataProberImageBuilder                   from './DataProberImageBuilder';
 import DepthCompositeImageBuilder               from './DepthCompositeImageBuilder';
 import DepthImageBuilder                        from './DepthImageBuilder';
 import FloatDataImageBuilder                    from './FloatDataImageBuilder';
+import Histogram2DImageBuilder                  from './Histogram2DImageBuilder';
 import MagicLensImageBuilder                    from './MagicLensImageBuilder';
 import MultiColorBySortedCompositeImageBuilder  from './MultiColorBySortedCompositeImageBuilder';
 import PixelOperatorImageBuilder                from './PixelOperatorImageBuilder';
@@ -19,6 +20,7 @@ export default {
   DepthCompositeImageBuilder,
   DepthImageBuilder,
   FloatDataImageBuilder,
+  Histogram2DImageBuilder,
   MagicLensImageBuilder,
   MultiColorBySortedCompositeImageBuilder,
   PixelOperatorImageBuilder,
