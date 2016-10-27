@@ -17,7 +17,9 @@ import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper'
 //   },
 //   "bins": [
 //     { x: 3.5, y: 5, count: 46 }, ...
-//   ]
+//   ],
+//   "maxCount": 11, // computed after data is received
+//   "numberOfBins": 32,
 // }
 //
 // ----------------------------------------------------------------------------
