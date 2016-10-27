@@ -10,13 +10,26 @@ const IMAGE_READY_TOPIC = 'image-ready';
 
 export default class RemoteRenderer {
 
-  constructor(pvwClient, container = null, id = -1) {
+  constructor(pvwClient, container = null, id = -1, statRenderer = null) {
     this.client = pvwClient;
     this.setQuality();
-    this.stats = { deltaT: [] };
+    this.stats = {
+      renderCount: 0,
+      staleRenderCount: 0,
+      deltaT: [],
+      roundTrip: [],
+      workTime: [],
+    };
     this.lastError = null;
     this.quality = 100;
     this.renderPending = false;
+    this.renderCount = 0;
+    this.staleRenderCount = 0;
+
+    this.statContainer = document.createElement('div');
+    this.statContainer.setAttribute('style', 'position: absolute; top: 0; right: 0; bottom: 0; left: 0;');
+    this.statRenderer = statRenderer;
+    this.showStats = false;
 
     this.canvas = document.createElement('canvas');
 
@@ -77,6 +90,10 @@ export default class RemoteRenderer {
       this.container = null;
       this.mouseHandler = null;
       this.size = null;
+
+      if (this.statRenderer) {
+        this.statRenderer.setContainer(null);
+      }
     }
 
     if (container && this.container !== container) {
@@ -84,9 +101,29 @@ export default class RemoteRenderer {
       this.mouseHandler = new MouseHandler(container);
       this.mouseHandler.attach(this.mouseListener.getListeners());
       this.container.appendChild(this.canvas);
+
       this.size = SizeHelper.getSize(container);
+
+      if (this.statRenderer) {
+        this.container.appendChild(this.statContainer);
+        this.statRenderer.setContainer(this.statContainer);
+      }
+
       this.render(true);
     }
+  }
+
+  pushStats(serverResponse) {
+    const localTime = +new Date();
+    this.stats.workTime.push(serverResponse.workTime);
+    this.stats.roundTrip.push((localTime - serverResponse.localTime) - serverResponse.workTime);
+    this.stats.deltaT.push(localTime - serverResponse.localTime);
+
+    [this.stats.workTime, this.stats.roundTrip, this.stats.deltaT].forEach((list) => {
+      while (list.length > 100) {
+        list.shift();
+      }
+    });
   }
 
   render(force = false) {
@@ -110,6 +147,7 @@ export default class RemoteRenderer {
 
     if (this.client && this.size && this.container) {
       this.renderPending = true;
+      this.stats.renderCount += 1;
 
       // Update local options
       this.options.size[0] = this.size.clientWidth;
@@ -129,13 +167,7 @@ export default class RemoteRenderer {
             this.renderPending = false;
 
             // stats
-            const localTime = +new Date();
-            this.stats.workTime = resp.workTime;
-            this.stats.roundTrip = (localTime - resp.localTime) - resp.workTime;
-            this.stats.deltaT.push(localTime - resp.localTime);
-            while (this.stats.deltaT.length > 100) {
-              this.stats.deltaT.shift();
-            }
+            this.pushStats(resp);
 
             // update local options
             this.options.mtime = resp.mtime;
@@ -150,9 +182,15 @@ export default class RemoteRenderer {
             if (resp.stale) {
               // No force render when we are stale otherwise
               // we will get in an infinite rendering loop
+              this.stats.staleRenderCount += 1;
               this.renderOnIdle(false);
             } else {
               this.emit(IMAGE_READY_TOPIC, this);
+            }
+
+            if (this.statRenderer) {
+              this.statRenderer.updateData(this.stats, this.showStats);
+              this.statRenderer.render();
             }
           },
           (err) => {
@@ -164,10 +202,17 @@ export default class RemoteRenderer {
     return false;
   }
 
+  showRenderStats(show) {
+    this.showStats = show;
+  }
+
   resize() {
     if (this.container) {
       this.size = SizeHelper.getSize(this.container);
       this.render(true);
+      if (this.statRenderer) {
+        this.statRenderer.resize();
+      }
     }
   }
 
@@ -185,6 +230,10 @@ export default class RemoteRenderer {
     this.client = null;
     this.imageDecoder = null;
     this.canvas = null;
+    if (this.statRenderer) {
+      this.statRenderer.destroy();
+      this.statRenderer = null;
+    }
   }
 }
 
