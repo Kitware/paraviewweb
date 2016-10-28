@@ -45,7 +45,7 @@ export default class Histogram2DPlotlyChartBuilder {
   // ------------------------------------------------------------------------
 
   buildChart() {
-    if (this.chartState.chartType) {
+    if (this.chartState.chartType && this.histogram) {
       const builder = chartFactory[this.chartState.chartType];
       const plotData = builder(this.chartState, this.histogram);
       this.chartState.forceNewPlot = false;
@@ -73,12 +73,9 @@ export default class Histogram2DPlotlyChartBuilder {
 
   // ------------------------------------------------------------------------
 
-  setChartData(chartData, layout) {
-    this.dataReady({
-      forceNewPlot: false,
-      traces: chartData,
-      layout,
-    });
+  setHistogram(histogram) {
+    this.histogram = histogram;
+    this.buildChart();
   }
 
   // ------------------------------------------------------------------------
@@ -106,6 +103,10 @@ export default class Histogram2DPlotlyChartBuilder {
     return {
       queryDataModel: this.queryDataModel,
     };
+  }
+
+  getAvailableChartTypes() {
+    return this.availableChartTypes;
   }
 }
 
