@@ -2,17 +2,17 @@
 
 ## Introduction
 
-This document will cover the expected RESTful API for launching a ParaViewWeb process.  For details on specific launcher implementations, see either the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) guide or the [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html) guide.  Also, see the [Launching Examples](/paraviewweb/docs/guides/launching_examples.html) guide for descriptions of some of the deployment configurations possible with either of these provided launchers.
+This document will cover the expected RESTful API for launching a ParaViewWeb process.  For details on our launcher implementation, see the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) guide.  Also, see the [Launching Examples](/paraviewweb/docs/guides/launching_examples.html) guide for descriptions of some of the deployment configurations possible with our provided launcher.
 
 ## Role of the launcher
 
 The launcher has a well-defined set of responsibilities:
 
 1. listen for incoming client requests for new visualization process,
-1. find an available "resource" from list it maintains (a "resource" is simply a [host, port] combination),
-1. launch the requested command-line,
-1. wait for that command-line process to be ready and when it is ready, note the session-id, host, and port in the mapping file,
-1. and finally, respond to the client with the proper information (including at least the sessionURL where the client can reach the running visualization process)
+2. find an available "resource" from list it maintains (a "resource" is simply a [host, port] combination),
+3. launch the requested command-line,
+4. wait for that command-line process to be ready and when it is ready, note the session-id, host, and port in the mapping file,
+5. and finally, respond to the client with the proper information (including at least the sessionURL where the client can reach the running visualization process)
 
 ## Process launcher RESTful API
 
@@ -20,19 +20,22 @@ VTKWeb/ParaViewWeb come with a JavaScript library, which allows the user to trig
 
 The following code example illustrates what can be done on the client side, and we will explain what should be expected by the server.
 
-    var config = {
-       'sessionManagerURL' : 'http://localhost:8080/paraview',
-       'application': 'loader',
-       'key1': 'value1',
-       'key2': 'value2',
-       ...
-       'keyN': 'valueN'
-    }
-    vtkWeb.start( config, function(connection){
-       // Success callback
-    }, function(code,reason){
-       // Error callback
-    });
+```js
+import SmartConnect from 'paraviewweb/src/IO/WebSocket/SmartConnect';
+
+const config = {
+   'sessionManagerURL' : 'http://localhost:8080/paraview',
+   'application': 'loader',
+   'key1': 'value1',
+   'key2': 'value2',
+   ...
+   'keyN': 'valueN'
+}
+
+const smartConnect = new SmartConnect(config);
+smartConnect.onConnectionReady((connection) => { /* start app */});
+smartConnect.connect();
+```
 
 The preceeding client code will trigger a __POST__ request on __http://localhost:8080/paraview__ with the given __config__ object as payload.  In response, the server will first start the application specified in the config __application__ value, and then it should  return the initial __config__ object with additional keys such as:
 
@@ -67,9 +70,7 @@ For example, if the client sends the given JSON payload
     'app': 'Visualizer'
     }
 
-The server should first run the command line associated with the application `launcher` (see the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) and [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html) guides for information about how the application commands lines are configured).  The server running the command line in this case would have the same effect as if you manually ran:
-
-    $ '/home/kitware/launcher.sh' 'localhost' 9001 '1024' 'Visualizer' 'sebastien.jourdain' 'ousdfbdxldfgh' 'katglrt54#%dfg' > /tmp/pw-logs/2345634574567.log
+The server should first run the command line associated with the application `launcher` (see the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) guide for information about how the application commands lines are configured).  
 
 Once the command line is running, the server should respond something like:
 

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-When deploying ParaViewWeb for multiple users, you will need a launcher module that will start a new visualization process for each user that requests one.  This task could be achieved by the Jetty launcher (see the [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html) guide for details). However, we wanted to provide a simple answer that did not require the use of an external component that is not already available within the ParaView binaries.  Hence, we built a Python based process launcher that follows the ParaViewWeb RESTful API for launching a new visualization process (see the [Launcher RESTful API](/paraviewweb/docs/guides/launcher_api.html) guide for details about the API itself.
+When deploying ParaViewWeb for multiple users, you will need a launcher module that will start a new visualization process for each user that requests one.  This task can be achieved by our Python based launcher described below.
 
 Because the Python launcher is included in ParaViewWeb and requires no extra software to get up and running, it is the recommended approach to launching ParaViewWeb visualization sessions.  This document covers how to configure the Python launcher for use with a front end, including specific details on getting it working with Apache.
 
@@ -61,35 +61,14 @@ __launcher.config__
   ## ===============================
 
   "apps": {
-    "pipeline": {
-      "cmd": [
-        "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_visualizer.py",
-        "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
-      ],
-      "ready_line" : "Starting factory"
-    },
     "visualizer": {
         "cmd": [
-            "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_visualizer.py",
-            "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
-        ],
-        "ready_line" : "Starting factory"
-    },
-    "loader": {
-        "cmd": [
-            "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_file_loader.py",
-            "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
-        ],
-        "ready_line" : "Starting factory"
-    },
-    "data_prober": {
-        "cmd": [
-            "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_data_prober.py",
+            "${python_exec}", "-dr", "${visualizer_path}/server/pvw-visualizer.py",
             "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
     }
-    }
+  }
 }
 ```
 
@@ -112,7 +91,7 @@ $ ./bin/vtkpython Wrapping/Python/vtk/web/launcher.py launcher.config
 - The `apps` section gives the command lines required to start any of the visualization processes the launcher will be capable of starting.  We recommend always providing the `-dr` argument to `pvpython` so that it never tries to load any saved preferences it might find.
 
 - The `configuration` section gives several important values:
-  - `sessionURL` gives the url needed to communicate with the visualization processes.  In the case of the Apache front end, Apache will recognize this url and re-write it so that Apache websocket forwarding can send the packets to the correct running process on the back end.  This `sessionURL` value needs to match what is expected by the Apache RewriteRule (given in the Apache virtual host configuration).  See the [Apache as a front end](/paraviewweb/docs/guides/apache_front_end.html) guide for details.
+  - `sessionURL` gives the url needed to communicate with the visualization processes.  In the case of the Apache front end, Apache will recognize this url and re-write it so that Apache websocket forwarding can send the packets to the correct running process on the back end.  This `sessionURL` value needs to match what is expected by the Apache RewriteRule (given in the Apache virtual host configuration).  See the [Apache as a front end](/visualizer/docs/guides/apache_front_end.html) guide for details.
   - `proxy_file` gives the location of the mapping file that the launcher and front end will use to communicate about which session ids get mapped to which port.  The location of this file must concur with the Apache RewriteMap value (given in the Apache virtual host configuration).
 
 - `sessionData` is designed to allow you to specify that certain arbitrary key/value pairs should be included in the data returned to the client upon successful creation of the session.  In the example launcher config file above, we have added a key called `updir` with a value of `/Home` to the `sessionData` segment.  This will cause the launcher to perform normal substitutions on the on the value (in this case, none are needed as the value is simply `/Home`), and then include `"updir": "/Home"` in the response when sessions are successfully created for clients.

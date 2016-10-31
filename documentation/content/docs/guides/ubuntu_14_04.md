@@ -97,24 +97,31 @@ In any case, you should have a directory structure that looks like that:
           - pvserver
           - ...
         + lib
-          + paraview-4.1
+          + paraview-5.1
             - libvtkXXXX.so
+          + python2.7
             + site-packages
               + paraview
               + vtk
               + ...
         + share
-          + paraview-4.1
-            + www
-              + apps
-              + lib
-              + ext
+          + paraview-5.2
+            + web
+              + visualizer
+                + www
+                  - index.html
+                  - ...
+                + server
+                  - pvw-visualizer.py
+              + lightviz
+                + www
+                + server
 
 Let's copy it in our global directory structure and assign it to our ParaViewWeb user:
 
 ```sh
-$ sudo cp -r /.../paraview-xxx /data/pv/pv-20140410
-$ sudo ln -s /data/pv/pv-20140410 /data/pv/pv-current
+$ sudo cp -r /.../paraview-xxx /data/pv/pv-5.2.0
+$ sudo ln -s /data/pv/pv-5.2.0 /data/pv/pv-current
 $ sudo chown -R pvw-user /data/pv
 $ sudo chgrp -R pvw-user /data/pv
 ```
@@ -142,7 +149,7 @@ $ sudo vi /data/pvw/conf/launcher.json
       "log_dir": "/data/pvw/logs",
       "host": "localhost",
       "endpoint": "paraview",
-      "sessionURL": "ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=${id}",
+      "sessionURL": "ws://YOUR_HOST_NAME_TO_REPLACE/proxy?sessionId=${id}&path=ws",
       "timeout": 25,
       "upload_dir": "/data/pvw/upload",
       "fields": ["file", "host", "port", "updir"],
@@ -150,36 +157,32 @@ $ sudo vi /data/pvw/conf/launcher.json
       "proxy_file": "/data/proxy.txt"
     },
     "properties": {
-      "python_path": "/data/pv/pv-current/lib/paraview-4.1/site-packages",
+      "web_path": "/data/pv/pv-current/share/paraview-5.2/web",
       "dataDir": "/data/pvw/data",
       "python_exec": "/data/pv/pv-current/bin/pvpython"
     },
     "apps": {
-      "pipeline": {
-        "cmd": [
-          "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_visualizer.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
-        ],
-        "ready_line" : "Starting factory"
-      },
       "visualizer": {
         "cmd": [
-          "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_visualizer.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
+          "${python_exec}", 
+          "-dr", 
+          "${web_path}/visualizer/server/pvw-visualizer.py",
+          "--port", "${port}", 
+          "--data-dir", "${dataDir}", 
+          "-f", 
+          "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
       },
-      "loader": {
+      "lightviz": {
         "cmd": [
-          "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_file_loader.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
-        ],
-        "ready_line" : "Starting factory"
-      },
-      "data_prober": {
-        "cmd": [
-          "${python_exec}", "-dr", "${python_path}/paraview/web/pv_web_data_prober.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
+          "${python_exec}", 
+          "-dr", 
+          "${web_path}/lightviz/server/pvw-light-viz.py",
+          "--port", "${port}", 
+          "--data", "${dataDir}", 
+          "-f", 
+          "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
       }
@@ -191,7 +194,7 @@ $ sudo vi /data/pvw/bin/start.sh
   #!/bin/bash
 
   export DISPLAY=:0.0
-  /data/pv/pv-current/bin/pvpython /data/pv/pv-current/lib/paraview-4.1/site-packages/vtk/web/launcher.py /data/pvw/conf/launcher.json &
+  /data/pv/pv-current/bin/pvpython /data/pv/pv-current/lib/python2.7/site-packages/vtk/web/launcher.py /data/pvw/conf/launcher.json &
 
 $ sudo touch /data/proxy.txt
 $ sudo chown pvw-user /data/proxy.txt
@@ -261,9 +264,9 @@ Then lets create our virtual host.  Be sure to replace `YOUR_HOST_NAME_TO_REPLAC
 
           # Handle WebSocket forwarding
           RewriteEngine On
-          RewriteMap  session-to-port  txt:/data/proxy.txt
-          RewriteCond %{QUERY_STRING}  ^sessionId=(.*)$               [NC]
-          RewriteRule ^/proxy.*$       ws://${session-to-port:%1}/ws  [P]
+          RewriteMap session-to-port txt:${MAPPING-FILE-DIR}/proxy.txt
+          RewriteCond %{QUERY_STRING} ^sessionId=(.*)&path=(.*)$ [NC]
+          RewriteRule ^/proxy.*$  ws://${session-to-port:%1}/%2  [P]
         </VirtualHost>
 ```
 
@@ -283,33 +286,16 @@ $ sudo a2dissite 000-default.conf
 
 ## Setting up the ParaViewWeb Web Site
 
-You can download the documentation of ParaView [here](http://paraview.org/paraview/resources/software.php)
-And download the ParaView-API-docs-v4.1.zip file or any newer version.
+You just need to copy the various web applications to our served directory.
 
-By uncompressing that file, you should get something like that:
-
-     -> ParaView-API-docs-v4.1
-        + js-doc
-           + ...
-        + ...
-
-Then copy the ParaViewWeb documentation over to /data/www
-
-```sh
-$ sudo cp -r /.../ParaView-API-docs-v4.1/js-doc/* /data/www
+```sh Visualizer
+$ cd /data/pv/pv-5.2/share/paraview-5.2/web
+$ sudo cp -r visualizer/www /data/www/visualizer
 ```
 
-Fix the home page to allow the access to the sample applications
-
-```sh
-$ sudo mv /data/www/index.html /data/www/index.origin
-$ sudo sh -c 'cat /data/www/index.origin | grep -v DEMO-APPS > /data/www/index.html'
-```
-
-Add the ParaViewWeb code
-
-```sh
-$ sudo cp -r /data/pv/pv-current/share/paraview-4.1/www/* /data/www/
+```sh LightViz
+$ cd /data/pv/pv-5.2/share/paraview-5.2/web
+$ sudo cp -r lightviz/www /data/www/lightviz
 ```
 
 ## Hardware graphics notes for Ubuntu 14.04 LTS on EC2

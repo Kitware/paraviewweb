@@ -38,13 +38,40 @@ The following picture illustrates how a single user can begin interacting with a
 
 In this case, ParaViewWeb is a single Python script that could be executed by the provided python interpreter. The script will be responsible for starting a web server and listening to a given port.
 
-The following command line illustrates how to trigger such a server:
+The following command line illustrates how to trigger such a server with ParaView 5.2 bundle which can be downloaded [here](http://www.paraview.org/download/):
 
-```bash
-$ ./bin/pvpython lib/paraview-4.1/site-packages/paraview/web/pv_web_visualizer.py  \
-            --content ./share/paraview-4.1/www                                     \
-            --data-dir /path-to-share/                                             \
-            --port 8080 &
+
+```sh macOS
+$ cd paraview.app/Contents
+$ ./bin/pvpython                                        \
+    ./Resources/web/visualizer/server/pvw-visualizer.py  \
+    --content ./Resources/web/visualizer/www/             \
+    --data-dir $PWD/data/                                  \
+    --port 8080
+
+==> Open your browser to http://localhost:8080/
+```
+
+```sh Linux
+$ cd ParaView-5.2.0-Qt4-OpenGL2-MPI-Linux-64bit
+$ ./bin/pvpython                                                 \
+    ./share/paraview-5.2/web/visualizer/server/pvw-visualizer.py  \
+    --content ./share/paraview-5.2/web/visualizer/www/             \
+    --data-dir $PWD/share/paraview-5.2/data/                        \
+    --port 8080
+
+==> Open your browser to http://localhost:8080/
+```
+
+```sh Windows
+$ cd ParaView-5.2.0-Qt4-OpenGL2-MPI-Windows-64bit
+$ .\bin\pvpython.exe                                                \
+    %cd%\share\paraview-5.2\web\visualizer\server\pvw-visualizer.py  \
+    --content %cd%\share\paraview-5.2\web\visualizer\www\             \
+    --data-dir %cd%\data\                                              \
+    --port 8080
+
+==> Open your browser to http://localhost:8080/
 ```
 
 This setup does not allow several users to connect to a remote server and build their own visualizations independently from each other. To support such deployment, a multi-user setup is needed.
