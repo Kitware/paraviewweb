@@ -52,9 +52,4 @@ Onced started (~5 minutes), you can access the machine like the following:
 
 ### AMIs
 
-| Region                | Name | AMI |
-| --------------------- | ---- | --- |
-| US East (N. Virginia) |      |     |
-| US West (Oregon)      |      |     |
-
 Please [contact us](http://www.kitware.com/products/support.html) if you need us to build a VM for you.
