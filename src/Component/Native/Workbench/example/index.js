@@ -16,11 +16,11 @@ const container = document.querySelector('.content');
 container.style.height = '100vh';
 container.style.width = '100vw';
 
-const green = new BGColor('green');
-const red = new BGColor('red');
-const blue = new BGColor('blue');
-const pink = new BGColor('pink');
-const gray = new BGColor('gray');
+const green = BGColor.newInstance({ color:'green' });
+const   red = BGColor.newInstance({ color:'red' });
+const  blue = BGColor.newInstance({ color:'blue' });
+const  pink = BGColor.newInstance({ color:'pink' });
+const  gray = BGColor.newInstance({ color:'gray' });
 
 // const toggleView = new ToggleControl(green, red);
 

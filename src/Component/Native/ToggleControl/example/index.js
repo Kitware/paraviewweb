@@ -7,8 +7,8 @@ import 'normalize.css';
 const container = document.querySelector('.content');
 container.style.height = '100vh';
 
-const green = new BGColorComponent('green');
-const red = new BGColorComponent('red');
+const green = BGColorComponent.newInstance({ color:'green' });
+const   red = BGColorComponent.newInstance({ color:'red' });
 const toggleView = new ToggleControlComponent(green, red);
 
 toggleView.setContainer(container);
