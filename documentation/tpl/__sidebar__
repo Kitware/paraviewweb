@@ -11,7 +11,6 @@ docs:
     troubleshooting: /paraviewweb/docs/troubleshooting.html
     contributing: /paraviewweb/docs/contributing.html
   pvw_server:
-    getting_started: /paraviewweb/docs/guides/getting_started.html
     architecture: /paraviewweb/docs/guides/architecture.html
     multi_user_setup: /paraviewweb/docs/guides/multi_user_setup.html
     apache_front_end: /paraviewweb/docs/guides/apache_front_end.html
