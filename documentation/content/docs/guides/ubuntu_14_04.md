@@ -97,7 +97,7 @@ In any case, you should have a directory structure that looks like that:
           - pvserver
           - ...
         + lib
-          + paraview-5.1
+          + paraview-5.2
             - libvtkXXXX.so
           + python2.7
             + site-packages
