@@ -1,6 +1,8 @@
-# ParaViewWeb: A JavaScript Library for Building Web-based Applications with Scientific Visualization
+title: ParaViewWeb
+---
+# A JavaScript Library for Building Web-based Applications with Scientific Visualization
 
-ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX, a high-performance HTTP server or even locally with command line based application using your browser.
+ParaViewWeb, the JavaScript library, is a Web framework to build applications with interactive scientific visualization inside the Web browser. Those applications can leverage a VTK and/or ParaView backend for large data processing and rendering, but can also be used on static Web server like Apache or NGINX. You can even build local command line tools and use your browser to interact with your application.
 
 ## A modern approach
 
