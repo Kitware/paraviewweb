@@ -1,0 +1,11 @@
+.bgColorContainer {
+  border-radius: 15px;
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  left: 5px;
+  pointer-events: none;
+  overflow: hidden;
+}
