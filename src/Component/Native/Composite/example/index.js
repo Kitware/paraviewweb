@@ -1,5 +1,5 @@
 import CompositeComponent   from '..';
-import BGColorComponent     from '../../BackgroundColor';
+import BackgroundColor      from '../../BackgroundColor';
 
 // Load CSS
 require('normalize.css');
@@ -10,10 +10,10 @@ container.style.width = '100%';
 container.style.height = '600px';
 
 const composite = new CompositeComponent();
-const green = new BGColorComponent('green');
-const red = new BGColorComponent('red');
-const blue = new BGColorComponent('blue');
-const pink = new BGColorComponent('pink');
+const green = BackgroundColor.newInstance({ color:'green' });
+const red   = BackgroundColor.newInstance({ color:'red' });
+const blue  = BackgroundColor.newInstance({ color:'blue' });
+const pink  = BackgroundColor.newInstance({ color:'pink' });
 
 composite.addViewport(green);
 composite.addViewport(red);
