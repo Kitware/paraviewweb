@@ -3,6 +3,7 @@ import CanvasOffscreenBuffer from './CanvasOffscreenBuffer';
 import Convert from './Convert';
 import ConvertProxyProperty from './ConvertProxyProperty';
 import Debounce from './Debounce';
+import HyperbolicGeometry from './HyperbolicGeometry';
 import ImageExporter from './ImageExporter';
 import Loop from './Loop';
 import Observable from './Observable';
@@ -20,6 +21,7 @@ export default {
   Convert,
   ConvertProxyProperty,
   Debounce,
+  HyperbolicGeometry,
   ImageExporter,
   Loop,
   Observable,
