@@ -2,7 +2,7 @@
 
 ### Hardware
 
-When you instantiating an AMI, you should use:
+When you are instantiating an Amazon Machine Image (AMI), you should use:
 - Hardware with GPU: g2.2xlarge
 - Security rule: http + ssh (80+22)
 
@@ -17,7 +17,7 @@ The machine at startup will:
 - Configure the launcher with the proper hostname.
 - Start ParaViewWeb launcher
 
-Onced started (~5 minutes), you can access the machine like the following:
+Once started (~5 minutes), you can access the machine like the following:
 - http://ec2-198-51-100-1.compute-1.amazonaws.com/apps/Visualizer
 
 ### AMIs
@@ -31,7 +31,7 @@ Onced started (~5 minutes), you can access the machine like the following:
 
 ### Hardware
 
-When you instantiating an AMI, you should use:
+When you are instantiating an AMI, you should use:
 - Hardware with GPU: g2.2xlarge
 - Security rule: http + ssh (80+22)
 
@@ -46,7 +46,7 @@ The machine at startup will:
 - Configure the launcher with the proper hostname.
 - Start ParaViewWeb launcher
 
-Onced started (~5 minutes), you can access the machine like the following:
+Once started (~5 minutes), you can access the machine like the following:
 - http://ec2-198-51-100-1.compute-1.amazonaws.com/Visualizer
 - http://ec2-198-51-100-1.compute-1.amazonaws.com/LightViz
 
