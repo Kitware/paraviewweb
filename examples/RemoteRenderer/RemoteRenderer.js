@@ -129,19 +129,34 @@
 
 	var RemoteRenderer = function () {
 	  function RemoteRenderer(pvwClient) {
+	    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
 	    var _this = this;
 
-	    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 	    var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
+	    var statRenderer = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 	    _classCallCheck(this, RemoteRenderer);
 
 	    this.client = pvwClient;
 	    this.setQuality();
-	    this.stats = { deltaT: [] };
+	    this.stats = {
+	      renderCount: 0,
+	      staleRenderCount: 0,
+	      deltaT: [],
+	      roundTrip: [],
+	      workTime: []
+	    };
 	    this.lastError = null;
 	    this.quality = 100;
 	    this.renderPending = false;
+	    this.renderCount = 0;
+	    this.staleRenderCount = 0;
+
+	    this.statContainer = document.createElement('div');
+	    this.statContainer.setAttribute('style', 'position: absolute; top: 0; right: 0; bottom: 0; left: 0;');
+	    this.statRenderer = statRenderer;
+	    this.showStats = false;
 
 	    this.canvas = document.createElement('canvas');
 
@@ -213,6 +228,10 @@
 	        this.container = null;
 	        this.mouseHandler = null;
 	        this.size = null;
+
+	        if (this.statRenderer) {
+	          this.statRenderer.setContainer(null);
+	        }
 	      }
 
 	      if (container && this.container !== container) {
@@ -220,9 +239,30 @@
 	        this.mouseHandler = new _MouseHandler2.default(container);
 	        this.mouseHandler.attach(this.mouseListener.getListeners());
 	        this.container.appendChild(this.canvas);
+
 	        this.size = _SizeHelper2.default.getSize(container);
+
+	        if (this.statRenderer) {
+	          this.container.appendChild(this.statContainer);
+	          this.statRenderer.setContainer(this.statContainer);
+	        }
+
 	        this.render(true);
 	      }
+	    }
+	  }, {
+	    key: 'pushStats',
+	    value: function pushStats(serverResponse) {
+	      var localTime = +new Date();
+	      this.stats.workTime.push(serverResponse.workTime);
+	      this.stats.roundTrip.push(localTime - serverResponse.localTime - serverResponse.workTime);
+	      this.stats.deltaT.push(localTime - serverResponse.localTime);
+
+	      [this.stats.workTime, this.stats.roundTrip, this.stats.deltaT].forEach(function (list) {
+	        while (list.length > 100) {
+	          list.shift();
+	        }
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -251,6 +291,7 @@
 
 	      if (this.client && this.size && this.container) {
 	        this.renderPending = true;
+	        this.stats.renderCount += 1;
 
 	        // Update local options
 	        this.options.size[0] = this.size.clientWidth;
@@ -268,13 +309,7 @@
 	          _this2.renderPending = false;
 
 	          // stats
-	          var localTime = +new Date();
-	          _this2.stats.workTime = resp.workTime;
-	          _this2.stats.roundTrip = localTime - resp.localTime - resp.workTime;
-	          _this2.stats.deltaT.push(localTime - resp.localTime);
-	          while (_this2.stats.deltaT.length > 100) {
-	            _this2.stats.deltaT.shift();
-	          }
+	          _this2.pushStats(resp);
 
 	          // update local options
 	          _this2.options.mtime = resp.mtime;
@@ -289,9 +324,15 @@
 	          if (resp.stale) {
 	            // No force render when we are stale otherwise
 	            // we will get in an infinite rendering loop
+	            _this2.stats.staleRenderCount += 1;
 	            _this2.renderOnIdle(false);
 	          } else {
 	            _this2.emit(IMAGE_READY_TOPIC, _this2);
+	          }
+
+	          if (_this2.statRenderer) {
+	            _this2.statRenderer.updateData(_this2.stats, _this2.showStats);
+	            _this2.statRenderer.render();
 	          }
 	        }, function (err) {
 	          _this2.renderPending = false;
@@ -302,11 +343,19 @@
 	      return false;
 	    }
 	  }, {
+	    key: 'showRenderStats',
+	    value: function showRenderStats(show) {
+	      this.showStats = show;
+	    }
+	  }, {
 	    key: 'resize',
 	    value: function resize() {
 	      if (this.container) {
 	        this.size = _SizeHelper2.default.getSize(this.container);
 	        this.render(true);
+	        if (this.statRenderer) {
+	          this.statRenderer.resize();
+	        }
 	      }
 	    }
 	  }, {
@@ -326,6 +375,10 @@
 	      this.client = null;
 	      this.imageDecoder = null;
 	      this.canvas = null;
+	      if (this.statRenderer) {
+	        this.statRenderer.destroy();
+	        this.statRenderer = null;
+	      }
 	    }
 	  }]);
 
