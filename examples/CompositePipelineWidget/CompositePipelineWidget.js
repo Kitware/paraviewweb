@@ -5981,6 +5981,25 @@
 	      });
 	      return query;
 	    }
+	  }, {
+	    key: 'setPipelineQuery',
+	    value: function setPipelineQuery(query) {
+	      var localQuery = this.getPipelineQuery();
+	      if (query !== localQuery) {
+	        var maxIdx = localQuery.length / 2;
+	        for (var idx = 0; idx < maxIdx; idx++) {
+	          var colorIdx = 2 * idx + 1;
+	          if (localQuery[colorIdx] !== query[colorIdx]) {
+	            if (query[colorIdx] === '_') {
+	              this.setLayerVisible(LAYER_CODE[idx], false);
+	            } else {
+	              this.setLayerVisible(LAYER_CODE[idx], true);
+	              this.setActiveColor(LAYER_CODE[idx], query[colorIdx]);
+	            }
+	          }
+	        }
+	      }
+	    }
 
 	    // ------------------------------------------------------------------------
 
@@ -6041,6 +6060,45 @@
 
 	      this.emit(OPACITY_CHANGE_TOPIC, opacityArray);
 	    }
+
+	    // ------------------------------------------------------------------------
+
+	    /* eslint-disable */
+
+	  }, {
+	    key: 'bind',
+	    value: function bind(listOfStateToBind) {
+	      var changeInProgress = false;
+	      var queryChange = function queryChange(query) {
+	        if (changeInProgress) {
+	          return;
+	        }
+	        changeInProgress = true;
+	        listOfStateToBind.forEach(function (other) {
+	          other.setPipelineQuery(query);
+	        });
+	        changeInProgress = false;
+	      };
+
+	      var opacityChange = function opacityChange(opacityArray) {
+	        if (changeInProgress) {
+	          return;
+	        }
+	        changeInProgress = true;
+	        listOfStateToBind.forEach(function (other) {
+	          other.opacityArray = [].concat(opacityArray);
+	          other.emit(OPACITY_CHANGE_TOPIC, opacityArray);
+	        });
+	        changeInProgress = false;
+	      };
+
+	      listOfStateToBind.forEach(function (toMonitor) {
+	        toMonitor.onChange(queryChange);
+	        toMonitor.onOpacityChange(opacityChange);
+	      });
+	    }
+	    /* eslint-enable */
+
 	  }]);
 
 	  return PipelineState;

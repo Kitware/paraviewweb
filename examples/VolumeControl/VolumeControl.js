@@ -220,6 +220,34 @@
 
 	    // ------------------------------------------------------------------------
 
+	    /* eslint-disable */
+
+	  }, {
+	    key: 'bind',
+	    value: function bind(listOfStateToBind) {
+	      var changeInProgress = false;
+	      var applyChange = function applyChange(instance) {
+	        if (changeInProgress) {
+	          return;
+	        }
+	        changeInProgress = true;
+	        var newValues = instance.getOpacities();
+	        listOfStateToBind.forEach(function (other) {
+	          if (other !== instance) {
+	            other.updateOpacities(newValues);
+	          }
+	        });
+	        changeInProgress = false;
+	      };
+
+	      listOfStateToBind.forEach(function (toMonitor) {
+	        toMonitor.onChange(applyChange);
+	      });
+	    }
+	    /* eslint-enable */
+
+	    // ------------------------------------------------------------------------
+
 	  }, {
 	    key: 'destroy',
 	    value: function destroy() {
