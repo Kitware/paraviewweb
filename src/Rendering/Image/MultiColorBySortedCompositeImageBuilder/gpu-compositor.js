@@ -617,6 +617,9 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   setLightProperties(lightProps) {
+    const before = JSON.stringify(this.lightProperties);
     this.lightProperties = merge(this.lightProperties, lightProps);
+    const after = JSON.stringify(this.lightProperties);
+    return before !== after;
   }
 }
