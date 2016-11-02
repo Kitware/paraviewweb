@@ -21988,8 +21988,11 @@
 	    }
 	  },
 	  updateDimensions: function updateDimensions() {
-	    var el = this.rootContainer.parentNode,
-	        elSize = _SizeHelper2.default.getSize(el);
+	    if (!this.rootContainer) {
+	      return false;
+	    }
+	    var el = this.rootContainer.parentNode;
+	    var elSize = _SizeHelper2.default.getSize(el);
 
 	    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
 	      this.setState({
