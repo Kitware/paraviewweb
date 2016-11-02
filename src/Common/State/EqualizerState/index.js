@@ -91,6 +91,31 @@ export default class EqualizerState {
 
   // ------------------------------------------------------------------------
 
+  /* eslint-disable */
+  bind(listOfStateToBind) {
+    let changeInProgress = false;
+    const applyChange = (instance) => {
+      if (changeInProgress) {
+        return;
+      }
+      changeInProgress = true;
+      const newValues = instance.getOpacities();
+      listOfStateToBind.forEach((other) => {
+        if (other !== instance) {
+          other.updateOpacities(newValues);
+        }
+      });
+      changeInProgress = false;
+    };
+
+    listOfStateToBind.forEach((toMonitor) => {
+      toMonitor.onChange(applyChange);
+    });
+  }
+  /* eslint-enable */
+
+  // ------------------------------------------------------------------------
+
   destroy() {
     this.off();
 

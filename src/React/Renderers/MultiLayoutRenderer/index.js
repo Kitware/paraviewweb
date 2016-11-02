@@ -282,9 +282,9 @@ const MultiViewRenderer = React.createClass({
   drawViewport(viewport) {
     var renderer = this.props.renderers[viewport.name],
       region = viewport.region,
-      ctx = this.canvasRenderer.getContext('2d');
+      ctx = this.canvasRenderer ? this.canvasRenderer.getContext('2d') : null;
 
-    if (!renderer || (renderer.builder && !renderer.dataToDraw) || (renderer.painter && !renderer.painter.isReady())) {
+    if (!ctx || !renderer || (renderer.builder && !renderer.dataToDraw) || (renderer.painter && !renderer.painter.isReady())) {
       return;
     }
 

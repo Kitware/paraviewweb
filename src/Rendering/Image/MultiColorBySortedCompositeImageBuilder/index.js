@@ -6,6 +6,8 @@ import ToggleModel from '../../../Common/State/ToggleState';
 
 const
   FETCH_DATA_TOPIC = 'data_to_fetch';
+const
+  LIGHT_PROP_CHANGE = 'MultiColorBySortedCompositeImageBuilder.light.change';
 
 export default class MultiColorBySortedCompositeImageBuilder extends AbstractImageBuilder {
 
@@ -158,8 +160,17 @@ export default class MultiColorBySortedCompositeImageBuilder extends AbstractIma
   // ------------------------------------------------------------------------
 
   setLightProperties(lightProps) {
-    this.compositor.setLightProperties(lightProps);
+    const changeDetected = this.compositor.setLightProperties(lightProps);
     this.render();
+    if (changeDetected) {
+      this.emit(LIGHT_PROP_CHANGE, this.getLightProperties());
+    }
+  }
+
+  // ------------------------------------------------------------------------
+
+  onLightPropertyChange(callback) {
+    return this.on(LIGHT_PROP_CHANGE, callback);
   }
 
   // ------------------------------------------------------------------------
