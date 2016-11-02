@@ -469,8 +469,11 @@ const ImageRenderer = React.createClass({
   },
 
   updateDimensions() {
-    var el = this.rootContainer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    if (!this.rootContainer) {
+      return false;
+    }
+    const el = this.rootContainer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
     if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
       this.setState({

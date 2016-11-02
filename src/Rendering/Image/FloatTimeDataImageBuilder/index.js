@@ -1,6 +1,8 @@
 import Monologue from 'monologue.js';
 import LineChartPainter from '../../Painter/LineChartPainter';
 
+/* global window */
+
 const IMAGE_READY_TOPIC = 'image-ready';
 const CHANGE_TOPIC = 'FloatTimeDataImageBuilder.change';
 
@@ -9,8 +11,8 @@ function buildListenerWrapper(floatTimeDataImageBuilder) {
   const listener = imageBuilder.getListeners();
   const myListener = {};
 
-  ['drag'].forEach(name => {
-    myListener[name] = e => {
+  ['drag'].forEach((name) => {
+    myListener[name] = (e) => {
       if (!probeManager[name](e)) {
         return listener[name] ? listener[name](e) : false;
       }
@@ -20,7 +22,7 @@ function buildListenerWrapper(floatTimeDataImageBuilder) {
   });
 
   // Attache remaining method if any
-  Object.keys(listener).forEach(name => {
+  Object.keys(listener).forEach((name) => {
     if (!myListener[name]) {
       myListener[name] = listener[name];
     }
@@ -67,9 +69,11 @@ export default class FloatTimeDataImageBuilder {
       const ctx = canvas.getContext('2d');
 
       this.probeManager.setSize(outputSize[0], outputSize[1]);
-      this.probeManager.getProbes().forEach(probe => {
+      this.probeManager.getProbes().forEach((probe) => {
         const rgbStr = findProbeColor(probe, this.chartData.fields);
         const ext = probe.getExtent();
+        ctx.fillStyle = 'rgba(128, 128, 128, 0.5)';
+        ctx.fillRect(ext[0] - 3, ext[2] - 3, ext[1] - ext[0] + 6, ext[3] - ext[2] + 6);
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = rgbStr;
@@ -80,11 +84,11 @@ export default class FloatTimeDataImageBuilder {
       this.emit(IMAGE_READY_TOPIC, data);
     }));
 
-    this.subscriptions.push(this.imageBuilder.onTimeDataReady(data => {
+    this.subscriptions.push(this.imageBuilder.onTimeDataReady((data) => {
       this.updateChart(data);
     }));
 
-    this.subscriptions.push(this.queryDataModel.onStateChange(data => {
+    this.subscriptions.push(this.queryDataModel.onStateChange((data) => {
       if (data.name === 'time') {
         this.painter.setMarkerLocation(this.queryDataModel.getIndex('time') / (this.queryDataModel.getSize('time') - 1));
         this.render();
@@ -130,7 +134,7 @@ export default class FloatTimeDataImageBuilder {
 
     // Use same y scale for each field
     const sharedRange = [Number.MAX_VALUE, Number.MIN_VALUE];
-    this.chartData.fields.forEach(f => {
+    this.chartData.fields.forEach((f) => {
       updateRange(sharedRange, f.range);
       f.range = sharedRange;
     });
@@ -193,12 +197,12 @@ export default class FloatTimeDataImageBuilder {
   // ------------------------------------------------------------------------
 
   enableProbe(probeName, enable = true) {
-    this.probeManager.getProbes().forEach(probe => {
+    this.probeManager.getProbes().forEach((probe) => {
       if (probe.name === probeName) {
         probe.setActive(enable);
       }
     });
-    this.chartData.fields.forEach(field => {
+    this.chartData.fields.forEach((field) => {
       if (field.name === probeName) {
         field.active = !!enable;
       }
@@ -243,14 +247,19 @@ export default class FloatTimeDataImageBuilder {
   setRenderer(renderer) {
     this.renderer = renderer;
 
-    this.subscriptions.push(renderer.onDrawDone(rComponent => {
+    this.subscriptions.push(renderer.onDrawDone((rComponent) => {
       if (this.activeView > 0) {
         if (rComponent && rComponent.getRenderingCanvas && this.painter.isReady()) {
           const canvasRenderer = rComponent.getRenderingCanvas();
           const { width, height } = canvasRenderer;
           const ctxRenderer = canvasRenderer.getContext('2d');
           const offset = 5;
-          const location = { x: offset, y: Number(height) / 2 + offset, width: Number(width) / 2 - (2 * offset), height: Number(height) / 2 - (2 * offset) };
+          const location = {
+            x: offset,
+            y: (Number(height) / 2) + offset,
+            width: (Number(width) / 2) - (2 * offset),
+            height: (Number(height) / 2) - (2 * offset),
+          };
           ctxRenderer.fillStyle = '#ffffff';
           ctxRenderer.fillRect(location.x - 1, location.y - 1, location.width + 2, location.height + 2);
           this.painter.paint(ctxRenderer, location);
