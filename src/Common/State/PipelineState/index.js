@@ -198,6 +198,24 @@ export default class PipelineState {
     return query;
   }
 
+  setPipelineQuery(query) {
+    const localQuery = this.getPipelineQuery();
+    if (query !== localQuery) {
+      const maxIdx = localQuery.length / 2;
+      for (let idx = 0; idx < maxIdx; idx++) {
+        const colorIdx = (2 * idx) + 1;
+        if (localQuery[colorIdx] !== query[colorIdx]) {
+          if (query[colorIdx] === '_') {
+            this.setLayerVisible(LAYER_CODE[idx], false);
+          } else {
+            this.setLayerVisible(LAYER_CODE[idx], true);
+            this.setActiveColor(LAYER_CODE[idx], query[colorIdx]);
+          }
+        }
+      }
+    }
+  }
+
   // ------------------------------------------------------------------------
 
   getPipelineDescription() {
@@ -245,6 +263,42 @@ export default class PipelineState {
 
     this.emit(OPACITY_CHANGE_TOPIC, opacityArray);
   }
+
+  // ------------------------------------------------------------------------
+
+  /* eslint-disable */
+  bind(listOfStateToBind) {
+    let changeInProgress = false;
+    const queryChange = (query) => {
+      if (changeInProgress) {
+        return;
+      }
+      changeInProgress = true;
+      listOfStateToBind.forEach((other) => {
+        other.setPipelineQuery(query);
+      });
+      changeInProgress = false;
+    };
+
+    const opacityChange = (opacityArray) => {
+      if (changeInProgress) {
+        return;
+      }
+      changeInProgress = true;
+      listOfStateToBind.forEach((other) => {
+        other.opacityArray = [].concat(opacityArray);
+        other.emit(OPACITY_CHANGE_TOPIC, opacityArray)
+      });
+      changeInProgress = false;
+    };
+
+    listOfStateToBind.forEach((toMonitor) => {
+      toMonitor.onChange(queryChange);
+      toMonitor.onOpacityChange(opacityChange);
+    });
+  }
+  /* eslint-enable */
+
 }
 
 // Add Observer pattern using Monologue.js
