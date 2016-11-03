@@ -74,6 +74,14 @@ export default class Histogram2DPlotlyChartBuilder {
   // ------------------------------------------------------------------------
 
   setHistogram(histogram) {
+    // we need a new plot if the axes change, as opposed to just the data.
+    if (!this.histogram ||
+      this.histogram.x.name !== histogram.x.name ||
+      this.histogram.x.extent !== histogram.x.extent ||
+      this.histogram.y.name !== histogram.y.name ||
+      this.histogram.y.extent !== histogram.y.extent) {
+      this.chartState.forceNewPlot = true;
+    }
     this.histogram = histogram;
     this.buildChart();
   }

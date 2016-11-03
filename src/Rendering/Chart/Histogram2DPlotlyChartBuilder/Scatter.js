@@ -11,12 +11,14 @@ export default function Scatter(chartState, histogram) {
     color.push(bin.count);
   });
 
+  // 'text' shows up in the hover popup.
   return {
     forceNewPlot: chartState.forceNewPlot,
     traces: [
       {
         x,
         y,
+        text: color.map(count => (`Count: ${count}`)),
         mode: 'markers',
         marker: {
           size: 10,
@@ -24,6 +26,14 @@ export default function Scatter(chartState, histogram) {
         },
       },
     ],
-  // layout
+    layout: {
+      hovermode: 'closest',
+      xaxis: {
+        title: histogram.x.name,
+      },
+      yaxis: {
+        title: histogram.y.name,
+      },
+    },
   };
 }
