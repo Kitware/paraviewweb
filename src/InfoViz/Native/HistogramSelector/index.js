@@ -39,6 +39,7 @@ function histogramSelector(publicAPI, model) {
   // smallest we'll let it go. Limits boxesPerRow in header GUI.
   const minBoxSizeLimit = 115;
   const legendSize = 15;
+  const iconSize = 21.3;
   // hard coded because I did not figure out how to
   // properly query this value from our container.
   const borderSize = 6;
@@ -134,7 +135,7 @@ function histogramSelector(publicAPI, model) {
     model.histWidth = model.boxWidth - (boxBorder * 2) -
                       model.histMargin.left - model.histMargin.right;
     // other row size, probably a way to query for this
-    const otherRowHeight = 21;
+    const otherRowHeight = 23;
     model.histHeight = model.boxHeight - (boxBorder * 2) - otherRowHeight -
                        model.histMargin.top - model.histMargin.bottom;
 
@@ -269,14 +270,14 @@ function histogramSelector(publicAPI, model) {
 
     d3.select(model.container)
       .select(`.${style.jsHeaderBoxes}`)
-      .style('display', model.singleModeName === null ? 'initial' : 'none');
+      .style('display', model.singleModeName === null ? null : 'none');
     d3.select(model.container)
       .select(`.${style.jsHeaderBoxesNum}`)
       .text(`${model.boxesPerRow} /row`);
 
     d3.select(model.container)
       .select(`.${style.jsHeaderSingle}`)
-      .style('display', model.singleModeName === null ? 'none' : 'initial');
+      .style('display', model.singleModeName === null ? 'none' : null);
 
     if (model.provider.isA('LegendProvider') && model.singleModeName) {
       const { color, shape } = model.provider.getLegend(model.singleModeName);
@@ -605,14 +606,18 @@ function histogramSelector(publicAPI, model) {
       // Change interaction icons based on state.
       // scoreHelper has save icon and score icon.
       const numIcons = (model.singleModeSticky ? 0 : 1) + scoreHelper.numScoreIcons(def);
-      iconCell.style('width', `${(numIcons * 15) + 6}px`);
+      iconCell.style('width', `${(numIcons * iconSize) + 2}px`);
       scoreHelper.updateScoreIcons(iconCellViz, def);
       iconCellViz.select(`.${style.jsExpandIcon}`)
         .attr('class', model.singleModeName === null ? style.expandIcon : style.shrinkIcon)
         .style('display', model.singleModeSticky ? 'none' : null);
+      // + 2 accounts for internal padding.
+      const allIconsWidth = Math.ceil(iconCellViz.node().getBoundingClientRect().width) + 2;
+      // reset to the actual width used.
+      iconCell.style('width', `${allIconsWidth}px`);
       // Apply field name
       fieldCell
-        .style('width', `${model.histWidth - (numIcons * 19)}px`)
+        .style('width', `${model.boxWidth - (10 + legendSize + 6 + allIconsWidth)}px`)
         .text(def.name);
 
       // adjust some settings based on current size
