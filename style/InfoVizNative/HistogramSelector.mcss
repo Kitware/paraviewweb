@@ -42,7 +42,7 @@
 
 .histogramSelector {
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
-  font-size: 8pt;
+  font-size: 10pt;
   position: relative;
   top: 0px;
   bottom: 0px;
@@ -53,7 +53,7 @@
 .header {
   composes: jsHeader;
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
-  font-size: 10pt;
+  font-size: 11pt;
   font-weight: bold;
   user-select: none;
   cursor: pointer;
@@ -268,11 +268,14 @@
   padding-left: 0px;
   text-align: right;
   border-bottom: 1px solid #fff;
+  overflow: hidden;
 }
 
 .legendIconsViz {
   composes: jsLegendIconsViz;
   visibility: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 .baseLegendRow:hover {
@@ -282,7 +285,7 @@
   border-bottom: 1px solid #000;
 }
 
-.jsLegendRow:hover .jsLegendIconsViz {
+.jsLegendRow:hover .legendIconsViz {
   visibility: visible;
 }
 .sparkline {
