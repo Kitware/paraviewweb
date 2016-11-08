@@ -16,7 +16,7 @@ The launcher has several specific tasks, all with the common goal of allowing cl
 
 ## Configuration of the launcher
 
-The launcher provides a great deal of flexibility, which can be leveraged by customizing its configuration file.  In this guide, as in the [Apache as a front end](/paraviewweb/docs/guides/apache_front_end.html) guide, we assume you are using Apache as the front end, and we also assume the directory you have chosen for the mapping file is `<MAPPING-FILE-DIR>`.  The Following is an example configuration file:
+The launcher provides a great deal of flexibility, which can be leveraged by customizing its configuration file.  In this guide, as in the [Apache as a front end](apache_front_end.html) guide, we assume you are using Apache as the front end, and we also assume the directory you have chosen for the mapping file is `<MAPPING-FILE-DIR>`.  The Following is an example configuration file:
 
 __launcher.config__
 

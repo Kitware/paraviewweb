@@ -18,19 +18,19 @@ The point of the front end is to serve static content as well as to do network f
 
 While we recommend Apache (a version >= 2.4.7) as a front end component, there are really any number of potential options here. 
 
-We have provided a detailed guide on using [Apache as a front end](/paraviewweb/docs/guides/apache_front_end.html).
+We have provided a detailed guide on using [Apache as a front end](apache_front_end.html).
 
 ## Launcher
 
 The launcher component (sometimes previously called the "Session Manager") is responsible for launching a ParaViewWeb process for each user who requests one, and also for communicating the session ID and an associated port number to the front end component.  This allows the front end component to know how to forward future requests from each client to the correct port where that clients visualization session is listening.
 
-Currently ParaViewWeb includes our recommended [Python launcher](/paraviewweb/docs/guides/python_launcher.html) which is based on Twisted.  Also, many other approaches for launching visualization processes have been developed for specific applications and specific deployments.  Please see the [Laucher RESTful API](/paraviewweb/docs/guides/launcher_api.html) guide for information about the API that should be implemented by any launcher.
+Currently ParaViewWeb includes our recommended [Python launcher](python_launcher.html) which is based on Twisted.  Also, many other approaches for launching visualization processes have been developed for specific applications and specific deployments.  Please see the [Laucher RESTful API](launcher_api.html) guide for information about the API that should be implemented by any launcher.
 
 ## ParaViewWeb
 
 ParaViewWeb is simply ParaView, compiled with the Python option turned on.  Any machine where it is to be run must either have a suitable graphics environment, or else ParaView must also be compiled with OSMesa support so that it can do offscreen (software) rendering.
 
-There is some basic information about getting up and running with ParaViewWeb in the [Quick start](/paraviewweb/docs/guides/quick_start.html) guide.
+There is some basic information about getting up and running with ParaViewWeb in the [Setup](setup.html) guide.
 
 ### Rendering environment
 
@@ -38,11 +38,11 @@ Perhaps the first task to be undertaken is to decide whether you want hardware o
 
 #### Software rendering
 
-For instructions on how to compile ParaView for software rendering, see [Offscreen OSMesa ParaViewWeb](/paraviewweb/docs/guides/os_mesa.html).  The ParaView wiki [section](http://www.paraview.org/Wiki/ParaView_And_Mesa_3D) on Mesa 3D also has a lot of information on this topic.
+For instructions on how to compile ParaView for software rendering, see [Offscreen OSMesa ParaViewWeb](os_mesa.html).  The ParaView wiki [section](http://www.paraview.org/Wiki/ParaView_And_Mesa_3D) on Mesa 3D also has a lot of information on this topic.
 
 #### Hardware rendering
 
-For instructions on how to set up a hardware rendering environment, there are also many sources of information.  Again, the ParaView [wiki](http://www.paraview.org/Wiki/ParaView) is one such source.  We have also compiled instructions for setting up an environment suitable for hardware rendering on several kinds of Amazon EC2 AMI images running on g2.2xlarge instances.  That information can be found in the [EC2 Graphics Setup](/paraviewweb/docs/guides/graphics_on_ec2_g2.html) guide.
+For instructions on how to set up a hardware rendering environment, there are also many sources of information.  Again, the ParaView [wiki](http://www.paraview.org/Wiki/ParaView) is one such source.  We have also compiled instructions for setting up an environment suitable for hardware rendering on several kinds of Amazon EC2 AMI images running on g2.2xlarge instances.  That information can be found in the [EC2 Graphics Setup](graphics_on_ec2_g2.html) guide.
 
 ### Server configuration
 

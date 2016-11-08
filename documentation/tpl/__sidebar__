@@ -1,33 +1,33 @@
 docs:
   getting_started:
-    overview: /paraviewweb/docs/index.html
-    setup: /paraviewweb/docs/setup.html
-    roadmap: /paraviewweb/docs/roadmap.html
+    overview: index.html
+    setup: setup.html
+    roadmap: roadmap.html
     releases: https://github.com/Kitware/paraviewweb/releases
   basic_usage:
-    import: /paraviewweb/docs/import.html
+    import: import.html
   miscellaneous:
-    tools: /paraviewweb/docs/tools.html
-    troubleshooting: /paraviewweb/docs/troubleshooting.html
-    contributing: /paraviewweb/docs/contributing.html
+    tools: tools.html
+    troubleshooting: troubleshooting.html
+    contributing: contributing.html
   pvw_server:
-    architecture: /paraviewweb/docs/guides/architecture.html
-    multi_user_setup: /paraviewweb/docs/guides/multi_user_setup.html
-    apache_front_end: /paraviewweb/docs/guides/apache_front_end.html
-    ami: /paraviewweb/docs/guides/ami.html
+    architecture: architecture.html
+    multi_user_setup: multi_user_setup.html
+    apache_front_end: apache_front_end.html
+    ami: ami.html
   launchers:
-    launcher_api: /paraviewweb/docs/guides/launcher_api.html
-    python_launcher: /paraviewweb/docs/guides/python_launcher.html
-    launching_examples: /paraviewweb/docs/guides/launching_examples.html
+    launcher_api: launcher_api.html
+    python_launcher: python_launcher.html
+    launching_examples: launching_examples.html
   graphics:
-    graphics_on_ec2_g2: /paraviewweb/docs/guides/graphics_on_ec2_g2.html
-    os_mesa: /paraviewweb/docs/guides/os_mesa.html
-    virtualgl_turbovnc_howto: /paraviewweb/docs/guides/virtualgl_turbovnc_howto.html
+    graphics_on_ec2_g2: graphics_on_ec2_g2.html
+    os_mesa: os_mesa.html
+    virtualgl_turbovnc_howto: virtualgl_turbovnc_howto.html
   deploy:
-    ubuntu_14_04: /paraviewweb/docs/guides/ubuntu_14_04.html
-    ansible: /paraviewweb/docs/guides/ansible.html
-    vagrant: /paraviewweb/docs/guides/vagrant.html
-    nvidia_redhat: /paraviewweb/docs/guides/nvidia_redhat.html
+    ubuntu_14_04: ubuntu_14_04.html
+    ansible: ansible.html
+    vagrant: vagrant.html
+    nvidia_redhat: nvidia_redhat.html
   compilation:
-    configure_and_build_vtkweb: /paraviewweb/docs/guides/configure_and_build_vtkweb.html
-    configure_and_build_pvweb: /paraviewweb/docs/guides/configure_and_build_pvweb.html
+    configure_and_build_vtkweb: configure_and_build_vtkweb.html
+    configure_and_build_pvweb: configure_and_build_pvweb.html

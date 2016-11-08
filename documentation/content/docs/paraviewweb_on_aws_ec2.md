@@ -20,7 +20,7 @@ You should replace this with the actual hostname of a running instance. Addition
 
 ## Package install and graphics environment setup
 
-Some of the packages to be installed were related to building Apache, see the [Apache as a front end](/paraviewweb/docs/guides/apache_front_end.html) guide for details.  For information about graphics environment setup, please see the [EC2 Graphics Setup](/paraviewweb/docs/guides/graphics_on_ec2_g2.html) guide.
+Some of the packages to be installed were related to building Apache, see the [Apache as a front end](apache_front_end.html) guide for details.  For information about graphics environment setup, please see the [EC2 Graphics Setup](graphics_on_ec2_g2.html) guide.
 
 ## ParaView
 
@@ -40,11 +40,9 @@ Just make sure to use the correct instance DNS name.
 
 ## Apache
 
-Instructions for configuring (and also building) Apache can now be found in the [Apache as a front end](/paraviewweb/docs/guides/apache_front_end.html) guide.
+Instructions for configuring (and also building) Apache can now be found in the [Apache as a front end](apache_front_end.html) guide.
 
 ## Configure and run the launcher
-
-The instructions in the section illustrated how to set up Jetty as the launcher for use with the Apache front end.  Those instructions can now be found in the [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html) guide.  However, we now recommend using the  instead.
 
 Once the launcher is configured and ready, there are a few more steps before you can start it.  The final steps involve starting an X server (in the background), setting the DISPLAY environment variable, and finally running the launcher itself (also in the background).
 
@@ -57,7 +55,7 @@ $ export DISPLAY=:0.0
 
 ### Start the launcher
 
-Now you can start the launcher.  See the appropriate guide ([Python Launcher](/paraviewweb/docs/guides/python_launcher.html) or [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html)) for how to start the launcher of your choice.
+Now you can start the launcher.  See the appropriate guide ([Python Launcher](python_launcher.html)) for how to start the launcher.
 
 ## Final Testing
 

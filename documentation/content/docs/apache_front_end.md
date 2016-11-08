@@ -4,7 +4,7 @@
 
 In order to use Apache as a front end for ParaViewWeb, we recommend that you use version 2.4.7 or later of Apache.  This is because as of version 2.4.7 Apache has, out of the box, everything required for it to serve as a ParaViewWeb front end.
 
-Once Apache is ready to run, you will need to configure it together with your chosen launcher (see [Multi-User Setup](/paraviewweb/docs/guides/multi_user_setup.html) for information) to manage visualization sessions.
+Once Apache is ready to run, you will need to configure it together with your chosen launcher (see [Multi-User Setup](multi_user_setup.html) for information) to manage visualization sessions.
 
 ## Getting Apache
 
