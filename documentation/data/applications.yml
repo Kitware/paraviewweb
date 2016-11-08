@@ -10,3 +10,9 @@
   preview: http://kitware.github.io/arctic-viewer/
   tags:
     - ParaView
+- name: LightViz
+  description: Customizable Visualization application
+  link: https://github.com/kitware/light-viz
+  preview: http://kitware.github.io/light-viz/
+  tags:
+    - ParaView

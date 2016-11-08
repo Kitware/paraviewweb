@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The [Quick start](/paraviewweb/docs/guides/quick_start.html) guide has information about the fastest way to get ParaViewWeb and try it out.  This guide, however, contains pointers to other guides describing all the ways of obtaining and running ParaViewWeb, including sections on downloading release versions, getting and building from source, as well as setup, running, and deployment of ParaViewWeb.
+The [Quick start](quick_start.html) guide has information about the fastest way to get ParaViewWeb and try it out.  This guide, however, contains pointers to other guides describing all the ways of obtaining and running ParaViewWeb, including sections on downloading release versions, getting and building from source, as well as setup, running, and deployment of ParaViewWeb.
 
 <center>
 <img src='pvw_setup/PVW_Logo_128_txt.png'/>
@@ -44,8 +44,8 @@ There is a wealth of information regarding compiling ParaView available on the [
 
 ## Running ParaViewWeb
 
-Once you have successfully compiled ParaView (or if you have downloaded a release binary), you are ready to run ParaViewWeb.  Both the [Quick start](/paraviewweb/docs/guides/quick_start.html) as well the [Introduction for developers](/paraviewweb/docs/guides/developer_howto.html) guides have more information about running ParaViewWeb.
+Once you have successfully compiled ParaView (or if you have downloaded a release binary), you are ready to run ParaViewWeb.  Both the [Quick start](quick_start.html) as well the [Introduction for developers](developer_howto.html) guides have more information about running ParaViewWeb.
 
 ## Deploying ParaViewWeb
 
-When it comes time to move from running ParaViewWeb server processes by hand to an automated multi-user deployment, see the [Multi-User Setup](/paraviewweb/docs/guides/multi_user_setup.html) guide for the background information on deployment.  Also, the [Ubuntu 14.04 LTS](/paraviewweb/docs/guides/ubuntu_14_04.html) and [Amazon EC2 AMI Instance](/paraviewweb/docs/guides/paraviewweb_on_aws_ec2.html) guides have detailed information about deploying on some specific systems.  In addition, the [Launching Examples](/paraviewweb/docs/guides/launching_examples.html) guide has some examples of deployments achievable with the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) and the [Jetty Launcher](/paraviewweb/docs/guides/jetty_session_manager.html).
+When it comes time to move from running ParaViewWeb server processes by hand to an automated multi-user deployment, see the [Multi-User Setup](multi_user_setup.html) guide for the background information on deployment.  Also, the [Ubuntu 14.04 LTS](ubuntu_14_04.html) and [Amazon EC2 AMI Instance](paraviewweb_on_aws_ec2.html) guides have detailed information about deploying on some specific systems.  In addition, the [Launching Examples](launching_examples.html) guide has some examples of deployments achievable with the [Python Launcher](python_launcher.html).

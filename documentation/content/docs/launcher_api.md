@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document will cover the expected RESTful API for launching a ParaViewWeb process.  For details on our launcher implementation, see the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) guide.  Also, see the [Launching Examples](/paraviewweb/docs/guides/launching_examples.html) guide for descriptions of some of the deployment configurations possible with our provided launcher.
+This document will cover the expected RESTful API for launching a ParaViewWeb process.  For details on our launcher implementation, see the [Python Launcher](python_launcher.html) guide.  Also, see the [Launching Examples](launching_examples.html) guide for descriptions of some of the deployment configurations possible with our provided launcher.
 
 ## Role of the launcher
 
@@ -70,7 +70,7 @@ For example, if the client sends the given JSON payload
     'app': 'Visualizer'
     }
 
-The server should first run the command line associated with the application `launcher` (see the [Python Launcher](/paraviewweb/docs/guides/python_launcher.html) guide for information about how the application commands lines are configured).  
+The server should first run the command line associated with the application `launcher` (see the [Python Launcher](python_launcher.html) guide for information about how the application commands lines are configured).  
 
 Once the command line is running, the server should respond something like:
 
