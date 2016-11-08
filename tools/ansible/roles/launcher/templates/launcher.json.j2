@@ -1,5 +1,4 @@
 {
-
       "configuration": {
         "host" : "localhost",
         "port" : 9000,
@@ -15,16 +14,29 @@
 
       "properties" : {
         "python_exec" : "/opt/paraview/bin/pvpython",
-        "visualizer" : "{{paraview_versioned_lib_directory}}/site-packages/paraview/web/pv_web_visualizer.py",
-        "data_dir": "/home/{{pvw_user}}/data/ParaViewData/Data"
+        "visualizer" : "{{paraview_versioned_shared_directory}}/web/visualizer/server/pvw-visualizer.py",
+        "data_dir": "/home/{{pvw_user}}/data/ParaViewData/Data",
+        "lightviz" : "{{paraview_versioned_shared_directory}}/web/lightviz/server/pvw-light-viz.py",
+        "lightviz_data": "/home/{{pvw_user}}/data/LightVizDatasets"
       },
-
 
       "apps" : {
         "visualizer": {
           "cmd" : [
-            "${python_exec}", "${visualizer}", "--port", "${port}", "--data-dir", "${data_dir}" {{ ', "--mesa-llvm"' if virtualbox or not gpu else '' }}
-              ],
+            "${python_exec}", "${visualizer}",
+            "--port", "${port}",
+            "--data-dir", "${data_dir}"
+            {{ ', "--mesa-llvm"' if virtualbox or not gpu else '' }}
+          ],
+          "ready_line" : "Starting factory"
+        },
+        "lightviz": {
+          "cmd" : [
+            "${python_exec}", "${lightviz}",
+            "--port", "${port}",
+            "--data", "${data_dir}"
+            {{ ', "--mesa-llvm"' if virtualbox or not gpu else '' }}
+          ],
           "ready_line" : "Starting factory"
         }
      }

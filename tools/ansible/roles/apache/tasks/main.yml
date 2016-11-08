@@ -14,6 +14,19 @@
   tags:
     - apache
 
+- name: Fix Web directory ownership
+  become: yes
+  become_user: root
+  file:
+    path="/opt/paraview/www"
+    state=directory
+    recurse=yes
+    owner="{{apache_user_name}}"
+    group="{{apache_user_name}}"
+  tags:
+    - paraview
+
+
 - include: ./{{ ansible_distribution }}.yml
 
 

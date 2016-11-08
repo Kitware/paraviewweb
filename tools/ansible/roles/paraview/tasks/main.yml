@@ -16,7 +16,7 @@
 
 - name: Download ParaView
   get_url:
-    url="http://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.0&type=binary&os=linux64&downloadFile={{paraview_download_filename}}.tar.gz"
+    url="http://www.paraview.org/files/v5.2/{{paraview_download_filename}}.tar.gz"
     dest="/var/tmp"
   register: paraview_tarball
   when: not paraview_download_stat.stat.exists
@@ -126,6 +126,42 @@
     owner="{{pvw_user}}"
     group="{{pvw_user}}"
   when: paraview_data_tarball|changed
+  tags:
+    - paraview
+
+- name: Create LightViz data directory
+  become: yes
+  become_user: root
+  file:
+    path="/home/{{pvw_user}}/data/LightVizDatasets"
+    state=directory
+    owner="{{pvw_user}}"
+    group="{{pvw_user}}"
+  tags:
+    - paraview
+
+- name: Create Web directory
+  become: yes
+  become_user: root
+  file:
+    path="/opt/paraview/www"
+    state=directory
+    owner="{{pvw_user}}"
+    group="{{pvw_user}}"
+  tags:
+    - paraview
+
+- name: Install Visualizer Web directory
+  become: yes
+  become_user: root
+  shell: creates="/opt/paraview/www/visualizer" cp -r "{{paraview_versioned_shared_directory}}/web/visualizer/www" "/opt/paraview/www/visualizer"
+  tags:
+    - paraview
+
+- name: Install LightViz Web directory
+  become: yes
+  become_user: root
+  shell: creates="/opt/paraview/www/lightviz" cp -r "{{paraview_versioned_shared_directory}}/web/lightviz/www" "/opt/paraview/www/lightviz"
   tags:
     - paraview
 
