@@ -291,11 +291,21 @@ You just need to copy the various web applications to our served directory.
 ```sh Visualizer
 $ cd /data/pv/pv-5.2/share/paraview-5.2/web
 $ sudo cp -r visualizer/www /data/www/visualizer
+
+=> http://YOUR_HOST_NAME_TO_REPLACE/visualizer
 ```
 
 ```sh LightViz
 $ cd /data/pv/pv-5.2/share/paraview-5.2/web
 $ sudo cp -r lightviz/www /data/www/lightviz
+
+=> http://YOUR_HOST_NAME_TO_REPLACE/lightviz
+```
+
+You may need to ensure proper rights for the /data/www directory 
+
+```sh
+$ sudo chown -R www-data:www-data /data/www
 ```
 
 ## Hardware graphics notes for Ubuntu 14.04 LTS on EC2
