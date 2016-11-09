@@ -29127,6 +29127,7 @@
 	  }
 
 	  function drawSelectionBars(selectionBarModel) {
+	    var resizeTargetSize = 6;
 	    var svg = _d2.default.select(model.container).select('svg');
 	    var selBarGroup = svg.select('g.selection-bars');
 
@@ -29141,40 +29142,64 @@
 	      return d.color;
 	    }).attr('width', model.selectionBarWidth).attr('height', function (d, i) {
 	      var barHeight = d.screenRangeY[1] - d.screenRangeY[0];
-	      if (barHeight < 0) {
-	        barHeight = d.screenRangeY[0] - d.screenRangeY[1];
-	      }
+	      if (barHeight < 0) barHeight = -barHeight;
 	      return barHeight;
 	    }).attr('transform', function (d, i) {
 	      var startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
 	      return 'translate(' + (d.screenX - model.selectionBarWidth / 2) + ', ' + startPoint + ')';
+	    }).on('mousemove', function inner(d, i) {
+	      var moveCoords = _d2.default.mouse(svg.node());
+	      var resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
+	      if (Math.abs(d.screenRangeY[0] - moveCoords[1]) <= resizeHandle || Math.abs(d.screenRangeY[1] - moveCoords[1]) <= resizeHandle) {
+	        _d2.default.select(this).style('cursor', 'ns-resize');
+	      } else {
+	        _d2.default.select(this).style('cursor', null);
+	      }
+	    }).on('mouseout', function inner(d, i) {
+	      _d2.default.select(this).style('cursor', null);
 	    }).on('mousedown', function inner(d, i) {
 	      var _this = this;
 
 	      _d2.default.event.preventDefault();
-	      var downCoords = _d2.default.mouse(model.container);
+	      var downCoords = _d2.default.mouse(svg.node());
+	      // resize within X pixels of the ends, or 1/3 of the bar size, whichever is less.
+	      var resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
+	      var resizeIndex = -1;
+	      var resizeOffset = 0;
+	      if (Math.abs(d.screenRangeY[0] - downCoords[1]) <= resizeHandle) {
+	        resizeIndex = 0;
+	        resizeOffset = d.screenRangeY[0] - downCoords[1];
+	      } else if (Math.abs(d.screenRangeY[1] - downCoords[1]) <= resizeHandle) {
+	        resizeIndex = 1;
+	        resizeOffset = d.screenRangeY[1] - downCoords[1];
+	      }
 
 	      svg.on('mousemove', function (md, mi) {
-	        var moveCoords = _d2.default.mouse(model.container);
+	        var moveCoords = _d2.default.mouse(svg.node());
 	        var deltaYScreen = moveCoords[1] - downCoords[1];
+	        if (resizeIndex >= 0) {
+	          d.screenRangeY[resizeIndex] = moveCoords[1] + resizeOffset;
+	          deltaYScreen = 0;
+	        }
 	        var startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
-	        _d2.default.select(_this).attr('transform', 'translate(' + (d.screenX - model.selectionBarWidth / 2) + ', ' + (startPoint + deltaYScreen) + ')');
+	        var barHeight = d.screenRangeY[1] - d.screenRangeY[0];
+	        if (barHeight < 0) barHeight = -barHeight;
+	        _d2.default.select(_this).attr('transform', 'translate(' + (d.screenX - model.selectionBarWidth / 2) + ', ' + (startPoint + deltaYScreen) + ')').attr('height', barHeight);
 	      });
 
 	      svg.on('mouseup', function (md, mi) {
-	        var upCoords = _d2.default.mouse(model.container);
-	        var deltaYScreen = upCoords[1] - downCoords[1];
+	        var upCoords = _d2.default.mouse(svg.node());
+	        var deltaYScreen = resizeIndex === -1 ? upCoords[1] - downCoords[1] : 0;
 	        var startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
 	        var barHeight = d.screenRangeY[1] - d.screenRangeY[0];
-	        if (barHeight < 0) {
-	          barHeight = d.screenRangeY[0] - d.screenRangeY[1];
-	        }
+	        if (barHeight < 0) barHeight = -barHeight;
 	        var newStart = startPoint + deltaYScreen;
 	        var newEnd = newStart + barHeight;
 	        svg.on('mousemove', null);
 	        svg.on('mouseup', null);
 
 	        var axis = model.axes.getAxis(d.index);
+	        // Note: if bar is moved entirely outside the current range, it will be deleted.
 	        model.axes.updateSelection(d.index, d.selectionIndex, screenToData(model, newStart, axis), screenToData(model, newEnd, axis));
 	      });
 	    });
@@ -40577,6 +40602,11 @@
 	    key: 'updateSelection',
 	    value: function updateSelection(selectionIndex, start, end) {
 	      var entry = this.selections[selectionIndex].interval = [start, end];
+	      // if entire selection is outside range, delete it.
+	      if (start < this.range[0] && end < this.range[0] || end > this.range[1] && start > this.range[1]) {
+	        this.selections.splice(selectionIndex, 1);
+	        return;
+	      }
 
 	      // Clamp to axis range
 	      if (start < this.range[0]) {
@@ -40587,7 +40617,7 @@
 	        entry[1] = this.range[1];
 	      }
 
-	      // FIXME trigger notification
+	      // notification handled by AxesManager
 	    }
 	  }, {
 	    key: 'addSelection',
