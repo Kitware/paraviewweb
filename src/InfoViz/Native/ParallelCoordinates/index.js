@@ -115,6 +115,7 @@ function parallelCoordinate(publicAPI, model) {
   }
 
   function drawSelectionBars(selectionBarModel) {
+    const resizeTargetSize = 6;
     const svg = d3.select(model.container).select('svg');
     const selBarGroup = svg.select('g.selection-bars');
 
@@ -138,40 +139,68 @@ function parallelCoordinate(publicAPI, model) {
       .attr('width', model.selectionBarWidth)
       .attr('height', (d, i) => {
         let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
-        if (barHeight < 0) {
-          barHeight = d.screenRangeY[0] - d.screenRangeY[1];
-        }
+        if (barHeight < 0) barHeight = -barHeight;
         return barHeight;
       })
       .attr('transform', (d, i) => {
         const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
         return `translate(${d.screenX - (model.selectionBarWidth / 2)}, ${startPoint})`;
       })
+      .on('mousemove', function inner(d, i) {
+        const moveCoords = d3.mouse(svg.node());
+        const resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
+        if (Math.abs(d.screenRangeY[0] - moveCoords[1]) <= resizeHandle ||
+            Math.abs(d.screenRangeY[1] - moveCoords[1]) <= resizeHandle) {
+          d3.select(this).style('cursor', 'ns-resize');
+        } else {
+          d3.select(this).style('cursor', null);
+        }
+      })
+      .on('mouseout', function inner(d, i) {
+        d3.select(this).style('cursor', null);
+      })
       .on('mousedown', function inner(d, i) {
         d3.event.preventDefault();
-        const downCoords = d3.mouse(model.container);
+        const downCoords = d3.mouse(svg.node());
+        // resize within X pixels of the ends, or 1/3 of the bar size, whichever is less.
+        const resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
+        let resizeIndex = -1;
+        let resizeOffset = 0;
+        if (Math.abs(d.screenRangeY[0] - downCoords[1]) <= resizeHandle) {
+          resizeIndex = 0;
+          resizeOffset = d.screenRangeY[0] - downCoords[1];
+        } else if (Math.abs(d.screenRangeY[1] - downCoords[1]) <= resizeHandle) {
+          resizeIndex = 1;
+          resizeOffset = d.screenRangeY[1] - downCoords[1];
+        }
 
         svg.on('mousemove', (md, mi) => {
-          const moveCoords = d3.mouse(model.container);
-          const deltaYScreen = moveCoords[1] - downCoords[1];
+          const moveCoords = d3.mouse(svg.node());
+          let deltaYScreen = moveCoords[1] - downCoords[1];
+          if (resizeIndex >= 0) {
+            d.screenRangeY[resizeIndex] = moveCoords[1] + resizeOffset;
+            deltaYScreen = 0;
+          }
           const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
-          d3.select(this).attr('transform', `translate(${d.screenX - (model.selectionBarWidth / 2)}, ${startPoint + deltaYScreen})`);
+          let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
+          if (barHeight < 0) barHeight = -barHeight;
+          d3.select(this).attr('transform', `translate(${d.screenX - (model.selectionBarWidth / 2)}, ${startPoint + deltaYScreen})`)
+          .attr('height', barHeight);
         });
 
         svg.on('mouseup', (md, mi) => {
-          const upCoords = d3.mouse(model.container);
-          const deltaYScreen = upCoords[1] - downCoords[1];
+          const upCoords = d3.mouse(svg.node());
+          const deltaYScreen = (resizeIndex === -1 ? upCoords[1] - downCoords[1] : 0);
           const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
           let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
-          if (barHeight < 0) {
-            barHeight = d.screenRangeY[0] - d.screenRangeY[1];
-          }
+          if (barHeight < 0) barHeight = -barHeight;
           const newStart = startPoint + deltaYScreen;
           const newEnd = newStart + barHeight;
           svg.on('mousemove', null);
           svg.on('mouseup', null);
 
           const axis = model.axes.getAxis(d.index);
+          // Note: if bar is moved entirely outside the current range, it will be deleted.
           model.axes.updateSelection(d.index, d.selectionIndex, screenToData(model, newStart, axis), screenToData(model, newEnd, axis));
         });
       });
