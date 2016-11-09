@@ -52,4 +52,4 @@ Once started (~5 minutes), you can access the machine like the following:
 
 ### AMIs
 
-Please [contact us](http://www.kitware.com/products/support.html) if you need us to build a VM for you.
+Please [contact us](http://www.kitware.com/products/support.html) if you need us to build a VM for you or you can follow our [Ansible guide for EC2](ansible.html#EC2-Deployment)
