@@ -30,6 +30,12 @@ export default class Axis {
 
   updateSelection(selectionIndex, start, end) {
     const entry = this.selections[selectionIndex].interval = [start, end];
+    // if entire selection is outside range, delete it.
+    if ((start < this.range[0] && end < this.range[0]) ||
+        (end > this.range[1] && start > this.range[1])) {
+      this.selections.splice(selectionIndex, 1);
+      return;
+    }
 
     // Clamp to axis range
     if (start < this.range[0]) {
@@ -40,7 +46,7 @@ export default class Axis {
       entry[1] = this.range[1];
     }
 
-    // FIXME trigger notification
+    // notification handled by AxesManager
   }
 
   addSelection(start, end, endpoints = '**', uncertainty) {
