@@ -28,7 +28,7 @@
 - name: Copy ParaViewWeb site into /var/www/html
   become: yes
   become_user: root
-  shell: cp -r {{paraview_versioned_shared_directory}}/www/* /var/www/html/
+  shell: cp -r /opt/paraview/www/* /var/www/html/
   tags:
     - apache
 
