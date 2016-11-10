@@ -146,9 +146,17 @@ $ ansible-playbook                                              \
    -u ubuntu                                                    \
    -e hostname=ec2-35-163-16-21.us-west-2.compute.amazonaws.com \
    -e gpu=yes                                                   \
-   -e install_nvidia_driver=yes                                 \
+   -e install_nvidia_driver=no                                  \
    --private-key=./paraview-52.pem
 ```
+
+Since the ansible script won't install the drivers for the GPU you will have to do it yourself following the instruction from [NVidia](http://www.nvidia.com/Download/index.aspx?lang=en-us)
+
+The driver we used at the time of this documentation was:
+
+<center>
+<img src='nvidia-setting.jpg' width='60%' />
+</center>
 
 Here is the expected output of the previous command:
 
@@ -241,9 +249,6 @@ included: /Users/seb/Desktop/pv52-ec2/paraviewweb/tools/ansible/roles/paraview/t
 TASK [paraview : Step up ParaViewWeb user to auto login to start X] ************
 changed: [35.163.16.21] => (item={u'regex': u'^#auto_login          no$', u'line': u'auto_login          yes'})
 changed: [35.163.16.21] => (item={u'regex': u'^#default_user        simone$', u'line': u'default_user        pvw-user'})
-
-TASK [paraview : Install NVIDIA drivers] ***************************************
-changed: [35.163.16.21] => (item=[u'nvidia-current'])
 
 TASK [paraview : Run nvida-xconfig] ********************************************
 changed: [35.163.16.21]
