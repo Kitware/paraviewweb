@@ -90,7 +90,11 @@ export default React.createClass({
     if (multiple) {
       selectedValue = this.props.data.value.map(valueToString);
     } else if (this.props.ui.size === 1) {
-      selectedValue = valueToString(this.props.data.value[0]);
+      if (this.props.ui.domain && this.props.ui.domain[this.props.data.value[0]] !== undefined) {
+        selectedValue = valueToString(this.props.ui.domain[this.props.data.value[0]]);
+      } else {
+        selectedValue = valueToString(this.props.data.value[0]);
+      }
     } else {
       selectedValue = valueToString(this.props.data.value);
     }
