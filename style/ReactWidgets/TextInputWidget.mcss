@@ -10,7 +10,7 @@
 
 .button {
     composes: fa        from 'font-awesome/css/font-awesome.css';
-    composes: fa-check  from 'font-awesome/css/font-awesome.css';
+    /*composes: fa-check  from 'font-awesome/css/font-awesome.css';*/
 
     margin-left: 10px;
     flex: none;
