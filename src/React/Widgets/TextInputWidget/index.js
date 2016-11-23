@@ -18,7 +18,7 @@ export default React.createClass({
     return {
       value: '',
       className: '',
-      icon: 'fa-check',
+      icon: `${style.checkIcon}`,
     };
   },
 
@@ -37,6 +37,7 @@ export default React.createClass({
   endEditing() {
     this.setState({ editing: false });
 
+    if (!this.props.onChange) return;
     if (this.props.name) {
       this.props.onChange(this.state.valueRep, this.props.name);
     } else {

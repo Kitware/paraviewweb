@@ -99,19 +99,24 @@ export default React.createClass({
       selectedValue = valueToString(this.props.data.value);
     }
 
+    const containerStyle = this.props.ui.label !== undefined ? style.container : enumStyle.soloContainer;
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
-        <div className={style.header}>
-          <strong>{this.props.ui.label}</strong>
-          <span>
-            <ToggleIconButton
-              icon={style.helpIcon}
-              value={this.state.helpOpen}
-              toggle={!!this.props.ui.help}
-              onChange={this.helpToggled}
-            />
-          </span>
-        </div>
+      <div className={this.props.show(this.props.viewData) ? containerStyle : style.hidden}>
+        { this.props.ui.label !== undefined &&
+          <div className={enumStyle.header}>
+            <strong>{this.props.ui.label}</strong>
+            { this.props.ui.help !== undefined &&
+              <span>
+                <ToggleIconButton
+                  icon={style.helpIcon}
+                  value={this.state.helpOpen}
+                  toggle={!!this.props.ui.help}
+                  onChange={this.helpToggled}
+                />
+              </span>
+              }
+          </div>
+        }
         <div className={style.inputBlock}>
           <select
             className={multiple ? enumStyle.inputMultiSelect : enumStyle.input}
@@ -122,10 +127,12 @@ export default React.createClass({
             {mapper()}
           </select>
         </div>
-        <div
-          className={this.state.helpOpen ? style.helpBox : style.hidden}
-          dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
-        />
+        { this.props.ui.help !== undefined &&
+          <div
+            className={this.state.helpOpen ? style.helpBox : style.hidden}
+            dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
+          />
+        }
       </div>);
   },
 });
