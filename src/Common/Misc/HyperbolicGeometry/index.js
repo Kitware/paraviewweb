@@ -1,7 +1,8 @@
-const vectorMag = vec => Math.sqrt(vec.reduce((a, b) => (a + (b * b)), 0));
-const vectorDiff = (aa, bb) => [0, 1].map(ii => bb[ii] - aa[ii]);
-const vectorMAdd = (aa, bb, xx) => [0, 1].map(ii => aa[ii] + (xx * bb[ii]));
-const vectorDot = (aa, bb) => [0, 1].map(ii => aa[ii] * bb[ii]).reduce((pp, qq) => pp + qq, 0);
+export const vectorMag = vec => Math.sqrt(vec.reduce((a, b) => (a + (b * b)), 0));
+export const vectorDiff = (aa, bb) => [0, 1].map(ii => bb[ii] - aa[ii]);
+export const vectorMAdd = (aa, bb, xx) => [0, 1].map(ii => aa[ii] + (xx * bb[ii]));
+export const vectorDot = (aa, bb) => [0, 1].map(ii => aa[ii] * bb[ii]).reduce((pp, qq) => pp + qq, 0);
+export const vectorScale = (xx, aa) => aa.map(tt => xx * tt);
 
 /** \brief Map points from the unbounded hyperbolic plane to the unit Poincaré disk.
   *
@@ -282,6 +283,7 @@ export default {
   vectorDiff,
   vectorMAdd,
   vectorDot,
+  vectorScale,
   pointsApproxCollinear,
   lineLineIntersectFragile,
   lineCircleIntersectFragile,
