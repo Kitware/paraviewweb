@@ -25,11 +25,16 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     }
 
     const rect = model.container.getBoundingClientRect();
+    const smaller = rect.width < rect.height ? rect.width : rect.height;
+    const tx = rect.width / smaller;
+    const ty = rect.height / smaller;
     d3.select(model.container).select('svg')
       .attr('width', rect.width)
       .attr('height', rect.height);
     model.transformGroup.attr('transform',
-      `scale(${rect.width / 2.0}, ${rect.height / 2.0}) translate(1, 1)`);
+      `scale(${smaller / 2.0}, ${smaller / 2.0}) translate(${tx}, ${ty})`);
+    // TODO: Now transition the point size and arc width to maintain
+    //       the diagram's sense of proportion.
   };
 
   publicAPI.setContainer = (el) => {
@@ -119,10 +124,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
   };
 
   publicAPI.coordsChanged = () => {
-    model.nodeGroup.selectAll('.node').data(model.diskCoords, i => i);
-      model.nodeGroup.selectAll('.node') //.transition().duration(100)
-        .attr('cx', d => d[0])
-        .attr('cy', d => d[1]);
+    model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.idx);
+      model.nodeGroup.selectAll('.node').transition().duration(100)
+        .attr('cx', d => d.x[0])
+        .attr('cy', d => d.x[1]);
   };
 
   publicAPI.focusChanged = () => {
@@ -139,7 +144,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .classed('node', true)
       .classed(style.hyperbolicNode, true)
       .attr('r', '0.03px')
-      .on('click', (d, i) => { model.focus = model.nodes[i]; console.log('focus now ', model.focus); publicAPI.focusChanged(); });
+      .on('click', (d, i) => { model.focus = model.nodes[i]; publicAPI.focusChanged(); });
     ngdata.exit().remove();
     publicAPI.coordsChanged();
     console.log(model.nodeGroup.selectAll('.node'));
