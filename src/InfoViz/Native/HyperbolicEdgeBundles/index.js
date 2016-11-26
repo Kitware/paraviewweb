@@ -61,6 +61,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       viewdiv.classed(style.hyperbolicGeomContainer, true);
       const svg = viewdiv.append('svg').classed('hyperbolic-geom-svg', true);
       model.transformGroup = svg.append('g').classed('disk-transform', true);
+      model.transformGroup.append('circle').classed('disk-boundary', true);
       model.unselectedBundleGroup = model.transformGroup.append('g').classed('unselected-bundles', true);
       model.treeEdgeGroup = model.transformGroup.append('g').classed('tree-edges', true);
       model.selectedBundleGroup = model.transformGroup.append('g').classed('selected-bundles', true);
@@ -117,15 +118,16 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         [384.90567631119114, 354.81036757015187, 392.16231669382640, 390.86222345739990],
       ];
       model.hyperbolicBounds = [[253.15, 166.33], [420.81, 390.86]];
+      model.transitionTime = 500;
       model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
       model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce((a, b) => ((a > b) ? a : b)) / 2.0;
       publicAPI.modelUpdated();
     }
   };
 
-  publicAPI.coordsChanged = () => {
+  publicAPI.coordsChanged = (deltaT) => {
     model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.idx);
-      model.nodeGroup.selectAll('.node').transition().duration(100)
+      model.nodeGroup.selectAll('.node').transition().duration(deltaT)
         .attr('cx', d => d.x[0])
         .attr('cy', d => d.x[1]);
   };
@@ -133,7 +135,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
   publicAPI.focusChanged = () => {
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes, model.focus, model.diskScale);
-    publicAPI.coordsChanged();
+    publicAPI.coordsChanged(model.transitionTime);
   };
 
   publicAPI.modelUpdated = () => {
@@ -146,7 +148,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .attr('r', '0.03px')
       .on('click', (d, i) => { model.focus = model.nodes[i]; publicAPI.focusChanged(); });
     ngdata.exit().remove();
-    publicAPI.coordsChanged();
+    publicAPI.coordsChanged(model.transitionTime);
     console.log(model.nodeGroup.selectAll('.node'));
   };
 }
