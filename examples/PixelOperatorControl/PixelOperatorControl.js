@@ -22767,13 +22767,16 @@
 	    className: _react2.default.PropTypes.string,
 	    name: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
-	    value: _react2.default.PropTypes.string
+	    value: _react2.default.PropTypes.string,
+	    maxWidth: _react2.default.PropTypes.string,
+	    icon: _react2.default.PropTypes.string
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      value: '',
-	      className: ''
+	      className: '',
+	      icon: '' + _TextInputWidget2.default.checkIcon
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -22789,13 +22792,25 @@
 	  endEditing: function endEditing() {
 	    this.setState({ editing: false });
 
+	    if (!this.props.onChange) return;
 	    if (this.props.name) {
 	      this.props.onChange(this.state.valueRep, this.props.name);
 	    } else {
 	      this.props.onChange(this.state.valueRep);
 	    }
 	  },
+	  handleKeyUp: function handleKeyUp(e) {
+	    if (!this.textInput) return;
+	    if (e.key === 'Enter' || e.key === 'Return') {
+	      this.textInput.blur();
+	    } else if (e.key === 'Escape') {
+	      this.setState({ valueRep: this.props.value });
+	    }
+	  },
 	  render: function render() {
+	    var _this = this;
+
+	    var inlineStyle = this.props.maxWidth ? { maxWidth: this.props.maxWidth } : {};
 	    return _react2.default.createElement(
 	      'div',
 	      { className: [_TextInputWidget2.default.container, this.props.className].join(' ') },
@@ -22803,10 +22818,15 @@
 	        className: _TextInputWidget2.default.entry,
 	        type: 'text',
 	        value: this.state.editing ? this.state.valueRep : this.props.value,
+	        style: inlineStyle,
 	        onChange: this.valueChange,
-	        onBlur: this.endEditing
+	        onBlur: this.endEditing,
+	        onKeyUp: this.handleKeyUp,
+	        ref: function ref(c) {
+	          _this.textInput = c;
+	        }
 	      }),
-	      _react2.default.createElement('i', { className: this.state.editing ? _TextInputWidget2.default.editingButton : _TextInputWidget2.default.button })
+	      _react2.default.createElement('i', { className: [this.state.editing ? _TextInputWidget2.default.editingButton : _TextInputWidget2.default.button, this.props.icon].join(' ') })
 	    );
 	  }
 	});
@@ -22846,14 +22866,15 @@
 	exports.i(__webpack_require__(177), undefined);
 
 	// module
-	exports.push([module.id, ".TextInputWidget_container_3VM_x {\n    width: 100%;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: center;\n        align-items: center;\n}\n\n.TextInputWidget_entry_3jWRS {\n    -ms-flex: 1 0 auto;\n        flex: 1 0 auto;\n}\n\n.TextInputWidget_button_1TtFv {\n\n    margin-left: 10px;\n    -ms-flex: none;\n        flex: none;\n    cursor: pointer;\n    color: #ccc;\n}\n\n.TextInputWidget_editingButton_HVjK4 {\n    color: #000;\n}\n", ""]);
+	exports.push([module.id, ".TextInputWidget_container_3VM_x {\n    width: 100%;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: center;\n        align-items: center;\n}\n\n.TextInputWidget_entry_3jWRS {\n    -ms-flex: 1 0 auto;\n        flex: 1 0 auto;\n}\n\n.TextInputWidget_button_1TtFv {\n\n    margin-left: 10px;\n    -ms-flex: none;\n        flex: none;\n    cursor: pointer;\n    color: #ccc;\n}\n\n.TextInputWidget_editingButton_HVjK4 {\n    color: #000;\n}\n\n.TextInputWidget_checkIcon_1nRgU {\n}\n", ""]);
 
 	// exports
 	exports.locals = {
 		"container": "TextInputWidget_container_3VM_x",
 		"entry": "TextInputWidget_entry_3jWRS",
-		"button": "TextInputWidget_button_1TtFv " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-check"] + "",
-		"editingButton": "TextInputWidget_editingButton_HVjK4 TextInputWidget_button_1TtFv " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-check"] + ""
+		"button": "TextInputWidget_button_1TtFv " + __webpack_require__(177).locals["fa"] + "",
+		"editingButton": "TextInputWidget_editingButton_HVjK4 TextInputWidget_button_1TtFv " + __webpack_require__(177).locals["fa"] + "",
+		"checkIcon": "TextInputWidget_checkIcon_1nRgU " + __webpack_require__(177).locals["fa-check"] + ""
 	};
 
 /***/ },

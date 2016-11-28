@@ -32501,18 +32501,19 @@
 	      selectedValue = valueToString(this.props.data.value);
 	    }
 
+	    var containerStyle = this.props.ui.label !== undefined ? _CellProperty2.default.container : _EnumProperty2.default.soloContainer;
 	    return _react2.default.createElement(
 	      'div',
-	      { className: this.props.show(this.props.viewData) ? _CellProperty2.default.container : _CellProperty2.default.hidden },
-	      _react2.default.createElement(
+	      { className: this.props.show(this.props.viewData) ? containerStyle : _CellProperty2.default.hidden },
+	      this.props.ui.label !== undefined && _react2.default.createElement(
 	        'div',
-	        { className: _CellProperty2.default.header },
+	        { className: _EnumProperty2.default.header },
 	        _react2.default.createElement(
 	          'strong',
 	          null,
 	          this.props.ui.label
 	        ),
-	        _react2.default.createElement(
+	        this.props.ui.help !== undefined && _react2.default.createElement(
 	          'span',
 	          null,
 	          _react2.default.createElement(_ToggleIconButtonWidget2.default, {
@@ -32537,7 +32538,7 @@
 	          mapper()
 	        )
 	      ),
-	      _react2.default.createElement('div', {
+	      this.props.ui.help !== undefined && _react2.default.createElement('div', {
 	        className: this.state.helpOpen ? _CellProperty2.default.helpBox : _CellProperty2.default.hidden,
 	        dangerouslySetInnerHTML: { __html: this.props.ui.help }
 	      })
@@ -32577,15 +32578,17 @@
 
 	exports = module.exports = __webpack_require__(471)();
 	// imports
-
+	exports.i(__webpack_require__(499), undefined);
 
 	// module
-	exports.push([module.id, ".EnumProperty_input_3wekG {\n    margin-top: 6px;\n    width: 100%;\n    height: 28px;\n    border-radius: 5px;\n    background-color: white;\n    border-width: 1px;\n    border-color: lightgray lightgray gray lightgray;\n    border-style: solid;\n}\n\n.EnumProperty_inputMultiSelect_1tzWR {\n  height: 5.5em;\n}\n", ""]);
+	exports.push([module.id, ".EnumProperty_input_3wekG {\n    width: 100%;\n    height: 28px;\n    border-radius: 5px;\n    background-color: white;\n    border-width: 1px;\n    border-color: lightgray lightgray gray lightgray;\n    border-style: solid;\n}\n\n.EnumProperty_inputMultiSelect_1tzWR {\n  height: 5.5em;\n}\n\n.EnumProperty_header_3s_lG {\n  margin-bottom: 6px;\n}\n\n.EnumProperty_soloContainer_3jvOW {\n  width: calc(100% - 4px);\n  padding: 2px;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
 		"input": "EnumProperty_input_3wekG",
-		"inputMultiSelect": "EnumProperty_inputMultiSelect_1tzWR EnumProperty_input_3wekG"
+		"inputMultiSelect": "EnumProperty_inputMultiSelect_1tzWR EnumProperty_input_3wekG",
+		"header": "EnumProperty_header_3s_lG " + __webpack_require__(499).locals["header"] + "",
+		"soloContainer": "EnumProperty_soloContainer_3jvOW " + __webpack_require__(499).locals["container"] + ""
 	};
 
 /***/ },

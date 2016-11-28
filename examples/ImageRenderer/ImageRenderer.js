@@ -42730,9 +42730,7 @@
 	  emitChange: function emitChange(evt) {
 	    var html = this.rootContainer.innerHTML;
 	    if (this.props.onChange && html !== this.lastHtml) {
-	      evt.target = {
-	        value: html
-	      };
+	      evt.target.value = html;
 	      this.props.onChange(evt);
 	    }
 	    this.lastHtml = html;

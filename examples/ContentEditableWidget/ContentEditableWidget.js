@@ -61,13 +61,14 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Load CSS
-	__webpack_require__(173);
+	__webpack_require__(173); /* global document */
+
 
 	var container = document.querySelector('.content'),
 	    html = 'initial value';
 
-	function onChange(name, action, user) {
-	    console.log(name, action, user);
+	function onChange(event) {
+	  console.log(event.target.value, event.type);
 	}
 
 	_reactDom2.default.render(_react2.default.createElement(_2.default, { html: html, onChange: onChange }), container);
@@ -21509,9 +21510,7 @@
 	  emitChange: function emitChange(evt) {
 	    var html = this.rootContainer.innerHTML;
 	    if (this.props.onChange && html !== this.lastHtml) {
-	      evt.target = {
-	        value: html
-	      };
+	      evt.target.value = html;
 	      this.props.onChange(evt);
 	    }
 	    this.lastHtml = html;
