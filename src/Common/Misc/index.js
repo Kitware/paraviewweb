@@ -9,6 +9,7 @@ import Observable from './Observable';
 import PingPong from './PingPong';
 import SelectionBuilder from './SelectionBuilder';
 import SizeHelper from './SizeHelper';
+import URLExtract from './URLExtract';
 import UUID from './UUID';
 import Validate from './Validate';
 import WebGl from './WebGl';
@@ -25,6 +26,7 @@ export default {
   PingPong,
   SelectionBuilder,
   SizeHelper,
+  URLExtract,
   UUID,
   Validate,
   WebGl,
