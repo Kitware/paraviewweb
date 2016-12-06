@@ -79,7 +79,7 @@ function markModified(annotationObject) {
 // Exposed object
 // ----------------------------------------------------------------------------
 
-const EMPTY_ANNOTATION = annotation(SelectionBuilder.EMPTY_SELECTION, 0);
+const EMPTY_ANNOTATION = annotation(SelectionBuilder.EMPTY_SELECTION, []);
 
 export default {
   annotation,
