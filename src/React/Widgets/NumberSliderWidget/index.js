@@ -62,14 +62,14 @@ export default React.createClass({
           className={style.range}
           value={this.props.value}
           onChange={this.valInput}
-          max={max} min={min}
+          max={max} min={min} step={this.props.step || 'any'}
         />
         <input
           type="number"
           className={style.text}
           value={this.props.value}
           onChange={this.valInput}
-          max={max} min={min}
+          max={max} min={min} step="any"
         />
       </div>);
   },
