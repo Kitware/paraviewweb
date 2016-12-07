@@ -41306,7 +41306,7 @@
 	// Exposed object
 	// ----------------------------------------------------------------------------
 
-	var EMPTY_ANNOTATION = annotation(_SelectionBuilder2.default.EMPTY_SELECTION, 0);
+	var EMPTY_ANNOTATION = annotation(_SelectionBuilder2.default.EMPTY_SELECTION, []);
 
 	exports.default = {
 	  annotation: annotation,
