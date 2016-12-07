@@ -191,14 +191,14 @@
 	        className: _NumberSliderWidget2.default.range,
 	        value: this.props.value,
 	        onChange: this.valInput,
-	        max: max, min: min
+	        max: max, min: min, step: this.props.step || 'any'
 	      }),
 	      _react2.default.createElement('input', {
 	        type: 'number',
 	        className: _NumberSliderWidget2.default.text,
 	        value: this.props.value,
 	        onChange: this.valInput,
-	        max: max, min: min
+	        max: max, min: min, step: 'any'
 	      })
 	    );
 	  }

@@ -31273,19 +31273,19 @@
 	/* eslint-disable max-len */
 	var factoryMapping = {
 	  Cell: function Cell(prop, viewData, onChange) {
-	    return _react2.default.createElement(_CellProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange });
+	    return _react2.default.createElement(_CellProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
 	  },
 	  Slider: function Slider(prop, viewData, onChange) {
-	    return _react2.default.createElement(_SliderProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange });
+	    return _react2.default.createElement(_SliderProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
 	  },
 	  Enum: function Enum(prop, viewData, onChange) {
-	    return _react2.default.createElement(_EnumProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange });
+	    return _react2.default.createElement(_EnumProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
 	  },
 	  Checkbox: function Checkbox(prop, viewData, onChange) {
-	    return _react2.default.createElement(_CheckboxProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange });
+	    return _react2.default.createElement(_CheckboxProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
 	  },
 	  Map: function Map(prop, viewData, onChange) {
-	    return _react2.default.createElement(_MapProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange });
+	    return _react2.default.createElement(_MapProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
 	  }
 	};
 
@@ -31475,7 +31475,7 @@
 	exports.i(__webpack_require__(472), undefined);
 
 	// module
-	exports.push([module.id, ".CellProperty_container_3LtX- {\n    width: calc(100% - 20px);\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    -ms-flex-pack: center;\n        justify-content: center;\n    -ms-flex-align: center;\n        align-items: center;\n    padding: 8px 10px;\n}\n\n.CellProperty_hidden_KQXwN {\n    display: none;\n}\n\n@media(screen) and (max-width: 400px) {\n    .CellProperty_container_3LtX- {\n        max-width: 400px;\n    }\n}\n\n.CellProperty_header_2De03 {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-pack: justify;\n        justify-content: space-between;\n    -ms-flex-align: center;\n        align-items: center;\n    width: 100%;\n}\n\n.CellProperty_helpIcon_H7Kyj {\n}\n\n.CellProperty_plusIcon_25VKc {\n  cursor: pointer;\n}\n\n.CellProperty_deleteIcon_aFmOe {\n  position: relative;\n  top: 10px;\n  cursor: pointer;\n}\n\n.CellProperty_helpBox_1jeRL {\n    padding: 18px;\n    border: 1px solid #ddd;\n    background-color: #efefef;\n    margin-top: 10px;\n    width: 100%;\n    box-sizing: border-box;\n}\n\n.CellProperty_inputBlock_35DY3 {\n    width: 100%;\n    border-collapse: separate;\n    border-spacing: 5px 0;\n}\n\n.CellProperty_inputTable_1PW96 {\n}\n\n.CellProperty_inputRow_Lo3UF {\n  margin: 0;\n  padding: 0;\n}\n\n.CellProperty_inputCell_356L2 {\n  border-bottom: 1px solid gray;\n  min-height: 40px;\n  margin: 4px 5px;\n  padding: 0;\n}\n\n.CellProperty_inputCellLabel_-I6Cw {\n  display: block;\n  min-height: 16px;\n  padding: 2px 6px 0;\n  font-size: 0.75em;\n  color: #aaa;\n}\n\n.CellProperty_inputCellInput_bZgJ6 {\n  margin: 0;\n  padding: 3px 6px;\n  width: 100%;\n  box-sizing: border-box;\n}\n", ""]);
+	exports.push([module.id, ".CellProperty_container_3LtX- {\n    width: calc(100% - 20px);\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    -ms-flex-pack: center;\n        justify-content: center;\n    -ms-flex-align: center;\n        align-items: center;\n    padding: 8px 10px;\n}\n\n.CellProperty_hidden_KQXwN {\n    display: none;\n}\n\n@media(screen) and (max-width: 400px) {\n    .CellProperty_container_3LtX- {\n        max-width: 400px;\n    }\n}\n\n.CellProperty_header_2De03 {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-pack: justify;\n        justify-content: space-between;\n    -ms-flex-align: center;\n        align-items: center;\n    width: 100%;\n}\n\n.CellProperty_helpIcon_H7Kyj {\n}\n\n.CellProperty_plusIcon_25VKc {\n  cursor: pointer;\n}\n\n.CellProperty_deleteIcon_aFmOe {\n  position: relative;\n  top: 10px;\n  cursor: pointer;\n}\n\n.CellProperty_helpBox_1jeRL {\n    padding: 18px;\n    border: 1px solid #ddd;\n    background-color: #efefef;\n    margin-top: 10px;\n    width: 100%;\n    box-sizing: border-box;\n}\n\n.CellProperty_inputBlock_35DY3 {\n    width: 100%;\n    border-collapse: separate;\n    border-spacing: 5px 0;\n}\n\n.CellProperty_inputTable_1PW96 {\n}\n\n.CellProperty_inputRow_Lo3UF {\n  margin: 0;\n  padding: 0;\n}\n\n.CellProperty_inputCell_356L2 {\n  border-bottom: 1px solid gray;\n  min-height: 40px;\n  margin: 4px 5px;\n  padding: 0;\n}\n\n.CellProperty_inputCellLabel_-I6Cw {\n  display: block;\n  min-height: 16px;\n  padding: 2px 6px 0;\n  font-size: 0.75em;\n  color: #555;\n}\n\n.CellProperty_inputCellInput_bZgJ6 {\n  margin: 0;\n  padding: 3px 6px;\n  width: 100%;\n  box-sizing: border-box;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -32048,6 +32048,7 @@
 	    alwaysOn: _react2.default.PropTypes.bool,
 	    className: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.string,
+	    iconDisabled: _react2.default.PropTypes.string,
 	    name: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
 	    toggle: _react2.default.PropTypes.bool,
@@ -32083,8 +32084,15 @@
 	    }
 	  },
 	  render: function render() {
-	    var classList = [this.props.icon, this.props.className];
-	    classList.push(this.state.enabled || this.props.alwaysOn ? _ToggleIconButtonWidget2.default.enabledButton : _ToggleIconButtonWidget2.default.disabledButton);
+	    var classList = [this.props.className];
+	    var enabled = this.state.enabled || this.props.alwaysOn;
+	    if (this.props.iconDisabled) {
+	      classList.push(enabled ? this.props.icon : this.props.iconDisabled);
+	      classList.push(_ToggleIconButtonWidget2.default.enabledButton);
+	    } else {
+	      classList.push(this.props.icon);
+	      classList.push(enabled ? _ToggleIconButtonWidget2.default.enabledButton : _ToggleIconButtonWidget2.default.disabledButton);
+	    }
 	    return _react2.default.createElement('i', { className: classList.join(' '), onClick: this.buttonClicked });
 	  }
 	});
@@ -32209,7 +32217,8 @@
 	            value: !!_this.props.data.value[i],
 	            label: _this.props.ui.componentLabels[i],
 	            key: _this.props.data.id + '_' + i,
-	            onChange: _this.valueChange
+	            onChange: _this.valueChange,
+	            idx: i
 	          }));
 	        }
 	        return ret;
@@ -32357,7 +32366,7 @@
 
 
 	// module
-	exports.push([module.id, ".CheckboxProperty_label_XdRHl {\n  min-height: 16px;\n  padding: 2px 6px 0;\n  font-size: 0.75em;\n  color: #aaa;\n}\n\n.CheckboxProperty_input_V-tRF {\n\n}\n", ""]);
+	exports.push([module.id, ".CheckboxProperty_label_XdRHl {\n  min-height: 16px;\n  padding: 2px 6px 0;\n  font-size: 0.75em;\n  color: #555;\n}\n\n.CheckboxProperty_input_V-tRF {\n\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -33142,14 +33151,14 @@
 	        className: _NumberSliderWidget2.default.range,
 	        value: this.props.value,
 	        onChange: this.valInput,
-	        max: max, min: min
+	        max: max, min: min, step: this.props.step || 'any'
 	      }),
 	      _react2.default.createElement('input', {
 	        type: 'number',
 	        className: _NumberSliderWidget2.default.text,
 	        value: this.props.value,
 	        onChange: this.valInput,
-	        max: max, min: min
+	        max: max, min: min, step: 'any'
 	      })
 	    );
 	  }

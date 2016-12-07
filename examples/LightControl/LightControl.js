@@ -5010,7 +5010,7 @@
 	exports.i(__webpack_require__(43), undefined);
 
 	// module
-	exports.push([module.id, ".CollapsibleWidget_container_3dsOC {\n  width: 100%;\n  padding: 0;\n  font-family: sans-serif;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  clear: both;\n}\n\n.CollapsibleWidget_header_2jlW9 {\n  position: relative;\n  left: 0;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  display: inline-block;\n  padding: 0;\n  border: none;\n  background-color: rgba(0,0,0,0);\n  width: 100%;\n  text-align: left;\n}\n\n.CollapsibleWidget_caret_4nxYT {\n    transition: transform .2s ease;\n}\n\n.CollapsibleWidget_caretClosed_2wYFq {\n    transform: rotate(-90deg);\n}\n\n.CollapsibleWidget_title_f2tO1 {}\n\n.CollapsibleWidget_subtitle_2EvxW {\n  position: absolute;\n  right: 15px;\n  top: 0;\n  left: 5px;\n  text-align: right;\n  z-index: -1;\n}\n\n.CollapsibleWidget_subtitleActive_1hqN3 {\n  position: absolute;\n  right: 15px;\n  top: 0;\n}\n\n.CollapsibleWidget_visibleContent_3naaC {\n  padding: 5px 15px 0px 15px;\n}\n\n.CollapsibleWidget_hiddenContent_3XIsb {\n  display: none;\n}\n\n@media screen and (max-device-width: 400px) {\n    .CollapsibleWidget_caret_4nxYT {\n        font-size: 1.45em;\n    }\n}\n\n.is-ios-device .CollapsibleWidget_caret_4nxYT {\n    font-size: 1.45em;\n}\n", ""]);
+	exports.push([module.id, ".CollapsibleWidget_container_3dsOC {\n  width: 100%;\n  padding: 0;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  clear: both;\n}\n\n.CollapsibleWidget_header_2jlW9 {\n  position: relative;\n  left: 0;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  display: inline-block;\n  padding: 0;\n  border: none;\n  background-color: rgba(0,0,0,0);\n  width: 100%;\n  text-align: left;\n}\n\n.CollapsibleWidget_caret_4nxYT {\n    transition: transform .2s ease;\n}\n\n.CollapsibleWidget_caretClosed_2wYFq {\n    transform: rotate(-90deg);\n}\n\n.CollapsibleWidget_title_f2tO1 {}\n\n.CollapsibleWidget_subtitle_2EvxW {\n  position: absolute;\n  right: 15px;\n  top: 0;\n  left: 5px;\n  text-align: right;\n  z-index: -1;\n}\n\n.CollapsibleWidget_subtitleActive_1hqN3 {\n  position: absolute;\n  right: 15px;\n  top: 0;\n}\n\n.CollapsibleWidget_visibleContent_3naaC {\n  padding: 5px 15px 0px 15px;\n}\n\n.CollapsibleWidget_hiddenContent_3XIsb {\n  display: none;\n}\n\n@media screen and (max-device-width: 400px) {\n    .CollapsibleWidget_caret_4nxYT {\n        font-size: 1.45em;\n    }\n}\n\n.is-ios-device .CollapsibleWidget_caret_4nxYT {\n    font-size: 1.45em;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -29879,6 +29879,7 @@
 	    alwaysOn: _react2.default.PropTypes.bool,
 	    className: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.string,
+	    iconDisabled: _react2.default.PropTypes.string,
 	    name: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
 	    toggle: _react2.default.PropTypes.bool,
@@ -29914,8 +29915,15 @@
 	    }
 	  },
 	  render: function render() {
-	    var classList = [this.props.icon, this.props.className];
-	    classList.push(this.state.enabled || this.props.alwaysOn ? _ToggleIconButtonWidget2.default.enabledButton : _ToggleIconButtonWidget2.default.disabledButton);
+	    var classList = [this.props.className];
+	    var enabled = this.state.enabled || this.props.alwaysOn;
+	    if (this.props.iconDisabled) {
+	      classList.push(enabled ? this.props.icon : this.props.iconDisabled);
+	      classList.push(_ToggleIconButtonWidget2.default.enabledButton);
+	    } else {
+	      classList.push(this.props.icon);
+	      classList.push(enabled ? _ToggleIconButtonWidget2.default.enabledButton : _ToggleIconButtonWidget2.default.disabledButton);
+	    }
 	    return _react2.default.createElement('i', { className: classList.join(' '), onClick: this.buttonClicked });
 	  }
 	});

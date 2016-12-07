@@ -21509,6 +21509,7 @@
 	    this.setState({ editing: true, valueRep: newVal });
 	  },
 	  endEditing: function endEditing() {
+	    if (!this.state.editing) return;
 	    this.setState({ editing: false });
 
 	    if (!this.props.onChange) return;
