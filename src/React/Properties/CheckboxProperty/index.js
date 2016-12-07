@@ -50,6 +50,7 @@ export default React.createClass({
               label={this.props.ui.componentLabels[i]}
               key={`${this.props.data.id}_${i}`}
               onChange={this.valueChange}
+              idx={i}
             />);
         }
         return ret;

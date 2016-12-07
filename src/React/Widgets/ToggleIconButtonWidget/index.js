@@ -9,6 +9,7 @@ export default React.createClass({
     alwaysOn: React.PropTypes.bool,
     className: React.PropTypes.string,
     icon: React.PropTypes.string,
+    iconDisabled: React.PropTypes.string,
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
     toggle: React.PropTypes.bool,
@@ -48,8 +49,15 @@ export default React.createClass({
   },
 
   render() {
-    var classList = [this.props.icon, this.props.className];
-    classList.push((this.state.enabled || this.props.alwaysOn) ? style.enabledButton : style.disabledButton);
+    const classList = [this.props.className];
+    const enabled = this.state.enabled || this.props.alwaysOn;
+    if (this.props.iconDisabled) {
+      classList.push(enabled ? this.props.icon : this.props.iconDisabled);
+      classList.push(style.enabledButton);
+    } else {
+      classList.push(this.props.icon);
+      classList.push(enabled ? style.enabledButton : style.disabledButton);
+    }
     return <i className={classList.join(' ')} onClick={this.buttonClicked} />;
   },
 });
