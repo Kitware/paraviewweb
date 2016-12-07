@@ -79,7 +79,7 @@
   min-height: 16px;
   padding: 2px 6px 0;
   font-size: 0.75em;
-  color: #aaa;
+  color: #555;
 }
 
 .inputCellInput {

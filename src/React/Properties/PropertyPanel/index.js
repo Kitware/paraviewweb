@@ -30,7 +30,7 @@ export default React.createClass({
 
   render() {
     var viewData = this.props.viewData,
-      uiContents = content => factory(content, viewData, this.valueChange),
+      uiContents = content => factory(content, viewData, this.props.onChange ? this.valueChange : undefined),
       uiContainer = property => (
         <div key={property.title}>
           <div className={style.propertyHeader}>
