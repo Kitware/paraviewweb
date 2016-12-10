@@ -71,7 +71,7 @@ export default React.createClass({
         />
         { // Use the check icon by default, but allow customization, for example: fa-search
         }
-        <i className={[this.state.editing ? style.editingButton : style.button, this.props.icon].join(' ')} />
+        <i className={[this.state.editing ? style.editingButton : style.button, this.props.icon].join(' ')} onClick={this.endEditing} />
       </div>);
   },
 });
