@@ -22827,7 +22827,7 @@
 	          _this.textInput = c;
 	        }
 	      }),
-	      _react2.default.createElement('i', { className: [this.state.editing ? _TextInputWidget2.default.editingButton : _TextInputWidget2.default.button, this.props.icon].join(' ') })
+	      _react2.default.createElement('i', { className: [this.state.editing ? _TextInputWidget2.default.editingButton : _TextInputWidget2.default.button, this.props.icon].join(' '), onClick: this.endEditing })
 	    );
 	  }
 	});
