@@ -11,3 +11,14 @@
 .hyperbolicNode {
   fill: black;
 }
+
+.hyperbolicTreeEdge {
+  stroke: blue;
+  fill: none;
+}
+
+.hyperbolicDiskBoundary {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.005;
+}

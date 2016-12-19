@@ -13,7 +13,7 @@ import {
   // lineLineIntersectFragile,
   // lineCircleIntersectFragile,
   hyperbolicPlanePointsToPoincareDisk,
-  // hyperbolicPlaneGeodesicOnPoincareDisk,
+  hyperbolicPlaneGeodesicOnPoincareDisk,
   // interpolateOnPoincareDisk,
 } from '../../../Common/Misc/HyperbolicGeometry';
 
@@ -61,7 +61,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       viewdiv.classed(style.hyperbolicGeomContainer, true);
       const svg = viewdiv.append('svg').classed('hyperbolic-geom-svg', true);
       model.transformGroup = svg.append('g').classed('disk-transform', true);
-      model.transformGroup.append('circle').classed('disk-boundary', true);
+      model.transformGroup.append('circle')
+        .classed('disk-boundary', true)
+        .classed(style.hyperbolicDiskBoundary, true)
+        .attr('r', 1);
       model.unselectedBundleGroup = model.transformGroup.append('g').classed('unselected-bundles', true);
       model.treeEdgeGroup = model.transformGroup.append('g').classed('tree-edges', true);
       model.selectedBundleGroup = model.transformGroup.append('g').classed('selected-bundles', true);
@@ -130,17 +133,28 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.nodeGroup.selectAll('.node').transition().duration(deltaT)
         .attr('cx', d => d.x[0])
         .attr('cy', d => d.x[1]);
+    model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.idx);
+    model.treeEdgeGroup.selectAll('.link').transition().duration(deltaT)
+        .attr('d', pp => pp.path);
   };
 
   publicAPI.focusChanged = () => {
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes, model.focus, model.diskScale);
+    model.treePaths = hyperbolicPlaneGeodesicOnPoincareDisk(
+      model.treeEdges.map(mm => mm.filter((dd, ii) => ii < 2)),
+      model.treeEdges.map(mm => mm.filter((dd, ii) => ii > 1)),
+      model.focus, model.diskScale);
     publicAPI.coordsChanged(model.transitionTime);
   };
 
   publicAPI.modelUpdated = () => {
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes, model.focus, model.diskScale);
+    model.treePaths = hyperbolicPlaneGeodesicOnPoincareDisk(
+      model.treeEdges.map(mm => mm.filter((dd, ii) => ii < 2)),
+      model.treeEdges.map(mm => mm.filter((dd, ii) => ii > 1)),
+      model.focus, model.diskScale);
     const ngdata = model.nodeGroup.selectAll('.node').data(model.diskCoords);
     ngdata.enter().append('circle')
       .classed('node', true)
@@ -148,8 +162,14 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .attr('r', '0.03px')
       .on('click', (d, i) => { model.focus = model.nodes[i]; publicAPI.focusChanged(); });
     ngdata.exit().remove();
+    const tgdata = model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, dd => dd.idx);
+    tgdata.enter().append('path')
+      .classed('link', true)
+      .classed(style.hyperbolicTreeEdge, true);
+    tgdata.exit().remove();
     publicAPI.coordsChanged(model.transitionTime);
-    console.log(model.nodeGroup.selectAll('.node'));
+    //console.log(model.nodeGroup.selectAll('.node'));
+    //console.log(model.treeEdgeGroup.selectAll('.link'));
   };
 }
 

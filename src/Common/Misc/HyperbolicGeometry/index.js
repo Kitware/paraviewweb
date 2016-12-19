@@ -101,7 +101,7 @@ export function hyperbolicPlaneGeodesicOnPoincareDisk(p0, p1, focus, scale) {
   const tx0 = p0.map(pt => pt.map((coord, ii) => (coord - focus[ii]) / scale));
   const tx1 = p1.map(pt => pt.map((coord, ii) => (coord - focus[ii]) / scale));
   const pts = zip([tx0, tx1]);
-  const paths = pts.map((ppr) => {
+  const paths = pts.map((ppr, idx) => {
     const rho = [0, 0];
     const rr = [0, 0];
     const xd = [null, null];
@@ -169,7 +169,7 @@ export function hyperbolicPlaneGeodesicOnPoincareDisk(p0, p1, focus, scale) {
       const ar = Math.sqrt((dx * dx) + (dy * dy));
       pathCmd = `${pathCmd} A ${ar},${ar} 0 0,1 ${xd[1][0]},${xd[1][1]}`;
     }
-    return pathCmd;
+    return { idx, path: pathCmd };
   });
   return paths;
 }
