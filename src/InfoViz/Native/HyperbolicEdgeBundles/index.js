@@ -157,12 +157,12 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 
   publicAPI.coordsChanged = (deltaT) => {
     model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.idx);
-      model.nodeGroup.selectAll('.node').transition().duration(deltaT)
-        .attr('cx', d => d.x[0])
-        .attr('cy', d => d.x[1]);
+    model.nodeGroup.selectAll('.node').transition().duration(deltaT)
+      .attr('cx', d => d.x[0])
+      .attr('cy', d => d.x[1]);
     model.treeEdgeGroup.selectAll('.link').data(model.treePaths, ee => ee.idx);
     model.treeEdgeGroup.selectAll('.link').transition().duration(deltaT)
-        .attr('d', pp => pp.path);
+      .attr('d', pp => pp.path);
   };
 
   publicAPI.focusChanged = () => {
@@ -195,8 +195,6 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .classed(style.hyperbolicTreeEdge, true);
     tgdata.exit().remove();
     publicAPI.coordsChanged(model.transitionTime);
-    //console.log(model.nodeGroup.selectAll('.node'));
-    //console.log(model.treeEdgeGroup.selectAll('.link'));
   };
 }
 
