@@ -106,15 +106,15 @@ export function hyperbolicPlaneGeodesicOnPoincareDisk(p0, p1, focus, scale) {
     const rr = [0, 0];
     const xd = [null, null];
     const bdy = [false, false]; // Does endpoint i lie on the disk boundary?
-    for (let ii = 0; ii < 2; ++ii) {
-      rho[ii] = Math.sqrt((ppr[ii][0] * ppr[ii][0]) + (ppr[ii][1] * ppr[ii][1]));
-      if (rho[ii] < 1e-8) {
-        rr[ii] = 0.0;
-        xd[ii] = [0, 0];
+    for (let endpt = 0; endpt < 2; ++endpt) {
+      rho[endpt] = Math.sqrt((ppr[endpt][0] * ppr[endpt][0]) + (ppr[endpt][1] * ppr[endpt][1]));
+      if (rho[endpt] < 1e-8) {
+        rr[endpt] = 0.0;
+        xd[endpt] = [0, 0];
       } else {
-        rr[ii] = Math.tanh(rho[0] / 2.0);
-        xd[ii] = ppr[ii].map(ptii => rr[ii] * ptii / rho[ii]);
-        bdy[ii] = rr[ii] === 1.0;
+        rr[endpt] = Math.tanh(rho[endpt] / 2.0);
+        xd[endpt] = ppr[endpt].map(ptcoord => rr[endpt] * ptcoord / rho[endpt]);
+        bdy[endpt] = rr[endpt] === 1.0;
       }
     }
     // Now construct orthogonal circular arc intersecting xd[0] && xd[1]:
@@ -148,16 +148,16 @@ export function hyperbolicPlaneGeodesicOnPoincareDisk(p0, p1, focus, scale) {
         let bisectCtr2 = null;
         if (iptidx === 0) {
           // points can be ordered along arc p3, xd[0], xd[1]
-          bisectLeg1 = [0, 1].map(ii => p3[ii] - xd[0][ii]);
-          bisectLeg2 = [0, 1].map(ii => xd[0][ii] - xd[1][ii]);
-          bisectCtr1 = [0, 1].map(ii => xd[0][ii] + (0.5 * bisectLeg1[ii]));
-          bisectCtr2 = [0, 1].map(ii => xd[1][ii] + (0.5 * bisectLeg2[ii]));
+          bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[0][endpt]);
+          bisectLeg2 = [0, 1].map(endpt => xd[0][endpt] - xd[1][endpt]);
+          bisectCtr1 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg1[endpt]));
+          bisectCtr2 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg2[endpt]));
         } else {
           // points can be ordered along arc: p3, xd[1], xd[0]
-          bisectLeg1 = [0, 1].map(ii => p3[ii] - xd[1][ii]);
-          bisectLeg2 = [0, 1].map(ii => xd[1][ii] - xd[0][ii]);
-          bisectCtr1 = [0, 1].map(ii => xd[1][ii] + (0.5 * bisectLeg1[ii]));
-          bisectCtr2 = [0, 1].map(ii => xd[0][ii] + (0.5 * bisectLeg2[ii]));
+          bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[1][endpt]);
+          bisectLeg2 = [0, 1].map(endpt => xd[1][endpt] - xd[0][endpt]);
+          bisectCtr1 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg1[endpt]));
+          bisectCtr2 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg2[endpt]));
         }
         center = lineLineIntersectFragile(
           bisectCtr1, [bisectLeg1[1], -bisectLeg1[0]],
@@ -205,7 +205,7 @@ export function interpolateOnPoincareDisk(p0, p1, t, focus, scale) {
         rr[ii] = 0.0;
         xd[ii] = [0, 0];
       } else {
-        rr[ii] = Math.tanh(rho[0] / 2.0);
+        rr[ii] = Math.tanh(rho[ii] / 2.0);
         xd[ii] = ppr[ii].map(ptii => rr[ii] * ptii / rho[ii]);
         bdy[ii] = rr[ii] === 1.0;
       }
@@ -273,10 +273,12 @@ export function interpolateOnPoincareDisk(p0, p1, t, focus, scale) {
   return pout;
 }
 
+/*
 console.log(hyperbolicPlaneGeodesicOnPoincareDisk(
   [[-0.5, -0.5], [-0.5, -0.5], [0, 0], [-0.5, 0]],
   [[0.5, -0.5], [0.5, 0], [0.3, 0.2], [-0.5, 0.25]],
   [0, 0], 1.0));
+*/
 
 export default {
   vectorMag,

@@ -15,6 +15,7 @@
 .hyperbolicTreeEdge {
   stroke: blue;
   fill: none;
+  stroke-width: 0.005;
 }
 
 .hyperbolicDiskBoundary {

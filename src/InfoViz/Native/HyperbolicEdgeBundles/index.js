@@ -31,8 +31,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     d3.select(model.container).select('svg')
       .attr('width', rect.width)
       .attr('height', rect.height);
-    model.transformGroup.attr('transform',
-      `scale(${smaller / 2.0}, ${smaller / 2.0}) translate(${tx}, ${ty})`);
+    if (smaller > 0.0) {
+      model.transformGroup.attr('transform',
+        `scale(${smaller / 2.0}, ${smaller / 2.0}) translate(${tx}, ${ty})`);
+    }
     // TODO: Now transition the point size and arc width to maintain
     //       the diagram's sense of proportion.
   };
@@ -75,6 +77,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       // Instead of getting data from a provider:
       //   if (model.provider.isA('MutualInformationSummaryProvider')) ...
       // Hardcode it into the model for now:
+      /*
       model.nodes = [
         [326.68762207031250, 350.63452148437500],
         [245.65452575683594, 160.70016479492188],
@@ -97,6 +100,30 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         [269.68402099609375, 224.66835021972656],
         [263.04452514648440, 285.27932739257810],
         [404.71112060546875, 158.82929992675780],
+      ];
+      */
+      model.nodes = [
+        [253.15452023990338, 168.20016610150236],
+        [270.54451200408226, 292.77934091175390],
+        [277.18402873004840, 232.16835229042620],
+        [278.53741891587500, 193.50474848244320],
+        [305.58830280627257, 278.53238498678960],
+        [309.41841065363536, 226.10316106037124],
+        [312.72348495611050, 387.88299104668560],
+        [317.38810462926050, 194.53583132489254],
+        [326.54360452297306, 322.94680128722155],
+        [334.18762488572924, 358.13452292263090],
+        [341.96783106088634, 264.72268514753340],
+        [353.90429994195296, 319.41352650362420],
+        [364.24649860818110, 225.86363986467606],
+        [380.61471694769847, 264.58933353902040],
+        [380.88020608315810, 312.03672828584430],
+        [384.90567631119114, 354.81036757015187],
+        [389.54050702058120, 193.26583277340492],
+        [392.16231669382640, 390.86222345739990],
+        [412.21111372773570, 166.32929457453255],
+        [417.48583350629195, 260.61963708034210],
+        [420.81098775460663, 362.44843078875480],
       ];
       model.treeEdges = [
         [334.18762488572924, 358.13452292263090, 312.72348495611050, 387.88299104668560],
@@ -121,7 +148,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         [384.90567631119114, 354.81036757015187, 392.16231669382640, 390.86222345739990],
       ];
       model.hyperbolicBounds = [[253.15, 166.33], [420.81, 390.86]];
-      model.transitionTime = 500;
+      model.transitionTime = 5000;
       model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
       model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce((a, b) => ((a > b) ? a : b)) / 2.0;
       publicAPI.modelUpdated();
@@ -133,7 +160,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.nodeGroup.selectAll('.node').transition().duration(deltaT)
         .attr('cx', d => d.x[0])
         .attr('cy', d => d.x[1]);
-    model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.idx);
+    model.treeEdgeGroup.selectAll('.link').data(model.treePaths, ee => ee.idx);
     model.treeEdgeGroup.selectAll('.link').transition().duration(deltaT)
         .attr('d', pp => pp.path);
   };
@@ -162,7 +189,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .attr('r', '0.03px')
       .on('click', (d, i) => { model.focus = model.nodes[i]; publicAPI.focusChanged(); });
     ngdata.exit().remove();
-    const tgdata = model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, dd => dd.idx);
+    const tgdata = model.treeEdgeGroup.selectAll('.link').data(model.treePaths, dd => dd.idx);
     tgdata.enter().append('path')
       .classed('link', true)
       .classed(style.hyperbolicTreeEdge, true);
