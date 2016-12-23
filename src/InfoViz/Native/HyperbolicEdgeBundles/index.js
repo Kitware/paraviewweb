@@ -140,7 +140,6 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
       model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
         (a, b) => ((a > b) ? a : b)) / 2.0;
-      model.transitionTime = 500;
       publicAPI.modelUpdated();
     }
   };
@@ -218,6 +217,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
+  transitionTime: 500,
 };
 
 // ----------------------------------------------------------------------------
@@ -227,7 +227,8 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['color', 'container']);
+  CompositeClosureHelper.get(publicAPI, model, ['color', 'container', 'transitionTime']);
+  CompositeClosureHelper.set(publicAPI, model, ['transitionTime']);
 
   hyperbolicEdgeBundle(publicAPI, model);
 }

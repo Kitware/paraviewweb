@@ -1,13 +1,13 @@
 import 'normalize.css';
 
-import HyperbolicEdgeBundles from '..';
-import Workbench from '../../../../Component/Native/Workbench';
-import BackgroundColor from '../../../../Component/Native/BackgroundColor';
-import ToggleControl from '../../../../Component/Native/ToggleControl';
-import Spacer from '../../../../Component/Native/Spacer';
-import Composite from '../../../../Component/Native/Composite';
-import ReactAdapter from '../../../../Component/React/ReactAdapter';
-import WorkbenchController from '../../../../Component/React/WorkbenchController';
+import HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
+import             Workbench from '../../../../Component/Native/Workbench';
+import       BackgroundColor from '../../../../Component/Native/BackgroundColor';
+import         ToggleControl from '../../../../Component/Native/ToggleControl';
+import                Spacer from '../../../../Component/Native/Spacer';
+import             Composite from '../../../../Component/Native/Composite';
+import          ReactAdapter from '../../../../Component/React/ReactAdapter';
+import   WorkbenchController from '../../../../Component/React/WorkbenchController';
 
 import { debounce } from '../../../../Common/Misc/Debounce';
 
@@ -88,3 +88,8 @@ const resizeHandler = debounce(() => {
 // Register window resize handler so workbench redraws when browser is resized
 window.onresize = resizeHandler;
 
+// -----------------------------------------------------------
+// Make some variables global so that you can inspect and
+// modify objects in your browser's developer console:
+// -----------------------------------------------------------
+global.hyperbolicView = hyperbolicView;
