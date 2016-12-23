@@ -92,87 +92,95 @@ function lineCircleIntersectFragile(pp, dd, cc, rr) {
   * [arc]:  https://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
   * [line]: https://www.w3.org/TR/SVG/paths.html#PathDataLinetoCommands
   */
+//@{
+
+/// This variant takes a single pair of points as inputs (i.e., p0 and p1 arrays of coordinates) and returns a single path.
 export function hyperbolicPlaneGeodesicOnPoincareDisk(p0, p1, focus, scale) {
-  // zip from http://stackoverflow.com/questions/4856717/javascript-equivalent-of-pythons-zip-function:
-  function zip(arrays) {
-    return arrays[0].map((_, i) => arrays.map(array => array[i]));
-  }
   // Translate all the points in xh to the focal point:
-  const tx0 = p0.map(pt => pt.map((coord, ii) => (coord - focus[ii]) / scale));
-  const tx1 = p1.map(pt => pt.map((coord, ii) => (coord - focus[ii]) / scale));
-  const pts = zip([tx0, tx1]);
-  const paths = pts.map((ppr, idx) => {
-    const rho = [0, 0];
-    const rr = [0, 0];
-    const xd = [null, null];
-    const bdy = [false, false]; // Does endpoint i lie on the disk boundary?
-    for (let endpt = 0; endpt < 2; ++endpt) {
-      rho[endpt] = Math.sqrt((ppr[endpt][0] * ppr[endpt][0]) + (ppr[endpt][1] * ppr[endpt][1]));
-      if (rho[endpt] < 1e-8) {
-        rr[endpt] = 0.0;
-        xd[endpt] = [0, 0];
-      } else {
-        rr[endpt] = Math.tanh(rho[endpt] / 2.0);
-        xd[endpt] = ppr[endpt].map(ptcoord => rr[endpt] * ptcoord / rho[endpt]);
-        bdy[endpt] = rr[endpt] === 1.0;
-      }
-    }
-    // Now construct orthogonal circular arc intersecting xd[0] && xd[1]:
-    let pathCmd = `M ${xd[0][0]},${xd[0][1]}`;
-    if (pointsApproxCollinear(xd[0], xd[1], [0.0, 0.0], 1e-8)) {
-      // Case where the arc has infinite radius (i.e., a line):
-      pathCmd = `${pathCmd} L ${xd[1][0]},${xd[1][1]}`;
+  const tx = pt => pt.map((coord, ii) => (coord - focus[ii]) / scale);
+  const ppr = [tx(p0), tx(p1)];
+  const rho = [0, 0];
+  const rr = [0, 0];
+  const xd = [null, null];
+  const bdy = [false, false]; // Does endpoint i lie on the disk boundary?
+  for (let endpt = 0; endpt < 2; ++endpt) {
+    rho[endpt] = Math.sqrt((ppr[endpt][0] * ppr[endpt][0]) + (ppr[endpt][1] * ppr[endpt][1]));
+    if (rho[endpt] < 1e-8) {
+      rr[endpt] = 0.0;
+      xd[endpt] = [0, 0];
     } else {
-      let center = [0.0, 0.0]; // Center of circle forming geodesic between xd[0] & xd[1].
-      if (bdy[0] && bdy[1]) {
-        // Case where both points on disk boundary. Intersect tangents to get center.
-        center = lineLineIntersectFragile(xd[0], [xd[0][1], -xd[0][0]], xd[1], [xd[1][1], -xd[1][0]]);
-      } else {
-        // At least one point is interior. Use it to obtain third point, then center from chord bisectors.
-        let iptidx = null;
-        if (!bdy[0]) { // xd[0] is interior
-          iptidx = 0;
-        } else { // xd[1] is interior
-          iptidx = 1;
-        }
-        const ipt = xd[iptidx];
-        // Find points on unit disc intersected by a line at ipt perpendicular to the line from [0,0] to ipt:
-        // const imag = Math.sqrt(ipt[0]*ipt[0] + ipt[1]*ipt[1]);
-        const cpts = lineCircleIntersectFragile(ipt, [ipt[1], -ipt[0]], [0, 0], 1.0);
-        // The intersection of the tangent lines at the 2 cpts is a third point on the circle
-        const p3 = lineLineIntersectFragile(cpts[0], [cpts[0][1], -cpts[0][0]], cpts[1], [cpts[1][1], -cpts[1][0]]);
-        // Bisectors of circle chords intersect at the circle center.
-        let bisectLeg1 = null;
-        let bisectLeg2 = null;
-        let bisectCtr1 = null;
-        let bisectCtr2 = null;
-        if (iptidx === 0) {
-          // points can be ordered along arc p3, xd[0], xd[1]
-          bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[0][endpt]);
-          bisectLeg2 = [0, 1].map(endpt => xd[0][endpt] - xd[1][endpt]);
-          bisectCtr1 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg1[endpt]));
-          bisectCtr2 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg2[endpt]));
-        } else {
-          // points can be ordered along arc: p3, xd[1], xd[0]
-          bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[1][endpt]);
-          bisectLeg2 = [0, 1].map(endpt => xd[1][endpt] - xd[0][endpt]);
-          bisectCtr1 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg1[endpt]));
-          bisectCtr2 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg2[endpt]));
-        }
-        center = lineLineIntersectFragile(
-          bisectCtr1, [bisectLeg1[1], -bisectLeg1[0]],
-          bisectCtr2, [bisectLeg2[1], -bisectLeg2[0]]);
-      }
-      // Arc radius is distance from center to either xd[i] point.
-      const dx = xd[0][0] - center[0];
-      const dy = xd[0][1] - center[1];
-      const ar = Math.sqrt((dx * dx) + (dy * dy));
-      pathCmd = `${pathCmd} A ${ar},${ar} 0 0,1 ${xd[1][0]},${xd[1][1]}`;
+      rr[endpt] = Math.tanh(rho[endpt] / 2.0);
+      xd[endpt] = ppr[endpt].map(ptcoord => rr[endpt] * ptcoord / rho[endpt]);
+      bdy[endpt] = rr[endpt] === 1.0;
     }
-    return { idx, path: pathCmd };
-  });
-  return paths;
+  }
+  // Now construct orthogonal circular arc intersecting xd[0] && xd[1]:
+  let pathCmd = `M ${xd[0][0]},${xd[0][1]}`;
+  if (pointsApproxCollinear(xd[0], xd[1], [0.0, 0.0], 1e-8)) {
+    // Case where the arc has infinite radius (i.e., a line):
+    pathCmd = `${pathCmd} L ${xd[1][0]},${xd[1][1]}`;
+  } else {
+    let center = [0.0, 0.0]; // Center of circle forming geodesic between xd[0] & xd[1].
+    if (bdy[0] && bdy[1]) {
+      // Case where both points on disk boundary. Intersect tangents to get center.
+      center = lineLineIntersectFragile(xd[0], [xd[0][1], -xd[0][0]], xd[1], [xd[1][1], -xd[1][0]]);
+    } else {
+      // At least one point is interior. Use it to obtain third point, then center from chord bisectors.
+      let iptidx = null;
+      if (!bdy[0]) { // xd[0] is interior
+        iptidx = 0;
+      } else { // xd[1] is interior
+        iptidx = 1;
+      }
+      const ipt = xd[iptidx];
+      // Find points on unit disc intersected by a line at ipt perpendicular to the line from [0,0] to ipt:
+      // const imag = Math.sqrt(ipt[0]*ipt[0] + ipt[1]*ipt[1]);
+      const cpts = lineCircleIntersectFragile(ipt, [ipt[1], -ipt[0]], [0, 0], 1.0);
+      // The intersection of the tangent lines at the 2 cpts is a third point on the circle
+      const p3 = lineLineIntersectFragile(cpts[0], [cpts[0][1], -cpts[0][0]], cpts[1], [cpts[1][1], -cpts[1][0]]);
+      // Bisectors of circle chords intersect at the circle center.
+      let bisectLeg1 = null;
+      let bisectLeg2 = null;
+      let bisectCtr1 = null;
+      let bisectCtr2 = null;
+      if (iptidx === 0) {
+        // points can be ordered along arc p3, xd[0], xd[1]
+        bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[0][endpt]);
+        bisectLeg2 = [0, 1].map(endpt => xd[0][endpt] - xd[1][endpt]);
+        bisectCtr1 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg1[endpt]));
+        bisectCtr2 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg2[endpt]));
+      } else {
+        // points can be ordered along arc: p3, xd[1], xd[0]
+        bisectLeg1 = [0, 1].map(endpt => p3[endpt] - xd[1][endpt]);
+        bisectLeg2 = [0, 1].map(endpt => xd[1][endpt] - xd[0][endpt]);
+        bisectCtr1 = [0, 1].map(endpt => xd[1][endpt] + (0.5 * bisectLeg1[endpt]));
+        bisectCtr2 = [0, 1].map(endpt => xd[0][endpt] + (0.5 * bisectLeg2[endpt]));
+      }
+      center = lineLineIntersectFragile(
+        bisectCtr1, [bisectLeg1[1], -bisectLeg1[0]],
+        bisectCtr2, [bisectLeg2[1], -bisectLeg2[0]]);
+    }
+    // Arc radius is distance from center to either xd[i] point.
+    const dx = xd[0][0] - center[0];
+    const dy = xd[0][1] - center[1];
+    const ar = Math.sqrt((dx * dx) + (dy * dy));
+    pathCmd = `${pathCmd} A ${ar},${ar} 0 0,1 ${xd[1][0]},${xd[1][1]}`;
+  }
+  return pathCmd;
 }
+
+/** \brief This variant takes arrays of points as inputs (i.e., p0 and p1 are arrays of arrays).
+  *
+  * It returns an array of objects. Each object in the array as keys named `idx` and `path`.
+  */
+export function hyperbolicPlaneGeodesicsOnPoincareDisk(p0, p1, focus, scale) {
+  return p0.map((pt, idx) => ({
+    idx,
+    path: hyperbolicPlaneGeodesicOnPoincareDisk(pt, p1[idx], focus, scale),
+  }));
+}
+
+//@}
 
 /** \brief Compute the Poincaré disk coordinates of points along geodesics between pairs of hyperbolic plane coordinates.
   *
@@ -291,5 +299,6 @@ export default {
   lineCircleIntersectFragile,
   hyperbolicPlanePointsToPoincareDisk,
   hyperbolicPlaneGeodesicOnPoincareDisk,
+  hyperbolicPlaneGeodesicsOnPoincareDisk,
   interpolateOnPoincareDisk,
 };

@@ -14,6 +14,7 @@ import {
   // lineCircleIntersectFragile,
   hyperbolicPlanePointsToPoincareDisk,
   hyperbolicPlaneGeodesicOnPoincareDisk,
+  // hyperbolicPlaneGeodesicsOnPoincareDisk,
   // interpolateOnPoincareDisk,
 } from '../../../Common/Misc/HyperbolicGeometry';
 
@@ -101,31 +102,45 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         [420.81098775460663, 362.44843078875480],
       ];
       model.treeEdges = [
-        { idx:  0, p0: [334.18762488572924, 358.13452292263090], p1: [312.72348495611050, 387.88299104668560] },
-        { idx:  1, p0: [334.18762488572924, 358.13452292263090], p1: [353.90429994195296, 319.41352650362420] },
-        { idx:  2, p0: [253.15452023990338, 168.20016610150236], p1: [278.53741891587500, 193.50474848244320] },
-        { idx:  3, p0: [380.61471694769847, 264.58933353902040], p1: [417.48583350629195, 260.61963708034210] },
-        { idx:  4, p0: [380.61471694769847, 264.58933353902040], p1: [341.96783106088634, 264.72268514753340] },
-        { idx:  5, p0: [326.54360452297306, 322.94680128722155], p1: [353.90429994195296, 319.41352650362420] },
-        { idx:  6, p0: [364.24649860818110, 225.86363986467606], p1: [341.96783106088634, 264.72268514753340] },
-        { idx:  7, p0: [364.24649860818110, 225.86363986467606], p1: [389.54050702058120, 193.26583277340492] },
-        { idx:  8, p0: [420.81098775460663, 362.44843078875480], p1: [384.90567631119114, 354.81036757015187] },
-        { idx:  9, p0: [317.38810462926050, 194.53583132489254], p1: [309.41841065363536, 226.10316106037124] },
-        { idx: 10, p0: [309.41841065363536, 226.10316106037124], p1: [341.96783106088634, 264.72268514753340] },
-        { idx: 11, p0: [309.41841065363536, 226.10316106037124], p1: [278.53741891587500, 193.50474848244320] },
-        { idx: 12, p0: [309.41841065363536, 226.10316106037124], p1: [277.18402873004840, 232.16835229042620] },
-        { idx: 13, p0: [341.96783106088634, 264.72268514753340], p1: [353.90429994195296, 319.41352650362420] },
-        { idx: 14, p0: [341.96783106088634, 264.72268514753340], p1: [305.58830280627257, 278.53238498678960] },
-        { idx: 15, p0: [389.54050702058120, 193.26583277340492], p1: [412.21111372773570, 166.32929457453255] },
-        { idx: 16, p0: [353.90429994195296, 319.41352650362420], p1: [384.90567631119114, 354.81036757015187] },
-        { idx: 17, p0: [353.90429994195296, 319.41352650362420], p1: [380.88020608315810, 312.03672828584430] },
-        { idx: 18, p0: [305.58830280627257, 278.53238498678960], p1: [270.54451200408226, 292.77934091175390] },
-        { idx: 19, p0: [384.90567631119114, 354.81036757015187], p1: [392.16231669382640, 390.86222345739990] },
+        { idx:  0, i0:  9, i1:  6 },
+        { idx:  1, i0:  9, i1: 11 },
+        { idx:  2, i0:  0, i1:  3 },
+        { idx:  3, i0: 13, i1: 19 },
+        { idx:  4, i0: 13, i1: 10 },
+        { idx:  5, i0:  8, i1: 11 },
+        { idx:  6, i0: 12, i1: 10 },
+        { idx:  7, i0: 12, i1: 16 },
+        { idx:  8, i0: 20, i1: 15 },
+        { idx:  9, i0:  7, i1:  5 },
+        { idx: 10, i0:  5, i1: 10 },
+        { idx: 11, i0:  5, i1:  3 },
+        { idx: 12, i0:  5, i1:  2 },
+        { idx: 13, i0: 10, i1: 11 },
+        { idx: 14, i0: 10, i1:  4 },
+        { idx: 15, i0: 16, i1: 18 },
+        { idx: 16, i0: 11, i1: 15 },
+        { idx: 17, i0: 11, i1: 14 },
+        { idx: 18, i0:  4, i1:  1 },
+        { idx: 19, i0: 15, i1: 17 },
       ];
-      model.hyperbolicBounds = [[253.15, 166.33], [420.81, 390.86]];
-      model.transitionTime = 500;
+      // Finish initializing treeEdges and compute bounds/scale:
+      model.treeEdges.forEach(dd => {
+        dd.p0 = model.nodes[dd.i0];
+        dd.p1 = model.nodes[dd.i1];
+        dd.previous = {
+          p0: [dd.p0[0], dd.p0[1]],
+          p1: [dd.p0[0], dd.p0[1]],
+        };
+      });
+      model.hyperbolicBounds =
+        model.nodes.reduce((result, value) => [
+          [Math.min(result[0][0], value[0]), Math.min(result[0][1], value[1])],
+          [Math.max(result[1][0], value[0]), Math.max(result[1][1], value[1])]],
+          [Object.assign([], model.nodes[0]), Object.assign([], model.nodes[0])]);
       model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
-      model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce((a, b) => ((a > b) ? a : b)) / 2.0;
+      model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
+        (a, b) => ((a > b) ? a : b)) / 2.0;
+      model.transitionTime = 500;
       publicAPI.modelUpdated();
     }
   };
@@ -136,18 +151,18 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .attr('cx', d => d.x[0])
       .attr('cy', d => d.x[1]);
     if (deltaT > 0) {
-      let interpFocus = null;
-      if ('prevFocus' in model) {
-        interpFocus = d3.interpolate(model.prevFocus, model.focus);
-      }
+      const interpFocus = ('prevFocus' in model ?
+        d3.interpolate(model.prevFocus, model.focus) :
+        () => model.focus);
       const updateArcs = dd => {
-        if ('previous' in dd && 'prevFocus' in model) {
+        if ('previous' in dd) {
           const interpP0 = d3.interpolate(dd.previous.p0, dd.p0);
           const interpP1 = d3.interpolate(dd.previous.p1, dd.p1);
           return t => hyperbolicPlaneGeodesicOnPoincareDisk(
-            [interpP0(t)], [interpP1(t)], interpFocus(t), model.diskScale)[0].path;
+            interpP0(t), interpP1(t), interpFocus(t), model.diskScale);
         } else {
-          return () => hyperbolicPlaneGeodesicOnPoincareDisk([dd.p0], [dd.p1], model.focus, model.diskScale)[0].path;
+          return t => hyperbolicPlaneGeodesicOnPoincareDisk(
+            dd.p0, dd.p1, interpFocus(t), model.diskScale);
         }
       };
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.idx);
@@ -156,32 +171,30 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     } else {
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.idx);
       model.treeEdgeGroup.selectAll('.link')
-        .attr('d', pp => hyperbolicPlaneGeodesicOnPoincareDisk([pp.p0], [pp.p1], model.focus, model.diskScale)[0].path);
+        .attr('d', pp => hyperbolicPlaneGeodesicOnPoincareDisk(
+          pp.p0, pp.p1, model.focus, model.diskScale));
     }
   };
 
   publicAPI.focusChanged = () => {
-    model.treeEdges = model.treeEdges.map((dd) => ({ idx: dd.idx, p0: dd.p0, p1: dd.p1, previous: { p0: [dd.p0[0], dd.p0[1]], p1: [dd.p1[0], dd.p1[1]] }, }));
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes, model.focus, model.diskScale);
-    /*
-    model.treePaths = hyperbolicPlaneGeodesicOnPoincareDisk(
-      model.treeEdges.map(mm => mm.filter((dd, ii) => ii < 2)),
-      model.treeEdges.map(mm => mm.filter((dd, ii) => ii > 1)),
-      model.focus, model.diskScale);
-    */
     publicAPI.coordsChanged(model.transitionTime);
   };
 
   publicAPI.modelUpdated = () => {
+    // Remember old coordinates in "previous" before computing new ones:
+    model.treeEdges = model.treeEdges.map((dd) => ({
+      idx: dd.idx,
+      p0: dd.p0,
+      p1: dd.p1,
+      previous: {
+        p0: [dd.p0[0], dd.p0[1]],
+        p1: [dd.p1[0], dd.p1[1]]
+      },
+    }));
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes, model.focus, model.diskScale);
-    /*
-    model.treePaths = hyperbolicPlaneGeodesicOnPoincareDisk(
-      model.treeEdges.map(mm => mm.filter((dd, ii) => ii < 2)),
-      model.treeEdges.map(mm => mm.filter((dd, ii) => ii > 1)),
-      model.focus, model.diskScale);
-    */
     const ngdata = model.nodeGroup.selectAll('.node').data(model.diskCoords);
     ngdata.enter().append('circle')
       .classed('node', true)
