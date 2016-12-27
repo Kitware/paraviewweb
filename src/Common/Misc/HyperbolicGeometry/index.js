@@ -21,7 +21,7 @@ export function hyperbolicPlanePointsToPoincareDisk(xh, focus, scale) {
   const rr = rho.map(rhoii => (rhoii < 1e-8 ? 0.0 : Math.tanh(rhoii / 2.0)));
   // Use similar triangles to map the translated points to the unit disk:
   const xd = rr.map((rrii, ii) => (rho[ii] < 1e-8 ? [0.0, 0.0] : tx[ii].map(txii => rrii * txii / rho[ii])));
-  return xd.map((dd, ii) => ({ idx: ii, x: dd }));
+  return xd.map((dd, ii) => ({ id: ii, x: dd }));
 }
 
 /** \brief Return true if the 3 input points are approximately (within \a tol) collinear.
