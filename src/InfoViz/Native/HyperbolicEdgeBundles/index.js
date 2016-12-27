@@ -170,7 +170,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     ngdata.enter().append('circle')
       .classed('node', true)
       .classed(style.hyperbolicNode, true)
-      .attr('r', '0.03px')
+      .attr('r', '0.01px')
       .on('click', (d, i) => {
         model.prevFocus = model.focus;
         model.focus = coordsOf(model.nodes[i]);
