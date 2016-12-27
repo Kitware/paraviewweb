@@ -61,7 +61,7 @@
   opacity: 1;
 }
 
-.row:hover {
+.highlightedRow {
   background-color: #ccd;
 }
 

@@ -1,6 +1,7 @@
 import AnnotationStoreProvider from './AnnotationStoreProvider';
 import D3MultiClick from './D3MultiClick';
 import FieldProvider from './FieldProvider';
+import FieldHoverProvider from './FieldHoverProvider';
 import Histogram1DProvider from './Histogram1DProvider';
 import Histogram2DProvider from './Histogram2DProvider';
 import HistogramBinHoverProvider from './HistogramBinHoverProvider';
@@ -14,6 +15,7 @@ export default {
   AnnotationStoreProvider,
   D3MultiClick,
   FieldProvider,
+  FieldHoverProvider,
   Histogram1DProvider,
   Histogram2DProvider,
   HistogramBinHoverProvider,
