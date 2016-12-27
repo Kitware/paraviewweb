@@ -186,25 +186,48 @@ function hyperbolicEdgeBundle(publicAPI, model) {
   };
 
   publicAPI.layoutSpanningTree = () => {
-      model.sim = forceSimulation(model.nodes)
-        .force('charge', forceManyBody())
-        .force('link', forceLink(model.treeEdges).distance(20).strength(1))
-        .force('x', forceX())
-        .force('y', forceY());
-      model.sim.tick();
-      model.sim.on('tick', () => publicAPI.coordsChanged(0));
-      model.sim.restart();
+    // NB: Some of this code relies on the order of model.treeEdges to start
+    //     with the root node; to list parents as source, children as targets;
+    //     and to list links from the top down.
+    model.nodes.forEach((nn, ii) => { model.nodes[ii].children=[]; });
+    model.treeEdges.forEach(ee => { ee.target.parent = ee.source; ee.source.children.push(ee.target); });
+    const rootNode = model.treeEdges[0].source;
+    //console.log('hierarchy ', d3.layout.hierarchy()(rootNode), rootNode);
+    const maxDepth = model.nodes.reduce((depth, entry) => (entry.depth > depth ? entry.depth : depth), 1);
+    const tidyTree = d3.layout.tree()
+      .separation((a, b)  => (a.parent == b.parent ? 1 : 2) / a.depth)
+      .size([360, maxDepth * 10]);
+    tidyTree(rootNode); // Assign x, y coordinates to each node.
+    model.nodes.forEach((nn, ii) => {
+      const tx = nn.x;
+      const ty = nn.y;
+      model.nodes[ii].x = ty * Math.cos(tx*Math.PI/180.0);
+      model.nodes[ii].y = ty * Math.sin(tx*Math.PI/180.0);
+    });
 
-      // Compute bounds and scaling
-      model.hyperbolicBounds =
-        model.nodes.reduce((result, value) => [
-          [Math.min(result[0][0], value.x), Math.min(result[0][1], value.y)],
-          [Math.max(result[1][0], value.x), Math.max(result[1][1], value.y)]],
-          [[model.nodes[0].x, model.nodes[0].y], [model.nodes[0].x, model.nodes[0].y]]);
-      model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
-      model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
-        (a, b) => ((a > b) ? a : b)) / 2.0;
-      publicAPI.spanningTreeUpdated();
+    // Relax the sparse tidy tree with force-directed layout:
+    model.sim = forceSimulation(model.nodes)
+      .force('charge', forceManyBody())
+      .force('link', forceLink(model.treeEdges).distance(10).strength(1))
+      .force('x', forceX())
+      .force('y', forceY());
+    model.sim.tick();
+    model.sim.tick();
+    model.sim.tick();
+    model.sim.tick();
+    model.sim.on('tick', () => publicAPI.coordsChanged(0));
+    model.sim.restart();
+
+    // Compute bounds and scaling
+    model.hyperbolicBounds =
+      model.nodes.reduce((result, value) => [
+        [Math.min(result[0][0], value.x), Math.min(result[0][1], value.y)],
+        [Math.max(result[1][0], value.x), Math.max(result[1][1], value.y)]],
+        [[model.nodes[0].x, model.nodes[0].y], [model.nodes[0].x, model.nodes[0].y]]);
+    model.focus = vectorScale(0.5, vectorMAdd(model.hyperbolicBounds[0], model.hyperbolicBounds[1], 1.0));
+    model.diskScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
+      (a, b) => ((a > b) ? a : b)) / 2.0;
+    publicAPI.spanningTreeUpdated();
   };
 
   publicAPI.setMutualInformation = (vars, mi) => {
@@ -215,8 +238,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     let rr = 0;
     let ri = mi[rr][rr];
     for (let ii = 1; ii < nv; ++ii) {
-      if (mi[ii][ii] > ri) {
-        ri = mi[ii][ii];
+      const selfInfo = mi[ii][ii];
+      model.nodes[ii].value = selfInfo;
+      if (selfInfo > ri) {
+        ri = selfInfo;
         rr = ii;
       }
     }
