@@ -221,67 +221,35 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
     }
     console.log('Root ', rr);
+
     // II. Find descendants.
-    const nodes = new Set([rr]);
-    const missing = new Set();
-    const root = { name: String(rr), key: rr, children: [], size: ri, parent: null };
-    const leaf = { name: String(rr)+'r', key: vars[rr].name, children: [], size: ri, parent: root };
-    root.children.push(leaf);
-    const metaroot = { name: '-1', key: -1, children: [root], size: 0.0 };
-    map[metaroot.name] = metaroot;
-    map[root.name] = root;
-    root.parent = metaroot;
-    for (let ii = 0; ii < nv; ++ii) { if (ii != rr) { missing.add(ii); } }
-
-    const mslinks = [];
     model.treeEdges = [];
-
-    function addLink(ii, jj) {
-      if (mslinks[ii] === undefined) {
-        mslinks[ii] = new Set([jj]);
-      } else {
-        mslinks[ii].add(jj);
-      }
-      model.treeEdges.push({ id: model.treeEdges.length, source: vars[ii], target: vars[jj] });
-    }
-
+    const nodes = new Set([rr]);
+    const nextNode = mi[rr].map((vv) => ({ vmax: vv, vnod: rr}));
+    delete nextNode[rr];
     while (nodes.size < nv) {
-      let maxmi = -1;
-      let mrow = -1;
-      let mcol = -1;
-      var _itDone = true;
-      var _didIteratorError = false;
-      var _itError = undefined;
-
-      for (var _it = nodes.values()[Symbol.iterator](), _step; !(_itDone = (_step = _it.next()).done); _itDone = true) {
-        var row = _step.value;
-
-        var _itDone2 = true;
-        var _didIteratorError2 = false;
-        var _itError2 = undefined;
-        const rowVals = mi[row];
-
-        for (var _it2 = missing.values()[Symbol.iterator](), _step2; !(_itDone2 = (_step2 = _it2.next()).done); _itDone2 = true) {
-          var col = _step2.value;
-
-          const vv = rowVals[col];
-          if (maxmi < vv) {
-            mrow = row;
-            mcol = col;
-            maxmi = vv;
+      // Find the largest entry:
+      const linkToAdd =
+        nextNode.reduce((result, entry, ii) =>
+          (entry.vmax > result.vmax && !nodes.has(ii) ? Object.assign({ vlnk: ii }, entry) : result),
+          { vmax: -1, vnod: -1, vlnk: -1 });
+      if (linkToAdd.vlnk >= 0) {
+        nodes.add(linkToAdd.vlnk);
+        //missing.delete(linkToAdd.vlnk);
+        model.treeEdges.push({ id: model.treeEdges.length, source: vars[linkToAdd.vnod], target: vars[linkToAdd.vlnk] });
+        // Now update nextNode:
+        delete nextNode[linkToAdd.vlnk];
+        const miRow = mi[linkToAdd.vlnk];
+        nextNode.forEach((vv, ii) => {
+          if (vv.vmax < miRow[ii]) {
+            nextNode[ii].vmax = miRow[ii];
+            nextNode[ii].vnod = linkToAdd.vlnk;
           }
-        }
+        });
+      } else {
+        console.log('Error: not done adding links but no more entries available.');
+        break;
       }
-      missing.delete(mcol);
-      nodes.add(mcol);
-      const treeNode = { parent: map[String(mrow)], children: [], key: mcol, name: String(mcol), size: maxmi };
-      const treeLeaf = { parent: map[String(mcol)], children: [], key: vars[mcol].name, name: String(mcol) + 'r', size: maxmi };
-      treeNode.children.push(treeLeaf);
-      map[treeNode.name] = treeNode;
-      map[treeLeaf.name] = treeLeaf;
-      addLink(mrow < mcol ? mrow : mcol, mrow < mcol ? mcol : mrow);
-      treeNode.parent.children.push(treeNode);
-      console.log( mcol, ' is a child of ', mrow );
     }
 
     publicAPI.layoutSpanningTree();
