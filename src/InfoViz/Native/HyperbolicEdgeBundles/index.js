@@ -3,8 +3,8 @@ import { force, forceSimulation, forceManyBody, forceLink, forceX, forceY } from
 
 import style from 'PVWStyle/InfoVizNative/HyperbolicEdgeBundles.mcss';
 import htmlContent from './body.html';
+import FieldInformationProvider from '../../../InfoViz/Core/FieldInformationProvider';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import DataManager from '../../../IO/Core/DataManager';
 import {
   // vectorMag,
   vectorDiff,
@@ -80,36 +80,50 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 
       let mouseWheelMoving = false;
       svg.node().addEventListener('wheel', (event) => {
-        const maxScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
-          (a, b) => ((a > b) ? a : b)) * 2.0;
-        model.diskScale = Math.min(Math.max(model.diskScale + event.deltaY * 0.1, 0.5), maxScale);
-        //console.log('wheel', event.deltaY, model.diskScale);
-        if (!mouseWheelMoving) {
-          window.requestAnimationFrame(() => {
-            //console.log('   wheel', model.diskScale, maxScale);
-            model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
-              model.nodes.map(coordsOf), model.focus, model.diskScale);
-            publicAPI.coordsChanged(0);
-            mouseWheelMoving = false;
-          });
+        if ('hyperbolicBounds' in model) {
+          const maxScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
+            (a, b) => ((a > b) ? a : b)) * 2.0;
+          model.diskScale = Math.min(Math.max(model.diskScale + event.deltaY * 0.1, 0.5), maxScale);
+          //console.log('wheel', event.deltaY, model.diskScale);
+          if (!mouseWheelMoving) {
+            window.requestAnimationFrame(() => {
+              //console.log('   wheel', model.diskScale, maxScale);
+              model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
+                model.nodes.map(coordsOf), model.focus, model.diskScale);
+              publicAPI.coordsChanged(0);
+              mouseWheelMoving = false;
+            });
+          }
+          mouseWheelMoving = true;
         }
-        mouseWheelMoving = true;
       }, { passive: true });
 
       publicAPI.resize(); // Apply a transform to the transformGroup based on the size of the SVG.
 
-      // Instead of getting data from a provider:
-      //   if (model.provider.isA('MutualInformationSummaryProvider')) ...
-      // fetch using a DataManager for now:
-      const dataManager = new DataManager();
-      const url = '/paraviewweb/data/dummy/minfo.200.json';
-      dataManager.on(url, (data, envelope) => {
-        console.log('loaded data from ', url);
-        const minfo = data.data.minfo;
-        const vars = d3.range(minfo.length).map((nn) => ({ name: String(nn), id: nn }));
-        publicAPI.setMutualInformation(vars, minfo);
-      });
-      dataManager.fetchURL(url, 'json');
+      // Auto unmount on destroy
+      model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
+
+      // Fetch the mutual information matrix and mapping from row/column index to field name.
+      if (model.provider.isA('FieldInformationProvider')) {
+        model.fieldInformationSubscription =
+          model.provider.subscribeToFieldInformation(
+            (data) => {
+              if (data && 'fieldMapping' in data && 'mutualInformation' in data) {
+                publicAPI.setMutualInformation(
+                  data.fieldMapping, data.mutualInformation);
+              }
+            });
+        model.subscriptions.push(model.fieldInformationSubscription);
+      }
+      // Listen for hover events
+      if (model.provider.isA('FieldHoverProvider')) {
+        model.subscriptions.push(
+          model.provider.onHoverFieldChange(change => {
+            model.nodeGroup
+              .selectAll('.node')
+              .classed(style.highlightedNode, d => model.nodes[d.id].name in change.state.fields);
+          }));
+      }
     }
   };
 
@@ -170,13 +184,25 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     ngdata.enter().append('circle')
       .classed('node', true)
       .classed(style.hyperbolicNode, true)
-      .attr('r', '0.01px')
+      .attr('r', '0.02px')
       .on('click', (d, i) => {
         model.prevFocus = model.focus;
         model.focus = coordsOf(model.nodes[i]);
         publicAPI.focusChanged();
       });
     ngdata.exit().remove();
+    if (model.provider.isA('FieldHoverProvider')) {
+      model.nodeGroup.selectAll('.node')
+        .on('mouseenter', (d, i) => {
+          const state = { fields: {} };
+          state.fields[model.nodes[d.id].name] = true;
+          model.provider.setFieldHoverState({ state });
+        })
+        .on('mouseleave', () => {
+          const state = { fields: {} };
+          model.provider.setFieldHoverState({ state });
+        });
+    }
     const tgdata = model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, dd => dd.id);
     tgdata.enter().append('path')
       .classed('link', true)

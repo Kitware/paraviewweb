@@ -12,6 +12,12 @@
   fill: black;
 }
 
+.highlightedNode {
+  fill: red;
+  stroke: red;
+  stroke-width: 0.005;
+}
+
 .hyperbolicTreeEdge {
   stroke: blue;
   fill: none;
