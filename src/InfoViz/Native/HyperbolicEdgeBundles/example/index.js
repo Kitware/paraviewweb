@@ -23,6 +23,7 @@ import dataModel from './state.json';
 const container = document.querySelector('.content');
 container.style.height = '100vh';
 container.style.width = '100vw';
+d3.select('body').style('overflow', 'hidden'); // Safari otherwise intercepts wheel events
 
 const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
   Object.assign(model, initialValues);
