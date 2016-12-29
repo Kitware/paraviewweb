@@ -147,21 +147,24 @@ function fieldSelector(publicAPI, model) {
         .select('tbody.fields')
         .selectAll('tr')
         .on('mouseenter', function inner(d, i) {
-          const state = { fields: {}, };
-          state.fields[d] = true;
+          const state = { highlight: {}, disposition: 'preliminary' };
+          state.highlight[d] = true;
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', (d, i) => {
-          const state = { fields: {}, };
+          const state = { highlight: {}, disposition: 'final' };
           model.provider.setFieldHoverState({ state });
         });
       model.subscriptions.push(
-        model.provider.onHoverFieldChange(change => {
+        model.provider.onHoverFieldChange(hover => {
           d3
             .select(model.container)
             .select('tbody.fields')
             .selectAll('tr')
-            .classed(style.highlightedRow, d => d in change.state.fields);
+            .classed(style.highlightedRow, d => d in hover.state.highlight);
+          if ('subject' in hover.state && hover.state.subject !== null) {
+            console.log('Reorder by mutual information to ', hover.state.subject);
+          }
         }));
     }
 
@@ -177,6 +180,11 @@ function fieldSelector(publicAPI, model) {
         .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
         .on('click', (name) => {
+          const state = { highlight: {}, subject: name, disposition: 'final' };
+          state.highlight[name] = true;
+          model.provider.setFieldHoverState({ state });
+        })
+        .on('dblclick', (name) => {
           model.provider.toggleFieldSelection(name);
         });
 

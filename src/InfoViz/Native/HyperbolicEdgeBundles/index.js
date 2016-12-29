@@ -118,10 +118,37 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       // Listen for hover events
       if (model.provider.isA('FieldHoverProvider')) {
         model.subscriptions.push(
-          model.provider.onHoverFieldChange(change => {
+          model.provider.onHoverFieldChange(hover => {
+            //console.log(hover);
+            function updateDrawOrder(d, i) {
+              if (model.nodes[d.id].name in hover.state.highlight) {
+                this.parentNode.appendChild(this);
+                d3.select(this)
+                  .on('click', (d, i) => {
+                    if (model.provider.isA('FieldHoverProvider')) {
+                      const hover = model.provider.getFieldHoverState();
+                      hover.state.subject = model.nodes[d.id].name;
+                      hover.state.highlight[hover.state.subject] = true;
+                      model.provider.setFieldHoverState(hover);
+                    } else {
+                      model.prevFocus = model.focus;
+                      model.focus = coordsOf(model.nodes[i]);
+                      publicAPI.focusChanged();
+                    }
+                  });
+              }
+            }
             model.nodeGroup
               .selectAll('.node')
-              .classed(style.highlightedNode, d => model.nodes[d.id].name in change.state.fields);
+              .classed(style.highlightedNode, d => model.nodes[d.id].name in hover.state.highlight)
+              .each(updateDrawOrder);
+            if ('subject' in hover.state && hover.state.subject !== null) {
+              model.prevFocus = model.focus;
+              model.focus = model.nodes.reduce((result, entry) =>
+                entry.name === hover.state.subject ? coordsOf(entry) : result,
+                model.focus);
+              publicAPI.focusChanged();
+            }
           }));
       }
     }
@@ -186,20 +213,27 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .classed(style.hyperbolicNode, true)
       .attr('r', '0.02px')
       .on('click', (d, i) => {
-        model.prevFocus = model.focus;
-        model.focus = coordsOf(model.nodes[i]);
-        publicAPI.focusChanged();
+        if (model.provider.isA('FieldHoverProvider')) {
+          const hover = model.provider.getFieldHoverState();
+          hover.state.subject = model.nodes[d.id].name;
+          hover.state.highlight[hover.state.subject] = true;
+          model.provider.setFieldHoverState(hover);
+        } else {
+          model.prevFocus = model.focus;
+          model.focus = coordsOf(model.nodes[i]);
+          publicAPI.focusChanged();
+        }
       });
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
       model.nodeGroup.selectAll('.node')
         .on('mouseenter', (d, i) => {
-          const state = { fields: {} };
-          state.fields[model.nodes[d.id].name] = true;
+          const state = { highlight: {}, subject: null, disposition: 'preliminary' };
+          state.highlight[model.nodes[d.id].name] = true;
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', () => {
-          const state = { fields: {} };
+          const state = { highlight: {}, subject: null, disposition: 'final' };
           model.provider.setFieldHoverState({ state });
         });
     }
