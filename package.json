@@ -77,7 +77,7 @@
 
 
         "build"         : "npm run bin:fix-autobahn && webpack --progress --colors",
-        "build:release" : "npm run bin:fix-autobahn && export NODE_ENV=production && npm run build -- -p",
+        "build:release" : "npm run bin:fix-autobahn && (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
 
         "test"          : "karma start karma.conf.js",
         "test:travis"   : "karma start karma.conf.js --browsers Electron --single-run",
