@@ -1,7 +1,10 @@
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import   CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import              FieldSearch from '../../../InfoViz/React/FieldSearch';
+import             ReactAdapter from '../../../Component/React/ReactAdapter';
+
 import template from './template.html';
 
 // ----------------------------------------------------------------------------
@@ -44,6 +47,10 @@ function fieldSelector(publicAPI, model) {
     if (el) {
       d3.select(model.container).html(template);
       d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
+      if (model.displaySearch) {
+        model.searchBar = new ReactAdapter(FieldSearch, { provider: model.provider });
+        model.searchBar.setContainer(d3.select(model.container).select('.searchDiv').node());
+      }
 
       model.fieldShowHistogram = model.fieldShowHistogram && (model.provider.isA('Histogram1DProvider'));
       // append headers for histogram columns
@@ -335,6 +342,7 @@ function fieldSelector(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   provider: null,
+  displaySearch: false,
   displayUnselected: true,
   fieldShowHistogram: true,
   fieldHistWidth: 120,

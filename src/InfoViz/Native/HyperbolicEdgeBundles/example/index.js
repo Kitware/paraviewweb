@@ -2,7 +2,6 @@ import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
 import            FieldSelector from '../../../../InfoViz/Native/FieldSelector';
-import              FieldSearch from '../../../../InfoViz/React/FieldSearch';
 import       FieldHoverProvider from '../../../../InfoViz/Core/FieldHoverProvider';
 import FieldInformationProvider from '../../../../InfoViz/Core/FieldInformationProvider';
 import            FieldProvider from '../../../../InfoViz/Core/FieldProvider';
@@ -59,14 +58,13 @@ const  blue = BackgroundColor.newInstance({ color:'blue' });
 const  pink = BackgroundColor.newInstance({ color:'pink' });
 const  gray = BackgroundColor.newInstance({ color:'gray' });
 
-const fieldSearch = new ReactAdapter(FieldSearch, { provider });
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
-const fieldSelector = FieldSelector.newInstance({ provider });
+const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true });
 
 const viewports = {
   Gray: {
     component: gray,
-    viewport: -1,
+    viewport: 2,
   },
   HyperbolicEdgeBundles: {
     component: hyperbolicView,
@@ -84,10 +82,6 @@ const viewports = {
     component: fieldSelector,
     viewport: 1,
   },
-  FieldSearch: {
-    component: fieldSearch,
-    viewport: 2,
-  },
   Blue: {
     component: blue,
     viewport: -1,
@@ -100,7 +94,7 @@ const viewports = {
 
 const workbench = new Workbench();
 workbench.setComponents(viewports);
-workbench.setLayout('3xL');
+workbench.setLayout('2x1');
 
 const props = {
   onLayoutChange(layout) {
