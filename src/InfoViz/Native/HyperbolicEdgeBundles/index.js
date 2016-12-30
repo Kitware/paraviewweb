@@ -128,7 +128,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                     if (model.provider.isA('FieldHoverProvider')) {
                       const hover = model.provider.getFieldHoverState();
                       hover.state.subject = model.nodes[d.id].name;
-                      hover.state.highlight[hover.state.subject] = true;
+                      hover.state.highlight[hover.state.subject] = { weight: 1 };
                       model.provider.setFieldHoverState(hover);
                     } else {
                       model.prevFocus = model.focus;
@@ -141,6 +141,15 @@ function hyperbolicEdgeBundle(publicAPI, model) {
             model.nodeGroup
               .selectAll('.node')
               .classed(style.highlightedNode, d => model.nodes[d.id].name in hover.state.highlight)
+              .classed(style.emphasizedNode, d => {
+                const nodeName = model.nodes[d.id].name;
+                if (nodeName in hover.state.highlight) {
+                  const hv = hover.state.highlight[nodeName];
+                  console.log(`${nodeName} ${hv.weight}`);
+                  return (typeof hv === 'object' && hv.weight > 1);
+                }
+                return false;
+              })
               .each(updateDrawOrder);
             if ('subject' in hover.state && hover.state.subject !== null) {
               model.prevFocus = model.focus;
@@ -216,7 +225,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         if (model.provider.isA('FieldHoverProvider')) {
           const hover = model.provider.getFieldHoverState();
           hover.state.subject = model.nodes[d.id].name;
-          hover.state.highlight[hover.state.subject] = true;
+          hover.state.highlight[hover.state.subject] = { weight: 1 };
           model.provider.setFieldHoverState(hover);
         } else {
           model.prevFocus = model.focus;
@@ -229,7 +238,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.nodeGroup.selectAll('.node')
         .on('mouseenter', (d, i) => {
           const state = { highlight: {}, subject: null, disposition: 'preliminary' };
-          state.highlight[model.nodes[d.id].name] = true;
+          state.highlight[model.nodes[d.id].name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', () => {

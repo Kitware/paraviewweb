@@ -148,7 +148,7 @@ function fieldSelector(publicAPI, model) {
         .selectAll('tr')
         .on('mouseenter', function inner(d, i) {
           const state = { highlight: {}, disposition: 'preliminary' };
-          state.highlight[d] = true;
+          state.highlight[d] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', (d, i) => {
@@ -181,7 +181,7 @@ function fieldSelector(publicAPI, model) {
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
         .on('click', (name) => {
           const state = { highlight: {}, subject: name, disposition: 'final' };
-          state.highlight[name] = true;
+          state.highlight[name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('dblclick', (name) => {

@@ -12,6 +12,11 @@
   fill: black;
 }
 
+.emphasizedNode {
+  fill: yellow !important;
+  stroke-width: 0.007 !important;
+}
+
 .highlightedNode {
   fill: red;
   stroke: red;

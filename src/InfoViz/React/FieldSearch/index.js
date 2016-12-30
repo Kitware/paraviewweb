@@ -1,6 +1,6 @@
 import React from 'react';
-
 import Select from 'react-select';
+import classNames from 'classnames';
 
 import 'react-select/dist/react-select.css';
 
@@ -8,7 +8,10 @@ import style from '../../../../style/InfoVizReact/FieldSearch.mcss';
 
 function getOptionData(provider, mtime = 0) {
   const fieldNames = provider.getFieldNames();
-  const options = fieldNames.map(name => ({ label: name, value: provider.getField(name).id }));
+  const options = fieldNames.map(name => ({
+    label: name,
+    value: provider.getField(name).id,
+  }));
   const selectedFields = ''; // Comma-separated list of currently-selected fields.
   return { true, options, selectedFields };
 }
@@ -32,7 +35,9 @@ export default class FieldSearch extends React.Component {
     this.title = 'Field Search';
 
     // Autobinding
-    this.updateFieldHover = this.updateFieldHover.bind(this);
+    this.filterOptions = this.filterOptions.bind(this);
+    this.finalizeChosenOption = this.finalizeChosenOption.bind(this);
+    this.renderMenuAndUpdateHover = this.renderMenuAndUpdateHover.bind(this);
   }
 
   /// One-time initialization.
@@ -51,21 +56,57 @@ export default class FieldSearch extends React.Component {
     this.subscriptions = null;
   }
 
-  updateFieldHover(arg) {
-    //console.log('Change! ', arg, typeof arg, this.state.options, this.state.selectedFields, this.props);
+  filterOptions(options, filter, currentValues, config) {
+    console.log(`Filter "${filter}" type ${typeof filter}`, currentValues, 'config', config);
+    if (!filter) {
+      return options;
+    }
+    const oldHover = this.props.provider.isA('FieldHoverProvider') ?
+      this.props.provider.getFieldHoverState() : { state: { subject: null } };
+    const hover = { state: { disposition: 'preliminary', subject: oldHover.state.subject, highlight: {} } };
+    const downcasedFilter = filter.toLowerCase();
+
+    // (i) Map the options to indicate matches, (ii) filter out mismatches,
+    // and (iii) sort my where the match occurred -- giving priority to
+    // fields that start with the given text:
+    const filteredOpts = options
+      .map((option, optidx) => {
+        const downcasedOption = option.label.toLowerCase();
+        const matchPos = downcasedOption.indexOf(downcasedFilter);
+        if (matchPos >= 0) {
+          hover.state.highlight[option.label] = { weight: 1 };
+          return { match: matchPos, optidx, option };
+        }
+        return null;
+      })
+      .filter(entry => entry !== null)
+      .sort((a, b) => (a.match > b.match || (a.match === b.match && a.optidx > b.optidx)))
+      .map(entry => entry.option);
+
     if (this.props.provider.isA('FieldHoverProvider')) {
-      const fieldId = Number(arg);
+      this.props.provider.setFieldHoverState(hover);
+    }
+    return filteredOpts;
+  }
+
+  finalizeChosenOption(optionValue) {
+    console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
+    if (this.props.provider.isA('FieldHoverProvider')) {
+      const fieldId = Number(optionValue);
       const subject = this.state.options.reduce(
         (name, entry) => entry.value === fieldId ? entry.label : name,
         '');
-      const state = {
-        disposition: 'final',
-        subject,
-        highlight: {},
+      const hover = {
+        state: {
+          disposition: 'final',
+          subject,
+          highlight: {},
+        },
       };
-      state.highlight[subject] = true;
-      this.props.provider.setFieldHoverState({ state });
+      hover.state.highlight[subject] = { weight: 2 };
+      this.props.provider.setFieldHoverState(hover);
     }
+    return optionValue;
   }
 
   render() {
@@ -77,12 +118,72 @@ export default class FieldSearch extends React.Component {
             simpleValue
             value={this.state.selectedFields}
             placeholder="Search for a field"
+            filterOptions={this.filterOptions}
+            menuRenderer={this.renderMenuAndUpdateHover}
             options={this.state.options}
-            onChange={this.updateFieldHover}
+            onChange={this.finalizeChosenOption}
             resetValue={[]}
           />
         </div>
       </div>);
+  }
+
+  renderMenuAndUpdateHover({
+    focusedOption,
+    instancePrefix,
+    labelKey,
+    onFocus,
+    onSelect,
+    optionClassName,
+    optionComponent,
+    optionRenderer,
+    options,
+    valueArray,
+    valueKey,
+    onOptionRef
+  }) {
+    let Option = optionComponent;
+    if (this.props.provider.isA('FieldHoverProvider')) {
+      const oldHover = this.props.provider.getFieldHoverState();
+      const hover = { state: { 'disposition': 'preliminary', highlight: {} } };
+      if ('subject' in oldHover.state) {
+        hover.state.subject = oldHover.state.subject;
+      }
+      Object.keys(oldHover.state.highlight).forEach(name => {
+        hover.state.highlight[name] = { weight: 1 };
+      });
+      hover.state.highlight[focusedOption.label] = { weight: 2 };
+      this.props.provider.setFieldHoverState(hover);
+		}
+
+    return options.map((option, i) => {
+      let isSelected = valueArray && valueArray.indexOf(option) > -1;
+      let isFocused = option === focusedOption;
+      let optionClass = classNames(optionClassName, {
+        'Select-option': true,
+        'is-selected': isSelected,
+        'is-focused': isFocused,
+        'is-disabled': option.disabled,
+      });
+
+      return (
+        <Option
+          className={optionClass}
+          instancePrefix={instancePrefix}
+          isDisabled={option.disabled}
+          isFocused={isFocused}
+          isSelected={isSelected}
+          key={`option-${i}-${option[valueKey]}`}
+          onFocus={onFocus}
+          onSelect={onSelect}
+          option={option}
+          optionIndex={i}
+          ref={ref => { onOptionRef(ref, isFocused); }}
+        >
+          {optionRenderer(option, i)}
+        </Option>
+      );
+    });
   }
 }
 
