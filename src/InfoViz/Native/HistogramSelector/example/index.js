@@ -1,3 +1,4 @@
+/* global document */
 import 'normalize.css';
 import 'babel-polyfill';
 
@@ -8,7 +9,6 @@ import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
 import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
 import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
 import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
-import PartitionProvider from '../../../../../src/InfoViz/Core/PartitionProvider';
 import ScoresProvider from '../../../../../src/InfoViz/Core/ScoresProvider';
 import SelectionProvider from '../../../../../src/InfoViz/Core/SelectionProvider';
 
@@ -42,14 +42,13 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   Histogram1DProvider.extend(publicAPI, model, initialValues);
   HistogramBinHoverProvider.extend(publicAPI, model);
   LegendProvider.extend(publicAPI, model, initialValues);
-  PartitionProvider.extend(publicAPI, model, initialValues);
   ScoresProvider.extend(publicAPI, model, initialValues);
   SelectionProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
 // set provider behaviors
 provider.setFieldsSorted(true);
-provider.getFieldNames().forEach(name => {
+provider.getFieldNames().forEach((name) => {
   provider.addLegendEntry(name);
 });
 provider.assignLegend(['colors', 'shapes']);
