@@ -19,7 +19,7 @@ import              DataManager from '../../../../IO/Core/DataManager';
 
 import { debounce } from '../../../../Common/Misc/Debounce';
 
-import dataModel from './state.json';
+import dataModel from '../../HistogramSelector/example/state.json';
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';
