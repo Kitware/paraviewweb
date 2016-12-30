@@ -2,6 +2,7 @@ import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
 import            FieldSelector from '../../../../InfoViz/Native/FieldSelector';
+import              FieldSearch from '../../../../InfoViz/React/FieldSearch';
 import       FieldHoverProvider from '../../../../InfoViz/Core/FieldHoverProvider';
 import FieldInformationProvider from '../../../../InfoViz/Core/FieldInformationProvider';
 import            FieldProvider from '../../../../InfoViz/Core/FieldProvider';
@@ -15,6 +16,7 @@ import                Composite from '../../../../Component/Native/Composite';
 import             ReactAdapter from '../../../../Component/React/ReactAdapter';
 import      WorkbenchController from '../../../../Component/React/WorkbenchController';
 import              DataManager from '../../../../IO/Core/DataManager';
+
 
 import { debounce } from '../../../../Common/Misc/Debounce';
 
@@ -57,13 +59,14 @@ const  blue = BackgroundColor.newInstance({ color:'blue' });
 const  pink = BackgroundColor.newInstance({ color:'pink' });
 const  gray = BackgroundColor.newInstance({ color:'gray' });
 
+const fieldSearch = new ReactAdapter(FieldSearch, { provider });
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
 const fieldSelector = FieldSelector.newInstance({ provider });
 
 const viewports = {
   Gray: {
     component: gray,
-    viewport: 2,
+    viewport: -1,
   },
   HyperbolicEdgeBundles: {
     component: hyperbolicView,
@@ -81,6 +84,10 @@ const viewports = {
     component: fieldSelector,
     viewport: 1,
   },
+  FieldSearch: {
+    component: fieldSearch,
+    viewport: 2,
+  },
   Blue: {
     component: blue,
     viewport: -1,
@@ -93,7 +100,7 @@ const viewports = {
 
 const workbench = new Workbench();
 workbench.setComponents(viewports);
-workbench.setLayout('2x1');
+workbench.setLayout('3xL');
 
 const props = {
   onLayoutChange(layout) {
@@ -134,3 +141,5 @@ window.onresize = resizeHandler;
 // modify objects in your browser's developer console:
 // -----------------------------------------------------------
 global.hyperbolicView = hyperbolicView;
+global.fieldSearch = fieldSearch;
+global.fieldSelector = fieldSelector;
