@@ -2,7 +2,7 @@ function affine(inMin, val, inMax, outMin, outMax) {
   return (((val - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
 }
 
-export default function Surface3D(chartState, histogram) {
+export default function HistXYZ(chartState, histogram, chartType) {
   if (!histogram) return null;
 
   const nBins = histogram.numberOfBins;
@@ -28,16 +28,29 @@ export default function Surface3D(chartState, histogram) {
   });
 
   return {
+    nonsense: 'unknown value',
     forceNewPlot: chartState.forceNewPlot,
     traces: [
       {
         x,
         y,
         z,
-        type: 'surface',
+        type: chartType,
+        colorscale: chartState.colormap,
+        reversescale: chartState.reversescale,
       },
     ],
+    // redundant axis titles for 2D and 3D plots.
     layout: {
+      margin: {
+        t: 40,
+      },
+      xaxis: {
+        title: histogram.x.name,
+      },
+      yaxis: {
+        title: histogram.y.name,
+      },
       scene: {
         xaxis: {
           title: histogram.x.name,
@@ -49,6 +62,13 @@ export default function Surface3D(chartState, histogram) {
           title: 'Count',
         },
       },
+    },
+    config: {
+      scrollZoom: true,
+      displayModeBar: true,
+      displaylogo: false,
+      showLink: false,
+      modeBarButtonsToRemove: ['sendDataToCloud'],
     },
   };
 }
