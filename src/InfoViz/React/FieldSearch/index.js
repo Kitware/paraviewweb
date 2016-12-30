@@ -74,7 +74,7 @@ export default class FieldSearch extends React.Component {
         const downcasedOption = option.label.toLowerCase();
         const matchPos = downcasedOption.indexOf(downcasedFilter);
         if (matchPos >= 0) {
-          hover.state.highlight[option.label] = { weight: 1 };
+          hover.state.highlight[option.label] = { weight: 0 };
           return { match: matchPos, optidx, option };
         }
         return null;
@@ -103,7 +103,7 @@ export default class FieldSearch extends React.Component {
           highlight: {},
         },
       };
-      hover.state.highlight[subject] = { weight: 2 };
+      hover.state.highlight[subject] = { weight: 1 };
       this.props.provider.setFieldHoverState(hover);
     }
     return optionValue;
@@ -150,9 +150,9 @@ export default class FieldSearch extends React.Component {
         hover.state.subject = oldHover.state.subject;
       }
       Object.keys(oldHover.state.highlight).forEach(name => {
-        hover.state.highlight[name] = { weight: 1 };
+        hover.state.highlight[name] = { weight: 0 };
       });
-      hover.state.highlight[focusedOption.label] = { weight: 2 };
+      hover.state.highlight[focusedOption.label] = { weight: 1 };
       this.props.provider.setFieldHoverState(hover);
 		}
 

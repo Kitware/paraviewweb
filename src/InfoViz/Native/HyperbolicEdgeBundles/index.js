@@ -145,8 +145,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                 const nodeName = model.nodes[d.id].name;
                 if (nodeName in hover.state.highlight) {
                   const hv = hover.state.highlight[nodeName];
-                  console.log(`${nodeName} ${hv.weight}`);
-                  return (typeof hv === 'object' && hv.weight > 1);
+                  //console.log(`${nodeName} ${hv.weight}`);
+                  return (typeof hv === 'object' && hv.weight > 0);
                 }
                 return false;
               })

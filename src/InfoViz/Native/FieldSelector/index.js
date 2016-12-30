@@ -49,7 +49,7 @@ function fieldSelector(publicAPI, model) {
       d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
       if (model.displaySearch) {
         model.searchBar = new ReactAdapter(FieldSearch, { provider: model.provider });
-        model.searchBar.setContainer(d3.select(model.container).select('.searchDiv').node());
+        model.searchBar.setContainer(d3.select(model.container).select('.field-selector-search').node());
       }
 
       model.fieldShowHistogram = model.fieldShowHistogram && (model.provider.isA('Histogram1DProvider'));
@@ -93,11 +93,18 @@ function fieldSelector(publicAPI, model) {
     d3.select(model.container)
       .select('th.field-selector-label')
       .style('text-align', 'left')
-      .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
-      .on('click', (d) => {
-        model.displayUnselected = !model.displayUnselected;
-        publicAPI.render();
-      });
+      .select('div.field-selector-label')
+        .classed(style.fieldSelectorHead, true)
+        .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
+        .on('click', (d) => {
+          model.displayUnselected = !model.displayUnselected;
+          publicAPI.render();
+        });
+    d3.select(model.container)
+      .select('th.field-selector-label')
+      .select('div.field-selector-search')
+        .style('width', '400px') // FIXME: Evil!
+        .classed(style.fieldSelectorHead, true);
 
     // test for too-long rows
     const hideMore = model.container.scrollWidth > model.container.clientWidth;

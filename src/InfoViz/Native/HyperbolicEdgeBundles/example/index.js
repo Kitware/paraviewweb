@@ -135,5 +135,4 @@ window.onresize = resizeHandler;
 // modify objects in your browser's developer console:
 // -----------------------------------------------------------
 global.hyperbolicView = hyperbolicView;
-global.fieldSearch = fieldSearch;
 global.fieldSelector = fieldSelector;

@@ -9,22 +9,21 @@
 }
 
 .hyperbolicNode {
-  fill: black;
+  fill: #ddd;
 }
 
 .emphasizedNode {
-  fill: yellow !important;
+  fill: black !important;
+  stroke: black !important;
   stroke-width: 0.007 !important;
 }
 
 .highlightedNode {
-  fill: red;
-  stroke: red;
-  stroke-width: 0.005;
+  fill: #aaa;
 }
 
 .hyperbolicTreeEdge {
-  stroke: blue;
+  stroke: #aaa;
   fill: none;
   stroke-width: 0.005;
 }

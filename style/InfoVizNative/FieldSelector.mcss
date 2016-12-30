@@ -12,6 +12,10 @@
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
 }
 
+.fieldSelectorHead {
+  display: inline-flex;
+}
+
 .icon {
   composes: fa    from 'font-awesome/css/font-awesome.css';
   composes: fa-fw from 'font-awesome/css/font-awesome.css';
