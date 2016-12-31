@@ -280,10 +280,12 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       .force('link', forceLink(model.treeEdges).distance(10).strength(1))
       .force('x', forceX())
       .force('y', forceY());
-    model.sim.tick();
-    model.sim.tick();
-    model.sim.tick();
-    model.sim.tick();
+
+    // Give the tree a few iterations to relax before
+    // we grab its bounding box for a default scale:
+    for (let iter = 0; iter < 20; ++iter) {
+      model.sim.tick();
+    }
     model.sim.on('tick', () => publicAPI.coordsChanged(0));
     model.sim.restart();
 
