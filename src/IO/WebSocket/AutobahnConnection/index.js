@@ -92,7 +92,7 @@ export default class AutobahnConnection {
 
   destroy(timeout = 10) {
     this.off();
-    if (this.session) {
+    if (this.session && timeout > 0) {
       this.session.call('application.exit.later', [timeout]);
     }
     if (this.connection) {

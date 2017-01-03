@@ -27,5 +27,6 @@ for making RPC calls.
 
 ## destroy(timeout=10)
 
-Close the connection and ask the server to automaticaly shutdown
-after the given timeout while removing any listener.
+Close the connection and ask the server to automaticaly shutdown after the given timeout while removing any listener.
+
+If the provided timeout is negative, we will close the connection without asking the server to shutdown.
