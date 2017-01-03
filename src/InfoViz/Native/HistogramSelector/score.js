@@ -41,7 +41,6 @@ export default function init(inPublicAPI, inModel) {
 
   function defaultFieldData() {
     return {
-      scoreDirty: false,
       annotation: null,
     };
   }
@@ -123,30 +122,11 @@ export default function init(inPublicAPI, inModel) {
       console.error('Cannot translate scores to send to provider');
       return;
     }
-    if (model.provider.isA('PartitionProvider')) {
-      model.provider.changePartition(def.name, scoreData);
-      def.scoreDirty = true;
-      // set def.scoreDirty, to trigger a load of data. We'll use the current data
-      // until the server returns new data - see addSubscriptions() ..
-      // model.provider.onPartitionReady() below, which sets scoreDirty again to
-      // begin using the new data.
-    }
     if (model.provider.isA('SelectionProvider')) {
       if (!scoreData.name) {
         scoreData.name = `${scoreData.selection.partition.variable} (partition)`;
       }
       model.provider.setAnnotation(scoreData);
-    }
-  }
-
-  // retrieve regions/dividers from the server.
-  function getScores(def) {
-    if (def.scoreDirty && model.provider.isA('PartitionProvider')) {
-      if (model.provider.loadPartition(def.name)) {
-        const scoreData = model.provider.getPartition(def.name);
-        partitionToDividers(scoreData, def, model.scores);
-        def.scoreDirty = false;
-      }
     }
   }
 
@@ -915,13 +895,9 @@ export default function init(inPublicAPI, inModel) {
       def.dividers = [];
       def.regions = [model.defaultScore];
       def.editScore = false;
-      def.scoreDirty = true;
       def.lockAnnot = false;
     }
     const hobj = def.hobj;
-
-    // retrieve scores from the server, if available.
-    getScores(def, hobj);
 
     const gScore = svgGr.select(`.${style.jsScore}`);
     let drag = null;
@@ -1126,12 +1102,6 @@ export default function init(inPublicAPI, inModel) {
   }
 
   function addSubscriptions() {
-    if (model.provider.isA('PartitionProvider')) {
-      model.subscriptions.push(model.provider.onPartitionReady((field) => {
-        model.fieldData[field].scoreDirty = true;
-        publicAPI.render(field);
-      }));
-    }
     if (model.provider.isA('SelectionProvider')) {
       model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
         if (annotation.selection.type === 'partition') {
