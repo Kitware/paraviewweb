@@ -1,9 +1,15 @@
 import Monologue   from  'monologue.js';
 import HistXYZ     from './HistXYZ';
-// import Surface3D   from './Surface3D';
 import Scatter     from './Scatter';
 import ScatterXY     from './ScatterXY';
 
+const defaultConfig = {
+  scrollZoom: true,
+  displayModeBar: true,
+  displaylogo: false,
+  showLink: false,
+  modeBarButtonsToRemove: ['sendDataToCloud'],
+};
 const chartFactory = {
   Contour: { builder: HistXYZ, type: 'contour', data: 'histogram' },
   Heatmap: { builder: HistXYZ, type: 'heatmap', data: 'histogram' },
@@ -11,6 +17,14 @@ const chartFactory = {
   ScatterXY: { builder: ScatterXY, type: 'scatter', data: 'scatter' },
   ScatterXYContour: { builder: ScatterXY, type: 'histogram2dcontour', data: 'scatter' },
   Surface3D: { builder: HistXYZ, type: 'surface', data: 'histogram' },
+  Trend: {
+    builder: (chartState, data) => {
+      if (data) data.config = data.config || defaultConfig;
+      return data;
+    },
+    type: 'custom',
+    data: 'plot',
+  },
 };
 
 const DATA_READY_TOPIC = 'data-ready';
@@ -113,6 +127,11 @@ export default class Histogram2DPlotlyChartBuilder {
     this.scatter = scatter;
     this.buildChart();
   }
+  setPlot(plot) {
+    this.chartState.forceNewPlot = true;
+    this.plot = plot;
+    this.buildChart();
+  }
 
   // ------------------------------------------------------------------------
 
@@ -147,6 +166,9 @@ export default class Histogram2DPlotlyChartBuilder {
 
   getChartType() {
     return this.chartState.chartType;
+  }
+  getDataType() {
+    return chartFactory[this.chartState.chartType].data;
   }
 }
 
