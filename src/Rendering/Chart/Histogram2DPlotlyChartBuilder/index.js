@@ -1,10 +1,30 @@
 import Monologue   from  'monologue.js';
-import Surface3D   from './Surface3D';
+import HistXYZ     from './HistXYZ';
 import Scatter     from './Scatter';
+import ScatterXY     from './ScatterXY';
 
+const defaultConfig = {
+  scrollZoom: true,
+  displayModeBar: true,
+  displaylogo: false,
+  showLink: false,
+  modeBarButtonsToRemove: ['sendDataToCloud'],
+};
 const chartFactory = {
-  Surface3D,
-  Scatter,
+  Contour: { builder: HistXYZ, type: 'contour', data: 'histogram' },
+  Heatmap: { builder: HistXYZ, type: 'heatmap', data: 'histogram' },
+  Scatter: { builder: Scatter, type: 'scatter', data: 'histogram' },
+  ScatterXY: { builder: ScatterXY, type: 'scatter', data: 'scatter' },
+  ScatterXYContour: { builder: ScatterXY, type: 'histogram2dcontour', data: 'scatter' },
+  Surface3D: { builder: HistXYZ, type: 'surface', data: 'histogram' },
+  Trend: {
+    builder: (chartState, data) => {
+      if (data) data.config = data.config || defaultConfig;
+      return data;
+    },
+    type: 'custom',
+    data: 'plot',
+  },
 };
 
 const DATA_READY_TOPIC = 'data-ready';
@@ -15,6 +35,7 @@ export default class Histogram2DPlotlyChartBuilder {
     this.availableChartTypes = Object.keys(chartFactory);
     this.chartState = {
       chartType: this.availableChartTypes[1],
+      colormap: 'Portland',
     };
 
     // Handle data fetching
@@ -45,9 +66,11 @@ export default class Histogram2DPlotlyChartBuilder {
   // ------------------------------------------------------------------------
 
   buildChart() {
-    if (this.chartState.chartType && this.histogram) {
-      const builder = chartFactory[this.chartState.chartType];
-      const plotData = builder(this.chartState, this.histogram);
+    if (this.chartState.chartType && (this.histogram || this.scatter)) {
+      const builder = chartFactory[this.chartState.chartType].builder;
+      const typeString = chartFactory[this.chartState.chartType].type;
+      const dataType = chartFactory[this.chartState.chartType].data;
+      const plotData = builder(this.chartState, this[dataType], typeString);
       this.chartState.forceNewPlot = false;
       if (plotData) {
         this.dataReady(plotData);
@@ -57,9 +80,10 @@ export default class Histogram2DPlotlyChartBuilder {
 
   // ------------------------------------------------------------------------
 
-  updateState(state) {
+  updateState(state, forceNewPlot) {
     if (state) {
       this.chartState = Object.assign(this.chartState, state);
+      if (forceNewPlot) this.chartState.forceNewPlot = true;
     }
 
     this.buildChart();
@@ -72,6 +96,12 @@ export default class Histogram2DPlotlyChartBuilder {
   }
 
   // ------------------------------------------------------------------------
+  getHistogram() {
+    return this.histogram;
+  }
+  getScatter() {
+    return this.scatter;
+  }
 
   setHistogram(histogram) {
     // we need a new plot if the axes change, as opposed to just the data.
@@ -83,6 +113,23 @@ export default class Histogram2DPlotlyChartBuilder {
       this.chartState.forceNewPlot = true;
     }
     this.histogram = histogram;
+    this.buildChart();
+  }
+  setScatter(scatter) {
+    // we need a new plot if the axes change, as opposed to just the data.
+    if (!this.scatter ||
+      this.scatter[0].name !== scatter[0].name ||
+      this.scatter[0].extent !== scatter[0].extent ||
+      this.scatter[1].name !== scatter[1].name ||
+      this.scatter[1].extent !== scatter[1].extent) {
+      this.chartState.forceNewPlot = true;
+    }
+    this.scatter = scatter;
+    this.buildChart();
+  }
+  setPlot(plot) {
+    this.chartState.forceNewPlot = true;
+    this.plot = plot;
     this.buildChart();
   }
 
@@ -115,6 +162,13 @@ export default class Histogram2DPlotlyChartBuilder {
 
   getAvailableChartTypes() {
     return this.availableChartTypes;
+  }
+
+  getChartType() {
+    return this.chartState.chartType;
+  }
+  getDataType() {
+    return chartFactory[this.chartState.chartType].data;
   }
 }
 

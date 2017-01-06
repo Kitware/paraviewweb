@@ -1,4 +1,4 @@
-export default function Scatter(chartState, histogram) {
+export default function Scatter(chartState, histogram, chartType) {
   if (!histogram) return null;
 
   const x = [];
@@ -19,21 +19,36 @@ export default function Scatter(chartState, histogram) {
         x,
         y,
         text: color.map(count => (`Count: ${count}`)),
+        type: chartType,
         mode: 'markers',
         marker: {
-          size: 10,
+          size: 12,
+          // size: color,
           color,
+          colorscale: chartState.colormap, // Viridis
+          showscale: true,
+          reversescale: chartState.reversescale,
         },
       },
     ],
     layout: {
       hovermode: 'closest',
+      margin: {
+        t: 40,
+      },
       xaxis: {
         title: histogram.x.name,
       },
       yaxis: {
         title: histogram.y.name,
       },
+    },
+    config: {
+      scrollZoom: true,
+      displayModeBar: true,
+      displaylogo: false,
+      showLink: false,
+      modeBarButtonsToRemove: ['sendDataToCloud'],
     },
   };
 }

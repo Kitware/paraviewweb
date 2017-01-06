@@ -50,7 +50,7 @@ export default React.createClass({
           displayModeBar: false,
         };
 
-        Plotly.newPlot(container, data.traces, data.layout || layout, config);
+        Plotly.newPlot(container, data.traces, data.layout || layout, data.config || config);
       }
 
       if (data.hover && data.hover.enable === true) {
