@@ -312,12 +312,12 @@ export default class ComponentWorkbench {
     return this.on(CHANGE_TOPIC, callback);
   }
 
-  // visibility changes are issued _before_ renderer.setContainer() is called to render the viewport's contents
+  // visibility changes are issued _before_ component.setContainer() is called to render the viewport's contents
   // if index is -1, viewport will not be in the DOM
   // if index is >= count, viewport is in the DOM but not visible in the current layout
-  triggerVisibilityChange(renderer, index, layout) {
+  triggerVisibilityChange(component, index, layout) {
     const count = LAYOUT_TO_COUNT[layout];
-    this.emit(VISIBILITY_TOPIC, { renderer, index, count });
+    this.emit(VISIBILITY_TOPIC, { component, index, count });
   }
 
   // register interest in visibility events

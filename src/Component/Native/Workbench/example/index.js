@@ -82,8 +82,8 @@ workbench.onChange((model) => {
 });
 
 workbench.onVisibilityChange((event) => {
-  const { renderer, index, count } = event;
-  console.log(renderer ? renderer.color : 'none', index, count,
+  const { component, index, count } = event;
+  console.log(component ? component.color : 'none', index, count,
               index === -1 || index >= count ? 'hidden' : 'visible');
 });
 
