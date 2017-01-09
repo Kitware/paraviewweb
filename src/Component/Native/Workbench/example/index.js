@@ -1,3 +1,4 @@
+/* global window, document */
 import 'normalize.css';
 
 import Workbench from '..';
@@ -73,11 +74,17 @@ shiftedWorkbench.addViewport(workbench);
 const mainComponent = new ToggleControl(shiftedWorkbench, controlPanel, 280);
 mainComponent.setContainer(container);
 
-workbench.onChange(model => {
+workbench.onChange((model) => {
   props.activeLayout = model.layout;
   props.viewports = model.viewports;
   props.count = model.count;
   controlPanel.render();
+});
+
+workbench.onVisibilityChange((event) => {
+  const { component, index, count } = event;
+  console.log(component ? component.color : 'none', index, count,
+              index === -1 || index >= count ? 'hidden' : 'visible');
 });
 
 // Create a debounced window resize handler

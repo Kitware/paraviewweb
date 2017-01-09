@@ -5,6 +5,7 @@ import style from 'PVWStyle/ComponentNative/Workbench.mcss';
 import Layouts from '../../../React/Renderers/MultiLayoutRenderer/Layouts';
 
 const CHANGE_TOPIC = 'Workbench.change';
+const VISIBILITY_TOPIC = 'Workbench.visibility';
 const noOpRenderer = { resize() {}, render() {} };
 const NUMBER_OF_VIEWPORTS = 4;
 const LAYOUT_TO_COUNT = {
@@ -207,10 +208,12 @@ export default class ComponentWorkbench {
 
     // Find out if this viewport already has something else in it
     if (this.viewportList[index].renderer !== null) {
+      this.triggerVisibilityChange(this.viewportList[index].renderer, -1, this.activeLayout);
       this.viewportList[index].renderer.setContainer(null);
       this.viewportList[index].renderer = null;
     }
 
+    this.triggerVisibilityChange(instance, index, this.activeLayout);
     this.viewportList[index].renderer = instance;
     this.viewportList[index].el.setAttribute('class', style.viewport);
     if (instance !== null) {
@@ -265,6 +268,14 @@ export default class ComponentWorkbench {
    */
   setLayout(layout) {
     if (Layouts[layout]) {
+      if (this.activeLayout !== layout) {
+        if (LAYOUT_TO_COUNT[this.activeLayout] !== LAYOUT_TO_COUNT[layout]) {
+          const counts = [LAYOUT_TO_COUNT[this.activeLayout], LAYOUT_TO_COUNT[layout]].sort();
+          for (let i = counts[0]; i < counts[1]; ++i) {
+            this.triggerVisibilityChange(this.viewportList[i].renderer, i, layout);
+          }
+        }
+      }
       this.activeLayout = layout;
       this.layoutFn = Layouts[layout];
       this.resize();
@@ -299,6 +310,19 @@ export default class ComponentWorkbench {
 
   onChange(callback) {
     return this.on(CHANGE_TOPIC, callback);
+  }
+
+  // visibility changes are issued _before_ component.setContainer() is called to render the viewport's contents
+  // if index is -1, viewport will not be in the DOM
+  // if index is >= count, viewport is in the DOM but not visible in the current layout
+  triggerVisibilityChange(component, index, layout) {
+    const count = LAYOUT_TO_COUNT[layout];
+    this.emit(VISIBILITY_TOPIC, { component, index, count });
+  }
+
+  // register interest in visibility events
+  onVisibilityChange(callback) {
+    return this.on(VISIBILITY_TOPIC, callback);
   }
 
   setCenter(x, y) {
