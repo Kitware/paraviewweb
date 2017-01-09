@@ -80,7 +80,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var container = document.querySelector('.content');
+	var container = document.querySelector('.content'); /* global window, document */
+
 	container.style.height = '100vh';
 	container.style.width = '100vw';
 
@@ -148,6 +149,14 @@
 	  props.viewports = model.viewports;
 	  props.count = model.count;
 	  controlPanel.render();
+	});
+
+	workbench.onVisibilityChange(function (event) {
+	  var component = event.component;
+	  var index = event.index;
+	  var count = event.count;
+
+	  console.log(component ? component.color : 'none', index, count, index === -1 || index >= count ? 'hidden' : 'visible');
 	});
 
 	// Create a debounced window resize handler
@@ -535,6 +544,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var CHANGE_TOPIC = 'Workbench.change';
+	var VISIBILITY_TOPIC = 'Workbench.visibility';
 	var noOpRenderer = {
 	  resize: function resize() {},
 	  render: function render() {}
@@ -756,10 +766,12 @@
 
 	      // Find out if this viewport already has something else in it
 	      if (this.viewportList[index].renderer !== null) {
+	        this.triggerVisibilityChange(this.viewportList[index].renderer, -1, this.activeLayout);
 	        this.viewportList[index].renderer.setContainer(null);
 	        this.viewportList[index].renderer = null;
 	      }
 
+	      this.triggerVisibilityChange(instance, index, this.activeLayout);
 	      this.viewportList[index].renderer = instance;
 	      this.viewportList[index].el.setAttribute('class', _Workbench2.default.viewport);
 	      if (instance !== null) {
@@ -824,6 +836,14 @@
 	    key: 'setLayout',
 	    value: function setLayout(layout) {
 	      if (_Layouts2.default[layout]) {
+	        if (this.activeLayout !== layout) {
+	          if (LAYOUT_TO_COUNT[this.activeLayout] !== LAYOUT_TO_COUNT[layout]) {
+	            var counts = [LAYOUT_TO_COUNT[this.activeLayout], LAYOUT_TO_COUNT[layout]].sort();
+	            for (var i = counts[0]; i < counts[1]; ++i) {
+	              this.triggerVisibilityChange(this.viewportList[i].renderer, i, layout);
+	            }
+	          }
+	        }
 	        this.activeLayout = layout;
 	        this.layoutFn = _Layouts2.default[layout];
 	        this.resize();
@@ -867,6 +887,25 @@
 	    key: 'onChange',
 	    value: function onChange(callback) {
 	      return this.on(CHANGE_TOPIC, callback);
+	    }
+
+	    // visibility changes are issued _before_ component.setContainer() is called to render the viewport's contents
+	    // if index is -1, viewport will not be in the DOM
+	    // if index is >= count, viewport is in the DOM but not visible in the current layout
+
+	  }, {
+	    key: 'triggerVisibilityChange',
+	    value: function triggerVisibilityChange(component, index, layout) {
+	      var count = LAYOUT_TO_COUNT[layout];
+	      this.emit(VISIBILITY_TOPIC, { component: component, index: index, count: count });
+	    }
+
+	    // register interest in visibility events
+
+	  }, {
+	    key: 'onVisibilityChange',
+	    value: function onVisibilityChange(callback) {
+	      return this.on(VISIBILITY_TOPIC, callback);
 	    }
 	  }, {
 	    key: 'setCenter',
