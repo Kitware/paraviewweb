@@ -57,7 +57,7 @@ export default class FieldSearch extends React.Component {
   }
 
   filterOptions(options, filter, currentValues, config) {
-    console.log(`Filter "${filter}" type ${typeof filter}`, currentValues, 'config', config);
+    //console.log(`Filter "${filter}" type ${typeof filter}`, currentValues, 'config', config);
     if (!filter) {
       return options;
     }
@@ -90,7 +90,7 @@ export default class FieldSearch extends React.Component {
   }
 
   finalizeChosenOption(optionValue) {
-    console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
+    //console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
     if (this.props.provider.isA('FieldHoverProvider')) {
       const fieldId = Number(optionValue);
       const subject = this.state.options.reduce(
@@ -106,6 +106,7 @@ export default class FieldSearch extends React.Component {
       hover.state.highlight[subject] = { weight: 1 };
       this.props.provider.setFieldHoverState(hover);
     }
+    this.setState({ selectedFields: [ subject ] });
     return optionValue;
   }
 

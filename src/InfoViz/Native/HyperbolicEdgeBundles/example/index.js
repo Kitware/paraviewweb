@@ -47,7 +47,15 @@ dataManager.on(url, (data, envelope) => {
   const minfo = data.data.mutualInformation;
   const fieldKeys = Object.keys(data.data.fieldMapping);
   const vars = new Array(fieldKeys.length);
-  fieldKeys.forEach(key => { vars[data.data.fieldMapping[key].id] = data.data.fieldMapping[key]; });
+  fieldKeys.forEach(key => {
+    vars[data.data.fieldMapping[key].id] = data.data.fieldMapping[key];
+    // We assigned legend entries above, but only for fields listed by the FieldProvider.
+    // Our demo hacks more variables into FeildInformation, so add legend entries for those, too.
+    // TODO: Be consistent with FieldProvider.
+    if (!provider.getLegend(key)) {
+      provider.addLegendEntry(key);
+    }
+  });
   provider.setFieldInformation({ fieldMapping: vars, mutualInformation: minfo });
 });
 dataManager.fetchURL(url, 'json');

@@ -43,6 +43,7 @@ function fieldSelector(publicAPI, model) {
     }
 
     model.container = el;
+    model.fieldsToRender = null;
 
     if (el) {
       d3.select(model.container).html(template);
@@ -60,12 +61,31 @@ function fieldSelector(publicAPI, model) {
         header.append('th').text('Histogram').classed(style.jsSparkline, true);
         header.append('th').text('Max').classed(style.jsHistMax, true);
       }
-      publicAPI.render();
+
+      model.subscriptions.push(
+        model.provider.subscribeToFieldInformation(
+          publicAPI.setFieldsToRender));
     }
   };
 
+  publicAPI.setFieldsToRender = (info) => {
+    const fieldList = Object.keys(info.fieldMapping).map((key, idx) => ({
+      name: info.fieldMapping[key].name,
+      id: info.fieldMapping[key].id,
+      range: info.fieldMapping[key].range,
+      active: info.fieldMapping[key].active,
+      originalRow: idx, // where in the table the row should appear in the "default" view.
+      row: idx, // where in the table the row should appear on the next render
+    }));
+    model.fieldsToRender = fieldList;
+    model.mutualInformationMatrix = info.mutualInformation;
+    publicAPI.render();
+  }
+
+  publicAPI.getFieldsToRender = () => JSON.parse(JSON.stringify(model.fieldsToRender));
+
   publicAPI.render = () => {
-    if (!model.container) {
+    if (!model.container || !model.fieldsToRender) {
       return;
     }
 
@@ -86,8 +106,8 @@ function fieldSelector(publicAPI, model) {
       .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
 
 
-    const data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
-    const totalNum = model.displayUnselected ? data.length : model.provider.getFieldNames().length;
+    const data = model.displayUnselected ? model.fieldsToRender : model.fieldsToRender.filter(xx => xx.active);
+    const totalNum = model.fieldsToRender.length;
 
     // Update header label
     d3.select(model.container)
@@ -142,6 +162,18 @@ function fieldSelector(publicAPI, model) {
     header.selectAll(`.${style.jsHistMax}`)
       .style('display', hideField.minMax ? 'none' : null);
 
+    if (model.sortDirty) {
+      console.log('Sort by var ', model.sortByVar);
+      if (model.sortByVar === null) {
+        data.sort((a, b) => a.name > b.name);
+      } else {
+        data.sort((a, b) =>
+          (a.id === model.sortByVar ? false : (
+            b.id === model.sortByVar ? true : (
+              model.mutualInformationMatrix[model.sortByVar][a.id] < model.mutualInformationMatrix[model.sortByVar][b.id]))));
+      }
+      model.sortDirty = false;
+    }
     // Handle variables
     const variablesContainer = d3
       .select(model.container)
@@ -162,7 +194,7 @@ function fieldSelector(publicAPI, model) {
         .selectAll('tr')
         .on('mouseenter', function inner(d, i) {
           const state = { highlight: {}, disposition: 'preliminary' };
-          state.highlight[d] = { weight: 1 };
+          state.highlight[d.name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', (d, i) => {
@@ -171,20 +203,32 @@ function fieldSelector(publicAPI, model) {
         });
       model.subscriptions.push(
         model.provider.onHoverFieldChange(hover => {
+          let sortOrder = null;
           d3
             .select(model.container)
             .select('tbody.fields')
             .selectAll('tr')
-            .classed(style.highlightedRow, d => d in hover.state.highlight);
+            .classed(style.highlightedRow, d => d.name in hover.state.highlight);
           if ('subject' in hover.state && hover.state.subject !== null) {
             console.log('Reorder by mutual information to ', hover.state.subject);
+            sortOrder = model.fieldsToRender.reduce(
+              (varId, entry) => entry.name === hover.state.subject ? entry.id : varId,
+              null);
+          } else {
+            sortOrder = null;
+          }
+          if (model.sortByVar !== sortOrder && sortOrder) {
+            model.sortByVar = sortOrder;
+            model.sortDirty = true;
+            publicAPI.render();
           }
         }));
     }
 
     // Apply on each data item
-    function renderField(fieldName, index) {
-      const field = model.provider.getField(fieldName);
+    function renderField(fieldInfo, index) {
+      const fieldName = fieldInfo.name;
+      const field = fieldInfo; // model.provider.getField(fieldName);
       const fieldContainer = d3.select(this);
       let legendCell = fieldContainer.select(`.${style.jsLegend}`);
       let fieldCell = fieldContainer.select(`.${style.jsFieldName}`);
@@ -193,13 +237,13 @@ function fieldSelector(publicAPI, model) {
       fieldContainer
         .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
-        .on('click', (name) => {
-          const state = { highlight: {}, subject: name, disposition: 'final' };
-          state.highlight[name] = { weight: 1 };
+        .on('click', (entry) => {
+          const state = { highlight: {}, subject: entry.name, disposition: 'final' };
+          state.highlight[entry.name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
-        .on('dblclick', (name) => {
-          model.provider.toggleFieldSelection(name);
+        .on('dblclick', (entry) => {
+          model.provider.toggleFieldSelection(entry.name);
         });
 
       // Create missing DOM element if any
@@ -349,6 +393,8 @@ function fieldSelector(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   provider: null,
+  sortByVar: null,
+  sortDirty: true,
   displaySearch: false,
   displayUnselected: true,
   fieldShowHistogram: true,

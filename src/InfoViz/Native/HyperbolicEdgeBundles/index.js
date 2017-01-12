@@ -109,8 +109,12 @@ function hyperbolicEdgeBundle(publicAPI, model) {
           model.provider.subscribeToFieldInformation(
             (data) => {
               if (data && 'fieldMapping' in data && 'mutualInformation' in data) {
+                // We make a copy of the fieldMapping here because we modify it
+                // in a way that prevents serialization (object references to children),
+                // and the provider uses serialization to track differences. Grrr.
                 publicAPI.setMutualInformation(
-                  data.fieldMapping, data.mutualInformation);
+                  JSON.parse(JSON.stringify(data.fieldMapping)),
+                  data.mutualInformation);
               }
             });
         model.subscriptions.push(model.fieldInformationSubscription);
