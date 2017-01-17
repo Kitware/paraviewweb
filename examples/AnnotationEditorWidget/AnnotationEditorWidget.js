@@ -29531,7 +29531,7 @@
 	  };
 
 	  var onAnnotationChange = function onAnnotationChange(event) {
-	    var value = event.target.value;
+	    var value = event.target.type === 'number' ? +event.target.value : event.target.value;
 	    var name = event.target.name;
 	    var type = event.type;
 
