@@ -47,7 +47,7 @@ export default function annotationEditorWidget(props) {
   };
 
   const onAnnotationChange = (event) => {
-    const value = event.target.value;
+    const value = (event.target.type === 'number') ? +event.target.value : event.target.value;
     const name = event.target.name;
     const type = event.type;
 
