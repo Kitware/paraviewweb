@@ -47,6 +47,10 @@ function fieldSelector(publicAPI, model) {
 
     if (el) {
       d3.select(model.container).html(template);
+      // Style the outer div so long field lists will be scrollable:
+      d3.select(model.container).select('.field-selector-container')
+        .classed(style.fieldSelectorContainer, true);
+      // Style the table fonts:
       d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
       if (model.displaySearch) {
         model.searchBar = new ReactAdapter(FieldSearch, { provider: model.provider });
