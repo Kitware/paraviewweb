@@ -15,6 +15,7 @@ module.exports = {
     url: 'https://kitware.github.io/paraviewweb',
     root: '/paraviewweb/',
     github: 'kitware/paraviewweb',
+    google_analytics: 'UA-90338862-2',
   },
   webpack: {
     module: {
