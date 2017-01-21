@@ -8,6 +8,11 @@
 
 }
 
+.fieldSelectorContainer {
+  overflow-y: scroll;
+  height: 100%;
+}
+
 .fieldSelector {
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
 }
