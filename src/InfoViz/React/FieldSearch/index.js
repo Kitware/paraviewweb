@@ -13,7 +13,7 @@ function getOptionData(provider, mtime = 0) {
     value: provider.getField(name).id,
   }));
   const selectedFields = ''; // Comma-separated list of currently-selected fields.
-  return { true, options, selectedFields };
+  return { options, selectedFields };
 }
 
 export default class FieldSearch extends React.Component {
@@ -40,10 +40,10 @@ export default class FieldSearch extends React.Component {
     this.renderMenuAndUpdateHover = this.renderMenuAndUpdateHover.bind(this);
   }
 
-  /// One-time initialization.
+  // One-time initialization.
   componentWillMount() {
     this.subscriptions = [
-      this.props.provider.onFieldChange(field => {
+      this.props.provider.onFieldChange((field) => {
         this.setState(getOptionData(this.props.provider));
       }),
     ];
@@ -57,7 +57,7 @@ export default class FieldSearch extends React.Component {
   }
 
   filterOptions(options, filter, currentValues, config) {
-    //console.log(`Filter "${filter}" type ${typeof filter}`, currentValues, 'config', config);
+    // console.log(`Filter "${filter}" type ${typeof filter}`, currentValues, 'config', config);
     if (!filter) {
       return options;
     }
@@ -90,11 +90,12 @@ export default class FieldSearch extends React.Component {
   }
 
   finalizeChosenOption(optionValue) {
-    //console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
+    // console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
+    let subject = '';
     if (this.props.provider.isA('FieldHoverProvider')) {
       const fieldId = Number(optionValue);
-      const subject = this.state.options.reduce(
-        (name, entry) => entry.value === fieldId ? entry.label : name,
+      subject = this.state.options.reduce(
+        (name, entry) => (entry.value === fieldId ? entry.label : name),
         '');
       const hover = {
         state: {
@@ -106,8 +107,66 @@ export default class FieldSearch extends React.Component {
       hover.state.highlight[subject] = { weight: 1 };
       this.props.provider.setFieldHoverState(hover);
     }
-    this.setState({ selectedFields: [ subject ] });
+    this.setState({ selectedFields: [subject] });
     return optionValue;
+  }
+
+  renderMenuAndUpdateHover({
+    focusedOption,
+    instancePrefix,
+    labelKey,
+    onFocus,
+    onSelect,
+    optionClassName,
+    optionComponent,
+    optionRenderer,
+    options,
+    valueArray,
+    valueKey,
+    onOptionRef,
+  }) {
+    const Option = optionComponent;
+    if (this.props.provider.isA('FieldHoverProvider')) {
+      const oldHover = this.props.provider.getFieldHoverState();
+      const hover = { state: { disposition: 'preliminary', highlight: {} } };
+      if ('subject' in oldHover.state) {
+        hover.state.subject = oldHover.state.subject;
+      }
+      Object.keys(oldHover.state.highlight).forEach((name) => {
+        hover.state.highlight[name] = { weight: 0 };
+      });
+      hover.state.highlight[focusedOption.label] = { weight: 1 };
+      this.props.provider.setFieldHoverState(hover);
+    }
+
+    return options.map((option, i) => {
+      const isSelected = valueArray && valueArray.indexOf(option) > -1;
+      const isFocused = option === focusedOption;
+      const optionClass = classNames(optionClassName, {
+        'Select-option': true,
+        'is-selected': isSelected,
+        'is-focused': isFocused,
+        'is-disabled': option.disabled,
+      });
+
+      return (
+        <Option
+          className={optionClass}
+          instancePrefix={instancePrefix}
+          isDisabled={option.disabled}
+          isFocused={isFocused}
+          isSelected={isSelected}
+          key={`option-${i}-${option[valueKey]}`}
+          onFocus={onFocus}
+          onSelect={onSelect}
+          option={option}
+          optionIndex={i}
+          ref={(ref) => { onOptionRef(ref, isFocused); }}
+        >
+          {optionRenderer(option, i)}
+        </Option>
+      );
+    });
   }
 
   render() {
@@ -127,64 +186,6 @@ export default class FieldSearch extends React.Component {
           />
         </div>
       </div>);
-  }
-
-  renderMenuAndUpdateHover({
-    focusedOption,
-    instancePrefix,
-    labelKey,
-    onFocus,
-    onSelect,
-    optionClassName,
-    optionComponent,
-    optionRenderer,
-    options,
-    valueArray,
-    valueKey,
-    onOptionRef
-  }) {
-    let Option = optionComponent;
-    if (this.props.provider.isA('FieldHoverProvider')) {
-      const oldHover = this.props.provider.getFieldHoverState();
-      const hover = { state: { 'disposition': 'preliminary', highlight: {} } };
-      if ('subject' in oldHover.state) {
-        hover.state.subject = oldHover.state.subject;
-      }
-      Object.keys(oldHover.state.highlight).forEach(name => {
-        hover.state.highlight[name] = { weight: 0 };
-      });
-      hover.state.highlight[focusedOption.label] = { weight: 1 };
-      this.props.provider.setFieldHoverState(hover);
-		}
-
-    return options.map((option, i) => {
-      let isSelected = valueArray && valueArray.indexOf(option) > -1;
-      let isFocused = option === focusedOption;
-      let optionClass = classNames(optionClassName, {
-        'Select-option': true,
-        'is-selected': isSelected,
-        'is-focused': isFocused,
-        'is-disabled': option.disabled,
-      });
-
-      return (
-        <Option
-          className={optionClass}
-          instancePrefix={instancePrefix}
-          isDisabled={option.disabled}
-          isFocused={isFocused}
-          isSelected={isSelected}
-          key={`option-${i}-${option[valueKey]}`}
-          onFocus={onFocus}
-          onSelect={onSelect}
-          option={option}
-          optionIndex={i}
-          ref={ref => { onOptionRef(ref, isFocused); }}
-        >
-          {optionRenderer(option, i)}
-        </Option>
-      );
-    });
   }
 }
 

@@ -40,6 +40,7 @@ function fieldSelector(publicAPI, model) {
         model.container.removeChild(model.container.firstChild);
       }
       model.container = null;
+      model.innerDiv = null;
     }
 
     model.container = el;
@@ -48,57 +49,67 @@ function fieldSelector(publicAPI, model) {
     if (el) {
       d3.select(model.container).html(template);
       // Style the outer div so long field lists will be scrollable:
-      d3.select(model.container).select('.field-selector-container')
-        .classed(style.fieldSelectorContainer, true);
+      model.innerDiv = d3.select(model.container).select('.field-selector-container')
+        .classed(style.fieldSelectorContainer, true)
+        .node();
       // Style the table fonts:
-      d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
+      d3.select(model.innerDiv).select('.fieldSelector').classed(style.fieldSelector, true);
       if (model.displaySearch) {
         model.searchBar = new ReactAdapter(FieldSearch, { provider: model.provider });
-        model.searchBar.setContainer(d3.select(model.container).select('.field-selector-search').node());
+        model.searchBar.setContainer(d3.select(model.innerDiv).select('.field-selector-search').node());
       }
 
       model.fieldShowHistogram = model.fieldShowHistogram && (model.provider.isA('Histogram1DProvider'));
       // append headers for histogram columns
       if (model.fieldShowHistogram) {
-        const header = d3.select(model.container).select('thead').select('tr');
+        const header = d3.select(model.innerDiv).select('thead').select('tr');
         header.append('th').text('Min').classed(style.jsHistMin, true);
         header.append('th').text('Histogram').classed(style.jsSparkline, true);
         header.append('th').text('Max').classed(style.jsHistMax, true);
       }
-
-      model.subscriptions.push(
-        model.provider.subscribeToFieldInformation(
-          publicAPI.setFieldsToRender));
     }
   };
 
   publicAPI.setFieldsToRender = (info) => {
-    const fieldList = Object.keys(info.fieldMapping).map((key, idx) => ({
-      name: info.fieldMapping[key].name,
-      id: info.fieldMapping[key].id,
-      range: info.fieldMapping[key].range,
-      active: info.fieldMapping[key].active,
-      originalRow: idx, // where in the table the row should appear in the "default" view.
-      row: idx, // where in the table the row should appear on the next render
-    }));
-    model.fieldsToRender = fieldList;
-    model.mutualInformationMatrix = info.mutualInformation;
+    if (info) {
+      const fieldList = Object.keys(info.fieldMapping).map((key, idx) => ({
+        name: info.fieldMapping[key].name,
+        id: info.fieldMapping[key].id,
+        range: info.fieldMapping[key].range,
+        active: info.fieldMapping[key].active,
+        originalRow: idx, // where in the table the row should appear in the "default" view.
+        row: idx, // where in the table the row should appear on the next render
+      }));
+      model.fieldsToRender = fieldList;
+      model.mutualInformationMatrix = info.mutualInformation;
+    } else {
+      const fieldList = model.provider.getFieldNames().map((fieldName, idx) => {
+        const field = model.provider.getField(fieldName);
+        console.log(field.name);
+        return Object.assign(field, {
+          id: idx,
+          originalRow: idx, // where in the table the row should appear in the "default" view.
+          row: idx, // where in the table the row should appear on the next render
+        });
+      });
+      model.fieldsToRender = fieldList;
+    }
     publicAPI.render();
-  }
+  };
 
   publicAPI.getFieldsToRender = () => JSON.parse(JSON.stringify(model.fieldsToRender));
 
   publicAPI.render = () => {
-    if (!model.container || !model.fieldsToRender) {
+    if (!model.innerDiv || !model.fieldsToRender) {
       return;
     }
 
     const legendSize = 15;
 
     // Apply style
-    d3.select(model.container).select('thead').classed(style.thead, true);
-    d3.select(model.container).select('tbody').classed(style.tbody, true);
-    d3.select(model.container)
+    d3.select(model.innerDiv).select('thead').classed(style.thead, true);
+    d3.select(model.innerDiv).select('tbody').classed(style.tbody, true);
+    d3.select(model.innerDiv)
       .select('th.field-selector-mode')
       .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
@@ -114,7 +125,7 @@ function fieldSelector(publicAPI, model) {
     const totalNum = model.fieldsToRender.length;
 
     // Update header label
-    d3.select(model.container)
+    d3.select(model.innerDiv)
       .select('th.field-selector-label')
       .style('text-align', 'left')
       .select('div.field-selector-label')
@@ -124,41 +135,41 @@ function fieldSelector(publicAPI, model) {
           model.displayUnselected = !model.displayUnselected;
           publicAPI.render();
         });
-    d3.select(model.container)
+    d3.select(model.innerDiv)
       .select('th.field-selector-label')
       .select('div.field-selector-search')
-        .style('width', '400px') // FIXME: Evil!
+        .style('min-width', model.displaySearch ? '11rem' : '0') // Not sure how else to get necessary width...
         .classed(style.fieldSelectorHead, true);
 
     // test for too-long rows
-    const hideMore = model.container.scrollWidth > model.container.clientWidth;
+    const hideMore = model.innerDiv.scrollWidth > model.innerDiv.clientWidth;
     if (hideMore) {
       if (!hideField.minMax) {
         hideField.minMax = true;
-        hideField.minMaxWidth = model.container.scrollWidth;
+        hideField.minMaxWidth = model.innerDiv.scrollWidth;
         // if we hide min/max, we may also need to hide hist, so trigger another resize
         setTimeout(publicAPI.resize, 0);
       } else if (!hideField.hist) {
         hideField.hist = true;
-        hideField.histWidth = model.container.scrollWidth;
+        hideField.histWidth = model.innerDiv.scrollWidth;
       }
     } else if (hideField.minMax) {
       // if we've hidden something, see if we can re-show it.
       if (hideField.hist) {
-        if (model.container.scrollWidth - hideField.histWidth > 0) {
+        if (model.innerDiv.scrollWidth - hideField.histWidth > 0) {
           hideField.hist = false;
           hideField.histWidth = 0;
           // if we show hist, we may also need to show min/max, so trigger another resize
           setTimeout(publicAPI.resize, 0);
         }
       } else if (hideField.minMax) {
-        if (model.container.scrollWidth - hideField.minMaxWidth > 0) {
+        if (model.innerDiv.scrollWidth - hideField.minMaxWidth > 0) {
           hideField.minMax = false;
           hideField.minMaxWidth = 0;
         }
       }
     }
-    const header = d3.select(model.container).select('thead').select('tr');
+    const header = d3.select(model.innerDiv).select('thead').select('tr');
     header.selectAll(`.${style.jsHistMin}`)
       .style('display', hideField.minMax ? 'none' : null);
     header.selectAll(`.${style.jsSparkline}`)
@@ -169,18 +180,20 @@ function fieldSelector(publicAPI, model) {
     if (model.sortDirty) {
       console.log('Sort by var ', model.sortByVar);
       if (model.sortByVar === null) {
-        data.sort((a, b) => a.name > b.name);
+        data.sort((a, b) =>
+          (a.name < b.name ? -1 :
+            (a.name > b.name) ? 1 : 0));
       } else {
         data.sort((a, b) =>
-          (a.id === model.sortByVar ? false : (
-            b.id === model.sortByVar ? true : (
-              model.mutualInformationMatrix[model.sortByVar][a.id] < model.mutualInformationMatrix[model.sortByVar][b.id]))));
+          (a.id === model.sortByVar ? -1 : (
+            b.id === model.sortByVar ? 1 : (
+              model.mutualInformationMatrix[model.sortByVar][b.id] - model.mutualInformationMatrix[model.sortByVar][a.id]))));
       }
       model.sortDirty = false;
     }
     // Handle variables
     const variablesContainer = d3
-      .select(model.container)
+      .select(model.innerDiv)
       .select('tbody.fields')
       .selectAll('tr')
       .data(data);
@@ -192,11 +205,8 @@ function fieldSelector(publicAPI, model) {
     // bin-hovering is enabled) triggers a field-hover event that
     // can provide context for the field.
     if (model.provider.isA('FieldHoverProvider')) {
-      d3
-        .select(model.container)
-        .select('tbody.fields')
-        .selectAll('tr')
-        .on('mouseenter', function inner(d, i) {
+      variablesContainer
+        .on('mouseenter', (d, i) => {
           const state = { highlight: {}, disposition: 'preliminary' };
           state.highlight[d.name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
@@ -205,28 +215,6 @@ function fieldSelector(publicAPI, model) {
           const state = { highlight: {}, disposition: 'final' };
           model.provider.setFieldHoverState({ state });
         });
-      model.subscriptions.push(
-        model.provider.onHoverFieldChange(hover => {
-          let sortOrder = null;
-          d3
-            .select(model.container)
-            .select('tbody.fields')
-            .selectAll('tr')
-            .classed(style.highlightedRow, d => d.name in hover.state.highlight);
-          if ('subject' in hover.state && hover.state.subject !== null) {
-            console.log('Reorder by mutual information to ', hover.state.subject);
-            sortOrder = model.fieldsToRender.reduce(
-              (varId, entry) => entry.name === hover.state.subject ? entry.id : varId,
-              null);
-          } else {
-            sortOrder = null;
-          }
-          if (model.sortByVar !== sortOrder && sortOrder) {
-            model.sortByVar = sortOrder;
-            model.sortDirty = true;
-            publicAPI.render();
-          }
-        }));
     }
 
     // Apply on each data item
@@ -241,15 +229,17 @@ function fieldSelector(publicAPI, model) {
       fieldContainer
         .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
-        .on('click', (entry) => {
-          const state = { highlight: {}, subject: entry.name, disposition: 'final' };
-          state.highlight[entry.name] = { weight: 1 };
-          model.provider.setFieldHoverState({ state });
-        })
         .on('dblclick', (entry) => {
           model.provider.toggleFieldSelection(entry.name);
         });
-
+      if (model.provider.isA('FieldHoverProvider')) {
+        fieldContainer
+          .on('click', (entry) => {
+            const state = { highlight: {}, subject: entry.name, disposition: 'final' };
+            state.highlight[entry.name] = { weight: 1 };
+            model.provider.setFieldHoverState({ state });
+          });
+      }
       // Create missing DOM element if any
       if (legendCell.empty()) {
         legendCell = fieldContainer
@@ -350,7 +340,7 @@ function fieldSelector(publicAPI, model) {
   };
 
   function handleHoverUpdate(data) {
-    const svg = d3.select(model.container);
+    const svg = d3.select(model.innerDiv);
     Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
       svg.selectAll(`rect[pname='${pName}']`)
@@ -388,6 +378,37 @@ function fieldSelector(publicAPI, model) {
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
+  if (model.provider.isA('FieldHoverProvider')) {
+    model.subscriptions.push(
+      model.provider.onHoverFieldChange((hover) => {
+        let sortOrder = null;
+        d3
+          .select(model.innerDiv)
+          .select('tbody.fields')
+          .selectAll('tr')
+          .classed(style.highlightedRow, d => d.name in hover.state.highlight);
+        if ('subject' in hover.state && hover.state.subject !== null) {
+          console.log('Reorder by mutual information to ', hover.state.subject);
+          sortOrder = model.fieldsToRender.reduce(
+            (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
+            null);
+        } else {
+          sortOrder = null;
+        }
+        if (model.sortByVar !== sortOrder && sortOrder) {
+          model.sortByVar = sortOrder;
+          model.sortDirty = true;
+          publicAPI.render();
+        }
+      }));
+  }
+  if (model.provider.isA('FieldInformationProvider')) {
+    model.subscriptions.push(
+      model.provider.subscribeToFieldInformation(
+        publicAPI.setFieldsToRender));
+  } else {
+    publicAPI.setFieldsToRender();
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -395,6 +416,7 @@ function fieldSelector(publicAPI, model) {
 // ----------------------------------------------------------------------------
 
 const DEFAULT_VALUES = {
+  outerContainer: null,
   container: null,
   provider: null,
   sortByVar: null,

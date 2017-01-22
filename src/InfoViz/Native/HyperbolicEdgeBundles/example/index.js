@@ -1,3 +1,4 @@
+/* global document, d3, window */
 import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
@@ -34,7 +35,7 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   LegendProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 provider.setFieldsSorted(true);
-provider.getFieldNames().forEach(name => {
+provider.getFieldNames().forEach((name) => {
   provider.addLegendEntry(name);
 });
 provider.assignLegend(['colors', 'shapes']);
@@ -47,7 +48,7 @@ dataManager.on(url, (data, envelope) => {
   const minfo = data.data.mutualInformation;
   const fieldKeys = Object.keys(data.data.fieldMapping);
   const vars = new Array(fieldKeys.length);
-  fieldKeys.forEach(key => {
+  fieldKeys.forEach((key) => {
     vars[data.data.fieldMapping[key].id] = data.data.fieldMapping[key];
     // We assigned legend entries above, but only for fields listed by the FieldProvider.
     // Our demo hacks more variables into FeildInformation, so add legend entries for those, too.
@@ -67,7 +68,7 @@ const  pink = BackgroundColor.newInstance({ color:'pink' });
 const  gray = BackgroundColor.newInstance({ color:'gray' });
 
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
-const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true });
+const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
 
 const viewports = {
   Gray: {
@@ -123,7 +124,7 @@ shiftedWorkbench.addViewport(workbench);
 const mainComponent = new ToggleControl(shiftedWorkbench, controlPanel, 280);
 mainComponent.setContainer(container);
 
-workbench.onChange(model => {
+workbench.onChange((model) => {
   props.activeLayout = model.layout;
   props.viewports = model.viewports;
   props.count = model.count;
