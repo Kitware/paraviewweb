@@ -92,11 +92,14 @@ export default class FieldSearch extends React.Component {
   finalizeChosenOption(optionValue) {
     // console.log('Add option ', optionValue, typeof optionValue, this.state.options, this.state.selectedFields, this.props);
     let subject = '';
+    let subjectId = -1;
     if (this.props.provider.isA('FieldHoverProvider')) {
-      const fieldId = Number(optionValue);
-      subject = this.state.options.reduce(
-        (name, entry) => (entry.value === fieldId ? entry.label : name),
-        '');
+      if (optionValue !== '') {
+        subjectId = Number(optionValue);
+        subject = this.state.options.reduce(
+          (name, entry) => (entry.value === subjectId ? entry.label : name),
+          '');
+      }
       const hover = {
         state: {
           disposition: 'final',
@@ -104,10 +107,10 @@ export default class FieldSearch extends React.Component {
           highlight: {},
         },
       };
-      hover.state.highlight[subject] = { weight: 1 };
+      if (subject !== '') hover.state.highlight[subject] = { weight: 1 };
       this.props.provider.setFieldHoverState(hover);
     }
-    this.setState({ selectedFields: [subject] });
+    this.setState({ selectedFields: subjectId });
     return optionValue;
   }
 
@@ -174,7 +177,6 @@ export default class FieldSearch extends React.Component {
       <div className={style.container}>
         <div title={this.title}>
           <Select
-            multi
             simpleValue
             value={this.state.selectedFields}
             placeholder="Search for a field"

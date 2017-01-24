@@ -241,12 +241,12 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     if (model.provider.isA('FieldHoverProvider')) {
       model.nodeGroup.selectAll('.node')
         .on('mouseenter', (d, i) => {
-          const state = { highlight: {}, subject: null, disposition: 'preliminary' };
+          const state = { highlight: {}, subject: '', disposition: 'preliminary' };
           state.highlight[model.nodes[d.id].name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', () => {
-          const state = { highlight: {}, subject: null, disposition: 'final' };
+          const state = { highlight: {}, subject: '', disposition: 'preliminary' };
           model.provider.setFieldHoverState({ state });
         });
     }

@@ -9,12 +9,6 @@ import            FieldProvider from '../../../../InfoViz/Core/FieldProvider';
 import           LegendProvider from '../../../../InfoViz/Core/LegendProvider';
 import   CompositeClosureHelper from '../../../../Common/Core/CompositeClosureHelper';
 import                Workbench from '../../../../Component/Native/Workbench';
-import          BackgroundColor from '../../../../Component/Native/BackgroundColor';
-import            ToggleControl from '../../../../Component/Native/ToggleControl';
-import                   Spacer from '../../../../Component/Native/Spacer';
-import                Composite from '../../../../Component/Native/Composite';
-import             ReactAdapter from '../../../../Component/React/ReactAdapter';
-import      WorkbenchController from '../../../../Component/React/WorkbenchController';
 import              DataManager from '../../../../IO/Core/DataManager';
 
 
@@ -63,6 +57,32 @@ dataManager.fetchURL(url, 'json');
 
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
 const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
+let fieldInfo = null;
+let sortByVar = null;
+
+// fieldSelector can be sorted using any numeric array
+provider.subscribeToFieldInformation((info) => {
+  fieldInfo = info;
+});
+provider.onHoverFieldChange((hover) => {
+  // console.log(hover.state.disposition, hover.state.subject, hover.state.highlight);
+  let sortOrder = null;
+  if (hover.state.subject) {
+    console.log('Reorder by mutual information to ', hover.state.subject);
+    sortOrder = fieldInfo.fieldMapping.reduce(
+            (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
+            null);
+  }
+  if (sortByVar !== sortOrder && sortOrder !== null) {
+    sortByVar = sortOrder;
+    fieldSelector.setSortArray(sortByVar, fieldInfo.mutualInformation[sortByVar]);
+  } else if (hover.state.disposition === 'final' && sortOrder === null) {
+    // reset to alphabetical
+    fieldSelector.setSortArray(null, null);
+    sortByVar = null;
+  }
+});
+
 
 const viewports = {
   HyperbolicEdgeBundles: {
@@ -79,32 +99,7 @@ const workbench = new Workbench();
 workbench.setComponents(viewports);
 workbench.setLayout('2x1');
 
-// const props = {
-//   onLayoutChange(layout) {
-//     workbench.setLayout(layout);
-//   },
-//   onViewportChange(index, instance) {
-//     workbench.setViewport(index, instance);
-//   },
-//   activeLayout: workbench.getLayout(),
-//   viewports: workbench.getViewportMapping(),
-//   count: 4,
-// };
-
-// const controlPanel = new ReactAdapter(WorkbenchController, props);
-// const shiftedWorkbench = new Composite();
-// shiftedWorkbench.addViewport(new Spacer(), false);
-// shiftedWorkbench.addViewport(workbench);
-// const mainComponent = new ToggleControl(shiftedWorkbench, controlPanel, 280);
-// mainComponent.setContainer(container);
 workbench.setContainer(container);
-
-// workbench.onChange((model) => {
-//   props.activeLayout = model.layout;
-//   props.viewports = model.viewports;
-//   props.count = model.count;
-//   // controlPanel.render();
-// });
 
 // Create a debounced window resize handler
 const resizeHandler = debounce(() => {

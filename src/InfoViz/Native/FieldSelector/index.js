@@ -70,6 +70,14 @@ function fieldSelector(publicAPI, model) {
     }
   };
 
+  // TODO idx/model.sortByVar is probably not needed anymore, but still used to gate sorting.
+  publicAPI.setSortArray = (idx, arr) => {
+    model.sortByVar = idx;
+    model.sortArray = arr;
+    model.sortDirty = true;
+    publicAPI.render();
+  };
+
   publicAPI.setFieldsToRender = (info) => {
     if (info) {
       const fieldList = Object.keys(info.fieldMapping).map((key, idx) => {
@@ -84,7 +92,7 @@ function fieldSelector(publicAPI, model) {
         };
       });
       model.fieldsToRender = fieldList;
-      model.mutualInformationMatrix = info.mutualInformation;
+      // model.mutualInformationMatrix = info.mutualInformation;
     } else {
       const fieldList = model.provider.getFieldNames().map((fieldName, idx) => {
         const field = model.provider.getField(fieldName);
@@ -182,15 +190,13 @@ function fieldSelector(publicAPI, model) {
 
     if (model.sortDirty) {
       console.log('Sort by var ', model.sortByVar);
-      if (model.sortByVar === null) {
+      if (model.sortByVar === null || !model.sortArray) {
         data.sort((a, b) =>
           (a.name < b.name ? -1 :
             (a.name > b.name) ? 1 : 0));
       } else {
         data.sort((a, b) =>
-          (a.id === model.sortByVar ? -1 : (
-            b.id === model.sortByVar ? 1 : (
-              model.mutualInformationMatrix[model.sortByVar][b.id] - model.mutualInformationMatrix[model.sortByVar][a.id]))));
+          (model.sortArray[b.id] - model.sortArray[a.id]));
       }
       model.sortDirty = false;
     }
@@ -215,7 +221,7 @@ function fieldSelector(publicAPI, model) {
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', (d, i) => {
-          const state = { highlight: {}, disposition: 'final' };
+          const state = { highlight: {}, disposition: 'preliminary' };
           model.provider.setFieldHoverState({ state });
         });
     }
@@ -381,30 +387,30 @@ function fieldSelector(publicAPI, model) {
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
-  if (model.provider.isA('FieldHoverProvider')) {
-    model.subscriptions.push(
-      model.provider.onHoverFieldChange((hover) => {
-        let sortOrder = null;
-        d3
-          .select(model.innerDiv)
-          .select('tbody.fields')
-          .selectAll('tr')
-          .classed(style.highlightedRow, d => d.name in hover.state.highlight);
-        if ('subject' in hover.state && hover.state.subject !== null) {
-          console.log('Reorder by mutual information to ', hover.state.subject);
-          sortOrder = model.fieldsToRender.reduce(
-            (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
-            null);
-        } else {
-          sortOrder = null;
-        }
-        if (model.sortByVar !== sortOrder && sortOrder) {
-          model.sortByVar = sortOrder;
-          model.sortDirty = true;
-          publicAPI.render();
-        }
-      }));
-  }
+  // if (model.provider.isA('FieldHoverProvider')) {
+  //   model.subscriptions.push(
+  //     model.provider.onHoverFieldChange((hover) => {
+  //       let sortOrder = null;
+  //       d3
+  //         .select(model.innerDiv)
+  //         .select('tbody.fields')
+  //         .selectAll('tr')
+  //         .classed(style.highlightedRow, d => d.name in hover.state.highlight);
+  //       if ('subject' in hover.state && hover.state.subject !== null) {
+  //         console.log('Reorder by mutual information to ', hover.state.subject);
+  //         sortOrder = model.fieldsToRender.reduce(
+  //           (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
+  //           null);
+  //       } else {
+  //         sortOrder = null;
+  //       }
+  //       if (model.sortByVar !== sortOrder && sortOrder !== null) {
+  //         model.sortByVar = sortOrder;
+  //         model.sortDirty = true;
+  //         publicAPI.render();
+  //       }
+  //     }));
+  // }
   if (model.provider.isA('FieldInformationProvider')) {
     model.subscriptions.push(
       model.provider.subscribeToFieldInformation(
