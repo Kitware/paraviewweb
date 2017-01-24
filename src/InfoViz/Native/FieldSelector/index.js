@@ -72,14 +72,17 @@ function fieldSelector(publicAPI, model) {
 
   publicAPI.setFieldsToRender = (info) => {
     if (info) {
-      const fieldList = Object.keys(info.fieldMapping).map((key, idx) => ({
-        name: info.fieldMapping[key].name,
-        id: info.fieldMapping[key].id,
-        range: info.fieldMapping[key].range,
-        active: info.fieldMapping[key].active,
-        originalRow: idx, // where in the table the row should appear in the "default" view.
-        row: idx, // where in the table the row should appear on the next render
-      }));
+      const fieldList = Object.keys(info.fieldMapping).map((key, idx) => {
+        const field = model.provider.getField(info.fieldMapping[key].name);
+        return {
+          name: info.fieldMapping[key].name,
+          id: info.fieldMapping[key].id,
+          range: info.fieldMapping[key].range || field.range,
+          active: info.fieldMapping[key].active || field.active,
+          originalRow: idx, // where in the table the row should appear in the "default" view.
+          row: idx, // where in the table the row should appear on the next render
+        };
+      });
       model.fieldsToRender = fieldList;
       model.mutualInformationMatrix = info.mutualInformation;
     } else {
@@ -220,7 +223,7 @@ function fieldSelector(publicAPI, model) {
     // Apply on each data item
     function renderField(fieldInfo, index) {
       const fieldName = fieldInfo.name;
-      const field = fieldInfo; // model.provider.getField(fieldName);
+      const field = model.provider.getField(fieldName) || fieldInfo;
       const fieldContainer = d3.select(this);
       let legendCell = fieldContainer.select(`.${style.jsLegend}`);
       let fieldCell = fieldContainer.select(`.${style.jsFieldName}`);

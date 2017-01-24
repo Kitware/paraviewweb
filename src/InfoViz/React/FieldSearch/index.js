@@ -80,7 +80,7 @@ export default class FieldSearch extends React.Component {
         return null;
       })
       .filter(entry => entry !== null)
-      .sort((a, b) => (a.match > b.match || (a.match === b.match && a.optidx > b.optidx)))
+      .sort((a, b) => (a.match === b.match ? a.optidx - b.optidx : a.match - b.match))
       .map(entry => entry.option);
 
     if (this.props.provider.isA('FieldHoverProvider')) {

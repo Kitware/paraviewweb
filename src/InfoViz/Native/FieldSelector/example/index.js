@@ -14,7 +14,7 @@ import SelectionProvider from '../../../../../src/InfoViz/Core/SelectionProvider
 
 import FieldSelector from '../../../Native/FieldSelector';
 
-import dataModel from './state.json';
+import dataModel from '../../HistogramSelector/example/state.json';
 
 const bodyElt = document.querySelector('body');
 // '100vh' is 100% of the current screen height

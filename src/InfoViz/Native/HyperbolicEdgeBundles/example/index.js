@@ -61,43 +61,17 @@ dataManager.on(url, (data, envelope) => {
 });
 dataManager.fetchURL(url, 'json');
 
-const green = BackgroundColor.newInstance({ color:'green' });
-const   red = BackgroundColor.newInstance({ color:'red' });
-const  blue = BackgroundColor.newInstance({ color:'blue' });
-const  pink = BackgroundColor.newInstance({ color:'pink' });
-const  gray = BackgroundColor.newInstance({ color:'gray' });
-
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
 const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
 
 const viewports = {
-  Gray: {
-    component: gray,
-    viewport: 2,
-  },
   HyperbolicEdgeBundles: {
     component: hyperbolicView,
     viewport: 0,
   },
-  Green: {
-    component: green,
-    viewport: -1,
-  },
-  Red: {
-    component: red,
-    viewport: -1,
-  },
   FieldSelector: {
     component: fieldSelector,
     viewport: 1,
-  },
-  Blue: {
-    component: blue,
-    viewport: -1,
-  },
-  Pink: {
-    component: pink,
-    viewport: 3,
   },
 };
 
@@ -105,35 +79,36 @@ const workbench = new Workbench();
 workbench.setComponents(viewports);
 workbench.setLayout('2x1');
 
-const props = {
-  onLayoutChange(layout) {
-    workbench.setLayout(layout);
-  },
-  onViewportChange(index, instance) {
-    workbench.setViewport(index, instance);
-  },
-  activeLayout: workbench.getLayout(),
-  viewports: workbench.getViewportMapping(),
-  count: 4,
-};
+// const props = {
+//   onLayoutChange(layout) {
+//     workbench.setLayout(layout);
+//   },
+//   onViewportChange(index, instance) {
+//     workbench.setViewport(index, instance);
+//   },
+//   activeLayout: workbench.getLayout(),
+//   viewports: workbench.getViewportMapping(),
+//   count: 4,
+// };
 
-const controlPanel = new ReactAdapter(WorkbenchController, props);
-const shiftedWorkbench = new Composite();
-shiftedWorkbench.addViewport(new Spacer(), false);
-shiftedWorkbench.addViewport(workbench);
-const mainComponent = new ToggleControl(shiftedWorkbench, controlPanel, 280);
-mainComponent.setContainer(container);
+// const controlPanel = new ReactAdapter(WorkbenchController, props);
+// const shiftedWorkbench = new Composite();
+// shiftedWorkbench.addViewport(new Spacer(), false);
+// shiftedWorkbench.addViewport(workbench);
+// const mainComponent = new ToggleControl(shiftedWorkbench, controlPanel, 280);
+// mainComponent.setContainer(container);
+workbench.setContainer(container);
 
-workbench.onChange((model) => {
-  props.activeLayout = model.layout;
-  props.viewports = model.viewports;
-  props.count = model.count;
-  controlPanel.render();
-});
+// workbench.onChange((model) => {
+//   props.activeLayout = model.layout;
+//   props.viewports = model.viewports;
+//   props.count = model.count;
+//   // controlPanel.render();
+// });
 
 // Create a debounced window resize handler
 const resizeHandler = debounce(() => {
-  mainComponent.resize();
+  workbench.resize();
 }, 50);
 
 // Register window resize handler so workbench redraws when browser is resized
