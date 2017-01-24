@@ -3,6 +3,7 @@ import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
 import            FieldSelector from '../../../../InfoViz/Native/FieldSelector';
+import     FieldRelationDiagram from '../../../../InfoViz/Native/FieldRelationDiagram';
 import       FieldHoverProvider from '../../../../InfoViz/Core/FieldHoverProvider';
 import FieldInformationProvider from '../../../../InfoViz/Core/FieldInformationProvider';
 import            FieldProvider from '../../../../InfoViz/Core/FieldProvider';
@@ -36,26 +37,34 @@ provider.assignLegend(['colors', 'shapes']);
 
 // Fetch data (which can be too large for webpack) using a DataManager:
 const dataManager = new DataManager();
-const url = '/paraviewweb/data/dummy/minfo.200.json';
+const url = '/paraviewweb/data/dummy/minfo.nba.withCorrelations.json';
 dataManager.on(url, (data, envelope) => {
-  console.log('loaded data from ', url);
+  console.log('loaded data ', data, ' from ', url);
   const minfo = data.data.mutualInformation;
   const fieldKeys = Object.keys(data.data.fieldMapping);
   const vars = new Array(fieldKeys.length);
   fieldKeys.forEach((key) => {
     vars[data.data.fieldMapping[key].id] = data.data.fieldMapping[key];
     // We assigned legend entries above, but only for fields listed by the FieldProvider.
-    // Our demo hacks more variables into FeildInformation, so add legend entries for those, too.
+    // Our demo hacks more variables into FieldInformation, so add legend entries for those, too.
     // TODO: Be consistent with FieldProvider.
     if (!provider.getLegend(key)) {
       provider.addLegendEntry(key);
     }
   });
-  provider.setFieldInformation({ fieldMapping: vars, mutualInformation: minfo });
+  provider.setFieldInformation({
+    fieldMapping: vars,
+    mutualInformation: minfo,
+    smiTheta: data.data.theta,
+    taylorPearson: data.data.taylorPearson,
+    taylorTheta: data.data.taylorTheta,
+    taylorR: data.data.taylorStdDev,
+  });
 });
 dataManager.fetchURL(url, 'json');
 
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
+const fieldRelation = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
 const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
 let fieldInfo = null;
 let sortByVar = null;
@@ -83,7 +92,6 @@ provider.onHoverFieldChange((hover) => {
   }
 });
 
-
 const viewports = {
   HyperbolicEdgeBundles: {
     component: hyperbolicView,
@@ -93,11 +101,15 @@ const viewports = {
     component: fieldSelector,
     viewport: 1,
   },
+  FieldRelationDiagram: {
+    component: fieldRelation,
+    viewport: 2,
+  },
 };
 
 const workbench = new Workbench();
 workbench.setComponents(viewports);
-workbench.setLayout('2x1');
+workbench.setLayout('3xR');
 
 workbench.setContainer(container);
 
@@ -115,3 +127,4 @@ window.onresize = resizeHandler;
 // -----------------------------------------------------------
 global.hyperbolicView = hyperbolicView;
 global.fieldSelector = fieldSelector;
+global.fieldRelation = fieldRelation;

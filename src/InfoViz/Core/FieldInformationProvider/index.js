@@ -66,6 +66,16 @@ export function extend(publicAPI, model, initialValues = {}) {
           throw 'variation of information present in both state and data. Not handled yet.';
         }
       }
+      ['smiTheta', 'taylorPearson', 'taylorTheta', 'taylorR'].map(key => {
+        if (key in data) {
+          if (!(key in storage)) {
+            storage[key] = data[key];
+          } else {
+            console.log(`TODO: Implement merge of ${key}`);
+            throw `${key} present in both state and data. Not handled yet.`;
+          }
+        }
+      });
 
       return unchanged;
     },

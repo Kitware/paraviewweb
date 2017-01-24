@@ -1,0 +1,39 @@
+.fieldRelationContainer {
+  font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.fieldRelationNode {
+  fill: #ddd;
+}
+
+.emphasizedNode {
+  fill: black !important;
+  stroke: black !important;
+  stroke-width: 0.007 !important;
+}
+
+.highlightedNode {
+  fill: #aaa;
+}
+
+.fieldRelationTreeEdge {
+  stroke: #aaa;
+  fill: none;
+  stroke-width: 0.005;
+}
+
+.boundary {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.005;
+}
+
+.diskTransform {
+  fill: none;
+}

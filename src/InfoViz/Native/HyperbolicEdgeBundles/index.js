@@ -142,15 +142,54 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                   });
               }
             }
+            function linkToControlPts(dd, i) {
+              // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
+              // We must convert it to a path of control points starting with 'from' and going
+              // up parents until the deepest common parent is reached, then descend to 'to'.
+              const upwards = [];
+              const dnwards = [];
+              for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
+                upwards.push(upNode);
+              }
+              for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
+                dnwards.push(dnNode);
+              }
+              dnwards.reverse(); // places tree root at index 0
+              const trim = dnwards.reduce(
+                (result, entry, ientry) => upwards[upwards.length - ientry] === entry ? ientry : result,
+                -1);
+              const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+              const path = `M ${pathPts.map(pt => `${pt.x} ${pt.y}`).join(' L ')}`;
+              return path;
+            }
+            function drawLinksToNode(node, grp) {
+              const topNodeLinks = model.linkData[node.id].reduce(
+                (result, linkWeight, otherNodeId) =>
+                  (linkWeight > model.linkThreshold ? result.concat(
+                    [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
+                []
+              );
+              const linkData = grp.selectAll(style.bundleLink).data(topNodeLinks);
+              linkData.exit().remove();
+              linkData.enter().append('path')
+                .classed(style.bundleLink, true);
+              grp.selectAll(style.bundleLink)
+                .attr('d', linkToControlPts);
+            }
             model.nodeGroup
               .selectAll('.node')
               .classed(style.highlightedNode, d => model.nodes[d.id].name in hover.state.highlight)
               .classed(style.emphasizedNode, d => {
-                const nodeName = model.nodes[d.id].name;
+                const thisNode = model.nodes[d.id];
+                const nodeName = thisNode.name;
                 if (nodeName in hover.state.highlight) {
                   const hv = hover.state.highlight[nodeName];
-                  //console.log(`${nodeName} ${hv.weight}`);
-                  return (typeof hv === 'object' && hv.weight > 0);
+                  if (typeof hv === 'object' && hv.weight > 0) {
+                    // draw links in top 10%
+                    drawLinksToNode(thisNode, model.unselectedBundleGroup);
+                    return true;
+                  }
+                  //return (typeof hv === 'object' && hv.weight > 0);
                 }
                 return false;
               })
@@ -321,6 +360,15 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
     }
     console.log('Root ', rr);
+
+    // Get a threshold value of mutual information required for a link to
+    // be considered "worth drawing". For now, pin it to the 90th percentile:
+    const midata = mi.reduce((result, row, irow) => result.concat(row.slice(irow + 1)), []).sort();
+    const ixx = midata.length * 0.9; // "exact index" of 90th percentile
+    const ilo = Math.floor(ixx);
+    const ihi = Math.ceil(ixx);
+    model.linkThreshold = ((1.0 - ixx - ilo) * midata[ilo]) + ((ixx - ilo) * midata[ihi]);
+    model.linkData = mi;
 
     // II. Find descendants.
     model.treeEdges = [];
