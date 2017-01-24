@@ -77,8 +77,8 @@ provider.onHoverFieldChange((hover) => {
     sortByVar = sortOrder;
     fieldSelector.setSortArray(sortByVar, fieldInfo.mutualInformation[sortByVar]);
   } else if (hover.state.disposition === 'final' && sortOrder === null) {
-    // reset to alphabetical
-    fieldSelector.setSortArray(null, null);
+    // reset to alphabetical, use 'up' to reverse
+    fieldSelector.setSortArray(null, null, 'down');
     sortByVar = null;
   }
 });

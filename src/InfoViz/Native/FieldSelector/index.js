@@ -71,9 +71,10 @@ function fieldSelector(publicAPI, model) {
   };
 
   // TODO idx/model.sortByVar is probably not needed anymore, but still used to gate sorting.
-  publicAPI.setSortArray = (idx, arr) => {
+  publicAPI.setSortArray = (idx, arr, direction) => {
     model.sortByVar = idx;
     model.sortArray = arr;
+    model.sortMult = (direction === 'up' ? -1 : 1);
     model.sortDirty = true;
     publicAPI.render();
   };
@@ -189,14 +190,14 @@ function fieldSelector(publicAPI, model) {
       .style('display', hideField.minMax ? 'none' : null);
 
     if (model.sortDirty) {
-      console.log('Sort by var ', model.sortByVar);
+      console.log('Sort by var ', model.sortByVar, model.sortMult === 1 ? 'normal' : 'reversed');
       if (model.sortByVar === null || !model.sortArray) {
         data.sort((a, b) =>
-          (a.name < b.name ? -1 :
-            (a.name > b.name) ? 1 : 0));
+          (model.sortMult * (a.name < b.name ? -1 :
+            (a.name > b.name) ? 1 : 0)));
       } else {
         data.sort((a, b) =>
-          (model.sortArray[b.id] - model.sortArray[a.id]));
+          (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id])));
       }
       model.sortDirty = false;
     }
@@ -429,6 +430,7 @@ const DEFAULT_VALUES = {
   container: null,
   provider: null,
   sortByVar: null,
+  sortMult: 1,
   sortDirty: true,
   displaySearch: false,
   displayUnselected: true,
