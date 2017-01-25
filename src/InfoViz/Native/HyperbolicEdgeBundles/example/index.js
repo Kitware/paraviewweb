@@ -2,7 +2,8 @@
 import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
-import            FieldSelector from '../../../../InfoViz/Native/FieldSelector';
+import             ReactAdapter from '../../../../Component/React/ReactAdapter';
+import            FieldExplorer from '../../../../InfoViz/React/FieldExplorer';
 import     FieldRelationDiagram from '../../../../InfoViz/Native/FieldRelationDiagram';
 import       FieldHoverProvider from '../../../../InfoViz/Core/FieldHoverProvider';
 import FieldInformationProvider from '../../../../InfoViz/Core/FieldInformationProvider';
@@ -65,31 +66,26 @@ dataManager.fetchURL(url, 'json');
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
 const fieldSMI = FieldRelationDiagram.newInstance({ provider, diagramType: 'smi' });
 const fieldTaylor = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
-const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
-let fieldInfo = null;
-let sortByVar = null;
+
+const fieldExplorerProps = {
+  sortDirection: 'down',
+  disposition: null,
+  subject: null,
+  fieldInfo: null,
+  provider,
+};
+
+const fieldExplorer = new ReactAdapter(FieldExplorer, fieldExplorerProps);
 
 // fieldSelector can be sorted using any numeric array
 provider.subscribeToFieldInformation((info) => {
-  fieldInfo = info;
+  fieldExplorerProps.fieldInfo = info;
+  fieldExplorer.render();
 });
 provider.onHoverFieldChange((hover) => {
-  // console.log(hover.state.disposition, hover.state.subject, hover.state.highlight);
-  let sortOrder = null;
-  if (hover.state.subject) {
-    console.log('Reorder by mutual information to ', hover.state.subject);
-    sortOrder = fieldInfo.fieldMapping.reduce(
-            (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
-            null);
-  }
-  if (sortByVar !== sortOrder && sortOrder !== null) {
-    sortByVar = sortOrder;
-    fieldSelector.setSortArray(sortByVar, fieldInfo.mutualInformation[sortByVar]);
-  } else if (hover.state.disposition === 'final' && sortOrder === null) {
-    // reset to alphabetical, use 'up' to reverse
-    fieldSelector.setSortArray(null, null, 'down');
-    sortByVar = null;
-  }
+  fieldExplorerProps.subject = hover.state.subject;
+  fieldExplorerProps.disposition = hover.state.disposition;
+  fieldExplorer.render();
 });
 
 const viewports = {
@@ -97,8 +93,8 @@ const viewports = {
     component: hyperbolicView,
     viewport: 0,
   },
-  FieldSelector: {
-    component: fieldSelector,
+  FieldExplorer: {
+    component: fieldExplorer,
     viewport: 1,
   },
   TaylorDiagram: {
@@ -130,6 +126,5 @@ sizeHelper.triggerChange();
 // modify objects in your browser's developer console:
 // -----------------------------------------------------------
 global.hyperbolicView = hyperbolicView;
-global.fieldSelector = fieldSelector;
 global.fieldSMI = fieldSMI;
 global.fieldTaylor = fieldTaylor;
