@@ -62,7 +62,7 @@ export default class FieldSearch extends React.Component {
       return options;
     }
     const oldHover = this.props.provider.isA('FieldHoverProvider') ?
-      this.props.provider.getFieldHoverState() : { state: { subject: null } };
+      this.props.provider.getFieldHoverState() : { state: { subject: '' } };
     const hover = { state: { disposition: 'preliminary', subject: oldHover.state.subject, highlight: {} } };
     const downcasedFilter = filter.toLowerCase();
 
@@ -131,7 +131,7 @@ export default class FieldSearch extends React.Component {
     const Option = optionComponent;
     if (this.props.provider.isA('FieldHoverProvider')) {
       const oldHover = this.props.provider.getFieldHoverState();
-      const hover = { state: { disposition: 'preliminary', highlight: {} } };
+      const hover = { state: { disposition: 'preliminary', subject: '', highlight: {} } };
       if ('subject' in oldHover.state) {
         hover.state.subject = oldHover.state.subject;
       }

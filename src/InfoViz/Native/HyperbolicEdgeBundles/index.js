@@ -126,20 +126,23 @@ function hyperbolicEdgeBundle(publicAPI, model) {
           // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
           // We must convert it to a path of control points starting with 'from' and going
           // up parents until the deepest common parent is reached, then descend to 'to'.
-          const upwards = [];
-          const dnwards = [];
-          for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
-            upwards.push(upNode);
-          }
-          for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
-            dnwards.push(dnNode);
-          }
-          dnwards.reverse(); // places tree root at index 0
-          const trim = dnwards.reduce(
-            (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
-            -1);
-          const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
-          const path = `M ${pathPts.map(pt => `${pt.x} ${pt.y}`).join(' L ')}`;
+          // const upwards = [];
+          // const dnwards = [];
+          // for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
+          //   upwards.push(upNode);
+          // }
+          // for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
+          //   dnwards.push(dnNode);
+          // }
+          // dnwards.reverse(); // places tree root at index 0
+          // const trim = dnwards.reduce(
+          //   (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
+          //   -1);
+          // const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+          const coords = hyperbolicPlanePointsToPoincareDisk(
+          [dd.from, dd.to].map(coordsOf), model.focus, model.diskScale);
+
+          const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
           return path;
         };
         const drawLinksToNode = (node, grp) => {
@@ -149,19 +152,12 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                 [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
             []
           );
-          const linkData = grp.selectAll(style.bundleLink).data(topNodeLinks);
+          const linkData = grp.selectAll(`.${style.bundleLink}`).data(topNodeLinks);
           linkData.exit().remove();
-          // linkData.enter().append('path')
-          //   .classed(style.bundleLink, true);
-          // linkData
-          //   .attr('d', linkToControlPts);
-          linkData.enter().append('line')
-            .attr('x1', d => d.from.x)
-            .attr('y1', d => d.from.y)
-            .attr('x2', d => d.to.x)
-            .attr('y2', d => d.to.y)
-            .attr('stroke-width', 0.005)
-            .attr('stroke', 'black');
+          linkData.enter().append('path')
+            .classed(style.bundleLink, true);
+          linkData
+            .attr('d', linkToControlPts);
         };
         model.subscriptions.push(
           model.provider.onHoverFieldChange((hover) => {
@@ -184,6 +180,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                   });
               }
             }
+            let sawEmphasizedNode = false;
             model.nodeGroup
               .selectAll('.node')
               .classed(style.highlightedNode, d => (model.nodes[d.id].name in hover.state.highlight))
@@ -194,7 +191,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                   const hv = hover.state.highlight[nodeName];
                   if (typeof hv === 'object' && hv.weight > 0) {
                     // draw links in top 10%
-                    // drawLinksToNode(thisNode, model.unselectedBundleGroup);
+                    drawLinksToNode(thisNode, model.unselectedBundleGroup);
+                    sawEmphasizedNode = true;
                     return true;
                   }
                   // return (typeof hv === 'object' && hv.weight > 0);
@@ -202,7 +200,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                 return false;
               })
               .each(updateDrawOrder);
-            if ('subject' in hover.state && hover.state.subject !== null) {
+            if (!sawEmphasizedNode) {
+              model.unselectedBundleGroup.selectAll(`.${style.bundleLink}`).remove();
+            }
+            if (hover.state.subject) {
               model.prevFocus = model.focus;
               model.focus = model.nodes.reduce((result, entry) => (
                 entry.name === hover.state.subject ? coordsOf(entry) : result),
@@ -217,9 +218,9 @@ function hyperbolicEdgeBundle(publicAPI, model) {
   publicAPI.coordsChanged = (deltaT) => {
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes.map(coordsOf), model.focus, model.diskScale);
-    model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
+    const nodes = model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
     if (deltaT > 0) {
-      model.nodeGroup.selectAll('.node').transition().duration(deltaT)
+      nodes.transition().duration(deltaT)
         .attr('cx', d => d.x[0])
         .attr('cy', d => d.x[1]);
       const interpFocus = ('prevFocus' in model ?
@@ -235,18 +236,19 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         return t => hyperbolicPlaneGeodesicOnPoincareDisk(
           coordsOf(dd.p0), coordsOf(dd.p1), interpFocus(t), model.diskScale);
       };
-      model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id);
-      model.treeEdgeGroup.selectAll('.link').transition().duration(deltaT)
+      model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
+        .transition().duration(deltaT)
         .attrTween('d', updateArcs);
     } else {
-      model.nodeGroup.selectAll('.node')
+      nodes
         .attr('cx', d => d.x[0])
         .attr('cy', d => d.x[1]);
-      model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id);
-      model.treeEdgeGroup.selectAll('.link')
+      model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
         .attr('d', pp => hyperbolicPlaneGeodesicOnPoincareDisk(
           [pp.p0.x, pp.p0.y], [pp.p1.x, pp.p1.y], model.focus, model.diskScale));
     }
+    // cleanup
+    model.unselectedBundleGroup.selectAll(`.${style.bundleLink}`).remove();
   };
 
   publicAPI.focusChanged = () => {
@@ -275,6 +277,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         if (model.provider.isA('FieldHoverProvider')) {
           const hover = model.provider.getFieldHoverState();
           hover.state.subject = model.nodes[d.id].name;
+          hover.state.disposition = 'final';
           hover.state.highlight[hover.state.subject] = { weight: 1 };
           model.provider.setFieldHoverState(hover);
         } else {
@@ -285,7 +288,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       });
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
-      model.nodeGroup.selectAll('.node')
+      ngdata
         .on('mouseenter', (d, i) => {
           const state = { highlight: {}, subject: '', disposition: 'preliminary' };
           state.highlight[model.nodes[d.id].name] = { weight: 1 };
@@ -373,8 +376,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     const midata = mi.reduce((result, row, irow) => result.concat(row.slice(irow + 1)), []).sort();
     const ixx = midata.length * 0.9; // "exact index" of 90th percentile
     const ilo = Math.floor(ixx);
-    const ihi = Math.ceil(ixx);
-    model.linkThreshold = ((1.0 - ixx - ilo) * midata[ilo]) + ((ixx - ilo) * midata[ihi]);
+    const ihi = ilo + 1;
+    model.linkThreshold = ((ihi - ixx) * midata[ilo]) + ((ixx - ilo) * midata[ihi]);
     model.linkData = mi;
 
     // II. Find descendants.
