@@ -18,6 +18,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     const smaller = upw < 2.0 * uph ? upw : 2 * uph;
     const tx = rect.width / smaller;
     const ty = rect.height / smaller;
+    model.scale = smaller / 2.0;
     d3.select(model.container).select('svg')
       .attr('width', rect.width)
       .attr('height', rect.height);
@@ -110,18 +111,23 @@ function fieldRelationEdgeBundle(publicAPI, model) {
                   });
               }
             }
+            function emphasizeNode(d) {
+              const nodeName = model.nodes[d.id].name;
+              if (nodeName in hover.state.highlight) {
+                const hv = hover.state.highlight[nodeName];
+                // console.log(`${nodeName} ${hv.weight}`);
+                if (typeof hv === 'object' && hv.weight > 0) {
+                  d3.select(this).select('svg').classed(style.emphasizedGlyph, true);
+                  return true;
+                }
+              }
+              d3.select(this).select('svg').classed(style.emphasizedGlyph, false);
+              return false;
+            }
             model.nodeGroup
               .selectAll('.node')
               .classed(style.highlightedNode, d => (model.nodes[d.id].name in hover.state.highlight))
-              .classed(style.emphasizedNode, (d) => {
-                const nodeName = model.nodes[d.id].name;
-                if (nodeName in hover.state.highlight) {
-                  const hv = hover.state.highlight[nodeName];
-                  // console.log(`${nodeName} ${hv.weight}`);
-                  return (typeof hv === 'object' && hv.weight > 0);
-                }
-                return false;
-              })
+              .classed(style.emphasizedNode, emphasizeNode)
               .each(updateDrawOrder);
             if ('subject' in hover.state && hover.state.subject !== null) {
               const subjectId = model.nodes.reduce((result, entry) =>
@@ -143,12 +149,11 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     return ((t * nextTheta) + ((1.0 - t) * prevTheta)) * Math.PI / 180.0;
   }
 
-  function fixedRadiusTweenX(node) {
-    return t => node.r * Math.cos(interpolateTheta(node, t));
-  }
-
-  function fixedRadiusTweenY(node) {
-    return t => -node.r * Math.sin(interpolateTheta(node, t));
+  function fixedRadiusTween(node) {
+    return (t) => {
+      const th = interpolateTheta(node, t);
+      return `translate(${node.r * Math.cos(th)}, ${-node.r * Math.sin(th)})`;
+    };
   }
 
   publicAPI.coordsChanged = (deltaT) => {
@@ -156,31 +161,49 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
     if (deltaT > 0) {
       model.nodeGroup.selectAll('.node').transition().duration(deltaT)
-        .attrTween('cx', fixedRadiusTweenX)
-        .attrTween('cy', fixedRadiusTweenY);
+        .attrTween('transform', fixedRadiusTween);
     } else {
       model.nodeGroup.selectAll('.node')
-        .attr('cx', d => fixedRadiusTweenX(1.0))
-        .attr('cy', d => fixedRadiusTweenY(1.0));
+        .attr('transform', d => fixedRadiusTween(1.0));
     }
   };
 
   publicAPI.updateDiagram = () => {
+    // NB: The ensureLegendForNode function **relies** on having d3 define "this"
+    //     to be the currently-selected element, so the "=>" syntax cannot be used.
+    function ensureLegendForNode(d, i) {
+      const self = d3.select(this);
+      if (self.select(`svg.${style.legendShape}`).empty()) {
+        const { color, shape } = model.provider.getLegend(d.name);
+        self.append('svg')
+          .classed(style.legendShape, true)
+          .attr('width', model.legendSize / model.scale)
+          .attr('height', model.legendSize / model.scale)
+          .attr('x', -1 * model.legendSize / model.scale / 2.0)
+          .attr('y', -1 * model.legendSize / model.scale / 2.0)
+          .attr('fill', color)
+          .append('use')
+          .attr('xlink:href', shape);
+      }
+    }
     const ngdata = model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
-    ngdata.enter().append('circle')
+    ngdata.enter().append('g')
       .classed('node', true)
       .classed(style.fieldRelationNode, true)
-      .attr('r', '0.02px')
-      .on('click', (d, i) => {
-        if (model.provider.isA('FieldHoverProvider')) {
-          const hover = model.provider.getFieldHoverState();
-          hover.state.subject = model.nodes[d.id].name;
-          hover.state.highlight[hover.state.subject] = { weight: 1 };
-          model.provider.setFieldHoverState(hover);
-        } else {
-          publicAPI.placeNodesByRelationTo(d.id);
-        }
-      });
+        .on('click', (d, i) => {
+          if (model.provider.isA('FieldHoverProvider')) {
+            const hover = model.provider.getFieldHoverState();
+            hover.state.subject = model.nodes[d.id].name;
+            hover.state.highlight[hover.state.subject] = { weight: 1 };
+            model.provider.setFieldHoverState(hover);
+          } else {
+            publicAPI.placeNodesByRelationTo(d.id);
+          }
+        });
+    if (model.provider.isA('LegendProvider')) {
+      // FIXME: This will not change the legend glyph for any pre-existing nodes!
+      model.nodeGroup.selectAll('.node').each(ensureLegendForNode);
+    }
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
       model.nodeGroup.selectAll('.node')
@@ -235,6 +258,7 @@ const DEFAULT_VALUES = {
   diagramType: 'smi',
   focus: -1,
   prevFocus: -1,
+  legendSize: 16,
   transitionTime: 500,
 };
 

@@ -12,10 +12,18 @@
   fill: #bbb;
 }
 
+.legendShape {
+  stroke: black;
+}
+
 .emphasizedNode {
   fill: black !important;
   stroke: black !important;
   stroke-width: 0.007 !important;
+}
+
+.emphasizedGlyph {
+  stroke-width: 2px;
 }
 
 .highlightedNode {
