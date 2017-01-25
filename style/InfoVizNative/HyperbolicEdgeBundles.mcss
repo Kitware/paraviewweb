@@ -33,3 +33,9 @@
   stroke: black;
   stroke-width: 0.005;
 }
+
+.bundleLink {
+  fill: none;
+  stroke: green;
+  stroke-width: 0.005;
+}

@@ -1,4 +1,4 @@
-/* global document, d3, window */
+/* global document */
 import 'normalize.css';
 
 import    HyperbolicEdgeBundles from '../../../../InfoViz/Native/HyperbolicEdgeBundles';
@@ -12,15 +12,14 @@ import   CompositeClosureHelper from '../../../../Common/Core/CompositeClosureHe
 import                Workbench from '../../../../Component/Native/Workbench';
 import              DataManager from '../../../../IO/Core/DataManager';
 
-
-import { debounce } from '../../../../Common/Misc/Debounce';
+import sizeHelper   from '../../../../Common/Misc/SizeHelper';
 
 import dataModel from '../../HistogramSelector/example/state.json';
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';
 container.style.width = '100vw';
-d3.select('body').style('overflow', 'hidden'); // Safari otherwise intercepts wheel events
+document.querySelector('body').style.overflow = 'hidden'; // Safari otherwise intercepts wheel events
 
 const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
   Object.assign(model, initialValues);
@@ -118,13 +117,13 @@ workbench.setLayout('2x2');
 
 workbench.setContainer(container);
 
-// Create a debounced window resize handler
-const resizeHandler = debounce(() => {
+// Listen to window resize
+sizeHelper.onSizeChange(() => {
   workbench.resize();
-}, 50);
+});
+sizeHelper.startListening(50);
 
-// Register window resize handler so workbench redraws when browser is resized
-window.onresize = resizeHandler;
+sizeHelper.triggerChange();
 
 // -----------------------------------------------------------
 // Make some variables global so that you can inspect and

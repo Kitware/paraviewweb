@@ -1,9 +1,10 @@
+/* global window */
 import d3 from 'd3';
-import { force, forceSimulation, forceManyBody, forceLink, forceX, forceY } from 'd3-force';
+import { forceSimulation, forceManyBody, forceLink, forceX, forceY } from 'd3-force';
 
 import style from 'PVWStyle/InfoVizNative/HyperbolicEdgeBundles.mcss';
 import htmlContent from './body.html';
-import FieldInformationProvider from '../../../InfoViz/Core/FieldInformationProvider';
+// import FieldInformationProvider from '../../../InfoViz/Core/FieldInformationProvider';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import {
   // vectorMag,
@@ -83,11 +84,11 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         if ('hyperbolicBounds' in model) {
           const maxScale = vectorDiff(model.hyperbolicBounds[0], model.hyperbolicBounds[1]).reduce(
             (a, b) => ((a > b) ? a : b)) * 2.0;
-          model.diskScale = Math.min(Math.max(model.diskScale + event.deltaY * 0.1, 0.5), maxScale);
-          //console.log('wheel', event.deltaY, model.diskScale);
+          model.diskScale = Math.min(Math.max(model.diskScale + (event.deltaY * 0.1), 0.5), maxScale);
+          // console.log('wheel', event.deltaY, model.diskScale);
           if (!mouseWheelMoving) {
             window.requestAnimationFrame(() => {
-              //console.log('   wheel', model.diskScale, maxScale);
+              // console.log('   wheel', model.diskScale, maxScale);
               model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
                 model.nodes.map(coordsOf), model.focus, model.diskScale);
               publicAPI.coordsChanged(0);
@@ -121,19 +122,60 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
       // Listen for hover events
       if (model.provider.isA('FieldHoverProvider')) {
+        const linkToControlPts = (dd, i) => {
+          // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
+          // We must convert it to a path of control points starting with 'from' and going
+          // up parents until the deepest common parent is reached, then descend to 'to'.
+          const upwards = [];
+          const dnwards = [];
+          for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
+            upwards.push(upNode);
+          }
+          for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
+            dnwards.push(dnNode);
+          }
+          dnwards.reverse(); // places tree root at index 0
+          const trim = dnwards.reduce(
+            (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
+            -1);
+          const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+          const path = `M ${pathPts.map(pt => `${pt.x} ${pt.y}`).join(' L ')}`;
+          return path;
+        };
+        const drawLinksToNode = (node, grp) => {
+          const topNodeLinks = model.linkData[node.id].reduce(
+            (result, linkWeight, otherNodeId) =>
+              (linkWeight > model.linkThreshold ? result.concat(
+                [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
+            []
+          );
+          const linkData = grp.selectAll(style.bundleLink).data(topNodeLinks);
+          linkData.exit().remove();
+          // linkData.enter().append('path')
+          //   .classed(style.bundleLink, true);
+          // linkData
+          //   .attr('d', linkToControlPts);
+          linkData.enter().append('line')
+            .attr('x1', d => d.from.x)
+            .attr('y1', d => d.from.y)
+            .attr('x2', d => d.to.x)
+            .attr('y2', d => d.to.y)
+            .attr('stroke-width', 0.005)
+            .attr('stroke', 'black');
+        };
         model.subscriptions.push(
-          model.provider.onHoverFieldChange(hover => {
-            //console.log(hover);
+          model.provider.onHoverFieldChange((hover) => {
+            // console.log(hover);
             function updateDrawOrder(d, i) {
               if (model.nodes[d.id].name in hover.state.highlight) {
                 this.parentNode.appendChild(this);
                 d3.select(this)
-                  .on('click', (d, i) => {
+                  .on('click', (dd, idx) => {
                     if (model.provider.isA('FieldHoverProvider')) {
-                      const hover = model.provider.getFieldHoverState();
-                      hover.state.subject = model.nodes[d.id].name;
-                      hover.state.highlight[hover.state.subject] = { weight: 1 };
-                      model.provider.setFieldHoverState(hover);
+                      const fhover = model.provider.getFieldHoverState();
+                      fhover.state.subject = model.nodes[dd.id].name;
+                      fhover.state.highlight[fhover.state.subject] = { weight: 1 };
+                      model.provider.setFieldHoverState(fhover);
                     } else {
                       model.prevFocus = model.focus;
                       model.focus = coordsOf(model.nodes[i]);
@@ -142,62 +184,28 @@ function hyperbolicEdgeBundle(publicAPI, model) {
                   });
               }
             }
-            function linkToControlPts(dd, i) {
-              // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
-              // We must convert it to a path of control points starting with 'from' and going
-              // up parents until the deepest common parent is reached, then descend to 'to'.
-              const upwards = [];
-              const dnwards = [];
-              for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
-                upwards.push(upNode);
-              }
-              for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
-                dnwards.push(dnNode);
-              }
-              dnwards.reverse(); // places tree root at index 0
-              const trim = dnwards.reduce(
-                (result, entry, ientry) => upwards[upwards.length - ientry] === entry ? ientry : result,
-                -1);
-              const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
-              const path = `M ${pathPts.map(pt => `${pt.x} ${pt.y}`).join(' L ')}`;
-              return path;
-            }
-            function drawLinksToNode(node, grp) {
-              const topNodeLinks = model.linkData[node.id].reduce(
-                (result, linkWeight, otherNodeId) =>
-                  (linkWeight > model.linkThreshold ? result.concat(
-                    [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
-                []
-              );
-              const linkData = grp.selectAll(style.bundleLink).data(topNodeLinks);
-              linkData.exit().remove();
-              linkData.enter().append('path')
-                .classed(style.bundleLink, true);
-              grp.selectAll(style.bundleLink)
-                .attr('d', linkToControlPts);
-            }
             model.nodeGroup
               .selectAll('.node')
-              .classed(style.highlightedNode, d => model.nodes[d.id].name in hover.state.highlight)
-              .classed(style.emphasizedNode, d => {
+              .classed(style.highlightedNode, d => (model.nodes[d.id].name in hover.state.highlight))
+              .classed(style.emphasizedNode, (d) => {
                 const thisNode = model.nodes[d.id];
                 const nodeName = thisNode.name;
                 if (nodeName in hover.state.highlight) {
                   const hv = hover.state.highlight[nodeName];
                   if (typeof hv === 'object' && hv.weight > 0) {
                     // draw links in top 10%
-                    drawLinksToNode(thisNode, model.unselectedBundleGroup);
+                    // drawLinksToNode(thisNode, model.unselectedBundleGroup);
                     return true;
                   }
-                  //return (typeof hv === 'object' && hv.weight > 0);
+                  // return (typeof hv === 'object' && hv.weight > 0);
                 }
                 return false;
               })
               .each(updateDrawOrder);
             if ('subject' in hover.state && hover.state.subject !== null) {
               model.prevFocus = model.focus;
-              model.focus = model.nodes.reduce((result, entry) =>
-                entry.name === hover.state.subject ? coordsOf(entry) : result,
+              model.focus = model.nodes.reduce((result, entry) => (
+                entry.name === hover.state.subject ? coordsOf(entry) : result),
                 model.focus);
               publicAPI.focusChanged();
             }
@@ -217,16 +225,15 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       const interpFocus = ('prevFocus' in model ?
         d3.interpolate(model.prevFocus, model.focus) :
         () => model.focus);
-      const updateArcs = dd => {
+      const updateArcs = (dd) => {
         if ('previous' in dd) {
           const interpP0 = d3.interpolate(dd.previous.p0, dd.p0);
           const interpP1 = d3.interpolate(dd.previous.p1, dd.p1);
           return t => hyperbolicPlaneGeodesicOnPoincareDisk(
             coordsOf(interpP0(t)), coordsOf(interpP1(t)), interpFocus(t), model.diskScale);
-        } else {
-          return t => hyperbolicPlaneGeodesicOnPoincareDisk(
-            coordsOf(dd.p0), coordsOf(dd.p1), interpFocus(t), model.diskScale);
         }
+        return t => hyperbolicPlaneGeodesicOnPoincareDisk(
+          coordsOf(dd.p0), coordsOf(dd.p1), interpFocus(t), model.diskScale);
       };
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id);
       model.treeEdgeGroup.selectAll('.link').transition().duration(deltaT)
@@ -248,7 +255,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 
   publicAPI.spanningTreeUpdated = () => {
     // Remember old coordinates in "previous" before computing new ones:
-    model.treeEdges = model.treeEdges.map((dd) => ({
+    model.treeEdges = model.treeEdges.map(dd => ({
       id: dd.id,
       p0: dd.source,
       p1: dd.target,
@@ -301,20 +308,20 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     // NB: Some of this code relies on the order of model.treeEdges to start
     //     with the root node; to list parents as source, children as targets;
     //     and to list links from the top down.
-    model.nodes.forEach((nn, ii) => { model.nodes[ii].children=[]; });
-    model.treeEdges.forEach(ee => { ee.target.parent = ee.source; ee.source.children.push(ee.target); });
+    model.nodes.forEach((nn, ii) => { model.nodes[ii].children = []; });
+    model.treeEdges.forEach((ee) => { ee.target.parent = ee.source; ee.source.children.push(ee.target); });
     const rootNode = model.treeEdges[0].source;
-    //console.log('hierarchy ', d3.layout.hierarchy()(rootNode), rootNode);
+    // console.log('hierarchy ', d3.layout.hierarchy()(rootNode), rootNode);
     const maxDepth = model.nodes.reduce((depth, entry) => (entry.depth > depth ? entry.depth : depth), 1);
     const tidyTree = d3.layout.tree()
-      .separation((a, b)  => (a.parent == b.parent ? 1 : 2) / a.depth)
+      .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth)
       .size([360, maxDepth * 10]);
     tidyTree(rootNode); // Assign x, y coordinates to each node.
     model.nodes.forEach((nn, ii) => {
       const tx = nn.x;
       const ty = nn.y;
-      model.nodes[ii].x = ty * Math.cos(tx*Math.PI/180.0);
-      model.nodes[ii].y = ty * Math.sin(tx*Math.PI/180.0);
+      model.nodes[ii].x = ty * Math.cos(tx * Math.PI / 180.0);
+      model.nodes[ii].y = ty * Math.sin(tx * Math.PI / 180.0);
     });
 
     // Relax the sparse tidy tree with force-directed layout:
@@ -346,7 +353,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 
   publicAPI.setMutualInformation = (vars, mi) => {
     model.nodes = vars;
-    const map = {};
+    // const map = {};
     // Identify root of tree (largest self-information):
     const nv = mi.length;
     let rr = 0;
@@ -373,7 +380,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     // II. Find descendants.
     model.treeEdges = [];
     const nodes = new Set([rr]);
-    const nextNode = mi[rr].map((vv) => ({ vmax: vv, vnod: rr}));
+    const nextNode = mi[rr].map(vv => ({ vmax: vv, vnod: rr }));
     delete nextNode[rr];
     while (nodes.size < nv) {
       // Find the largest entry:
@@ -383,7 +390,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
           { vmax: -1, vnod: -1, vlnk: -1 });
       if (linkToAdd.vlnk >= 0) {
         nodes.add(linkToAdd.vlnk);
-        //missing.delete(linkToAdd.vlnk);
+        // missing.delete(linkToAdd.vlnk);
         model.treeEdges.push({ id: model.treeEdges.length, source: vars[linkToAdd.vnod], target: vars[linkToAdd.vlnk] });
         // Now update nextNode:
         delete nextNode[linkToAdd.vlnk];
