@@ -64,7 +64,8 @@ dataManager.on(url, (data, envelope) => {
 dataManager.fetchURL(url, 'json');
 
 const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
-const fieldRelation = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
+const fieldSMI = FieldRelationDiagram.newInstance({ provider, diagramType: 'smi' });
+const fieldTaylor = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
 const fieldSelector = FieldSelector.newInstance({ provider, displaySearch: true, fieldShowHistogram: false });
 let fieldInfo = null;
 let sortByVar = null;
@@ -101,15 +102,19 @@ const viewports = {
     component: fieldSelector,
     viewport: 1,
   },
-  FieldRelationDiagram: {
-    component: fieldRelation,
+  TaylorDiagram: {
+    component: fieldSMI,
     viewport: 2,
+  },
+  SMIDiagram: {
+    component: fieldTaylor,
+    viewport: 3,
   },
 };
 
 const workbench = new Workbench();
 workbench.setComponents(viewports);
-workbench.setLayout('3xR');
+workbench.setLayout('2x2');
 
 workbench.setContainer(container);
 
@@ -127,4 +132,5 @@ window.onresize = resizeHandler;
 // -----------------------------------------------------------
 global.hyperbolicView = hyperbolicView;
 global.fieldSelector = fieldSelector;
-global.fieldRelation = fieldRelation;
+global.fieldSMI = fieldSMI;
+global.fieldTaylor = fieldTaylor;

@@ -13,8 +13,8 @@ import {
   // pointsApproxCollinear,
   // lineLineIntersectFragile,
   // lineCircleIntersectFragile,
-  hyperbolicPlanePointsToPoincareDisk,
-  hyperbolicPlaneGeodesicOnPoincareDisk,
+  // hyperbolicPlanePointsToPoincareDisk,
+  // hyperbolicPlaneGeodesicOnPoincareDisk,
   // hyperbolicPlaneGeodesicsOnPoincareDisk,
   // interpolateOnPoincareDisk,
 } from '../../../Common/Misc/HyperbolicGeometry';
