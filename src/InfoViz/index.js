@@ -5,5 +5,5 @@ import React from './React';
 export default {
   Core,
   Native,
-  React
+  React,
 };

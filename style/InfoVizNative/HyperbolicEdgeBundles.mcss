@@ -9,7 +9,7 @@
 }
 
 .hyperbolicNode {
-  fill: #ddd;
+  fill: #bbb;
 }
 
 .emphasizedNode {
@@ -19,7 +19,7 @@
 }
 
 .highlightedNode {
-  fill: #aaa;
+  fill: #999;
 }
 
 .hyperbolicTreeEdge {
@@ -30,7 +30,7 @@
 
 .hyperbolicDiskBoundary {
   fill: none;
-  stroke: black;
+  stroke: #999;
   stroke-width: 0.005;
 }
 

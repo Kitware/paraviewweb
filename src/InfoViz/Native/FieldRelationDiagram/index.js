@@ -1,30 +1,11 @@
-/* global window */
 import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/FieldRelationDiagram.mcss';
 import htmlContent from './body.html';
 // import FieldInformationProvider from '../../../InfoViz/Core/FieldInformationProvider';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import {
-  // vectorMag,
-  vectorDiff,
-  // vectorMAdd,
-  // vectorDot,
-  // vectorScale,
-  // pointsApproxCollinear,
-  // lineLineIntersectFragile,
-  // lineCircleIntersectFragile,
-  hyperbolicPlanePointsToPoincareDisk,
-  // hyperbolicPlaneGeodesicOnPoincareDisk,
-  // hyperbolicPlaneGeodesicsOnPoincareDisk,
-  // interpolateOnPoincareDisk,
-} from '../../../Common/Misc/HyperbolicGeometry';
-
 
 function fieldRelationEdgeBundle(publicAPI, model) {
-  // Return an array containing a point's coordinates:
-  const coordsOf = (nn => [nn.x, nn.y]);
-
   publicAPI.resize = () => {
     if (!model.container) {
       return;
@@ -78,26 +59,6 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       model.selectedBundleGroup = model.transformGroup.append('g').classed('selected-bundles', true);
       model.nodeGroup = model.transformGroup.append('g').classed('nodes', true);
 
-      let mouseWheelMoving = false;
-      svg.node().addEventListener('wheel', (event) => {
-        if ('dataBounds' in model) {
-          const maxScale = vectorDiff(model.dataBounds[0], model.dataBounds[1]).reduce(
-            (a, b) => ((a > b) ? a : b)) * 2.0;
-          model.diskScale = Math.min(Math.max(model.diskScale + (event.deltaY * 0.1), 0.5), maxScale);
-          // console.log('wheel', event.deltaY, model.diskScale);
-          if (!mouseWheelMoving) {
-            window.requestAnimationFrame(() => {
-              // console.log('   wheel', model.diskScale, maxScale);
-              model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
-                model.nodes.map(coordsOf), model.focus, model.diskScale);
-              publicAPI.coordsChanged(0);
-              mouseWheelMoving = false;
-            });
-          }
-          mouseWheelMoving = true;
-        }
-      }, { passive: true });
-
       publicAPI.resize(); // Apply a transform to the transformGroup based on the size of the SVG.
 
       // Auto unmount on destroy
@@ -109,7 +70,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
           model.provider.subscribeToFieldInformation(
             (data) => {
               if (data && 'fieldMapping' in data && 'mutualInformation' in data) {
-                console.log('data ', data);
+                // console.log('data ', data);
                 const treeKey = `${model.diagramType.toLowerCase() === 'taylor' ? 'taylorPearson' : 'mutualInformation'}`;
                 const thetaKey = `${model.diagramType.toLowerCase()}Theta`;
                 const radKey = `${model.diagramType.toLowerCase() === 'taylor' ? 'taylorR' : 'mutualInformation'}`;
@@ -127,6 +88,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
             });
         model.subscriptions.push(model.fieldInformationSubscription);
       }
+
       // Listen for hover events
       if (model.provider.isA('FieldHoverProvider')) {
         model.subscriptions.push(
@@ -143,9 +105,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
                       fhover.state.highlight[fhover.state.subject] = { weight: 1 };
                       model.provider.setFieldHoverState(fhover);
                     } else {
-                      model.prevFocus = model.focus;
-                      model.focus = coordsOf(model.nodes[i]);
-                      publicAPI.focusChanged(i);
+                      publicAPI.placeNodesByRelationTo(d.id);
                     }
                   });
               }
@@ -164,50 +124,48 @@ function fieldRelationEdgeBundle(publicAPI, model) {
               })
               .each(updateDrawOrder);
             if ('subject' in hover.state && hover.state.subject !== null) {
-              model.prevFocus = model.focus;
-              const info = model.nodes.reduce((result, entry) =>
-                (entry.name === hover.state.subject ? { pt: coordsOf(entry), id: entry.id } : result),
-                { pt: model.focus, id: -1 });
-              model.focus = info.pt;
-              publicAPI.focusChanged(info.id);
+              const subjectId = model.nodes.reduce((result, entry) =>
+                (entry.name === hover.state.subject ? entry.id : result),
+                -1);
+              publicAPI.placeNodesByRelationTo(subjectId);
             }
           }));
       }
     }
   };
 
+  function interpolateTheta(node, t) {
+    if (model.prevFocus < 0) {
+      return node.th * Math.PI / 180.0;
+    }
+    const prevTheta = model.theta[model.prevFocus][node.id];
+    const nextTheta = model.theta[model.focus][node.id];
+    return ((t * nextTheta) + ((1.0 - t) * prevTheta)) * Math.PI / 180.0;
+  }
+
+  function fixedRadiusTweenX(node) {
+    return t => node.r * Math.cos(interpolateTheta(node, t));
+  }
+
+  function fixedRadiusTweenY(node) {
+    return t => -node.r * Math.sin(interpolateTheta(node, t));
+  }
+
   publicAPI.coordsChanged = (deltaT) => {
-    console.log(' coords changed ', model);
+    // console.log(' coords changed ', model);
     model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
     if (deltaT > 0) {
       model.nodeGroup.selectAll('.node').transition().duration(deltaT)
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y);
+        .attrTween('cx', fixedRadiusTweenX)
+        .attrTween('cy', fixedRadiusTweenY);
     } else {
       model.nodeGroup.selectAll('.node')
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y);
+        .attr('cx', d => fixedRadiusTweenX(1.0))
+        .attr('cy', d => fixedRadiusTweenY(1.0));
     }
   };
 
-  publicAPI.focusChanged = (subjectId) => {
-    if (subjectId < 0) {
-      console.log('bad subject');
-      return;
-    }
-    model.nodes.forEach((nn, ii) => {
-      const tx = nn.r;
-      const ty = model.theta[subjectId][ii];
-      model.nodes[ii].th = ty;
-      model.nodes[ii].x = tx * Math.cos(ty * Math.PI / 180.0);
-      model.nodes[ii].y = -tx * Math.sin(ty * Math.PI / 180.0);
-    });
-    publicAPI.coordsChanged(model.transitionTime);
-  };
-
-  publicAPI.spanningTreeUpdated = () => {
-    // Remember old coordinates in "previous" before computing new ones:
-    model.diskCoords = model.nodes.map(coordsOf);
+  publicAPI.updateDiagram = () => {
     const ngdata = model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
     ngdata.enter().append('circle')
       .classed('node', true)
@@ -220,9 +178,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
           hover.state.highlight[hover.state.subject] = { weight: 1 };
           model.provider.setFieldHoverState(hover);
         } else {
-          model.prevFocus = model.focus;
-          model.focus = coordsOf(model.nodes[i]);
-          publicAPI.focusChanged();
+          publicAPI.placeNodesByRelationTo(d.id);
         }
       });
     ngdata.exit().remove();
@@ -241,55 +197,29 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     publicAPI.coordsChanged(model.transitionTime);
   };
 
-  publicAPI.placeNodesByRelation = (subject) => {
+  publicAPI.placeNodesByRelationTo = (subject) => {
+    if (typeof subject !== 'number' || subject < 0) {
+      console.log(`Bad subject ${subject} for ${model.diagramType}`);
+      return; // Ignore invalid request.
+    }
+    model.prevFocus = model.focus;
+    model.focus = subject;
     model.nodes.forEach((nn, ii) => {
-      const tx = nn.r;
-      const ty = model.theta[subject][ii];
-      model.nodes[ii].th = ty;
-      model.nodes[ii].x = tx * Math.cos(ty * Math.PI / 180.0);
-      model.nodes[ii].y = -tx * Math.sin(ty * Math.PI / 180.0);
+      model.nodes[ii].th = model.theta[subject][ii];
     });
-
-    // Compute bounds and scaling
-    model.dataBounds = [[-1, 0], [+1, +1]];
-    /*
-      model.nodes.reduce((result, value) => [
-        [Math.min(result[0][0], value.x), Math.min(result[0][1], value.y)],
-        [Math.max(result[1][0], value.x), Math.max(result[1][1], value.y)]],
-        [[model.nodes[0].x, model.nodes[0].y], [model.nodes[0].x, model.nodes[0].y]]);
-    */
-    model.focus = 1.0; // FIXME: Use normalized Pearson or SMI of subject.
-    model.diskScale = vectorDiff(model.dataBounds[0], model.dataBounds[1]).reduce(
-      (a, b) => ((a > b) ? a : b)) / 2.0;
-    publicAPI.spanningTreeUpdated();
+    publicAPI.updateDiagram();
   };
 
   publicAPI.setRelationData = (vars, treeData, radius, theta) => {
     model.nodes = vars;
-    // const map = {};
-    // Identify root of tree (largest self-information):
-    const nv = treeData.length;
-    let rr = 0;
-    let ri = treeData[rr][rr];
-    for (let ii = 1; ii < nv; ++ii) {
-      const selfInfo = treeData[ii][ii];
-      model.nodes[ii].value = selfInfo;
-      if (selfInfo > ri) {
-        ri = selfInfo;
-        rr = ii;
-      }
-    }
-    console.log('Root ', rr);
     const rmax = radius.reduce((rmx, entry) => (rmx < entry ? entry : rmx));
     model.theta = theta;
-    theta[rr].forEach((th, ii) => {
+    theta[0].forEach((th, ii) => {
       model.nodes[ii].r = radius[ii] / rmax;
       model.nodes[ii].th = th;
-      model.nodes[ii].x = model.nodes[ii].r * Math.cos(model.nodes[ii].th * Math.PI / 180.0);
-      model.nodes[ii].y = -model.nodes[ii].r * Math.sin(model.nodes[ii].th * Math.PI / 180.0);
     });
 
-    publicAPI.placeNodesByRelation(rr);
+    publicAPI.placeNodesByRelationTo(0);
   };
 
   publicAPI.getState = () => model;
@@ -303,6 +233,8 @@ const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
   diagramType: 'smi',
+  focus: -1,
+  prevFocus: -1,
   transitionTime: 500,
 };
 

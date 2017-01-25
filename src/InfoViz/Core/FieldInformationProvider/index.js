@@ -34,7 +34,7 @@ export function extend(publicAPI, model, initialValues = {}) {
         storage.fieldMapping = [];
         unchanged = false;
       }
-      Object.keys(data.fieldMapping).forEach(name => {
+      Object.keys(data.fieldMapping).forEach((name) => {
         if (name in storage.fieldMapping) {
           if (storage.fieldMapping[name].id === data.fieldMapping[name].id) {
             storage.fieldMapping[name] =
@@ -66,7 +66,7 @@ export function extend(publicAPI, model, initialValues = {}) {
           throw 'variation of information present in both state and data. Not handled yet.';
         }
       }
-      ['smiTheta', 'taylorPearson', 'taylorTheta', 'taylorR'].map(key => {
+      ['smiTheta', 'taylorPearson', 'taylorTheta', 'taylorR'].forEach((key) => {
         if (key in data) {
           if (!(key in storage)) {
             storage[key] = data[key];
