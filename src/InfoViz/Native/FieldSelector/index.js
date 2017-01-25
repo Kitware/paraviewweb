@@ -44,7 +44,7 @@ function fieldSelector(publicAPI, model) {
     }
 
     model.container = el;
-    model.fieldsToRender = null;
+    // model.fieldsToRender = null;
 
     if (el) {
       d3.select(model.container).html(template);
@@ -79,6 +79,20 @@ function fieldSelector(publicAPI, model) {
     publicAPI.render();
   };
 
+  publicAPI.setDisplayOnlyUnselected = (onoff) => {
+    model.displayOnlyUnselected = !!onoff;
+  };
+
+  publicAPI.handleFieldChange = (field) => {
+    if (field && model.fieldsToRender) {
+      const index = model.fieldsToRender.findIndex(fieldInfo => (fieldInfo.name === field.name));
+      if (index !== -1) {
+        model.fieldsToRender[index].active = field.active;
+      }
+    }
+    publicAPI.render();
+  };
+
   publicAPI.setFieldsToRender = (info) => {
     if (info) {
       const fieldList = Object.keys(info.fieldMapping).map((key, idx) => {
@@ -97,8 +111,8 @@ function fieldSelector(publicAPI, model) {
     } else {
       const fieldList = model.provider.getFieldNames().map((fieldName, idx) => {
         const field = model.provider.getField(fieldName);
-        console.log(field.name);
-        return Object.assign(field, {
+        // console.log(field.name);
+        return Object.assign({}, field, {
           id: idx,
           originalRow: idx, // where in the table the row should appear in the "default" view.
           row: idx, // where in the table the row should appear on the next render
@@ -124,27 +138,35 @@ function fieldSelector(publicAPI, model) {
     d3.select(model.innerDiv)
       .select('th.field-selector-mode')
       .on('click', (d) => {
-        model.displayUnselected = !model.displayUnselected;
+        if (!model.displayOnlyUnselected) {
+          model.displayUnselected = !model.displayUnselected;
+        }
         publicAPI.render();
       })
       .select('i')
       // apply class - 'false' should come first to not remove common base class.
+      // model.displayOnlyUnselected disables the icon completely.
       .classed(!model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
-      .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
+      .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, !model.displayOnlyUnselected);
 
 
-    const data = model.displayUnselected ? model.fieldsToRender : model.fieldsToRender.filter(xx => xx.active);
+    const data = model.displayUnselected && !model.displayOnlyUnselected ? model.fieldsToRender :
+      model.fieldsToRender.filter(xx => (model.displayOnlyUnselected ? !xx.active : xx.active));
     const totalNum = model.fieldsToRender.length;
 
+    let text = model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`;
+    if (model.displayOnlyUnselected) text = `Unselected (${data.length} / ${totalNum} total)`;
     // Update header label
     d3.select(model.innerDiv)
       .select('th.field-selector-label')
       .style('text-align', 'left')
       .select('div.field-selector-label')
         .classed(style.fieldSelectorHead, true)
-        .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
+        .text(text)
         .on('click', (d) => {
-          model.displayUnselected = !model.displayUnselected;
+          if (!model.displayOnlyUnselected) {
+            model.displayUnselected = !model.displayUnselected;
+          }
           publicAPI.render();
         });
     d3.select(model.innerDiv)
@@ -241,6 +263,7 @@ function fieldSelector(publicAPI, model) {
         .classed(field.active ? style.selectedRow : style.unselectedRow, true)
         .on('dblclick', (entry) => {
           model.provider.toggleFieldSelection(entry.name);
+          // if (fieldInfo) fieldInfo.active = !fieldInfo.active;
         });
       if (model.provider.isA('FieldHoverProvider')) {
         fieldContainer
@@ -362,7 +385,7 @@ function fieldSelector(publicAPI, model) {
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
+  model.subscriptions.push(model.provider.onFieldChange(publicAPI.handleFieldChange));
   if (model.fieldShowHistogram) {
     if (model.provider.isA('Histogram1DProvider')) {
       model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
@@ -434,6 +457,7 @@ const DEFAULT_VALUES = {
   sortDirty: true,
   displaySearch: false,
   displayUnselected: true,
+  displayOnlyUnselected: false,
   fieldShowHistogram: true,
   fieldHistWidth: 120,
   fieldHistHeight: 15,

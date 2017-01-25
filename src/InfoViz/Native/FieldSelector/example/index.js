@@ -11,29 +11,15 @@ import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
 import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
 import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
 import SelectionProvider from '../../../../../src/InfoViz/Core/SelectionProvider';
+import Workbench from '../../../../Component/Native/Workbench';
 
 import FieldSelector from '../../../Native/FieldSelector';
 
 import dataModel from '../../HistogramSelector/example/state.json';
 
-const bodyElt = document.querySelector('body');
-// '100vh' is 100% of the current screen height
-const defaultHeight = '100vh';
-
-const firstContainer = document.createElement('div');
-firstContainer.style.position = 'relative';
-firstContainer.style.width = '50%';
-firstContainer.style.height = defaultHeight;
-firstContainer.style.float = 'left';
-bodyElt.appendChild(firstContainer);
-
-const secondContainer = document.createElement('div');
-secondContainer.style.position = 'relative';
-secondContainer.style.width = '50%';
-secondContainer.style.height = defaultHeight;
-secondContainer.style.float = 'left';
-secondContainer.style['font-size'] = '10pt';
-bodyElt.appendChild(secondContainer);
+const container = document.querySelector('.content');
+container.style.height = '100vh';
+container.style.width = '100vw';
 
 const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
   Object.assign(model, initialValues);
@@ -53,11 +39,29 @@ provider.getFieldNames().forEach((name) => {
 provider.assignLegend(['colors', 'shapes']);
 
 // Create field selector
-const fieldSelector = FieldSelector.newInstance({ provider, container: firstContainer });
+const fieldSelector = FieldSelector.newInstance({ provider });
+const fieldSelectorB = FieldSelector.newInstance({ provider, displayOnlyUnselected: true });
+
+const viewports = {
+  FieldSelectorA: {
+    component: fieldSelector,
+    viewport: 0,
+  },
+  FieldSelectorB: {
+    component: fieldSelectorB,
+    viewport: 1,
+  },
+};
+
+const workbench = new Workbench();
+workbench.setComponents(viewports);
+workbench.setLayout('2x1');
+
+workbench.setContainer(container);
 
 // Listen to window resize
 sizeHelper.onSizeChange(() => {
-  fieldSelector.resize();
+  workbench.resize();
 });
 sizeHelper.startListening();
 
