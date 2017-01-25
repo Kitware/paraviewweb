@@ -1,6 +1,6 @@
 # Debounce
 
-This is module expose an helper method used to prevent repetetive calls
+This module exposes a helper method used to prevent repetitive calls
 by debouncing it.
 
 ```js
@@ -15,5 +15,5 @@ var funcB = debounce(invalidateSize, 250);
 
 Returns a function, that, as long as it continues to be invoked, will not
 be triggered. The function will be called after it stops being called for
-N milliseconds. If `immediate` is passed, trigger the function on the
+`wait` milliseconds. If `immediate` is passed, trigger the function on the
 leading edge, instead of the trailing.

@@ -9,7 +9,8 @@ const observableInstance = new Observable();
 const TOPIC = 'window.size.change';
 const domSizes = new WeakMap();
 const sizeProperties = ['scrollWidth', 'scrollHeight', 'clientWidth', 'clientHeight'];
-const windowListener = debounce(invalidateSize, 250);
+let wait = 250;
+let windowListener = debounce(invalidateSize, wait);
 
 let timestamp = 0;
 let listenerAttached = false;
@@ -50,7 +51,11 @@ function isListening() {
   return listenerAttached;
 }
 
-function startListening() {
+function startListening(timeout = 250) {
+  if (timeout !== wait) {
+    wait = timeout;
+    windowListener = debounce(invalidateSize, wait);
+  }
   if (!listenerAttached) {
     window.addEventListener('resize', windowListener);
     listenerAttached = true;
