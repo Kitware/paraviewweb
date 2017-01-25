@@ -411,30 +411,16 @@ function fieldSelector(publicAPI, model) {
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
-  // if (model.provider.isA('FieldHoverProvider')) {
-  //   model.subscriptions.push(
-  //     model.provider.onHoverFieldChange((hover) => {
-  //       let sortOrder = null;
-  //       d3
-  //         .select(model.innerDiv)
-  //         .select('tbody.fields')
-  //         .selectAll('tr')
-  //         .classed(style.highlightedRow, d => d.name in hover.state.highlight);
-  //       if ('subject' in hover.state && hover.state.subject !== null) {
-  //         console.log('Reorder by mutual information to ', hover.state.subject);
-  //         sortOrder = model.fieldsToRender.reduce(
-  //           (varId, entry) => (entry.name === hover.state.subject ? entry.id : varId),
-  //           null);
-  //       } else {
-  //         sortOrder = null;
-  //       }
-  //       if (model.sortByVar !== sortOrder && sortOrder !== null) {
-  //         model.sortByVar = sortOrder;
-  //         model.sortDirty = true;
-  //         publicAPI.render();
-  //       }
-  //     }));
-  // }
+  if (model.provider.isA('FieldHoverProvider')) {
+    model.subscriptions.push(
+      model.provider.onHoverFieldChange((hover) => {
+        d3
+          .select(model.innerDiv)
+          .select('tbody.fields')
+          .selectAll('tr')
+          .classed(style.highlightedRow, d => d.name in hover.state.highlight);
+      }));
+  }
   if (model.provider.isA('FieldInformationProvider')) {
     model.subscriptions.push(
       model.provider.subscribeToFieldInformation(
