@@ -18,3 +18,11 @@
   composes: sortButton;
   border: 3px solid black
 }
+
+.sortContainerText {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  font-size: smaller;
+  font-weight: bolder;
+}

@@ -82,9 +82,11 @@ provider.subscribeToFieldInformation((info) => {
   fieldExplorer.render();
 });
 provider.onHoverFieldChange((hover) => {
-  fieldExplorerProps.subject = hover.state.subject;
-  fieldExplorerProps.disposition = hover.state.disposition;
-  fieldExplorer.render();
+  if (hover.state.subject) {
+    fieldExplorerProps.subject = hover.state.subject;
+    fieldExplorerProps.disposition = hover.state.disposition;
+    fieldExplorer.render();
+  }
 });
 
 const viewports = {

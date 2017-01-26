@@ -21,49 +21,73 @@ function buildSortButtonList() {
   return [
     {
       key: 'decreasingAlphabet',
+      dir: 'down',
+      subjectRequired: false,
       label: 'Sort alphabetical (decreasing)',
       icon: decAlphabetIcon,
     }, {
       key: 'increasingAlphabet',
+      dir: 'up',
+      subjectRequired: false,
       label: 'Sort alphabetical (increasing)',
       icon: incAlphabetIcon,
     }, {
-      key: 'decreasingCorrelation',
-      label: 'Sort correlation (decreasing)',
-      icon: decCorrelationIcon,
-    }, {
-      key: 'increasingCorrelation',
-      label: 'Sort correlation (increasing)',
-      icon: incCorrelationIcon,
-    }, {
-      key: 'decreasingEntropy',
-      label: 'Sort entropy (decreasing)',
-      icon: decEntropyIcon,
-    }, {
-      key: 'increasingEntropy',
-      label: 'Sort entropy (increasing)',
-      icon: incEntropyIcon,
-    }, {
-      key: 'decreasingMutualInfo',
-      label: 'Sort mutual info (decreasing)',
-      icon: decMutualInfoIcon,
-    }, {
-      key: 'increasingMutualInfo',
-      label: 'Sort mutual info (increasing)',
-      icon: incMutualInfoIcon,
-    }, {
       key: 'decreasingStdDev',
+      dir: 'down',
+      subjectRequired: false,
       label: 'Sort std dev (decreasing)',
       icon: decStddevIcon,
     }, {
       key: 'increasingStdDev',
+      dir: 'up',
+      subjectRequired: false,
       label: 'Sort std dev (increasing)',
       icon: incStddevIcon,
+    }, {
+      key: 'decreasingEntropy',
+      dir: 'down',
+      subjectRequired: false,
+      label: 'Sort entropy (decreasing)',
+      icon: decEntropyIcon,
+    }, {
+      key: 'increasingEntropy',
+      dir: 'up',
+      subjectRequired: false,
+      label: 'Sort entropy (increasing)',
+      icon: incEntropyIcon,
+    }, {
+      key: 'decreasingMutualInfo',
+      dir: 'down',
+      subjectRequired: true,
+      label: 'Sort mutual info (decreasing)',
+      icon: decMutualInfoIcon,
+    }, {
+      key: 'increasingMutualInfo',
+      dir: 'up',
+      subjectRequired: true,
+      label: 'Sort mutual info (increasing)',
+      icon: incMutualInfoIcon,
+    }, {
+      key: 'decreasingCorrelation',
+      dir: 'down',
+      subjectRequired: true,
+      label: 'Sort correlation (decreasing)',
+      icon: decCorrelationIcon,
+    }, {
+      key: 'increasingCorrelation',
+      dir: 'up',
+      subjectRequired: true,
+      label: 'Sort correlation (increasing)',
+      icon: incCorrelationIcon,
     },
   ];
 }
 
 function retrieveSortArray(fieldInfo, sortMethod, varIdx) {
+  if (sortMethod === 'decreasingAlphabet' || sortMethod === 'increasingAlphabet') {
+    console.log('alphabetical sort');
+    return null;
+  }
   return fieldInfo.mutualInformation[varIdx];
 }
 
@@ -78,12 +102,14 @@ export default class FieldExplorer extends React.Component {
     this.selectedFields = null;
 
     this.sortButtons = buildSortButtonList();
-    this.sortMethod = 'munk';
+    this.sortSubject = null;
 
     this.sortByVar = null;
 
     this.state = {
-      sortMethod: 'decreasingMutualInfo',
+      sortMethod: 'decreasingAlphabet',
+      sortDir: 'down',
+      subjectRequired: false,
     };
 
     // Autobinding
@@ -122,9 +148,12 @@ export default class FieldExplorer extends React.Component {
     this.selectedFields = null;
   }
 
-  updateSortMethod(sortKey, btnIdx) {
-    console.log(`Sort method updated, method = ${sortKey}, btnIdx = ${btnIdx}`);
-    this.setState({ sortMethod: sortKey });
+  updateSortMethod(btnInfo, btnIdx) {
+    this.setState({
+      sortMethod: btnInfo.key,
+      sortDir: btnInfo.dir,
+      subjectRequired: btnInfo.subjectRequired,
+    });
   }
 
   render() {
@@ -132,20 +161,19 @@ export default class FieldExplorer extends React.Component {
     const buttonBarHeight = 70;
     const hh = buttonBarHeight / 2;
 
-    let sortOrder = null;
-    if (renderProps.subject) {
-      sortOrder = renderProps.fieldInfo.fieldMapping.reduce(
-              (varId, entry) => (entry.name === renderProps.subject ? entry.id : varId),
+    if (renderProps.subject && renderProps.subject !== '') {
+      this.sortSubject = renderProps.subject;
+    }
+
+    if (this.sortSubject) {
+      this.sortByVar = renderProps.fieldInfo.fieldMapping.reduce(
+              (varId, entry) => (entry.name === this.sortSubject ? entry.id : varId),
               null);
     }
-    if (this.sortByVar !== sortOrder && sortOrder !== null) {
-      this.sortByVar = sortOrder;
+
+    if (this.sortByVar !== null || this.state.subjectRequired === false) {
       const sortArray = retrieveSortArray(renderProps.fieldInfo, this.state.sortMethod, this.sortByVar);
-      this.unselectedFields.setSortArray(sortArray);
-    } else if (renderProps.disposition === 'final' && sortOrder === null) {
-      // reset to alphabetical, use 'up' to reverse
-      this.unselectedFields.setSortArray(null, 'down');
-      this.sortByVar = null;
+      this.unselectedFields.setSortArray(sortArray, this.state.sortDir);
     }
 
     return (
@@ -162,6 +190,9 @@ export default class FieldExplorer extends React.Component {
             display: 'flex',
             alignItems: 'flex-end' }}
         >
+          <span className={style.sortContainerText}>
+            {`Sort options (current subject: ${this.sortSubject})`}
+          </span>
           {
             this.sortButtons.map((btnInfo, idx) => (
               <div key={btnInfo.key} title={btnInfo.label} className={style.sortButtonContainer}>
@@ -170,7 +201,7 @@ export default class FieldExplorer extends React.Component {
                   height="32"
                   icon={btnInfo.icon}
                   className={this.state.sortMethod === btnInfo.key ? style.selectedSortButton : style.sortButton}
-                  onClick={() => this.updateSortMethod(btnInfo.key, idx)}
+                  onClick={() => this.updateSortMethod(btnInfo, idx)}
                 />
               </div>
             ))
