@@ -13,7 +13,7 @@
 }
 
 .legendShape {
-  stroke: black;
+  stroke: #bbb;
 }
 
 .emphasizedNode {
@@ -23,11 +23,17 @@
 }
 
 .emphasizedGlyph {
-  stroke-width: 2px;
+  stroke: black;
+  stroke-width: 4px;
 }
 
 .highlightedNode {
   fill: #999;
+}
+
+.highlightedGlyph {
+  stroke: #999;
+  stroke-width: 4px;
 }
 
 .fieldRelationTreeEdge {

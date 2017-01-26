@@ -92,44 +92,42 @@ function fieldRelationEdgeBundle(publicAPI, model) {
 
       // Listen for hover events
       if (model.provider.isA('FieldHoverProvider')) {
+        const hoverWeight = (d, highlight) => {
+          const nodeName = model.nodes[d.id].name;
+          const hv = highlight[nodeName];
+          if (hv && hv.weight !== undefined) {
+            if (hv.weight >= 0) return hv.weight;
+          }
+          return -1;
+        };
         model.subscriptions.push(
           model.provider.onHoverFieldChange((hover) => {
             // console.log(hover);
             function updateDrawOrder(d, i) {
               if (model.nodes[d.id].name in hover.state.highlight) {
                 this.parentNode.appendChild(this);
-                d3.select(this)
-                  .on('click', (dd, idx) => {
-                    if (model.provider.isA('FieldHoverProvider')) {
-                      const fhover = model.provider.getFieldHoverState();
-                      fhover.state.subject = model.nodes[dd.id].name;
-                      fhover.state.highlight[fhover.state.subject] = { weight: 1 };
-                      model.provider.setFieldHoverState(fhover);
-                    } else {
-                      publicAPI.placeNodesByRelationTo(d.id);
-                    }
-                  });
+                // d3.select(this)
+                //   .on('click', (dd, idx) => {
+                //     if (model.provider.isA('FieldHoverProvider')) {
+                //       const fhover = model.provider.getFieldHoverState();
+                //       fhover.state.subject = model.nodes[dd.id].name;
+                //       fhover.state.highlight[fhover.state.subject] = { weight: 1 };
+                //       model.provider.setFieldHoverState(fhover);
+                //     } else {
+                //       publicAPI.placeNodesByRelationTo(d.id);
+                //     }
+                //   });
               }
             }
-            function emphasizeNode(d) {
-              const nodeName = model.nodes[d.id].name;
-              if (nodeName in hover.state.highlight) {
-                const hv = hover.state.highlight[nodeName];
-                // console.log(`${nodeName} ${hv.weight}`);
-                if (typeof hv === 'object' && hv.weight > 0) {
-                  d3.select(this).select('svg').classed(style.emphasizedGlyph, true);
-                  return true;
-                }
-              }
-              d3.select(this).select('svg').classed(style.emphasizedGlyph, false);
-              return false;
-            }
-            model.nodeGroup
-              .selectAll('.node')
-              .classed(style.highlightedNode, d => (model.nodes[d.id].name in hover.state.highlight))
-              .classed(style.emphasizedNode, emphasizeNode)
-              .each(updateDrawOrder);
-            if ('subject' in hover.state && hover.state.subject !== null) {
+            const grp = model.nodeGroup.selectAll('.node');
+            grp.select('circle')
+              .classed(style.highlightedNode, d => (hoverWeight(d, hover.state.highlight) === 0))
+              .classed(style.emphasizedNode, d => (hoverWeight(d, hover.state.highlight) > 0));
+            grp.select('svg')
+              .classed(style.highlightedGlyph, d => (hoverWeight(d, hover.state.highlight) === 0))
+              .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0));
+            grp.each(updateDrawOrder);
+            if (hover.state.subject) {
               const subjectId = model.nodes.reduce((result, entry) =>
                 (entry.name === hover.state.subject ? entry.id : result),
                 -1);

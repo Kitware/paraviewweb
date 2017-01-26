@@ -1,4 +1,5 @@
 import d3 from 'd3';
+// eslint-disable-next-line
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
 
 import   CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';

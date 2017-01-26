@@ -2,8 +2,8 @@
 import d3 from 'd3';
 import { forceSimulation, forceManyBody, forceLink, forceX, forceY } from 'd3-force';
 
+// eslint-disable-next-line
 import style from 'PVWStyle/InfoVizNative/HyperbolicEdgeBundles.mcss';
-import htmlContent from './body.html';
 // import FieldInformationProvider from '../../../InfoViz/Core/FieldInformationProvider';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 import {
@@ -35,6 +35,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     const smaller = rect.width < rect.height ? rect.width : rect.height;
     const tx = rect.width / smaller;
     const ty = rect.height / smaller;
+    model.scale = smaller / 2.0;
     d3.select(model.container).select('svg')
       .attr('width', rect.width)
       .attr('height', rect.height);
@@ -46,28 +47,85 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     //       the diagram's sense of proportion.
   };
 
+  const linkToControlPts = (interpFocus, deltaT) => {
+    // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
+    // We must convert it to a path of control points starting with 'from' and going
+    // up parents until the deepest common parent is reached, then descend to 'to'.
+    // const upwards = [];
+    // const dnwards = [];
+    // for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
+    //   upwards.push(upNode);
+    // }
+    // for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
+    //   dnwards.push(dnNode);
+    // }
+    // dnwards.reverse(); // places tree root at index 0
+    // const trim = dnwards.reduce(
+    //   (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
+    //   -1);
+    // const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+    if (interpFocus && deltaT) {
+      // animating, so our normal attr function needs to return a function of time, 0 -> 1
+      return (dd, i) => (
+        (t) => {
+          // dd.from and dd.to don't actually change, so they don't get interpolated.
+          const coords = hyperbolicPlanePointsToPoincareDisk(
+          [dd.from, dd.to].map(coordsOf), interpFocus(t), model.diskScale);
+
+          const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
+          return path;
+        }
+      );
+    }
+    return (dd, i) => {
+      const coords = hyperbolicPlanePointsToPoincareDisk(
+      [dd.from, dd.to].map(coordsOf), model.focus, model.diskScale);
+
+      const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
+      return path;
+    };
+  };
+  const drawLinksToNode = (node, grp, deltaT, interpFocus) => {
+    const topNodeLinks = model.linkData[node.id].reduce(
+      (result, linkWeight, otherNodeId) =>
+        (linkWeight > model.linkThreshold ? result.concat(
+          [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
+      []
+    );
+    const linkData = grp.selectAll(`.${style.bundleLink}`).data(topNodeLinks);
+    linkData.exit().remove();
+    linkData.enter().append('path')
+      .classed(style.bundleLink, true);
+    if (deltaT > 0) {
+      linkData.transition().duration(deltaT)
+        .attrTween('d', linkToControlPts(interpFocus, deltaT));
+    } else {
+      linkData
+        .attr('d', linkToControlPts());
+    }
+  };
+
   publicAPI.setContainer = (el) => {
     if (model.container) {
       while (model.container.firstChild) {
         model.container.removeChild(model.container.firstChild);
-        delete model.unselectedBundleGroup;
-        delete model.treeEdgeGroup;
-        delete model.selectedBundleGroup;
-        delete model.nodeGroup;
-        delete model.transformGroup;
-        // TODO: When el is null/undefined and API is provider, unsubscribe.
       }
+      delete model.unselectedBundleGroup;
+      delete model.treeEdgeGroup;
+      delete model.selectedBundleGroup;
+      delete model.nodeGroup;
+      delete model.transformGroup;
+      // TODO: When el is null/undefined and API is provider, unsubscribe. Maybe move subscriptions to happen once?
     }
 
     model.container = el;
 
     if (model.container) {
-      // Create placeholder
-      model.container.innerHTML = htmlContent;
-
+      // Create top-level divs
+      const containerDiv = d3.select(model.container).append('div'); // .classed('hyperbolic-geom-container', true);
+      // containerDiv.append('div').classed('hyperbolic-controls', true);
+      const viewdiv = containerDiv.append('div').classed(style.hyperbolicGeomContainer, true);
       // Apply style and create SVG for rendering
-      const viewdiv = d3.select(model.container).select('.hyperbolic-geom-viewport');
-      viewdiv.classed(style.hyperbolicGeomContainer, true);
       const svg = viewdiv.append('svg').classed('hyperbolic-geom-svg', true);
       model.transformGroup = svg.append('g').classed('disk-transform', true);
       model.transformGroup.append('circle')
@@ -109,7 +167,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         model.fieldInformationSubscription =
           model.provider.subscribeToFieldInformation(
             (data) => {
-              if (data && 'fieldMapping' in data && 'mutualInformation' in data) {
+              if (data && data.fieldMapping && data.mutualInformation) {
                 // We make a copy of the fieldMapping here because we modify it
                 // in a way that prevents serialization (object references to children),
                 // and the provider uses serialization to track differences. Grrr.
@@ -122,42 +180,13 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
       // Listen for hover events
       if (model.provider.isA('FieldHoverProvider')) {
-        const linkToControlPts = (dd, i) => {
-          // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
-          // We must convert it to a path of control points starting with 'from' and going
-          // up parents until the deepest common parent is reached, then descend to 'to'.
-          // const upwards = [];
-          // const dnwards = [];
-          // for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
-          //   upwards.push(upNode);
-          // }
-          // for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
-          //   dnwards.push(dnNode);
-          // }
-          // dnwards.reverse(); // places tree root at index 0
-          // const trim = dnwards.reduce(
-          //   (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
-          //   -1);
-          // const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
-          const coords = hyperbolicPlanePointsToPoincareDisk(
-          [dd.from, dd.to].map(coordsOf), model.focus, model.diskScale);
-
-          const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
-          return path;
-        };
-        const drawLinksToNode = (node, grp) => {
-          const topNodeLinks = model.linkData[node.id].reduce(
-            (result, linkWeight, otherNodeId) =>
-              (linkWeight > model.linkThreshold ? result.concat(
-                [{ from: model.nodes[node.id], to: model.nodes[otherNodeId] }]) : result),
-            []
-          );
-          const linkData = grp.selectAll(`.${style.bundleLink}`).data(topNodeLinks);
-          linkData.exit().remove();
-          linkData.enter().append('path')
-            .classed(style.bundleLink, true);
-          linkData
-            .attr('d', linkToControlPts);
+        const hoverWeight = (d, highlight) => {
+          const nodeName = model.nodes[d.id].name;
+          const hv = highlight[nodeName];
+          if (hv && hv.weight !== undefined) {
+            if (hv.weight >= 0) return hv.weight;
+          }
+          return -1;
         };
         model.subscriptions.push(
           model.provider.onHoverFieldChange((hover) => {
@@ -165,69 +194,67 @@ function hyperbolicEdgeBundle(publicAPI, model) {
             function updateDrawOrder(d, i) {
               if (model.nodes[d.id].name in hover.state.highlight) {
                 this.parentNode.appendChild(this);
-                d3.select(this)
-                  .on('click', (dd, idx) => {
-                    if (model.provider.isA('FieldHoverProvider')) {
-                      const fhover = model.provider.getFieldHoverState();
-                      fhover.state.subject = model.nodes[dd.id].name;
-                      fhover.state.highlight[fhover.state.subject] = { weight: 1 };
-                      model.provider.setFieldHoverState(fhover);
-                    } else {
-                      model.prevFocus = model.focus;
-                      model.focus = coordsOf(model.nodes[i]);
-                      publicAPI.focusChanged();
-                    }
-                  });
               }
             }
             let sawEmphasizedNode = false;
-            model.nodeGroup
-              .selectAll('.node')
-              .classed(style.highlightedNode, d => (model.nodes[d.id].name in hover.state.highlight))
+            const grp = model.nodeGroup
+              .selectAll('.node');
+            grp.select('circle')
+              .classed(style.highlightedNode, d => (hoverWeight(d, hover.state.highlight) === 0))
               .classed(style.emphasizedNode, (d) => {
-                const thisNode = model.nodes[d.id];
-                const nodeName = thisNode.name;
-                if (nodeName in hover.state.highlight) {
-                  const hv = hover.state.highlight[nodeName];
-                  if (typeof hv === 'object' && hv.weight > 0) {
-                    // draw links in top 10%
-                    drawLinksToNode(thisNode, model.unselectedBundleGroup);
-                    sawEmphasizedNode = true;
-                    return true;
-                  }
-                  // return (typeof hv === 'object' && hv.weight > 0);
+                if (hoverWeight(d, hover.state.highlight) > 0) {
+                  // draw links in top 10%
+                  drawLinksToNode(model.nodes[d.id], model.unselectedBundleGroup);
+                  sawEmphasizedNode = true;
+                  return true;
                 }
                 return false;
-              })
-              .each(updateDrawOrder);
+              });
+            grp.select('svg')
+              .classed(style.highlightedGlyph, d => (hoverWeight(d, hover.state.highlight) === 0))
+              .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0));
+
+            grp.each(updateDrawOrder);
             if (!sawEmphasizedNode) {
               model.unselectedBundleGroup.selectAll(`.${style.bundleLink}`).remove();
             }
             if (hover.state.subject) {
-              model.prevFocus = model.focus;
-              model.focus = model.nodes.reduce((result, entry) => (
-                entry.name === hover.state.subject ? coordsOf(entry) : result),
-                model.focus);
-              publicAPI.focusChanged();
+              const focusNode = model.nodes.reduce((result, entry) => (
+                entry.name === hover.state.subject ? entry : result),
+                model.focusNode);
+              publicAPI.focusChanged(focusNode);
+            } else if (!model.focusNode) {
+              model.selectedBundleGroup.selectAll(`.${style.bundleLink}`).remove();
             }
           }));
       }
     }
   };
 
-  publicAPI.coordsChanged = (deltaT) => {
+  publicAPI.coordsChanged = (deltaT, newFocusNode) => {
+    if (newFocusNode) {
+      // hover node links turn into focus node links, so draw focus at the old position
+      if (model.focusNode && deltaT > 0) {
+        drawLinksToNode(model.focusNode, model.selectedBundleGroup);
+      }
+      model.focusNode = newFocusNode;
+      model.prevFocus = model.focus;
+      model.focus = coordsOf(model.focusNode);
+    }
+
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes.map(coordsOf), model.focus, model.diskScale);
     const nodes = model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
     if (deltaT > 0) {
       nodes.transition().duration(deltaT)
-        .attr('cx', d => d.x[0])
-        .attr('cy', d => d.x[1]);
-      const interpFocus = ('prevFocus' in model ?
+        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]})`);
+        // .attr('cx', d => d.x[0])
+        // .attr('cy', d => d.x[1]);
+      const interpFocus = (model.prevFocus ?
         d3.interpolate(model.prevFocus, model.focus) :
         () => model.focus);
       const updateArcs = (dd) => {
-        if ('previous' in dd) {
+        if (dd.previous) {
           const interpP0 = d3.interpolate(dd.previous.p0, dd.p0);
           const interpP1 = d3.interpolate(dd.previous.p1, dd.p1);
           return t => hyperbolicPlaneGeodesicOnPoincareDisk(
@@ -239,21 +266,44 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
         .transition().duration(deltaT)
         .attrTween('d', updateArcs);
+      if (model.focusNode) {
+        drawLinksToNode(model.focusNode, model.selectedBundleGroup, deltaT, interpFocus);
+      }
     } else {
       nodes
-        .attr('cx', d => d.x[0])
-        .attr('cy', d => d.x[1]);
+        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]})`);
+        // .attr('cx', d => d.x[0])
+        // .attr('cy', d => d.x[1]);
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
         .attr('d', pp => hyperbolicPlaneGeodesicOnPoincareDisk(
           [pp.p0.x, pp.p0.y], [pp.p1.x, pp.p1.y], model.focus, model.diskScale));
+      if (model.focusNode) {
+        drawLinksToNode(model.focusNode, model.selectedBundleGroup);
+      }
     }
     // cleanup
     model.unselectedBundleGroup.selectAll(`.${style.bundleLink}`).remove();
   };
 
-  publicAPI.focusChanged = () => {
-    publicAPI.coordsChanged(model.transitionTime);
+  publicAPI.focusChanged = (node) => {
+    publicAPI.coordsChanged(model.transitionTime, node);
   };
+
+  function ensureLegendForNode(d, i) {
+    const self = d3.select(this);
+    if (self.select(`svg.${style.legendShape}`).empty()) {
+      const { color, shape } = model.provider.getLegend(model.nodes[d.id].name);
+      self.append('svg')
+        .classed(style.legendShape, true)
+        .attr('width', model.legendSize / model.scale)
+        .attr('height', model.legendSize / model.scale)
+        .attr('x', -1 * model.legendSize / model.scale / 2.0)
+        .attr('y', -1 * model.legendSize / model.scale / 2.0)
+        .attr('fill', color)
+        .append('use')
+        .attr('xlink:href', shape);
+    }
+  }
 
   publicAPI.spanningTreeUpdated = () => {
     // Remember old coordinates in "previous" before computing new ones:
@@ -269,10 +319,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     model.diskCoords = hyperbolicPlanePointsToPoincareDisk(
       model.nodes.map(coordsOf), model.focus, model.diskScale);
     const ngdata = model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
-    ngdata.enter().append('circle')
+    const grp = ngdata.enter().append('g')
       .classed('node', true)
-      .classed(style.hyperbolicNode, true)
-      .attr('r', '0.02px')
       .on('click', (d, i) => {
         if (model.provider.isA('FieldHoverProvider')) {
           const hover = model.provider.getFieldHoverState();
@@ -281,11 +329,16 @@ function hyperbolicEdgeBundle(publicAPI, model) {
           hover.state.highlight[hover.state.subject] = { weight: 1 };
           model.provider.setFieldHoverState(hover);
         } else {
-          model.prevFocus = model.focus;
-          model.focus = coordsOf(model.nodes[i]);
-          publicAPI.focusChanged();
+          publicAPI.focusChanged(model.nodes[i]);
         }
       });
+    grp.append('circle')
+      .classed(style.hyperbolicNode, true)
+      .attr('r', '0.02px');
+    if (model.provider.isA('LegendProvider')) {
+      // FIXME: This will not change the legend glyph for any pre-existing nodes!
+      grp.each(ensureLegendForNode);
+    }
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
       ngdata
@@ -424,6 +477,7 @@ const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
   transitionTime: 500,
+  legendSize: 16,
 };
 
 // ----------------------------------------------------------------------------

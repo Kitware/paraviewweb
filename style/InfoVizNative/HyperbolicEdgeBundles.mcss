@@ -12,14 +12,28 @@
   fill: #bbb;
 }
 
+.legendShape {
+  stroke: #bbb;
+}
+
 .emphasizedNode {
-  fill: black !important;
-  stroke: black !important;
-  stroke-width: 0.007 !important;
+  fill: black;
+  stroke: black;
+  stroke-width: 0.007;
+}
+
+.emphasizedGlyph {
+  stroke: black;
+  stroke-width: 4px;
 }
 
 .highlightedNode {
   fill: #999;
+}
+
+.highlightedGlyph {
+  stroke: #999;
+  stroke-width: 4px;
 }
 
 .hyperbolicTreeEdge {
