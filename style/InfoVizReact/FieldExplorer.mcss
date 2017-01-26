@@ -9,6 +9,12 @@
 
 .sortButton {
   cursor: pointer;
-  border: 1px solid black;
+  border: 1px solid grey;
   border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.selectedSortButton {
+  composes: sortButton;
+  border: 3px solid black
 }

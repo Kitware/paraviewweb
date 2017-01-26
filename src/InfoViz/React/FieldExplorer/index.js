@@ -82,14 +82,12 @@ export default class FieldExplorer extends React.Component {
 
     this.sortByVar = null;
 
-    // Autobinding
-    this.updateSortMethod = this.updateSortMethod.bind(this);
-  }
-
-  getInitialState() {
-    return {
+    this.state = {
       sortMethod: 'decreasingMutualInfo',
     };
+
+    // Autobinding
+    this.updateSortMethod = this.updateSortMethod.bind(this);
   }
 
   // One-time initialization.
@@ -131,6 +129,8 @@ export default class FieldExplorer extends React.Component {
 
   render() {
     const renderProps = this.props.getRenderProps();
+    const buttonBarHeight = 70;
+    const hh = buttonBarHeight / 2;
 
     let sortOrder = null;
     if (renderProps.subject) {
@@ -150,10 +150,18 @@ export default class FieldExplorer extends React.Component {
 
     return (
       <div className={style.container}>
-        <div style={{ overflow: 'auto', position: 'absolute', top: 0, width: '100%', height: 'calc(50% - 30px)' }}>
+        <div style={{ overflow: 'auto', position: 'absolute', top: 0, width: '100%', height: `calc(50% - ${hh}px)` }}>
           <ComponentToReact className={style.fullSize} component={this.selectedFields} />
         </div>
-        <div style={{ position: 'absolute', top: 'calc(50% - 30px)', height: 30, width: '100%', display: 'flex' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: `calc(50% - ${hh}px)`,
+            height: buttonBarHeight,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-end' }}
+        >
           {
             this.sortButtons.map((btnInfo, idx) => (
               <div key={btnInfo.key} title={btnInfo.label} className={style.sortButtonContainer}>
@@ -161,14 +169,14 @@ export default class FieldExplorer extends React.Component {
                   width="32"
                   height="32"
                   icon={btnInfo.icon}
-                  className={style.sortButton}
+                  className={this.state.sortMethod === btnInfo.key ? style.selectedSortButton : style.sortButton}
                   onClick={() => this.updateSortMethod(btnInfo.key, idx)}
                 />
               </div>
             ))
           }
         </div>
-        <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: 'calc(50% - 30px)' }}>
+        <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: `calc(50% - ${hh}px)` }}>
           <ComponentToReact className={style.fullSize} component={this.unselectedFields} />
         </div>
       </div>);
