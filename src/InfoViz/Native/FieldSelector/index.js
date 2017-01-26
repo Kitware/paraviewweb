@@ -71,11 +71,9 @@ function fieldSelector(publicAPI, model) {
   };
 
   // TODO idx/model.sortByVar is probably not needed anymore, but still used to gate sorting.
-  publicAPI.setSortArray = (idx, arr, direction) => {
-    model.sortByVar = idx;
+  publicAPI.setSortArray = (arr, direction) => {
     model.sortArray = arr;
     model.sortMult = (direction === 'up' ? -1 : 1);
-    model.sortDirty = true;
     publicAPI.render();
   };
 
@@ -211,18 +209,17 @@ function fieldSelector(publicAPI, model) {
     header.selectAll(`.${style.jsHistMax}`)
       .style('display', hideField.minMax ? 'none' : null);
 
-    if (model.sortDirty) {
-      console.log('Sort by var ', model.sortByVar, model.sortMult === 1 ? 'normal' : 'reversed');
-      if (model.sortByVar === null || !model.sortArray) {
-        data.sort((a, b) =>
-          (model.sortMult * (a.name < b.name ? -1 :
-            (a.name > b.name) ? 1 : 0)));
-      } else {
-        data.sort((a, b) =>
-          (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id])));
-      }
-      model.sortDirty = false;
+    // Sorting
+    // console.log('Sort ', model.sortMult === 1 ? 'normal' : 'reversed');
+    if (!model.sortArray) {
+      data.sort((a, b) =>
+        (model.sortMult * (a.name < b.name ? -1 :
+          (a.name > b.name) ? 1 : 0)));
+    } else {
+      data.sort((a, b) =>
+        (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id])));
     }
+
     // Handle variables
     const variablesContainer = d3
       .select(model.innerDiv)
@@ -411,6 +408,7 @@ function fieldSelector(publicAPI, model) {
   if (model.provider.isA('HistogramBinHoverProvider')) {
     model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
   }
+
   if (model.provider.isA('FieldHoverProvider')) {
     model.subscriptions.push(
       model.provider.onHoverFieldChange((hover) => {
@@ -421,6 +419,7 @@ function fieldSelector(publicAPI, model) {
           .classed(style.highlightedRow, d => d.name in hover.state.highlight);
       }));
   }
+
   if (model.provider.isA('FieldInformationProvider')) {
     model.subscriptions.push(
       model.provider.subscribeToFieldInformation(
@@ -440,7 +439,6 @@ const DEFAULT_VALUES = {
   provider: null,
   sortByVar: null,
   sortMult: 1,
-  sortDirty: true,
   displaySearch: false,
   displayUnselected: true,
   displayOnlyUnselected: false,

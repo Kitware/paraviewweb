@@ -72,10 +72,9 @@ const fieldExplorerProps = {
   disposition: null,
   subject: null,
   fieldInfo: null,
-  provider,
 };
 
-const fieldExplorer = new ReactAdapter(FieldExplorer, fieldExplorerProps);
+const fieldExplorer = new ReactAdapter(FieldExplorer, { provider, getRenderProps: () => fieldExplorerProps });
 
 // fieldSelector can be sorted using any numeric array
 provider.subscribeToFieldInformation((info) => {

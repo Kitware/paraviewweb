@@ -1,11 +1,71 @@
+import                 React from 'react';
+
+import      ComponentToReact from '../../../Component/React/ComponentToReact';
+import         SvgIconWidget from '../../../React/Widgets/SvgIconWidget';
+import         FieldSelector from '../../Native/FieldSelector';
+import                 style from '../../../../style/InfoVizReact/FieldExplorer.mcss';
+
+import       decAlphabetIcon from './svg/alphabet-down.svg';
+import       incAlphabetIcon from './svg/alphabet-up.svg';
+import    decCorrelationIcon from './svg/correlation-down.svg';
+import    incCorrelationIcon from './svg/correlation-up.svg';
+import        decEntropyIcon from './svg/entropy-down.svg';
+import        incEntropyIcon from './svg/entropy-up.svg';
+import     decMutualInfoIcon from './svg/mutualinfo-down.svg';
+import     incMutualInfoIcon from './svg/mutualinfo-up.svg';
+import         decStddevIcon from './svg/stddev-down.svg';
+import         incStddevIcon from './svg/stddev-up.svg';
 
 
-import React from 'react';
+function buildSortButtonList() {
+  return [
+    {
+      key: 'decreasingAlphabet',
+      label: 'Sort alphabetical (decreasing)',
+      icon: decAlphabetIcon,
+    }, {
+      key: 'increasingAlphabet',
+      label: 'Sort alphabetical (increasing)',
+      icon: incAlphabetIcon,
+    }, {
+      key: 'decreasingCorrelation',
+      label: 'Sort correlation (decreasing)',
+      icon: decCorrelationIcon,
+    }, {
+      key: 'increasingCorrelation',
+      label: 'Sort correlation (increasing)',
+      icon: incCorrelationIcon,
+    }, {
+      key: 'decreasingEntropy',
+      label: 'Sort entropy (decreasing)',
+      icon: decEntropyIcon,
+    }, {
+      key: 'increasingEntropy',
+      label: 'Sort entropy (increasing)',
+      icon: incEntropyIcon,
+    }, {
+      key: 'decreasingMutualInfo',
+      label: 'Sort mutual info (decreasing)',
+      icon: decMutualInfoIcon,
+    }, {
+      key: 'increasingMutualInfo',
+      label: 'Sort mutual info (increasing)',
+      icon: incMutualInfoIcon,
+    }, {
+      key: 'decreasingStdDev',
+      label: 'Sort std dev (decreasing)',
+      icon: decStddevIcon,
+    }, {
+      key: 'increasingStdDev',
+      label: 'Sort std dev (increasing)',
+      icon: incStddevIcon,
+    },
+  ];
+}
 
-import   ComponentToReact from '../../../Component/React/ComponentToReact';
-import        FieldSearch from '../FieldSearch';
-import      FieldSelector from '../../Native/FieldSelector';
-import              style from '../../../../style/InfoVizReact/FieldExplorer.mcss';
+function retrieveSortArray(fieldInfo, sortMethod, varIdx) {
+  return fieldInfo.mutualInformation[varIdx];
+}
 
 
 export default class FieldExplorer extends React.Component {
@@ -17,10 +77,19 @@ export default class FieldExplorer extends React.Component {
     this.unselectedFields = null;
     this.selectedFields = null;
 
+    this.sortButtons = buildSortButtonList();
+    this.sortMethod = 'munk';
+
     this.sortByVar = null;
 
     // Autobinding
-    this.fieldSearchUpdated = this.fieldSearchUpdated.bind(this);
+    this.updateSortMethod = this.updateSortMethod.bind(this);
+  }
+
+  getInitialState() {
+    return {
+      sortMethod: 'decreasingMutualInfo',
+    };
   }
 
   // One-time initialization.
@@ -29,16 +98,14 @@ export default class FieldExplorer extends React.Component {
       provider: this.props.provider,
       displaySearch: true,
       fieldShowHistogram: true,
-      // showOnlyUnselected: true,
+      displayOnlyUnselected: true,
     });
     this.selectedFields = FieldSelector.newInstance({
       provider: this.props.provider,
       displaySearch: false,
       fieldShowHistogram: true,
-      // showOnlySelected: true,
+      displayUnselected: false,
     });
-
-    // this.subscriptions.push();
   }
 
   componentDidMount() {
@@ -50,11 +117,6 @@ export default class FieldExplorer extends React.Component {
   }
 
   componentWillUnmount() {
-    // while (this.subscriptions && this.subscriptions.length) {
-    //   this.subscriptions.pop().unsubscribe();
-    // }
-    // this.subscriptions = null;
-
     this.unselectedFields.destroy();
     this.unselectedFields = null;
 
@@ -62,30 +124,27 @@ export default class FieldExplorer extends React.Component {
     this.selectedFields = null;
   }
 
-  fieldSearchUpdated(newVal) {
-    this.selectedFields.setFieldsToRender();
-    this.selectedFields.render();
-
-    this.unselectedFields.setFieldsToRender();
-    this.unselectedFields.render();
+  updateSortMethod(sortKey, btnIdx) {
+    console.log(`Sort method updated, method = ${sortKey}, btnIdx = ${btnIdx}`);
+    this.setState({ sortMethod: sortKey });
   }
 
   render() {
-    console.log(`FieldExplorer.render() => subject; ${this.props.subject}, disposition: ${this.props.disposition}`);
+    const renderProps = this.props.getRenderProps();
 
     let sortOrder = null;
-    if (this.props.subject) {
-      console.log('Reorder by mutual information to ', this.props.subject);
-      sortOrder = this.props.fieldInfo.fieldMapping.reduce(
-              (varId, entry) => (entry.name === this.props.subject ? entry.id : varId),
+    if (renderProps.subject) {
+      sortOrder = renderProps.fieldInfo.fieldMapping.reduce(
+              (varId, entry) => (entry.name === renderProps.subject ? entry.id : varId),
               null);
     }
     if (this.sortByVar !== sortOrder && sortOrder !== null) {
       this.sortByVar = sortOrder;
-      this.unselectedFields.setSortArray(this.sortByVar, this.props.fieldInfo.mutualInformation[this.sortByVar]);
-    } else if (this.props.disposition === 'final' && sortOrder === null) {
+      const sortArray = retrieveSortArray(renderProps.fieldInfo, this.state.sortMethod, this.sortByVar);
+      this.unselectedFields.setSortArray(sortArray);
+    } else if (renderProps.disposition === 'final' && sortOrder === null) {
       // reset to alphabetical, use 'up' to reverse
-      this.unselectedFields.setSortArray(null, null, 'down');
+      this.unselectedFields.setSortArray(null, 'down');
       this.sortByVar = null;
     }
 
@@ -94,8 +153,20 @@ export default class FieldExplorer extends React.Component {
         <div style={{ overflow: 'auto', position: 'absolute', top: 0, width: '100%', height: 'calc(50% - 30px)' }}>
           <ComponentToReact className={style.fullSize} component={this.selectedFields} />
         </div>
-        <div style={{ position: 'absolute', top: 'calc(50% - 30px)', height: 30, width: '100%' }}>
-          <FieldSearch provider={this.props.provider} onChosenOptionFinalized={this.fieldSearchUpdated} />
+        <div style={{ position: 'absolute', top: 'calc(50% - 30px)', height: 30, width: '100%', display: 'flex' }}>
+          {
+            this.sortButtons.map((btnInfo, idx) => (
+              <div key={btnInfo.key} title={btnInfo.label} className={style.sortButtonContainer}>
+                <SvgIconWidget
+                  width="32"
+                  height="32"
+                  icon={btnInfo.icon}
+                  className={style.sortButton}
+                  onClick={() => this.updateSortMethod(btnInfo.key, idx)}
+                />
+              </div>
+            ))
+          }
         </div>
         <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: 'calc(50% - 30px)' }}>
           <ComponentToReact className={style.fullSize} component={this.unselectedFields} />
@@ -106,17 +177,9 @@ export default class FieldExplorer extends React.Component {
 
 FieldExplorer.propTypes = {
   provider: React.PropTypes.object,
-  sortDirection: React.PropTypes.string,
-  subject: React.PropTypes.string,
-  disposition: React.PropTypes.string,
-  fieldInfo: React.PropTypes.object,
-
+  getRenderProps: React.PropTypes.func,
 };
 
 FieldExplorer.defaultProps = {
   provider: null,
-  sortDirection: 'down',
-  subject: null,
-  disposition: null,
-  fieldInfo: null,
 };
