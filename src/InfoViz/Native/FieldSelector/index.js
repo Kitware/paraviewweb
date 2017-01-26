@@ -78,8 +78,9 @@ function fieldSelector(publicAPI, model) {
     publicAPI.render();
   };
 
-  publicAPI.setDisplayOnlyUnselected = (onoff) => {
-    model.displayOnlyUnselected = !!onoff;
+  publicAPI.setDisplay = (which) => {
+    if (which === 'selected' || which === 'unselected') model.display = which;
+    else model.display = 'all';
   };
 
   publicAPI.handleFieldChange = (field) => {
@@ -137,24 +138,25 @@ function fieldSelector(publicAPI, model) {
     d3.select(model.innerDiv)
       .select('th.field-selector-mode')
       .on('click', (d) => {
-        if (!model.displayOnlyUnselected) {
-          model.displayUnselected = !model.displayUnselected;
-        }
+        if (model.display === 'all') model.display = 'selected';
+        else if (model.display === 'selected') model.display = 'unselected';
+        else model.display = 'all';
         publicAPI.render();
       })
       .select('i')
       // apply class - 'false' should come first to not remove common base class.
       // model.displayOnlyUnselected disables the icon completely.
-      .classed(!model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
-      .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, !model.displayOnlyUnselected);
+      .classed(!(model.display === 'all') ? style.allFieldsIcon : style.selectedFieldsIcon, false)
+      .classed((model.display === 'all') ? style.allFieldsIcon : style.selectedFieldsIcon, true);
 
 
-    const data = model.displayUnselected && !model.displayOnlyUnselected ? model.fieldsToRender :
-      model.fieldsToRender.filter(xx => (model.displayOnlyUnselected ? !xx.active : xx.active));
+    const selectedBool = (model.display === 'selected');
+    const data = (model.display === 'all') ? model.fieldsToRender :
+      model.fieldsToRender.filter(xx => (selectedBool ? xx.active : !xx.active));
     const totalNum = model.fieldsToRender.length;
 
-    let text = model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`;
-    if (model.displayOnlyUnselected) text = `Unselected (${data.length} / ${totalNum} total)`;
+    let text = (model.display === 'all') ? `All (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`;
+    if (model.display === 'unselected') text = `Unselected (${data.length} / ${totalNum} total)`;
     // Update header label
     d3.select(model.innerDiv)
       .select('th.field-selector-label')
@@ -441,8 +443,7 @@ const DEFAULT_VALUES = {
   sortByVar: null,
   sortMult: 1,
   displaySearch: false,
-  displayUnselected: true,
-  displayOnlyUnselected: false,
+  display: 'all',
   fieldShowHistogram: true,
   fieldHistWidth: 120,
   fieldHistHeight: 15,

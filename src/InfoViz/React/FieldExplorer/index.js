@@ -96,13 +96,13 @@ export default class FieldExplorer extends React.Component {
       provider: this.props.provider,
       displaySearch: true,
       fieldShowHistogram: true,
-      displayOnlyUnselected: true,
+      display: 'unselected',
     });
     this.selectedFields = FieldSelector.newInstance({
       provider: this.props.provider,
       displaySearch: false,
       fieldShowHistogram: true,
-      displayUnselected: false,
+      display: 'selected',
     });
   }
 
