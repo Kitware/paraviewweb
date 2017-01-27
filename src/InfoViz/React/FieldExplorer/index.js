@@ -20,65 +20,80 @@ import         incStddevIcon from './svg/stddev-up.svg';
 function buildSortButtonList() {
   return [
     {
-      key: 'decreasingAlphabet',
-      dir: 'down',
-      subjectRequired: false,
-      label: 'Sort alphabetical (decreasing)',
-      icon: decAlphabetIcon,
+      down: {
+        key: 'decreasingAlphabet',
+        dir: 'down',
+        subjectRequired: false,
+        label: 'Sort alphabetical (decreasing)',
+        icon: decAlphabetIcon,
+      },
+      up: {
+        key: 'increasingAlphabet',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort alphabetical (increasing)',
+        icon: incAlphabetIcon,
+      },
     }, {
-      key: 'increasingAlphabet',
-      dir: 'up',
-      subjectRequired: false,
-      label: 'Sort alphabetical (increasing)',
-      icon: incAlphabetIcon,
+      down: {
+        key: 'decreasingStdDev',
+        dir: 'down',
+        subjectRequired: false,
+        label: 'Sort std dev (decreasing)',
+        icon: decStddevIcon,
+      },
+      up: {
+        key: 'increasingStdDev',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort std dev (increasing)',
+        icon: incStddevIcon,
+      },
     }, {
-      key: 'decreasingStdDev',
-      dir: 'down',
-      subjectRequired: false,
-      label: 'Sort std dev (decreasing)',
-      icon: decStddevIcon,
+      down: {
+        key: 'decreasingEntropy',
+        dir: 'down',
+        subjectRequired: false,
+        label: 'Sort entropy (decreasing)',
+        icon: decEntropyIcon,
+      },
+      up: {
+        key: 'increasingEntropy',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort entropy (increasing)',
+        icon: incEntropyIcon,
+      },
     }, {
-      key: 'increasingStdDev',
-      dir: 'up',
-      subjectRequired: false,
-      label: 'Sort std dev (increasing)',
-      icon: incStddevIcon,
+      down: {
+        key: 'decreasingCorrelation',
+        dir: 'down',
+        subjectRequired: true,
+        label: 'Sort correlation (decreasing)',
+        icon: decCorrelationIcon,
+      },
+      up: {
+        key: 'increasingCorrelation',
+        dir: 'up',
+        subjectRequired: true,
+        label: 'Sort correlation (increasing)',
+        icon: incCorrelationIcon,
+      },
     }, {
-      key: 'decreasingEntropy',
-      dir: 'down',
-      subjectRequired: false,
-      label: 'Sort entropy (decreasing)',
-      icon: decEntropyIcon,
-    }, {
-      key: 'increasingEntropy',
-      dir: 'up',
-      subjectRequired: false,
-      label: 'Sort entropy (increasing)',
-      icon: incEntropyIcon,
-    }, {
-      key: 'decreasingMutualInfo',
-      dir: 'down',
-      subjectRequired: true,
-      label: 'Sort mutual info (decreasing)',
-      icon: decMutualInfoIcon,
-    }, {
-      key: 'increasingMutualInfo',
-      dir: 'up',
-      subjectRequired: true,
-      label: 'Sort mutual info (increasing)',
-      icon: incMutualInfoIcon,
-    }, {
-      key: 'decreasingCorrelation',
-      dir: 'down',
-      subjectRequired: true,
-      label: 'Sort correlation (decreasing)',
-      icon: decCorrelationIcon,
-    }, {
-      key: 'increasingCorrelation',
-      dir: 'up',
-      subjectRequired: true,
-      label: 'Sort correlation (increasing)',
-      icon: incCorrelationIcon,
+      down: {
+        key: 'decreasingMutualInfo',
+        dir: 'down',
+        subjectRequired: true,
+        label: 'Sort mutual info (decreasing)',
+        icon: decMutualInfoIcon,
+      },
+      up: {
+        key: 'increasingMutualInfo',
+        dir: 'up',
+        subjectRequired: true,
+        label: 'Sort mutual info (increasing)',
+        icon: incMutualInfoIcon,
+      },
     },
   ];
 }
@@ -89,6 +104,10 @@ function retrieveSortArray(fieldInfo, sortMethod, varIdx) {
     return null;
   }
   return fieldInfo.mutualInformation[varIdx];
+}
+
+function swap(d) {
+  return d === 'up' ? 'down' : 'up';
 }
 
 
@@ -110,6 +129,7 @@ export default class FieldExplorer extends React.Component {
       sortMethod: 'decreasingAlphabet',
       sortDir: 'down',
       subjectRequired: false,
+      btnDirections: ['down', 'down', 'down', 'down', 'down'],
     };
 
     // Autobinding
@@ -148,17 +168,28 @@ export default class FieldExplorer extends React.Component {
     this.selectedFields = null;
   }
 
-  updateSortMethod(btnInfo, btnIdx) {
-    this.setState({
+  updateSortMethod(btnInfo, btnIdx, alreadySelected) {
+    const nextState = {
       sortMethod: btnInfo.key,
-      sortDir: btnInfo.dir,
       subjectRequired: btnInfo.subjectRequired,
-    });
+      btnDirections: [].concat(this.state.btnDirections),
+      sortDir: btnInfo.dir,
+    };
+
+    if (alreadySelected) {
+      // This sort method is already selected, just swap the direction
+      const dir = swap(nextState.btnDirections[btnIdx]);
+      nextState.btnDirections[btnIdx] = dir;
+      nextState.sortDir = dir;
+      nextState.sortMethod = this.sortButtons[btnIdx][dir].key;
+    }
+
+    this.setState(nextState);
   }
 
   render() {
     const renderProps = this.props.getRenderProps();
-    const buttonBarHeight = 70;
+    const buttonBarHeight = 80;
     const hh = buttonBarHeight / 2;
 
     if (renderProps.subject && renderProps.subject !== '') {
@@ -194,17 +225,21 @@ export default class FieldExplorer extends React.Component {
             {`Sort options (current subject: ${this.sortSubject})`}
           </span>
           {
-            this.sortButtons.map((btnInfo, idx) => (
-              <div key={btnInfo.key} title={btnInfo.label} className={style.sortButtonContainer}>
-                <SvgIconWidget
-                  width="32"
-                  height="32"
-                  icon={btnInfo.icon}
-                  className={this.state.sortMethod === btnInfo.key ? style.selectedSortButton : style.sortButton}
-                  onClick={() => this.updateSortMethod(btnInfo, idx)}
-                />
-              </div>
-            ))
+            this.sortButtons.map((btnInfo, idx) => {
+              const btn = btnInfo[this.state.btnDirections[idx]];
+              const otherBtn = btnInfo[swap(this.state.btnDirections[idx])];
+              const isSelected = this.state.sortMethod === btn.key || this.state.sortMethod === otherBtn.key;
+              return (
+                <div key={btn.key} title={btn.label} className={style.sortButtonContainer}>
+                  <SvgIconWidget
+                    width="60"
+                    height="60"
+                    icon={btn.icon}
+                    className={isSelected ? style.selectedSortButton : style.sortButton}
+                    onClick={() => this.updateSortMethod(btn, idx, isSelected)}
+                  />
+                </div>);
+            })
           }
         </div>
         <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: `calc(50% - ${hh}px)` }}>
