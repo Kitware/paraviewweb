@@ -257,7 +257,7 @@ const DEFAULT_VALUES = {
   focus: -1,
   prevFocus: -1,
   legendSize: 16,
-  transitionTime: 500,
+  transitionTime: 750,
 };
 
 // ----------------------------------------------------------------------------

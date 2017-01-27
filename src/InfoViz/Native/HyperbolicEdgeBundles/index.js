@@ -476,8 +476,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
-  transitionTime: 500,
-  legendSize: 16,
+  transitionTime: 750,
+  legendSize: 12,
 };
 
 // ----------------------------------------------------------------------------

@@ -140,6 +140,7 @@ export default class FieldExplorer extends React.Component {
     this.unselectedFields = FieldSelector.newInstance({
       provider: this.props.provider,
       displaySearch: true,
+      showSelectedFirstToggle: true,
     });
   }
 

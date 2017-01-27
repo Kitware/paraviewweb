@@ -68,6 +68,28 @@ function fieldSelector(publicAPI, model) {
         header.append('th').text('Histogram').classed(style.jsSparkline, true);
         header.append('th').text('Max').classed(style.jsHistMax, true);
       }
+      if (model.showSelectedFirstToggle) {
+        const header = d3.select(model.innerDiv).select('thead').append('tr');
+        const selClick = () => {
+          if (model.display === 'all') {
+            model.displaySelectedFirst = !model.displaySelectedFirst;
+            publicAPI.render();
+          }
+        };
+        header
+          .append('th').classed(style.jsSelectedFirst, true)
+            .append('i').classed(style.allFieldsIcon, true)
+              .on('click', selClick);
+        header.append('th').classed(style.selectedFirstLabel, true)
+          .append('div').classed(style.fieldSelectorHead, true)
+            .text('Selected First')
+            .on('click', selClick);
+        if (model.fieldShowHistogram) header.append('th').attr('colspan', '3');
+      }
+      // allow completely hidden header
+      if (!model.showHeader) {
+        d3.select(model.innerDiv).select('thead').style('display', 'none');
+      }
     }
   };
 
@@ -81,6 +103,12 @@ function fieldSelector(publicAPI, model) {
   publicAPI.setDisplay = (which) => {
     if (which === 'selected' || which === 'unselected') model.display = which;
     else model.display = 'all';
+    publicAPI.render();
+  };
+
+  publicAPI.setDisplaySelectedFirst = (onoff) => {
+    model.displaySelectedFirst = !!onoff;
+    publicAPI.render();
   };
 
   publicAPI.handleFieldChange = (field) => {
@@ -131,21 +159,21 @@ function fieldSelector(publicAPI, model) {
     }
 
     const legendSize = 15;
+    const displayClick = (d) => {
+      if (model.display === 'all') model.display = 'selected';
+      else if (model.display === 'selected') model.display = 'unselected';
+      else model.display = 'all';
+      publicAPI.render();
+    };
 
     // Apply style
     d3.select(model.innerDiv).select('thead').classed(style.thead, true);
     d3.select(model.innerDiv).select('tbody').classed(style.tbody, true);
     d3.select(model.innerDiv)
       .select('th.field-selector-mode')
-      .on('click', (d) => {
-        if (model.display === 'all') model.display = 'selected';
-        else if (model.display === 'selected') model.display = 'unselected';
-        else model.display = 'all';
-        publicAPI.render();
-      })
+      .on('click', displayClick)
       .select('i')
       // apply class - 'false' should come first to not remove common base class.
-      // model.displayOnlyUnselected disables the icon completely.
       .classed(!(model.display === 'all') ? style.allFieldsIcon : style.selectedFieldsIcon, false)
       .classed((model.display === 'all') ? style.allFieldsIcon : style.selectedFieldsIcon, true);
 
@@ -164,17 +192,20 @@ function fieldSelector(publicAPI, model) {
       .select('div.field-selector-label')
         .classed(style.fieldSelectorHead, true)
         .text(text)
-        .on('click', (d) => {
-          if (!model.displayOnlyUnselected) {
-            model.displayUnselected = !model.displayUnselected;
-          }
-          publicAPI.render();
-        });
+        .on('click', displayClick);
     d3.select(model.innerDiv)
       .select('th.field-selector-label')
       .select('div.field-selector-search')
         .style('min-width', model.displaySearch ? '11rem' : '0') // Not sure how else to get necessary width...
         .classed(style.fieldSelectorHead, true);
+    if (model.showSelectedFirstToggle) {
+      d3.select(model.innerDiv).select(`.${style.jsSelectedFirst}`).select('i')
+        .classed(model.displaySelectedFirst ? style.allFieldsIcon : style.selectedFirstIcon, false)
+        .classed(!model.displaySelectedFirst ? style.allFieldsIcon : style.selectedFirstIcon, true)
+        .classed(style.disabled, model.display !== 'all');
+      d3.select(model.innerDiv).selectAll(`.${style.jsSelectedFirst}`)
+        .classed(style.disabled, model.display !== 'all');
+    }
 
     // test for too-long rows
     const hideMore = model.innerDiv.scrollWidth > model.innerDiv.clientWidth;
@@ -221,6 +252,12 @@ function fieldSelector(publicAPI, model) {
     } else {
       data.sort((a, b) =>
         (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id])));
+    }
+
+    // pull selected fields to the top, after sorting, if configured.
+    if (model.displaySelectedFirst && model.display === 'all') {
+      const newData = data.filter(xx => xx.active).concat(data.filter(xx => !xx.active));
+      newData.forEach((d, i) => { data[i] = d; });
     }
 
     // Handle variables
@@ -443,11 +480,14 @@ const DEFAULT_VALUES = {
   sortByVar: null,
   sortMult: 1,
   displaySearch: false,
+  displaySelectedFirst: false,
   display: 'all',
   fieldShowHistogram: true,
   fieldHistWidth: 120,
   fieldHistHeight: 15,
   numberOfBins: 32,
+  showSelectedFirstToggle: false,
+  showHeader: true,
 };
 
 // ----------------------------------------------------------------------------
