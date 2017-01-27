@@ -189,7 +189,7 @@ export default class FieldExplorer extends React.Component {
       this.sortSubject = renderProps.subject;
     }
 
-    if (this.sortSubject) {
+    if (this.sortSubject && renderProps.fieldInfo) {
       this.sortByVar = renderProps.fieldInfo.fieldMapping.reduce(
               (varId, entry) => (entry.name === this.sortSubject ? entry.id : varId),
               null);

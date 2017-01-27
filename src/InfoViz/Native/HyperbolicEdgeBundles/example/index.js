@@ -77,7 +77,7 @@ const fieldTaylor = FieldRelationDiagram.newInstance({ provider, diagramType: 't
 const fieldExplorerProps = {
   sortDirection: 'down',
   disposition: null,
-  subject: null,
+  subject: provider.getFieldNames()[0],
   fieldInfo: null,
 };
 
