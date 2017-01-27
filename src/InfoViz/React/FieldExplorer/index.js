@@ -99,10 +99,18 @@ function buildSortButtonList() {
 }
 
 function retrieveSortArray(fieldInfo, sortMethod, varIdx) {
-  if (sortMethod === 'decreasingAlphabet' || sortMethod === 'increasingAlphabet') {
-    return null;
+  if (sortMethod.indexOf('StdDev') >= 0) {
+    return fieldInfo.taylorR;
+  } else if (sortMethod.indexOf('Entropy') >= 0) {
+    return fieldInfo.entropy;
+  } else if (sortMethod.indexOf('Correlation') >= 0) {
+    return fieldInfo.taylorPearson[varIdx];
+  } else if (sortMethod.indexOf('MutualInfo') >= 0) {
+    return fieldInfo.mutualInformation[varIdx];
   }
-  return fieldInfo.mutualInformation[varIdx];
+
+  // Default is to sort alphabetical
+  return null;
 }
 
 function swap(d) {

@@ -66,7 +66,7 @@ export function extend(publicAPI, model, initialValues = {}) {
           throw 'variation of information present in both state and data. Not handled yet.';
         }
       }
-      ['smiTheta', 'taylorPearson', 'taylorTheta', 'taylorR'].forEach((key) => {
+      ['smiTheta', 'taylorPearson', 'taylorTheta', 'taylorR', 'entropy'].forEach((key) => {
         if (key in data) {
           if (!(key in storage)) {
             storage[key] = data[key];

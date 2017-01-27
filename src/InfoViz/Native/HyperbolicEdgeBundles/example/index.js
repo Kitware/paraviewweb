@@ -52,9 +52,16 @@ dataManager.on(url, (data, envelope) => {
       provider.addLegendEntry(key);
     }
   });
+
+  const entropyArray = [];
+  for (let i = 0; i < minfo.length; i += 1) {
+    entropyArray.push(minfo[i][i]);
+  }
+
   provider.setFieldInformation({
     fieldMapping: vars,
     mutualInformation: minfo,
+    entropy: entropyArray,
     smiTheta: data.data.theta,
     taylorPearson: data.data.taylorPearson,
     taylorTheta: data.data.taylorTheta,
