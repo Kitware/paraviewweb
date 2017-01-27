@@ -297,8 +297,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         .classed(style.legendShape, true)
         .attr('width', model.legendSize / model.scale)
         .attr('height', model.legendSize / model.scale)
-        .attr('x', -1 * model.legendSize / model.scale / 2.0)
-        .attr('y', -1 * model.legendSize / model.scale / 2.0)
+        .attr('x', -0.5 * model.legendSize / model.scale)
+        .attr('y', -0.5 * model.legendSize / model.scale)
         .attr('fill', color)
         .append('use')
         .attr('xlink:href', shape);
@@ -332,12 +332,17 @@ function hyperbolicEdgeBundle(publicAPI, model) {
           publicAPI.focusChanged(model.nodes[i]);
         }
       });
-    grp.append('circle')
-      .classed(style.hyperbolicNode, true)
-      .attr('r', '0.02px');
     if (model.provider.isA('LegendProvider')) {
+      // HACK needed for emphasized node styling side-effects.
+      grp.append('circle')
+        .classed(style.hyperbolicNode, true)
+        .attr('r', '0.002px');
       // FIXME: This will not change the legend glyph for any pre-existing nodes!
       grp.each(ensureLegendForNode);
+    } else {
+      grp.append('circle')
+        .classed(style.hyperbolicNode, true)
+        .attr('r', '0.02px');
     }
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {

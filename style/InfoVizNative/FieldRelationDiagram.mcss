@@ -48,6 +48,24 @@
   stroke-width: 0.005;
 }
 
+.ticks {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 0.005;
+}
+
+.crossHairs {
+  fill: none;
+  stroke: #99b;
+  stroke-width: 0.005;
+}
+
+.focusArc {
+  fill: none;
+  stroke: #9b9;
+  stroke-width: 0.005;
+}
+
 .diskTransform {
   fill: none;
 }

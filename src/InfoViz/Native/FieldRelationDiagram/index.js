@@ -19,6 +19,8 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     const tx = rect.width / smaller;
     const ty = rect.height / smaller;
     model.scale = smaller / 2.0;
+    model.tx = tx;
+    model.ty = (2 * ty) - (padding / smaller);
     d3.select(model.container).select('svg')
       .attr('width', rect.width)
       .attr('height', rect.height);
@@ -53,12 +55,55 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       viewdiv.classed(style.fieldRelationContainer, true);
       const svg = viewdiv.append('svg').classed('field-relation-svg', true);
       model.transformGroup = svg.append('g').classed('disk-transform', true);
+
+      // draw some polar axes grid
+      for (let r = 0.2; r < 0.99; r += 0.2) {
+        model.transformGroup.append('path')
+          .classed(style.ticks, true)
+          .attr('d', `M ${r},0 A ${r},${r} 0 1 0 -${r},0`);
+      }
+      for (let t = Math.PI / 12; t < Math.PI * 0.99; t += Math.PI / 12) {
+        model.transformGroup.append('path')
+          .classed(style.ticks, true)
+          .attr('d', `M 0,0 L ${Math.cos(t)},-${Math.sin(t)}`);
+      }
       model.transformGroup.append('path')
         .classed(style.boundary, true)
         .attr('d', 'M -1,0 L 1,0 A 1,1 0 1 0 -1,0');
+      model.transformGroup.append('path')
+        .classed(style.focusArc, true)
+        .attr('d', 'M 0.5,0 A 0.5,0.5 0 1 0 -0.5,0');
+
       model.unselectedBundleGroup = model.transformGroup.append('g').classed('unselected-bundles', true);
       model.selectedBundleGroup = model.transformGroup.append('g').classed('selected-bundles', true);
       model.nodeGroup = model.transformGroup.append('g').classed('nodes', true);
+
+      // add mouse handlers for targeting lines
+      svg
+        .on('mousemove', (d, i) => {
+          const coord = d3.mouse(svg.node());
+          let line = model.transformGroup.selectAll(`line.${style.crossHairs}`);
+          let path = model.transformGroup.selectAll(`path.${style.crossHairs}`);
+          if (line.empty()) {
+            line = model.transformGroup.append('line').classed(style.crossHairs, true)
+              .attr('x1', 0).attr('y1', 0);
+            path = model.transformGroup.append('path').classed(style.crossHairs, true);
+          }
+          coord[0] = (coord[0] / model.scale) - model.tx;
+          coord[1] = (coord[1] / model.scale) - model.ty;
+          const arcR = Math.sqrt((coord[0] * coord[0]) + (coord[1] * coord[1]));
+          if (arcR <= 1.0) {
+            line
+              .attr('x2', coord[0])
+              .attr('y2', coord[1]);
+            path.attr('d', `M ${arcR},0 A ${arcR},${arcR} 0 1 0 -${arcR},0`);
+          } else {
+            model.transformGroup.selectAll(`.${style.crossHairs}`).remove();
+          }
+        })
+        .on('mouseleave', () => {
+          model.transformGroup.selectAll(`.${style.crossHairs}`).remove();
+        });
 
       publicAPI.resize(); // Apply a transform to the transformGroup based on the size of the SVG.
 
@@ -122,7 +167,14 @@ function fieldRelationEdgeBundle(publicAPI, model) {
             const grp = model.nodeGroup.selectAll('.node');
             grp.select('circle')
               .classed(style.highlightedNode, d => (hoverWeight(d, hover.state.highlight) === 0))
-              .classed(style.emphasizedNode, d => (hoverWeight(d, hover.state.highlight) > 0));
+              .classed(style.emphasizedNode, (d) => {
+                if (hoverWeight(d, hover.state.highlight) > 0) {
+                  // also draw a line from the origin to the emphasized node.
+                  // model.transformGroup
+                  return true;
+                }
+                return false;
+              });
             grp.select('svg')
               .classed(style.highlightedGlyph, d => (hoverWeight(d, hover.state.highlight) === 0))
               .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0));
@@ -154,14 +206,14 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     };
   }
 
-  publicAPI.coordsChanged = (deltaT) => {
+  const coordsChanged = (deltaT, nodeselect) => {
     // console.log(' coords changed ', model);
-    model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
+    // model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
     if (deltaT > 0) {
-      model.nodeGroup.selectAll('.node').transition().duration(deltaT)
+      nodeselect.transition().duration(deltaT)
         .attrTween('transform', fixedRadiusTween);
     } else {
-      model.nodeGroup.selectAll('.node')
+      nodeselect
         .attr('transform', d => fixedRadiusTween(1.0));
     }
   };
@@ -177,8 +229,8 @@ function fieldRelationEdgeBundle(publicAPI, model) {
           .classed(style.legendShape, true)
           .attr('width', model.legendSize / model.scale)
           .attr('height', model.legendSize / model.scale)
-          .attr('x', -1 * model.legendSize / model.scale / 2.0)
-          .attr('y', -1 * model.legendSize / model.scale / 2.0)
+          .attr('x', -0.5 * model.legendSize / model.scale)
+          .attr('y', -0.5 * model.legendSize / model.scale)
           .attr('fill', color)
           .append('use')
           .attr('xlink:href', shape);
@@ -200,22 +252,28 @@ function fieldRelationEdgeBundle(publicAPI, model) {
         });
     if (model.provider.isA('LegendProvider')) {
       // FIXME: This will not change the legend glyph for any pre-existing nodes!
-      model.nodeGroup.selectAll('.node').each(ensureLegendForNode);
+      ngdata.each(ensureLegendForNode);
     }
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
       model.nodeGroup.selectAll('.node')
         .on('mouseenter', (d, i) => {
-          const state = { highlight: {}, subject: null, disposition: 'preliminary' };
+          const state = { highlight: {}, subject: '', disposition: 'preliminary' };
           state.highlight[model.nodes[d.id].name] = { weight: 1 };
           model.provider.setFieldHoverState({ state });
         })
         .on('mouseleave', () => {
-          const state = { highlight: {}, subject: null, disposition: 'preliminary' };
+          const state = { highlight: {}, subject: '', disposition: 'preliminary' };
           model.provider.setFieldHoverState({ state });
         });
     }
-    publicAPI.coordsChanged(model.transitionTime);
+    // draw arc at focus radius
+    const arcR = model.nodes[model.focus].r;
+    model.transformGroup.select(`.${style.focusArc}`)
+      .attr('d', `M ${arcR},0 A ${arcR},${arcR} 0 1 0 -${arcR},0`);
+
+    // move nodes
+    coordsChanged(model.transitionTime, ngdata);
   };
 
   publicAPI.placeNodesByRelationTo = (subject) => {
