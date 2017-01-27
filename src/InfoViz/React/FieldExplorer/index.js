@@ -5,94 +5,94 @@ import         SvgIconWidget from '../../../React/Widgets/SvgIconWidget';
 import         FieldSelector from '../../Native/FieldSelector';
 import                 style from '../../../../style/InfoVizReact/FieldExplorer.mcss';
 
-import       decAlphabetIcon from './svg/alphabet-down.svg';
-import       incAlphabetIcon from './svg/alphabet-up.svg';
-import    decCorrelationIcon from './svg/correlation-down.svg';
-import    incCorrelationIcon from './svg/correlation-up.svg';
-import        decEntropyIcon from './svg/entropy-down.svg';
-import        incEntropyIcon from './svg/entropy-up.svg';
-import     decMutualInfoIcon from './svg/mutualinfo-down.svg';
-import     incMutualInfoIcon from './svg/mutualinfo-up.svg';
-import         decStddevIcon from './svg/stddev-down.svg';
-import         incStddevIcon from './svg/stddev-up.svg';
+import       incAlphabetIcon from './svg/alphabet-down.svg';
+import       decAlphabetIcon from './svg/alphabet-up.svg';
+import    incCorrelationIcon from './svg/correlation-down.svg';
+import    decCorrelationIcon from './svg/correlation-up.svg';
+import        incEntropyIcon from './svg/entropy-down.svg';
+import        decEntropyIcon from './svg/entropy-up.svg';
+import     incMutualInfoIcon from './svg/mutualinfo-down.svg';
+import     decMutualInfoIcon from './svg/mutualinfo-up.svg';
+import         incStddevIcon from './svg/stddev-down.svg';
+import         decStddevIcon from './svg/stddev-up.svg';
 
 
 function buildSortButtonList() {
   return [
     {
       down: {
-        key: 'decreasingAlphabet',
-        dir: 'down',
-        subjectRequired: false,
-        label: 'Sort alphabetical (decreasing)',
-        icon: decAlphabetIcon,
-      },
-      up: {
         key: 'increasingAlphabet',
-        dir: 'up',
+        dir: 'down',
         subjectRequired: false,
         label: 'Sort alphabetical (increasing)',
         icon: incAlphabetIcon,
       },
+      up: {
+        key: 'decreasingAlphabet',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort alphabetical (decreasing)',
+        icon: decAlphabetIcon,
+      },
     }, {
       down: {
-        key: 'decreasingStdDev',
-        dir: 'down',
-        subjectRequired: false,
-        label: 'Sort std dev (decreasing)',
-        icon: decStddevIcon,
-      },
-      up: {
         key: 'increasingStdDev',
-        dir: 'up',
+        dir: 'down',
         subjectRequired: false,
         label: 'Sort std dev (increasing)',
         icon: incStddevIcon,
       },
+      up: {
+        key: 'dedreasingStdDev',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort std dev (decreasing)',
+        icon: decStddevIcon,
+      },
     }, {
       down: {
-        key: 'decreasingEntropy',
-        dir: 'down',
-        subjectRequired: false,
-        label: 'Sort entropy (decreasing)',
-        icon: decEntropyIcon,
-      },
-      up: {
         key: 'increasingEntropy',
-        dir: 'up',
+        dir: 'down',
         subjectRequired: false,
         label: 'Sort entropy (increasing)',
         icon: incEntropyIcon,
       },
+      up: {
+        key: 'decreasingEntropy',
+        dir: 'up',
+        subjectRequired: false,
+        label: 'Sort entropy (decreasing)',
+        icon: decEntropyIcon,
+      },
     }, {
       down: {
-        key: 'decreasingCorrelation',
-        dir: 'down',
-        subjectRequired: true,
-        label: 'Sort correlation (decreasing)',
-        icon: decCorrelationIcon,
-      },
-      up: {
         key: 'increasingCorrelation',
-        dir: 'up',
+        dir: 'down',
         subjectRequired: true,
         label: 'Sort correlation (increasing)',
         icon: incCorrelationIcon,
       },
+      up: {
+        key: 'decreasingCorrelation',
+        dir: 'up',
+        subjectRequired: true,
+        label: 'Sort correlation (decreasing)',
+        icon: decCorrelationIcon,
+      },
     }, {
       down: {
-        key: 'decreasingMutualInfo',
-        dir: 'down',
-        subjectRequired: true,
-        label: 'Sort mutual info (decreasing)',
-        icon: decMutualInfoIcon,
-      },
-      up: {
         key: 'increasingMutualInfo',
-        dir: 'up',
+        dir: 'down',
         subjectRequired: true,
         label: 'Sort mutual info (increasing)',
         icon: incMutualInfoIcon,
+      },
+      up: {
+        key: 'decreasingMutualInfo',
+        dir: 'up',
+        subjectRequired: true,
+        label: 'Sort mutual info (decreasing)',
+        icon: decMutualInfoIcon,
       },
     },
   ];
@@ -100,7 +100,6 @@ function buildSortButtonList() {
 
 function retrieveSortArray(fieldInfo, sortMethod, varIdx) {
   if (sortMethod === 'decreasingAlphabet' || sortMethod === 'increasingAlphabet') {
-    console.log('alphabetical sort');
     return null;
   }
   return fieldInfo.mutualInformation[varIdx];
@@ -126,7 +125,7 @@ export default class FieldExplorer extends React.Component {
     this.sortByVar = null;
 
     this.state = {
-      sortMethod: 'decreasingAlphabet',
+      sortMethod: 'increasingAlphabet',
       sortDir: 'down',
       subjectRequired: false,
       btnDirections: ['down', 'down', 'down', 'down', 'down'],
@@ -141,21 +140,10 @@ export default class FieldExplorer extends React.Component {
     this.unselectedFields = FieldSelector.newInstance({
       provider: this.props.provider,
       displaySearch: true,
-      fieldShowHistogram: true,
-      display: 'unselected',
-    });
-    this.selectedFields = FieldSelector.newInstance({
-      provider: this.props.provider,
-      displaySearch: false,
-      fieldShowHistogram: true,
-      display: 'selected',
     });
   }
 
   componentDidMount() {
-    this.selectedFields.setFieldsToRender();
-    this.selectedFields.render();
-
     this.unselectedFields.setFieldsToRender();
     this.unselectedFields.render();
   }
@@ -163,9 +151,6 @@ export default class FieldExplorer extends React.Component {
   componentWillUnmount() {
     this.unselectedFields.destroy();
     this.unselectedFields = null;
-
-    this.selectedFields.destroy();
-    this.selectedFields = null;
   }
 
   updateSortMethod(btnInfo, btnIdx, alreadySelected) {
@@ -190,7 +175,6 @@ export default class FieldExplorer extends React.Component {
   render() {
     const renderProps = this.props.getRenderProps();
     const buttonBarHeight = 80;
-    const hh = buttonBarHeight / 2;
 
     if (renderProps.subject && renderProps.subject !== '') {
       this.sortSubject = renderProps.subject;
@@ -209,18 +193,7 @@ export default class FieldExplorer extends React.Component {
 
     return (
       <div className={style.container}>
-        <div style={{ overflow: 'auto', position: 'absolute', top: 0, width: '100%', height: `calc(50% - ${hh}px)` }}>
-          <ComponentToReact className={style.fullSize} component={this.selectedFields} />
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: `calc(50% - ${hh}px)`,
-            height: buttonBarHeight,
-            width: '100%',
-            display: 'flex',
-            alignItems: 'flex-end' }}
-        >
+        <div className={style.buttonBar} style={{ height: buttonBarHeight }} >
           <span className={style.sortContainerText}>
             {`Sort options (current subject: ${this.sortSubject})`}
           </span>
@@ -232,8 +205,8 @@ export default class FieldExplorer extends React.Component {
               return (
                 <div key={btn.key} title={btn.label} className={style.sortButtonContainer}>
                   <SvgIconWidget
-                    width="60"
-                    height="60"
+                    width="50"
+                    height="50"
                     icon={btn.icon}
                     className={isSelected ? style.selectedSortButton : style.sortButton}
                     onClick={() => this.updateSortMethod(btn, idx, isSelected)}
@@ -242,7 +215,7 @@ export default class FieldExplorer extends React.Component {
             })
           }
         </div>
-        <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: `calc(50% - ${hh}px)` }}>
+        <div style={{ overflow: 'auto', position: 'absolute', bottom: 0, width: '100%', height: `calc(100% - ${buttonBarHeight}px)` }}>
           <ComponentToReact className={style.fullSize} component={this.unselectedFields} />
         </div>
       </div>);

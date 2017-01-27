@@ -3,8 +3,17 @@
   height: 100%;
 }
 
+.buttonBar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 .sortButtonContainer {
-  flex: 1 0 auto;
+  float: left;
+  padding-left: 5px;
+  position: relative;
+  top: 20px;
 }
 
 .sortButton {
@@ -21,8 +30,8 @@
 
 .sortContainerText {
   position: absolute;
-  top: 0px;
-  left: 0;
+  top: 2px;
+  left: 2px;
   font-size: smaller;
   font-weight: bolder;
 }
