@@ -214,8 +214,8 @@ export default class FieldExplorer extends React.Component {
               return (
                 <div key={btn.key} title={btn.label} className={style.sortButtonContainer}>
                   <SvgIconWidget
-                    width="50"
-                    height="50"
+                    width="50px"
+                    height="50px"
                     icon={btn.icon}
                     className={isSelected ? style.selectedSortButton : style.sortButton}
                     onClick={() => this.updateSortMethod(btn, idx, isSelected)}

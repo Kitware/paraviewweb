@@ -19,12 +19,12 @@
 .emphasizedNode {
   fill: black;
   stroke: black;
-  stroke-width: 0.007;
+  stroke-width: 3px;
 }
 
 .emphasizedGlyph {
   stroke: black;
-  stroke-width: 4px;
+  stroke-width: 3px;
 }
 
 .highlightedNode {
@@ -33,7 +33,7 @@
 
 .highlightedGlyph {
   stroke: #999;
-  stroke-width: 4px;
+  stroke-width: 3px;
 }
 
 .hyperbolicTreeEdge {
@@ -51,5 +51,5 @@
 .bundleLink {
   fill: none;
   stroke: green;
-  stroke-width: 0.005;
+  stroke-width: 0.0075;
 }

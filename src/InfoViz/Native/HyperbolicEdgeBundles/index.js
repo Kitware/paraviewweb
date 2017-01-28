@@ -43,47 +43,57 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       model.transformGroup.attr('transform',
         `scale(${smaller / 2.0}, ${smaller / 2.0}) translate(${tx}, ${ty})`);
     }
+    // let nodes get smaller for small diagram, but not too big.
+    model.nodeScale = 1.0 / Math.max(200, model.scale);
+
     // TODO: Now transition the point size and arc width to maintain
     //       the diagram's sense of proportion.
+    if (model.nodeGroup) {
+      model.nodeGroup.selectAll('.node')
+        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
+    }
   };
 
+  // d3's edge bundling curve generator
+  const makeCurve = d3.svg.line()
+    .interpolate('bundle')
+    .tension(0.7)
+    .x(d => d.x[0])
+    .y(d => d.x[1]);
   const linkToControlPts = (interpFocus, deltaT) => {
-    // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
-    // We must convert it to a path of control points starting with 'from' and going
-    // up parents until the deepest common parent is reached, then descend to 'to'.
-    // const upwards = [];
-    // const dnwards = [];
-    // for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
-    //   upwards.push(upNode);
-    // }
-    // for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
-    //   dnwards.push(dnNode);
-    // }
-    // dnwards.reverse(); // places tree root at index 0
-    // const trim = dnwards.reduce(
-    //   (result, entry, ientry) => (upwards[upwards.length - ientry] === entry ? ientry : result),
-    //   -1);
-    // const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+    function inner(dd, i, t, interpF) {
+      // dd is an object with 'from' and 'to' keys that reference entries in model.nodes.
+      // We must convert it to a path of control points starting with 'from' and going
+      // up parents until the deepest common parent is reached, then descend to 'to'.
+      const upwards = [];
+      const dnwards = [];
+      for (let upNode = dd.from; upNode !== null; upNode = 'parent' in upNode ? upNode.parent : null) {
+        upwards.push(upNode);
+      }
+      for (let dnNode = dd.to; dnNode !== null; dnNode = 'parent' in dnNode ? dnNode.parent : null) {
+        dnwards.push(dnNode);
+      }
+      dnwards.reverse(); // places tree root at index 0
+      const trim = dnwards.reduce(
+        (result, entry, ientry) => (upwards[upwards.length - 1 - ientry] === entry ? ientry : result),
+        -1);
+      const pathPts = upwards.slice(0, upwards.length - trim - 1).concat(dnwards.slice(trim));
+
+      // input coords don't actually change, so they don't get interpolated. Only the center changes.
+      const coords = hyperbolicPlanePointsToPoincareDisk(
+      // [dd.from, dd.to] // for straight lines
+      pathPts.map(coordsOf), interpF ? interpF(t) : model.focus, model.diskScale);
+
+      // const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`; // for straight lines
+      return makeCurve(coords);
+    }
     if (interpFocus && deltaT) {
       // animating, so our normal attr function needs to return a function of time, 0 -> 1
       return (dd, i) => (
-        (t) => {
-          // dd.from and dd.to don't actually change, so they don't get interpolated.
-          const coords = hyperbolicPlanePointsToPoincareDisk(
-          [dd.from, dd.to].map(coordsOf), interpFocus(t), model.diskScale);
-
-          const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
-          return path;
-        }
+        t => inner(dd, i, t, interpFocus)
       );
     }
-    return (dd, i) => {
-      const coords = hyperbolicPlanePointsToPoincareDisk(
-      [dd.from, dd.to].map(coordsOf), model.focus, model.diskScale);
-
-      const path = `M ${coords.map(pt => `${pt.x[0]} ${pt.x[1]}`).join(' L ')}`;
-      return path;
-    };
+    return (dd, i) => inner(dd, i, 1.0);
   };
   const drawLinksToNode = (node, grp, deltaT, interpFocus) => {
     const topNodeLinks = model.linkData[node.id].reduce(
@@ -132,9 +142,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
         .classed('disk-boundary', true)
         .classed(style.hyperbolicDiskBoundary, true)
         .attr('r', 1);
-      model.unselectedBundleGroup = model.transformGroup.append('g').classed('unselected-bundles', true);
       model.treeEdgeGroup = model.transformGroup.append('g').classed('tree-edges', true);
+      // bundles should go in front of static tree edges, but behind nodes.
       model.selectedBundleGroup = model.transformGroup.append('g').classed('selected-bundles', true);
+      model.unselectedBundleGroup = model.transformGroup.append('g').classed('unselected-bundles', true);
       model.nodeGroup = model.transformGroup.append('g').classed('nodes', true);
 
       let mouseWheelMoving = false;
@@ -247,7 +258,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     const nodes = model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
     if (deltaT > 0) {
       nodes.transition().duration(deltaT)
-        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]})`);
+        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
         // .attr('cx', d => d.x[0])
         // .attr('cy', d => d.x[1]);
       const interpFocus = (model.prevFocus ?
@@ -271,7 +282,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
     } else {
       nodes
-        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]})`);
+        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
         // .attr('cx', d => d.x[0])
         // .attr('cy', d => d.x[1]);
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
@@ -295,10 +306,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       const { color, shape } = model.provider.getLegend(model.nodes[d.id].name);
       self.append('svg')
         .classed(style.legendShape, true)
-        .attr('width', model.legendSize / model.scale)
-        .attr('height', model.legendSize / model.scale)
-        .attr('x', -0.5 * model.legendSize / model.scale)
-        .attr('y', -0.5 * model.legendSize / model.scale)
+        .attr('width', model.legendSize)
+        .attr('height', model.legendSize)
+        .attr('x', -0.5 * model.legendSize)
+        .attr('y', -0.5 * model.legendSize)
         .attr('fill', color)
         .append('use')
         .attr('xlink:href', shape);
@@ -336,13 +347,13 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       // HACK needed for emphasized node styling side-effects.
       grp.append('circle')
         .classed(style.hyperbolicNode, true)
-        .attr('r', '0.002px');
+        .attr('r', '1px');
       // FIXME: This will not change the legend glyph for any pre-existing nodes!
       grp.each(ensureLegendForNode);
     } else {
       grp.append('circle')
         .classed(style.hyperbolicNode, true)
-        .attr('r', '0.02px');
+        .attr('r', `${model.legendSize}px`);
     }
     ngdata.exit().remove();
     if (model.provider.isA('FieldHoverProvider')) {
@@ -482,7 +493,7 @@ const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
   transitionTime: 750,
-  legendSize: 12,
+  legendSize: 16,
 };
 
 // ----------------------------------------------------------------------------
