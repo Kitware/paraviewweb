@@ -53,6 +53,7 @@ function fieldSelector(publicAPI, model) {
       model.innerDiv = d3.select(model.container).select('.field-selector-container')
         .classed(style.fieldSelectorContainer, true)
         .node();
+      if (!model.innerDiv) model.innerDiv = model.container;
       // Style the table fonts:
       d3.select(model.innerDiv).select('.fieldSelector').classed(style.fieldSelector, true);
       if (model.displaySearch) {

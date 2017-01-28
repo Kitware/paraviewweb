@@ -39,6 +39,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
         delete model.unselectedBundleGroup;
         delete model.selectedBundleGroup;
         delete model.nodeGroup;
+        delete model.axesGroup;
         delete model.transformGroup;
         // TODO: When el is null/undefined and API is provider, unsubscribe.
       }
@@ -55,22 +56,24 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       viewdiv.classed(style.fieldRelationContainer, true);
       const svg = viewdiv.append('svg').classed('field-relation-svg', true);
       model.transformGroup = svg.append('g').classed('disk-transform', true);
-
+      model.axesGroup = model.transformGroup.append('g');
+      model.axesGroup.append('path')
+        .classed(style.boundary, true)
+        .attr('d', 'M -1,0 L 1,0 A 1,1 0 1 0 -1,0');
       // draw some polar axes grid
       for (let r = 0.2; r < 0.99; r += 0.2) {
-        model.transformGroup.append('path')
+        model.axesGroup.append('path')
           .classed(style.ticks, true)
           .attr('d', `M ${r},0 A ${r},${r} 0 1 0 -${r},0`);
       }
+      // every 15 degrees
       for (let t = Math.PI / 12; t < Math.PI * 0.99; t += Math.PI / 12) {
-        model.transformGroup.append('path')
+        model.axesGroup.append('path')
           .classed(style.ticks, true)
           .attr('d', `M 0,0 L ${Math.cos(t)},-${Math.sin(t)}`);
       }
-      model.transformGroup.append('path')
-        .classed(style.boundary, true)
-        .attr('d', 'M -1,0 L 1,0 A 1,1 0 1 0 -1,0');
-      model.transformGroup.append('path')
+      // show an arc through the focus node - repositioned as soon as focus is set
+      model.axesGroup.append('path')
         .classed(style.focusArc, true)
         .attr('d', 'M 0.5,0 A 0.5,0.5 0 1 0 -0.5,0');
 
@@ -82,27 +85,35 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       svg
         .on('mousemove', (d, i) => {
           const coord = d3.mouse(svg.node());
-          let line = model.transformGroup.selectAll(`line.${style.crossHairs}`);
-          let path = model.transformGroup.selectAll(`path.${style.crossHairs}`);
+          let line = model.axesGroup.selectAll(`line.${style.crossHairs}`);
+          let path = model.axesGroup.selectAll(`path.${style.crossHairs}`);
           if (line.empty()) {
-            line = model.transformGroup.append('line').classed(style.crossHairs, true)
+            line = model.axesGroup.append('line').classed(style.crossHairs, true)
               .attr('x1', 0).attr('y1', 0);
-            path = model.transformGroup.append('path').classed(style.crossHairs, true);
           }
+          if (path.empty()) {
+            path = model.axesGroup.append('path').classed(style.crossHairs, true);
+          }
+          // apply the diagram transform manually.
           coord[0] = (coord[0] / model.scale) - model.tx;
           coord[1] = (coord[1] / model.scale) - model.ty;
           const arcR = Math.sqrt((coord[0] * coord[0]) + (coord[1] * coord[1]));
-          if (arcR <= 1.0) {
+          if (arcR <= 1.1 && coord[1] <= 0.0) {
+            // draw radial line all the way to r === 1.0
             line
-              .attr('x2', coord[0])
-              .attr('y2', coord[1]);
-            path.attr('d', `M ${arcR},0 A ${arcR},${arcR} 0 1 0 -${arcR},0`);
+              .attr('x2', coord[0] / arcR)
+              .attr('y2', coord[1] / arcR);
+            if (arcR <= 1.0) {
+              path.attr('d', `M ${arcR},0 A ${arcR},${arcR} 0 1 0 -${arcR},0`);
+            } else {
+              path.remove();
+            }
           } else {
-            model.transformGroup.selectAll(`.${style.crossHairs}`).remove();
+            model.axesGroup.selectAll(`.${style.crossHairs}`).remove();
           }
         })
         .on('mouseleave', () => {
-          model.transformGroup.selectAll(`.${style.crossHairs}`).remove();
+          model.axesGroup.selectAll(`.${style.crossHairs}`).remove();
         });
 
       publicAPI.resize(); // Apply a transform to the transformGroup based on the size of the SVG.
