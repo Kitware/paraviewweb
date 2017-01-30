@@ -226,7 +226,8 @@ function hyperbolicEdgeBundle(publicAPI, model) {
               });
             grp.select('svg')
               .classed(style.highlightedGlyph, d => (hoverWeight(d, hover.state.highlight) === 0))
-              .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0));
+              .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0))
+              .classed(style.selectedGlyph, d => (model.provider.getField(model.nodes[d.id].name).active));
 
             grp.each(updateDrawOrder);
             if (!sawEmphasizedNode) {
@@ -497,7 +498,7 @@ function hyperbolicEdgeBundle(publicAPI, model) {
 const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
-  transitionTime: 750,
+  transitionTime: 1500,
   legendSize: 12,
 };
 

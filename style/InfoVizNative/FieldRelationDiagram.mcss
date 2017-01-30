@@ -16,13 +16,19 @@
   stroke: #bbb;
 }
 
+.selectedGlyph {
+  stroke: #66b;
+  stroke-width: 2px;
+}
+
 .emphasizedNode {
-  fill: black !important;
-  stroke: black !important;
-  stroke-width: 0.007 !important;
+  fill: black;
+  stroke: black;
+  stroke-width: 3px;
 }
 
 .emphasizedGlyph {
+  composes: selectedGlyph;
   stroke: black;
   stroke-width: 3px;
 }
@@ -32,6 +38,7 @@
 }
 
 .highlightedGlyph {
+  composes: selectedGlyph;
   stroke: #999;
   stroke-width: 3px;
 }

@@ -16,6 +16,12 @@
   stroke: #bbb;
 }
 
+.selectedGlyph {
+  /* Match FieldSelector highlightedRow, #66b === 0.5 * #ccd */
+  stroke: #66b;
+  stroke-width: 2px;
+}
+
 .emphasizedNode {
   fill: black;
   stroke: black;
@@ -23,6 +29,7 @@
 }
 
 .emphasizedGlyph {
+  composes: selectedGlyph;
   stroke: black;
   stroke-width: 3px;
 }
@@ -32,6 +39,7 @@
 }
 
 .highlightedGlyph {
+  composes: selectedGlyph;
   stroke: #999;
   stroke-width: 3px;
 }
@@ -50,8 +58,7 @@
 
 .bundleLink {
   fill: none;
-  /* Match FieldSelector highlightedRow, #66b === 0.5 * #ccd */
-  stroke: #66b;
+  stroke: #840098;
   stroke-width: 0.0075;
   opacity: 0.5;
 }
