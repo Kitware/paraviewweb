@@ -15,31 +15,101 @@ import              DataManager from '../../../../IO/Core/DataManager';
 
 import sizeHelper   from '../../../../Common/Misc/SizeHelper';
 
-import dataModel from './state.json';
-
 const container = document.querySelector('.content');
 container.style.height = '100vh';
 container.style.width = '100vw';
 document.querySelector('body').style.overflow = 'hidden'; // Safari otherwise intercepts wheel events
 
-const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
-  Object.assign(model, initialValues);
-  FieldProvider.extend(publicAPI, model, initialValues);
-  FieldHoverProvider.extend(publicAPI, model, initialValues);
-  FieldInformationProvider.extend(publicAPI, model, initialValues);
-  LegendProvider.extend(publicAPI, model, initialValues);
-})(dataModel);
-provider.setFieldsSorted(true);
-provider.getFieldNames().forEach((name) => {
-  provider.addLegendEntry(name);
-});
-provider.assignLegend(['colors', 'shapes']);
+let hyperbolicView = null;
+let fieldSMI = null;
+let fieldTaylor = null;
+
+const stateUrl = '/paraviewweb/data/dummy/state.json';
+const minfoUrl = '/paraviewweb/data/dummy/minfo.demo.json';
 
 // Fetch data (which can be too large for webpack) using a DataManager:
-const dataManager = new DataManager();
-const url = '/paraviewweb/data/dummy/minfo.nba.withCorrelations.json';
-dataManager.on(url, (data, envelope) => {
-  console.log('loaded data ', data, ' from ', url);
+const stateManager = new DataManager();
+const minfoManager = new DataManager();
+let provider = null;
+
+stateManager.on(stateUrl, (stateData, stateEnvelope) => {
+  provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
+    Object.assign(model, initialValues);
+    FieldProvider.extend(publicAPI, model, initialValues);
+    FieldHoverProvider.extend(publicAPI, model, initialValues);
+    FieldInformationProvider.extend(publicAPI, model, initialValues);
+    LegendProvider.extend(publicAPI, model, initialValues);
+  })(stateData.data);
+  provider.setFieldsSorted(true);
+  provider.getFieldNames().forEach((name) => {
+    provider.addLegendEntry(name);
+  });
+  provider.assignLegend(['colors', 'shapes']);
+
+  hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
+  fieldSMI = FieldRelationDiagram.newInstance({ provider, diagramType: 'smi' });
+  fieldTaylor = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
+
+  const fieldExplorerProps = {
+    sortDirection: 'down',
+    disposition: null,
+    subject: provider.getFieldNames()[0],
+    fieldInfo: null,
+  };
+
+  const fieldExplorer = new ReactAdapter(FieldExplorer, { provider, getRenderProps: () => fieldExplorerProps });
+
+  // fieldSelector can be sorted using any numeric array
+  provider.subscribeToFieldInformation((info) => {
+    fieldExplorerProps.fieldInfo = info;
+    fieldExplorer.render();
+  });
+  provider.onHoverFieldChange((hover) => {
+    if (hover.state.subject) {
+      fieldExplorerProps.subject = hover.state.subject;
+      fieldExplorerProps.disposition = hover.state.disposition;
+      fieldExplorer.render();
+    }
+  });
+
+  const viewports = {
+    HyperbolicEdgeBundles: {
+      component: hyperbolicView,
+      viewport: 0,
+    },
+    FieldExplorer: {
+      component: fieldExplorer,
+      viewport: 1,
+    },
+    TaylorDiagram: {
+      component: fieldSMI,
+      viewport: 2,
+    },
+    SMIDiagram: {
+      component: fieldTaylor,
+      viewport: 3,
+    },
+  };
+
+  const workbench = new Workbench();
+  workbench.setComponents(viewports);
+  workbench.setLayout('2x2');
+
+  workbench.setContainer(container);
+
+  // Listen to window resize
+  sizeHelper.onSizeChange(() => {
+    workbench.resize();
+  });
+  sizeHelper.startListening(50);
+
+  sizeHelper.triggerChange();
+
+  minfoManager.fetchURL(minfoUrl, 'json');
+});
+
+minfoManager.on(minfoUrl, (data, envelope) => {
+  console.log('loaded data ', data, ' from ', minfoUrl);
   const minfo = data.data.mutualInformation;
   const fieldKeys = Object.keys(data.data.fieldMapping);
   const vars = new Array(fieldKeys.length);
@@ -68,66 +138,8 @@ dataManager.on(url, (data, envelope) => {
     taylorR: data.data.taylorStdDev,
   });
 });
-dataManager.fetchURL(url, 'json');
 
-const hyperbolicView = HyperbolicEdgeBundles.newInstance({ provider });
-const fieldSMI = FieldRelationDiagram.newInstance({ provider, diagramType: 'smi' });
-const fieldTaylor = FieldRelationDiagram.newInstance({ provider, diagramType: 'taylor' });
-
-const fieldExplorerProps = {
-  sortDirection: 'down',
-  disposition: null,
-  subject: provider.getFieldNames()[0],
-  fieldInfo: null,
-};
-
-const fieldExplorer = new ReactAdapter(FieldExplorer, { provider, getRenderProps: () => fieldExplorerProps });
-
-// fieldSelector can be sorted using any numeric array
-provider.subscribeToFieldInformation((info) => {
-  fieldExplorerProps.fieldInfo = info;
-  fieldExplorer.render();
-});
-provider.onHoverFieldChange((hover) => {
-  if (hover.state.subject) {
-    fieldExplorerProps.subject = hover.state.subject;
-    fieldExplorerProps.disposition = hover.state.disposition;
-    fieldExplorer.render();
-  }
-});
-
-const viewports = {
-  HyperbolicEdgeBundles: {
-    component: hyperbolicView,
-    viewport: 0,
-  },
-  FieldExplorer: {
-    component: fieldExplorer,
-    viewport: 1,
-  },
-  TaylorDiagram: {
-    component: fieldSMI,
-    viewport: 2,
-  },
-  SMIDiagram: {
-    component: fieldTaylor,
-    viewport: 3,
-  },
-};
-
-const workbench = new Workbench();
-workbench.setComponents(viewports);
-workbench.setLayout('2x2');
-
-workbench.setContainer(container);
-
-// Listen to window resize
-sizeHelper.onSizeChange(() => {
-  workbench.resize();
-});
-sizeHelper.startListening(50);
-
-sizeHelper.triggerChange();
+stateManager.fetchURL(stateUrl, 'json');
 
 // -----------------------------------------------------------
 // Make some variables global so that you can inspect and
