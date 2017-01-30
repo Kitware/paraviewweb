@@ -6,6 +6,21 @@ import htmlContent from './body.html';
 import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
 function fieldRelationEdgeBundle(publicAPI, model) {
+  function interpolateTheta(node, t) {
+    const nextTheta = model.theta[model.focus][node.id];
+    const prevTheta = model.prevFocus >= 0 ? model.theta[model.prevFocus][node.id] : nextTheta;
+    const th = ((t * nextTheta) + ((1.0 - t) * prevTheta)) * Math.PI / 180.0;
+    const scale = (model.provider.getField(model.nodes[node.id].name).active ? model.nodeScale * 1.67 : model.nodeScale);
+    return `translate(${node.r * Math.cos(th)}, ${-node.r * Math.sin(th)}) scale(${scale}, ${scale})`;
+  }
+
+  function fixedRadiusTween(deltaT) {
+    if (deltaT > 0) {
+      return node => (t => interpolateTheta(node, t));
+    }
+    return node => interpolateTheta(node, 1.0);
+  }
+
   publicAPI.resize = () => {
     if (!model.container) {
       return;
@@ -28,8 +43,15 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       model.transformGroup.attr('transform',
         `scale(${smaller / 2.0}, ${smaller / 2.0}) translate(${tx}, ${(2 * ty) - (padding / smaller)})`);
     }
-    // TODO: Now transition the point size and arc width to maintain
+    // let nodes get smaller for small diagram, but not too big.
+    model.nodeScale = 1.0 / Math.max(200, model.scale);
+
+    // TODO: Now transition arc width to maintain
     //       the diagram's sense of proportion.
+    if (model.nodeGroup) {
+      model.nodeGroup.selectAll('.node')
+        .attr('transform', fixedRadiusTween(0));
+    }
   };
 
   publicAPI.setContainer = (el) => {
@@ -162,30 +184,9 @@ function fieldRelationEdgeBundle(publicAPI, model) {
             function updateDrawOrder(d, i) {
               if (model.nodes[d.id].name in hover.state.highlight) {
                 this.parentNode.appendChild(this);
-                // d3.select(this)
-                //   .on('click', (dd, idx) => {
-                //     if (model.provider.isA('FieldHoverProvider')) {
-                //       const fhover = model.provider.getFieldHoverState();
-                //       fhover.state.subject = model.nodes[dd.id].name;
-                //       fhover.state.highlight[fhover.state.subject] = { weight: 1 };
-                //       model.provider.setFieldHoverState(fhover);
-                //     } else {
-                //       publicAPI.placeNodesByRelationTo(d.id);
-                //     }
-                //   });
               }
             }
             const grp = model.nodeGroup.selectAll('.node');
-            grp.select('circle')
-              .classed(style.highlightedNode, d => (hoverWeight(d, hover.state.highlight) === 0))
-              .classed(style.emphasizedNode, (d) => {
-                if (hoverWeight(d, hover.state.highlight) > 0) {
-                  // also draw a line from the origin to the emphasized node.
-                  // model.transformGroup
-                  return true;
-                }
-                return false;
-              });
             grp.select('svg')
               .classed(style.highlightedGlyph, d => (hoverWeight(d, hover.state.highlight) === 0))
               .classed(style.emphasizedGlyph, d => (hoverWeight(d, hover.state.highlight) > 0));
@@ -201,31 +202,14 @@ function fieldRelationEdgeBundle(publicAPI, model) {
     }
   };
 
-  function interpolateTheta(node, t) {
-    if (model.prevFocus < 0) {
-      return node.th * Math.PI / 180.0;
-    }
-    const prevTheta = model.theta[model.prevFocus][node.id];
-    const nextTheta = model.theta[model.focus][node.id];
-    return ((t * nextTheta) + ((1.0 - t) * prevTheta)) * Math.PI / 180.0;
-  }
-
-  function fixedRadiusTween(node) {
-    return (t) => {
-      const th = interpolateTheta(node, t);
-      return `translate(${node.r * Math.cos(th)}, ${-node.r * Math.sin(th)})`;
-    };
-  }
-
   const coordsChanged = (deltaT, nodeselect) => {
     // console.log(' coords changed ', model);
-    // model.nodeGroup.selectAll('.node').data(model.nodes, dd => dd.id);
     if (deltaT > 0) {
       nodeselect.transition().duration(deltaT)
-        .attrTween('transform', fixedRadiusTween);
+        .attrTween('transform', fixedRadiusTween(deltaT));
     } else {
       nodeselect
-        .attr('transform', d => fixedRadiusTween(1.0));
+        .attr('transform', fixedRadiusTween(0));
     }
   };
 
@@ -238,10 +222,10 @@ function fieldRelationEdgeBundle(publicAPI, model) {
         const { color, shape } = model.provider.getLegend(d.name);
         self.append('svg')
           .classed(style.legendShape, true)
-          .attr('width', model.legendSize / model.scale)
-          .attr('height', model.legendSize / model.scale)
-          .attr('x', -0.5 * model.legendSize / model.scale)
-          .attr('y', -0.5 * model.legendSize / model.scale)
+          .attr('width', model.legendSize)
+          .attr('height', model.legendSize)
+          .attr('x', -0.5 * model.legendSize)
+          .attr('y', -0.5 * model.legendSize)
           .attr('fill', color)
           .append('use')
           .attr('xlink:href', shape);
@@ -325,7 +309,7 @@ const DEFAULT_VALUES = {
   diagramType: 'smi',
   focus: -1,
   prevFocus: -1,
-  legendSize: 16,
+  legendSize: 12,
   transitionTime: 750,
 };
 

@@ -50,6 +50,8 @@
 
 .bundleLink {
   fill: none;
-  stroke: green;
+  /* Match FieldSelector highlightedRow, #66b === 0.5 * #ccd */
+  stroke: #66b;
   stroke-width: 0.0075;
+  opacity: 0.5;
 }

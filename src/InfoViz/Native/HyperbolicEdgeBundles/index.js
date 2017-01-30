@@ -46,11 +46,14 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     // let nodes get smaller for small diagram, but not too big.
     model.nodeScale = 1.0 / Math.max(200, model.scale);
 
-    // TODO: Now transition the point size and arc width to maintain
+    // TODO: Now transition the arc width to maintain
     //       the diagram's sense of proportion.
     if (model.nodeGroup) {
       model.nodeGroup.selectAll('.node')
-        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
+        .attr('transform', (d) => {
+          const scale = (model.provider.getField(model.nodes[d.id].name).active ? model.nodeScale * 1.67 : model.nodeScale);
+          return `translate(${d.x[0]}, ${d.x[1]}) scale(${scale}, ${scale})`;
+        });
     }
   };
 
@@ -258,9 +261,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
     const nodes = model.nodeGroup.selectAll('.node').data(model.diskCoords, dd => dd.id);
     if (deltaT > 0) {
       nodes.transition().duration(deltaT)
-        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
-        // .attr('cx', d => d.x[0])
-        // .attr('cy', d => d.x[1]);
+        .attr('transform', (d) => {
+          const scale = (model.provider.getField(model.nodes[d.id].name).active ? model.nodeScale * 1.67 : model.nodeScale);
+          return `translate(${d.x[0]}, ${d.x[1]}) scale(${scale}, ${scale})`;
+        });
       const interpFocus = (model.prevFocus ?
         d3.interpolate(model.prevFocus, model.focus) :
         () => model.focus);
@@ -282,9 +286,10 @@ function hyperbolicEdgeBundle(publicAPI, model) {
       }
     } else {
       nodes
-        .attr('transform', d => `translate(${d.x[0]}, ${d.x[1]}) scale(${model.nodeScale}, ${model.nodeScale})`);
-        // .attr('cx', d => d.x[0])
-        // .attr('cy', d => d.x[1]);
+        .attr('transform', (d) => {
+          const scale = (model.provider.getField(model.nodes[d.id].name).active ? model.nodeScale * 1.67 : model.nodeScale);
+          return `translate(${d.x[0]}, ${d.x[1]}) scale(${scale}, ${scale})`;
+        });
       model.treeEdgeGroup.selectAll('.link').data(model.treeEdges, ee => ee.id)
         .attr('d', pp => hyperbolicPlaneGeodesicOnPoincareDisk(
           [pp.p0.x, pp.p0.y], [pp.p1.x, pp.p1.y], model.focus, model.diskScale));
@@ -493,7 +498,7 @@ const DEFAULT_VALUES = {
   container: null,
   color: 'inherit',
   transitionTime: 750,
-  legendSize: 16,
+  legendSize: 12,
 };
 
 // ----------------------------------------------------------------------------
