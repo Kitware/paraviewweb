@@ -15,7 +15,7 @@ import              DataManager from '../../../../IO/Core/DataManager';
 
 import sizeHelper   from '../../../../Common/Misc/SizeHelper';
 
-import dataModel from '../../HistogramSelector/example/state.json';
+import dataModel from './state.json';
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';
