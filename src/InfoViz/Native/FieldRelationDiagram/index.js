@@ -92,7 +92,7 @@ function fieldRelationEdgeBundle(publicAPI, model) {
       for (let t = Math.PI / 12; t < Math.PI * 0.99; t += Math.PI / 12) {
         model.axesGroup.append('path')
           .classed(style.ticks, true)
-          .attr('d', `M 0,0 L ${Math.cos(t)},-${Math.sin(t)}`);
+          .attr('d', `M ${0.2 * Math.cos(t)},-${0.2 * Math.sin(t)} L ${Math.cos(t)},-${Math.sin(t)}`);
       }
       // show an arc through the focus node - repositioned as soon as focus is set
       model.axesGroup.append('path')
