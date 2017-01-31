@@ -1,11 +1,16 @@
 /*empty styles allow for d3 selection in javascript*/
 .jsFieldName,
+.jsFieldSelector,
+.jsFieldSelectorMode,
+.jsFieldSelectorLabel,
 .jsHistMax,
 .jsHistMin,
 .jsHistRect,
 .jsLegend,
 .jsSelectedFirst,
-.jsSparkline {
+.jsSparkline,
+.jsTHead,
+.jsTBody {
 
 }
 
@@ -48,6 +53,18 @@
   text-align: left;
 }
 
+.showHistIcon {
+  composes: icon;
+  composes: fa-bar-chart from 'font-awesome/css/font-awesome.css';
+  float: right;
+  margin-left: 3px;
+}
+
+.showBoxIcon {
+  composes: showHistIcon;
+  opacity: 0.5;
+}
+
 .legend {
   composes: jsLegend;
   text-align: center;
@@ -63,6 +80,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.chartHeader {
+  width: calc(100% - 16px);
+  text-align: center;
 }
 
 .row {
@@ -85,11 +107,13 @@
 }
 
 .thead {
+  composes: jsTHead;
   user-select: none;
   cursor: pointer;
 }
 
 .tbody {
+  composes: jsTBody;
 }
 
 .sparkline {
@@ -99,6 +123,7 @@
 
 .sparklineSvg {
   vertical-align: middle;
+  shape-rendering: crispEdges;
 }
 
 .histRect {
@@ -121,4 +146,22 @@
 
 .binHilite {
   fill: #001EB8;
+}
+
+.whisker {
+  stroke: black;
+}
+
+.iqr {
+  stroke: black;
+  fill: white;
+}
+
+.median {
+  stroke: black;
+}
+
+.mean {
+  stroke: black;
+  stroke-width: 2;
 }

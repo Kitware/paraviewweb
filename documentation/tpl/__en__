@@ -44,6 +44,7 @@ sidebar:
     virtualgl_turbovnc_howto: VirtualGL and TurboVNC
     deploy: Deployment
     ubuntu_14_04: Ubuntu 14.04 LTS
+    windows_10: Windows 10
     ansible: Ansible playbook
     nvidia_redhat: Nvidia on RedHat
     vagrant: Vangrant setup
