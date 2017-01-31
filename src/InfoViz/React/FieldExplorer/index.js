@@ -168,6 +168,7 @@ export default class FieldExplorer extends React.Component {
       subjectRequired: btnInfo.subjectRequired,
       btnDirections: [].concat(this.state.btnDirections),
       sortDir: btnInfo.dir,
+      fieldShowHistogram: true,
     };
 
     if (alreadySelected) {

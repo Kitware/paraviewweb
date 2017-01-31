@@ -9,6 +9,7 @@ import       FieldHoverProvider from '../../../../InfoViz/Core/FieldHoverProvide
 import FieldInformationProvider from '../../../../InfoViz/Core/FieldInformationProvider';
 import            FieldProvider from '../../../../InfoViz/Core/FieldProvider';
 import           LegendProvider from '../../../../InfoViz/Core/LegendProvider';
+import      Histogram1DProvider from '../../../../InfoViz/Core/Histogram1DProvider';
 import   CompositeClosureHelper from '../../../../Common/Core/CompositeClosureHelper';
 import                Workbench from '../../../../Component/Native/Workbench';
 import              DataManager from '../../../../IO/Core/DataManager';
@@ -37,6 +38,7 @@ stateManager.on(stateUrl, (stateData, stateEnvelope) => {
     Object.assign(model, initialValues);
     FieldProvider.extend(publicAPI, model, initialValues);
     FieldHoverProvider.extend(publicAPI, model, initialValues);
+    Histogram1DProvider.extend(publicAPI, model, initialValues);
     FieldInformationProvider.extend(publicAPI, model, initialValues);
     LegendProvider.extend(publicAPI, model, initialValues);
   })(stateData.data);
