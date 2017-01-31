@@ -251,8 +251,14 @@ function fieldSelector(publicAPI, model) {
         (model.sortMult * (a.name < b.name ? -1 :
           (a.name > b.name) ? 1 : 0)));
     } else {
-      data.sort((a, b) =>
-        (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id])));
+      data.sort((a, b) => {
+        const result = (model.sortMult * (model.sortArray[b.id] - model.sortArray[a.id]));
+        if (result === 0) {
+          return (a.name < b.name ? -1 :
+          (a.name > b.name) ? 1 : 0);
+        }
+        return result;
+      });
     }
 
     // pull selected fields to the top, after sorting, if configured.
