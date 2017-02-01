@@ -142,7 +142,11 @@
 	      }
 
 	      lut.setPreset(preset || 'spectralflip');
-	      lut.setScalarRange(range[0], range[1]);
+	      if (range[0] < range[1]) {
+	        lut.setScalarRange(range[0], range[1]);
+	      } else {
+	        lut.setScalarRange(0, 1);
+	      }
 
 	      this.emit(TOPIC.LIST_CHANGE, this);
 
