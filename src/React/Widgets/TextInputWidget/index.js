@@ -9,6 +9,7 @@ export default React.createClass({
     className: React.PropTypes.string,
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
+    placeholder: React.PropTypes.string,
     value: React.PropTypes.string,
     maxWidth: React.PropTypes.string,
     icon: React.PropTypes.string,
@@ -63,6 +64,7 @@ export default React.createClass({
           className={style.entry}
           type="text"
           value={this.state.editing ? this.state.valueRep : this.props.value}
+          placeholder={this.props.placeholder}
           style={inlineStyle}
           onChange={this.valueChange}
           onBlur={this.endEditing}
