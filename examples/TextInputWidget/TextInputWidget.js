@@ -21486,6 +21486,7 @@
 	    className: _react2.default.PropTypes.string,
 	    name: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
+	    placeholder: _react2.default.PropTypes.string,
 	    value: _react2.default.PropTypes.string,
 	    maxWidth: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.string
@@ -21538,6 +21539,7 @@
 	        className: _TextInputWidget2.default.entry,
 	        type: 'text',
 	        value: this.state.editing ? this.state.valueRep : this.props.value,
+	        placeholder: this.props.placeholder,
 	        style: inlineStyle,
 	        onChange: this.valueChange,
 	        onBlur: this.endEditing,
