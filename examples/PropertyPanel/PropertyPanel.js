@@ -23246,6 +23246,21 @@
 	      )
 	    );
 	  },
+	  n: function n(data, ui, callback) {
+	    ui.componentLabels = arrayFill(ui.componentLabels, ui.size);
+	    data.value = arrayFill(data.value, ui.size, null);
+	    return _react2.default.createElement(
+	      'tbody',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        { className: _CellProperty2.default.inputRow },
+	        data.value.map(function (value, idx) {
+	          return _react2.default.createElement(_InputCell2.default, { idx: idx, key: idx, label: ui.componentLabels[idx], type: ui.type, value: value, name: data.name, domain: ui.domain, onChange: callback });
+	        })
+	      )
+	    );
+	  },
 	  m6: function m6(data, ui, callback) {
 	    ui.componentLabels = arrayFill(ui.componentLabels, 6);
 	    data.value = arrayFill(data.value, 6, null);
