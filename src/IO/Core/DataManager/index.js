@@ -1,10 +1,10 @@
-/* global window */
-
+import JSZip from 'jszip';
 import Monologue from 'monologue.js';
 
 // Module dependencies and constants
 import request from './request';
 import PatternMap from './pattern';
+
 
 const
   typeFnMap = {
@@ -242,6 +242,99 @@ export default class DataManager {
 
   getMemoryUsage() {
     return this.cacheData.size;
+  }
+
+  useHttpRequest() {
+    typeFnMap.json = request.fetchJSON;
+    typeFnMap.text = request.fetchTxt;
+    typeFnMap.blob = request.fetchBlob;
+    typeFnMap.arraybuffer = request.fetchArray;
+    typeFnMap.array = request.fetchArray;
+    return this;
+  }
+
+  useZipContent(zipContent, options) {
+    return new Promise((accept, reject) => {
+      const zip = new JSZip();
+      let zipRoot = zip;
+      zip.loadAsync(zipContent, options)
+        .then(() => {
+          // Find root index.json
+          const metaFiles = [];
+          zip.forEach((relativePath, zipEntry) => {
+            if (relativePath.indexOf('index.json') !== -1) {
+              metaFiles.push(relativePath);
+            }
+          });
+          metaFiles.sort((a, b) => a.length > b.length);
+          const fullRootPath = metaFiles[0].split('/');
+          while (fullRootPath.length > 1) {
+            const dirName = fullRootPath.shift();
+            zipRoot = zipRoot.folder(dirName);
+          }
+
+          // Replace access method
+          typeFnMap.json = (url, cb) => {
+            zipRoot.file(url).async('string').then(
+              (str) => {
+                cb(null, JSON.parse(str));
+              },
+              (err) => {
+                cb(err);
+              }
+            );
+          };
+
+          typeFnMap.text = (url, cb) => {
+            zipRoot.file(url).async('string').then(
+              (str) => {
+                cb(null, str);
+              },
+              (err) => {
+                cb(err);
+              }
+            );
+          };
+
+          typeFnMap.blob = (url, mimeType, cb) => {
+            zipRoot.file(url).async('uint8array').then(
+              (uint8array) => {
+                const buffer = new ArrayBuffer(uint8array.length);
+                const view = new Uint8Array(buffer);
+                view.set(uint8array);
+                cb(null, new Blob([buffer], { type: mimeType }));
+              },
+              (err) => {
+                cb(err);
+              }
+            );
+          };
+
+          typeFnMap.arraybuffer = (url, mimeType, cb) => {
+            zipRoot.file(url).async('uint8array').then(
+              (uint8array) => {
+                const buffer = new ArrayBuffer(uint8array.length);
+                const view = new Uint8Array(buffer);
+                view.set(uint8array);
+                cb(null, buffer);
+              },
+              (err) => {
+                cb(err);
+              }
+            );
+          };
+
+          typeFnMap.array = typeFnMap.arraybuffer;
+
+          // Fix any previously registered pattern
+          Object.keys(this.keyToTypeMap).forEach((key) => {
+            const array = this.keyToTypeMap[key];
+            array[1] = typeFnMap[array[0]];
+          });
+
+          accept(this);
+        });
+    });
   }
 }
 
