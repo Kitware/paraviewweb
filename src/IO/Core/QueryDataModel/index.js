@@ -720,6 +720,14 @@ export default class QueryDataModel {
     return dataManager.cacheData.size;
   }
 
+  useZipContent(zipContent, options) {
+    return dataManager.useZipContent(zipContent, options);
+  }
+
+  useHttpRequest() {
+    dataManager.useHttpRequest();
+  }
+
   link(queryDataModel, args = null, fetch = false) {
     return queryDataModel.onStateChange((data, envelope) => {
       if (data.name !== undefined && data.value !== undefined) {
