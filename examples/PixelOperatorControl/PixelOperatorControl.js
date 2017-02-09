@@ -61,7 +61,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Load CSS
-	__webpack_require__(188);
+	__webpack_require__(189);
 
 	var operationValue = 'a+2/5';
 	var operator = {
@@ -22743,7 +22743,7 @@
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22753,7 +22753,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TextInputWidget = __webpack_require__(186);
+	var _TextInputWidget = __webpack_require__(187);
 
 	var _TextInputWidget2 = _interopRequireDefault(_TextInputWidget);
 
@@ -22770,19 +22770,23 @@
 	    placeholder: _react2.default.PropTypes.string,
 	    value: _react2.default.PropTypes.string,
 	    maxWidth: _react2.default.PropTypes.string,
-	    icon: _react2.default.PropTypes.string
+	    icon: _react2.default.PropTypes.string,
+	    editing: _react2.default.PropTypes.bool,
+	    escEndsEdit: _react2.default.PropTypes.bool
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      value: '',
 	      className: '',
-	      icon: '' + _TextInputWidget2.default.checkIcon
+	      icon: '' + _TextInputWidget2.default.checkIcon,
+	      editing: false,
+	      escEndsEdit: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      editing: false,
+	      editing: this.props.editing,
 	      valueRep: this.props.value
 	    };
 	  },
@@ -22802,15 +22806,23 @@
 	    }
 	  },
 	  handleKeyUp: function handleKeyUp(e) {
+	    var _this = this;
+
 	    if (!this.textInput) return;
 	    if (e.key === 'Enter' || e.key === 'Return') {
 	      this.textInput.blur();
 	    } else if (e.key === 'Escape') {
 	      this.setState({ valueRep: this.props.value });
+	      if (this.props.escEndsEdit) {
+	        // needs to happen at next idle so it happens after setState.
+	        setImmediate(function () {
+	          return _this.textInput.blur();
+	        });
+	      }
 	    }
 	  },
 	  render: function render() {
-	    var _this = this;
+	    var _this2 = this;
 
 	    var inlineStyle = this.props.maxWidth ? { maxWidth: this.props.maxWidth } : {};
 	    return _react2.default.createElement(
@@ -22826,22 +22838,105 @@
 	        onBlur: this.endEditing,
 	        onKeyUp: this.handleKeyUp,
 	        ref: function ref(c) {
-	          _this.textInput = c;
+	          _this2.textInput = c;
 	        }
 	      }),
 	      _react2.default.createElement('i', { className: [this.state.editing ? _TextInputWidget2.default.editingButton : _TextInputWidget2.default.button, this.props.icon].join(' '), onClick: this.endEditing })
 	    );
 	  }
 	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(186).setImmediate))
 
 /***/ },
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
+	var apply = Function.prototype.apply;
+	var slice = Array.prototype.slice;
+	var immediateIds = {};
+	var nextImmediateId = 0;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) { timeout.close(); };
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// That's not how node.js implements it but the exposed api is the same.
+	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+	  var id = nextImmediateId++;
+	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+	  immediateIds[id] = true;
+
+	  nextTick(function onNextTick() {
+	    if (immediateIds[id]) {
+	      // fn.call() is faster so we optimize for the common use-case
+	      // @see http://jsperf.com/call-apply-segu
+	      if (args) {
+	        fn.apply(null, args);
+	      } else {
+	        fn.call(null);
+	      }
+	      // Prevent ids from leaking
+	      exports.clearImmediate(id);
+	    }
+	  });
+
+	  return id;
+	};
+
+	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+	  delete immediateIds[id];
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(186).setImmediate, __webpack_require__(186).clearImmediate))
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(187);
+	var content = __webpack_require__(188);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(184)(content, {});
@@ -22861,7 +22956,7 @@
 	}
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(176)();
@@ -22881,13 +22976,13 @@
 	};
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(189);
+	var content = __webpack_require__(190);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(184)(content, {});
@@ -22907,7 +23002,7 @@
 	}
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(176)();
