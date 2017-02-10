@@ -60,7 +60,7 @@ Will generate the following commit message:
 ## Code editing
 
 [Sublime Text 3](http://www.sublimetext.com) with the following set of plugins.
-To install plugins you will have to first install the [Package constrol](https://packagecontrol.io/installation).
+To install plugins you will have to first install the [Package control](https://packagecontrol.io/installation).
 
 Then installing new plugin should start with: ```Ctrl/Cmd + Shift + p``` Install
 

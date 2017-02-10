@@ -10,7 +10,7 @@ A new instance is created with:
 ```javascript
 import DataManager from 'paraviewweb/src/IO/Core/DataManager';
 
-dataManager = new DataManager(cacheSize = 1 000 000 000); // 1 GB by default
+dataManager = new DataManager({cacheSize : 1000000000}); // 1 GB by default
 ```
 
 All listening is managed using [monolog.js](https://www.npmjs.com/package/monologue.js)

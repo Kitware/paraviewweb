@@ -2,7 +2,7 @@
 
 ## constructor(urls, secret="vtkweb-secret")
 
-Create an instance of Autobahn conenction. The urls can either
+Create an instance of Autobahn connection. The urls can either
 be a single url (string) or a list of urls such as WebSocket and http
 for long-polling fallback.
 
