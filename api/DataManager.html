@@ -45,7 +45,7 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/api/DataManager.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="Data ManagerThis module allows users to fetch data (JSON, Text, ArrayBuffer, blob) andcache the result for future use. Additional pattern based URL requests canbe achieved. Images can also be retrieve">
-<meta property="og:updated_time" content="2017-02-09T03:00:49.352Z">
+<meta property="og:updated_time" content="2017-02-10T19:58:01.743Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DataManager">
 <meta name="twitter:description" content="Data ManagerThis module allows users to fetch data (JSON, Text, ArrayBuffer, blob) andcache the result for future use. Additional pattern based URL requests canbe achieved. Images can also be retrieve">
@@ -101,7 +101,7 @@
               <div class="article-content" itemprop="articleBody">
                 <h1 id="Data-Manager" class="article-heading"><a href="#Data-Manager" class="headerlink" title="Data Manager"></a>Data Manager<a class="article-anchor" href="#Data-Manager" aria-hidden="true"></a></h1><p>This module allows users to fetch data (JSON, Text, ArrayBuffer, blob) and<br>cache the result for future use. Additional pattern based URL requests can<br>be achieved. Images can also be retrieved as a blob and can be display using<br>a generated browser url.</p>
 <p>A new instance is created with:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> DataManager <span class="keyword">from</span> <span class="string">'paraviewweb/src/IO/Core/DataManager'</span>;</div><div class="line"></div><div class="line">dataManager = <span class="keyword">new</span> DataManager(cacheSize = <span class="number">1</span> <span class="number">000</span> <span class="number">000</span> <span class="number">000</span>); <span class="comment">// 1 GB by default</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> DataManager <span class="keyword">from</span> <span class="string">'paraviewweb/src/IO/Core/DataManager'</span>;</div><div class="line"></div><div class="line">dataManager = <span class="keyword">new</span> DataManager(&#123;<span class="attr">cacheSize</span> : <span class="number">1000000000</span>&#125;); <span class="comment">// 1 GB by default</span></div></pre></td></tr></table></figure>
 <p>All listening is managed using <a href="https://www.npmjs.com/package/monologue.js" target="_blank" rel="external">monolog.js</a><br>and might not be fully described here, consult their full documentation<br><a href="https://www.npmjs.com/package/monologue.js" target="_blank" rel="external">here</a>.</p>
 <h2 id="fetchURL-url-type-mimeType-topicForNotification" class="article-heading"><a href="#fetchURL-url-type-mimeType-topicForNotification" class="headerlink" title="fetchURL(url, type[, mimeType, topicForNotification])"></a>fetchURL(url, type[, mimeType, topicForNotification])<a class="article-anchor" href="#fetchURL-url-type-mimeType-topicForNotification" aria-hidden="true"></a></h2><p>Fetches a data object from a static URL. The set of possible<br>data type are: [ ‘json’, ‘text’, ‘blob’, ‘array’ ]</p>
 <p>For the <strong>blob</strong> type, an extra argument is required which is the mimetype of<br>the blob.</p>
@@ -131,7 +131,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-02-09T03:00:49.352Z" itemprop="dateModified">Last updated: 2017-02-09</time>
+                <time class="article-footer-updated" datetime="2017-02-10T19:58:01.743Z" itemprop="dateModified">Last updated: 2017-02-10</time>
                 <a href="CSVReader.html" class="article-footer-prev" title="CSVReader"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="GeometryDataModel.html" class="article-footer-next" title="GeometryDataModel"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

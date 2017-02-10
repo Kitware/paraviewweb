@@ -42731,7 +42731,7 @@
 	});
 	exports.capitalize = capitalize;
 	// ----------------------------------------------------------------------------
-	// capitilze provided string
+	// capitalize provided string
 	// ----------------------------------------------------------------------------
 
 	function capitalize(str) {

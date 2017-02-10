@@ -40453,7 +40453,7 @@
 	});
 	exports.capitalize = capitalize;
 	// ----------------------------------------------------------------------------
-	// capitilze provided string
+	// capitalize provided string
 	// ----------------------------------------------------------------------------
 
 	function capitalize(str) {
@@ -43402,7 +43402,7 @@
 	        }
 	      });
 	    }
-	    // Check mutualInformationParameterNames are consitent with the current set of data
+	    // Check mutualInformationParameterNames are consistent with the current set of data
 	    // if not just for the next notification...
 	    try {
 	      _pmi2.default.updateMutualInformation(mutualInformationData, [].concat(deltaHandling.added, deltaHandling.modified), [].concat(deltaHandling.removed, invalidAxis), histograms);

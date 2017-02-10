@@ -45,7 +45,7 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/roadmap.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="IntroductionParaViewWeb aims to be a library for building visualization applications on the Web. Those applications can leverage a VTK/ParaView backend for large data processing and/or rendering but c">
-<meta property="og:updated_time" content="2017-02-09T03:00:49.244Z">
+<meta property="og:updated_time" content="2017-02-10T19:58:01.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Roadmap">
 <meta name="twitter:description" content="IntroductionParaViewWeb aims to be a library for building visualization applications on the Web. Those applications can leverage a VTK/ParaView backend for large data processing and/or rendering but c">
@@ -107,7 +107,7 @@
 <li><strong>ParaViewWeb LightViz</strong>: The LightViz application aims to provide an intutive and interactive visualization tool which could easily adapt itself to the data we are looking at. The ParaViewWeb library provides to the application all the components it needs to build the UI as well as the WebSocket connectivity to the ParaView server. The application is just connecting all the components together in a miningful way and providing a nice command line interface.</li>
 <li><strong>ParaViewWeb ArcticViewer</strong>: The ArcticViewer application break the pattern here by not requiring a processing server like ParaView or VTK. In fact, ArcticView rely on the fact that the data has been pre-processed which allow it to be directly read by the Web client. In that use case, ParaViewWeb provides the various data handlers, rendering algorithms and UI components to drive the data fetching along with the rendering parameters. ArcticView is then providing an infrastructure for running a data visualization tool directly from a command line where various types of data are understood and the appropriate viewer get instantiated based on the data we are looking at. </li>
 <li><strong>SimPut</strong>: The SimPut application as opposed to the other applications does not provide any visualization. The application aims to provide an environment for dynamically generating UI with various form of inputs in order to produce templated outputs file for simulation code. SimPut is leveraging from ParaViewWeb its infrastructure to build user input interface for Proxies properties which are also used insde the ParaViewWeb Visualizer to create the Proxy Editor Panel.</li>
-<li><strong>HPCCloud</strong>: HPCCloud is more of a platform as it embbed many of the tools listed above. And because of that, it also make some usage to the ParaViewWeb library.</li>
+<li><strong>HPCCloud</strong>: HPCCloud is more of a platform as it embedded many of the tools listed above. And because of that, it also make some usage to the ParaViewWeb library.</li>
 </ul>
 <h3 id="Roadmap" class="article-heading"><a href="#Roadmap" class="headerlink" title="Roadmap"></a>Roadmap<a class="article-anchor" href="#Roadmap" aria-hidden="true"></a></h3><p>This roadmap does not provide any timeline but instead provides insight on its modules and how we see them evolved.</p>
 <h4 id="Common" class="article-heading"><a href="#Common" class="headerlink" title="Common"></a>Common<a class="article-anchor" href="#Common" aria-hidden="true"></a></h4><p>The common module aims to provide some core data model and helpers.<br>This include color handling, offscreen canvas, WebGL utility and various data model to hold state for some UI components.</p>
@@ -136,7 +136,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-02-09T03:00:49.244Z" itemprop="dateModified">Last updated: 2017-02-09</time>
+                <time class="article-footer-updated" datetime="2017-02-10T19:58:01.683Z" itemprop="dateModified">Last updated: 2017-02-10</time>
                 <a href="setup.html" class="article-footer-prev" title="Setup"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="https://github.com/Kitware/paraviewweb/releases" class="article-footer-next" title="Releases"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
