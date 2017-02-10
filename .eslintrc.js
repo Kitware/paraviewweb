@@ -27,5 +27,8 @@ module.exports = {
   },
   'settings': {
     'import/resolver': 'webpack'
-  }
+  },
+  env: {
+    browser: true,
+  },
 };

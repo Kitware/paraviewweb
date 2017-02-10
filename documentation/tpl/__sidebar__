@@ -25,6 +25,7 @@ docs:
     virtualgl_turbovnc_howto: virtualgl_turbovnc_howto.html
   deploy:
     ubuntu_14_04: ubuntu_14_04.html
+    windows_10: windows_10.html
     ansible: ansible.html
     vagrant: vagrant.html
     nvidia_redhat: nvidia_redhat.html

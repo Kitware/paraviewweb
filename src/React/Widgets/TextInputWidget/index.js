@@ -9,9 +9,12 @@ export default React.createClass({
     className: React.PropTypes.string,
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
+    placeholder: React.PropTypes.string,
     value: React.PropTypes.string,
     maxWidth: React.PropTypes.string,
     icon: React.PropTypes.string,
+    editing: React.PropTypes.bool,
+    escEndsEdit: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -19,12 +22,14 @@ export default React.createClass({
       value: '',
       className: '',
       icon: `${style.checkIcon}`,
+      editing: false,
+      escEndsEdit: false,
     };
   },
 
   getInitialState() {
     return {
-      editing: false,
+      editing: this.props.editing,
       valueRep: this.props.value,
     };
   },
@@ -52,6 +57,10 @@ export default React.createClass({
       this.textInput.blur();
     } else if (e.key === 'Escape') {
       this.setState({ valueRep: this.props.value });
+      if (this.props.escEndsEdit) {
+        // needs to happen at next idle so it happens after setState.
+        setImmediate(() => this.textInput.blur());
+      }
     }
   },
 
@@ -63,6 +72,7 @@ export default React.createClass({
           className={style.entry}
           type="text"
           value={this.state.editing ? this.state.valueRep : this.props.value}
+          placeholder={this.props.placeholder}
           style={inlineStyle}
           onChange={this.valueChange}
           onBlur={this.endEditing}

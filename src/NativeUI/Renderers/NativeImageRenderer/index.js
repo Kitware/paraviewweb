@@ -64,7 +64,7 @@ export default class NativeImageRenderer {
   }
 
   updateDrawnImage() {
-    this.ctx.drawImage(this.image, 0, 0);
+    this.ctx.drawImage(this.image, 0, 0, this.size.clientWidth, this.size.clientHeight);
     if (this.drawFPS) {
       this.ctx.textBaseline = 'top';
       this.ctx.textAlign = 'left';

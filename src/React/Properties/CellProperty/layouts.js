@@ -84,6 +84,18 @@ const layouts = {
           </tr>
         </tbody>);
   },
+  n: (data, ui, callback) => {
+    ui.componentLabels = arrayFill(ui.componentLabels, ui.size);
+    data.value = arrayFill(data.value, ui.size, null);
+      return (
+        <tbody>
+          <tr className={ style.inputRow }>
+            {data.value.map((value, idx) =>
+              <InputCell idx={idx} key={idx} label={ui.componentLabels[idx]} type={ui.type} value={value} name={data.name} domain={ui.domain} onChange={callback}/>)
+            }
+          </tr>
+        </tbody>);
+  },
   m6: (data, ui, callback) => {
       ui.componentLabels = arrayFill(ui.componentLabels, 6);
       data.value = arrayFill(data.value, 6, null);
