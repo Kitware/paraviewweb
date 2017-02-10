@@ -65,7 +65,7 @@ function mutualInformationProvider(publicAPI, model) {
         }
       });
     }
-    // Check mutualInformationParameterNames are consitent with the current set of data
+    // Check mutualInformationParameterNames are consistent with the current set of data
     // if not just for the next notification...
     try {
       PMI.updateMutualInformation(
