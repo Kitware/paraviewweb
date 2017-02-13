@@ -11,7 +11,6 @@ import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProv
 import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
 import ScoresProvider from '../../../../../src/InfoViz/Core/ScoresProvider';
 import SelectionProvider from '../../../../../src/InfoViz/Core/SelectionProvider';
-import AnnotationStoreProvider from '../../../../../src/InfoViz/Core/AnnotationStoreProvider';
 import HistogramSelector from '../../../Native/HistogramSelector';
 import FieldSelector from '../../../Native/FieldSelector';
 
@@ -44,7 +43,6 @@ const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialVa
   LegendProvider.extend(publicAPI, model, initialValues);
   ScoresProvider.extend(publicAPI, model, initialValues);
   SelectionProvider.extend(publicAPI, model, initialValues);
-  AnnotationProvider.extend(publicAPI, model, initialValues);
 })(dataModel);
 
 // set provider behaviors
