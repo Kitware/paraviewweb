@@ -235,17 +235,21 @@ export default React.createClass({
   },
 
   computeActionRegion(evt) {
+    const actionStruct = {
+      cursor: null,
+      dragAction: null,
+    };
+
+    if (!this.mainContainerDiv) {
+      return actionStruct;
+    }
+
     const { relX: x, relY: y } = getMouseEventInfo(evt, this.mainContainerDiv);
     this.setLastScreenX(evt.screenX);
     this.setLastScreenY(evt.screenY);
 
     const contentWidth = this.state.width - (2 * this.props.marginSize);
     const contentHeight = this.state.height - ((2 * this.props.marginSize) + this.props.titleBarHeight);
-
-    const actionStruct = {
-      cursor: null,
-      dragAction: null,
-    };
 
     if (evt.target.nodeName === 'OPTION') {
       return actionStruct;

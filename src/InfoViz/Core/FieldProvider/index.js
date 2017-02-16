@@ -54,6 +54,11 @@ function fieldProvider(publicAPI, model) {
     triggerFieldChange(field);
   };
 
+  publicAPI.removeField = (name) => {
+    delete model.fields[name];
+    triggerFieldChange();
+  };
+
   publicAPI.getField = name => model.fields[name];
 
   publicAPI.updateField = (name, changeSet = {}) => {
