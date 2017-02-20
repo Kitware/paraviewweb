@@ -728,6 +728,10 @@ export default class QueryDataModel {
     dataManager.useHttpRequest();
   }
 
+  useHtmlContent() {
+    dataManager.useHtmlContent();
+  }
+
   link(queryDataModel, args = null, fetch = false) {
     return queryDataModel.onStateChange((data, envelope) => {
       if (data.name !== undefined && data.value !== undefined) {

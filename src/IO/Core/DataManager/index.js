@@ -3,6 +3,7 @@ import Monologue from 'monologue.js';
 
 // Module dependencies and constants
 import request from './request';
+import htmlRequest from './htmlRequest';
 import PatternMap from './pattern';
 
 
@@ -310,7 +311,7 @@ export default class DataManager {
             );
           };
 
-          typeFnMap.arraybuffer = (url, mimeType, cb) => {
+          typeFnMap.arraybuffer = (url, cb) => {
             zipRoot.file(url).async('uint8array').then(
               (uint8array) => {
                 const buffer = new ArrayBuffer(uint8array.length);
@@ -335,6 +336,22 @@ export default class DataManager {
           accept(this);
         });
     });
+  }
+
+  useHtmlContent() {
+    typeFnMap.json = htmlRequest.json;
+    typeFnMap.text = htmlRequest.text;
+    typeFnMap.blob = htmlRequest.blob;
+    typeFnMap.arraybuffer = htmlRequest.array;
+    typeFnMap.array = htmlRequest.array;
+
+    // Fix any previously registered pattern
+    Object.keys(this.keyToTypeMap).forEach((key) => {
+      const array = this.keyToTypeMap[key];
+      array[1] = typeFnMap[array[0]];
+    });
+
+    return this;
   }
 }
 
