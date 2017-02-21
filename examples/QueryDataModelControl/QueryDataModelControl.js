@@ -9147,6 +9147,11 @@
 	      dataManager.useHtmlContent();
 	    }
 	  }, {
+	    key: 'getDataManager',
+	    value: function getDataManager() {
+	      return dataManager;
+	    }
+	  }, {
 	    key: 'link',
 	    value: function link(queryDataModel) {
 	      var _this8 = this;
