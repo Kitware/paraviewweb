@@ -34,6 +34,13 @@ module.exports = [
     loader: 'babel?presets[]=es2015,presets[]=react',
   }, {
     test: /\.js$/,
+    include: /node_modules(\/|\\)vtk.js(\/|\\)/,
+    loader: 'babel?presets[]=es2015,presets[]=react',
+  }, {
+    test: /\.glsl$/,
+    loader: 'shader',
+  }, {
+    test: /\.js$/,
     exclude: /node_modules/,
     loader: 'babel?presets[]=es2015,presets[]=react',
   },
