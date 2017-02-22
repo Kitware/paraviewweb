@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default */
 import vtkActor                   from 'vtk.js/Sources/Rendering/Core/Actor';
-import vtkColorTransferFunction   from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
+// import vtkColorTransferFunction   from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
 import vtkDataArray               from 'vtk.js/Sources/Common/Core/DataArray';
 import vtkMapper                  from 'vtk.js/Sources/Rendering/Core/Mapper';
 import vtkOpenGLRenderWindow      from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
@@ -105,26 +105,44 @@ export default class VTKGeometryBuilder {
       const renderInfo = this.meshMap[name];
       if (renderInfo.colorArrayName === lookupTable.name) {
         renderInfo.mapper.setScalarRange(...lookupTable.getScalarRange());
-        renderInfo.mapper.getLookupTable().removeAllPoints();
-        lookupTable.controlPoints.forEach(({ x, r, g, b }) => {
-          renderInfo.mapper.getLookupTable().addRGBPoint(x, r, g, b);
-        });
+        if (renderInfo.fieldValue !== undefined) {
+          const c = lookupTable.getColor(renderInfo.fieldValue);
+          renderInfo.actor.getProperty().setDiffuseColor(c[0], c[1], c[2]);
+        }
+        // renderInfo.mapper.getLookupTable().removeAllPoints();
+        // lookupTable.controlPoints.forEach(({ x, r, g, b }) => {
+        //   renderInfo.mapper.getLookupTable().addRGBPoint(x, r, g, b);
+        // });
         this.renderWindow.render();
       }
     });
   }
 
   updateGeometry(geo) {
+    let firstTime = false;
+    const lut = this.lookupTableManager.getLookupTable(geo.fieldName);
     if (!(geo.name in this.meshMap)) {
       // Create new Geometry
+      firstTime = true;
+      const sha = geo.sha;
       const source = vtkPolyData.newInstance();
       const mapper = vtkMapper.newInstance({ interpolateScalarsBeforeMapping: true });
       const actor = vtkActor.newInstance();
-      const lookupTable = vtkColorTransferFunction.newInstance();
-      mapper.setLookupTable(lookupTable);
+      // const lookupTable = vtkColorTransferFunction.newInstance();
+      // mapper.setLookupTable(lookupTable);
+      const lookupTable = mapper.getLookupTable();
+      lookupTable.setHueRange(0.666, 0);
 
       mapper.setInputData(source);
       actor.setMapper(mapper);
+
+      if (lut) {
+        mapper.setScalarRange(...lut.getScalarRange());
+        // lookupTable.removeAllPoints();
+        // lut.controlPoints.forEach(({ x, r, g, b }) => {
+        //   lookupTable.addRGBPoint(x, r, g, b);
+        // });
+      }
 
       // Register geometry
       this.meshMap[geo.name] = {
@@ -132,6 +150,7 @@ export default class VTKGeometryBuilder {
         mapper,
         actor,
         lookupTable,
+        sha,
       };
 
       // Bind data
@@ -146,51 +165,62 @@ export default class VTKGeometryBuilder {
       this.renderer.addActor(actor);
       this.renderer.resetCamera();
     } else {
-      const { source } = this.meshMap[geo.name];
-      source.getPoints().setData(geo.points, 3);
+      let changeDetected = false;
+      const { source, sha } = this.meshMap[geo.name];
+      if (geo.sha.points !== sha.points) {
+        source.getPoints().setData(geo.points, 3);
+        geo.sha.points = sha.points;
+        changeDetected = true;
+      }
+
       ['verts', 'lines', 'polys', 'strips'].forEach((cellType) => {
         if (geo.cells.indexOf(cellType) === -1) {
-          source.get(cellType)[cellType].setData(EMPTY_CELL_ARRAY);
-        } else {
+          if (source.get(cellType)[cellType].getData() !== EMPTY_CELL_ARRAY) {
+            source.get(cellType)[cellType].setData(EMPTY_CELL_ARRAY);
+            changeDetected = true;
+          }
+        } else if (geo.sha[cellType] !== sha[cellType]) {
           source.get(cellType)[cellType].setData(geo[cellType]);
+          geo.sha[cellType] = sha[cellType];
+          changeDetected = true;
         }
       });
-      source.modified();
+      if (changeDetected) {
+        source.modified();
+      }
     }
 
     // Handle data field
     this.meshMap[geo.name].colorArrayName = geo.fieldName;
-    const lut = this.lookupTableManager.getLookupTable(geo.fieldName);
-    const { source, mapper, lookupTable } = this.meshMap[geo.name];
-    const fields = {
-      POINT_DATA: source.getPointData(),
-      CELL_DATA: source.getCellData(),
-    };
-    Object.keys(fields).forEach(key => fields[key].removeAllArrays());
+    const { actor, source, mapper, sha } = this.meshMap[geo.name];
+    if (sha.field !== geo.sha.field || firstTime || Number.isFinite(geo.field)) {
+      const fields = {
+        POINT_DATA: source.getPointData(),
+        CELL_DATA: source.getCellData(),
+      };
+      Object.keys(fields).forEach(key => fields[key].removeAllArrays());
 
-    if (geo.field !== undefined) {
-      const { fieldLocation, fieldName, field } = geo;
-      if (Number.isFinite(field)) {
-        let size = source.getPoints().getNumberOfPoints();
-        if (fieldLocation === 'CELL_DATA') {
-          size = source.getNumberOfCells();
+      if (geo.field !== undefined) {
+        const { fieldLocation, fieldName, field } = geo;
+        if (Number.isFinite(field)) {
+          if (lut) {
+            this.meshMap[geo.name].fieldValue = field;
+            const c = lut.getColor(field);
+            actor.getProperty().setDiffuseColor(c[0], c[1], c[2]);
+          }
+          // let size = source.getPoints().getNumberOfPoints();
+          // if (fieldLocation === 'CELL_DATA') {
+          //   size = source.getNumberOfCells();
+          // }
+          // const values = new Float32Array(size);
+          // values.fill(field);
+          // const array = vtkDataArray.newInstance({ name: fieldName, values });
+          // fields[fieldLocation].setScalars(array);
+        } else {
+          const array = vtkDataArray.newInstance({ name: fieldName, values: field });
+          fields[fieldLocation].setScalars(array);
         }
-        const values = new Float32Array(size);
-        values.fill(field);
-        const array = vtkDataArray.newInstance({ name: fieldName, values });
-        fields[fieldLocation].setScalars(array);
-      } else {
-        const array = vtkDataArray.newInstance({ name: fieldName, values: field });
-        fields[fieldLocation].setScalars(array);
       }
-    }
-
-    if (lut) {
-      mapper.setScalarRange(...lut.getScalarRange());
-      lookupTable.removeAllPoints();
-      lut.controlPoints.forEach(({ x, r, g, b }) => {
-        lookupTable.addRGBPoint(x, r, g, b);
-      });
     }
 
     this.renderer.resetCameraClippingRange();
