@@ -92,6 +92,7 @@ export default class VTKGeometryDataModel {
           name,
           cells: [],
           points: undefined,
+          sha: {},
         };
 
         // Get points
@@ -101,6 +102,7 @@ export default class VTKGeometryDataModel {
           field: 'points',
           type: getType(url),
         };
+        sceneData[name].sha.points = url;
         urls.push(url);
 
         // Get cells
@@ -113,6 +115,7 @@ export default class VTKGeometryDataModel {
             field: cellType,
             type: getType(url),
           };
+          sceneData[name].sha[cellType] = url;
           urls.push(url);
         });
 
@@ -130,6 +133,7 @@ export default class VTKGeometryDataModel {
               meta: polydata.fields[this.colorByMapping[name]],
               type: getType(url),
             };
+            sceneData[name].sha.field = url;
             urls.push(url);
           }
         }
