@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default */
 import vtkActor                   from 'vtk.js/Sources/Rendering/Core/Actor';
-// import vtkColorTransferFunction   from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
+import vtkColorTransferFunction   from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
 import vtkDataArray               from 'vtk.js/Sources/Common/Core/DataArray';
 import vtkMapper                  from 'vtk.js/Sources/Rendering/Core/Mapper';
 import vtkOpenGLRenderWindow      from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
@@ -109,10 +109,12 @@ export default class VTKGeometryBuilder {
           const c = lookupTable.getColor(renderInfo.fieldValue);
           renderInfo.actor.getProperty().setDiffuseColor(c[0], c[1], c[2]);
         }
-        // renderInfo.mapper.getLookupTable().removeAllPoints();
-        // lookupTable.controlPoints.forEach(({ x, r, g, b }) => {
-        //   renderInfo.mapper.getLookupTable().addRGBPoint(x, r, g, b);
-        // });
+        if (renderInfo.mapper.getLookupTable().removeAllPoints) {
+          renderInfo.mapper.getLookupTable().removeAllPoints();
+          lookupTable.controlPoints.forEach(({ x, r, g, b }) => {
+            renderInfo.mapper.getLookupTable().addRGBPoint(x, r, g, b);
+          });
+        }
         this.renderWindow.render();
       }
     });
@@ -128,20 +130,22 @@ export default class VTKGeometryBuilder {
       const source = vtkPolyData.newInstance();
       const mapper = vtkMapper.newInstance({ interpolateScalarsBeforeMapping: true });
       const actor = vtkActor.newInstance();
-      // const lookupTable = vtkColorTransferFunction.newInstance();
-      // mapper.setLookupTable(lookupTable);
-      const lookupTable = mapper.getLookupTable();
-      lookupTable.setHueRange(0.666, 0);
+      const lookupTable = vtkColorTransferFunction.newInstance();
+      mapper.setLookupTable(lookupTable);
+      // const lookupTable = mapper.getLookupTable();
+      // lookupTable.setHueRange(0.666, 0);
 
       mapper.setInputData(source);
       actor.setMapper(mapper);
 
       if (lut) {
         mapper.setScalarRange(...lut.getScalarRange());
-        // lookupTable.removeAllPoints();
-        // lut.controlPoints.forEach(({ x, r, g, b }) => {
-        //   lookupTable.addRGBPoint(x, r, g, b);
-        // });
+        if (lookupTable.removeAllPoints) {
+          lookupTable.removeAllPoints();
+          lut.controlPoints.forEach(({ x, r, g, b }) => {
+            lookupTable.addRGBPoint(x, r, g, b);
+          });
+        }
       }
 
       // Register geometry
