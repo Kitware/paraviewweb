@@ -1,6 +1,5 @@
 {
   "defaultEmptyAnnotationName": "Empty",
-  "isA": ["AnnotationStoreProvider", "FieldProvider", "Histogram1DProvider", "Histogram2DProvider", "HistogramBinHoverProvider", "LegendProvider", "MutualInformationProvider"],
   "fields": {
     "percentage of team minutes": {
       "range": [7.2, 79.5],

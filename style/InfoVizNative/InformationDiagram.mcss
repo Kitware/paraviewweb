@@ -1,3 +1,6 @@
+.jsMouseArc {
+}
+
 .hidden {
   display: none;
   opacity: 0;
@@ -121,6 +124,17 @@
 
 .group path {
   fill-opacity: .5;
+}
+
+.mouseArcViz {
+  composes: jsMouseArc;
+  fill-opacity: 0.15 !important;
+  pointer-events: none;
+}
+.mouseArcHidden {
+  composes: jsMouseArc;
+  fill-opacity: 0 !important;
+  pointer-events: none;
 }
 
 .hoverOutline {
