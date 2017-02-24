@@ -140,8 +140,9 @@
 }
 
 .legendIcon {
+  composes: fa-lg from 'font-awesome/css/font-awesome.css';
   vertical-align: middle;
-  padding: 1px 2px;
+  padding: 1px 1px;
 }
 .expandIcon {
   composes: jsExpandIcon;

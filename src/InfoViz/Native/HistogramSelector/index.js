@@ -37,9 +37,9 @@ function histogramSelector(publicAPI, model) {
   // to before fewer histograms are created to fill the container's width
   let minBoxSize = 200;
   // smallest we'll let it go. Limits boxesPerRow in header GUI.
-  const minBoxSizeLimit = 115;
+  const minBoxSizeLimit = 125;
   const legendSize = 15;
-  const iconSize = 21.3;
+  const iconSize = 24.3;
   // hard coded because I did not figure out how to
   // properly query this value from our container.
   const borderSize = 6;
