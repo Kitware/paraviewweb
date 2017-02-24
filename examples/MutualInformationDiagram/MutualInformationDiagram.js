@@ -29236,11 +29236,12 @@
 
 	    var histoArc = _d3.default.svg.arc().innerRadius(outerRadius + 10);
 
+	    var insideArc = _d3.default.svg.arc().innerRadius(1).outerRadius(innerRadius);
+
 	    var layout = _d3.default.layout.chord().padding(0.04).sortSubgroups(_d3.default.descending).sortChords(_d3.default.ascending);
 
 	    var path = _d3.default.svg.chord().radius(innerRadius);
 
-	    // Remove previous SVG
 	    var svgParent = _d3.default.select(model.container).select('svg');
 	    var svg = svgParent.select('.main-circle');
 	    if (svgParent.empty()) {
@@ -29430,7 +29431,7 @@
 	    function drawPMIAllBinsTwoVars() {
 	      var d = model.renderState.pmiAllBinsTwoVars.d;
 	      if (d.source.index === d.target.index) {
-	        console.log('Cannot render self-PMI', model.mutualInformationData.vmap[d.source.index].name);
+	        // console.log('Cannot render self-PMI', model.mutualInformationData.vmap[d.source.index].name);
 	        return;
 	      }
 
@@ -29513,6 +29514,7 @@
 	      var info = findGroupAndBin(overCoords);
 	      var clearStatusBar = false;
 	      var groupHoverName = null;
+	      var groupInsideName = null;
 	      var highlightAllGroups = false;
 
 	      for (var idx = 0; idx < variableList.length; ++idx) {
@@ -29523,7 +29525,7 @@
 	        highlightAllGroups = true;
 	        clearStatusBar = true;
 	      } else if (info.found) {
-	        if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
+	        if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;else if (info.radius <= innerRadius) groupInsideName = info.group;
 
 	        var binMap = {};
 	        if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
@@ -29551,6 +29553,11 @@
 	      // highlight all groups if a click will reset to default view (veryOutermostRadius)
 	      svg.selectAll('g.group path[id^=\'' + model.instanceID + '-group\']').classed(_InformationDiagram2.default.hoverOutline, function (data, idx) {
 	        return highlightAllGroups || model.mutualInformationData.vmap[idx].name === groupHoverName;
+	      });
+
+	      // show mouse-interaction guide inside the legend arcs.
+	      svg.selectAll('g.group').select('.' + _InformationDiagram2.default.jsMouseArc).attr('class', function (data, idx) {
+	        return model.mutualInformationData.vmap[idx].name === groupInsideName ? _InformationDiagram2.default.mouseArcViz : _InformationDiagram2.default.mouseArcHidden;
 	      });
 
 	      if (clearStatusBar === true) {
@@ -29630,6 +29637,8 @@
 	    groupEnter.append('path').attr('id', function (d, i) {
 	      return model.instanceID + '-group' + i;
 	    });
+	    // add mouse-interaction arc - show where mouse affects this group's chords.
+	    groupEnter.append('path').classed(_InformationDiagram2.default.mouseArcHidden, true);
 
 	    // Add a text label.
 	    var groupText = groupEnter.append('text')
@@ -29650,6 +29659,8 @@
 
 	    // enter + update items.
 	    var groupPath = group.select('path').attr('d', arc);
+	    group.select('.' + _InformationDiagram2.default.jsMouseArc).attr('d', insideArc);
+
 	    // Remove the labels that don't fit, or shorten label, using ...
 	    group.select('text').select('textPath').each(function truncate(d, i) {
 	      d.textShown = true;
@@ -29694,9 +29705,9 @@
 	    // .remove(); ie11 throws errors if we use .remove() - hide instead.
 
 
-	    // Add group for glyph
-	    if (getLegend) {
-	      group.each(function addLegend(glyphData) {
+	    // Add group for glyph, or assign color as fallback.
+	    group.each(function addLegend(glyphData) {
+	      if (getLegend) {
 	        var glyph = _d3.default.select(this).select('g.glyph');
 	        if (glyph.empty()) {
 	          glyph = _d3.default.select(this).append('g').classed('glyph', true).classed(_InformationDiagram2.default.glyph, true);
@@ -29721,8 +29732,18 @@
 	          // glyph.remove(); ie11 objects, hide instead.
 	          glyph.attr('display', 'none');
 	        }
-	      });
-	    }
+	      } else {
+	        model.mutualInformationData.vmap[glyphData.index].color = cmap(glyphData.index);
+	      }
+	    });
+
+	    // Add the color to the group arc
+	    group.select('path').style('fill', function (d) {
+	      return model.mutualInformationData.vmap[d.index].color || 'red';
+	    });
+	    group.select('.' + _InformationDiagram2.default.jsMouseArc).style('fill', function (d) {
+	      return model.mutualInformationData.vmap[d.index].color || 'red';
+	    });
 
 	    function getParamBinRange(index, numberOfBins, paramName) {
 	      var paramRange = model.provider.getField(paramName).range;
@@ -29740,14 +29761,6 @@
 	      var gvar = model.histogramData[gname];
 
 	      if (!gvar) return;
-
-	      // Set the color if it hasn't already been set
-	      if (!getLegend) {
-	        model.mutualInformationData.vmap[groupData.index].color = cmap(groupData.index);
-	      }
-
-	      // Add the color to the group arc
-	      _d3.default.select(this).select('path').style('fill', model.mutualInformationData.vmap[groupData.index].color || 'red');
 
 	      groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
 
@@ -39648,10 +39661,11 @@
 	exports.i(__webpack_require__(314), undefined);
 
 	// module
-	exports.push([module.id, ".InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  pointer-events: all;\n  text-align: left;\n  top: 10px;\n  left: 20px;\n  width: calc(100% - 22px);\n  border: none;\n  background: transparent;\n  outline: none;\n  transition: opacity 1s;\n}\n.InformationDiagram_infoDiagramContainer_3cx2M text {\n  text-align: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath, .InformationDiagram_group_12rpU text {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
+	exports.push([module.id, ".InformationDiagram_jsMouseArc__3h97 {\n}\n\n.InformationDiagram_hidden_2L0Gb {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramContainer_3cx2M {\n  font-family: \"Optima\", \"Linux Biolinum\", \"URW Classico\", sans;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  overflow: hidden;\n}\n\n.InformationDiagram_statusBarContainer_2h5cy {\n  position: absolute;\n  /*left: 10px;*/\n  right: 10px;\n  height: 40px;\n  bottom: 5px;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: rgba(200, 200, 200, 0.5);\n  z-index: 4;\n  transition: width 0.5s;\n}\n\n.InformationDiagram_button_2Bufq {\n  position: absolute;\n  pointer-events: all;\n  cursor: pointer;\n  color: gray;\n  left: 3px;\n  top: 4px;\n}\n\n.InformationDiagram_button_2Bufq:hover {\n  color: black;\n}\n\n.InformationDiagram_showButton_GN-f2 {\n}\n\n.InformationDiagram_hideButton_2tHWF {\n}\n\n.InformationDiagram_statusBarText_dgXGJ {\n  position: relative;\n  pointer-events: all;\n  text-align: left;\n  top: 10px;\n  left: 20px;\n  width: calc(100% - 22px);\n  border: none;\n  background: transparent;\n  outline: none;\n  transition: opacity 1s;\n}\n.InformationDiagram_infoDiagramContainer_3cx2M text {\n  text-align: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn {\n  float: left;\n  vertical-align: top;\n}\n\n.InformationDiagram_informationDiagramSvgShow_4_bUN {\n  display: inline;\n  opacity: 1.0;\n  transition: opacity 0.5s;\n}\n.InformationDiagram_informationDiagramSvgHide_VG9dn {\n  display: none;\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-row {\n  text-align: center;\n}\n\n.InformationDiagram_infoDiagramPlaceholder_3LP4Z .id-placeholder-title {\n    font-size: 45px;\n}\n\n.InformationDiagram_group_12rpU textPath, .InformationDiagram_group_12rpU text {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  fill: black;\n  text-anchor: middle;\n  pointer-events: none;\n}\n\n.InformationDiagram_glyph_3vWD6 {\n    pointer-events: none;\n}\n\n.InformationDiagram_mainCircle_1RwCc {\n  fill: none;\n  pointer-events: all;\n}\n\n.InformationDiagram_group_12rpU path {\n  fill-opacity: .5;\n}\n\n.InformationDiagram_mouseArcViz_2x1WF {\n  fill-opacity: 0.15 !important;\n  pointer-events: none;\n}\n.InformationDiagram_mouseArcHidden_3n7Cf {\n  fill-opacity: 0 !important;\n  pointer-events: none;\n}\n\n.InformationDiagram_hoverOutline_BMvI- {\n  stroke-width: 0.5px;\n  stroke: #333;\n}\n\n.InformationDiagram_chord_2djEw {\n  fill: #bbb;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n}\n\n.InformationDiagram_pmiChord_qBBnA {\n  fill: #ccc;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.5s;\n}\n\n.InformationDiagram_pmiChord_qBBnA.positive {\n  fill: #33b733;\n}\n\n.InformationDiagram_pmiChord_qBBnA.negative {\n  fill: #b73333;\n}\n\n.InformationDiagram_pmiChord_qBBnA.highlight-pmi {\n  fill: #ffff00;\n  fill-opacity: 0.5;\n  stroke: #000;\n  stroke-width: .25px;\n  transition: fill 0.3s;\n}\n\n.InformationDiagram_chord_2djEw:hover, .InformationDiagram_pmichord_1eNKe:hover {\n  fill: #b73333;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.fade {\n  display: none;\n}\n\n.InformationDiagram_informationDiagramSvg_2nnrn path.htile.hilite {\n  fill: blue;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
+		"jsMouseArc": "InformationDiagram_jsMouseArc__3h97",
 		"hidden": "InformationDiagram_hidden_2L0Gb",
 		"infoDiagramContainer": "InformationDiagram_infoDiagramContainer_3cx2M",
 		"statusBarContainer": "InformationDiagram_statusBarContainer_2h5cy",
@@ -39666,6 +39680,8 @@
 		"group": "InformationDiagram_group_12rpU",
 		"glyph": "InformationDiagram_glyph_3vWD6",
 		"mainCircle": "InformationDiagram_mainCircle_1RwCc",
+		"mouseArcViz": "InformationDiagram_mouseArcViz_2x1WF InformationDiagram_jsMouseArc__3h97",
+		"mouseArcHidden": "InformationDiagram_mouseArcHidden_3n7Cf InformationDiagram_jsMouseArc__3h97",
 		"hoverOutline": "InformationDiagram_hoverOutline_BMvI-",
 		"chord": "InformationDiagram_chord_2djEw",
 		"pmiChord": "InformationDiagram_pmiChord_qBBnA",
@@ -43799,15 +43815,6 @@
 
 	module.exports = {
 		"defaultEmptyAnnotationName": "Empty",
-		"isA": [
-			"AnnotationStoreProvider",
-			"FieldProvider",
-			"Histogram1DProvider",
-			"Histogram2DProvider",
-			"HistogramBinHoverProvider",
-			"LegendProvider",
-			"MutualInformationProvider"
-		],
 		"fields": {
 			"percentage of team minutes": {
 				"range": [

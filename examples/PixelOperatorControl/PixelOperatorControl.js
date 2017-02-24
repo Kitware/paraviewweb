@@ -22772,7 +22772,8 @@
 	    maxWidth: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.string,
 	    editing: _react2.default.PropTypes.bool,
-	    escEndsEdit: _react2.default.PropTypes.bool
+	    escEndsEdit: _react2.default.PropTypes.bool,
+	    blurEndsEdit: _react2.default.PropTypes.bool
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -22781,7 +22782,8 @@
 	      className: '',
 	      icon: '' + _TextInputWidget2.default.checkIcon,
 	      editing: false,
-	      escEndsEdit: false
+	      escEndsEdit: false,
+	      blurEndsEdit: true
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -22789,6 +22791,9 @@
 	      editing: this.props.editing,
 	      valueRep: this.props.value
 	    };
+	  },
+	  isEditing: function isEditing() {
+	    return this.state.editing;
 	  },
 	  valueChange: function valueChange(e) {
 	    var newVal = e.target.value;
@@ -22811,12 +22816,14 @@
 	    if (!this.textInput) return;
 	    if (e.key === 'Enter' || e.key === 'Return') {
 	      this.textInput.blur();
+	      if (!this.props.blurEndsEdit) this.endEditing();
 	    } else if (e.key === 'Escape') {
 	      this.setState({ valueRep: this.props.value });
 	      if (this.props.escEndsEdit) {
 	        // needs to happen at next idle so it happens after setState.
 	        setImmediate(function () {
-	          return _this.textInput.blur();
+	          _this.textInput.blur();
+	          if (!_this.props.blurEndsEdit) _this.endEditing();
 	        });
 	      }
 	    }
@@ -22835,7 +22842,7 @@
 	        placeholder: this.props.placeholder,
 	        style: inlineStyle,
 	        onChange: this.valueChange,
-	        onBlur: this.endEditing,
+	        onBlur: this.props.blurEndsEdit ? this.endEditing : null,
 	        onKeyUp: this.handleKeyUp,
 	        ref: function ref(c) {
 	          _this2.textInput = c;
