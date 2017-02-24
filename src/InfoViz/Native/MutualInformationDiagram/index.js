@@ -224,6 +224,10 @@ function informationDiagram(publicAPI, model) {
 
     const histoArc = d3.svg.arc().innerRadius(outerRadius + 10);
 
+    const insideArc = d3.svg.arc()
+      .innerRadius(1)
+      .outerRadius(innerRadius);
+
     const layout = d3
       .layout
       .chord()
@@ -233,7 +237,6 @@ function informationDiagram(publicAPI, model) {
 
     const path = d3.svg.chord().radius(innerRadius);
 
-    // Remove previous SVG
     let svgParent = d3.select(model.container).select('svg');
     let svg = svgParent.select('.main-circle');
     if (svgParent.empty()) {
@@ -428,7 +431,7 @@ function informationDiagram(publicAPI, model) {
     function drawPMIAllBinsTwoVars() {
       const d = model.renderState.pmiAllBinsTwoVars.d;
       if (d.source.index === d.target.index) {
-        console.log('Cannot render self-PMI', model.mutualInformationData.vmap[d.source.index].name);
+        // console.log('Cannot render self-PMI', model.mutualInformationData.vmap[d.source.index].name);
         return;
       }
 
@@ -524,6 +527,7 @@ function informationDiagram(publicAPI, model) {
         const info = findGroupAndBin(overCoords);
         let clearStatusBar = false;
         let groupHoverName = null;
+        let groupInsideName = null;
         let highlightAllGroups = false;
 
         for (let idx = 0; idx < variableList.length; ++idx) {
@@ -535,6 +539,7 @@ function informationDiagram(publicAPI, model) {
           clearStatusBar = true;
         } else if (info.found) {
           if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
+          else if (info.radius <= innerRadius) groupInsideName = info.group;
 
           let binMap = {};
           if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
@@ -565,6 +570,10 @@ function informationDiagram(publicAPI, model) {
         svg
           .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
           .classed(style.hoverOutline, (data, idx) => highlightAllGroups || model.mutualInformationData.vmap[idx].name === groupHoverName);
+
+        // show mouse-interaction guide inside the legend arcs.
+        svg.selectAll('g.group').select(`.${style.jsMouseArc}`)
+          .attr('class', (data, idx) => (model.mutualInformationData.vmap[idx].name === groupInsideName ? style.mouseArcViz : style.mouseArcHidden));
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');
@@ -655,6 +664,11 @@ function informationDiagram(publicAPI, model) {
     groupEnter
       .append('path')
       .attr('id', (d, i) => `${model.instanceID}-group${i}`);
+    // add mouse-interaction arc - show where mouse affects this group's chords.
+    groupEnter
+      .append('path')
+      .classed(style.mouseArcHidden, true);
+
 
     // Add a text label.
     const groupText = groupEnter
@@ -679,6 +693,9 @@ function informationDiagram(publicAPI, model) {
     // enter + update items.
     const groupPath = group.select('path')
       .attr('d', arc);
+    group.select(`.${style.jsMouseArc}`)
+      .attr('d', insideArc);
+
     // Remove the labels that don't fit, or shorten label, using ...
     group
       .select('text').select('textPath')
@@ -724,9 +741,9 @@ function informationDiagram(publicAPI, model) {
       // .remove(); ie11 throws errors if we use .remove() - hide instead.
 
 
-    // Add group for glyph
-    if (getLegend) {
-      group.each(function addLegend(glyphData) {
+    // Add group for glyph, or assign color as fallback.
+    group.each(function addLegend(glyphData) {
+      if (getLegend) {
         let glyph = d3.select(this).select('g.glyph');
         if (glyph.empty()) {
           glyph = d3.select(this)
@@ -766,8 +783,18 @@ function informationDiagram(publicAPI, model) {
           // glyph.remove(); ie11 objects, hide instead.
           glyph.attr('display', 'none');
         }
-      });
-    }
+      } else {
+        model.mutualInformationData.vmap[glyphData.index].color = cmap(glyphData.index);
+      }
+    });
+
+    // Add the color to the group arc
+    group
+      .select('path')
+      .style('fill', d => model.mutualInformationData.vmap[d.index].color || 'red');
+    group
+      .select(`.${style.jsMouseArc}`)
+      .style('fill', d => model.mutualInformationData.vmap[d.index].color || 'red');
 
     function getParamBinRange(index, numberOfBins, paramName) {
       const paramRange = model.provider.getField(paramName).range;
@@ -790,16 +817,6 @@ function informationDiagram(publicAPI, model) {
         const gvar = model.histogramData[gname];
 
         if (!gvar) return;
-
-        // Set the color if it hasn't already been set
-        if (!getLegend) {
-          model.mutualInformationData.vmap[groupData.index].color = cmap(groupData.index);
-        }
-
-        // Add the color to the group arc
-        d3.select(this)
-          .select('path')
-          .style('fill', model.mutualInformationData.vmap[groupData.index].color || 'red');
 
         groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
 
