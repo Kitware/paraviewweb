@@ -39673,7 +39673,11 @@
 	  if (txt === null) {
 	    cb('No such resource ' + url);
 	  } else {
-	    cb(null, (0, _base64Js.toByteArray)(txt));
+	    var uint8array = (0, _base64Js.toByteArray)(txt);
+	    var buffer = new ArrayBuffer(uint8array.length);
+	    var view = new Uint8Array(buffer);
+	    view.set(uint8array);
+	    cb(null, buffer);
 	  }
 	}
 
