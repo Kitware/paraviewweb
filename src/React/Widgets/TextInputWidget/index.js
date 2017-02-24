@@ -15,6 +15,7 @@ export default React.createClass({
     icon: React.PropTypes.string,
     editing: React.PropTypes.bool,
     escEndsEdit: React.PropTypes.bool,
+    blurEndsEdit: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -24,6 +25,7 @@ export default React.createClass({
       icon: `${style.checkIcon}`,
       editing: false,
       escEndsEdit: false,
+      blurEndsEdit: true,
     };
   },
 
@@ -32,6 +34,10 @@ export default React.createClass({
       editing: this.props.editing,
       valueRep: this.props.value,
     };
+  },
+
+  isEditing() {
+    return this.state.editing;
   },
 
   valueChange(e) {
@@ -55,11 +61,15 @@ export default React.createClass({
     if (!this.textInput) return;
     if (e.key === 'Enter' || e.key === 'Return') {
       this.textInput.blur();
+      if (!this.props.blurEndsEdit) this.endEditing();
     } else if (e.key === 'Escape') {
       this.setState({ valueRep: this.props.value });
       if (this.props.escEndsEdit) {
         // needs to happen at next idle so it happens after setState.
-        setImmediate(() => this.textInput.blur());
+        setImmediate(() => {
+          this.textInput.blur();
+          if (!this.props.blurEndsEdit) this.endEditing();
+        });
       }
     }
   },
@@ -75,7 +85,7 @@ export default React.createClass({
           placeholder={this.props.placeholder}
           style={inlineStyle}
           onChange={this.valueChange}
-          onBlur={this.endEditing}
+          onBlur={this.props.blurEndsEdit ? this.endEditing : null}
           onKeyUp={this.handleKeyUp}
           ref={(c) => { this.textInput = c; }}
         />
