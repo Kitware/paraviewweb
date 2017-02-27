@@ -43,7 +43,7 @@
         "font-awesome": "4.5.0",
         "normalize.css": "4.1.1",
 
-        "tonic-arctic-sample-data": "http://www.kitware.com/in-situ-data/npm/tonic-arctic-sample-data-1.2.2.tgz",
+        "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz",
 
         "kw-web-suite": "2.2.1",
         "kw-doc": "1.0.15",
