@@ -27,7 +27,7 @@ bodyElt.appendChild(container);
 
 const fieldSelectorContainer = document.createElement('div');
 fieldSelectorContainer.style.position = 'relative';
-fieldSelectorContainer.style.width = '40%';
+fieldSelectorContainer.style.width = '30%';
 fieldSelectorContainer.style.height = '250px';
 fieldSelectorContainer.style.float = 'left';
 bodyElt.appendChild(fieldSelectorContainer);
