@@ -159,8 +159,14 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  // need a unique groupID whenever a group is added.
-  let groupID = 0;
+  // track chord mode between renders
+  const pmiChordMode = {
+    mode: PMI_CHORD_MODE_NONE,
+    srcParam: null,
+    srcBin: null,
+    miIndex: -1,
+  };
+
 
   publicAPI.render = () => {
     // Extract provider data for local access
@@ -199,13 +205,6 @@ function informationDiagram(publicAPI, model) {
     d3.select(model.container).select('svg.information-diagram')
       .classed(style.informationDiagramSvgHide, false)
       .classed(style.informationDiagramSvgShow, true);
-
-    const pmiChordMode = {
-      mode: PMI_CHORD_MODE_NONE,
-      srcParam: null,
-      srcBin: null,
-      miIndex: -1,
-    };
 
     const outerHistoRadius = Math.min(width, height) / 2;
     const veryOutermostRadius = outerHistoRadius + 80;
@@ -652,7 +651,8 @@ function informationDiagram(publicAPI, model) {
     // Add a group per neighborhood.
     const group = svg
       .selectAll('.group')
-      .data(layout.groups, () => { groupID += 1; return groupID; });
+      // set a key === field name, so groups are re-used. Need a fall-back for removed fields, though.
+      .data(layout.groups, d => (model.mutualInformationData.vmap[d.index] ? model.mutualInformationData.vmap[d.index].name : d.index));
     const groupEnter = group
       .enter()
       .append('g')
@@ -858,6 +858,11 @@ function informationDiagram(publicAPI, model) {
       pmiChordMode.srcParam = null;
       pmiChordMode.srcBin = null;
       pmiChordMode.miIndex = -1;
+      model.renderState = {
+        pmiAllBinsTwoVars: null,
+        pmiOneBinAllVars: null,
+        pmiHighlight: null,
+      };
       updateChordVisibility({ mi: { show: true } });
     }
     // do we need to reset?
@@ -926,14 +931,17 @@ function informationDiagram(publicAPI, model) {
         }
       });
 
-    if (model.renderState.pmiAllBinsTwoVars !== null) {
+    if (model.renderState.pmiAllBinsTwoVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ALL_BINS_TWO_VARS) {
       drawPMIAllBinsTwoVars();
-    } else if (model.renderState.pmiOneBinAllVars !== null) {
+    } else if (model.renderState.pmiOneBinAllVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS) {
       const { group: g, bin: b, d, i } = model.renderState.pmiOneBinAllVars;
       drawPMIOneBinAllVars(g, b)(d, i);
+    } else {
+      // only happens on 'needReset', above.
+      // showAllChords();
     }
 
-    if (model.renderState.pmiHighlight !== null) {
+    if (model.renderState.pmiHighlight !== null && pmiChordMode.mode !== PMI_CHORD_MODE_NONE) {
       findPmiChordsToHighlight();
     }
 
