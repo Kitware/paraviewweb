@@ -107,7 +107,7 @@
 
 	var fieldSelectorContainer = document.createElement('div');
 	fieldSelectorContainer.style.position = 'relative';
-	fieldSelectorContainer.style.width = '40%';
+	fieldSelectorContainer.style.width = '30%';
 	fieldSelectorContainer.style.height = '250px';
 	fieldSelectorContainer.style.float = 'left';
 	bodyElt.appendChild(fieldSelectorContainer);
@@ -29177,8 +29177,13 @@
 	    }
 	  };
 
-	  // need a unique groupID whenever a group is added.
-	  var groupID = 0;
+	  // track chord mode between renders
+	  var pmiChordMode = {
+	    mode: PMI_CHORD_MODE_NONE,
+	    srcParam: null,
+	    srcBin: null,
+	    miIndex: -1
+	  };
 
 	  publicAPI.render = function () {
 	    // Extract provider data for local access
@@ -29213,13 +29218,6 @@
 
 	    _d3.default.select(model.container).select('div.info-diagram-placeholder').classed(_InformationDiagram2.default.hidden, true);
 	    _d3.default.select(model.container).select('svg.information-diagram').classed(_InformationDiagram2.default.informationDiagramSvgHide, false).classed(_InformationDiagram2.default.informationDiagramSvgShow, true);
-
-	    var pmiChordMode = {
-	      mode: PMI_CHORD_MODE_NONE,
-	      srcParam: null,
-	      srcBin: null,
-	      miIndex: -1
-	    };
 
 	    var outerHistoRadius = Math.min(width, height) / 2;
 	    var veryOutermostRadius = outerHistoRadius + 80;
@@ -29628,8 +29626,10 @@
 	    var cmap = _d3.default.scale.category20();
 
 	    // Add a group per neighborhood.
-	    var group = svg.selectAll('.group').data(layout.groups, function () {
-	      groupID += 1;return groupID;
+	    var group = svg.selectAll('.group')
+	    // set a key === field name, so groups are re-used. Need a fall-back for removed fields, though.
+	    .data(layout.groups, function (d) {
+	      return model.mutualInformationData.vmap[d.index] ? model.mutualInformationData.vmap[d.index].name : d.index;
 	    });
 	    var groupEnter = group.enter().append('g').classed('group', true).classed(_InformationDiagram2.default.group, true);
 
@@ -29801,6 +29801,11 @@
 	      pmiChordMode.srcParam = null;
 	      pmiChordMode.srcBin = null;
 	      pmiChordMode.miIndex = -1;
+	      model.renderState = {
+	        pmiAllBinsTwoVars: null,
+	        pmiOneBinAllVars: null,
+	        pmiHighlight: null
+	      };
 	      updateChordVisibility({ mi: { show: true } });
 	    }
 	    // do we need to reset?
@@ -29856,9 +29861,9 @@
 	      }
 	    });
 
-	    if (model.renderState.pmiAllBinsTwoVars !== null) {
+	    if (model.renderState.pmiAllBinsTwoVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ALL_BINS_TWO_VARS) {
 	      drawPMIAllBinsTwoVars();
-	    } else if (model.renderState.pmiOneBinAllVars !== null) {
+	    } else if (model.renderState.pmiOneBinAllVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS) {
 	      var _model$renderState$pm2 = model.renderState.pmiOneBinAllVars;
 	      var g = _model$renderState$pm2.group;
 	      var b = _model$renderState$pm2.bin;
@@ -29866,9 +29871,12 @@
 	      var i = _model$renderState$pm2.i;
 
 	      drawPMIOneBinAllVars(g, b)(d, i);
+	    } else {
+	      // only happens on 'needReset', above.
+	      // showAllChords();
 	    }
 
-	    if (model.renderState.pmiHighlight !== null) {
+	    if (model.renderState.pmiHighlight !== null && pmiChordMode.mode !== PMI_CHORD_MODE_NONE) {
 	      findPmiChordsToHighlight();
 	    }
 
