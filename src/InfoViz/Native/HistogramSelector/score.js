@@ -262,7 +262,7 @@ export default function init(inPublicAPI, inModel) {
     // Override icon if disabled
     if (publicAPI.isFieldActionDisabled(def.name, 'save')) {
       iconCell.select(`.${style.jsSaveIcon}`)
-        .attr('class', style.hideSaveIcon);
+        .attr('class', style.noSaveIcon);
     }
 
     if (publicAPI.isFieldActionDisabled(def.name, 'score')) {

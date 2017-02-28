@@ -176,31 +176,30 @@
   display: none;
 }
 
-.noSaveIcon {
+.saveIcon {
   composes: jsSaveIcon;
   composes: icon;
   composes: legendIcon;
 }
+.noSaveIcon {
+  composes: saveIcon;
+  display: none;
+}
 .unchangedSaveIcon {
-  composes: noSaveIcon;
+  composes: saveIcon;
   composes: fa-bookmark-o from 'font-awesome/css/font-awesome.css';
 }
 .unchangedActiveSaveIcon {
-  composes: noSaveIcon;
+  composes: saveIcon;
   composes: fa-bookmark from 'font-awesome/css/font-awesome.css';
 }
 .modifiedSaveIcon {
-  composes: noSaveIcon;
+  composes: saveIcon;
   composes: fa-floppy-o from 'font-awesome/css/font-awesome.css';
 }
 .newSaveIcon {
-  composes: noSaveIcon;
+  composes: saveIcon;
   composes: fa-plus from 'font-awesome/css/font-awesome.css';
-}
-
-.hideSaveIcon {
-  composes: jsSaveIcon;
-  display: none;
 }
 
 .histogramSelectorCell {
