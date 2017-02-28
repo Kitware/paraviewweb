@@ -16,6 +16,7 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     escEndsEdit: React.PropTypes.bool,
     blurEndsEdit: React.PropTypes.bool,
+    grabFocus: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -26,6 +27,7 @@ export default React.createClass({
       editing: false,
       escEndsEdit: false,
       blurEndsEdit: true,
+      grabFocus: false,
     };
   },
 
@@ -34,6 +36,12 @@ export default React.createClass({
       editing: this.props.editing,
       valueRep: this.props.value,
     };
+  },
+
+  componentDidMount() {
+    if (this.props.grabFocus && this.textInput) {
+      this.textInput.focus();
+    }
   },
 
   isEditing() {
