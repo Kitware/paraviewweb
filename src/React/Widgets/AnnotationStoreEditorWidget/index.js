@@ -5,8 +5,15 @@ import style from 'PVWStyle/ReactWidgets/AnnotationStoreEditorWidget.mcss';
 import ActionListWidget from '../ActionListWidget';
 import AnnotationEditorWidget from '../AnnotationEditorWidget';
 
-function button(label, action) {
-  return <div key={label} className={style.button} onClick={action}>{label}</div>;
+function button(label, action, iconClass) {
+  return (
+    <div key={label} className={style.button} onClick={action}>
+      {label}
+      {iconClass &&
+        <i className={iconClass} />
+      }
+    </div>
+  );
 }
 
 export default function annotationStoreEditorWidget(props) {
@@ -35,14 +42,14 @@ export default function annotationStoreEditorWidget(props) {
   if (props.annotation && props.annotations[props.annotation.id]) {
     const storedSelectedAnnotation = props.annotations[props.annotation.id];
     if (storedSelectedAnnotation.generation === props.annotation.generation) {
-      buttons.push(button('Delete', storeAction('delete')));
+      buttons.push(button('Delete', storeAction('delete'), style.deleteIcon));
     } else {
-      buttons.push(button('Save as new', storeAction('new')));
-      buttons.push(button('Revert', storeAction('reset')));
-      buttons.push(button('Update', storeAction('save')));
+      buttons.push(button('Save as new', storeAction('new'), style.saveAsNewIcon));
+      buttons.push(button('Revert', storeAction('reset'), style.revertIcon));
+      buttons.push(button('Update', storeAction('save'), style.updateIcon));
     }
   } else if (props.annotation && props.annotation.selection.type !== 'empty' && !props.annotation.readOnly) {
-    buttons.push(button('Save', storeAction('new')));
+    buttons.push(button('Save', storeAction('new'), style.saveAsNewIcon));
   }
 
   return (
@@ -64,7 +71,7 @@ export default function annotationStoreEditorWidget(props) {
       </div>
       <div className={style.buttonLine}>
         <section className={style.buttonsSection}>
-          <div className={style.button} onClick={() => props.onChange('pushEmpty')}>Reset</div>
+          {button('Reset', () => props.onChange('pushEmpty'), style.resetIcon)}
         </section>
         <section className={style.buttonsSection}>
           {buttons}
