@@ -29272,17 +29272,22 @@
 	          glyphSize += 1;
 	        }
 
-	        var glyphGroup = svg.selectAll('g.glyphs').data(labelDataModel);
+	        var glyphGroup = svg.selectAll('g.glyphs').data(labelDataModel, function (d) {
+	          return d ? d.name : 'none';
+	        });
 
 	        glyphGroup.exit().remove();
 
-	        glyphGroup.enter().append('g').classed('glyphs', true);
+	        var glyphEnter = glyphGroup.enter().append('g').classed('glyphs', true);
 
 	        // Create nested structure
-	        var svgGroup = glyphGroup.selectAll('svg').data([0]);
-	        svgGroup.enter().append('svg');
-	        var useGroup = svgGroup.selectAll('use').data([0]);
-	        useGroup.enter().append('use');
+	        var svgGroup = glyphEnter.append('svg');
+	        svgGroup.append('use');
+
+	        // add a tooltip
+	        glyphEnter.append('title').text(function (d) {
+	          return d.name;
+	        });
 
 	        glyphGroup.attr('transform', function (d, i) {
 	          return 'translate(' + (d.centerX - glyphSize * 0.5) + ', ' + glyphPadding + ')';
@@ -29292,7 +29297,7 @@
 	          }
 	        });
 
-	        glyphGroup.each(function applyLegendStyle(d, i) {
+	        glyphEnter.each(function applyLegendStyle(d, i) {
 	          _d2.default.select(this).select('svg').attr('fill', d.legend.color).attr('stroke', 'black').attr('width', glyphSize).attr('height', glyphSize).style('color', d.legend.color) // Firefox SVG use color bug workaround fix
 	          .classed(_ParallelCoordinates2.default.clickable, d.annotated).select('use').classed(_ParallelCoordinates2.default.colorToFill, true) // Firefox SVG use color bug workaround fix
 	          .classed(_ParallelCoordinates2.default.blackStroke, true).attr('xlink:href', d.legend.shape);
