@@ -21492,7 +21492,8 @@
 	    icon: _react2.default.PropTypes.string,
 	    editing: _react2.default.PropTypes.bool,
 	    escEndsEdit: _react2.default.PropTypes.bool,
-	    blurEndsEdit: _react2.default.PropTypes.bool
+	    blurEndsEdit: _react2.default.PropTypes.bool,
+	    grabFocus: _react2.default.PropTypes.bool
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -21502,7 +21503,8 @@
 	      icon: '' + _TextInputWidget2.default.checkIcon,
 	      editing: false,
 	      escEndsEdit: false,
-	      blurEndsEdit: true
+	      blurEndsEdit: true,
+	      grabFocus: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -21510,6 +21512,11 @@
 	      editing: this.props.editing,
 	      valueRep: this.props.value
 	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    if (this.props.grabFocus && this.textInput) {
+	      this.textInput.focus();
+	    }
 	  },
 	  isEditing: function isEditing() {
 	    return this.state.editing;

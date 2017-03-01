@@ -29646,31 +29646,39 @@
 	    .attr('dy', 15);
 
 	    if (!model.textLengthMap) model.textLengthMap = {};
-	    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
-	    var textPath = groupText.append('textPath').attr('xlink:href', '#straight-text-path').attr('startOffset', '25%').text(function (d, i) {
+	    groupText.append('textPath').attr('startOffset', '25%').text(function (d, i) {
 	      return model.mutualInformationData.vmap[i].name;
-	    }).each(function textLen(d, i) {
-	      model.textLengthMap[model.mutualInformationData.vmap[i].name] = this.getComputedTextLength();
-	    });
-
-	    textPath.attr('xlink:href', function (d, i) {
-	      return '#' + model.instanceID + '-group' + i;
 	    });
 
 	    // enter + update items.
 	    var groupPath = group.select('path').attr('d', arc);
 	    group.select('.' + _InformationDiagram2.default.jsMouseArc).attr('d', insideArc);
 
+	    var textPath = group.select('text').select('textPath');
+
+	    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
+	    textPath.filter(function (d) {
+	      return !model.textLengthMap[model.mutualInformationData.vmap[d.index].name];
+	    }).text(function (d) {
+	      return model.mutualInformationData.vmap[d.index].name;
+	    }).attr('xlink:href', '#straight-text-path').each(function textLen(d) {
+	      model.textLengthMap[model.mutualInformationData.vmap[d.index].name] = this.getComputedTextLength();
+	    });
+
+	    textPath.attr('xlink:href', function (d, i) {
+	      return '#' + model.instanceID + '-group' + d.index;
+	    })
 	    // Remove the labels that don't fit, or shorten label, using ...
-	    group.select('text').select('textPath').each(function truncate(d, i) {
+	    .each(function truncate(d, i) {
 	      d.textShown = true;
 	      var availLength = groupPath[0][d.index].getTotalLength() / 2 - deltaRadius - model.glyphSize;
 	      // shorten text based on string length vs initial total length.
-	      var fullText = model.mutualInformationData.vmap[d.index].name;
+	      var fullText = model.mutualInformationData.vmap[i].name;
 	      var textLength = model.textLengthMap[fullText];
 	      var strLength = fullText.length;
 	      // we fit! done.
 	      if (textLength <= availLength) {
+	        _d3.default.select(this).text(fullText);
 	        d.textLength = textLength;
 	        return;
 	      }
