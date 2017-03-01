@@ -71,3 +71,37 @@
 .button:hover {
   border-color: #777;
 }
+
+.icon {
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-lg from 'font-awesome/css/font-awesome.css';
+  user-select: none;
+  cursor: pointer;
+  padding: 1px 0px;
+  margin-left: 10px;
+}
+
+.saveAsNewIcon {
+  composes: icon;
+  composes: fa-plus from 'font-awesome/css/font-awesome.css';
+}
+
+.updateIcon {
+  composes: icon;
+  composes: fa-floppy-o from 'font-awesome/css/font-awesome.css';
+}
+
+.revertIcon {
+  composes: icon;
+  composes: fa-undo from 'font-awesome/css/font-awesome.css';
+}
+
+.resetIcon {
+  composes: icon;
+  composes: fa-bookmark-o from 'font-awesome/css/font-awesome.css';
+}
+
+.deleteIcon {
+  composes: icon;
+  composes: fa-trash-o from 'font-awesome/css/font-awesome.css';
+}

@@ -659,7 +659,6 @@ function informationDiagram(publicAPI, model) {
       .classed('group', true)
       .classed(style.group, true);
 
-
     // Add the group arc.
     groupEnter
       .append('path')
@@ -669,7 +668,6 @@ function informationDiagram(publicAPI, model) {
       .append('path')
       .classed(style.mouseArcHidden, true);
 
-
     // Add a text label.
     const groupText = groupEnter
       .append('text')
@@ -677,18 +675,10 @@ function informationDiagram(publicAPI, model) {
       .attr('dy', 15);
 
     if (!model.textLengthMap) model.textLengthMap = {};
-    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
-    const textPath = groupText
+    groupText
       .append('textPath')
-      .attr('xlink:href', '#straight-text-path')
       .attr('startOffset', '25%')
-      .text((d, i) => model.mutualInformationData.vmap[i].name)
-      .each(function textLen(d, i) {
-        model.textLengthMap[model.mutualInformationData.vmap[i].name] = this.getComputedTextLength();
-      });
-
-    textPath
-      .attr('xlink:href', (d, i) => `#${model.instanceID}-group${i}`);
+      .text((d, i) => model.mutualInformationData.vmap[i].name);
 
     // enter + update items.
     const groupPath = group.select('path')
@@ -696,18 +686,30 @@ function informationDiagram(publicAPI, model) {
     group.select(`.${style.jsMouseArc}`)
       .attr('d', insideArc);
 
-    // Remove the labels that don't fit, or shorten label, using ...
-    group
-      .select('text').select('textPath')
+    const textPath = group
+      .select('text').select('textPath');
+
+    // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
+    textPath.filter(d => (!model.textLengthMap[model.mutualInformationData.vmap[d.index].name]))
+      .text(d => model.mutualInformationData.vmap[d.index].name)
+      .attr('xlink:href', '#straight-text-path')
+      .each(function textLen(d) {
+        model.textLengthMap[model.mutualInformationData.vmap[d.index].name] = this.getComputedTextLength();
+      });
+
+    textPath
+      .attr('xlink:href', (d, i) => `#${model.instanceID}-group${d.index}`)
+      // Remove the labels that don't fit, or shorten label, using ...
       .each(function truncate(d, i) {
         d.textShown = true;
         const availLength = ((groupPath[0][d.index].getTotalLength() / 2) - deltaRadius - model.glyphSize);
         // shorten text based on string length vs initial total length.
-        const fullText = model.mutualInformationData.vmap[d.index].name;
+        const fullText = model.mutualInformationData.vmap[i].name;
         const textLength = model.textLengthMap[fullText];
         const strLength = fullText.length;
         // we fit! done.
         if (textLength <= availLength) {
+          d3.select(this).text(fullText);
           d.textLength = textLength;
           return;
         }
