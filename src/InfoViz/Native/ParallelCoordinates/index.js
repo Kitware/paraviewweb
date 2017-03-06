@@ -852,6 +852,14 @@ function parallelCoordinate(publicAPI, model) {
       model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
         ({ name, range: model.provider.getField(name).range })
       ));
+
+      if (model.provider.isA('Histogram2DProvider')) {
+        model.histogram2DDataSubscription.update(model.axes.getAxesPairs());
+      }
+
+      if (model.provider.isA('SelectionProvider')) {
+        model.selectionDataSubscription.update(model.axes.getAxesPairs());
+      }
     }));
     // Use initial state
     model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>

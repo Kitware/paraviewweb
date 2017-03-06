@@ -238,7 +238,8 @@ export default React.createClass({
 
         actives.forEach((idx) => {
           const { id, parent, name, visible } = nodes[idx];
-          changeSet.push({ id, parent, name, visible, active });
+          const userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
+          changeSet.push(Object.assign({ id, parent, name, visible, active }, userData));
         });
 
         this.props.onChange({ type: 'active', changeSet });
@@ -257,7 +258,8 @@ export default React.createClass({
     if (this.props.onChange) {
       const { id, parent, name, visible } = node,
         active = (actives.indexOf(yVal) !== -1),
-        changeSet = [{ id, parent, name, visible, active }];
+        userData = node.userData ? { userData: node.userData } : null,
+        changeSet = [Object.assign({ id, parent, name, visible, active }, userData)];
 
       this.props.onChange({ type: 'visibility', changeSet });
     }
@@ -267,7 +269,8 @@ export default React.createClass({
     if (this.props.onChange) {
       const yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
         { id, parent, name, visible } = this.state.nodes[yVal],
-        changeSet = [{ id, parent, name, visible }];
+        userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null,
+        changeSet = [Object.assign({ id, parent, name, visible }, userData)];
 
       this.props.onChange({ type: 'delete', changeSet });
     }

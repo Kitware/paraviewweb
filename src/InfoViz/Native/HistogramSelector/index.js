@@ -48,8 +48,6 @@ function histogramSelector(publicAPI, model) {
 
   let displayOnlySelected = false;
 
-  let lastNumFields = 0;
-
   const scoreHelper = score(publicAPI, model);
 
   // This function modifies the Transform property
@@ -207,7 +205,6 @@ function histogramSelector(publicAPI, model) {
     if (index < 0) index = fieldNames.length - 1;
 
     model.singleModeName = fieldNames[index];
-    lastNumFields = 0;
     publicAPI.render();
   }
 
@@ -406,8 +403,7 @@ function histogramSelector(publicAPI, model) {
       return;
     }
 
-    const updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
-
+    updateSizeInformation(model.singleModeName !== null);
     let fieldNames = getCurrentFieldNames();
 
     updateHeader(fieldNames.length);
@@ -416,12 +412,14 @@ function histogramSelector(publicAPI, model) {
       fieldNames = [model.singleModeName];
     }
 
-    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
-      lastNumFields = fieldNames.length;
-
+    // If we find down the road that it's too expensive to re-populate the nest
+    // all the time, we can try to come up with the proper guards that make sure
+    // we do whenever we need it, but not more.  For now, we just make sure we
+    // always get the updates we need.
+    if (fieldNames.length > 0) {
       // get the data and put it into the nest based on the
       // number of boxesPerRow
-      const mungedData = fieldNames.map((name) => {
+      const mungedData = fieldNames.filter(name => model.fieldData[name]).map((name) => {
         const d = model.fieldData[name];
         return d;
       });
@@ -784,6 +782,13 @@ function histogramSelector(publicAPI, model) {
     });
   }
 
+  function createFieldData(fieldName) {
+    return Object.assign(
+      model.fieldData[fieldName] || {},
+      model.provider.getField(fieldName),
+      scoreHelper.defaultFieldData());
+  }
+
   // Auto unmount on destroy
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 
@@ -794,15 +799,24 @@ function histogramSelector(publicAPI, model) {
     }
 
     fieldNames.forEach((name) => {
-      model.fieldData[name] = Object.assign(
-        model.fieldData[name] || {},
-        model.provider.getField(name),
-        scoreHelper.defaultFieldData());
+      model.fieldData[name] = createFieldData(name);
     });
 
     model.subscriptions.push(model.provider.onFieldChange((field) => {
-      Object.assign(model.fieldData[field.name], field);
-      publicAPI.render();
+      if (field && model.fieldData[field.name]) {
+        Object.assign(model.fieldData[field.name], field);
+        publicAPI.render();
+      } else {
+        if (field) {
+          model.fieldData[field.name] = createFieldData(field.name);
+        }
+        model.histogram1DDataSubscription.update(
+          model.provider.getFieldNames(),
+          {
+            numberOfBins: model.numberOfBins,
+            partial: true,
+          });
+      }
     }));
   }
 
@@ -859,9 +873,7 @@ function histogramSelector(publicAPI, model) {
         if (annotation.selection.type === 'partition') {
           const fieldName = annotation.selection.partition.variable;
           if (model.fieldData[fieldName]) {
-            model.fieldData[fieldName].annotation = null;
-            model.fieldData[fieldName].dividers = undefined;
-            model.fieldData[fieldName].editScore = false;
+            scoreHelper.clearFieldAnnotation(fieldName);
             publicAPI.render(fieldName);
           }
         }

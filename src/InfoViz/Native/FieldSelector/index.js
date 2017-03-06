@@ -264,8 +264,19 @@ function fieldSelector(publicAPI, model) {
 
   // Make sure default values get applied
   publicAPI.setContainer(model.container);
+
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
+
+  model.subscriptions.push(model.provider.onFieldChange(() => {
+    publicAPI.render();
+    model.histogram1DDataSubscription.update(
+      model.provider.getFieldNames(),
+      {
+        numberOfBins: model.numberOfBins,
+        partial: true,
+      });
+  }));
+
   if (model.fieldShowHistogram) {
     if (model.provider.isA('Histogram1DProvider')) {
       model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
