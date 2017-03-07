@@ -29585,6 +29585,11 @@
 	    triggerFieldChange(field);
 	  };
 
+	  publicAPI.removeField = function (name) {
+	    delete model.fields[name];
+	    triggerFieldChange();
+	  };
+
 	  publicAPI.getField = function (name) {
 	    return model.fields[name];
 	  };
@@ -31480,8 +31485,6 @@
 
 	  var displayOnlySelected = false;
 
-	  var lastNumFields = 0;
-
 	  var scoreHelper = (0, _score2.default)(publicAPI, model);
 
 	  // This function modifies the Transform property
@@ -31633,7 +31636,6 @@
 	    if (index < 0) index = fieldNames.length - 1;
 
 	    model.singleModeName = fieldNames[index];
-	    lastNumFields = 0;
 	    publicAPI.render();
 	  }
 
@@ -31806,8 +31808,7 @@
 	      return;
 	    }
 
-	    var updateBoxPerRow = updateSizeInformation(model.singleModeName !== null);
-
+	    updateSizeInformation(model.singleModeName !== null);
 	    var fieldNames = getCurrentFieldNames();
 
 	    updateHeader(fieldNames.length);
@@ -31816,12 +31817,16 @@
 	      fieldNames = [model.singleModeName];
 	    }
 
-	    if (updateBoxPerRow || fieldNames.length !== lastNumFields) {
-	      lastNumFields = fieldNames.length;
-
+	    // If we find down the road that it's too expensive to re-populate the nest
+	    // all the time, we can try to come up with the proper guards that make sure
+	    // we do whenever we need it, but not more.  For now, we just make sure we
+	    // always get the updates we need.
+	    if (fieldNames.length > 0) {
 	      // get the data and put it into the nest based on the
 	      // number of boxesPerRow
-	      var mungedData = fieldNames.map(function (name) {
+	      var mungedData = fieldNames.filter(function (name) {
+	        return model.fieldData[name];
+	      }).map(function (name) {
 	        var d = model.fieldData[name];
 	        return d;
 	      });
@@ -32141,6 +32146,10 @@
 	    });
 	  }
 
+	  function createFieldData(fieldName) {
+	    return Object.assign(model.fieldData[fieldName] || {}, model.provider.getField(fieldName), scoreHelper.defaultFieldData());
+	  }
+
 	  // Auto unmount on destroy
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 
@@ -32151,12 +32160,22 @@
 	    }
 
 	    fieldNames.forEach(function (name) {
-	      model.fieldData[name] = Object.assign(model.fieldData[name] || {}, model.provider.getField(name), scoreHelper.defaultFieldData());
+	      model.fieldData[name] = createFieldData(name);
 	    });
 
 	    model.subscriptions.push(model.provider.onFieldChange(function (field) {
-	      Object.assign(model.fieldData[field.name], field);
-	      publicAPI.render();
+	      if (field && model.fieldData[field.name]) {
+	        Object.assign(model.fieldData[field.name], field);
+	        publicAPI.render();
+	      } else {
+	        if (field) {
+	          model.fieldData[field.name] = createFieldData(field.name);
+	        }
+	        model.histogram1DDataSubscription.update(model.provider.getFieldNames(), {
+	          numberOfBins: model.numberOfBins,
+	          partial: true
+	        });
+	      }
 	    }));
 	  }
 
@@ -32210,9 +32229,7 @@
 	          if (annotation.selection.type === 'partition') {
 	            var fieldName = annotation.selection.partition.variable;
 	            if (model.fieldData[fieldName]) {
-	              model.fieldData[fieldName].annotation = null;
-	              model.fieldData[fieldName].dividers = undefined;
-	              model.fieldData[fieldName].editScore = false;
+	              scoreHelper.clearFieldAnnotation(fieldName);
 	              publicAPI.render(fieldName);
 	            }
 	          }
@@ -42874,6 +42891,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	// import downArrowImage from './down_arrow.png';
 
 	function init(inPublicAPI, inModel) {
@@ -42998,6 +43017,8 @@
 
 	  // communicate with the server which regions/dividers have changed.
 	  function sendScores(def) {
+	    var passive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
 	    var scoreData = dividersToPartition(def, model.scores);
 	    if (scoreData === null) {
 	      console.error('Cannot translate scores to send to provider');
@@ -43007,7 +43028,14 @@
 	      if (!scoreData.name) {
 	        scoreData.name = scoreData.selection.partition.variable + ' (partition)';
 	      }
-	      model.provider.setAnnotation(scoreData);
+	      if (!passive) {
+	        model.provider.setAnnotation(scoreData);
+	      } else if (model.provider.isA('AnnotationStoreProvider') && model.provider.getStoredAnnotation(scoreData.id)) {
+	        // Passive means we don't want to set the active annotation, but if there is
+	        // a stored annotation matching these score dividers, we still need to update
+	        // that stored annotation
+	        model.provider.updateStoredAnnotations(_defineProperty({}, scoreData.id, scoreData));
+	      }
 	    }
 	  }
 
@@ -43644,18 +43672,25 @@
 	    if (model.fieldData[paramName] && model.fieldData[paramName].hobj) {
 	      (function () {
 	        var def = model.fieldData[paramName];
-	        var hobj = model.fieldData[paramName].hobj;
-	        if (hobj.min !== oldRangeMin || hobj.max !== oldRangeMax) {
-	          def.dividers.forEach(function (divider, index) {
-	            if (oldRangeMax === oldRangeMin) {
-	              // space dividers evenly in the middle - i.e. punt.
-	              divider.value = (index + 1) / (def.dividers.length + 1) * (hobj.max - hobj.min) + hobj.min;
-	            } else {
-	              // this set the divider to hobj.min if the new hobj.min === hobj.max.
-	              divider.value = (divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin) * (hobj.max - hobj.min) + hobj.min;
+	        // Since we come in here whenever a new histogram gets pushed to the histo
+	        // selector, avoid rescaling dividers unless there is actually a partition
+	        // annotation on this field.
+	        if (showScore(def)) {
+	          (function () {
+	            var hobj = model.fieldData[paramName].hobj;
+	            if (hobj.min !== oldRangeMin || hobj.max !== oldRangeMax) {
+	              def.dividers.forEach(function (divider, index) {
+	                if (oldRangeMax === oldRangeMin) {
+	                  // space dividers evenly in the middle - i.e. punt.
+	                  divider.value = (index + 1) / (def.dividers.length + 1) * (hobj.max - hobj.min) + hobj.min;
+	                } else {
+	                  // this set the divider to hobj.min if the new hobj.min === hobj.max.
+	                  divider.value = (divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin) * (hobj.max - hobj.min) + hobj.min;
+	                }
+	              });
+	              sendScores(def, true);
 	            }
-	          });
-	          sendScores(def);
+	          })();
 	        }
 	      })();
 	    }
@@ -43913,6 +43948,13 @@
 	    }
 	  }
 
+	  function clearFieldAnnotation(fieldName) {
+	    model.fieldData[fieldName].annotation = null;
+	    model.fieldData[fieldName].dividers = undefined;
+	    model.fieldData[fieldName].regions = [model.defaultScore];
+	    model.fieldData[fieldName].editScore = false;
+	  }
+
 	  return {
 	    addSubscriptions: addSubscriptions,
 	    createGroups: createGroups,
@@ -43930,6 +43972,7 @@
 	    rescaleDividers: rescaleDividers,
 	    updateHeader: updateHeader,
 	    updateFieldAnnotations: updateFieldAnnotations,
+	    clearFieldAnnotation: clearFieldAnnotation,
 	    updateScoreIcons: updateScoreIcons
 	  };
 	}
@@ -44611,8 +44654,17 @@
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
+
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-	  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
+
+	  model.subscriptions.push(model.provider.onFieldChange(function () {
+	    publicAPI.render();
+	    model.histogram1DDataSubscription.update(model.provider.getFieldNames(), {
+	      numberOfBins: model.numberOfBins,
+	      partial: true
+	    });
+	  }));
+
 	  if (model.fieldShowHistogram) {
 	    if (model.provider.isA('Histogram1DProvider')) {
 	      model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (allHistogram1d) {

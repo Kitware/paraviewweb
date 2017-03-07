@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/launching_examples/pvw-deploy-opt-1.png">
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/launching_examples/pvw-deploy-opt-2.png">
 <meta property="og:image" content="https://kitware.github.io/paraviewweb/launching_examples/pvw-deploy-opt-3.png">
-<meta property="og:updated_time" content="2017-03-01T16:16:50.411Z">
+<meta property="og:updated_time" content="2017-03-07T01:11:01.036Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="Launching Examples Supported “Out-of-the-box”IntroductionAs discussed in the Multi-User Setup guide, there are three components required to deploy ParaViewWeb for multiple concurrent users.  Those com">
@@ -104,7 +104,7 @@
               </header>
               <div class="article-content" itemprop="articleBody">
                 <h1 id="Launching-Examples-Supported-“Out-of-the-box”" class="article-heading"><a href="#Launching-Examples-Supported-“Out-of-the-box”" class="headerlink" title="Launching Examples Supported “Out-of-the-box”"></a>Launching Examples Supported “Out-of-the-box”<a class="article-anchor" href="#Launching-Examples-Supported-“Out-of-the-box”" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>As discussed in the <a href="multi_user_setup.html">Multi-User Setup</a> guide, there are three components required to deploy ParaViewWeb for multiple concurrent users.  Those components are a front end, a launcher, and ParaViewWeb itself.  Quite simple, yes?  And yet because there is so much flexibility designed into the system components, there is a nearly infinite number of possibile deployment configurations that can be achieved out-of-the-box.</p>
-<p>We provide a Python implementation of the launcher component, which is described <a href="python_launcher.html">here</a>.  These are designed to be very flexible, while supporting the typical “showcase” deployment.  It is very important to note, however, that the launcher is just a possible implementation of the <a href="launcher_api.html">Launcher RESTful API</a>.  The provided launcher does not requires user to authenticate themselves before requesting resources, and does not supports limiting the number of compute hours for a given user, just to name two limitations.  In any real-world deployment of ParaViewWeb, for example in any HPC system, it is expected that launching of ParaViewWeb jobs will need to be done in a custom manner.  All HPC systems come with their own job scheduling frameworks, which will typically need to be used to start processes on the system.</p>
+<p>We provide a Python implementation of the launcher component, which is described <a href="python_launcher.html">here</a>.  These are designed to be very flexible, while supporting the typical “showcase” deployment.  It is very important to note, however, that the launcher is just a possible implementation of the <a href="launcher_api.html">Launcher RESTful API</a>.  The provided launcher does not requires user to authenticate themselves before requesting resources, and does not support limiting the number of compute hours for a given user, just to name two limitations.  In any real-world deployment of ParaViewWeb, for example in any HPC system, it is expected that launching of ParaViewWeb jobs will need to be done in a custom manner.  All HPC systems come with their own job scheduling frameworks, which will typically need to be used to start processes on the system.</p>
 <p>Having gotten that caveat out of the way, this document will describe several deployment configurations that can be achieved with an Apache front end along with the Python launcher.  In order to make the examples more concrete, the relevant configuration lines of the Apache virtual host as well as the launcher are given.</p>
 <p>As a final note before we dive into some examples, we want to mention that Kitware is always available to consult on real-world ParaViewWeb deployments where specialized or custom launching is involved.</p>
 <h2 id="First-Example-One-machine" class="article-heading"><a href="#First-Example-One-machine" class="headerlink" title="First Example: One machine"></a>First Example: One machine<a class="article-anchor" href="#First-Example-One-machine" aria-hidden="true"></a></h2><center><br><img src="launching_examples/pvw-deploy-opt-1.png"><br></center>
@@ -135,7 +135,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-03-01T16:16:50.411Z" itemprop="dateModified">Last updated: 2017-03-01</time>
+                <time class="article-footer-updated" datetime="2017-03-07T01:11:01.036Z" itemprop="dateModified">Last updated: 2017-03-07</time>
                 <a href="python_launcher.html" class="article-footer-prev" title="Python"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="graphics_on_ec2_g2.html" class="article-footer-next" title="EC2"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

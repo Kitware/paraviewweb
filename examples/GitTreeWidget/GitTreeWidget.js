@@ -29665,7 +29665,8 @@
 	            var name = _nodes$idx.name;
 	            var visible = _nodes$idx.visible;
 
-	            changeSet.push({ id: id, parent: parent, name: name, visible: visible, active: active });
+	            var userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
+	            changeSet.push(Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData));
 	          });
 
 	          _this.props.onChange({ type: 'active', changeSet: changeSet });
@@ -29689,7 +29690,8 @@
 	      var name = node.name;
 	      var visible = node.visible;
 	      var active = actives.indexOf(yVal) !== -1;
-	      var changeSet = [{ id: id, parent: parent, name: name, visible: visible, active: active }];
+	      var userData = node.userData ? { userData: node.userData } : null;
+	      var changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData)];
 
 	      this.props.onChange({ type: 'visibility', changeSet: changeSet });
 	    }
@@ -29702,7 +29704,8 @@
 	      var parent = _state$nodes$yVal.parent;
 	      var name = _state$nodes$yVal.name;
 	      var visible = _state$nodes$yVal.visible;
-	      var changeSet = [{ id: id, parent: parent, name: name, visible: visible }];
+	      var userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null;
+	      var changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible }, userData)];
 
 	      this.props.onChange({ type: 'delete', changeSet: changeSet });
 	    }

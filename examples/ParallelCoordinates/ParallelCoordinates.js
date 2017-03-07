@@ -29736,6 +29736,14 @@
 	      model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
 	        return { name: name, range: model.provider.getField(name).range };
 	      }));
+
+	      if (model.provider.isA('Histogram2DProvider')) {
+	        model.histogram2DDataSubscription.update(model.axes.getAxesPairs());
+	      }
+
+	      if (model.provider.isA('SelectionProvider')) {
+	        model.selectionDataSubscription.update(model.axes.getAxesPairs());
+	      }
 	    }));
 	    // Use initial state
 	    model.axes.updateAxes(model.provider.getActiveFieldNames().map(function (name) {
@@ -41320,8 +41328,17 @@
 
 	  // Make sure default values get applied
 	  publicAPI.setContainer(model.container);
+
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-	  model.subscriptions.push(model.provider.onFieldChange(publicAPI.render));
+
+	  model.subscriptions.push(model.provider.onFieldChange(function () {
+	    publicAPI.render();
+	    model.histogram1DDataSubscription.update(model.provider.getFieldNames(), {
+	      numberOfBins: model.numberOfBins,
+	      partial: true
+	    });
+	  }));
+
 	  if (model.fieldShowHistogram) {
 	    if (model.provider.isA('Histogram1DProvider')) {
 	      model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(function (allHistogram1d) {
@@ -42300,6 +42317,11 @@
 	    field.range = [].concat(field.range); // Make sure we copy the array
 	    model.fields[name] = field;
 	    triggerFieldChange(field);
+	  };
+
+	  publicAPI.removeField = function (name) {
+	    delete model.fields[name];
+	    triggerFieldChange();
 	  };
 
 	  publicAPI.getField = function (name) {
