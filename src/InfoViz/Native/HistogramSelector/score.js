@@ -117,6 +117,8 @@ export default function init(inPublicAPI, inModel) {
 
   // communicate with the server which regions/dividers have changed.
   function sendScores(def, passive = false) {
+    // when showing a threshold, don't communicate with provider.
+    if (def.lockAnnot) return;
     const scoreData = dividersToPartition(def, model.scores);
     if (scoreData === null) {
       console.error('Cannot translate scores to send to provider');
@@ -175,13 +177,19 @@ export default function init(inPublicAPI, inModel) {
       def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
       // set regions to 'no' | 'yes'
       def.regions = [0, 2];
-      sendScores(def);
-      // set mode that prevents editing the annotation, except for the single divider.
+      // set mode that prevents sending or editing the annotation, except for the single divider.
       def.lockAnnot = true;
+      // sendScores(def);
       setEditScore(def, true);
     } else {
       def.lockAnnot = false;
     }
+  };
+
+  publicAPI.getScoreThreshold = (fieldName) => {
+    const def = model.fieldData[fieldName];
+    if (!def.lockAnnot) console.log('Wrong mode for score threshold, arbitrary results.');
+    return def.dividers[0].value;
   };
 
   const scoredHeaderClick = (d) => {
