@@ -335,11 +335,8 @@ function histogramSelector(publicAPI, model) {
   // other histograms in the fields list is disabled.
   // Calling requestNumBoxesPerRow() re-enables switching.
   publicAPI.displaySingleHistogram = (fieldName, disableSwitch) => {
-    model.singleModeName = null;
-    model.singleModeSticky = false;
-    if (model.fieldData[fieldName]) {
-      toggleSingleModeEvt(model.fieldData[fieldName]);
-    }
+    model.singleModeName = fieldName;
+    model.scrollToName = fieldName;
     if (model.singleModeName && disableSwitch) {
       model.singleModeSticky = true;
     } else {
