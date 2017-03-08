@@ -31739,11 +31739,8 @@
 	  // other histograms in the fields list is disabled.
 	  // Calling requestNumBoxesPerRow() re-enables switching.
 	  publicAPI.displaySingleHistogram = function (fieldName, disableSwitch) {
-	    model.singleModeName = null;
-	    model.singleModeSticky = false;
-	    if (model.fieldData[fieldName]) {
-	      toggleSingleModeEvt(model.fieldData[fieldName]);
-	    }
+	    model.singleModeName = fieldName;
+	    model.scrollToName = fieldName;
 	    if (model.singleModeName && disableSwitch) {
 	      model.singleModeSticky = true;
 	    } else {
@@ -43019,6 +43016,8 @@
 	  function sendScores(def) {
 	    var passive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
+	    // when showing a threshold, don't communicate with provider.
+	    if (def.lockAnnot) return;
 	    var scoreData = dividersToPartition(def, model.scores);
 	    if (scoreData === null) {
 	      console.error('Cannot translate scores to send to provider');
@@ -43080,13 +43079,19 @@
 	      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
 	      // set regions to 'no' | 'yes'
 	      def.regions = [0, 2];
-	      sendScores(def);
-	      // set mode that prevents editing the annotation, except for the single divider.
+	      // set mode that prevents sending or editing the annotation, except for the single divider.
 	      def.lockAnnot = true;
+	      // sendScores(def);
 	      setEditScore(def, true);
 	    } else {
 	      def.lockAnnot = false;
 	    }
+	  };
+
+	  publicAPI.getScoreThreshold = function (fieldName) {
+	    var def = model.fieldData[fieldName];
+	    if (!def.lockAnnot) console.log('Wrong mode for score threshold, arbitrary results.');
+	    return def.dividers[0].value;
 	  };
 
 	  var scoredHeaderClick = function scoredHeaderClick(d) {
