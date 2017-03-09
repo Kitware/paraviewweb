@@ -43016,8 +43016,6 @@
 	  function sendScores(def) {
 	    var passive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	    // when showing a threshold, don't communicate with provider.
-	    if (def.lockAnnot) return;
 	    var scoreData = dividersToPartition(def, model.scores);
 	    if (scoreData === null) {
 	      console.error('Cannot translate scores to send to provider');
@@ -43026,6 +43024,9 @@
 	    if (model.provider.isA('SelectionProvider')) {
 	      if (!scoreData.name) {
 	        scoreData.name = scoreData.selection.partition.variable + ' (partition)';
+	        if (model.provider.isA('AnnotationStoreProvider')) {
+	          scoreData.name = model.provider.getNextStoredAnnotationName(scoreData.name);
+	        }
 	      }
 	      if (!passive) {
 	        model.provider.setAnnotation(scoreData);
@@ -43067,7 +43068,9 @@
 
 	  publicAPI.setDefaultScorePartition = function (fieldName) {
 	    var def = model.fieldData[fieldName];
-	    if (def) {
+	    if (!def) return;
+	    // possibly the best we can do - check for a threshold-like annotation
+	    if (!def.lockAnnot || !(def.regions && def.regions.length === 2 && def.regions[0] === 0 && def.regions[1] === 2)) {
 	      // create a divider halfway through.
 	      var _getHistRange3 = getHistRange(def);
 
@@ -43079,13 +43082,14 @@
 	      def.dividers = [createDefaultDivider(0.5 * (minRange + maxRange), 0)];
 	      // set regions to 'no' | 'yes'
 	      def.regions = [0, 2];
-	      // set mode that prevents sending or editing the annotation, except for the single divider.
+	      // clear any existing (local) annotation
+	      def.annotation = null;
+	      // set mode that prevents editing the annotation, except for the single divider.
 	      def.lockAnnot = true;
-	      // sendScores(def);
-	      setEditScore(def, true);
-	    } else {
-	      def.lockAnnot = false;
+	      sendScores(def);
 	    }
+	    // we might already have threshold annot, but need to score it.
+	    setEditScore(def, true);
 	  };
 
 	  publicAPI.getScoreThreshold = function (fieldName) {
@@ -43925,6 +43929,11 @@
 	      model.subscriptions.push(model.provider.onAnnotationChange(function (annotation) {
 	        if (annotation.selection.type === 'partition') {
 	          var field = annotation.selection.partition.variable;
+	          // ignore annotation if it's read-only and we aren't
+	          if (annotation.readOnly && model.readOnlyFields.indexOf(field) === -1) return;
+	          // Vice-versa: single mode, displaying read-only, ignore external annots.
+	          if (!annotation.readOnly && model.fieldData[field].lockAnnot) return;
+
 	          // respond to annotation.
 	          model.fieldData[field].annotation = annotation;
 	          partitionToDividers(annotation, model.fieldData[field], model.scores);
