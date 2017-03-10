@@ -329,6 +329,13 @@ function informationDiagram(publicAPI, model) {
           lastAnnotationPushed = model.provider.getAnnotation();
           if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
             lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+            if (lastAnnotationPushed.name === '') {
+              // set default range annotation name
+              AnnotationBuilder.setDefaultName(lastAnnotationPushed);
+              if (model.provider.isA('AnnotationStoreProvider')) {
+                lastAnnotationPushed.name = model.provider.getNextStoredAnnotationName(lastAnnotationPushed.name);
+              }
+            }
           } else {
             lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
               selection,
