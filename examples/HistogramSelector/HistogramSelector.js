@@ -43023,7 +43023,7 @@
 	    }
 	    if (model.provider.isA('SelectionProvider')) {
 	      if (!scoreData.name) {
-	        scoreData.name = scoreData.selection.partition.variable + ' (partition)';
+	        _AnnotationBuilder2.default.setDefaultName(scoreData);
 	        if (model.provider.isA('AnnotationStoreProvider')) {
 	          scoreData.name = model.provider.getNextStoredAnnotationName(scoreData.name);
 	        }
@@ -44348,6 +44348,28 @@
 	  return Object.assign({}, annotationObj, { generation: generation, id: id });
 	}
 
+	function setDefaultName(annotationObject) {
+	  if (annotationObject.selection.type === 'range') {
+	    var rangeNames = Object.keys(annotationObject.selection.range.variables);
+	    if (rangeNames.length > 0) {
+	      annotationObject.name = rangeNames[0];
+	      if (rangeNames.length > 1) {
+	        annotationObject.name += ' & ' + rangeNames[1];
+	      }
+	      if (rangeNames.length > 2) {
+	        annotationObject.name += ' &...';
+	      }
+	    } else {
+	      annotationObject.name = 'empty';
+	    }
+	    annotationObject.name += ' (range)';
+	  } else if (annotationObject.selection.type === 'partition') {
+	    annotationObject.name = annotationObject.selection.partition.variable + ' (partition)';
+	  } else {
+	    annotationObject.name = 'unknown';
+	  }
+	}
+
 	// ----------------------------------------------------------------------------
 
 	function markModified(annotationObject) {
@@ -44366,6 +44388,7 @@
 	  EMPTY_ANNOTATION: EMPTY_ANNOTATION,
 	  fork: fork,
 	  markModified: markModified,
+	  setDefaultName: setDefaultName,
 	  setInitialGenerationNumber: setInitialGenerationNumber,
 	  update: update,
 	  updateReadOnlyFlag: updateReadOnlyFlag
