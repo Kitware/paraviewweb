@@ -67,6 +67,28 @@ function fork(annotationObj) {
   return Object.assign({}, annotationObj, { generation, id });
 }
 
+function setDefaultName(annotationObject) {
+  if (annotationObject.selection.type === 'range') {
+    const rangeNames = Object.keys(annotationObject.selection.range.variables);
+    if (rangeNames.length > 0) {
+      annotationObject.name = rangeNames[0];
+      if (rangeNames.length > 1) {
+        annotationObject.name += ` & ${rangeNames[1]}`;
+      }
+      if (rangeNames.length > 2) {
+        annotationObject.name += ' &...';
+      }
+    } else {
+      annotationObject.name = 'empty';
+    }
+    annotationObject.name += ' (range)';
+  } else if (annotationObject.selection.type === 'partition') {
+    annotationObject.name = `${annotationObject.selection.partition.variable} (partition)`;
+  } else {
+    annotationObject.name = 'unknown';
+  }
+}
+
 // ----------------------------------------------------------------------------
 
 function markModified(annotationObject) {
@@ -86,6 +108,7 @@ export default {
   EMPTY_ANNOTATION,
   fork,
   markModified,
+  setDefaultName,
   setInitialGenerationNumber,
   update,
   updateReadOnlyFlag,
