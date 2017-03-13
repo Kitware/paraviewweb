@@ -42627,7 +42627,7 @@
 	    this.intensitySubscription = this.props.intensity.onChange(function () {
 	      _this.forceUpdate();
 	    });
-	    this.computationSubscription = this.props.intensity.onChange(function () {
+	    this.computationSubscription = this.props.computation.onChange(function () {
 	      _this.forceUpdate();
 	    });
 	  },
