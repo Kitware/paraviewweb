@@ -196,7 +196,7 @@ export default class VTKGeometryBuilder {
 
     // Handle data field
     this.meshMap[geo.name].colorArrayName = geo.fieldName;
-    const { actor, source, mapper, sha } = this.meshMap[geo.name];
+    const { actor, source, sha } = this.meshMap[geo.name];
     if (sha.field !== geo.sha.field || firstTime || Number.isFinite(geo.field)) {
       const fields = {
         POINT_DATA: source.getPointData(),
