@@ -25,7 +25,7 @@ export default React.createClass({
     this.intensitySubscription = this.props.intensity.onChange(() => {
       this.forceUpdate();
     });
-    this.computationSubscription = this.props.intensity.onChange(() => {
+    this.computationSubscription = this.props.computation.onChange(() => {
       this.forceUpdate();
     });
   },
