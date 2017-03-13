@@ -1,6 +1,8 @@
 import 'vtk.js/Sources/Common/DataModel/ImageData';
 import vtkDataArray from 'vtk.js/Sources/Common/Core/DataArray';
 
+import pako from 'pako';
+
 import vtk from 'vtk.js/Sources/vtk';
 import Monologue from 'monologue.js';
 import DataManager from '../DataManager';
@@ -28,7 +30,15 @@ export default class VTKImageDataModel {
 
       if (dataDescription && this.currentImageData) {
         delete dataDescription.ref;
-        const dataArray = vtkDataArray.newInstance(Object.assign({}, dataDescription, { values: new window[dataDescription.dataType](data.data) }));
+        let values = null;
+
+        if (this.fetchGzip) {
+          values = new window[dataDescription.dataType](pako.inflate(new Uint8Array(data.data)).buffer);
+        } else {
+          values = new window[dataDescription.dataType](data.data);
+        }
+
+        const dataArray = vtkDataArray.newInstance(Object.assign({}, dataDescription, { values }));
         this.currentImageData.get(dataDescription.location)[dataDescription.location].setScalars(dataArray);
         this.currentImageData.modified();
 
@@ -67,7 +77,10 @@ export default class VTKImageDataModel {
 
   loadScene(imageDataJSON) {
     if (imageDataJSON.processed) {
-      this.currentImageData = imageDataJSON.processed;
+      if (this.currentImageData !== imageDataJSON.processed) {
+        this.currentImageData = imageDataJSON.processed;
+        this.geometryReady(this.currentImageData);
+      }
     } else {
       const urls = [];
       this.dataMapping = {};
@@ -89,7 +102,6 @@ export default class VTKImageDataModel {
         });
 
         // Create image data
-        console.log('new image data');
         this.currentImageData = vtk(imageDataJSON);
         imageDataJSON.processed = this.currentImageData;
 
