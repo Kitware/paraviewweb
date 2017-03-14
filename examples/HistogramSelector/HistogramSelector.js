@@ -32151,12 +32151,11 @@
 	  model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 
 	  if (model.provider.isA('FieldProvider')) {
-	    var fieldNames = model.provider.getFieldNames();
 	    if (!model.fieldData) {
 	      model.fieldData = {};
 	    }
 
-	    fieldNames.forEach(function (name) {
+	    model.provider.getFieldNames().forEach(function (name) {
 	      model.fieldData[name] = createFieldData(name);
 	    });
 
@@ -32165,13 +32164,23 @@
 	        Object.assign(model.fieldData[field.name], field);
 	        publicAPI.render();
 	      } else {
-	        if (field) {
-	          model.fieldData[field.name] = createFieldData(field.name);
-	        }
-	        model.histogram1DDataSubscription.update(model.provider.getFieldNames(), {
-	          numberOfBins: model.numberOfBins,
-	          partial: true
-	        });
+	        (function () {
+	          var fieldNames = model.provider.getFieldNames();
+	          if (field) {
+	            model.fieldData[field.name] = createFieldData(field.name);
+	          } else {
+	            // check for deleted field. Delete our fieldData if so. Ensures subscription remains up-to-date.
+	            Object.keys(model.fieldData).forEach(function (name) {
+	              if (fieldNames.indexOf(name) === -1) {
+	                delete model.fieldData[name];
+	              }
+	            });
+	          }
+	          model.histogram1DDataSubscription.update(fieldNames, {
+	            numberOfBins: model.numberOfBins,
+	            partial: true
+	          });
+	        })();
 	      }
 	    }));
 	  }
