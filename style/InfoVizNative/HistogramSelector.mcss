@@ -51,6 +51,14 @@
   box-sizing: border-box;
 }
 
+/* fix a chrome bug with scrolling - must be rendered, full-height */
+.parameterScrollFix {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 1px;
+}
+
 .header {
   composes: jsHeader;
   font-family: "Optima", "Linux Biolinum", "URW Classico", sans;
