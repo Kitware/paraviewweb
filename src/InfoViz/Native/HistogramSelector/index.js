@@ -790,12 +790,11 @@ function histogramSelector(publicAPI, model) {
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 
   if (model.provider.isA('FieldProvider')) {
-    const fieldNames = model.provider.getFieldNames();
     if (!model.fieldData) {
       model.fieldData = {};
     }
 
-    fieldNames.forEach((name) => {
+    model.provider.getFieldNames().forEach((name) => {
       model.fieldData[name] = createFieldData(name);
     });
 
@@ -804,11 +803,19 @@ function histogramSelector(publicAPI, model) {
         Object.assign(model.fieldData[field.name], field);
         publicAPI.render();
       } else {
+        const fieldNames = model.provider.getFieldNames();
         if (field) {
           model.fieldData[field.name] = createFieldData(field.name);
+        } else {
+          // check for deleted field. Delete our fieldData if so. Ensures subscription remains up-to-date.
+          Object.keys(model.fieldData).forEach((name) => {
+            if (fieldNames.indexOf(name) === -1) {
+              delete model.fieldData[name];
+            }
+          });
         }
         model.histogram1DDataSubscription.update(
-          model.provider.getFieldNames(),
+          fieldNames,
           {
             numberOfBins: model.numberOfBins,
             partial: true,
