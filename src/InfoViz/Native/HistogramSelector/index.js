@@ -764,6 +764,7 @@ function histogramSelector(publicAPI, model) {
         .append('div')
         .classed(style.histogramSelector, true);
 
+      model.parameterList.append('span').classed(style.parameterScrollFix, true);
       publicAPI.resize();
 
       setImmediate(scoreHelper.updateFieldAnnotations);
