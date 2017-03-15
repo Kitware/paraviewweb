@@ -86,11 +86,11 @@
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _FieldSelector = __webpack_require__(351);
+	var _FieldSelector = __webpack_require__(368);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
-	var _state = __webpack_require__(355);
+	var _state = __webpack_require__(372);
 
 	var _state2 = _interopRequireDefault(_state);
 
@@ -42885,15 +42885,19 @@
 
 	var _d3 = _interopRequireDefault(_d2);
 
+	var _deepEquals = __webpack_require__(348);
+
+	var _deepEquals2 = _interopRequireDefault(_deepEquals);
+
 	var _HistogramSelector = __webpack_require__(337);
 
 	var _HistogramSelector2 = _interopRequireDefault(_HistogramSelector);
 
-	var _SelectionBuilder = __webpack_require__(348);
+	var _SelectionBuilder = __webpack_require__(365);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
-	var _AnnotationBuilder = __webpack_require__(349);
+	var _AnnotationBuilder = __webpack_require__(366);
 
 	var _AnnotationBuilder2 = _interopRequireDefault(_AnnotationBuilder);
 
@@ -42998,6 +43002,14 @@
 	    // Construct a partition annotation:
 	    var partitionAnnotation = null;
 	    if (def.annotation && !model.provider.shouldCreateNewAnnotation()) {
+	      // don't send a new selection unless it's changed.
+	      var saveGen = partitionSelection.generation;
+	      partitionSelection.generation = def.annotation.selection.generation;
+	      var changeSet = { score: def.regions };
+	      if (!(0, _deepEquals2.default)(partitionSelection, def.annotation.selection)) {
+	        partitionSelection.generation = saveGen;
+	        changeSet.selection = partitionSelection;
+	      }
 	      partitionAnnotation = _AnnotationBuilder2.default.update(def.annotation, { selection: partitionSelection, score: def.regions });
 	    } else {
 	      partitionAnnotation = _AnnotationBuilder2.default.annotation(partitionSelection, def.regions, 1, '');
@@ -43130,6 +43142,17 @@
 	    return count;
 	  }
 
+	  function annotationSameAsStored(annotation) {
+	    var storedAnnot = model.provider.getStoredAnnotation(annotation.id);
+	    if (!storedAnnot) return false;
+	    if (annotation.generation === storedAnnot.generation) return true;
+	    var savedGen = annotation.generation;
+	    annotation.generation = storedAnnot.generation;
+	    var ret = (0, _deepEquals2.default)(annotation, storedAnnot);
+	    annotation.generation = savedGen;
+	    return ret;
+	  }
+
 	  function createScoreIcons(iconCell) {
 	    if (!enabled()) return;
 	    // create/save partition annotation
@@ -43137,7 +43160,7 @@
 	      iconCell.append('i').classed(_HistogramSelector2.default.noSaveIcon, true).on('click', function (d) {
 	        if (model.provider.getStoredAnnotation) {
 	          var annotation = d.annotation;
-	          var isSame = model.provider.getStoredAnnotation(annotation.id) ? annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation : false;
+	          var isSame = annotationSameAsStored(annotation);
 	          if (!isSame) {
 	            model.provider.setStoredAnnotation(annotation.id, annotation);
 	          } else {
@@ -43163,7 +43186,7 @@
 	      // new/modified/unmodified annotation...
 	      if (def.annotation) {
 	        if (model.provider.getStoredAnnotation(def.annotation.id)) {
-	          var isSame = def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation;
+	          var isSame = annotationSameAsStored(def.annotation);
 	          if (isSame) {
 	            var isActive = def.annotation === model.provider.getAnnotation();
 	            iconCell.select('.' + _HistogramSelector2.default.jsSaveIcon).attr('class', isActive ? _HistogramSelector2.default.unchangedActiveSaveIcon : _HistogramSelector2.default.unchangedSaveIcon);
@@ -44004,6 +44027,528 @@
 
 /***/ },
 /* 348 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(349), __webpack_require__(350), __webpack_require__(353), __webpack_require__(354), __webpack_require__(363)], __WEBPACK_AMD_DEFINE_RESULT__ = function (is, isObject, isArray, objEquals, arrEquals) {
+
+	    /**
+	     * Recursively checks for same properties and values.
+	     */
+	    function deepEquals(a, b, callback){
+	        callback = callback || is;
+
+	        var bothObjects = isObject(a) && isObject(b);
+	        var bothArrays = !bothObjects && isArray(a) && isArray(b);
+
+	        if (!bothObjects && !bothArrays) {
+	            return callback(a, b);
+	        }
+
+	        function compare(a, b){
+	            return deepEquals(a, b, callback);
+	        }
+
+	        var method = bothObjects ? objEquals : arrEquals;
+	        return method(a, b, compare);
+	    }
+
+	    return deepEquals;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 349 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+
+	    /**
+	     * Check if both arguments are egal.
+	     */
+	    function is(x, y){
+	        // implementation borrowed from harmony:egal spec
+	        if (x === y) {
+	          // 0 === -0, but they are not identical
+	          return x !== 0 || 1 / x === 1 / y;
+	        }
+
+	        // NaN !== NaN, but they are identical.
+	        // NaNs are the only non-reflexive value, i.e., if x !== x,
+	        // then x is a NaN.
+	        // isNaN is broken: it converts its argument to number, so
+	        // isNaN("foo") => true
+	        return x !== x && y !== y;
+	    }
+
+	    return is;
+
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(351)], __WEBPACK_AMD_DEFINE_RESULT__ = function (isKind) {
+	    /**
+	     */
+	    function isObject(val) {
+	        return isKind(val, 'Object');
+	    }
+	    return isObject;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 351 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(352)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf) {
+	    /**
+	     * Check if value is from a specific "kind".
+	     */
+	    function isKind(val, kind){
+	        return kindOf(val) === kind;
+	    }
+	    return isKind;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 352 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+
+	    var _rKind = /^\[object (.*)\]$/,
+	        _toString = Object.prototype.toString,
+	        UNDEF;
+
+	    /**
+	     * Gets the "kind" of value. (e.g. "String", "Number", etc)
+	     */
+	    function kindOf(val) {
+	        if (val === null) {
+	            return 'Null';
+	        } else if (val === UNDEF) {
+	            return 'Undefined';
+	        } else {
+	            return _rKind.exec( _toString.call(val) )[1];
+	        }
+	    }
+	    return kindOf;
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 353 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(351)], __WEBPACK_AMD_DEFINE_RESULT__ = function (isKind) {
+	    /**
+	     */
+	    var isArray = Array.isArray || function (val) {
+	        return isKind(val, 'Array');
+	    };
+	    return isArray;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 354 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(355), __webpack_require__(356), __webpack_require__(350), __webpack_require__(349)], __WEBPACK_AMD_DEFINE_RESULT__ = function(hasOwn, every, isObject, is) {
+
+	    // Makes a function to compare the object values from the specified compare
+	    // operation callback.
+	    function makeCompare(callback) {
+	        return function(value, key) {
+	            return hasOwn(this, key) && callback(value, this[key]);
+	        };
+	    }
+
+	    function checkProperties(value, key) {
+	        return hasOwn(this, key);
+	    }
+
+	    /**
+	     * Checks if two objects have the same keys and values.
+	     */
+	    function equals(a, b, callback) {
+	        callback = callback || is;
+
+	        if (!isObject(a) || !isObject(b)) {
+	            return callback(a, b);
+	        }
+
+	        return (every(a, makeCompare(callback), b) &&
+	                every(b, checkProperties, a));
+	    }
+
+	    return equals;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 355 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+
+	    /**
+	     * Safer Object.hasOwnProperty
+	     */
+	     function hasOwn(obj, prop){
+	         return Object.prototype.hasOwnProperty.call(obj, prop);
+	     }
+
+	     return hasOwn;
+
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 356 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(357), __webpack_require__(359)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn, makeIterator) {
+
+	    /**
+	     * Object every
+	     */
+	    function every(obj, callback, thisObj) {
+	        callback = makeIterator(callback, thisObj);
+	        var result = true;
+	        forOwn(obj, function(val, key) {
+	            // we consider any falsy values as "false" on purpose so shorthand
+	            // syntax can be used to check property existence
+	            if (!callback(val, key, obj)) {
+	                result = false;
+	                return false; // break
+	            }
+	        });
+	        return result;
+	    }
+
+	    return every;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(355), __webpack_require__(358)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, forIn) {
+
+	    /**
+	     * Similar to Array/forEach but works over object properties and fixes Don't
+	     * Enum bug on IE.
+	     * based on: http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
+	     */
+	    function forOwn(obj, fn, thisObj){
+	        forIn(obj, function(val, key){
+	            if (hasOwn(obj, key)) {
+	                return fn.call(thisObj, obj[key], key, obj);
+	            }
+	        });
+	    }
+
+	    return forOwn;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 358 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(355)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn) {
+
+	    var _hasDontEnumBug,
+	        _dontEnums;
+
+	    function checkDontEnum(){
+	        _dontEnums = [
+	                'toString',
+	                'toLocaleString',
+	                'valueOf',
+	                'hasOwnProperty',
+	                'isPrototypeOf',
+	                'propertyIsEnumerable',
+	                'constructor'
+	            ];
+
+	        _hasDontEnumBug = true;
+
+	        for (var key in {'toString': null}) {
+	            _hasDontEnumBug = false;
+	        }
+	    }
+
+	    /**
+	     * Similar to Array/forEach but works over object properties and fixes Don't
+	     * Enum bug on IE.
+	     * based on: http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
+	     */
+	    function forIn(obj, fn, thisObj){
+	        var key, i = 0;
+	        // no need to check if argument is a real object that way we can use
+	        // it for arrays, functions, date, etc.
+
+	        //post-pone check till needed
+	        if (_hasDontEnumBug == null) checkDontEnum();
+
+	        for (key in obj) {
+	            if (exec(fn, obj, key, thisObj) === false) {
+	                break;
+	            }
+	        }
+
+
+	        if (_hasDontEnumBug) {
+	            var ctor = obj.constructor,
+	                isProto = !!ctor && obj === ctor.prototype;
+
+	            while (key = _dontEnums[i++]) {
+	                // For constructor, if it is a prototype object the constructor
+	                // is always non-enumerable unless defined otherwise (and
+	                // enumerated above).  For non-prototype objects, it will have
+	                // to be defined on this object, since it cannot be defined on
+	                // any prototype objects.
+	                //
+	                // For other [[DontEnum]] properties, check if the value is
+	                // different than Object prototype value.
+	                if (
+	                    (key !== 'constructor' ||
+	                        (!isProto && hasOwn(obj, key))) &&
+	                    obj[key] !== Object.prototype[key]
+	                ) {
+	                    if (exec(fn, obj, key, thisObj) === false) {
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	    function exec(fn, obj, key, thisObj){
+	        return fn.call(thisObj, obj[key], key, obj);
+	    }
+
+	    return forIn;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 359 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(360), __webpack_require__(361), __webpack_require__(362)], __WEBPACK_AMD_DEFINE_RESULT__ = function(identity, prop, deepMatches) {
+
+	    /**
+	     * Converts argument into a valid iterator.
+	     * Used internally on most array/object/collection methods that receives a
+	     * callback/iterator providing a shortcut syntax.
+	     */
+	    function makeIterator(src, thisObj){
+	        if (src == null) {
+	            return identity;
+	        }
+	        switch(typeof src) {
+	            case 'function':
+	                // function is the first to improve perf (most common case)
+	                // also avoid using `Function#call` if not needed, which boosts
+	                // perf a lot in some cases
+	                return (typeof thisObj !== 'undefined')? function(val, i, arr){
+	                    return src.call(thisObj, val, i, arr);
+	                } : src;
+	            case 'object':
+	                return function(val){
+	                    return deepMatches(val, src);
+	                };
+	            case 'string':
+	            case 'number':
+	                return prop(src);
+	        }
+	    }
+
+	    return makeIterator;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+
+	    /**
+	     * Returns the first argument provided to it.
+	     */
+	    function identity(val){
+	        return val;
+	    }
+
+	    return identity;
+
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 361 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+
+	    /**
+	     * Returns a function that gets a property of the passed object
+	     */
+	    function prop(name){
+	        return function(obj){
+	            return obj[name];
+	        };
+	    }
+
+	    return prop;
+
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 362 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(357), __webpack_require__(353)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn, isArray) {
+
+	    function containsMatch(array, pattern) {
+	        var i = -1, length = array.length;
+	        while (++i < length) {
+	            if (deepMatches(array[i], pattern)) {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    }
+
+	    function matchArray(target, pattern) {
+	        var i = -1, patternLength = pattern.length;
+	        while (++i < patternLength) {
+	            if (!containsMatch(target, pattern[i])) {
+	                return false;
+	            }
+	        }
+
+	        return true;
+	    }
+
+	    function matchObject(target, pattern) {
+	        var result = true;
+	        forOwn(pattern, function(val, key) {
+	            if (!deepMatches(target[key], val)) {
+	                // Return false to break out of forOwn early
+	                return (result = false);
+	            }
+	        });
+
+	        return result;
+	    }
+
+	    /**
+	     * Recursively check if the objects match.
+	     */
+	    function deepMatches(target, pattern){
+	        if (target && typeof target === 'object' &&
+	            pattern && typeof pattern === 'object') {
+	            if (isArray(target) && isArray(pattern)) {
+	                return matchArray(target, pattern);
+	            } else {
+	                return matchObject(target, pattern);
+	            }
+	        } else {
+	            return target === pattern;
+	        }
+	    }
+
+	    return deepMatches;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(349), __webpack_require__(353), __webpack_require__(364)], __WEBPACK_AMD_DEFINE_RESULT__ = function(is, isArray, every) {
+
+	    /**
+	     * Compares if both arrays have the same elements
+	     */
+	    function equals(a, b, callback){
+	        callback = callback || is;
+
+	        if (!isArray(a) || !isArray(b)) {
+	            return callback(a, b);
+	        }
+
+	        if (a.length !== b.length) {
+	            return false;
+	        }
+
+	        return every(a, makeCompare(callback), b);
+	    }
+
+	    function makeCompare(callback) {
+	        return function(value, i) {
+	            return i in this && callback(value, this[i]);
+	        };
+	    }
+
+	    return equals;
+
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 364 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(359)], __WEBPACK_AMD_DEFINE_RESULT__ = function (makeIterator) {
+
+	    /**
+	     * Array every
+	     */
+	    function every(arr, callback, thisObj) {
+	        callback = makeIterator(callback, thisObj);
+	        var result = true;
+	        if (arr == null) {
+	            return result;
+	        }
+
+	        var i = -1, len = arr.length;
+	        while (++i < len) {
+	            // we iterate over sparse items since there is no way to make it
+	            // work properly on IE 7-8. see #64
+	            if (!callback(arr[i], i, arr) ) {
+	                result = false;
+	                break;
+	            }
+	        }
+
+	        return result;
+	    }
+
+	    return every;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 365 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -44273,7 +44818,7 @@
 	};
 
 /***/ },
-/* 349 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44282,9 +44827,9 @@
 	  value: true
 	});
 
-	var _UUID = __webpack_require__(350);
+	var _UUID = __webpack_require__(367);
 
-	var _SelectionBuilder = __webpack_require__(348);
+	var _SelectionBuilder = __webpack_require__(365);
 
 	var _SelectionBuilder2 = _interopRequireDefault(_SelectionBuilder);
 
@@ -44406,7 +44951,7 @@
 	};
 
 /***/ },
-/* 350 */
+/* 367 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -44442,7 +44987,7 @@
 	};
 
 /***/ },
-/* 351 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44457,7 +45002,7 @@
 
 	var _d2 = _interopRequireDefault(_d);
 
-	var _FieldSelector = __webpack_require__(352);
+	var _FieldSelector = __webpack_require__(369);
 
 	var _FieldSelector2 = _interopRequireDefault(_FieldSelector);
 
@@ -44465,7 +45010,7 @@
 
 	var _CompositeClosureHelper2 = _interopRequireDefault(_CompositeClosureHelper);
 
-	var _template = __webpack_require__(354);
+	var _template = __webpack_require__(371);
 
 	var _template2 = _interopRequireDefault(_template);
 
@@ -44774,13 +45319,13 @@
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 352 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(353);
+	var content = __webpack_require__(370);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -44800,7 +45345,7 @@
 	}
 
 /***/ },
-/* 353 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -44840,13 +45385,13 @@
 	};
 
 /***/ },
-/* 354 */
+/* 371 */
 /***/ function(module, exports) {
 
 	module.exports = "<table class=\"fieldSelector\">\n  <thead>\n    <tr><th class=\"field-selector-mode\"><i></i></th><th class=\"field-selector-label\"></th></tr>\n  </thead>\n  <tbody class=\"fields\"></tbody>\n</table>\n";
 
 /***/ },
-/* 355 */
+/* 372 */
 /***/ function(module, exports) {
 
 	module.exports = {
