@@ -1,6 +1,7 @@
 import React from 'react';
 
 import style from 'PVWStyle/ReactWidgets/AnnotationStoreEditorWidget.mcss';
+import deepEquals from 'mout/src/lang/deepEquals';
 
 import ActionListWidget from '../ActionListWidget';
 import AnnotationEditorWidget from '../AnnotationEditorWidget';
@@ -41,7 +42,9 @@ export default function annotationStoreEditorWidget(props) {
 
   if (props.annotation && props.annotations[props.annotation.id]) {
     const storedSelectedAnnotation = props.annotations[props.annotation.id];
-    if (storedSelectedAnnotation.generation === props.annotation.generation) {
+    if ((storedSelectedAnnotation.generation === props.annotation.generation) ||
+        (props.ignoreGeneration &&
+         deepEquals(Object.assign({}, storedSelectedAnnotation, { generation: props.annotation.generation }), props.annotation))) {
       buttons.push(button('Delete', storeAction('delete'), style.deleteIcon));
     } else {
       buttons.push(button('Save as new', storeAction('new'), style.saveAsNewIcon));
@@ -88,6 +91,7 @@ annotationStoreEditorWidget.propTypes = {
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
   rationaleOpen: React.PropTypes.bool,
+  ignoreGeneration: React.PropTypes.bool,
 
   onAnnotationChange: React.PropTypes.func,
   onChange: React.PropTypes.func,
@@ -97,4 +101,5 @@ annotationStoreEditorWidget.defaultProps = {
   onAnnotationChange(annotation, isEditing) {},
   onChange(action, id, annotation) {},
   rationaleOpen: false,
+  ignoreGeneration: false,
 };

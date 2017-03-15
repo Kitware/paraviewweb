@@ -1,4 +1,5 @@
 import d3 from 'd3';
+import deepEquals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
@@ -92,6 +93,14 @@ export default function init(inPublicAPI, inModel) {
     // Construct a partition annotation:
     let partitionAnnotation = null;
     if (def.annotation && !model.provider.shouldCreateNewAnnotation()) {
+      // don't send a new selection unless it's changed.
+      const saveGen = partitionSelection.generation;
+      partitionSelection.generation = def.annotation.selection.generation;
+      const changeSet = { score: def.regions };
+      if (!deepEquals(partitionSelection, def.annotation.selection)) {
+        partitionSelection.generation = saveGen;
+        changeSet.selection = partitionSelection;
+      }
       partitionAnnotation = AnnotationBuilder.update(def.annotation, { selection: partitionSelection, score: def.regions });
     } else {
       partitionAnnotation = AnnotationBuilder.annotation(partitionSelection, def.regions, 1, '');
@@ -218,6 +227,17 @@ export default function init(inPublicAPI, inModel) {
     return count;
   }
 
+  function annotationSameAsStored(annotation) {
+    const storedAnnot = model.provider.getStoredAnnotation(annotation.id);
+    if (!storedAnnot) return false;
+    if (annotation.generation === storedAnnot.generation) return true;
+    const savedGen = annotation.generation;
+    annotation.generation = storedAnnot.generation;
+    const ret = deepEquals(annotation, storedAnnot);
+    annotation.generation = savedGen;
+    return ret;
+  }
+
   function createScoreIcons(iconCell) {
     if (!enabled()) return;
     // create/save partition annotation
@@ -228,9 +248,7 @@ export default function init(inPublicAPI, inModel) {
           .on('click', (d) => {
             if (model.provider.getStoredAnnotation) {
               const annotation = d.annotation;
-              const isSame = model.provider.getStoredAnnotation(annotation.id)
-                ? (annotation.generation === model.provider.getStoredAnnotation(annotation.id).generation)
-                : false;
+              const isSame = annotationSameAsStored(annotation);
               if (!isSame) {
                 model.provider.setStoredAnnotation(annotation.id, annotation);
               } else {
@@ -259,7 +277,7 @@ export default function init(inPublicAPI, inModel) {
       // new/modified/unmodified annotation...
       if (def.annotation) {
         if (model.provider.getStoredAnnotation(def.annotation.id)) {
-          const isSame = (def.annotation.generation === model.provider.getStoredAnnotation(def.annotation.id).generation);
+          const isSame = annotationSameAsStored(def.annotation);
           if (isSame) {
             const isActive = (def.annotation === model.provider.getAnnotation());
             iconCell.select(`.${style.jsSaveIcon}`)
