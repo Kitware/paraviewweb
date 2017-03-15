@@ -87,6 +87,8 @@
 
 .animationSpeed {
     float: left;
+    user-select: none;
+    cursor: pointer;
 }
 
 .collapsedControl .animationSpeed {
