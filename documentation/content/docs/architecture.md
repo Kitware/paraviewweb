@@ -46,7 +46,7 @@ $ cd paraview.app/Contents
 $ ./bin/pvpython                                        \
     ./Resources/web/visualizer/server/pvw-visualizer.py  \
     --content ./Resources/web/visualizer/www/             \
-    --data-dir $PWD/data                                   \
+    --data $PWD/data                                   \
     --port 8080
 
 ==> Open your browser to http://localhost:8080/
@@ -57,7 +57,7 @@ $ cd ParaView-5.3.0-Qt4-OpenGL2-MPI-Linux-64bit
 $ ./bin/pvpython                                                 \
     ./share/paraview-5.3/web/visualizer/server/pvw-visualizer.py  \
     --content ./share/paraview-5.3/web/visualizer/www/             \
-    --data-dir $PWD/share/paraview-5.3/data                         \
+    --data $PWD/share/paraview-5.3/data                         \
     --port 8080
 
 ==> Open your browser to http://localhost:8080/
@@ -68,7 +68,7 @@ $ cd ParaView-5.3.0-Qt4-OpenGL2-MPI-Windows-64bit
 $ .\bin\pvpython.exe                                          \
    share\paraview-5.3\web\visualizer\server\pvw-visualizer.py  \
    --content share\paraview-5.3\web\visualizer\www\             \
-   --data-dir "C:\...full_path...\data"                          \
+   --data "C:\...full_path...\data"                          \
    --port 8080
 
 ==> Open your browser to http://localhost:8080/

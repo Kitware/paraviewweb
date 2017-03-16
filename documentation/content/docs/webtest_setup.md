@@ -144,7 +144,7 @@ Now start Firefox and install the add-on by pointing directly at the webdriver.x
 
 To run a test, you will just run the web application (Visualizer, Parallel, FileViewer, etc...) that has a test written for it with a few extra command line arguments.  Below is an example of how you might run a test from your ParaView build directory, but you can run from an install directory by changing the arguments appropriately:
 
-    ./bin/pvpython ./lib/site-packages/paraview/web/pv_web_visualizer.py --content ./www --data-dir /home/kitware/projects/ParaViewData/Data --port 8080 --baseline-img-dir /home/kitware/projects/ParaViewData/Baseline/WebTesting/ParaView --run-test-script ./lib/site-packages/paraview/web/test/test_pv_web_visualizer_can_test.py --test-use-browser firefox --temporary-directory /home/kitware/Documents/dashboardtesting/MyTests/Experimental/ParaView-Debug-nogui/Testing/Temporary --test-image-file-name pvweb-firefox.Visualizer-can_test.png
+    ./bin/pvpython ./lib/site-packages/paraview/web/pv_web_visualizer.py --content ./www --data /home/kitware/projects/ParaViewData/Data --port 8080 --baseline-img-dir /home/kitware/projects/ParaViewData/Baseline/WebTesting/ParaView --run-test-script ./lib/site-packages/paraview/web/test/test_pv_web_visualizer_can_test.py --test-use-browser firefox --temporary-directory /home/kitware/Documents/dashboardtesting/MyTests/Experimental/ParaView-Debug-nogui/Testing/Temporary --test-image-file-name pvweb-firefox.Visualizer-can_test.png
 
 The test-specific arguments are explained below:
 

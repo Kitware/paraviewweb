@@ -168,7 +168,7 @@ $ sudo vi /data/pvw/conf/launcher.json
           "-dr", 
           "${web_path}/visualizer/server/pvw-visualizer.py",
           "--port", "${port}", 
-          "--data-dir", "${dataDir}", 
+          "--data", "${dataDir}", 
           "-f", 
           "--authKey", "${secret}"
         ],

@@ -53,7 +53,7 @@ __Python launcher config__
       "visualizer": {
         "cmd": [
           "${python_exec}", "-dr", "${visualizer_path}/server/pvw-visualizer.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
+          "--port", "${port}", "--data", "${dataDir}", "-f", "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
       },
@@ -105,7 +105,7 @@ __Python launcher config__
       "visualizer": {
         "cmd": [
           "${python_exec}", "-dr", "${visualizer_path}/server/pvw-visualizer.py",
-          "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
+          "--port", "${port}", "--data", "${dataDir}", "-f", "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
       },
@@ -187,7 +187,7 @@ export DISPLAY=:0.0
 export PATH=/opt/python-2.7.3/bin:\$PATH
 export LD_LIBRARY_PATH=/opt/python-2.7.3/lib
 
-"/home/pvw-user/projects/ParaView/build/bin/pvpython" "-dr" "${app}" "--data-dir" "${datadir}" "--port" "${port}"
+"/home/pvw-user/projects/ParaView/build/bin/pvpython" "-dr" "${app}" "--data" "${datadir}" "--port" "${port}"
 EOF
 ```
 
