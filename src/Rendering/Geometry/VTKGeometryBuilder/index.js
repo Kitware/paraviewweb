@@ -173,7 +173,7 @@ export default class VTKGeometryBuilder {
       const { source, sha } = this.meshMap[geo.name];
       if (geo.sha.points !== sha.points) {
         source.getPoints().setData(geo.points, 3);
-        geo.sha.points = sha.points;
+        sha.points = geo.sha.points;
         changeDetected = true;
       }
 
@@ -185,7 +185,7 @@ export default class VTKGeometryBuilder {
           }
         } else if (geo.sha[cellType] !== sha[cellType]) {
           source.get(cellType)[cellType].setData(geo[cellType]);
-          geo.sha[cellType] = sha[cellType];
+          sha[cellType] = geo.sha[cellType];
           changeDetected = true;
         }
       });
