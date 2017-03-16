@@ -106,7 +106,7 @@ Where display-number is replaced with the actual display number you noted in ste
 
 ##### Now use the VirtualGL program, *vglrun*, to start the ParaViewWeb application of interest.
 
-    /opt/VirtualGL/bin/vglrun <path-to-pvpython> <path-to-paraview-build>/lib/site-packages/paraview/web/pv_web_visualizer.py --content <path-to-content> --port <port> --data-dir <paraview-data-dir>
+    /opt/VirtualGL/bin/vglrun <path-to-pvpython> <path-to-paraview-build>/lib/site-packages/paraview/web/pv_web_visualizer.py --content <path-to-content> --port <port> --data <paraview-data-dir>
 
 Where all the elements in angle brackets, shown above, have been replaced with the correct values.
 
@@ -178,7 +178,7 @@ As an example, here is a bash shell script, which automates the steps given abov
     export DISPLAY=:$displayNumber.0
 
     # Now run the ParaViewWeb application
-    $vglRunPath $paraViewBuildDir/bin/pvpython $paraViewBuildDir/lib/site-packages/paraview/web/pv_web_visualizer.py --content $paraViewBuildDir/www --port $port --data-dir $paraViewDataDir
+    $vglRunPath $paraViewBuildDir/bin/pvpython $paraViewBuildDir/lib/site-packages/paraview/web/pv_web_visualizer.py --content $paraViewBuildDir/www --port $port --data $paraViewDataDir
 
     # When it finishes, make sure to kill the associated vnc session and
     # release the display number.

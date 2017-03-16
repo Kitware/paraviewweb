@@ -64,7 +64,7 @@ __launcher.config__
     "visualizer": {
         "cmd": [
             "${python_exec}", "-dr", "${visualizer_path}/server/pvw-visualizer.py",
-            "--port", "${port}", "--data-dir", "${dataDir}", "-f", "--authKey", "${secret}"
+            "--port", "${port}", "--data", "${dataDir}", "-f", "--authKey", "${secret}"
         ],
         "ready_line" : "Starting factory"
     }
