@@ -40774,6 +40774,7 @@
 	function dataSubscriber(publicAPI, model, dataName, dataHandler) {
 	  // Private members
 	  var dataSubscriptions = [];
+	  var forceFlushRequests = 0;
 	  var eventName = dataName + 'SubscriptionChange';
 	  var fireMethodName = 'fire' + capitalize(eventName);
 	  var dataContainerName = dataName + '_storage';
@@ -40799,7 +40800,7 @@
 	    try {
 	      if (dataListener) {
 	        var dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-	        if (dataToForward && JSON.stringify(dataToForward) !== dataListener.request.lastPush) {
+	        if (dataToForward && (JSON.stringify(dataToForward) !== dataListener.request.lastPush || dataListener.request.metadata.forceFlush)) {
 	          dataListener.request.lastPush = JSON.stringify(dataToForward);
 	          dataListener.onDataReady(dataToForward);
 	        }
@@ -40812,6 +40813,10 @@
 	  // onDataReady function will be called each time the setXXX method will be called and
 	  // when the actual subscription correspond to the data that has been set.
 	  // This is performed synchronously.
+	  // The default behavior is to avoid pushing data to subscribers if nothing has changed
+	  // since the last push.  However, by providing "forceFlush: true" in the metadata,
+	  // subscribers can indicate that they want data pushed to them even if there has been
+	  // no change since the last push.
 	  publicAPI['subscribeTo' + capitalize(dataName)] = function (onDataReady) {
 	    var variables = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	    var metadata = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -40822,6 +40827,9 @@
 	      variables: variables,
 	      metadata: Object.assign({}, dataHandler.defaultMetadata, metadata)
 	    };
+	    if (request.metadata.forceFlush) {
+	      forceFlushRequests += 1;
+	    }
 	    var dataListener = { onDataReady: onDataReady, request: request };
 	    dataSubscriptions.push(dataListener);
 	    publicAPI[fireMethodName](request);
@@ -40829,11 +40837,17 @@
 	    return {
 	      unsubscribe: function unsubscribe() {
 	        request.action = 'unsubscribe';
+	        if (request.metadata.forceFlush) {
+	          forceFlushRequests -= 1;
+	        }
 	        publicAPI[fireMethodName](request);
 	        dataSubscriptions[id] = null;
 	      },
 	      update: function update(vars, meta) {
 	        request.variables = [].concat(vars);
+	        if (meta && meta.forceFlush !== request.metadata.forceFlush) {
+	          forceFlushRequests += meta.forceFlush ? 1 : -1;
+	        }
 	        request.metadata = Object.assign({}, request.metadata, meta);
 	        publicAPI[fireMethodName](request);
 	        flushDataToListener(dataListener, null);
@@ -40844,7 +40858,7 @@
 	  // Method use to store data
 	  publicAPI['set' + capitalize(dataName)] = function (data) {
 	    // Process all subscription to see if we can trigger a notification
-	    if (!dataHandler.set(model[dataContainerName], data)) {
+	    if (!dataHandler.set(model[dataContainerName], data) || forceFlushRequests > 0) {
 	      dataSubscriptions.forEach(function (dataListener) {
 	        return flushDataToListener(dataListener, data);
 	      });
