@@ -13,6 +13,7 @@ export default React.createClass({
     menuAddOn: React.PropTypes.array,
     queryDataModel: React.PropTypes.object.isRequired,
     renderers: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object,
   },
 
   getInitialState() {

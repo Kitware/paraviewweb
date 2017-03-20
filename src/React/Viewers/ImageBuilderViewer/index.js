@@ -12,11 +12,13 @@ export default React.createClass({
     imageBuilder: React.PropTypes.object.isRequired,
     menuAddOn: React.PropTypes.array,
     queryDataModel: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {
     return {
       config: {},
+      userData: {},
     };
   },
 
@@ -72,6 +74,7 @@ export default React.createClass({
         queryDataModel={queryDataModel}
         magicLensController={magicLensController}
         imageBuilder={imageBuilder}
+        userData={this.props.userData}
         config={this.props.config || {}}
       >
         {controlWidgets}

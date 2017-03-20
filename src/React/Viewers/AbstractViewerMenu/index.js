@@ -23,6 +23,7 @@ export default React.createClass({
     queryDataModel: React.PropTypes.object,
     renderer: React.PropTypes.string,
     renderers: React.PropTypes.object,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {
@@ -141,6 +142,7 @@ export default React.createClass({
           className={style.renderer}
           imageBuilder={rootImageBuilder}
           listener={this.props.mouseListener || rootImageBuilder.getListeners()}
+          userData={this.props.userData}
         />);
     }
 
@@ -151,6 +153,7 @@ export default React.createClass({
           className={style.renderer}
           renderers={this.props.renderers}
           layout={this.props.layout}
+          userData={this.props.userData}
         />);
     }
 
@@ -160,6 +163,7 @@ export default React.createClass({
           ref={(c) => { this.renderer = c; }}
           className={style.renderer}
           geometryBuilder={this.props.geometryBuilder}
+          userData={this.props.userData}
         />);
     }
 

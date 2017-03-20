@@ -29,6 +29,7 @@ export default React.createClass({
     height: React.PropTypes.number,
     legend: React.PropTypes.bool,
     width: React.PropTypes.number,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {

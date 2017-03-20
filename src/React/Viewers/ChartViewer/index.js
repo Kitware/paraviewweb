@@ -12,6 +12,7 @@ export default React.createClass({
     chartBuilder: React.PropTypes.object.isRequired,
     menuAddOn: React.PropTypes.array,
     queryDataModel: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {

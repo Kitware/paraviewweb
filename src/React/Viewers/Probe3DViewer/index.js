@@ -25,6 +25,7 @@ export default React.createClass({
     imageBuilder: React.PropTypes.object.isRequired,
     probe: React.PropTypes.bool,
     queryDataModel: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {
