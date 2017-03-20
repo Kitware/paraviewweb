@@ -116,6 +116,10 @@ export default class VTKVolumeBuilder {
     return this.pipeline.mapper;
   }
 
+  getActiveCamera() {
+    return this.renderer.getActiveCamera();
+  }
+
   updateGeometry(imageData) {
     let firstTime = false;
     if (!this.pipeline.actor) {

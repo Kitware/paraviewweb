@@ -148,6 +148,7 @@ const ImageRenderer = React.createClass({
     minZoom: React.PropTypes.number,
     modifiers: React.PropTypes.array,
     pressRadius: React.PropTypes.number,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {
@@ -157,6 +158,7 @@ const ImageRenderer = React.createClass({
       crosshairColor: '#000',
       modifiers: [0, 2],
       pressRadius: 50,
+      userData: {},
     };
   },
 
@@ -257,6 +259,7 @@ const ImageRenderer = React.createClass({
   },
 
   componentDidUpdate(nextProps, nextState) {
+    this.mouseHandler.setEnable(!nextProps.userData.disableMouseListener);
     this.updateDimensions();
     if (this.imageToDraw.drawToCanvas) {
       this.imageToDraw.drawToCanvas();

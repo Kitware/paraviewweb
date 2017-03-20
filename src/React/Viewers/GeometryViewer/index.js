@@ -10,6 +10,7 @@ export default React.createClass({
     geometryBuilder: React.PropTypes.object.isRequired,
     menuAddOn: React.PropTypes.array,
     queryDataModel: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object,
   },
 
   getDefaultProps() {
