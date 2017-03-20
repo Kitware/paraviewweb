@@ -87,6 +87,7 @@
 
 .animationSpeed {
     float: left;
+    height: 1.25em;
     user-select: none;
     cursor: pointer;
 }
@@ -103,6 +104,8 @@
 }
 
 .collapsedMenuButton {
+    width: 1.5em;
+    height: 1.5em;
     composes: menuButton;
     border: 1px solid;
     border-radius: 50%;
@@ -112,6 +115,7 @@
 }
 
 .control {
+    composes: jsAbstractViewMenuControl from global;
     position: absolute;
     top: 10px;
     right: 10px;
