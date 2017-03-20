@@ -231,6 +231,14 @@ export default class VTKGeometryBuilder {
     this.renderWindow.render();
   }
 
+  getActiveCamera() {
+    return this.renderer.getActiveCamera();
+  }
+
+  render() {
+    this.renderWindow.render();
+  }
+
   updateObjectVisibility(name, visibility) {
     if (this.meshMap[name]) {
       this.meshMap[name].actor.setVisibility(!!visibility);
