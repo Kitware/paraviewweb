@@ -138,7 +138,8 @@
 	    data: _react2.default.PropTypes.any.isRequired,
 	    height: _react2.default.PropTypes.number,
 	    legend: _react2.default.PropTypes.bool,
-	    width: _react2.default.PropTypes.number
+	    width: _react2.default.PropTypes.number,
+	    userData: _react2.default.PropTypes.object
 	  },
 
 	  getDefaultProps: function getDefaultProps() {

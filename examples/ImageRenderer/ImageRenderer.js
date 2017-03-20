@@ -21682,7 +21682,8 @@
 	    maxZoom: _react2.default.PropTypes.number,
 	    minZoom: _react2.default.PropTypes.number,
 	    modifiers: _react2.default.PropTypes.array,
-	    pressRadius: _react2.default.PropTypes.number
+	    pressRadius: _react2.default.PropTypes.number,
+	    userData: _react2.default.PropTypes.object
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -21691,7 +21692,8 @@
 	      maxZoom: 10,
 	      crosshairColor: '#000',
 	      modifiers: [0, 2],
-	      pressRadius: 50
+	      pressRadius: 50,
+	      userData: {}
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -21792,6 +21794,7 @@
 	    }
 	  },
 	  componentDidUpdate: function componentDidUpdate(nextProps, nextState) {
+	    this.mouseHandler.setEnable(!nextProps.userData.disableMouseListener);
 	    this.updateDimensions();
 	    if (this.imageToDraw.drawToCanvas) {
 	      this.imageToDraw.drawToCanvas();
@@ -43219,6 +43222,10 @@
 	}
 
 	function broadcast(ctx, topic, event) {
+	  if (!ctx.mouseEnabled) {
+	    return;
+	  }
+
 	  event.preventDefault();
 
 	  event.button = 0;
@@ -43249,6 +43256,7 @@
 
 	    handlerCount += 1;
 	    this.id = 'mouse_handler_' + handlerCount;
+	    this.mouseEnabled = true;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -43271,6 +43279,10 @@
 	    };
 
 	    this.domEventHandler = function (e) {
+	      if (!_this.mouseEnabled) {
+	        return true;
+	      }
+
 	      e.preventDefault();
 	      var event = {
 	        srcEvent: e,
@@ -43425,6 +43437,13 @@
 	    value: function toggleModifierOnPress(enable, modifiers) {
 	      this.toggleModifiers = modifiers;
 	      this.toggleModifierEnable = enable;
+	    }
+	  }, {
+	    key: 'setEnable',
+	    value: function setEnable() {
+	      var enableMouse = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      this.mouseEnabled = !!enableMouse;
 	    }
 	  }, {
 	    key: 'attach',

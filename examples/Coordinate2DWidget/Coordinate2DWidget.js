@@ -5331,6 +5331,10 @@
 	}
 
 	function broadcast(ctx, topic, event) {
+	  if (!ctx.mouseEnabled) {
+	    return;
+	  }
+
 	  event.preventDefault();
 
 	  event.button = 0;
@@ -5361,6 +5365,7 @@
 
 	    handlerCount += 1;
 	    this.id = 'mouse_handler_' + handlerCount;
+	    this.mouseEnabled = true;
 	    this.el = domElement;
 	    this.modifier = 0;
 	    this.toggleModifiers = [0];
@@ -5383,6 +5388,10 @@
 	    };
 
 	    this.domEventHandler = function (e) {
+	      if (!_this.mouseEnabled) {
+	        return true;
+	      }
+
 	      e.preventDefault();
 	      var event = {
 	        srcEvent: e,
@@ -5537,6 +5546,13 @@
 	    value: function toggleModifierOnPress(enable, modifiers) {
 	      this.toggleModifiers = modifiers;
 	      this.toggleModifierEnable = enable;
+	    }
+	  }, {
+	    key: 'setEnable',
+	    value: function setEnable() {
+	      var enableMouse = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      this.mouseEnabled = !!enableMouse;
 	    }
 	  }, {
 	    key: 'attach',
