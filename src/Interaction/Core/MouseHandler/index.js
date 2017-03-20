@@ -40,6 +40,10 @@ function getRelative(el, event) {
 }
 
 function broadcast(ctx, topic, event) {
+  if (!ctx.mouseEnabled) {
+    return;
+  }
+
   event.preventDefault();
 
   event.button = 0;
@@ -67,6 +71,7 @@ export default class MouseHandler {
 
     handlerCount += 1;
     this.id = `mouse_handler_${handlerCount}`;
+    this.mouseEnabled = true;
     this.el = domElement;
     this.modifier = 0;
     this.toggleModifiers = [0];
@@ -89,6 +94,10 @@ export default class MouseHandler {
     };
 
     this.domEventHandler = (e) => {
+      if (!this.mouseEnabled) {
+        return true;
+      }
+
       e.preventDefault();
       const event = {
         srcEvent: e,
@@ -239,6 +248,10 @@ export default class MouseHandler {
   toggleModifierOnPress(enable, modifiers) {
     this.toggleModifiers = modifiers;
     this.toggleModifierEnable = enable;
+  }
+
+  setEnable(enableMouse = true) {
+    this.mouseEnabled = !!enableMouse;
   }
 
   attach(listeners) {
