@@ -235,7 +235,16 @@ export default class VTKGeometryBuilder {
     return this.renderer.getActiveCamera();
   }
 
+  getRenderer() {
+    return this.renderer;
+  }
+
+  getRenderWindow() {
+    return this.renderWindow;
+  }
+
   render() {
+    this.renderer.resetCameraClippingRange();
     this.renderWindow.render();
   }
 

@@ -12,7 +12,7 @@ import vtkVolume                  from 'vtk.js/Sources/Rendering/Core/Volume';
 import vtkVolumeMapper            from 'vtk.js/Sources/Rendering/Core/VolumeMapper';
 
 const IMAGE_READY_TOPIC = 'image-ready';
-const ARRAY_NAME = 'Scalars';
+const DEFAULT_ARRAY_NAME = 'Scalars';
 
 export default class VTKVolumeBuilder {
 
@@ -30,9 +30,10 @@ export default class VTKVolumeBuilder {
     });
 
     // Handle LookupTable change
-    // FIXME ?
-    this.lookupTableManager.addFields({ [ARRAY_NAME]: [0, 255] });
-    this.lookupTableManager.updateActiveLookupTable(ARRAY_NAME);
+    const arrayNames = Object.keys(this.queryDataModel.originalData.LookupTables);
+    this.arrayName = arrayNames.length ? arrayNames[0] : DEFAULT_ARRAY_NAME;
+    this.lookupTableManager.addFields({ [this.arrayName]: [0, 255] }, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.updateActiveLookupTable(this.arrayName);
 
     // this.lookupTableManager.addFields(this.queryDataModel.originalData.Geometry.ranges,
     //   this.queryDataModel.originalData.LookupTables);
@@ -89,7 +90,7 @@ export default class VTKVolumeBuilder {
   }
 
   getLookupTable() {
-    return this.lookupTableManager.getLookupTable(ARRAY_NAME);
+    return this.lookupTableManager.getLookupTable(this.arrayName);
   }
 
   getColorFunction() {
@@ -162,12 +163,21 @@ export default class VTKVolumeBuilder {
     this.renderWindow.render();
   }
 
+  getRenderer() {
+    return this.renderer;
+  }
+
+  getRenderWindow() {
+    return this.renderWindow;
+  }
+
   resetCamera() {
     this.renderer.resetCamera();
     this.renderWindow.render();
   }
 
   render() {
+    this.renderer.resetCameraClippingRange();
     this.renderWindow.render();
   }
 
