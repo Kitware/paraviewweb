@@ -30,7 +30,7 @@ export default class VTKVolumeBuilder {
     });
 
     // Handle LookupTable change
-    const arrayNames = Object.keys(this.queryDataModel.originalData.LookupTables);
+    const arrayNames = Object.keys(this.queryDataModel.originalData.LookupTables || {});
     this.arrayName = arrayNames.length ? arrayNames[0] : DEFAULT_ARRAY_NAME;
     this.lookupTableManager.addFields({ [this.arrayName]: [0, 255] }, this.queryDataModel.originalData.LookupTables);
     this.lookupTableManager.updateActiveLookupTable(this.arrayName);
