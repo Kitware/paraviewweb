@@ -162,12 +162,21 @@ export default class VTKVolumeBuilder {
     this.renderWindow.render();
   }
 
+  getRenderer() {
+    return this.renderer;
+  }
+
+  getRenderWindow() {
+    return this.renderWindow;
+  }
+
   resetCamera() {
     this.renderer.resetCamera();
     this.renderWindow.render();
   }
 
   render() {
+    this.renderer.resetCameraClippingRange();
     this.renderWindow.render();
   }
 
