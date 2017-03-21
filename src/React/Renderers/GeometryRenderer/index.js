@@ -60,8 +60,8 @@ export default React.createClass({
         height: elSize.clientHeight,
       });
 
-      if (this.props.geometryBuilder) {
-        this.props.geometryBuilder.updateSize(window.innerWidth, window.innerHeight);
+      if (this.props.geometryBuilder && this.props.geometryBuilder.updateSize) {
+        this.props.geometryBuilder.updateSize(elSize.clientWidth, elSize.clientHeight);
       }
       return true;
     }
