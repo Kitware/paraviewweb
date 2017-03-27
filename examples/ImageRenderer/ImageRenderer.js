@@ -43194,7 +43194,8 @@
 	  CTRL: 8
 	},
 	    eventTypeMapping = {
-	  contextmenu: 'contextmenu',
+	  mousemove: 'zoom',
+	  mouseup: 'zoom',
 	  mousewheel: 'zoom',
 	  DOMMouseScroll: 'zoom'
 	},
@@ -43283,11 +43284,18 @@
 	        return true;
 	      }
 
+	      if (!_this.inRightClickHandling && ['mousemove', 'mouseup'].indexOf(e.type) !== -1) {
+	        return true;
+	      } else if (e.type === 'contextmenu') {
+	        _this.inRightClickHandling = true;
+	      }
+
 	      e.preventDefault();
+
 	      var event = {
 	        srcEvent: e,
-	        button: e.type === 'contextmenu' ? 2 : 0,
-	        topic: eventTypeMapping[e.type],
+	        button: _this.inRightClickHandling ? 2 : 0,
+	        topic: eventTypeMapping[e.type] || 'zoom',
 
 	        center: {
 	          x: e.clientX,
@@ -43349,6 +43357,11 @@
 	      }
 
 	      _this.emit(event.topic, event);
+
+	      if (e.type === 'mouseup') {
+	        _this.inRightClickHandling = false;
+	      }
+
 	      return false;
 	    };
 
@@ -43416,6 +43429,8 @@
 
 	    // Manage events that are not captured by hammer
 	    this.el.addEventListener('contextmenu', this.domEventHandler);
+	    this.el.addEventListener('mousemove', this.domEventHandler);
+	    this.el.addEventListener('mouseup', this.domEventHandler);
 	    this.el.addEventListener('mousewheel', this.domEventHandler);
 	    this.el.addEventListener('DOMMouseScroll', this.domEventHandler);
 	  }
@@ -43467,6 +43482,8 @@
 
 	      // Remove events that are not captured by hammer
 	      this.el.removeEventListener('contextmenu', this.domEventHandler);
+	      this.el.removeEventListener('mousemove', this.domEventHandler);
+	      this.el.removeEventListener('mouseup', this.domEventHandler);
 	      this.el.removeEventListener('mousewheel', this.domEventHandler);
 	      this.el.removeEventListener('DOMMouseScroll', this.domEventHandler);
 	    }
