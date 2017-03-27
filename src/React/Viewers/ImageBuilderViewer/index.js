@@ -2,6 +2,7 @@ import React                from 'react';
 
 import AbstractViewerMenu   from '../AbstractViewerMenu';
 import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
+import ImageRenderer        from '../../Renderers/ImageRenderer';
 
 export default React.createClass({
 
@@ -76,6 +77,7 @@ export default React.createClass({
         imageBuilder={imageBuilder}
         userData={this.props.userData}
         config={this.props.config || {}}
+        rendererClass={ImageRenderer}
       >
         {controlWidgets}
       </AbstractViewerMenu>

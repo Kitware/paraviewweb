@@ -6,6 +6,10 @@ import equals                from 'mout/src/object/equals';
 import AbstractImageBuilder  from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/FloatImageControl';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
+
 const
   PROBE_CHANGE_TOPIC = 'probe-change',
   TIME_DATA_READY = 'time-data-ready';

@@ -105,7 +105,7 @@ export default React.createClass({
         <CollapsibleWidget
           title="Time probe"
           open={timeProbe.enabled}
-          subtitle={timeProbe.enabled ? timeProbe.value : ''}
+          subtitle={timeProbe.enabled ? (timeProbe.value || 0).toString() : ''}
           visible={floatImageModel.isMultiView()}
           onChange={this.toggleProbe}
         >

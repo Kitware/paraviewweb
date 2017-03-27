@@ -3,6 +3,7 @@ import React                from 'react';
 import AbstractViewerMenu   from '../AbstractViewerMenu';
 import MultiViewControl     from '../../CollapsibleControls/MultiViewControl';
 import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
+import MultiViewRenderer    from '../../Renderers/MultiLayoutRenderer';
 
 export default React.createClass({
 
@@ -95,6 +96,7 @@ export default React.createClass({
         queryDataModel={queryDataModel}
         renderers={this.props.renderers}
         renderer="MultiViewRenderer"
+        rendererClass={MultiViewRenderer}
         layout={this.props.layout}
       >
         <MultiViewControl renderer={this.state.renderer} />

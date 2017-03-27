@@ -4,6 +4,11 @@ import CPUCompositor from './cpu-compositor';
 import GPUCompositor from './gpu-compositor';
 import ToggleModel from '../../../Common/State/ToggleState';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LightPropertiesWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/CompositeControl';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
+
 const
   FETCH_DATA_TOPIC = 'data_to_fetch';
 const

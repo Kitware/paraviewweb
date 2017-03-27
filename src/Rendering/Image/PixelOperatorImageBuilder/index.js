@@ -1,6 +1,8 @@
 import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/PixelOperatorControl';
+
 export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
 
   // ------------------------------------------------------------------------
