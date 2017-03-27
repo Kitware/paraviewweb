@@ -21,6 +21,7 @@ export default class VTKVolumeBuilder {
     this.imageDataModel = imageDataModel;
     this.queryDataModel = queryDataModel;
     this.pipeline = {};
+    this.initActions = [];
 
     // Handle data fetching
     this.queryDataModel.onDataChange((data, envelope) => {
@@ -158,6 +159,7 @@ export default class VTKVolumeBuilder {
     if (firstTime) {
       this.renderer.addVolume(this.pipeline.actor);
       this.renderer.resetCamera();
+      this.initActions.forEach(cb => cb());
     }
 
     this.renderWindow.render();
@@ -174,6 +176,14 @@ export default class VTKVolumeBuilder {
   resetCamera() {
     this.renderer.resetCamera();
     this.renderWindow.render();
+  }
+
+  addInitializationAction(initCallback) {
+    this.initActions.push(initCallback);
+  }
+
+  clearInitializationActions() {
+    this.initActions = [];
   }
 
   render() {

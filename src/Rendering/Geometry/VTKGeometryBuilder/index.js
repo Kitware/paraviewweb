@@ -15,6 +15,7 @@ export default class VTKGeometryBuilder {
 
   constructor(lutMgr, geometryDataModel, pipelineModel, queryDataModel) {
     this.meshMap = {};
+    this.initActions = [];
 
     this.firstSceneLoad = true;
     this.lookupTableManager = lutMgr;
@@ -168,6 +169,8 @@ export default class VTKGeometryBuilder {
       });
       this.renderer.addActor(actor);
       this.renderer.resetCamera();
+
+      this.initActions.forEach(cb => cb());
     } else {
       let changeDetected = false;
       const { source, sha } = this.meshMap[geo.name];
@@ -229,6 +232,14 @@ export default class VTKGeometryBuilder {
 
     this.renderer.resetCameraClippingRange();
     this.renderWindow.render();
+  }
+
+  addInitializationAction(initCallback) {
+    this.initActions.push(initCallback);
+  }
+
+  clearInitializationActions() {
+    this.initActions = [];
   }
 
   getActiveCamera() {
