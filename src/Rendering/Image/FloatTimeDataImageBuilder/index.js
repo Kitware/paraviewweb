@@ -1,6 +1,10 @@
 import Monologue from 'monologue.js';
 import LineChartPainter from '../../Painter/LineChartPainter';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/TimeFloatImageControl';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
+
 /* global window */
 
 const IMAGE_READY_TOPIC = 'image-ready';

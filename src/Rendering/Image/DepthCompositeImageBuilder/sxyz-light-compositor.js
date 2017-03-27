@@ -13,6 +13,11 @@ import fragmentShaderCompositeLight from './shaders/fragment/compositeLight.c';
 import fragmentShaderCompositeLUT from './shaders/fragment/compositeLut.c';
 import fragmentShaderBacground from './shaders/fragment/background.c';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LightPropertiesWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/CompositeControl';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
+
 const texParameter = [
     ['TEXTURE_MAG_FILTER', 'NEAREST'],
     ['TEXTURE_MIN_FILTER', 'NEAREST'],

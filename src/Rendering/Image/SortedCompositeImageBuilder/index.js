@@ -4,6 +4,9 @@ import EqualizerModel from '../../../Common/State/EqualizerState';
 import GPUCompositor from './sorted-compositor-gpu';
 import ToggleModel from '../../../Common/State/ToggleState';
 
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/VolumeControlWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
+
 const
   LUT_NAME = 'VolumeScalar';
 

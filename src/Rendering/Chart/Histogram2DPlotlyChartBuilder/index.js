@@ -1,7 +1,9 @@
 import Monologue   from  'monologue.js';
 import HistXYZ     from './HistXYZ';
 import Scatter     from './Scatter';
-import ScatterXY     from './ScatterXY';
+import ScatterXY   from './ScatterXY';
+
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
 const defaultConfig = {
   scrollZoom: true,

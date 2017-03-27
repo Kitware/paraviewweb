@@ -1,11 +1,5 @@
-import React             from 'react';
-
-import style             from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
-
-import GeometryRenderer  from '../../Renderers/GeometryRenderer';
-import ImageRenderer     from '../../Renderers/ImageRenderer';
-import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
-import PlotlyRenderer    from '../../Renderers/PlotlyRenderer';
+import React from 'react';
+import style from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
 
 export default React.createClass({
 
@@ -22,6 +16,7 @@ export default React.createClass({
     mouseListener: React.PropTypes.object,
     queryDataModel: React.PropTypes.object,
     renderer: React.PropTypes.string,
+    rendererClass: React.PropTypes.func,
     renderers: React.PropTypes.object,
     userData: React.PropTypes.object,
   },
@@ -125,56 +120,12 @@ export default React.createClass({
 
   /* eslint-disable complexity */
   render() {
-    var queryDataModel = this.props.queryDataModel,
-      magicLensController = this.props.magicLensController,
-      rootImageBuilder = magicLensController || this.props.imageBuilder,
-      renderer = null,
-      serverRecording = !!this.props.config.Recording,
-      isImageRenderer = (this.props.renderer === 'ImageRenderer'),
-      isMultiViewer = (this.props.renderer === 'MultiViewRenderer'),
-      isChartViewer = (this.props.renderer === 'PlotlyRenderer'),
-      isGeometryViewer = (this.props.renderer === 'GeometryRenderer');
+    const Renderer = this.props.rendererClass;
 
-    if (isImageRenderer) {
-      renderer = (
-        <ImageRenderer
-          ref={(c) => { this.renderer = c; }}
-          className={style.renderer}
-          imageBuilder={rootImageBuilder}
-          listener={this.props.mouseListener || rootImageBuilder.getListeners()}
-          userData={this.props.userData}
-        />);
-    }
-
-    if (isMultiViewer) {
-      renderer = (
-        <MultiViewRenderer
-          ref={(c) => { this.renderer = c; }}
-          className={style.renderer}
-          renderers={this.props.renderers}
-          layout={this.props.layout}
-          userData={this.props.userData}
-        />);
-    }
-
-    if (isGeometryViewer) {
-      renderer = (
-        <GeometryRenderer
-          ref={(c) => { this.renderer = c; }}
-          className={style.renderer}
-          geometryBuilder={this.props.geometryBuilder}
-          userData={this.props.userData}
-        />);
-    }
-
-    if (isChartViewer) {
-      renderer = (
-        <PlotlyRenderer
-          ref={(c) => { this.renderer = c; }}
-          className={style.renderer}
-          chartBuilder={this.props.chartBuilder}
-        />);
-    }
+    const queryDataModel = this.props.queryDataModel;
+    const magicLensController = this.props.magicLensController;
+    const rootImageBuilder = magicLensController || this.props.imageBuilder;
+    const serverRecording = !!this.props.config.Recording;
 
     return (
       <div className={style.container}>
@@ -189,12 +140,12 @@ export default React.createClass({
               onClick={this.toggleLens}
             />
             <i
-              className={(serverRecording && isImageRenderer && this.props.imageBuilder.handleRecord)
+              className={(serverRecording && (this.props.renderer === 'ImageRenderer') && this.props.imageBuilder.handleRecord)
                 ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden}
               onClick={this.toggleRecord}
             />
             <i
-              className={(isImageRenderer || isGeometryViewer) ? style.resetCameraButton : style.hidden}
+              className={(['ImageRenderer', 'GeometryRenderer'].indexOf(this.props.renderer) !== -1) ? style.resetCameraButton : style.hidden}
               onClick={this.resetCamera}
             />
             <i
@@ -224,7 +175,26 @@ export default React.createClass({
             {this.props.children}
           </div>
         </div>
-        {renderer}
+        <Renderer
+          // Common
+          className={style.renderer}
+          ref={(c) => { this.renderer = c; }}
+          userData={this.props.userData}
+
+          // ImageRenderer
+          imageBuilder={rootImageBuilder}
+          listener={this.props.mouseListener || (rootImageBuilder && rootImageBuilder.getListeners ? rootImageBuilder.getListeners() : null)}
+
+          // MultiViewRenderer
+          renderers={this.props.renderers}
+          layout={this.props.layout}
+
+          // GeometryRenderer
+          geometryBuilder={this.props.geometryBuilder}
+
+          // PlotlyRenderer
+          chartBuilder={this.props.chartBuilder}
+        />
       </div>
       );
   },

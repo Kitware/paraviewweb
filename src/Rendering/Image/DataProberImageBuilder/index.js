@@ -1,7 +1,11 @@
 /* global Image */
 
-import AbstractImageBuilder from '../AbstractImageBuilder';
+import AbstractImageBuilder  from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
+
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/ProbeControl';
+import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
 const
   PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
