@@ -1,24 +1,24 @@
 # Developer guide
 
-ParaViewWeb is meant to be an Open Source Framework for building
-Web application for Scientific Visualization.
+ParaViewWeb is an Open Source Framework for building
+web applications for Scientific Visualization.
 
-The following guide explain our software process and tools use to
+The following guide explains our software processes and the tools used to
 build and develop this framework.
 
 ## Software process
 
-We rely on Semantic-release to manage our change log, tagging and publishing
-to NPM via Travis.
+We rely on [Semantic-release](https://github.com/semantic-release/semantic-release) to manage our change log, tagging and publishing
+to [NPM](https://www.npmjs.com/package/paraviewweb) via [Travis](https://travis-ci.org/).
 
-In order to maintain that process each commit message should follow a specific
-formatting. To ensure that formating, we use Commitizen which can be triggered
+Semantic-release requires each commit message to follow a specific
+format. To ensure that format, we use Commitizen, which can be triggered
 via the following command line. Additional information can be found 
 [here](https://gist.github.com/stephenparish/9941e89d80e2bc58a153).
 
     $ git cz
 
-Then a set of questions will be presented to you like the following ones:
+Then a set of questions will be presented to you like these:
 
     $ git cz
     cz-cli@2.4.6, cz-conventional-changelog@1.1.5
@@ -46,7 +46,7 @@ Then a set of questions will be presented to you like the following ones:
 
     ? List any breaking changes or issues closed by this change:
 
-Will generate the following commit message:
+Those answers will generate the following commit message:
 
     commit 1a31ecfcc2f6f4283e51187a24ce0e9d9c17ae54
     Author: Sebastien Jourdain <sebastien.jourdain@kitware.com>
@@ -54,15 +54,12 @@ Will generate the following commit message:
 
         style(ESLint): Update code formatting to comply with our ESLint specification
 
-
-[Full convention](https://gist.github.com/stephenparish/9941e89d80e2bc58a153) 
-
 ## Code editing
 
-[Sublime Text 3](http://www.sublimetext.com) with the following set of plugins.
-To install plugins you will have to first install the [Package control](https://packagecontrol.io/installation).
+[Sublime Text 3](http://www.sublimetext.com) is recommended with the following set of plugins.
 
-Then installing new plugin should start with: ```Ctrl/Cmd + Shift + p``` Install
+To install plugins, first install [Package constrol](https://packagecontrol.io/installation).
+Then you can install new plugins with: ```Ctrl/Cmd + Shift + p``` Install
 
 ### Git + GitGutter
 
@@ -79,10 +76,12 @@ Windows/Linux or Ctrl + ⌥ + f on Mac. Alternatively, use the context menu.
 
 ### Sublime-Linter + SublimeLinter-eslint
 
+Highlight needed style fixes while editing. Finds common coding errors.
 [More information available here](https://github.com/roadhump/SublimeLinter-eslint).
 
     $ npm install -g eslint
 
 ### EditorConfig
 
+Fix white-space and indentation automatically while editing.
 [More information available here](https://github.com/sindresorhus/editorconfig-sublime#readme)
