@@ -7348,8 +7348,9 @@
 	  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
 
 	  function wrap(innerFn, outerFn, self, tryLocsList) {
-	    // If outerFn provided, then outerFn.prototype instanceof Generator.
-	    var generator = Object.create((outerFn || Generator).prototype);
+	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+	    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+	    var generator = Object.create(protoGenerator.prototype);
 	    var context = new Context(tryLocsList || []);
 
 	    // The ._invoke method unifies the implementations of the .next,
@@ -8307,8 +8308,15 @@
 /* 300 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -8329,7 +8337,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -8358,7 +8366,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -8378,8 +8386,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -8786,12 +8794,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 
 	  if (!condition) {
 	    var error;
@@ -25865,10 +25879,10 @@
 	 */
 
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable === window) {
+	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
 	    return {
-	      x: window.pageXOffset || document.documentElement.scrollLeft,
-	      y: window.pageYOffset || document.documentElement.scrollTop
+	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
+	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -26624,7 +26638,9 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  var doc = object ? object.ownerDocument || object : document;
+	  var defaultView = doc.defaultView || window;
+	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 
 	module.exports = isNode;
@@ -26654,15 +26670,19 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
+	 *
+	 * @param {?DOMDocument} doc Defaults to current document.
+	 * @return {?DOMElement}
 	 */
-	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
+	function getActiveElement(doc) /*?DOMElement*/{
+	  doc = doc || (typeof document !== 'undefined' ? document : undefined);
+	  if (typeof doc === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return document.activeElement || document.body;
+	    return doc.activeElement || doc.body;
 	  } catch (e) {
-	    return document.body;
+	    return doc.body;
 	  }
 	}
 
@@ -29484,16 +29504,17 @@
 	}
 
 	function extractBranchesAndForks(model, leaf) {
-	  var x = leaf.x;
-	  var y = leaf.y;
-	  var rootId = model.rootId;
-	  var map = model.map;
-	  var branches = model.branches;
-	  var forks = model.forks;
-	  var branch = { x: x, y: y };
-	  var currentNode = leaf;
+	  var x = leaf.x,
+	      y = leaf.y,
+	      rootId = model.rootId,
+	      map = model.map,
+	      branches = model.branches,
+	      forks = model.forks,
+	      branch = { x: x, y: y },
+	      currentNode = leaf;
 
 	  // Move currentNode to the top before fork while stretching the branch
+
 	  while (currentNode.parent !== rootId && map[currentNode.parent].x === branch.x) {
 	    currentNode = map[currentNode.parent];
 	    branch.to = currentNode.y;
@@ -29517,8 +29538,8 @@
 
 	function fillActives(model) {
 	  var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-	  var nodes = model.nodes;
-	  var actives = model.actives;
+	  var nodes = model.nodes,
+	      actives = model.actives;
 
 	  // Fill the actives list with the position instead of ids
 
@@ -29594,17 +29615,16 @@
 	  },
 	  processData: function processData(list) {
 	    var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-	    var model = generateModel(list, this.props.rootId);
-	    var tree = model.tree;
-	    var leaves = model.leaves;
-	    var rootId = model.rootId;
-	    var nodes = model.nodes;
-	    var branches = model.branches;
-	    var forks = model.forks;
-	    var actives = model.actives;
+	    var model = generateModel(list, this.props.rootId),
+	        tree = model.tree,
+	        leaves = model.leaves,
+	        rootId = model.rootId,
+	        nodes = model.nodes,
+	        branches = model.branches,
+	        forks = model.forks,
+	        actives = model.actives;
 
 	    // Assign each node position starting from the root
-
 	    tree[rootId].forEach(function (rootNode) {
 	      return assignNodePosition(model, rootNode, 0);
 	    });
@@ -29626,20 +29646,17 @@
 	    this.setState({ nodes: nodes, branches: branches, forks: forks, actives: actives, leaves: leaves });
 	  },
 	  toggleActive: function toggleActive(event) {
-	    var _this = this;
-
-	    var _state = this.state;
-	    var actives = _state.actives;
-	    var nodes = _state.nodes;
+	    var _state = this.state,
+	        actives = _state.actives,
+	        nodes = _state.nodes;
 
 
 	    if (event.target.nodeName !== 'circle' && !event.target.classList.contains(_GitTreeWidget2.default.iconText)) {
-	      var size = _SizeHelper2.default.getSize(this.rootContainer);
-	      var deltaY = this.props.deltaY;
-	      // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
-	      var originTop = size.clientRect.y || size.clientRect.top;
-	      var yVal = Math.floor((event.clientY - originTop) / deltaY);
-	      var index = actives.indexOf(yVal);
+	      var size = _SizeHelper2.default.getSize(this.rootContainer),
+	          deltaY = this.props.deltaY,
+	          originTop = size.clientRect.y || size.clientRect.top,
+	          yVal = Math.floor((event.clientY - originTop) / deltaY),
+	          index = actives.indexOf(yVal);
 
 	      // command key for osx, control key for windows
 	      if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
@@ -29654,83 +29671,86 @@
 	      this.setState({ actives: actives });
 
 	      if (this.props.onChange) {
-	        (function () {
-	          var changeSet = [],
-	              active = true;
+	        var changeSet = [],
+	            active = true;
 
-	          actives.forEach(function (idx) {
-	            var _nodes$idx = nodes[idx];
-	            var id = _nodes$idx.id;
-	            var parent = _nodes$idx.parent;
-	            var name = _nodes$idx.name;
-	            var visible = _nodes$idx.visible;
+	        actives.forEach(function (idx) {
+	          var _nodes$idx = nodes[idx],
+	              id = _nodes$idx.id,
+	              parent = _nodes$idx.parent,
+	              name = _nodes$idx.name,
+	              visible = _nodes$idx.visible;
 
-	            var userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
-	            changeSet.push(Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData));
-	          });
+	          var userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
+	          changeSet.push(Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData));
+	        });
 
-	          _this.props.onChange({ type: 'active', changeSet: changeSet });
-	        })();
+	        this.props.onChange({ type: 'active', changeSet: changeSet });
 	      }
 	    }
 	  },
 	  toggleVisibility: function toggleVisibility(event) {
-	    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10);
-	    var _state2 = this.state;
-	    var actives = _state2.actives;
-	    var nodes = _state2.nodes;
-	    var node = nodes[yVal];
+	    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+	        _state2 = this.state,
+	        actives = _state2.actives,
+	        nodes = _state2.nodes,
+	        node = nodes[yVal];
+
 
 	    node.visible = !node.visible;
 	    this.setState({ nodes: nodes });
 
 	    if (this.props.onChange) {
-	      var id = node.id;
-	      var parent = node.parent;
-	      var name = node.name;
-	      var visible = node.visible;
-	      var active = actives.indexOf(yVal) !== -1;
-	      var userData = node.userData ? { userData: node.userData } : null;
-	      var changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData)];
+	      var id = node.id,
+	          parent = node.parent,
+	          name = node.name,
+	          visible = node.visible,
+	          active = actives.indexOf(yVal) !== -1,
+	          userData = node.userData ? { userData: node.userData } : null,
+	          changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData)];
+
 
 	      this.props.onChange({ type: 'visibility', changeSet: changeSet });
 	    }
 	  },
 	  deleteNode: function deleteNode(event) {
 	    if (this.props.onChange) {
-	      var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10);
-	      var _state$nodes$yVal = this.state.nodes[yVal];
-	      var id = _state$nodes$yVal.id;
-	      var parent = _state$nodes$yVal.parent;
-	      var name = _state$nodes$yVal.name;
-	      var visible = _state$nodes$yVal.visible;
-	      var userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null;
-	      var changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible }, userData)];
+	      var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+	          _state$nodes$yVal = this.state.nodes[yVal],
+	          id = _state$nodes$yVal.id,
+	          parent = _state$nodes$yVal.parent,
+	          name = _state$nodes$yVal.name,
+	          visible = _state$nodes$yVal.visible,
+	          userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null,
+	          changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible }, userData)];
+
 
 	      this.props.onChange({ type: 'delete', changeSet: changeSet });
 	    }
 	  },
 	  renderNodes: function renderNodes() {
-	    var _this2 = this;
+	    var _this = this;
 
 	    return this.state.nodes.map(function (el, index) {
-	      var _props = _this2.props;
-	      var activeCircleStrokeColor = _props.activeCircleStrokeColor;
-	      var deltaX = _props.deltaX;
-	      var deltaY = _props.deltaY;
-	      var fontSize = _props.fontSize;
-	      var notVisibleCircleFillColor = _props.notVisibleCircleFillColor;
-	      var offset = _props.offset;
-	      var palette = _props.palette;
-	      var radius = _props.radius;
-	      var stroke = _props.stroke;
-	      var textColor = _props.textColor;
-	      var textWeight = _props.textWeight;
-	      var isActive = _this2.state.actives.includes(index);
-	      var isVisible = !!el.visible;
-	      var branchColor = palette[el.x % palette.length];
+	      var _props = _this.props,
+	          activeCircleStrokeColor = _props.activeCircleStrokeColor,
+	          deltaX = _props.deltaX,
+	          deltaY = _props.deltaY,
+	          fontSize = _props.fontSize,
+	          notVisibleCircleFillColor = _props.notVisibleCircleFillColor,
+	          offset = _props.offset,
+	          palette = _props.palette,
+	          radius = _props.radius,
+	          stroke = _props.stroke,
+	          textColor = _props.textColor,
+	          textWeight = _props.textWeight,
+	          isActive = _this.state.actives.includes(index),
+	          isVisible = !!el.visible,
+	          branchColor = palette[el.x % palette.length];
 
 	      // Styles
+
+
 	      var currentTextColor = textColor[isActive ? 1 : 0];
 	      var weight = textWeight[isActive ? 1 : 0];
 	      var strokeColor = isActive ? activeCircleStrokeColor : branchColor || branchColor;
@@ -29753,7 +29773,7 @@
 	          stroke: strokeColor,
 	          strokeWidth: stroke,
 	          fill: fillColor,
-	          onClick: _this2.toggleVisibility
+	          onClick: _this.toggleVisibility
 	        }),
 	        _react2.default.createElement(
 	          'text',
@@ -29772,12 +29792,12 @@
 	    });
 	  },
 	  renderBranches: function renderBranches() {
-	    var _props2 = this.props;
-	    var deltaX = _props2.deltaX;
-	    var deltaY = _props2.deltaY;
-	    var offset = _props2.offset;
-	    var palette = _props2.palette;
-	    var stroke = _props2.stroke;
+	    var _props2 = this.props,
+	        deltaX = _props2.deltaX,
+	        deltaY = _props2.deltaY,
+	        offset = _props2.offset,
+	        palette = _props2.palette,
+	        stroke = _props2.stroke;
 
 
 	    return this.state.branches.map(function (el, index) {
@@ -29795,13 +29815,13 @@
 	    });
 	  },
 	  renderForks: function renderForks() {
-	    var _props3 = this.props;
-	    var deltaX = _props3.deltaX;
-	    var deltaY = _props3.deltaY;
-	    var offset = _props3.offset;
-	    var palette = _props3.palette;
-	    var radius = _props3.radius;
-	    var stroke = _props3.stroke;
+	    var _props3 = this.props,
+	        deltaX = _props3.deltaX,
+	        deltaY = _props3.deltaY,
+	        offset = _props3.offset,
+	        palette = _props3.palette,
+	        radius = _props3.radius,
+	        stroke = _props3.stroke;
 
 
 	    return this.state.forks.map(function (el, index) {
@@ -29822,17 +29842,17 @@
 	    });
 	  },
 	  renderActives: function renderActives() {
-	    var _this3 = this;
+	    var _this2 = this;
 
-	    var _props4 = this.props;
-	    var margin = _props4.margin;
-	    var deltaY = _props4.deltaY;
+	    var _props4 = this.props,
+	        margin = _props4.margin,
+	        deltaY = _props4.deltaY;
 
 
 	    return this.state.actives.map(function (el, index) {
 	      return _react2.default.createElement('rect', {
 	        key: 'active-' + index,
-	        'data-id': _this3.state.nodes[el].y,
+	        'data-id': _this2.state.nodes[el].y,
 	        x: '-50',
 	        width: '1000',
 	        fill: '#999',
@@ -29842,22 +29862,22 @@
 	    });
 	  },
 	  renderDeleteActions: function renderDeleteActions() {
-	    var _this4 = this;
+	    var _this3 = this;
 
 	    if (!this.props.enableDelete) {
 	      return null;
 	    }
 
-	    var _props5 = this.props;
-	    var deltaY = _props5.deltaY;
-	    var width = _props5.width;
-	    var offset = _props5.offset;
-	    var textColor = _props5.textColor;
-	    var radius = _props5.radius;
+	    var _props5 = this.props,
+	        deltaY = _props5.deltaY,
+	        width = _props5.width,
+	        offset = _props5.offset,
+	        textColor = _props5.textColor,
+	        radius = _props5.radius;
 
 
 	    return this.state.leaves.map(function (node, idx) {
-	      var isActive = _this4.state.actives.includes(node.y),
+	      var isActive = _this3.state.actives.includes(node.y),
 	          currentTextColor = textColor[isActive ? 1 : 0];
 
 	      return _react2.default.createElement(
@@ -29865,7 +29885,7 @@
 	        {
 	          key: 'delete-' + idx,
 	          className: _GitTreeWidget2.default.iconText,
-	          onClick: _this4.deleteNode,
+	          onClick: _this3.deleteNode,
 	          'data-id': node.y,
 	          x: Number(width) - offset - 10,
 	          y: deltaY * node.y + deltaY / 2 + (radius - 1),
@@ -29876,13 +29896,13 @@
 	    });
 	  },
 	  render: function render() {
-	    var _this5 = this;
+	    var _this4 = this;
 
 	    return _react2.default.createElement(
 	      'svg',
 	      {
 	        ref: function ref(c) {
-	          return _this5.rootContainer = c;
+	          return _this4.rootContainer = c;
 	        },
 	        style: this.props.style,
 	        width: this.props.width,
@@ -29914,8 +29934,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!./../../node_modules/postcss-loader/index.js!./GitTreeWidget.mcss", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!./../../node_modules/postcss-loader/index.js!./GitTreeWidget.mcss");
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./GitTreeWidget.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./GitTreeWidget.mcss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});

@@ -116,9 +116,9 @@
 
 	function getCanvasSize(ctx) {
 	  var margin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-	  var _ctx$canvas = ctx.canvas;
-	  var width = _ctx$canvas.width;
-	  var height = _ctx$canvas.height;
+	  var _ctx$canvas = ctx.canvas,
+	      width = _ctx$canvas.width,
+	      height = _ctx$canvas.height;
 
 	  width -= 2 * margin;
 	  height -= 2 * margin;
@@ -127,12 +127,12 @@
 	}
 
 	function getCanvasCoordinates(ctx, point, margin) {
-	  var _getCanvasSize = getCanvasSize(ctx, margin);
+	  var _getCanvasSize = getCanvasSize(ctx, margin),
+	      width = _getCanvasSize.width,
+	      height = _getCanvasSize.height;
 
-	  var width = _getCanvasSize.width;
-	  var height = _getCanvasSize.height;
-	  var x = point.x;
-	  var y = point.y;
+	  var x = point.x,
+	      y = point.y;
 
 	  x = Math.floor(x * width + margin + 0.5);
 	  y = Math.floor((1 - y) * height + margin + 0.5);
@@ -140,8 +140,8 @@
 	}
 
 	function drawControlPoint(ctx, point, radius, color) {
-	  var x = point.x;
-	  var y = point.y;
+	  var x = point.x,
+	      y = point.y;
 
 	  ctx.beginPath();
 	  ctx.fillStyle = color;
@@ -150,10 +150,9 @@
 	}
 
 	function getNormalizePosition(event, ctx, margin) {
-	  var _getCanvasSize2 = getCanvasSize(ctx, margin);
-
-	  var width = _getCanvasSize2.width;
-	  var height = _getCanvasSize2.height;
+	  var _getCanvasSize2 = getCanvasSize(ctx, margin),
+	      width = _getCanvasSize2.width,
+	      height = _getCanvasSize2.height;
 
 	  var rect = event.target.getBoundingClientRect();
 
@@ -307,18 +306,17 @@
 	  }, {
 	    key: 'setStyle',
 	    value: function setStyle() {
-	      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      var _ref$radius = _ref.radius;
-	      var radius = _ref$radius === undefined ? 6 : _ref$radius;
-	      var _ref$stroke = _ref.stroke;
-	      var stroke = _ref$stroke === undefined ? 2 : _ref$stroke;
-	      var _ref$color = _ref.color;
-	      var color = _ref$color === undefined ? '#000000' : _ref$color;
-	      var _ref$activePointColor = _ref.activePointColor;
-	      var activePointColor = _ref$activePointColor === undefined ? '#EE3333' : _ref$activePointColor;
-	      var _ref$fillColor = _ref.fillColor;
-	      var fillColor = _ref$fillColor === undefined ? '#ccc' : _ref$fillColor;
+	      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	          _ref$radius = _ref.radius,
+	          radius = _ref$radius === undefined ? 6 : _ref$radius,
+	          _ref$stroke = _ref.stroke,
+	          stroke = _ref$stroke === undefined ? 2 : _ref$stroke,
+	          _ref$color = _ref.color,
+	          color = _ref$color === undefined ? '#000000' : _ref$color,
+	          _ref$activePointColor = _ref.activePointColor,
+	          activePointColor = _ref$activePointColor === undefined ? '#EE3333' : _ref$activePointColor,
+	          _ref$fillColor = _ref.fillColor,
+	          fillColor = _ref$fillColor === undefined ? '#ccc' : _ref$fillColor;
 
 	      this.radius = radius;
 	      this.stroke = stroke;
@@ -367,11 +365,10 @@
 	    value: function render() {
 	      var _this3 = this;
 
-	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius);
-
-	      var width = _getCanvasSize3.width;
-	      var height = _getCanvasSize3.height;
-	      var margin = _getCanvasSize3.margin;
+	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius),
+	          width = _getCanvasSize3.width,
+	          height = _getCanvasSize3.height,
+	          margin = _getCanvasSize3.margin;
 
 	      this.ctx.fillStyle = this.fillColor;
 	      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

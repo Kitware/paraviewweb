@@ -7368,8 +7368,9 @@
 	  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
 
 	  function wrap(innerFn, outerFn, self, tryLocsList) {
-	    // If outerFn provided, then outerFn.prototype instanceof Generator.
-	    var generator = Object.create((outerFn || Generator).prototype);
+	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+	    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+	    var generator = Object.create(protoGenerator.prototype);
 	    var context = new Context(tryLocsList || []);
 
 	    // The ._invoke method unifies the implementations of the .next,
@@ -8327,8 +8328,15 @@
 /* 300 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -8349,7 +8357,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -8378,7 +8386,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -8398,8 +8406,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -8806,12 +8814,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 
 	  if (!condition) {
 	    var error;
@@ -25885,10 +25899,10 @@
 	 */
 
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable === window) {
+	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
 	    return {
-	      x: window.pageXOffset || document.documentElement.scrollLeft,
-	      y: window.pageYOffset || document.documentElement.scrollTop
+	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
+	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -26644,7 +26658,9 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  var doc = object ? object.ownerDocument || object : document;
+	  var defaultView = doc.defaultView || window;
+	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 
 	module.exports = isNode;
@@ -26674,15 +26690,19 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
+	 *
+	 * @param {?DOMDocument} doc Defaults to current document.
+	 * @return {?DOMElement}
 	 */
-	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
+	function getActiveElement(doc) /*?DOMElement*/{
+	  doc = doc || (typeof document !== 'undefined' ? document : undefined);
+	  if (typeof doc === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return document.activeElement || document.body;
+	    return doc.activeElement || doc.body;
 	  } catch (e) {
-	    return document.body;
+	    return doc.body;
 	  }
 	}
 
@@ -29526,10 +29546,9 @@
 	    }
 	  },
 	  updateDimensions: function updateDimensions() {
-	    var _sizeHelper$getSize = _SizeHelper2.default.getSize(this.rootContainer, true);
-
-	    var clientWidth = _sizeHelper$getSize.clientWidth;
-	    var clientHeight = _sizeHelper$getSize.clientHeight;
+	    var _sizeHelper$getSize = _SizeHelper2.default.getSize(this.rootContainer, true),
+	        clientWidth = _sizeHelper$getSize.clientWidth,
+	        clientHeight = _sizeHelper$getSize.clientHeight;
 
 	    if (this.props.width === -1) {
 	      this.setState({ width: clientWidth });
@@ -30233,8 +30252,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!./../../node_modules/postcss-loader/index.js!./PieceWiseFunctionEditorWidget.mcss", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!./../../node_modules/postcss-loader/index.js!./PieceWiseFunctionEditorWidget.mcss");
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./PieceWiseFunctionEditorWidget.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./PieceWiseFunctionEditorWidget.mcss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -30623,9 +30642,9 @@
 
 	function getCanvasSize(ctx) {
 	  var margin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-	  var _ctx$canvas = ctx.canvas;
-	  var width = _ctx$canvas.width;
-	  var height = _ctx$canvas.height;
+	  var _ctx$canvas = ctx.canvas,
+	      width = _ctx$canvas.width,
+	      height = _ctx$canvas.height;
 
 	  width -= 2 * margin;
 	  height -= 2 * margin;
@@ -30634,12 +30653,12 @@
 	}
 
 	function getCanvasCoordinates(ctx, point, margin) {
-	  var _getCanvasSize = getCanvasSize(ctx, margin);
+	  var _getCanvasSize = getCanvasSize(ctx, margin),
+	      width = _getCanvasSize.width,
+	      height = _getCanvasSize.height;
 
-	  var width = _getCanvasSize.width;
-	  var height = _getCanvasSize.height;
-	  var x = point.x;
-	  var y = point.y;
+	  var x = point.x,
+	      y = point.y;
 
 	  x = Math.floor(x * width + margin + 0.5);
 	  y = Math.floor((1 - y) * height + margin + 0.5);
@@ -30647,8 +30666,8 @@
 	}
 
 	function drawControlPoint(ctx, point, radius, color) {
-	  var x = point.x;
-	  var y = point.y;
+	  var x = point.x,
+	      y = point.y;
 
 	  ctx.beginPath();
 	  ctx.fillStyle = color;
@@ -30657,10 +30676,9 @@
 	}
 
 	function getNormalizePosition(event, ctx, margin) {
-	  var _getCanvasSize2 = getCanvasSize(ctx, margin);
-
-	  var width = _getCanvasSize2.width;
-	  var height = _getCanvasSize2.height;
+	  var _getCanvasSize2 = getCanvasSize(ctx, margin),
+	      width = _getCanvasSize2.width,
+	      height = _getCanvasSize2.height;
 
 	  var rect = event.target.getBoundingClientRect();
 
@@ -30814,18 +30832,17 @@
 	  }, {
 	    key: 'setStyle',
 	    value: function setStyle() {
-	      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      var _ref$radius = _ref.radius;
-	      var radius = _ref$radius === undefined ? 6 : _ref$radius;
-	      var _ref$stroke = _ref.stroke;
-	      var stroke = _ref$stroke === undefined ? 2 : _ref$stroke;
-	      var _ref$color = _ref.color;
-	      var color = _ref$color === undefined ? '#000000' : _ref$color;
-	      var _ref$activePointColor = _ref.activePointColor;
-	      var activePointColor = _ref$activePointColor === undefined ? '#EE3333' : _ref$activePointColor;
-	      var _ref$fillColor = _ref.fillColor;
-	      var fillColor = _ref$fillColor === undefined ? '#ccc' : _ref$fillColor;
+	      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	          _ref$radius = _ref.radius,
+	          radius = _ref$radius === undefined ? 6 : _ref$radius,
+	          _ref$stroke = _ref.stroke,
+	          stroke = _ref$stroke === undefined ? 2 : _ref$stroke,
+	          _ref$color = _ref.color,
+	          color = _ref$color === undefined ? '#000000' : _ref$color,
+	          _ref$activePointColor = _ref.activePointColor,
+	          activePointColor = _ref$activePointColor === undefined ? '#EE3333' : _ref$activePointColor,
+	          _ref$fillColor = _ref.fillColor,
+	          fillColor = _ref$fillColor === undefined ? '#ccc' : _ref$fillColor;
 
 	      this.radius = radius;
 	      this.stroke = stroke;
@@ -30874,11 +30891,10 @@
 	    value: function render() {
 	      var _this3 = this;
 
-	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius);
-
-	      var width = _getCanvasSize3.width;
-	      var height = _getCanvasSize3.height;
-	      var margin = _getCanvasSize3.margin;
+	      var _getCanvasSize3 = getCanvasSize(this.ctx, this.radius),
+	          width = _getCanvasSize3.width,
+	          height = _getCanvasSize3.height,
+	          margin = _getCanvasSize3.margin;
 
 	      this.ctx.fillStyle = this.fillColor;
 	      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
