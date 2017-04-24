@@ -44,16 +44,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["LinearPieceWiseEditor"] = __webpack_require__(1);
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	var _ = __webpack_require__(2);
+	var _ = __webpack_require__(1);
 
 	var _2 = _interopRequireDefault(_);
 
@@ -74,7 +67,7 @@
 	editor.setControlPoints([{ x: 0.0, y: 0.0 }, { x: 0.25, y: 0.75 }, { x: 0.5, y: 0.25 }, { x: 0.75, y: 0.5 }, { x: 1, y: 1 }]);
 
 /***/ },
-/* 2 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -87,7 +80,7 @@
 
 	exports.getCanvasSize = getCanvasSize;
 
-	var _monologue = __webpack_require__(3);
+	var _monologue = __webpack_require__(2);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -434,7 +427,7 @@
 	_monologue2.default.mixInto(LinearPieceWiseEditor);
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -449,7 +442,7 @@
 		/* istanbul ignore if  */
 		if ( true ) {
 			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(6) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
 				return factory( _, riveter, root );
 			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		/* istanbul ignore else  */
@@ -901,7 +894,7 @@
 
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -13256,10 +13249,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module), (function() { return this; }())))
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -13275,7 +13268,7 @@
 
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13289,7 +13282,7 @@
 	(function (root, factory) {
 	    if (true) {
 	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
 	            return factory(_, root);
 	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module === "object" && module.exports) {
@@ -13466,7 +13459,7 @@
 	}));
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -20628,7 +20621,7 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module), (function() { return this; }())))
 
 /***/ }
 /******/ ]);

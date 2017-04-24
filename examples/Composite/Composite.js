@@ -44,27 +44,20 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Composite"] = __webpack_require__(1);
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	var _ = __webpack_require__(2);
+	var _ = __webpack_require__(1);
 
 	var _2 = _interopRequireDefault(_);
 
-	var _BackgroundColor = __webpack_require__(7);
+	var _BackgroundColor = __webpack_require__(6);
 
 	var _BackgroundColor2 = _interopRequireDefault(_BackgroundColor);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Load CSS
-	__webpack_require__(8);
+	__webpack_require__(7);
 
 	var container = document.querySelector('.content');
 	container.style.position = 'relative';
@@ -85,7 +78,7 @@
 	composite.setContainer(container);
 
 /***/ },
-/* 2 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -96,7 +89,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
 
-	var _Composite = __webpack_require__(3);
+	var _Composite = __webpack_require__(2);
 
 	var _Composite2 = _interopRequireDefault(_Composite);
 
@@ -193,16 +186,16 @@
 	exports.default = NativeCompositeComponent;
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(4);
+	var content = __webpack_require__(3);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(6)(content, {});
+	var update = __webpack_require__(5)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -219,10 +212,10 @@
 	}
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(5)();
+	exports = module.exports = __webpack_require__(4)();
 	// imports
 
 
@@ -237,7 +230,7 @@
 	};
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/*
@@ -293,7 +286,7 @@
 
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -545,7 +538,7 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -608,16 +601,16 @@
 	exports.default = NativeBackgroundColorComponent;
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(9);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(6)(content, {});
+	var update = __webpack_require__(5)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -634,10 +627,10 @@
 	}
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(5)();
+	exports = module.exports = __webpack_require__(4)();
 	// imports
 
 
