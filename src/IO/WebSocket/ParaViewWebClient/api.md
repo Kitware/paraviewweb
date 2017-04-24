@@ -19,12 +19,15 @@ Available protocols list:
 
 ** ColorManager
 ** FileListing
+** KeyValuePairStore,
 ** MouseHandler
 ** ProxyManager
+** SaveData
 ** TimeHandler
 ** ViewPort
 ** ViewPortGeometryDelivery
 ** ViewPortImageDelivery
+** VtkGeometryDelivery
 
 A custom protocol will be the following form:
 
