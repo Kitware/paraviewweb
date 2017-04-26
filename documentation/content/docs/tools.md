@@ -16,11 +16,11 @@ format. To ensure that format, we use Commitizen, which can be triggered
 via the following command line. Additional information can be found 
 [here](https://gist.github.com/stephenparish/9941e89d80e2bc58a153).
 
-    $ git cz
+    $ npm run commit
 
 Then a set of questions will be presented to you like these:
 
-    $ git cz
+    $ npm run commit
     cz-cli@2.4.6, cz-conventional-changelog@1.1.5
 
     Line 1 will be cropped at 100 characters. All other lines will be wrapped
