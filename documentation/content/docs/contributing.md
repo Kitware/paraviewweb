@@ -19,7 +19,6 @@ Please follow the coding style:
 $ git clone https://github.com/<username>/paraviewweb.git
 $ cd paraviewweb
 $ npm install
-$ npm install -g commitizen
 ```
 
 3. Create a feature branch.
@@ -38,7 +37,7 @@ $ npm run doc:www
 6. Use Commitizen for your commit message.
 
 ```sh
-$ git cz
+$ npm run commit
 ```
 
 7. Push the branch.

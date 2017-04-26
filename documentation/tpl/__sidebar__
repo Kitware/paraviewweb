@@ -3,6 +3,7 @@ docs:
     overview: index.html
     setup: setup.html
     roadmap: roadmap.html
+    events: events.html
     releases: https://github.com/Kitware/paraviewweb/releases
   basic_usage:
     import: import.html
