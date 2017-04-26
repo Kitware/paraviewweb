@@ -31,13 +31,16 @@ export default class VTKVolumeBuilder {
     });
 
     // Handle LookupTable change
+    this.pipeline.range = [0, 255];
+    if (this.queryDataModel.originalData.metadata && this.queryDataModel.originalData.metadata.piecewise) {
+      const pwArray = this.queryDataModel.originalData.metadata.piecewise;
+      this.pipeline.range[1] = pwArray[pwArray.length - 1][0];
+    }
     const arrayNames = Object.keys(this.queryDataModel.originalData.LookupTables || {});
     this.arrayName = arrayNames.length ? arrayNames[0] : DEFAULT_ARRAY_NAME;
-    this.lookupTableManager.addFields({ [this.arrayName]: [0, 255] }, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields({ [this.arrayName]: this.pipeline.range }, this.queryDataModel.originalData.LookupTables);
     this.lookupTableManager.updateActiveLookupTable(this.arrayName);
 
-    // this.lookupTableManager.addFields(this.queryDataModel.originalData.Geometry.ranges,
-    //   this.queryDataModel.originalData.LookupTables);
     this.lookupTableManager.onChange((data, envelope) => {
       this.updateColoring(data.change, data.lut);
     });
@@ -47,7 +50,12 @@ export default class VTKVolumeBuilder {
     this.renderWindow = vtkRenderWindow.newInstance();
     this.renderer = vtkRenderer.newInstance();
     this.renderWindow.addRenderer(this.renderer);
-    this.renderer.setBackground(0, 0, 0); // Black
+
+    const color = this.queryDataModel.originalData.metadata ? this.queryDataModel.originalData.metadata.backgroundColor : '#000000';
+    if (color.length === 7) {
+      const bgColor = [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)].map(v => (parseInt(v, 16) / 255));
+      this.renderer.setBackground(bgColor);
+    }
 
     this.imageBuilderSubscription = this.imageDataModel.onGeometryReady((data, envelope) => {
       this.updateGeometry(data);
@@ -128,24 +136,34 @@ export default class VTKVolumeBuilder {
       firstTime = true;
 
       this.pipeline.actor = vtkVolume.newInstance();
-      this.pipeline.mapper = vtkVolumeMapper.newInstance();
-      this.pipeline.mapper.setSampleDistance(0.7);
+      this.pipeline.mapper = vtkVolumeMapper.newInstance({ sampleDistance: 0.7 });
       this.pipeline.actor.setMapper(this.pipeline.mapper);
 
       this.pipeline.ctfun = vtkColorTransferFunction.newInstance();
-      this.pipeline.ctfun.addRGBPoint(0, 85 / 255.0, 0, 0);
-      this.pipeline.ctfun.addRGBPoint(95, 1.0, 1.0, 1.0);
-      this.pipeline.ctfun.addRGBPoint(225, 0.66, 0.66, 0.5);
-      this.pipeline.ctfun.addRGBPoint(255, 0.3, 1.0, 0.5);
+      this.pipeline.ctfun.addRGBPoint(this.pipeline.range[0], 85 / 255.0, 0, 0);
+      this.pipeline.ctfun.addRGBPoint(0.37 * this.pipeline.range[1], 1.0, 1.0, 1.0);
+      this.pipeline.ctfun.addRGBPoint(0.88 * this.pipeline.range[1], 0.66, 0.66, 0.5);
+      this.pipeline.ctfun.addRGBPoint(this.pipeline.range[1], 0.3, 1.0, 0.5);
 
       this.pipeline.ofun = vtkPiecewiseFunction.newInstance();
-      this.pipeline.ofun.addPoint(0.0, 0.0);
-      this.pipeline.ofun.addPoint(255.0, 1.0);
+      this.pipeline.ofun.addPoint(this.pipeline.range[0], 0.0);
+      this.pipeline.ofun.addPoint(this.pipeline.range[1], 1.0);
 
       this.pipeline.actor.getProperty().setRGBTransferFunction(0, this.pipeline.ctfun);
       this.pipeline.actor.getProperty().setScalarOpacity(0, this.pipeline.ofun);
       this.pipeline.actor.getProperty().setScalarOpacityUnitDistance(0, 3.0);
       this.pipeline.actor.getProperty().setInterpolationTypeToLinear();
+
+      // Add shadow
+      this.pipeline.actor.getProperty().setGradientOpacityMinimumValue(0, 15);
+      this.pipeline.actor.getProperty().setGradientOpacityMinimumOpacity(0, 0.0);
+      this.pipeline.actor.getProperty().setGradientOpacityMaximumValue(0, 100);
+      this.pipeline.actor.getProperty().setGradientOpacityMaximumOpacity(0, 1.0);
+      this.pipeline.actor.getProperty().setShade(true);
+      this.pipeline.actor.getProperty().setAmbient(0.2);
+      this.pipeline.actor.getProperty().setDiffuse(0.7);
+      this.pipeline.actor.getProperty().setSpecular(0.3);
+      this.pipeline.actor.getProperty().setSpecularPower(8.0);
     }
 
     if (this.pipeline.source !== imageData) {
@@ -159,6 +177,7 @@ export default class VTKVolumeBuilder {
     if (firstTime) {
       this.renderer.addVolume(this.pipeline.actor);
       this.renderer.resetCamera();
+      this.renderer.updateLightsGeometryToFollowCamera();
       this.initActions.forEach(cb => cb());
     }
 
