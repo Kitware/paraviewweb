@@ -51,7 +51,7 @@ export default class VTKVolumeBuilder {
     this.renderer = vtkRenderer.newInstance();
     this.renderWindow.addRenderer(this.renderer);
 
-    const color = this.queryDataModel.originalData.metadata ? this.queryDataModel.originalData.metadata.backgroundColor : '#000000';
+    const color = this.queryDataModel.originalData.metadata && this.queryDataModel.originalData.metadata.backgroundColor ? this.queryDataModel.originalData.metadata.backgroundColor : '#000000';
     if (color.length === 7) {
       const bgColor = [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)].map(v => (parseInt(v, 16) / 255));
       this.renderer.setBackground(bgColor);
