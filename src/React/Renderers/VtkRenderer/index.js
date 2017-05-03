@@ -12,7 +12,7 @@ export default React.createClass({
   propTypes: {
     className: React.PropTypes.string,
     client: React.PropTypes.object,
-    viewId: React.PropTypes.number,
+    viewId: React.PropTypes.string,
     interactionTimout: React.PropTypes.number,
     connection: React.PropTypes.object,
     showFPS: React.PropTypes.bool,
@@ -24,7 +24,7 @@ export default React.createClass({
       className: '',
       showFPS: false,
       style: {},
-      viewId: -1,
+      viewId: '-1',
       interactionTimout: 500,
     };
   },
@@ -65,7 +65,7 @@ export default React.createClass({
 
     // Establish image stream connection
     this.binaryImageStream.connect({
-      view_id: this.props.viewId,
+      view_id: parseInt(this.props.viewId, 10),
     }).then(
       () => {
         // Update size and do a force push
@@ -75,11 +75,6 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
-    if (this.binaryImageStream) {
-      this.binaryImageStream.destroy();
-      this.binaryImageStream = null;
-    }
-
     if (this.mouseListener) {
       this.mouseListener.destroy();
       this.mouseListener = null;
@@ -93,6 +88,11 @@ export default React.createClass({
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription = null;
+    }
+
+    if (this.binaryImageStream) {
+      this.binaryImageStream.destroy();
+      this.binaryImageStream = null;
     }
   },
 
