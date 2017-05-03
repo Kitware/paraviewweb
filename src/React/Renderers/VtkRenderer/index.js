@@ -75,11 +75,6 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
-    if (this.binaryImageStream) {
-      this.binaryImageStream.destroy();
-      this.binaryImageStream = null;
-    }
-
     if (this.mouseListener) {
       this.mouseListener.destroy();
       this.mouseListener = null;
@@ -93,6 +88,11 @@ export default React.createClass({
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription = null;
+    }
+
+    if (this.binaryImageStream) {
+      this.binaryImageStream.destroy();
+      this.binaryImageStream = null;
     }
   },
 
