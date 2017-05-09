@@ -5,6 +5,10 @@ import React                           from 'react';
 import vtkOpenGLRenderWindow           from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
 import vtkSynchronizableRenderWindow   from 'vtk.js/Sources/Rendering/Misc/SynchronizableRenderWindow';
 import vtkRenderWindowInteractor       from 'vtk.js/Sources/Rendering/Core/RenderWindowInteractor';
+import vtkInteractorStyleManipulator   from 'vtk.js/Sources/Interaction/Style/InteractorStyleManipulator';
+import vtkTrackballPan                 from 'vtk.js/Sources/Interaction/Manipulators/TrackballPan';
+import vtkTrackballZoom                from 'vtk.js/Sources/Interaction/Manipulators/TrackballZoom';
+import vtkTrackballRotate              from 'vtk.js/Sources/Interaction/Manipulators/TrackballRotate';
 
 
 const SYNCHRONIZATION_CONTEXT_NAME = 'pvwLocalRenderingContext';
@@ -13,6 +17,9 @@ const SYNCHRONIZATION_CONTEXT_NAME = 'pvwLocalRenderingContext';
 export default class VtkGeometryRenderer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.geometryTopicSubscription = null;
+    this.renderWindow = null;
 
     // Set up initial state
     this.state = {
@@ -32,31 +39,75 @@ export default class VtkGeometryRenderer extends React.Component {
     const container = this.rootContainer;
 
     // VTK renderWindow/renderer
-    const renderWindow = vtkSynchronizableRenderWindow.newInstance({ synchronizerContextName: this.props.synchronizerContextName });
+    const renderWindowInitialValues = {
+      synchronizerContextName: this.props.synchronizerContextName,
+    };
+
+    if (this.state.viewId !== -1) {
+
+    }
+
+    this.renderWindow = vtkSynchronizableRenderWindow.newInstance(renderWindowInitialValues);
 
     // OpenGlRenderWindow
     const openGlRenderWindow = vtkOpenGLRenderWindow.newInstance();
     openGlRenderWindow.setContainer(container);
-    renderWindow.addView(openGlRenderWindow);
+    this.renderWindow.addView(openGlRenderWindow);
+
+    const interactorStyle = vtkInteractorStyleManipulator.newInstance();
+
+    const panManipulator = vtkTrackballPan.newInstance();
+    panManipulator.setButton(1);
+    panManipulator.setShift(false);
+    panManipulator.setControl(true);
+    interactorStyle.addManipulator(panManipulator);
+
+    const zoomManipulator = vtkTrackballZoom.newInstance();
+    zoomManipulator.setButton(1);
+    zoomManipulator.setShift(true);
+    zoomManipulator.setControl(false);
+    interactorStyle.addManipulator(zoomManipulator);
+
+    const rotateManipulator = vtkTrackballRotate.newInstance();
+    rotateManipulator.setButton(1);
+    rotateManipulator.setShift(false);
+    rotateManipulator.setControl(false);
+    interactorStyle.addManipulator(rotateManipulator);
 
     // Interactor
     const interactor = vtkRenderWindowInteractor.newInstance();
     interactor.setView(openGlRenderWindow);
+    interactor.setInteractorStyle(interactorStyle);
     interactor.initialize();
     interactor.bindEvents(container);
 
-    this.props.client.VtkGeometryDelivery.onViewChange((data) => {
+    function viewChanged(data) {
+      const viewState = data[0];
       console.log('Received scene desciption:');
-      console.log(data);
-      renderWindow.synchronize(data[0]);
+      console.log(viewState);
+      if (viewState.extra && viewState.extra.centerOfRotation) {
+        interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+      }
+      this.renderWindow.synchronize(viewState);
+    }
+
+    // Subscribes to wamp pubsub topic
+    this.props.client.VtkGeometryDelivery.onViewChange(viewChanged).then((subscription) => {
+      console.log('Topic subscription succeeded');
+      console.log(subscription);
+      this.geometryTopicSubscription = subscription;
+    }, (subError) => {
+      console.log('Failed to subscribe to topic');
+      console.log(subError);
     });
 
+    // Lets the server know we are interested in changes to one of it's views
     this.props.client.VtkGeometryDelivery.addViewObserver(this.props.viewId).then((successResult) => {
-      console.log(`Subscribe to view ${this.props.viewId} succeeded`);
+      console.log(`Successfully added observer to view ${this.props.viewId}`);
       console.log(successResult);
       this.setState({ viewId: successResult.viewId });
     }, (failureResult) => {
-      console.log(`Failed to subscribe to view ${this.props.viewId}`);
+      console.log(`Failed to add observer to view ${this.props.viewId}`);
       console.log(failureResult);
     });
 
@@ -64,7 +115,7 @@ export default class VtkGeometryRenderer extends React.Component {
     function updateRenderWindowSize() {
       const dims = container.getBoundingClientRect();
       openGlRenderWindow.setSize(dims.width, dims.height);
-      renderWindow.render();
+      this.renderWindow.render();
     }
 
     if (this.props.resizeOnWindowResize) {
@@ -74,13 +125,30 @@ export default class VtkGeometryRenderer extends React.Component {
     updateRenderWindowSize();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.viewId !== this.state.viewId) {
+      // remove observer for old view
+      // add observer for new view
+      // dump the synchronizable render window and make a new one
+    }
+  }
+
   componentWillUnmount() {
-    const actualViewId = this.rootContainer.getAttribute('data-view-id');
+    console.log('Unsubscribing from view change topic');
+    this.props.client.VtkGeometryDelivery.offViewChange(this.geometryTopicSubscription)
+      .then((unsubSuccess) => {
+        console.log('Unsubscribe resolved ', unsubSuccess);
+      }, (unsubFailure) => {
+        console.log('Unsubscribe resolved ', unsubFailure);
+      });
+
+    // const actualViewId = this.rootContainer.getAttribute('data-view-id');
+    const actualViewId = this.state.viewId;
     this.props.client.VtkGeometryDelivery.removeViewObserver(actualViewId).then((successResult) => {
-      console.log(`Unsubscribe from view ${actualViewId} succeeded`);
+      console.log(`Removed observer from view ${actualViewId} succeeded`);
       console.log(successResult);
     }, (failureResult) => {
-      console.log(`Failed to unsubscribe from view ${actualViewId}`);
+      console.log(`Failed to remove observer from view ${actualViewId}`);
       console.log(failureResult);
     });
 
@@ -121,7 +189,7 @@ VtkGeometryRenderer.defaultProps = {
   className: '',
   showFPS: false,
   style: {},
-  viewId: -1,
+  viewId: '-1',
   interactionTimout: 500,
   synchronizerContextName: SYNCHRONIZATION_CONTEXT_NAME,
   resizeOnWindowResize: false,
