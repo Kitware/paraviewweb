@@ -26,6 +26,8 @@ export default class VtkGeometryRenderer extends React.Component {
     // Get our hands on the default synchronization context and tell how to fetch data arrays
     const synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(this.props.synchronizerContextName);
     synchCtx.setFetchArrayFunction(this.props.client.VtkGeometryDelivery.getArray);
+    // FIXME: clear only the specific time updater that we know and care about, the camera
+    synchCtx.clearAllOneTimeUpdaters();
 
     const container = this.rootContainer;
 
@@ -84,6 +86,8 @@ export default class VtkGeometryRenderer extends React.Component {
 
     // Get our hands on the default synchronization context and clean it up
     const synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(this.props.synchronizerContextName);
+    // FIXME: clear only the specific time updater that we know and care about, the camera
+    // synchCtx.clearAllOneTimeUpdaters();
 
     if (this.props.clearInstanceCacheOnUnMount) {
       synchCtx.emptyCachedInstances();
