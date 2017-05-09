@@ -120,7 +120,7 @@ VtkGeometryRenderer.defaultProps = {
   viewId: -1,
   interactionTimout: 500,
   synchronizerContextName: SYNCHRONIZATION_CONTEXT_NAME,
-  resizeOnWindowResize: true,
-  clearInstanceCacheOnUnMount: true,
-  clearArrayCacheOnUnMount: true,
+  resizeOnWindowResize: false,
+  clearInstanceCacheOnUnMount: false,
+  clearArrayCacheOnUnMount: false,
 };
