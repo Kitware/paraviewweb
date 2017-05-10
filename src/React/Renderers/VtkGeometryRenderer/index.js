@@ -12,6 +12,7 @@ import vtkTrackballRotate              from 'vtk.js/Sources/Interaction/Manipula
 
 
 const SYNCHRONIZATION_CONTEXT_NAME = 'pvwLocalRenderingContext';
+const ACTIVE_VIEW_ID = '-1';
 
 
 export default class VtkGeometryRenderer extends React.Component {
@@ -19,80 +20,144 @@ export default class VtkGeometryRenderer extends React.Component {
     super(props);
 
     this.geometryTopicSubscription = null;
+    this.openGlRenderWindow = null;
     this.renderWindow = null;
+    this.interactorStyle = null;
+    this.synchCtx = null;
 
     // Set up initial state
     this.state = {
       viewId: props.viewId,
     };
+
+    this.viewChanged = this.viewChanged.bind(this);
+    this.addViewObserver = this.addViewObserver.bind(this);
+    this.removeViewObserver = this.removeViewObserver.bind(this);
+    this.subscribeViewChangeTopic = this.subscribeViewChangeTopic.bind(this);
+    this.unsubscribeViewChangeTopic = this.unsubscribeViewChangeTopic.bind(this);
+    this.updateRenderWindowSize = this.updateRenderWindowSize.bind(this);
   }
 
   componentDidMount() {
-    console.log('VtkGeometryRenderer is now mounted');
-
     // Get our hands on the default synchronization context and tell how to fetch data arrays
-    const synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(this.props.synchronizerContextName);
-    synchCtx.setFetchArrayFunction(this.props.client.VtkGeometryDelivery.getArray);
-    // FIXME: clear only the specific time updater that we know and care about, the camera
-    synchCtx.clearAllOneTimeUpdaters();
+    this.synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(this.props.synchronizerContextName);
+    this.synchCtx.setFetchArrayFunction(this.props.client.VtkGeometryDelivery.getArray);
 
     const container = this.rootContainer;
 
     // VTK renderWindow/renderer
-    const renderWindowInitialValues = {
-      synchronizerContextName: this.props.synchronizerContextName,
-    };
+    const initialValues = Object.assign({ synchronizerContextName: this.props.synchronizerContextName },
+      this.state.viewId !== ACTIVE_VIEW_ID && { viewId: this.state.viewId });
 
-    if (this.state.viewId !== -1) {
-
-    }
-
-    this.renderWindow = vtkSynchronizableRenderWindow.newInstance(renderWindowInitialValues);
+    this.renderWindow = vtkSynchronizableRenderWindow.newInstance(initialValues);
 
     // OpenGlRenderWindow
-    const openGlRenderWindow = vtkOpenGLRenderWindow.newInstance();
-    openGlRenderWindow.setContainer(container);
-    this.renderWindow.addView(openGlRenderWindow);
+    this.openGlRenderWindow = vtkOpenGLRenderWindow.newInstance();
+    this.openGlRenderWindow.setContainer(container);
+    this.renderWindow.addView(this.openGlRenderWindow);
 
-    const interactorStyle = vtkInteractorStyleManipulator.newInstance();
+    this.interactorStyle = vtkInteractorStyleManipulator.newInstance();
 
     const panManipulator = vtkTrackballPan.newInstance();
     panManipulator.setButton(1);
     panManipulator.setShift(false);
     panManipulator.setControl(true);
-    interactorStyle.addManipulator(panManipulator);
+    this.interactorStyle.addManipulator(panManipulator);
 
     const zoomManipulator = vtkTrackballZoom.newInstance();
     zoomManipulator.setButton(1);
     zoomManipulator.setShift(true);
     zoomManipulator.setControl(false);
-    interactorStyle.addManipulator(zoomManipulator);
+    this.interactorStyle.addManipulator(zoomManipulator);
 
     const rotateManipulator = vtkTrackballRotate.newInstance();
     rotateManipulator.setButton(1);
     rotateManipulator.setShift(false);
     rotateManipulator.setControl(false);
-    interactorStyle.addManipulator(rotateManipulator);
+    this.interactorStyle.addManipulator(rotateManipulator);
 
     // Interactor
     const interactor = vtkRenderWindowInteractor.newInstance();
-    interactor.setView(openGlRenderWindow);
-    interactor.setInteractorStyle(interactorStyle);
+    interactor.setView(this.openGlRenderWindow);
+    interactor.setInteractorStyle(this.interactorStyle);
     interactor.initialize();
     interactor.bindEvents(container);
 
-    function viewChanged(data) {
-      const viewState = data[0];
-      console.log('Received scene desciption:');
-      console.log(viewState);
-      if (viewState.extra && viewState.extra.centerOfRotation) {
-        interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
-      }
-      this.renderWindow.synchronize(viewState);
+    this.subscribeViewChangeTopic();
+    this.addViewObserver(this.state.viewId);
+
+    if (this.props.resizeOnWindowResize) {
+      window.addEventListener('resize', this.updateRenderWindowSize);
     }
 
-    // Subscribes to wamp pubsub topic
-    this.props.client.VtkGeometryDelivery.onViewChange(viewChanged).then((subscription) => {
+    this.updateRenderWindowSize();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.viewId !== this.state.viewId) {
+      // Update observers for change in view id
+      this.removeViewObserver(this.state.viewId);
+      this.addViewObserver(nextProps.viewId);
+
+      // dump the synchronizable render window and make a new one
+      this.renderWindow.removeView(this.openGlRenderWindow);
+      this.renderWindow.destroy();
+      const initialValues = Object.assign({ synchronizerContextName: this.props.synchronizerContextName },
+        nextProps.viewId !== ACTIVE_VIEW_ID && { viewId: nextProps.viewId });
+      this.renderWindow = vtkSynchronizableRenderWindow.newInstance(initialValues);
+      this.renderWindow.addView(this.openGlRenderWindow);
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeViewChangeTopic();
+    this.removeViewObserver(this.state.viewId);
+
+    // FIXME: clear only the specific time updater that we know and care about, the camera
+    this.synchCtx.clearAllOneTimeUpdaters();
+
+    if (this.props.clearInstanceCacheOnUnMount) {
+      this.synchCtx.emptyCachedInstances();
+    }
+
+    if (this.props.clearArrayCacheOnUnMount) {
+      this.synchCtx.emptyCachedArrays();
+    }
+  }
+
+  viewChanged(data) {
+    const viewState = data[0];
+    console.log('Received scene desciption:');
+    console.log(viewState);
+    if (viewState.extra && viewState.extra.centerOfRotation) {
+      this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+    }
+    this.renderWindow.synchronize(viewState);
+  }
+
+  addViewObserver(viewId) {
+    this.props.client.VtkGeometryDelivery.addViewObserver(viewId).then((successResult) => {
+      console.log(`Successfully added observer to view ${viewId}`);
+      console.log(successResult);
+      this.setState({ viewId: successResult.viewId });
+    }, (failureResult) => {
+      console.log(`Failed to add observer to view ${viewId}`);
+      console.log(failureResult);
+    });
+  }
+
+  removeViewObserver(viewId) {
+    this.props.client.VtkGeometryDelivery.removeViewObserver(viewId).then((successResult) => {
+      console.log(`Removed observer from view ${viewId} succeeded`);
+      console.log(successResult);
+    }, (failureResult) => {
+      console.log(`Failed to remove observer from view ${viewId}`);
+      console.log(failureResult);
+    });
+  }
+
+  subscribeViewChangeTopic() {
+    this.props.client.VtkGeometryDelivery.onViewChange(this.viewChanged).then((subscription) => {
       console.log('Topic subscription succeeded');
       console.log(subscription);
       this.geometryTopicSubscription = subscription;
@@ -100,70 +165,21 @@ export default class VtkGeometryRenderer extends React.Component {
       console.log('Failed to subscribe to topic');
       console.log(subError);
     });
-
-    // Lets the server know we are interested in changes to one of it's views
-    this.props.client.VtkGeometryDelivery.addViewObserver(this.props.viewId).then((successResult) => {
-      console.log(`Successfully added observer to view ${this.props.viewId}`);
-      console.log(successResult);
-      this.setState({ viewId: successResult.viewId });
-    }, (failureResult) => {
-      console.log(`Failed to add observer to view ${this.props.viewId}`);
-      console.log(failureResult);
-    });
-
-    // Handle window resize
-    function updateRenderWindowSize() {
-      const dims = container.getBoundingClientRect();
-      openGlRenderWindow.setSize(dims.width, dims.height);
-      this.renderWindow.render();
-    }
-
-    if (this.props.resizeOnWindowResize) {
-      window.addEventListener('resize', updateRenderWindowSize);
-    }
-
-    updateRenderWindowSize();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.viewId !== this.state.viewId) {
-      // remove observer for old view
-      // add observer for new view
-      // dump the synchronizable render window and make a new one
-    }
-  }
-
-  componentWillUnmount() {
-    console.log('Unsubscribing from view change topic');
+  unsubscribeViewChangeTopic() {
     this.props.client.VtkGeometryDelivery.offViewChange(this.geometryTopicSubscription)
       .then((unsubSuccess) => {
         console.log('Unsubscribe resolved ', unsubSuccess);
       }, (unsubFailure) => {
         console.log('Unsubscribe resolved ', unsubFailure);
       });
+  }
 
-    // const actualViewId = this.rootContainer.getAttribute('data-view-id');
-    const actualViewId = this.state.viewId;
-    this.props.client.VtkGeometryDelivery.removeViewObserver(actualViewId).then((successResult) => {
-      console.log(`Removed observer from view ${actualViewId} succeeded`);
-      console.log(successResult);
-    }, (failureResult) => {
-      console.log(`Failed to remove observer from view ${actualViewId}`);
-      console.log(failureResult);
-    });
-
-    // Get our hands on the default synchronization context and clean it up
-    const synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(this.props.synchronizerContextName);
-    // FIXME: clear only the specific time updater that we know and care about, the camera
-    // synchCtx.clearAllOneTimeUpdaters();
-
-    if (this.props.clearInstanceCacheOnUnMount) {
-      synchCtx.emptyCachedInstances();
-    }
-
-    if (this.props.clearArrayCacheOnUnMount) {
-      synchCtx.emptyCachedArrays();
-    }
+  updateRenderWindowSize() {
+    const dims = this.rootContainer.getBoundingClientRect();
+    this.openGlRenderWindow.setSize(dims.width, dims.height);
+    this.renderWindow.render();
   }
 
   render() {
@@ -175,7 +191,7 @@ VtkGeometryRenderer.propTypes = {
   className: React.PropTypes.string,
   showFPS: React.PropTypes.bool,
   style: React.PropTypes.object,
-  viewId: React.PropTypes.number,
+  viewId: React.PropTypes.string,
   interactionTimout: React.PropTypes.number,
   synchronizerContextName: React.PropTypes.string,
   resizeOnWindowResize: React.PropTypes.bool,
@@ -189,7 +205,7 @@ VtkGeometryRenderer.defaultProps = {
   className: '',
   showFPS: false,
   style: {},
-  viewId: '-1',
+  viewId: ACTIVE_VIEW_ID,
   interactionTimout: 500,
   synchronizerContextName: SYNCHRONIZATION_CONTEXT_NAME,
   resizeOnWindowResize: false,
