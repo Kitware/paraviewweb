@@ -46,8 +46,10 @@ export default class VtkGeometryRenderer extends React.Component {
     const container = this.rootContainer;
 
     // VTK renderWindow/renderer
-    const initialValues = Object.assign({ synchronizerContextName: this.props.synchronizerContextName },
-      this.state.viewId !== ACTIVE_VIEW_ID && { viewId: this.state.viewId });
+    const initialValues = { synchronizerContextName: this.props.synchronizerContextName };
+    if (this.state.viewId !== ACTIVE_VIEW_ID) {
+      initialValues.viewId = this.state.viewId;
+    }
 
     this.renderWindow = vtkSynchronizableRenderWindow.newInstance(initialValues);
 
@@ -102,8 +104,10 @@ export default class VtkGeometryRenderer extends React.Component {
       // dump the synchronizable render window and make a new one
       this.renderWindow.removeView(this.openGlRenderWindow);
       this.renderWindow.destroy();
-      const initialValues = Object.assign({ synchronizerContextName: this.props.synchronizerContextName },
-        nextProps.viewId !== ACTIVE_VIEW_ID && { viewId: nextProps.viewId });
+      const initialValues = { synchronizerContextName: this.props.synchronizerContextName };
+      if (nextProps.viewId !== ACTIVE_VIEW_ID) {
+        initialValues.viewId = nextProps.viewId;
+      }
       this.renderWindow = vtkSynchronizableRenderWindow.newInstance(initialValues);
       this.renderWindow.addView(this.openGlRenderWindow);
     }
@@ -113,26 +117,18 @@ export default class VtkGeometryRenderer extends React.Component {
     this.unsubscribeViewChangeTopic();
     this.removeViewObserver(this.state.viewId);
 
-    // FIXME: clear only the specific time updater that we know and care about, the camera
-    this.synchCtx.clearAllOneTimeUpdaters();
+    if (this.props.clearOneTimeUpdatersOnUnmount) {
+      const dependentIds = this.renderWindow.getManagedInstanceIds();
+      this.synchCtx.clearOneTimeUpdaters(dependentIds);
+    }
 
-    if (this.props.clearInstanceCacheOnUnMount) {
+    if (this.props.clearInstanceCacheOnUnmount) {
       this.synchCtx.emptyCachedInstances();
     }
 
-    if (this.props.clearArrayCacheOnUnMount) {
+    if (this.props.clearArrayCacheOnUnmount) {
       this.synchCtx.emptyCachedArrays();
     }
-  }
-
-  viewChanged(data) {
-    const viewState = data[0];
-    console.log('Received scene desciption:');
-    console.log(viewState);
-    if (viewState.extra && viewState.extra.centerOfRotation) {
-      this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
-    }
-    this.renderWindow.synchronize(viewState);
   }
 
   addViewObserver(viewId) {
@@ -182,6 +178,44 @@ export default class VtkGeometryRenderer extends React.Component {
     this.renderWindow.render();
   }
 
+  resetCamera() {
+    this.renderWindow.getRenderers().forEach(renderer => renderer.resetCamera());
+  }
+
+  getCameraParameters() {
+
+  }
+
+  setCameraParameters() {
+
+  }
+
+  getRenderWindow() {
+
+  }
+
+  getManipulatorInteractorStyle() {
+
+  }
+
+  viewChanged(data) {
+    const viewState = data[0];
+    console.log('Received scene desciption:');
+    console.log(viewState);
+    if (viewState.extra && viewState.extra.centerOfRotation) {
+      this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+    }
+    this.renderWindow.synchronize(viewState);
+  }
+
+  // getCameraViewUp() {
+  //   return this.interactorStyle.getCurrentRenderer().getActiveCamera().getViewUp();
+  // }
+
+  // getCameraFocalPoint() {
+  //   return this.interactorStyle.getCurrentRenderer().getActiveCamera().getFocalPoint();
+  // }
+
   render() {
     return <div className={this.props.className} data-view-id={this.state.viewId} style={this.props.style} ref={c => (this.rootContainer = c)} />;
   }
@@ -195,8 +229,9 @@ VtkGeometryRenderer.propTypes = {
   interactionTimout: React.PropTypes.number,
   synchronizerContextName: React.PropTypes.string,
   resizeOnWindowResize: React.PropTypes.bool,
-  clearInstanceCacheOnUnMount: React.PropTypes.bool,
-  clearArrayCacheOnUnMount: React.PropTypes.bool,
+  clearOneTimeUpdatersOnUnmount: React.PropTypes.bool,
+  clearInstanceCacheOnUnmount: React.PropTypes.bool,
+  clearArrayCacheOnUnmount: React.PropTypes.bool,
   client: React.PropTypes.object,
   connection: React.PropTypes.object,
 };
@@ -209,6 +244,7 @@ VtkGeometryRenderer.defaultProps = {
   interactionTimout: 500,
   synchronizerContextName: SYNCHRONIZATION_CONTEXT_NAME,
   resizeOnWindowResize: false,
-  clearInstanceCacheOnUnMount: false,
-  clearArrayCacheOnUnMount: false,
+  clearOneTimeUpdatersOnUnmount: false,
+  clearInstanceCacheOnUnmount: false,
+  clearArrayCacheOnUnmount: false,
 };
