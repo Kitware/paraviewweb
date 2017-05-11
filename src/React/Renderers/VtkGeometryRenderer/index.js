@@ -97,13 +97,15 @@ export default class VtkGeometryRenderer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.viewId !== this.state.viewId) {
+      console.log(`VtkGeometryRenderer viewId will change from ${this.state.viewId} to ${nextProps.viewId}`);
+
       // Update observers for change in view id
       this.removeViewObserver(this.state.viewId);
       this.addViewObserver(nextProps.viewId);
 
       // dump the synchronizable render window and make a new one
       this.renderWindow.removeView(this.openGlRenderWindow);
-      this.renderWindow.destroy();
+      this.renderWindow.delete();
       const initialValues = { synchronizerContextName: this.props.synchronizerContextName };
       if (nextProps.viewId !== ACTIVE_VIEW_ID) {
         initialValues.viewId = nextProps.viewId;
@@ -131,25 +133,50 @@ export default class VtkGeometryRenderer extends React.Component {
     }
   }
 
-  addViewObserver(viewId) {
-    this.props.client.VtkGeometryDelivery.addViewObserver(viewId).then((successResult) => {
-      console.log(`Successfully added observer to view ${viewId}`);
-      console.log(successResult);
-      this.setState({ viewId: successResult.viewId });
-    }, (failureResult) => {
-      console.log(`Failed to add observer to view ${viewId}`);
-      console.log(failureResult);
-    });
+  getCameraParameters() {
+    // Calling getCurrentRenderer() on the interactorStyle seems to return null
+    // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
+    const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
+    const cameraParams = activeCamera.get('position', 'focalPoint', 'viewUp');
+    return Object.assign({}, cameraParams, { centerOfRotation: this.interactorStyle.getCenterOfRotation() });
   }
 
-  removeViewObserver(viewId) {
-    this.props.client.VtkGeometryDelivery.removeViewObserver(viewId).then((successResult) => {
-      console.log(`Removed observer from view ${viewId} succeeded`);
-      console.log(successResult);
-    }, (failureResult) => {
-      console.log(`Failed to remove observer from view ${viewId}`);
-      console.log(failureResult);
-    });
+  setCameraParameters(params) {
+    // Calling getCurrentRenderer() on the interactorStyle seems to return null
+    // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
+    const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
+    activeCamera.set({ position: params.position });
+    activeCamera.set({ focalPoint: params.focalPoint });
+    activeCamera.set({ viewUp: params.viewUp });
+    this.interactorStyle.set({ centerOfRotation: params.centerOfRotation });
+    this.renderWindow.render();
+  }
+
+  getRenderWindow() {
+    return this.renderWindow;
+  }
+
+  getManipulatorInteractorStyle() {
+    return this.interactorStyle;
+  }
+
+  resetCamera() {
+    this.renderWindow.getRenderers().forEach(renderer => renderer.resetCamera());
+  }
+
+  updateRenderWindowSize() {
+    const dims = this.rootContainer.getBoundingClientRect();
+    this.openGlRenderWindow.setSize(dims.width, dims.height);
+    this.renderWindow.render();
+  }
+
+  unsubscribeViewChangeTopic() {
+    this.props.client.VtkGeometryDelivery.offViewChange(this.geometryTopicSubscription)
+      .then((unsubSuccess) => {
+        console.log('Unsubscribe resolved ', unsubSuccess);
+      }, (unsubFailure) => {
+        console.log('Unsubscribe resolved ', unsubFailure);
+      });
   }
 
   subscribeViewChangeTopic() {
@@ -163,39 +190,25 @@ export default class VtkGeometryRenderer extends React.Component {
     });
   }
 
-  unsubscribeViewChangeTopic() {
-    this.props.client.VtkGeometryDelivery.offViewChange(this.geometryTopicSubscription)
-      .then((unsubSuccess) => {
-        console.log('Unsubscribe resolved ', unsubSuccess);
-      }, (unsubFailure) => {
-        console.log('Unsubscribe resolved ', unsubFailure);
-      });
+  removeViewObserver(viewId) {
+    this.props.client.VtkGeometryDelivery.removeViewObserver(viewId).then((successResult) => {
+      console.log(`Removed observer from view ${viewId} succeeded`);
+      console.log(successResult);
+    }, (failureResult) => {
+      console.log(`Failed to remove observer from view ${viewId}`);
+      console.log(failureResult);
+    });
   }
 
-  updateRenderWindowSize() {
-    const dims = this.rootContainer.getBoundingClientRect();
-    this.openGlRenderWindow.setSize(dims.width, dims.height);
-    this.renderWindow.render();
-  }
-
-  resetCamera() {
-    this.renderWindow.getRenderers().forEach(renderer => renderer.resetCamera());
-  }
-
-  getCameraParameters() {
-
-  }
-
-  setCameraParameters() {
-
-  }
-
-  getRenderWindow() {
-
-  }
-
-  getManipulatorInteractorStyle() {
-
+  addViewObserver(viewId) {
+    this.props.client.VtkGeometryDelivery.addViewObserver(viewId).then((successResult) => {
+      console.log(`Successfully added observer to view ${viewId}`);
+      console.log(successResult);
+      this.setState({ viewId: successResult.viewId });
+    }, (failureResult) => {
+      console.log(`Failed to add observer to view ${viewId}`);
+      console.log(failureResult);
+    });
   }
 
   viewChanged(data) {
@@ -207,14 +220,6 @@ export default class VtkGeometryRenderer extends React.Component {
     }
     this.renderWindow.synchronize(viewState);
   }
-
-  // getCameraViewUp() {
-  //   return this.interactorStyle.getCurrentRenderer().getActiveCamera().getViewUp();
-  // }
-
-  // getCameraFocalPoint() {
-  //   return this.interactorStyle.getCurrentRenderer().getActiveCamera().getFocalPoint();
-  // }
 
   render() {
     return <div className={this.props.className} data-view-id={this.state.viewId} style={this.props.style} ref={c => (this.rootContainer = c)} />;
