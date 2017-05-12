@@ -14,7 +14,6 @@ import vtkTrackballRotate              from 'vtk.js/Sources/Interaction/Manipula
 const SYNCHRONIZATION_CONTEXT_NAME = 'pvwLocalRenderingContext';
 const ACTIVE_VIEW_ID = '-1';
 
-
 export default class VtkGeometryRenderer extends React.Component {
   constructor(props) {
     super(props);
@@ -54,8 +53,11 @@ export default class VtkGeometryRenderer extends React.Component {
     this.renderWindow = vtkSynchronizableRenderWindow.newInstance(initialValues);
 
     // OpenGlRenderWindow
-    this.openGlRenderWindow = vtkOpenGLRenderWindow.newInstance();
+    this.openGlRenderWindow = vtkOpenGLRenderWindow.newInstance({ notifyImageReady: !!this.props.onImageReady });
     this.openGlRenderWindow.setContainer(container);
+    if (this.props.onImageReady) {
+      this.openGlRenderWindow.onImageReady(this.props.onImageReady);
+    }
     this.renderWindow.addView(this.openGlRenderWindow);
 
     this.interactorStyle = vtkInteractorStyleManipulator.newInstance();
@@ -121,7 +123,7 @@ export default class VtkGeometryRenderer extends React.Component {
 
     if (this.props.clearOneTimeUpdatersOnUnmount) {
       const dependentIds = this.renderWindow.getManagedInstanceIds();
-      this.synchCtx.clearOneTimeUpdaters(dependentIds);
+      this.renderWindow.clearOneTimeUpdaters(dependentIds);
     }
 
     if (this.props.clearInstanceCacheOnUnmount) {
@@ -134,6 +136,7 @@ export default class VtkGeometryRenderer extends React.Component {
   }
 
   getCameraParameters() {
+    // FIXME: find the proper way to get the renderer we care about
     // Calling getCurrentRenderer() on the interactorStyle seems to return null
     // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
     const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
@@ -141,14 +144,10 @@ export default class VtkGeometryRenderer extends React.Component {
     return Object.assign({}, cameraParams, { centerOfRotation: this.interactorStyle.getCenterOfRotation() });
   }
 
-  setCameraParameters(params) {
-    // Calling getCurrentRenderer() on the interactorStyle seems to return null
-    // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
+  setCameraParameters({ position, focalPoint, viewUp, centerOfRotation }) {
     const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
-    activeCamera.set({ position: params.position });
-    activeCamera.set({ focalPoint: params.focalPoint });
-    activeCamera.set({ viewUp: params.viewUp });
-    this.interactorStyle.set({ centerOfRotation: params.centerOfRotation });
+    activeCamera.set({ position, focalPoint, viewUp });
+    this.interactorStyle.setCenterOfRotation(centerOfRotation);
     this.renderWindow.render();
   }
 
@@ -173,7 +172,7 @@ export default class VtkGeometryRenderer extends React.Component {
   unsubscribeViewChangeTopic() {
     this.props.client.VtkGeometryDelivery.offViewChange(this.geometryTopicSubscription)
       .then((unsubSuccess) => {
-        console.log('Unsubscribe resolved ', unsubSuccess);
+        // console.log('Unsubscribe resolved ', unsubSuccess);
       }, (unsubFailure) => {
         console.log('Unsubscribe resolved ', unsubFailure);
       });
@@ -181,8 +180,8 @@ export default class VtkGeometryRenderer extends React.Component {
 
   subscribeViewChangeTopic() {
     this.props.client.VtkGeometryDelivery.onViewChange(this.viewChanged).then((subscription) => {
-      console.log('Topic subscription succeeded');
-      console.log(subscription);
+      // console.log('Topic subscription succeeded');
+      // console.log(subscription);
       this.geometryTopicSubscription = subscription;
     }, (subError) => {
       console.log('Failed to subscribe to topic');
@@ -192,8 +191,8 @@ export default class VtkGeometryRenderer extends React.Component {
 
   removeViewObserver(viewId) {
     this.props.client.VtkGeometryDelivery.removeViewObserver(viewId).then((successResult) => {
-      console.log(`Removed observer from view ${viewId} succeeded`);
-      console.log(successResult);
+      // console.log(`Removed observer from view ${viewId} succeeded`);
+      // console.log(successResult);
     }, (failureResult) => {
       console.log(`Failed to remove observer from view ${viewId}`);
       console.log(failureResult);
@@ -202,9 +201,10 @@ export default class VtkGeometryRenderer extends React.Component {
 
   addViewObserver(viewId) {
     this.props.client.VtkGeometryDelivery.addViewObserver(viewId).then((successResult) => {
-      console.log(`Successfully added observer to view ${viewId}`);
-      console.log(successResult);
+      // console.log(`Successfully added observer to view ${viewId}`);
+      // console.log(successResult);
       this.setState({ viewId: successResult.viewId });
+      // FIXME: trigger the action which should store the active view id in the redux state
     }, (failureResult) => {
       console.log(`Failed to add observer to view ${viewId}`);
       console.log(failureResult);
@@ -213,8 +213,8 @@ export default class VtkGeometryRenderer extends React.Component {
 
   viewChanged(data) {
     const viewState = data[0];
-    console.log('Received scene desciption:');
-    console.log(viewState);
+    // console.log('Received scene desciption:');
+    // console.log(viewState);
     if (viewState.extra && viewState.extra.centerOfRotation) {
       this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
     }
@@ -237,6 +237,7 @@ VtkGeometryRenderer.propTypes = {
   clearOneTimeUpdatersOnUnmount: React.PropTypes.bool,
   clearInstanceCacheOnUnmount: React.PropTypes.bool,
   clearArrayCacheOnUnmount: React.PropTypes.bool,
+  onImageReady: React.PropTypes.func,
   client: React.PropTypes.object,
   connection: React.PropTypes.object,
 };
