@@ -152,13 +152,13 @@ export default class VtkGeometryRenderer extends React.Component {
     // FIXME: find the proper way to get the renderer we care about
     // Calling getCurrentRenderer() on the interactorStyle seems to return null
     // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
-    const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
+    const activeCamera = this.activeCamera || this.renderWindow.getRenderers()[0].getActiveCamera();
     const cameraParams = activeCamera.get('position', 'focalPoint', 'viewUp');
     return Object.assign({}, cameraParams, { centerOfRotation: this.interactorStyle.getCenterOfRotation() });
   }
 
   setCameraParameters({ position, focalPoint, viewUp, centerOfRotation }) {
-    const activeCamera = this.renderWindow.getRenderers()[0].getActiveCamera();
+    const activeCamera = this.activeCamera || this.renderWindow.getRenderers()[0].getActiveCamera();
     activeCamera.set({ position, focalPoint, viewUp });
     this.interactorStyle.setCenterOfRotation(centerOfRotation);
     this.renderWindow.render();
@@ -224,10 +224,14 @@ export default class VtkGeometryRenderer extends React.Component {
 
   viewChanged(data) {
     const viewState = data[0];
-    if (viewState.extra && viewState.extra.centerOfRotation) {
-      this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+    if (this.renderWindow.synchronize(viewState) && viewState.extra) {
+      if (viewState.extra.centerOfRotation) {
+        this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+      }
+      if (viewState.extra.camera) {
+        this.activeCamera = this.synchCtx.getInstance(viewState.extra.camera);
+      }
     }
-    this.renderWindow.synchronize(viewState);
   }
 
   render() {
