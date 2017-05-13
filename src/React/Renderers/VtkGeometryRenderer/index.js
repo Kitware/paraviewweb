@@ -224,12 +224,13 @@ export default class VtkGeometryRenderer extends React.Component {
 
   viewChanged(data) {
     const viewState = data[0];
-    if (viewState.extra && viewState.extra.centerOfRotation) {
-      this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
-    }
-    this.renderWindow.synchronize(viewState);
-    if (viewState.extra && viewState.extra.camera) {
-      this.activeCamera = this.synchCtx.getInstance(viewState.extra.camera);
+    if (this.renderWindow.synchronize(viewState) && viewState.extra) {
+      if (viewState.extra.centerOfRotation) {
+        this.interactorStyle.setCenterOfRotation(viewState.extra.centerOfRotation);
+      }
+      if (viewState.extra.camera) {
+        this.activeCamera = this.synchCtx.getInstance(viewState.extra.camera);
+      }
     }
   }
 
