@@ -121,6 +121,7 @@ export default class VtkGeometryRenderer extends React.Component {
     this.interactor.unbindEvents(this.rootContainer);
     this.unsubscribeViewChangeTopic();
     this.removeViewObserver(this.state.viewId);
+    window.removeEventListener('resize', this.updateRenderWindowSize);
 
     if (this.props.clearOneTimeUpdatersOnUnmount) {
       this.renderWindow.clearOneTimeUpdaters();
