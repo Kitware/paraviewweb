@@ -10,6 +10,7 @@ import vtkTrackballPan                 from 'vtk.js/Sources/Interaction/Manipula
 import vtkTrackballZoom                from 'vtk.js/Sources/Interaction/Manipulators/TrackballZoom';
 import vtkTrackballRotate              from 'vtk.js/Sources/Interaction/Manipulators/TrackballRotate';
 
+import BusyMonitor                     from '../../../Common/Misc/BusyMonitor';
 
 const SYNCHRONIZATION_CONTEXT_NAME = 'pvwLocalRenderingContext';
 const ACTIVE_VIEW_ID = '-1';
@@ -25,9 +26,14 @@ export default class VtkGeometryRenderer extends React.Component {
       viewId: props.viewId,
     };
 
+    this.monitor = BusyMonitor.newInstance();
+    if (this.props.onBusyChange) {
+      this.monitor.onBusyStatusChanged(this.props.onBusyChange);
+    }
+
     // Get our hands on the default synchronization context and tell how to fetch data arrays
     this.synchCtx = vtkSynchronizableRenderWindow.getSynchronizerContext(props.synchronizerContextName);
-    this.synchCtx.setFetchArrayFunction(props.client.VtkGeometryDelivery.getArray);
+    this.synchCtx.setFetchArrayFunction(this.monitor.busyWrapFunction(props.client.VtkGeometryDelivery.getArray));
 
     // VTK renderWindow/renderer
     const initialValues = { synchronizerContextName: props.synchronizerContextName };
@@ -121,6 +127,13 @@ export default class VtkGeometryRenderer extends React.Component {
     this.interactor.unbindEvents(this.rootContainer);
     this.unsubscribeViewChangeTopic();
     this.removeViewObserver(this.state.viewId);
+    this.monitor.destroy();
+
+    window.removeEventListener('resize', this.updateRenderWindowSize);
+
+    if (this.props.onBusyChange) {
+      this.props.onBusyChange(false);
+    }
 
     if (this.props.clearOneTimeUpdatersOnUnmount) {
       this.renderWindow.clearOneTimeUpdaters();
@@ -170,6 +183,10 @@ export default class VtkGeometryRenderer extends React.Component {
 
   getManipulatorInteractorStyle() {
     return this.interactorStyle;
+  }
+
+  isRendererBusy() {
+    return this.monitor.isBusy();
   }
 
   resetCamera() {
@@ -252,6 +269,7 @@ VtkGeometryRenderer.propTypes = {
   clearArrayCacheOnUnmount: React.PropTypes.bool,
   onImageReady: React.PropTypes.func,
   viewIdUpdated: React.PropTypes.func,
+  onBusyChange: React.PropTypes.func,
   client: React.PropTypes.object,
   connection: React.PropTypes.object,
 };
