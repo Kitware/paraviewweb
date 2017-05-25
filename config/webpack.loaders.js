@@ -29,6 +29,9 @@ module.exports = [
     test: /\.html$/,
     loader: 'html-loader',
   }, {
+    test: /\.isvg$/,
+    loader: 'html-loader?attrs=false',
+  }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)paraviewweb(\/|\\)/,
     loader: 'babel?presets[]=es2015,presets[]=react',
