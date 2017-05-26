@@ -37,7 +37,7 @@ export default React.createClass({
   componentDidMount() {
     const container = this.rootContainer;
 
-    const wsbUrl = `${this.props.connection.urls}b`;
+    const wsbUrl = `${this.props.connection.getUrl()}b`;
     this.binaryImageStream = new BinaryImageStream(wsbUrl);
     this.mouseListener = new VtkWebMouseListener(this.props.client);
 

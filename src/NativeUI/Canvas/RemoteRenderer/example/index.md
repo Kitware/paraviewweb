@@ -1,7 +1,8 @@
 # RemoteRenderer
 
 The RemoteRenderer can be used with either the VTK-Web or ParaView-Web servers.
-The current example is not supposed to work on github.io as no VTK based server is going to be available, but it can be used for local testing with one of the servers below.
+The current example will not work until you start one of the servers below on
+your local machine.
 
 ## Using VTK as server
 
@@ -26,10 +27,10 @@ r"""
              to deliver the static content and the current process only focuses on the
              WebSocket connectivity of clients.
 
-        --authKey vtk-secret
+        --authKey wslink-secret
              Secret key that should be provided by the client to allow it to make any
              WebSocket communication. The client will assume if none is given that the
-             server expects "vtk-secret" as secret key.
+             server expects "wslink-secret" as the secret key.
 """
 
 # import to process args
@@ -38,8 +39,9 @@ import os
 
 # import vtk modules.
 import vtk
-from vtk.web import protocols, server
-from vtk.web import wamp as vtk_wamp
+from vtk.web import protocols
+from vtk.web import wslink as vtk_wslink
+from wslink import server
 
 try:
     import argparse
@@ -52,11 +54,11 @@ except ImportError:
 # Create custom ServerProtocol class to handle clients requests
 # =============================================================================
 
-class _WebCone(vtk_wamp.ServerProtocol):
+class _WebCone(vtk_wslink.ServerProtocol):
 
     # Application configuration
     view    = None
-    authKey = "vtkweb-secret"
+    authKey = "wslink-secret"
 
     def initialize(self):
         global renderer, renderWindow, renderWindowInteractor, cone, mapper, actor
@@ -66,6 +68,9 @@ class _WebCone(vtk_wamp.ServerProtocol):
         self.registerVtkWebProtocol(protocols.vtkWebViewPort())
         self.registerVtkWebProtocol(protocols.vtkWebViewPortImageDelivery())
         self.registerVtkWebProtocol(protocols.vtkWebViewPortGeometryDelivery())
+
+        # Update authentication key to use
+        self.updateSecret(_WebCone.authKey)
 
         # Create default pipeline (Only once for all the session)
         if not _WebCone.view:
@@ -128,14 +133,11 @@ vtkpython vtk_server.py --port 1234
 import os
 
 # import paraview modules.
-from paraview.web import wamp      as pv_wamp
+from paraview.web import wslink      as pv_wslink
 from paraview.web import protocols as pv_protocols
 
-# import RPC annotation
-from autobahn.wamp import register as exportRpc
-
 from paraview import simple
-from vtk.web import server
+from wslink import server
 
 try:
     import argparse
@@ -148,7 +150,7 @@ except ImportError:
 # Create custom PVServerProtocol class to handle clients requests
 # =============================================================================
 
-class _DemoServer(pv_wamp.PVServerProtocol):
+class _DemoServer(pv_wslink.PVServerProtocol):
 
     def initialize(self):
         # Bring used components
@@ -161,6 +163,7 @@ class _DemoServer(pv_wamp.PVServerProtocol):
         simple.GetRenderView().Background = [0,0,0]
         cone = simple.Cone()
         simple.Show(cone)
+        simple.Render()
 
         # Update interaction mode
         pxm = simple.servermanager.ProxyManager()

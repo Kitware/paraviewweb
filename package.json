@@ -15,7 +15,6 @@
     },
     "main": "./dist/ParaViewWeb.js",
     "dependencies": {
-        "autobahn": "0.9.6",
         "when": "3.7.7",
         "ws": "0.8.1",
         "pako": "1.0.1",
@@ -48,6 +47,7 @@
 
         "kw-web-suite": "2.2.1",
         "kw-doc": "1.0.15",
+        "wslink": "0.1.0",
 
         "babel-plugin-istanbul": "2.0.0",
         "babel-polyfill": "6.16.0",
@@ -72,16 +72,14 @@
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
 
-        "bin:fix-autobahn" : "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
-
         "doc"           : "kw-doc -c ./documentation/config.js",
         "doc:www"       : "kw-doc -c ./documentation/config.js -s",
         "predoc:publish": "./tools/install-data/install-sample-data-cli.js",
         "doc:publish"   : "kw-doc -c ./documentation/config.js -p",
 
 
-        "build"         : "npm run bin:fix-autobahn && webpack --progress --colors",
-        "build:release" : "npm run bin:fix-autobahn && (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
+        "build"         : "npm run webpack --progress --colors",
+        "build:release" : "npm run (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
 
         "test"          : "karma start karma.conf.js",
         "test:travis"   : "karma start karma.conf.js --browsers Electron --single-run",
@@ -95,7 +93,6 @@
         }
     },
     "bin": {
-        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
         "pvw-html-data-bundle": "./tools/html-web-resource/bundle-html-cli.js"
     }
 }

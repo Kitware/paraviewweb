@@ -1,6 +1,6 @@
+import SmartConnect from 'wslink/SmartConnect';
 import RemoteRenderer from '..';
 import SizeHelper from '../../../../Common/Misc/SizeHelper';
-import SmartConnect from '../../../../IO/WebSocket/SmartConnect';
 import ParaViewWebClient from '../../../../IO/WebSocket/ParaViewWebClient';
 
 document.body.style.padding = '0';
@@ -16,7 +16,7 @@ divRenderer.style.overflow = 'hidden';
 
 const config = { sessionURL: 'ws://localhost:1234/ws' };
 const smartConnect = new SmartConnect(config);
-smartConnect.onConnectionReady(connection => {
+smartConnect.onConnectionReady((connection) => {
   const pvwClient = ParaViewWebClient.createClient(connection, ['MouseHandler', 'ViewPort', 'ViewPortImageDelivery']);
   const renderer = new RemoteRenderer(pvwClient);
   renderer.setContainer(divRenderer);
