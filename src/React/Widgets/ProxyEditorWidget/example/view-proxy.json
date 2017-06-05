@@ -1,488 +1,1306 @@
 {
-    "ui": [{
-        "widget": "list-1",
-        "name": "Axes Grid",
-        "values": {
+  "ui": [
+    {
+      "widget": "ProxyEditorPropertyWidget",
+      "type": "ProxyEditorPropertyWidget",
+      "name": "AxesGrid",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Visibility",
+          "doc": "\n          Show/hide the axes grid.\n        ",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Axes Grid",
+          "values": {
             "GridAxes3DActor": "333"
+          },
+          "type": "proxy",
+          "visibilityProperty": "Visibility",
+          "advanced": 0,
+          "size": 1
         },
-        "type": "proxy",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Visibility",
-        "doc": "\n          Show/hide the axes grid.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "X Title",
-        "doc": "\n          Set the title string for X axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "str",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Y Title",
-        "doc": "\n          Set the title string for Y axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "str",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Z Title",
-        "doc": "\n          Set the title string for Z axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "str",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Faces To Render",
-        "doc": "\n          Set the mask to select faces. The faces rendered will be a subset of the\n          faces selected depending on the status of **CullBackface** and\n          **CullFrontface** properties.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Cull Backface",
-        "doc": "\n              Set to true to hide faces of the grid facing away from the camera i.e. hide all\n              back faces.\n            ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Cull Frontface",
-        "doc": "\n              Set to true to hide faces of the grid facing towards from the camera i.e. hide all\n              front faces.\n            ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Grid Color",
-        "doc": "Color used when coloring the grid wireframe",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Show Grid",
-        "doc": "\n          Turn off to not render the plane grids.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Show Edges",
-        "doc": "\n          Turn off to not render the plane edges.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Show Ticks",
-        "doc": "\n          Turn off to not render the tick marks.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Axes To Label",
-        "doc": "\n          Set the mask to select the axes to label. The axes labelled will be a subset of the\n          axes selected depending on which faces are also being rendered.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Label Unique Edges Only",
-        "doc": "\n          Set to true to only label edges shared with 1 face. Note that\n          if all faces are being rendered, this will generate no labels.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "X Axis Notation",
-        "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for X Axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "values": {
-            "Mixed": 0,
-            "Fixed": 2,
-            "Scientific": 1
+        {
+          "widget": "PropertyGroup",
+          "name": "Title Texts",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "X Title",
+              "doc": "\n          Set the title string for X axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Title",
+              "doc": "\n          Set the title string for Y axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Title",
+              "doc": "\n          Set the title string for Z axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
         },
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "X Axis Precision",
-        "doc": "\n          Get/set the numerical precision to use for the X Axis, default is 2.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "X Axis Use Custom Labels",
-        "doc": "\n          Specify whether to use custom labels for the X axis. Labels\n          specified by **XAxisLabels** are used only when\n          this flag is set to 1.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "X Axis Labels",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 0,
-        "size": 0
-    }, {
-        "widget": "list-1",
-        "name": "Y Axis Notation",
-        "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Y Axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "values": {
-            "Mixed": 0,
-            "Fixed": 2,
-            "Scientific": 1
+        {
+          "widget": "PropertyGroup",
+          "name": "X Title Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
         },
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Y Axis Precision",
-        "doc": "\n          Get/set the numerical precision to use for the Y Axis, default is 2.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Y Axis Use Custom Labels",
-        "doc": "\n          Specify whether to use custom labels for the Y axis. Labels\n          specified by **YAxisLabels** are used only when\n          this flag is set to 1.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Y Axis Labels",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 0,
-        "size": 0
-    }, {
-        "widget": "list-1",
-        "name": "Z Axis Notation",
-        "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Z Axis.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "values": {
-            "Mixed": 0,
-            "Fixed": 2,
-            "Scientific": 1
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Title Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
         },
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Z Axis Precision",
-        "doc": "\n          Get/set the numerical precision to use for the Z Axis, default is 2.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Z Axis Use Custom Labels",
-        "doc": "\n          Specify whether to use custom labels for the Z axis. Labels\n          specified by **ZAxisLabels** are used only when\n          this flag is set to 1.\n        ",
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Z Axis Labels",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 0,
-        "size": 0
-    }, {
-        "widget": "textfield",
-        "name": "Data Scale",
-        "doc": "\n          If data is being scaled, you can show the original data bounds for the axes\n          instead of the scaled bounds by setting the DataScale to match the scaling applied\n          to the dataset.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Data Position",
-        "doc": "\n          If data is being translated, you can show the original data bounds for the axes\n          instead of the translated bounds by setting the DataPosition to match the\n          translation applied to the dataset.\n        ",
-        "range": [],
-        "depends": "317:AxesGrid:GridAxes3DActor:1",
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Center Axes Visibility",
-        "doc": "Toggle the visibility of the axes showing the center of\n        rotation in the scene.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Orientation Axes Visibility",
-        "doc": "Toggle the visibility of the axes showing the\n        viewing direction.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Orientation Axes Interactivity",
-        "doc": "Allows repositioning of the orientation\n        axes.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "type": "float",
-        "name": "Orientation Axes Label Color",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "type": "float",
-        "name": "Orientation Axes Outline Color",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Use Light",
-        "doc": "Enable/Disable the LightKit.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Fill Light Warmth",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Fill Light K: F Ratio",
-        "range": [{
-            "max": 15,
-            "min": 1
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Fill Light Elevation",
-        "range": [{
-            "max": 10,
-            "min": -90
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Fill Light Azimuth",
-        "range": [{
-            "max": 90,
-            "min": -90
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Back Light Warmth",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Back Light K: B Ratio",
-        "range": [{
-            "max": 15,
-            "min": 1
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Back Light Elevation",
-        "range": [{
-            "max": 45,
-            "min": -45
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Back Light Azimuth",
-        "range": [{
-            "max": 170,
-            "min": 60
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Head Light Warmth",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Head Light K: H Ratio",
-        "range": [{
-            "max": 15,
-            "min": 1
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "type": "int",
-        "name": "Maintain Luminance",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Light Switch",
-        "doc": "Turn on/off the default light in the 3D\n        renderer.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Light Ambient Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Light Specular Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Light Diffuse Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Light Intensity",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Light Type",
-        "values": {
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Title Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Face Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Faces To Render",
+              "doc": "\n          Set the mask to select faces. The faces rendered will be a subset of the\n          faces selected depending on the status of **CullBackface** and\n          **CullFrontface** properties.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Cull Backface",
+              "doc": "\n              Set to true to hide faces of the grid facing away from the camera i.e. hide all\n              back faces.\n            ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Cull Frontface",
+              "doc": "\n              Set to true to hide faces of the grid facing towards from the camera i.e. hide all\n              front faces.\n            ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Grid Color",
+              "doc": "Color used when coloring the grid wireframe",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Grid",
+          "doc": "\n          Turn off to not render the plane grids.\n        ",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Edges",
+          "doc": "\n          Turn off to not render the plane edges.\n        ",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Ticks",
+          "doc": "\n          Turn off to not render the tick marks.\n        ",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Label Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Label Unique Edges Only",
+              "doc": "\n          Set to true to only label edges shared with 1 face. Note that\n          if all faces are being rendered, this will generate no labels.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Axes To Label",
+              "doc": "\n          Set the mask to select the axes to label. The axes labelled will be a subset of the\n          axes selected depending on which faces are also being rendered.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "X Axis Label Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Axis Label Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Axis Label Font Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "X Axis Label Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "X Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for X Axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "X Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the X Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "X Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the X axis. Labels\n          specified by **XAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "X Axis Labels",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Axis Label Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "Y Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Y Axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the Y Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Y Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the Y axis. Labels\n          specified by **YAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Axis Labels",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Axis Label Properties",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "Z Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Z Axis.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the Z Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Z Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the Z axis. Labels\n          specified by **ZAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Axis Labels",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Data Transform",
+          "depends": "317:AxesGrid:GridAxes3DActor:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Data Scale",
+              "doc": "\n          If data is being scaled, you can show the original data bounds for the axes\n          instead of the scaled bounds by setting the DataScale to match the scaling applied\n          to the dataset.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Data Position",
+              "doc": "\n          If data is being translated, you can show the original data bounds for the axes\n          instead of the translated bounds by setting the DataPosition to match the\n          translation applied to the dataset.\n        ",
+              "range": [],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Data Bounds Inflate Factor",
+              "doc": "\n          After the data bounds have been computed, this property enables to inflate the\n          bounds used to generate the axes grid, so it will be slightly larger than the\n          data bounds. It inflates the axes grid bounds using the diagonal length of the\n          bounding box multiplied by this factor.\n          Data bounds are not modified, only the aspect of the AxesGrid is modified.\n          The default value (0.0008) ensures that there is no concident lines drawn when\n          zooming close enough to the model.\n        ",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "317:AxesGrid:GridAxes3DActor:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 1
+        }
+      ]
+    },
+    {
+      "widget": "checkbox",
+      "name": "Center Axes Visibility",
+      "doc": "Toggle the visibility of the axes showing the center of\n        rotation in the scene.",
+      "type": "int",
+      "advanced": 0,
+      "size": 1
+    },
+    {
+      "widget": "checkbox",
+      "name": "Hidden Line Removal",
+      "doc": "\n          Use a hidden line removal technique to hide wireframe surfaces that\n          are occluded by other wireframe surfaces. Note that this is disabled\n          when rendering distributed geometry in parallel.\n        ",
+      "type": "int",
+      "advanced": 0,
+      "size": 1
+    },
+    {
+      "widget": "checkbox",
+      "name": "Camera Parallel Projection",
+      "doc": "\n          Enable/disable parallel projection mode.\n        ",
+      "type": "int",
+      "advanced": 0,
+      "size": 1
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Orientation Axes",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Orientation Axes Visibility",
+          "doc": "Toggle the visibility of the axes showing the\n        viewing direction.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Orientation Axes Interactivity",
+          "doc": "Allows repositioning of the orientation\n        axes.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "type": "float",
+          "name": "Orientation Axes Label Color",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "type": "float",
+          "name": "Orientation Axes Outline Color",
+          "advanced": 1,
+          "size": 3
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Lights",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Use Light",
+          "doc": "Enable/Disable the LightKit.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Fill Light Warmth",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Fill Light K: F Ratio",
+          "range": [
+            {
+              "max": 15.0,
+              "min": 1.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Fill Light Elevation",
+          "range": [
+            {
+              "max": 10.0,
+              "min": -90.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Fill Light Azimuth",
+          "range": [
+            {
+              "max": 90.0,
+              "min": -90.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Back Light Warmth",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Back Light K: B Ratio",
+          "range": [
+            {
+              "max": 15.0,
+              "min": 1.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Back Light Elevation",
+          "range": [
+            {
+              "max": 45.0,
+              "min": -45.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Back Light Azimuth",
+          "range": [
+            {
+              "max": 170.0,
+              "min": 60.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Head Light Warmth",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Head Light K: H Ratio",
+          "range": [
+            {
+              "max": 15.0,
+              "min": 1.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "type": "int",
+          "name": "Maintain Luminance",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Light Switch",
+          "doc": "Turn on/off the default light in the 3D\n        renderer.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Light Ambient Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Light Specular Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Light Diffuse Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Light Intensity",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Light Type",
+          "values": {
             "CameraLight": 2,
             "HeadLight": 1,
             "SceneLight": 3
+          },
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Background",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Background",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
         },
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Stereo Type",
-        "doc": "\n          Set the stereo rendering mode to use. In client-server configurations,\n          you may also want to set the ServerStereoType.\n        ",
-        "values": {
+        {
+          "widget": "textfield",
+          "name": "Background2",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        },
+        {
+          "widget": "checkbox",
+          "type": "int",
+          "name": "Use Gradient Background",
+          "advanced": 0,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Stereo",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "list-1",
+          "name": "Stereo Type",
+          "doc": "\n          Set the stereo rendering mode to use. In client-server configurations,\n          you may also want to set the ServerStereoType.\n        ",
+          "values": {
             "Crystal Eyes": 1,
             "None": 10,
             "Right": 5,
@@ -493,15 +1311,16 @@
             "Checkerboard": 8,
             "Interlaced": 3,
             "Left": 4
+          },
+          "type": "int",
+          "advanced": 0,
+          "size": 1
         },
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Server Stereo Type",
-        "doc": "\n          This property allows you to set a different stereo mode for the server processes.\n          Note that the stereo type selected on the client and server must be *compatible*, i.e.\n          if the stereo type on the client side needs 2 renders each frame, the stereo type on the\n          server must do exactly the same, otherwise deadlocks may ensue.\n        ",
-        "values": {
+        {
+          "widget": "list-1",
+          "name": "Server Stereo Type",
+          "doc": "\n          This property allows you to set a different stereo mode for the server processes.\n          Note that the stereo type selected on the client and server must be *compatible*, i.e.\n          if the stereo type on the client side needs 2 renders each frame, the stereo type on the\n          server must do exactly the same, otherwise deadlocks may ensue.\n        ",
+          "values": {
             "Crystal Eyes": 1,
             "None": 10,
             "Right": 5,
@@ -513,353 +1332,807 @@
             "Same As Client": 0,
             "Interlaced": 3,
             "Left": 4
+          },
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "OSPRay Rendering",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Enable OSPRay",
+          "doc": "Switches between rasterization and ray tracing.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
         },
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Camera Parallel Projection",
-        "doc": "\n          Enable/disable parallel projection mode.\n        ",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Background",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Background2",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "type": "int",
-        "name": "Use Gradient Background",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Lock Bounds",
-        "doc": "A helper function to force consistent Z buffer\n        captures from a RenderView.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Draw Cells",
-        "doc": "RGB colors will come directly from a cell (1)\n        or point (0) aligned array.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Array Name To Draw",
-        "doc": "RGB colors will come directly from a named\n        array.",
-        "type": "str",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Array Number To Draw",
-        "doc": "RGB colors will come directly from the numbered\n        array.",
-        "range": [],
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Array Component To Draw",
-        "doc": "RGB colors will come directly from the numbered\n        component of the array.",
-        "range": [],
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Scalar Range",
-        "doc": "Min and max values to map linearly between to\n        produce RGB colors.",
-        "range": [],
-        "type": "float",
-        "advanced": 0,
-        "size": 2
-    }],
-    "id": "317",
-    "properties": [{
-        "name": "AxesGrid",
-        "value": "GridAxes3DActor",
-        "id": "317"
-    }, {
-        "name": "Visibility",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "XTitle",
-        "value": "X Axis",
-        "id": "333"
-    }, {
-        "name": "YTitle",
-        "value": "Y Axis",
-        "id": "333"
-    }, {
-        "name": "ZTitle",
-        "value": "Z Axis",
-        "id": "333"
-    }, {
-        "name": "FacesToRender",
-        "value": 63,
-        "id": "333"
-    }, {
-        "name": "CullBackface",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "CullFrontface",
-        "value": 1,
-        "id": "333"
-    }, {
-        "name": "GridColor",
-        "value": [1, 1, 1],
-        "id": "333"
-    }, {
-        "name": "ShowGrid",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "ShowEdges",
-        "value": 1,
-        "id": "333"
-    }, {
-        "name": "ShowTicks",
-        "value": 1,
-        "id": "333"
-    }, {
-        "name": "AxesToLabel",
-        "value": 63,
-        "id": "333"
-    }, {
-        "name": "LabelUniqueEdgesOnly",
-        "value": 1,
-        "id": "333"
-    }, {
-        "name": "XAxisNotation",
-        "value": "Mixed",
-        "id": "333"
-    }, {
-        "name": "XAxisPrecision",
-        "value": 2,
-        "id": "333"
-    }, {
-        "name": "XAxisUseCustomLabels",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "XAxisLabels",
-        "value": [],
-        "id": "333"
-    }, {
-        "name": "YAxisNotation",
-        "value": "Mixed",
-        "id": "333"
-    }, {
-        "name": "YAxisPrecision",
-        "value": 2,
-        "id": "333"
-    }, {
-        "name": "YAxisUseCustomLabels",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "YAxisLabels",
-        "value": [],
-        "id": "333"
-    }, {
-        "name": "ZAxisNotation",
-        "value": "Mixed",
-        "id": "333"
-    }, {
-        "name": "ZAxisPrecision",
-        "value": 2,
-        "id": "333"
-    }, {
-        "name": "ZAxisUseCustomLabels",
-        "value": 0,
-        "id": "333"
-    }, {
-        "name": "ZAxisLabels",
-        "value": [],
-        "id": "333"
-    }, {
-        "name": "DataScale",
-        "value": [1, 1, 1],
-        "id": "333"
-    }, {
-        "name": "DataPosition",
-        "value": [0, 0, 0],
-        "id": "333"
-    }, {
-        "name": "CenterAxesVisibility",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "OrientationAxesVisibility",
-        "value": 1,
-        "id": "317"
-    }, {
-        "name": "OrientationAxesInteractivity",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "OrientationAxesLabelColor",
-        "value": [1, 1, 1],
-        "id": "317"
-    }, {
-        "name": "OrientationAxesOutlineColor",
-        "value": [1, 1, 1],
-        "id": "317"
-    }, {
-        "name": "UseLight",
-        "value": 1,
-        "id": "317"
-    }, {
-        "name": "FillLightWarmth",
-        "value": 0.4,
-        "id": "317"
-    }, {
-        "name": "FillLightK:F Ratio",
-        "value": 3,
-        "id": "317"
-    }, {
-        "name": "FillLightElevation",
-        "value": -75,
-        "id": "317"
-    }, {
-        "name": "FillLightAzimuth",
-        "value": -10,
-        "id": "317"
-    }, {
-        "name": "BackLightWarmth",
-        "value": 0.5,
-        "id": "317"
-    }, {
-        "name": "BackLightK:B Ratio",
-        "value": 3.5,
-        "id": "317"
-    }, {
-        "name": "BackLightElevation",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "BackLightAzimuth",
-        "value": 110,
-        "id": "317"
-    }, {
-        "name": "HeadLightWarmth",
-        "value": 0.5,
-        "id": "317"
-    }, {
-        "name": "HeadLightK:H Ratio",
-        "value": 3,
-        "id": "317"
-    }, {
-        "name": "MaintainLuminance",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "LightSwitch",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "LightAmbientColor",
-        "value": [1, 1, 1],
-        "id": "317"
-    }, {
-        "name": "LightSpecularColor",
-        "value": [1, 1, 1],
-        "id": "317"
-    }, {
-        "name": "LightDiffuseColor",
-        "value": [1, 1, 1],
-        "id": "317"
-    }, {
-        "name": "LightIntensity",
-        "value": 1,
-        "id": "317"
-    }, {
-        "name": "LightType",
-        "value": "HeadLight",
-        "id": "317"
-    }, {
-        "name": "StereoType",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "ServerStereoType",
-        "value": "Same As Client",
-        "id": "317"
-    }, {
-        "name": "CameraParallelProjection",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "Background",
-        "value": [0, 0, 0],
-        "id": "317"
-    }, {
-        "name": "Background2",
-        "value": [0, 0, 0.165],
-        "id": "317"
-    }, {
-        "name": "UseGradientBackground",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "LockBounds",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "DrawCells",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "ArrayNameToDraw",
-        "value": "",
-        "id": "317"
-    }, {
-        "name": "ArrayNumberToDraw",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "ArrayComponentToDraw",
-        "value": 0,
-        "id": "317"
-    }, {
-        "name": "ScalarRange",
-        "value": [0, -1],
-        "id": "317"
-    }]
+        {
+          "widget": "checkbox",
+          "name": "Shadows",
+          "doc": "Controls whether OSPRay casts shadow rays\n        or not.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Ambient Samples",
+          "doc": "Sets the number of occlusion query rays that\n        OSPRay sends at each intersection.",
+          "range": [],
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Samples Per Pixel",
+          "doc": "Set the number of primary rays that OSPRay\n        shoots per pixel.",
+          "range": [],
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Progressive Passes",
+          "doc": "Set the number of render passes OSPRay takes to\n        improve image quality. Has no effect unless ParaView\n        is started with the --enable-streaming option.",
+          "range": [],
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Light Scale",
+          "doc": "Dimish or Amplify all lights in the scene.",
+          "range": [],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        }
+      ]
+    }
+  ],
+  "id": "317",
+  "properties": [
+    {
+      "children": [
+        {
+          "name": "Visibility",
+          "value": 0,
+          "id": "333"
+        },
+        {
+          "name": "AxesGrid",
+          "value": "GridAxes3DActor",
+          "id": "317"
+        },
+        {
+          "children": [
+            {
+              "name": "XTitle",
+              "value": "X Axis",
+              "id": "333"
+            },
+            {
+              "name": "YTitle",
+              "value": "Y Axis",
+              "id": "333"
+            },
+            {
+              "name": "ZTitle",
+              "value": "Z Axis",
+              "id": "333"
+            }
+          ],
+          "id": "333:Title Texts",
+          "value": false,
+          "name": "Title Texts"
+        },
+        {
+          "children": [
+            {
+              "name": "XTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "XTitleFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "XTitleBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XTitleItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XTitleFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "XTitleShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XTitleOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:X Title Font Properties",
+          "value": false,
+          "name": "X Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "YTitleFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "YTitleBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YTitleItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YTitleFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "YTitleShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YTitleOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:Y Title Font Properties",
+          "value": false,
+          "name": "Y Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "ZTitleFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "ZTitleBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZTitleItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZTitleFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "ZTitleShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZTitleOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:Z Title Font Properties",
+          "value": false,
+          "name": "Z Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "FacesToRender",
+              "value": 63,
+              "id": "333"
+            },
+            {
+              "name": "CullBackface",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "CullFrontface",
+              "value": 1,
+              "id": "333"
+            },
+            {
+              "name": "GridColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            }
+          ],
+          "id": "333:Face Properties",
+          "value": false,
+          "name": "Face Properties"
+        },
+        {
+          "name": "ShowGrid",
+          "value": 0,
+          "id": "333"
+        },
+        {
+          "name": "ShowEdges",
+          "value": 1,
+          "id": "333"
+        },
+        {
+          "name": "ShowTicks",
+          "value": 1,
+          "id": "333"
+        },
+        {
+          "children": [
+            {
+              "name": "LabelUniqueEdgesOnly",
+              "value": 1,
+              "id": "333"
+            },
+            {
+              "name": "AxesToLabel",
+              "value": 63,
+              "id": "333"
+            }
+          ],
+          "id": "333:Label Properties",
+          "value": false,
+          "name": "Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "XLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "XLabelFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "XLabelBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XLabelItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XLabelFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "XLabelShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XLabelOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:X Axis Label Font Properties",
+          "value": false,
+          "name": "X Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "YLabelFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "YLabelBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YLabelItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YLabelFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "YLabelShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YLabelOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:Y Axis Label Font Properties",
+          "value": false,
+          "name": "Y Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "ZLabelFontFamily",
+              "value": "Arial",
+              "id": "333"
+            },
+            {
+              "name": "ZLabelBold",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZLabelItalic",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZLabelFontSize",
+              "value": 12,
+              "id": "333"
+            },
+            {
+              "name": "ZLabelShadow",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZLabelOpacity",
+              "value": 1.0,
+              "id": "333"
+            }
+          ],
+          "id": "333:Z Axis Label Font Properties",
+          "value": false,
+          "name": "Z Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "XAxisNotation",
+              "value": "Mixed",
+              "id": "333"
+            },
+            {
+              "name": "XAxisPrecision",
+              "value": 2,
+              "id": "333"
+            },
+            {
+              "name": "XAxisUseCustomLabels",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "XAxisLabels",
+              "value": [],
+              "id": "333"
+            }
+          ],
+          "id": "333:X Axis Label Properties",
+          "value": false,
+          "name": "X Axis Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YAxisNotation",
+              "value": "Mixed",
+              "id": "333"
+            },
+            {
+              "name": "YAxisPrecision",
+              "value": 2,
+              "id": "333"
+            },
+            {
+              "name": "YAxisUseCustomLabels",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "YAxisLabels",
+              "value": [],
+              "id": "333"
+            }
+          ],
+          "id": "333:Y Axis Label Properties",
+          "value": false,
+          "name": "Y Axis Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZAxisNotation",
+              "value": "Mixed",
+              "id": "333"
+            },
+            {
+              "name": "ZAxisPrecision",
+              "value": 2,
+              "id": "333"
+            },
+            {
+              "name": "ZAxisUseCustomLabels",
+              "value": 0,
+              "id": "333"
+            },
+            {
+              "name": "ZAxisLabels",
+              "value": [],
+              "id": "333"
+            }
+          ],
+          "id": "333:Z Axis Label Properties",
+          "value": false,
+          "name": "Z Axis Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "DataScale",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "DataPosition",
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "id": "333"
+            },
+            {
+              "name": "DataBoundsInflateFactor",
+              "value": 0.0008,
+              "id": "333"
+            }
+          ],
+          "id": "333:Data Transform",
+          "value": false,
+          "name": "Data Transform"
+        }
+      ],
+      "id": "317:AxesGrid",
+      "value": false,
+      "name": "AxesGrid"
+    },
+    {
+      "name": "CenterAxesVisibility",
+      "value": 0,
+      "id": "317"
+    },
+    {
+      "name": "HiddenLineRemoval",
+      "value": 0,
+      "id": "317"
+    },
+    {
+      "name": "CameraParallelProjection",
+      "value": 0,
+      "id": "317"
+    },
+    {
+      "children": [
+        {
+          "name": "OrientationAxesVisibility",
+          "value": 1,
+          "id": "317"
+        },
+        {
+          "name": "OrientationAxesInteractivity",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "OrientationAxesLabelColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "317"
+        },
+        {
+          "name": "OrientationAxesOutlineColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "317"
+        }
+      ],
+      "id": "317:Orientation Axes",
+      "value": false,
+      "name": "Orientation Axes"
+    },
+    {
+      "children": [
+        {
+          "name": "UseLight",
+          "value": 1,
+          "id": "317"
+        },
+        {
+          "name": "FillLightWarmth",
+          "value": 0.4,
+          "id": "317"
+        },
+        {
+          "name": "FillLightK:F Ratio",
+          "value": 3.0,
+          "id": "317"
+        },
+        {
+          "name": "FillLightElevation",
+          "value": -75.0,
+          "id": "317"
+        },
+        {
+          "name": "FillLightAzimuth",
+          "value": -10.0,
+          "id": "317"
+        },
+        {
+          "name": "BackLightWarmth",
+          "value": 0.5,
+          "id": "317"
+        },
+        {
+          "name": "BackLightK:B Ratio",
+          "value": 3.5,
+          "id": "317"
+        },
+        {
+          "name": "BackLightElevation",
+          "value": 0.0,
+          "id": "317"
+        },
+        {
+          "name": "BackLightAzimuth",
+          "value": 110.0,
+          "id": "317"
+        },
+        {
+          "name": "HeadLightWarmth",
+          "value": 0.5,
+          "id": "317"
+        },
+        {
+          "name": "HeadLightK:H Ratio",
+          "value": 3.0,
+          "id": "317"
+        },
+        {
+          "name": "MaintainLuminance",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "LightSwitch",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "LightAmbientColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "317"
+        },
+        {
+          "name": "LightSpecularColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "317"
+        },
+        {
+          "name": "LightDiffuseColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "317"
+        },
+        {
+          "name": "LightIntensity",
+          "value": 1.0,
+          "id": "317"
+        },
+        {
+          "name": "LightType",
+          "value": "HeadLight",
+          "id": "317"
+        }
+      ],
+      "id": "317:Lights",
+      "value": false,
+      "name": "Lights"
+    },
+    {
+      "children": [
+        {
+          "name": "Background",
+          "value": [
+            0.32,
+            0.34,
+            0.43
+          ],
+          "id": "317"
+        },
+        {
+          "name": "Background2",
+          "value": [
+            0.0,
+            0.0,
+            0.165
+          ],
+          "id": "317"
+        },
+        {
+          "name": "UseGradientBackground",
+          "value": 0,
+          "id": "317"
+        }
+      ],
+      "id": "317:Background",
+      "value": false,
+      "name": "Background"
+    },
+    {
+      "children": [
+        {
+          "name": "StereoType",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "ServerStereoType",
+          "value": "Same As Client",
+          "id": "317"
+        }
+      ],
+      "id": "317:Stereo",
+      "value": false,
+      "name": "Stereo"
+    },
+    {
+      "children": [
+        {
+          "name": "EnableOSPRay",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "Shadows",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "AmbientSamples",
+          "value": 0,
+          "id": "317"
+        },
+        {
+          "name": "SamplesPerPixel",
+          "value": 1,
+          "id": "317"
+        },
+        {
+          "name": "MaxFrames",
+          "value": 1,
+          "id": "317"
+        },
+        {
+          "name": "LightScale",
+          "value": 1.0,
+          "id": "317"
+        }
+      ],
+      "id": "317:OSPRay Rendering",
+      "value": false,
+      "name": "OSPRay Rendering"
+    }
+  ]
 }

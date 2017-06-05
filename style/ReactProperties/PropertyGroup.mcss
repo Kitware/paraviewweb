@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 8px 0;
+}
+
+.toolbar {
+  line-height: 30px;
+  height: 30px;
+  min-height: 30px;
+  user-select: none;
+  margin: 0 10px 5px 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: 500;
+}
+
+.separator {
+  border: 1px solid black;
+  margin: 0 10px;
+  position: relative;
+  top: -10px;
+}
+
+.title {
+   text-transform: capitalize;
+   font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+.content {
+  width: 100%;
+}

@@ -1,1103 +1,1519 @@
 {
-    "data": {
-        "arrays": [{
-            "range": [{
-                "max": 0.000013329898584157294,
-                "name": "Magnitude",
-                "min": 0
-            }, {
-                "max": 3.212448973499704e-7,
-                "name": "X",
-                "min": -4.965284006175352e-7
-            }, {
-                "max": 5.920081207477779e-7,
-                "name": "Y",
-                "min": -5.920087460253853e-7
-            }, {
-                "max": 0.000010021663911174983,
-                "name": "Z",
-                "min": -0.000013328498425835278
-            }],
-            "location": "POINTS",
-            "type": "double",
-            "name": "ACCL",
-            "size": 3
-        }, {
-            "range": [{
-                "max": 0,
-                "name": "Magnitude",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "X",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "Y",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "Z",
-                "min": 0
-            }],
-            "location": "POINTS",
-            "type": "double",
-            "name": "DISPL",
-            "size": 3
-        }, {
-            "range": [{
-                "max": 10088,
-                "name": "",
-                "min": 1
-            }],
-            "location": "POINTS",
-            "type": "id_type",
-            "name": "GlobalNodeId",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 10088,
-                "name": "",
-                "min": 1
-            }],
-            "location": "POINTS",
-            "type": "id_type",
-            "name": "PedigreeNodeId",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 5000,
-                "name": "Magnitude",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "X",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "Y",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "Z",
-                "min": -5000
-            }],
-            "location": "POINTS",
-            "type": "double",
-            "name": "VEL",
-            "size": 3
-        }, {
-            "range": [{
-                "max": 0,
-                "name": "",
-                "min": 0
-            }],
-            "location": "CELLS",
-            "type": "double",
-            "name": "EQPS",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 7152,
-                "name": "",
-                "min": 7152
-            }],
-            "location": "CELLS",
-            "type": "id_type",
-            "name": "GlobalElementId",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 2,
-                "name": "",
-                "min": 2
-            }],
-            "location": "CELLS",
-            "type": "int",
-            "name": "ObjectId",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 7152,
-                "name": "",
-                "min": 7152
-            }],
-            "location": "CELLS",
-            "type": "id_type",
-            "name": "PedigreeElementId",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 2959999.75,
-                "name": "",
-                "min": 1467643.625
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "KE",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 0.2753971517086029,
-                "name": "",
-                "min": -0.04863959178328514
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "XMOM",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 0.007546288892626762,
-                "name": "",
-                "min": -5.840920925140381
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "YMOM",
-            "size": 1
-        }, {
-            "range": [{
-                "max": -765.4190673828125,
-                "name": "",
-                "min": -1183.9998779296875
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "ZMOM",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 28318,
-                "name": "",
-                "min": 0
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "NSTEPS",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 2.4712693402761943e-7,
-                "name": "",
-                "min": 5.355158805286919e-8
-            }],
-            "location": "FIELDS",
-            "type": "double",
-            "name": "TMSTEP",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 2,
-                "name": "",
-                "min": 1
-            }],
-            "location": "FIELDS",
-            "type": "int",
-            "name": "ElementBlockIds",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 80,
-                "name": "0",
-                "min": 32
-            }, {
-                "max": 101,
-                "name": "1",
-                "min": 32
-            }, {
-                "max": 111,
-                "name": "2",
-                "min": 32
-            }, {
-                "max": 105,
-                "name": "3",
-                "min": 46
-            }, {
-                "max": 110,
-                "name": "4",
-                "min": 0
-            }, {
-                "max": 79,
-                "name": "5",
-                "min": 0
-            }, {
-                "max": 57,
-                "name": "6",
-                "min": 0
-            }, {
-                "max": 68,
-                "name": "7",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "8",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "9",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "10",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "11",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "12",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "13",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "14",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "15",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "16",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "17",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "18",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "19",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "20",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "21",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "22",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "23",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "24",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "25",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "26",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "27",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "28",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "29",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "30",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "31",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "32",
-                "min": 0
-            }],
-            "location": "FIELDS",
-            "type": "char",
-            "name": "QA_Records",
-            "size": 33
-        }, {
-            "range": [{
-                "max": -1e+299,
-                "name": "",
-                "min": 1e+299
-            }],
-            "location": "FIELDS",
-            "type": "unspecified",
-            "name": "Title",
-            "size": 1
-        }, {
-            "range": [{
-                "max": 48,
-                "name": "0",
-                "min": 48
-            }, {
-                "max": 50,
-                "name": "1",
-                "min": 49
-            }, {
-                "max": 47,
-                "name": "2",
-                "min": 47
-            }, {
-                "max": 32,
-                "name": "3",
-                "min": 32
-            }, {
-                "max": 99,
-                "name": "4",
-                "min": 71
-            }, {
-                "max": 108,
-                "name": "5",
-                "min": 97
-            }, {
-                "max": 111,
-                "name": "6",
-                "min": 110
-            }, {
-                "max": 99,
-                "name": "7",
-                "min": 51
-            }, {
-                "max": 107,
-                "name": "8",
-                "min": 68
-            }, {
-                "max": 97,
-                "name": "9",
-                "min": 58
-            }, {
-                "max": 108,
-                "name": "10",
-                "min": 32
-            }, {
-                "max": 102,
-                "name": "11",
-                "min": 97
-            }, {
-                "max": 108,
-                "name": "12",
-                "min": 46
-            }, {
-                "max": 111,
-                "name": "13",
-                "min": 102
-            }, {
-                "max": 99,
-                "name": "14",
-                "min": 46
-            }, {
-                "max": 107,
-                "name": "15",
-                "min": 100
-            }, {
-                "max": 97,
-                "name": "16",
-                "min": 0
-            }, {
-                "max": 108,
-                "name": "17",
-                "min": 0
-            }, {
-                "max": 102,
-                "name": "18",
-                "min": 0
-            }, {
-                "max": 108,
-                "name": "19",
-                "min": 0
-            }, {
-                "max": 103,
-                "name": "20",
-                "min": 0
-            }, {
-                "max": 50,
-                "name": "21",
-                "min": 0
-            }, {
-                "max": 103,
-                "name": "22",
-                "min": 0
-            }, {
-                "max": 50,
-                "name": "23",
-                "min": 0
-            }, {
-                "max": 100,
-                "name": "24",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "25",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "26",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "27",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "28",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "29",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "30",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "31",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "32",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "33",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "34",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "35",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "36",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "37",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "38",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "39",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "40",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "41",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "42",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "43",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "44",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "45",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "46",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "47",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "48",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "49",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "50",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "51",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "52",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "53",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "54",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "55",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "56",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "57",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "58",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "59",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "60",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "61",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "62",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "63",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "64",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "65",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "66",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "67",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "68",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "69",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "70",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "71",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "72",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "73",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "74",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "75",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "76",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "77",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "78",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "79",
-                "min": 0
-            }, {
-                "max": 0,
-                "name": "80",
-                "min": 0
-            }],
-            "location": "FIELDS",
-            "type": "char",
-            "name": "Info_Records",
-            "size": 81
-        }],
-        "cells": 7152,
-        "memory": 2171,
-        "bounds": [-7.878461837768555, 8.312582015991211, 0, 8, -14.999999046325684, 4.778104782104492],
-        "points": 10088,
-        "time": ["0.0", "0.000100073739304", "0.000199905101908", "0.000299964391161", "0.000400086544687", "0.000499919231515", "0.000599935126957", "0.000700049218722", "0.000800035253633", "0.00090006069513", "0.00100000598468", "0.00109998101834", "0.00119993311819", "0.00129998673219", "0.00140009319875", "0.00150004134048", "0.0015999188181", "0.00169999850914", "0.00180007342715", "0.00190002250019", "0.00199998565949", "0.0020999298431", "0.00219992105849", "0.00229999283329", "0.00240005389787", "0.00249994290061", "0.00259992131032", "0.00269998027943", "0.00279999966733", "0.00289991078898", "0.00300002051517", "0.00309997936711", "0.00319999479689", "0.00329994247295", "0.00340002309531", "0.00349996844307", "0.00359999225475", "0.00369996228255", "0.00379998679273", "0.00389998196624", "0.00399998575449", "0.00410001119599", "0.00419997423887", "0.0042999885045"],
-        "type": "Multi-block Dataset"
+  "data": {
+    "arrays": [
+      {
+        "range": [
+          {
+            "max": 1.3329898584157294e-05,
+            "name": "Magnitude",
+            "min": 0.0
+          },
+          {
+            "max": 3.212448973499704e-07,
+            "name": "X",
+            "min": -4.965284006175352e-07
+          },
+          {
+            "max": 5.920081207477779e-07,
+            "name": "Y",
+            "min": -5.920087460253853e-07
+          },
+          {
+            "max": 1.0021663911174983e-05,
+            "name": "Z",
+            "min": -1.3328498425835278e-05
+          }
+        ],
+        "location": "POINTS",
+        "type": "double",
+        "name": "ACCL",
+        "size": 3
+      },
+      {
+        "range": [
+          {
+            "max": 0.0,
+            "name": "Magnitude",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "X",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "Y",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "Z",
+            "min": 0.0
+          }
+        ],
+        "location": "POINTS",
+        "type": "double",
+        "name": "DISPL",
+        "size": 3
+      },
+      {
+        "range": [
+          {
+            "max": 10088.0,
+            "name": "",
+            "min": 1.0
+          }
+        ],
+        "location": "POINTS",
+        "type": "id_type",
+        "name": "GlobalNodeId",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 10088.0,
+            "name": "",
+            "min": 1.0
+          }
+        ],
+        "location": "POINTS",
+        "type": "id_type",
+        "name": "PedigreeNodeId",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 5000.0,
+            "name": "Magnitude",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "X",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "Y",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "Z",
+            "min": -5000.0
+          }
+        ],
+        "location": "POINTS",
+        "type": "double",
+        "name": "VEL",
+        "size": 3
+      },
+      {
+        "range": [
+          {
+            "max": 0.0,
+            "name": "",
+            "min": 0.0
+          }
+        ],
+        "location": "CELLS",
+        "type": "double",
+        "name": "EQPS",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 7152.0,
+            "name": "",
+            "min": 7152.0
+          }
+        ],
+        "location": "CELLS",
+        "type": "id_type",
+        "name": "GlobalElementId",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 2.0,
+            "name": "",
+            "min": 2.0
+          }
+        ],
+        "location": "CELLS",
+        "type": "int",
+        "name": "ObjectId",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 7152.0,
+            "name": "",
+            "min": 7152.0
+          }
+        ],
+        "location": "CELLS",
+        "type": "id_type",
+        "name": "PedigreeElementId",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 2.0,
+            "name": "",
+            "min": 1.0
+          }
+        ],
+        "location": "FIELDS",
+        "type": "int",
+        "name": "ElementBlockIds",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 48.0,
+            "name": "0",
+            "min": 48.0
+          },
+          {
+            "max": 50.0,
+            "name": "1",
+            "min": 49.0
+          },
+          {
+            "max": 47.0,
+            "name": "2",
+            "min": 47.0
+          },
+          {
+            "max": 32.0,
+            "name": "3",
+            "min": 32.0
+          },
+          {
+            "max": 99.0,
+            "name": "4",
+            "min": 71.0
+          },
+          {
+            "max": 108.0,
+            "name": "5",
+            "min": 97.0
+          },
+          {
+            "max": 111.0,
+            "name": "6",
+            "min": 110.0
+          },
+          {
+            "max": 99.0,
+            "name": "7",
+            "min": 51.0
+          },
+          {
+            "max": 107.0,
+            "name": "8",
+            "min": 68.0
+          },
+          {
+            "max": 97.0,
+            "name": "9",
+            "min": 58.0
+          },
+          {
+            "max": 108.0,
+            "name": "10",
+            "min": 32.0
+          },
+          {
+            "max": 102.0,
+            "name": "11",
+            "min": 97.0
+          },
+          {
+            "max": 108.0,
+            "name": "12",
+            "min": 46.0
+          },
+          {
+            "max": 111.0,
+            "name": "13",
+            "min": 102.0
+          },
+          {
+            "max": 99.0,
+            "name": "14",
+            "min": 46.0
+          },
+          {
+            "max": 107.0,
+            "name": "15",
+            "min": 100.0
+          },
+          {
+            "max": 97.0,
+            "name": "16",
+            "min": 0.0
+          },
+          {
+            "max": 108.0,
+            "name": "17",
+            "min": 0.0
+          },
+          {
+            "max": 102.0,
+            "name": "18",
+            "min": 0.0
+          },
+          {
+            "max": 108.0,
+            "name": "19",
+            "min": 0.0
+          },
+          {
+            "max": 103.0,
+            "name": "20",
+            "min": 0.0
+          },
+          {
+            "max": 50.0,
+            "name": "21",
+            "min": 0.0
+          },
+          {
+            "max": 103.0,
+            "name": "22",
+            "min": 0.0
+          },
+          {
+            "max": 50.0,
+            "name": "23",
+            "min": 0.0
+          },
+          {
+            "max": 100.0,
+            "name": "24",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "25",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "26",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "27",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "28",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "29",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "30",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "31",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "32",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "33",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "34",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "35",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "36",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "37",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "38",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "39",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "40",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "41",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "42",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "43",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "44",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "45",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "46",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "47",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "48",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "49",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "50",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "51",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "52",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "53",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "54",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "55",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "56",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "57",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "58",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "59",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "60",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "61",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "62",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "63",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "64",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "65",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "66",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "67",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "68",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "69",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "70",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "71",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "72",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "73",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "74",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "75",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "76",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "77",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "78",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "79",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "80",
+            "min": 0.0
+          }
+        ],
+        "location": "FIELDS",
+        "type": "char",
+        "name": "Info_Records",
+        "size": 81
+      },
+      {
+        "range": [
+          {
+            "max": 2959999.75,
+            "name": "",
+            "min": 1467643.625
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "KE",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 28318.0,
+            "name": "",
+            "min": 0.0
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "NSTEPS",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 80.0,
+            "name": "0",
+            "min": 32.0
+          },
+          {
+            "max": 101.0,
+            "name": "1",
+            "min": 32.0
+          },
+          {
+            "max": 111.0,
+            "name": "2",
+            "min": 32.0
+          },
+          {
+            "max": 105.0,
+            "name": "3",
+            "min": 46.0
+          },
+          {
+            "max": 110.0,
+            "name": "4",
+            "min": 0.0
+          },
+          {
+            "max": 79.0,
+            "name": "5",
+            "min": 0.0
+          },
+          {
+            "max": 57.0,
+            "name": "6",
+            "min": 0.0
+          },
+          {
+            "max": 68.0,
+            "name": "7",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "8",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "9",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "10",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "11",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "12",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "13",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "14",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "15",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "16",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "17",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "18",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "19",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "20",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "21",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "22",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "23",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "24",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "25",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "26",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "27",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "28",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "29",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "30",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "31",
+            "min": 0.0
+          },
+          {
+            "max": 0.0,
+            "name": "32",
+            "min": 0.0
+          }
+        ],
+        "location": "FIELDS",
+        "type": "char",
+        "name": "QA_Records",
+        "size": 33
+      },
+      {
+        "range": [
+          {
+            "max": -1e+299,
+            "name": "",
+            "min": 1e+299
+          }
+        ],
+        "location": "FIELDS",
+        "type": "unspecified",
+        "name": "Title",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 2.4712693402761943e-07,
+            "name": "",
+            "min": 5.355158805286919e-08
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "TMSTEP",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 0.2753971517086029,
+            "name": "",
+            "min": -0.04863959178328514
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "XMOM",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": 0.007546288892626762,
+            "name": "",
+            "min": -5.840920925140381
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "YMOM",
+        "size": 1
+      },
+      {
+        "range": [
+          {
+            "max": -765.4190673828125,
+            "name": "",
+            "min": -1183.9998779296875
+          }
+        ],
+        "location": "FIELDS",
+        "type": "double",
+        "name": "ZMOM",
+        "size": 1
+      }
+    ],
+    "cells": 7152,
+    "memory": 2171,
+    "bounds": [
+      -7.878461837768555,
+      8.312582015991211,
+      0.0,
+      8.0,
+      -14.999999046325684,
+      4.778104782104492
+    ],
+    "points": 10088,
+    "time": [
+      "0.0",
+      "0.000100073739304",
+      "0.000199905101908",
+      "0.000299964391161",
+      "0.000400086544687",
+      "0.000499919231515",
+      "0.000599935126957",
+      "0.000700049218722",
+      "0.000800035253633",
+      "0.00090006069513",
+      "0.00100000598468",
+      "0.00109998101834",
+      "0.00119993311819",
+      "0.00129998673219",
+      "0.00140009319875",
+      "0.00150004134048",
+      "0.0015999188181",
+      "0.00169999850914",
+      "0.00180007342715",
+      "0.00190002250019",
+      "0.00199998565949",
+      "0.0020999298431",
+      "0.00219992105849",
+      "0.00229999283329",
+      "0.00240005389787",
+      "0.00249994290061",
+      "0.00259992131032",
+      "0.00269998027943",
+      "0.00279999966733",
+      "0.00289991078898",
+      "0.00300002051517",
+      "0.00309997936711",
+      "0.00319999479689",
+      "0.00329994247295",
+      "0.00340002309531",
+      "0.00349996844307",
+      "0.00359999225475",
+      "0.00369996228255",
+      "0.00379998679273",
+      "0.00389998196624",
+      "0.00399998575449",
+      "0.00410001119599",
+      "0.00419997423887",
+      "0.0042999885045"
+    ],
+    "type": "Multi-block Dataset"
+  },
+  "ui": [
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Variables",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Generate Object Id Cell Array",
+          "doc": "Specifies whether a variable named \"ObjectId\" should be\n        created for each entry of each block and set being loaded and assigned\n        the identifying number of the block or set, so that given a cell one\n        can readily identify the block or set it came from. This is useful for\n        coloring a mesh by block ID or set ID.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Generate Global Element Id Array",
+          "doc": "Should the reader retrieve the first new-style element\n        map, or if that is not present, the solitary old-style element map\n        (which always exists but may be procedurally generated if it is not\n        stored with the file)?",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-n",
+          "name": "Element Variables",
+          "doc": "Use this property to select which variables defined over\n        elements (cells) should be loaded. Element variables specify a single\n        value per entry in some element block.",
+          "values": [
+            "EQPS"
+          ],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Face Variables",
+          "doc": "Use this property to select which variables defined over\n        faces should be loaded. Faces are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Face variables\n        specify a single value per entry in some face block.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Edge Variables",
+          "doc": "Use this property to select which variables defined over\n        edges should be loaded. Edges are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Edge variables\n        specify a single value per entry in some edge block.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Side Set Result Array Status",
+          "doc": "An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. Variables, such as boundary conditions, may then be defined over\n        these sets by specifying a single number per side. For example, a\n        hexahedron has 18 sides: 6 faces and 12 edges. Any of these sides may\n        be individually called out in a set and assigned a result value. This\n        property specifies which of those variables should be loaded. The\n        corresponding set must also be loaded using the SideSetArrayStatus\n        property in order for the variable to appear.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Node Set Result Array Status",
+          "doc": "An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those\n        variables should be loaded. The corresponding set must also be loaded\n        using the NodeSetArrayStatus property in order for the variable to\n        appear.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Face Set Result Array Status",
+          "doc": "An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per face. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the FaceSetArrayStatus property in order for the\n        variable to appear.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Edge Set Result Array Status",
+          "doc": "An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per edge. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the EdgeSetArrayStatus property in order for the\n        variable to appear.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Generate Global Node Id Array",
+          "doc": "Should the reader retrieve the first new-style node map,\n        or if that is not present, the solitary old-style node map (which\n        always exists but may be procedurally generated if it is not stored\n        with the file)?",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-n",
+          "name": "Element Set Result Array Status",
+          "doc": "An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right.\n        Variables, such as feature classifiers, may then be defined over these\n        sets by specifying a single number per element. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the ElementSetArrayStatus property in order for\n        the variable to appear.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Point Variables",
+          "doc": "Use this property to select which nodal (i.e.,\n        per-point) variables should be loaded.",
+          "values": [
+            "DISPL",
+            "VEL",
+            "ACCL"
+          ],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Global Variables",
+          "doc": "Use this property to select which global (i.e.,\n        per-mesh) variables should be loaded. Global variables are stored as\n        arrays in the field data of the reader's output.",
+          "values": [
+            "KE",
+            "XMOM",
+            "YMOM",
+            "ZMOM",
+            "NSTEPS",
+            "TMSTEP"
+          ],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        }
+      ]
     },
-    "ui": [{
-        "widget": "checkbox",
-        "name": "Generate Object Id Cell Array",
-        "doc": "Specifies whether a variable named \"ObjectId\" should be\n        created for each entry of each block and set being loaded and assigned\n        the identifying number of the block or set, so that given a cell one\n        can readily identify the block or set it came from. This is useful for\n        coloring a mesh by block ID or set ID.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Generate Global Element Id Array",
-        "doc": "Should the reader retrieve the first new-style element\n        map, or if that is not present, the solitary old-style element map\n        (which always exists but may be procedurally generated if it is not\n        stored with the file)?",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-n",
-        "name": "Element Variables",
-        "doc": "Use this property to select which variables defined over\n        elements (cells) should be loaded. Element variables specify a single\n        value per entry in some element block.",
-        "values": ["EQPS"],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Face Variables",
-        "doc": "Use this property to select which variables defined over\n        faces should be loaded. Faces are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Face variables\n        specify a single value per entry in some face block.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Edge Variables",
-        "doc": "Use this property to select which variables defined over\n        edges should be loaded. Edges are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Edge variables\n        specify a single value per entry in some edge block.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Side Set Result Array Status",
-        "doc": "An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. Variables, such as boundary conditions, may then be defined over\n        these sets by specifying a single number per side. For example, a\n        hexahedron has 18 sides: 6 faces and 12 edges. Any of these sides may\n        be individually called out in a set and assigned a result value. This\n        property specifies which of those variables should be loaded. The\n        corresponding set must also be loaded using the SideSetArrayStatus\n        property in order for the variable to appear.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Node Set Result Array Status",
-        "doc": "An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those\n        variables should be loaded. The corresponding set must also be loaded\n        using the NodeSetArrayStatus property in order for the variable to\n        appear.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Face Set Result Array Status",
-        "doc": "An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per face. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the FaceSetArrayStatus property in order for the\n        variable to appear.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Edge Set Result Array Status",
-        "doc": "An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per edge. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the EdgeSetArrayStatus property in order for the\n        variable to appear.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "checkbox",
-        "name": "Generate Global Node Id Array",
-        "doc": "Should the reader retrieve the first new-style node map,\n        or if that is not present, the solitary old-style node map (which\n        always exists but may be procedurally generated if it is not stored\n        with the file)?",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-n",
-        "name": "Element Set Result Array Status",
-        "doc": "An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right.\n        Variables, such as feature classifiers, may then be defined over these\n        sets by specifying a single number per element. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the ElementSetArrayStatus property in order for\n        the variable to appear.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Point Variables",
-        "doc": "Use this property to select which nodal (i.e.,\n        per-point) variables should be loaded.",
-        "values": ["DISPL", "VEL", "ACCL"],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Global Variables",
-        "doc": "Use this property to select which global (i.e.,\n        per-mesh) variables should be loaded. Global variables are stored as\n        arrays in the field data of the reader's output.",
-        "values": ["KE", "XMOM", "YMOM", "ZMOM", "NSTEPS", "TMSTEP"],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "checkbox",
-        "name": "Apply Displacements",
-        "doc": "Geometric locations can include displacements. When this\n        option is on, the nodal positions are 'displaced' by the standard\n        exodus displacement vector. If displacements are turned 'off', the user\n        can explicitly add them by applying a warp filter.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Displacement Magnitude",
-        "doc": "When displacements are being applied, they are scaled by\n        this amount. Set to 1 for no scaling.",
-        "range": [],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "list-n",
-        "name": "Edge Blocks",
-        "doc": "Use this property to select which blocks of edges should\n        be loaded. All edges in the same block will have the same interpolant\n        (linear, quadratic, etc.) and have the same variables defined over\n        them.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Node Set Array Status",
-        "doc": "An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those sets\n        should be loaded. The accompanying NodeSetResultArrayStatus property\n        specifies which variables defined over those sets should be\n        loaded.",
-        "values": ["Unnamed set ID: 1", "Unnamed set ID: 100"],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Side Set Array Status",
-        "doc": "An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. This property specifies which of those sets should be loaded.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per side. For example, a hexahedron\n        has 18 sides: 6 faces and 12 edges. Any of these sides may be\n        individually called out in a set and assigned a result value. The\n        accompanying SideSetResultArrayStatus property specifies which\n        variables defined over those sets should be loaded.",
-        "values": ["Unnamed set ID: 4"],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Face Set Array Status",
-        "doc": "An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per face. The accompanying\n        FaceSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Edge Set Array Status",
-        "doc": "An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per edge. The accompanying\n        EdgeSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Element Set Array Status",
-        "doc": "An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as feature classifiers, may then be defined over these sets by\n        specifying a single number per element. The accompanying\n        ElementSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Node Map Array Status",
-        "doc": "Specify which maps defined over nodes (points) in the\n        mesh should be loaded. A node map is a renumbering of all the points in\n        a file from their offset in the file to some arbitrary integers,\n        usually specifying a unique global ID across a set of files. These are\n        sometimes called new-style maps because they are specified differently\n        than in older Exodus files, which only allowed a single node\n        map.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Edge Map Array Status",
-        "doc": "Specify which maps defined over edges in the mesh should\n        be loaded. An edge map is a renumbering of all the edges (across all\n        the edge blocks of a file) from their offset in the file to some\n        arbitrary integers, usually specifying a unique global ID across a set\n        of files.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Face Map Array Status",
-        "doc": "Specify which maps defined over faces in the mesh should\n        be loaded. A face map is a renumbering of all the faces (across all the\n        face blocks of a file) from their offset in the file to some arbitrary\n        integers, usually specifying a unique global ID across a set of\n        files.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Element Map Array Status",
-        "doc": "Specify which maps defined over elements (cells) in the\n        mesh should be loaded. An element map is a renumbering of all the\n        elements (across all the element blocks of a file) from their offset in\n        the file to some arbitrary integers, usually specifying a unique global\n        ID across a set of files. These are sometimes called new-style maps\n        because they are specified differently than in older Exodus files,\n        which only allowed a single element map.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "textfield",
-        "name": "Element Blocks",
-        "doc": "Use this property to select which blocks of elements\n        (cells) should be loaded. All elements (cells) in the same block will\n        have the same interpolant (tetrahedral, triangular, trilinear\n        hexahedral, etc.) and have the same variables defined over\n        them.",
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "list-n",
-        "name": "Face Blocks",
-        "doc": "Use this property to select which blocks of faces should\n        be loaded. All faces in the same block will have the same interpolant\n        (triangular, bilinear quadrilateral, etc.) and have the same variables\n        defined over them.",
-        "values": [],
-        "type": "str",
-        "advanced": 0,
-        "size": -1
-    }, {
-        "widget": "checkbox",
-        "name": "Has Mode Shapes",
-        "doc": "Some simulations overload the Exodus time steps to\n        represent mode shapes. In this case, it does not make sense to iterate\n        over the \"time steps\", because they are not meant to be played in\n        order. Rather, each represents the vibration at a different \"mode.\"\n        Setting the value of this property to 1 changes the semantics of the\n        reader to not report the time steps to downstream\n        filters.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Mode Shape",
-        "doc": "Specify which mode shape to animate when HasModeShapes\n        is on.",
-        "range": [{
-            "max": 44,
-            "min": 1
-        }],
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Animate Vibrations",
-        "doc": "If this flag is on and HasModeShapes is also on, then\n        this reader will report a continuous time range [0,1] and animate the\n        displacements in a periodic sinusoid. If this flag is off and\n        HasModeShapes is on, this reader ignores time. This flag has no effect\n        if HasModeShapes is off.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "File Prefix",
-        "doc": "This property specifies the file root used with the file\n        pattern to format a file name. (See the File Pattern\n        property).",
-        "type": "str",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "File Pattern",
-        "doc": "This property contains a text string specifying the\n        pattern used to load files. There are two parts to it: the prefix (%s)\n        and the file number (%i). The format used is the same as that used for\n        printf.",
-        "type": "str",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "File Range",
-        "doc": "This property controls the indices of the first and last\n        files to be read.",
-        "range": [{
-            "max": 0,
-            "min": 0
-        }],
-        "type": "int",
-        "advanced": 1,
-        "size": 2
-    }, {
-        "widget": "textfield",
-        "name": "XML File Name",
-        "doc": "This property specifies the name of an XML file\n        containing part and material descriptions and a mapping to element\n        blocks.",
-        "type": "str",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Generate File Id Array",
-        "doc": "Should each cell in the mesh be assigned an integer\n        identifying the file it came from? If turned on, a cell variable named\n        \"FileId\" should be present.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }],
-    "id": "558",
-    "properties": [{
-        "name": "GenerateObjectIdCellArray",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "GenerateGlobalElementIdArray",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "ElementVariables",
-        "value": ["EQPS"],
-        "id": "558"
-    }, {
-        "name": "FaceVariables",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "EdgeVariables",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "SideSetResultArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "NodeSetResultArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "FaceSetResultArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "EdgeSetResultArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "GenerateGlobalNodeIdArray",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "ElementSetResultArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "PointVariables",
-        "value": ["DISPL", "VEL", "ACCL"],
-        "id": "558"
-    }, {
-        "name": "GlobalVariables",
-        "value": ["KE", "XMOM", "YMOM", "ZMOM", "NSTEPS", "TMSTEP"],
-        "id": "558"
-    }, {
-        "name": "ApplyDisplacements",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "DisplacementMagnitude",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "EdgeBlocks",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "NodeSetArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "SideSetArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "FaceSetArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "EdgeSetArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "ElementSetArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "NodeMapArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "EdgeMapArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "FaceMapArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "ElementMapArrayStatus",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "ElementBlocks",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "FaceBlocks",
-        "value": [],
-        "id": "558"
-    }, {
-        "name": "HasModeShapes",
-        "value": 0,
-        "id": "558"
-    }, {
-        "name": "ModeShape",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "AnimateVibrations",
-        "value": 1,
-        "id": "558"
-    }, {
-        "name": "FilePrefix",
-        "value": "/Users/seb/Downloads/ParaViewData-3.10.1/Data/can.ex2",
-        "id": "558"
-    }, {
-        "name": "FilePattern",
-        "value": "%s",
-        "id": "558"
-    }, {
-        "name": "FileRange",
-        "value": [0, 0],
-        "id": "558"
-    }, {
-        "name": "XMLFileName",
-        "value": "/Users/seb/Downloads/ParaViewData-3.10.1/Data/artifact.dta",
-        "id": "558"
-    }, {
-        "name": "GenerateFileIdArray",
-        "value": 0,
-        "id": "558"
-    }]
+    {
+      "widget": "checkbox",
+      "name": "Apply Displacements",
+      "doc": "Geometric locations can include displacements. When this\n        option is on, the nodal positions are 'displaced' by the standard\n        exodus displacement vector. If displacements are turned 'off', the user\n        can explicitly add them by applying a warp filter.",
+      "type": "int",
+      "advanced": 0,
+      "size": 1
+    },
+    {
+      "widget": "textfield",
+      "name": "Displacement Magnitude",
+      "doc": "When displacements are being applied, they are scaled by\n        this amount. Set to 1 for no scaling.",
+      "range": [],
+      "type": "float",
+      "advanced": 0,
+      "size": 1
+    },
+    {
+      "widget": "list-n",
+      "name": "Edge Blocks",
+      "doc": "Use this property to select which blocks of edges should\n        be loaded. All edges in the same block will have the same interpolant\n        (linear, quadratic, etc.) and have the same variables defined over\n        them.",
+      "values": [],
+      "type": "str",
+      "advanced": 0,
+      "size": -1
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Sets",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "list-n",
+          "name": "Node Set Array Status",
+          "doc": "An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those sets\n        should be loaded. The accompanying NodeSetResultArrayStatus property\n        specifies which variables defined over those sets should be\n        loaded.",
+          "values": [
+            "Unnamed set ID: 1",
+            "Unnamed set ID: 100"
+          ],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Side Set Array Status",
+          "doc": "An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. This property specifies which of those sets should be loaded.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per side. For example, a hexahedron\n        has 18 sides: 6 faces and 12 edges. Any of these sides may be\n        individually called out in a set and assigned a result value. The\n        accompanying SideSetResultArrayStatus property specifies which\n        variables defined over those sets should be loaded.",
+          "values": [
+            "Unnamed set ID: 4"
+          ],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Face Set Array Status",
+          "doc": "An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per face. The accompanying\n        FaceSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Edge Set Array Status",
+          "doc": "An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per edge. The accompanying\n        EdgeSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Element Set Array Status",
+          "doc": "An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as feature classifiers, may then be defined over these sets by\n        specifying a single number per element. The accompanying\n        ElementSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Maps",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "list-n",
+          "name": "Node Map Array Status",
+          "doc": "Specify which maps defined over nodes (points) in the\n        mesh should be loaded. A node map is a renumbering of all the points in\n        a file from their offset in the file to some arbitrary integers,\n        usually specifying a unique global ID across a set of files. These are\n        sometimes called new-style maps because they are specified differently\n        than in older Exodus files, which only allowed a single node\n        map.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Edge Map Array Status",
+          "doc": "Specify which maps defined over edges in the mesh should\n        be loaded. An edge map is a renumbering of all the edges (across all\n        the edge blocks of a file) from their offset in the file to some\n        arbitrary integers, usually specifying a unique global ID across a set\n        of files.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Face Map Array Status",
+          "doc": "Specify which maps defined over faces in the mesh should\n        be loaded. A face map is a renumbering of all the faces (across all the\n        face blocks of a file) from their offset in the file to some arbitrary\n        integers, usually specifying a unique global ID across a set of\n        files.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "list-n",
+          "name": "Element Map Array Status",
+          "doc": "Specify which maps defined over elements (cells) in the\n        mesh should be loaded. An element map is a renumbering of all the\n        elements (across all the element blocks of a file) from their offset in\n        the file to some arbitrary integers, usually specifying a unique global\n        ID across a set of files. These are sometimes called new-style maps\n        because they are specified differently than in older Exodus files,\n        which only allowed a single element map.",
+          "values": [],
+          "type": "str",
+          "advanced": 0,
+          "size": -1
+        }
+      ]
+    },
+    {
+      "widget": "textfield",
+      "name": "Element Blocks",
+      "doc": "Use this property to select which blocks of elements\n        (cells) should be loaded. All elements (cells) in the same block will\n        have the same interpolant (tetrahedral, triangular, trilinear\n        hexahedral, etc.) and have the same variables defined over\n        them.",
+      "type": "str",
+      "advanced": 0,
+      "size": -1
+    },
+    {
+      "widget": "list-n",
+      "name": "Face Blocks",
+      "doc": "Use this property to select which blocks of faces should\n        be loaded. All faces in the same block will have the same interpolant\n        (triangular, bilinear quadrilateral, etc.) and have the same variables\n        defined over them.",
+      "values": [],
+      "type": "str",
+      "advanced": 0,
+      "size": -1
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Mode Shapes",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Has Mode Shapes",
+          "doc": "Some simulations overload the Exodus time steps to\n        represent mode shapes. In this case, it does not make sense to iterate\n        over the \"time steps\", because they are not meant to be played in\n        order. Rather, each represents the vibration at a different \"mode.\"\n        Setting the value of this property to 1 changes the semantics of the\n        reader to not report the time steps to downstream\n        filters.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Mode Shape",
+          "doc": "Specify which mode shape to animate when HasModeShapes\n        is on.",
+          "range": [
+            {
+              "max": 44,
+              "min": 1
+            }
+          ],
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Animate Vibrations",
+          "doc": "If this flag is on and HasModeShapes is also on, then\n        this reader will report a continuous time range [0,1] and animate the\n        displacements in a periodic sinusoid. If this flag is off and\n        HasModeShapes is on, this reader ignores time. This flag has no effect\n        if HasModeShapes is off.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "File Pattern",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "File Prefix",
+          "doc": "This property specifies the file root used with the file\n        pattern to format a file name. (See the File Pattern\n        property).",
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "File Pattern",
+          "doc": "This property contains a text string specifying the\n        pattern used to load files. There are two parts to it: the prefix (%s)\n        and the file number (%i). The format used is the same as that used for\n        printf.",
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "File Range",
+          "doc": "This property controls the indices of the first and last\n        files to be read.",
+          "range": [
+            {
+              "max": 0,
+              "min": 0
+            }
+          ],
+          "type": "int",
+          "advanced": 1,
+          "size": 2
+        },
+        {
+          "widget": "textfield",
+          "name": "XML File Name",
+          "doc": "This property specifies the name of an XML file\n        containing part and material descriptions and a mapping to element\n        blocks.",
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "checkbox",
+      "name": "Generate File Id Array",
+      "doc": "Should each cell in the mesh be assigned an integer\n        identifying the file it came from? If turned on, a cell variable named\n        \"FileId\" should be present.",
+      "type": "int",
+      "advanced": 0,
+      "size": 1
+    }
+  ],
+  "id": "370",
+  "properties": [
+    {
+      "children": [
+        {
+          "name": "GenerateObjectIdCellArray",
+          "value": 1,
+          "id": "370"
+        },
+        {
+          "name": "GenerateGlobalElementIdArray",
+          "value": 1,
+          "id": "370"
+        },
+        {
+          "name": "ElementVariables",
+          "value": [
+            "EQPS"
+          ],
+          "id": "370"
+        },
+        {
+          "name": "FaceVariables",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "EdgeVariables",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "SideSetResultArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "NodeSetResultArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "FaceSetResultArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "EdgeSetResultArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "GenerateGlobalNodeIdArray",
+          "value": 1,
+          "id": "370"
+        },
+        {
+          "name": "ElementSetResultArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "PointVariables",
+          "value": [
+            "DISPL",
+            "VEL",
+            "ACCL"
+          ],
+          "id": "370"
+        },
+        {
+          "name": "GlobalVariables",
+          "value": [
+            "KE",
+            "XMOM",
+            "YMOM",
+            "ZMOM",
+            "NSTEPS",
+            "TMSTEP"
+          ],
+          "id": "370"
+        }
+      ],
+      "id": "370:Variables",
+      "value": false,
+      "name": "Variables"
+    },
+    {
+      "name": "ApplyDisplacements",
+      "value": 1,
+      "id": "370"
+    },
+    {
+      "name": "DisplacementMagnitude",
+      "value": 1.0,
+      "id": "370"
+    },
+    {
+      "name": "EdgeBlocks",
+      "value": [],
+      "id": "370"
+    },
+    {
+      "children": [
+        {
+          "name": "NodeSetArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "SideSetArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "FaceSetArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "EdgeSetArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "ElementSetArrayStatus",
+          "value": [],
+          "id": "370"
+        }
+      ],
+      "id": "370:Sets",
+      "value": false,
+      "name": "Sets"
+    },
+    {
+      "children": [
+        {
+          "name": "NodeMapArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "EdgeMapArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "FaceMapArrayStatus",
+          "value": [],
+          "id": "370"
+        },
+        {
+          "name": "ElementMapArrayStatus",
+          "value": [],
+          "id": "370"
+        }
+      ],
+      "id": "370:Maps",
+      "value": false,
+      "name": "Maps"
+    },
+    {
+      "name": "ElementBlocks",
+      "value": [],
+      "id": "370"
+    },
+    {
+      "name": "FaceBlocks",
+      "value": [],
+      "id": "370"
+    },
+    {
+      "children": [
+        {
+          "name": "HasModeShapes",
+          "value": 0,
+          "id": "370"
+        },
+        {
+          "name": "ModeShape",
+          "value": 1,
+          "id": "370"
+        },
+        {
+          "name": "AnimateVibrations",
+          "value": 1,
+          "id": "370"
+        }
+      ],
+      "id": "370:Mode Shapes",
+      "value": false,
+      "name": "Mode Shapes"
+    },
+    {
+      "children": [
+        {
+          "name": "FilePrefix",
+          "value": "/.../ParaViewData-v4.0.1/Data/can.ex2",
+          "id": "370"
+        },
+        {
+          "name": "FilePattern",
+          "value": "%s",
+          "id": "370"
+        },
+        {
+          "name": "FileRange",
+          "value": [
+            0,
+            0
+          ],
+          "id": "370"
+        },
+        {
+          "name": "XMLFileName",
+          "value": "/.../ParaViewData-v4.0.1/Data/artifact.dta",
+          "id": "370"
+        }
+      ],
+      "id": "370:File Pattern",
+      "value": false,
+      "name": "File Pattern"
+    },
+    {
+      "name": "GenerateFileIdArray",
+      "value": 0,
+      "id": "370"
+    }
+  ]
 }
