@@ -9,6 +9,7 @@ import ViewPort from './ViewPort';
 import ViewPortGeometryDelivery from './ViewPortGeometryDelivery';
 import ViewPortImageDelivery from './ViewPortImageDelivery';
 import VtkGeometryDelivery from './VtkGeometryDelivery';
+import VtkImageDelivery from './VtkImageDelivery';
 
 const
   protocolsMap = {
@@ -23,6 +24,7 @@ const
     ViewPortGeometryDelivery,
     ViewPortImageDelivery,
     VtkGeometryDelivery,
+    VtkImageDelivery,
   };
 
 export function createClient(connection, protocols = [], customProtocols = {}) {

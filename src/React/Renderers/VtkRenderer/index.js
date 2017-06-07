@@ -15,6 +15,7 @@ export default React.createClass({
     viewId: React.PropTypes.string,
     interactionTimout: React.PropTypes.number,
     connection: React.PropTypes.object,
+    imageStream: React.PropTypes.object,
     showFPS: React.PropTypes.bool,
     style: React.PropTypes.object,
   },
@@ -22,6 +23,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       className: '',
+      imageStream: null,
       showFPS: false,
       style: {},
       viewId: '-1',
@@ -37,8 +39,12 @@ export default React.createClass({
   componentDidMount() {
     const container = this.rootContainer;
 
-    const wsbUrl = `${this.props.connection.getUrl()}b`;
-    this.binaryImageStream = new BinaryImageStream(wsbUrl);
+    if (!this.props.imageStream) {
+      const wsbUrl = `${this.props.connection.urls}b`;
+      this.binaryImageStream = new BinaryImageStream(wsbUrl);
+    } else {
+      this.binaryImageStream = this.props.imageStream;
+    }
     this.mouseListener = new VtkWebMouseListener(this.props.client);
 
     // Attach interaction listener for image quality
