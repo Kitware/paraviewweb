@@ -23,6 +23,7 @@
         "jszip": "3.1.3",
         "base64-js": "1.2.0",
         "vtk.js": "3.0.1",
+        "wslink": "0.1.0",
 
         "commander": "2.9.0",
         "shelljs": "0.7.4",
@@ -48,7 +49,6 @@
 
         "kw-web-suite": "2.2.1",
         "kw-doc": "1.0.15",
-        "wslink": "0.1.0",
 
         "babel-plugin-istanbul": "2.0.0",
         "babel-polyfill": "6.16.0",
