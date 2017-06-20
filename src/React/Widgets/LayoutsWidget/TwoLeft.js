@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/LayoutsWidget.mcss';
 
-export default function twoLeft(props) {
+export default function render(props) {
   return (
     <table className={props.active === '3xL' ? style.activeTable : style.table} name="3xL" onClick={props.onClick}>
       <tbody>
@@ -16,13 +16,13 @@ export default function twoLeft(props) {
     </table>);
 }
 
-twoLeft.propTypes = {
+render.propTypes = {
   onClick: React.PropTypes.func,
   active: React.PropTypes.string,
   activeRegion: React.PropTypes.number,
 };
 
-twoLeft.defaultProps = {
+render.defaultProps = {
   onClick: () => {},
   activeRegion: -1,
 };

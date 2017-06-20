@@ -28,6 +28,9 @@ module.exports = {
   'settings': {
     'import/resolver': 'webpack'
   },
+  globals: {
+    __BASE_PATH__: false,
+  },
   env: {
     browser: true,
   },

@@ -1,184 +1,282 @@
 {
-    "colorBy": {
-        "color": [0, 0.3, 0.4],
-        "representation": "729",
-        "scalarBar": 0,
-        "array": [null, "", -1],
-        "mode": "array"
+  "colorBy": {
+    "color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "representation": "589",
+    "scalarBar": 0,
+    "array": [
+      null,
+      "",
+      -1
+    ],
+    "mode": "array"
+  },
+  "ui": [
+    {
+      "widget": "list-1",
+      "name": "Representation",
+      "doc": "Choose the type for the representation.",
+      "values": [
+        "3D Glyphs",
+        "Outline",
+        "Point Gaussian",
+        "Points",
+        "Surface",
+        "Surface With Edges",
+        "Volume",
+        "Wireframe"
+      ],
+      "type": "str",
+      "advanced": 0,
+      "size": 1
     },
-    "ui": [{
-        "widget": "checkbox",
-        "name": "Cube Axes Visibility",
-        "doc": "Set the visibility for the cube axes.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Representation",
-        "doc": "Choose the type for the representation.",
-        "values": ["3D Glyphs", "Outline", "Points", "Surface", "Surface With Edges", "Volume", "Wireframe"],
-        "type": "str",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Ambient Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Diffuse Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Map Scalars",
-        "doc": "When set to True, LookupTable will always be\n        used for scalar mapping. Otherwise, when up to 4 component\n        scalars are present, the components are clamped to a valid\n        color interval (0-255 for an integral type and 0.0-1.0 for a\n        floating point type) and then directly used as\n        color.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Interpolate Scalars Before Mapping",
-        "doc": "When set to true (default), texture coordinates\n        are sent to and interpolated by the graphics card. This is\n        equivalent with interpolating scalars and then mapping them to\n        obtain colors between points. Otherwise, colors are sent to\n        and interpolated by the graphics card.\n        ",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Opacity",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Point Size",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Line Width",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Interpolation",
-        "values": {
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Coloring",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Ambient Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Diffuse Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 3
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Scalar Coloring",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Map Scalars",
+          "doc": "When set to True, LookupTable will always be\n        used for scalar mapping. Otherwise, when up to 4 component\n        scalars are present, the components are clamped to a valid\n        color interval (0-255 for an integral type and 0.0-1.0 for a\n        floating point type) and then directly used as\n        color.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Interpolate Scalars Before Mapping",
+          "doc": "When set to true (default), texture coordinates\n        are sent to and interpolated by the graphics card. This is\n        equivalent with interpolating scalars and then mapping them to\n        obtain colors between points. Otherwise, colors are sent to\n        and interpolated by the graphics card.\n        ",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Styling",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Opacity",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Point Size",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Line Width",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Lighting",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "list-1",
+          "name": "Interpolation",
+          "values": {
             "Flat": 0,
             "Gouraud": 1
+          },
+          "type": "int",
+          "advanced": 1,
+          "size": 1
         },
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Specular",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Specular Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Specular Power",
-        "range": [{
-            "max": 100,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Ambient",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Diffuse",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Edge Color",
-        "doc": "Set the edge color. This color is used to draw the edge\n        for the polygonal data when EdgeVisibility is on.",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "list-1",
-        "name": "Backface Representation",
-        "doc": "Choose the representation type for the\n        backface.",
-        "values": {
+        {
+          "widget": "textfield",
+          "name": "Specular",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Specular Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Specular Power",
+          "range": [
+            {
+              "max": 100.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Ambient",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Diffuse",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Edge Styling",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Edge Color",
+          "doc": "Set the edge color. This color is used to draw the edge\n        for the polygonal data when EdgeVisibility is on.",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Backface Styling",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "list-1",
+          "name": "Backface Representation",
+          "doc": "Choose the representation type for the\n        backface.",
+          "values": {
             "Cull Frontface": 402,
             "Surface With Edges": 3,
             "Wireframe": 1,
@@ -186,360 +284,4205 @@
             "Cull Backface": 401,
             "Points": 0,
             "Follow Frontface": 400
+          },
+          "type": "int",
+          "advanced": 1,
+          "size": 1
         },
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Backface Ambient Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Backface Diffuse Color",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }, {
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Backface Opacity",
-        "range": [{
-            "max": 1,
-            "min": 0
-        }],
-        "type": "float",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Translation",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Scale",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Orientation",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "name": "Origin",
-        "range": [],
-        "type": "float",
-        "advanced": 1,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "type": "int",
-        "name": "Pickable",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Triangulate",
-        "doc": "Triangulate the geometry internally to avoid rendering\n        issues of non-convex polygons. This feature has a processing and memory\n        cost, it should be enabled only when needed.",
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Nonlinear Subdivision Level",
-        "range": [{
-            "max": 4,
-            "min": 0
-        }],
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Block Colors Distinct Values",
-        "doc": "\n          Determines the number of distinct values in\n          vtkBlockColors. This array is added to each block if\n          the dataset is a composite dataset. The array has one value\n          set to (blockIndex % BlockColorsDistinctValues)\n        ",
-        "range": [],
-        "type": "int",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Glyph Type",
-        "doc": "Specify the source objects.",
-        "values": {
-            "Box": "603",
-            "2D Glyph": "647",
-            "Cylinder": "614",
-            "Sphere": "636",
-            "Cone": "592",
-            "Arrow": "581",
-            "Line": "625"
+        {
+          "widget": "textfield",
+          "name": "Backface Ambient Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
         },
-        "type": "proxy",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "type": "float",
-        "name": "Custom Bounds",
-        "advanced": 0,
-        "size": 6
-    }, {
-        "widget": "textfield",
-        "type": "int",
-        "name": "Custom Bounds Active",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "type": "int",
-        "name": "Original Bounds Range Active",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "textfield",
-        "type": "float",
-        "name": "Custom Range",
-        "advanced": 0,
-        "size": 6
-    }, {
-        "widget": "textfield",
-        "type": "int",
-        "name": "Custom Range Active",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Use Axes Origin",
-        "doc": "Specify if the AxesCenter should be used to draw the axes.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "name": "Axes Origin",
-        "range": [],
-        "type": "float",
-        "advanced": 0,
-        "size": 3
-    }, {
-        "widget": "checkbox",
-        "name": "Sticky Axes",
-        "doc": "Adjust the axes to always be visible in the viewport unless the\n  original bounds of the axes are entirely outside the viewport.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "checkbox",
-        "name": "Center Sticky Axes",
-        "doc": "Keep the sticky axes centered in the view window.",
-        "type": "int",
-        "advanced": 0,
-        "size": 1
-    }, {
-        "widget": "textfield",
-        "type": "float",
-        "name": "Scalar Opacity Unit Distance",
-        "advanced": 1,
-        "size": 1
-    }, {
-        "widget": "list-1",
-        "name": "Select Mapper",
-        "doc": "Select the volume mapper to use for Volume\n        rendering.",
-        "values": ["Projected tetra", "HAVS", "Z sweep", "Bunyk ray cast"],
-        "type": "str",
-        "advanced": 1,
-        "size": 1
-    }],
-    "id": "729",
-    "properties": [{
-        "name": "CubeAxesVisibility",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "Representation",
-        "value": "Surface",
-        "id": "729"
-    }, {
-        "name": "AmbientColor",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "DiffuseColor",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "MapScalars",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "InterpolateScalarsBeforeMapping",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "Opacity",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "PointSize",
-        "value": 2,
-        "id": "729"
-    }, {
-        "name": "LineWidth",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "Interpolation",
-        "value": "Gouraud",
-        "id": "729"
-    }, {
-        "name": "Specular",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "SpecularColor",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "SpecularPower",
-        "value": 100,
-        "id": "729"
-    }, {
-        "name": "Ambient",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "Diffuse",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "EdgeColor",
-        "value": [0, 0, 0.5],
-        "id": "729"
-    }, {
-        "name": "BackfaceRepresentation",
-        "value": "Follow Frontface",
-        "id": "729"
-    }, {
-        "name": "BackfaceAmbientColor",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "BackfaceDiffuseColor",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "BackfaceOpacity",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "Position",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "Scale",
-        "value": [1, 1, 1],
-        "id": "729"
-    }, {
-        "name": "Orientation",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "Origin",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "Pickable",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "Triangulate",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "NonlinearSubdivisionLevel",
-        "value": 1,
-        "id": "729"
-    }, {
-        "name": "BlockColorsDistinctValues",
-        "value": 12,
-        "id": "729"
-    }, {
-        "name": "GlyphType",
-        "value": "Arrow",
-        "id": "729"
-    }, {
-        "name": "CustomBounds",
-        "value": [0, 1, 0, 1, 0, 1],
-        "id": "729"
-    }, {
-        "name": "CustomBoundsActive",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "OriginalBoundsRangeActive",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "CustomRange",
-        "value": [0, 1, 0, 1, 0, 1],
-        "id": "729"
-    }, {
-        "name": "CustomRangeActive",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "UseAxesOrigin",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "AxesOrigin",
-        "value": [0, 0, 0],
-        "id": "729"
-    }, {
-        "name": "StickyAxes",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "CenterStickyAxes",
-        "value": 0,
-        "id": "729"
-    }, {
-        "name": "ScalarOpacityUnitDistance",
-        "value": 1.3901072164734267,
-        "id": "729"
-    }, {
-        "name": "SelectMapper",
-        "value": "Projected tetra",
-        "id": "729"
-    }]
+        {
+          "widget": "textfield",
+          "name": "Backface Diffuse Color",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            },
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Backface Opacity",
+          "range": [
+            {
+              "max": 1.0,
+              "min": 0.0
+            }
+          ],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Transforming",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Translation",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Scale",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Orientation",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "textfield",
+          "name": "Origin",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 3
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Miscellaneous",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "checkbox",
+          "type": "int",
+          "name": "Pickable",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Triangulate",
+          "doc": "Triangulate the geometry internally to avoid rendering\n        issues of non-convex polygons. This feature has a processing and memory\n        cost, it should be enabled only when needed.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Nonlinear Subdivision Level",
+          "range": [
+            {
+              "max": 4,
+              "min": 0
+            }
+          ],
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Block Colors Distinct Values",
+          "doc": "\n          Determines the number of distinct values in\n          vtkBlockColors. This array is added to each block if\n          the dataset is a composite dataset. The array has one value\n          set to (blockIndex % BlockColorsDistinctValues)\n        ",
+          "range": [],
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Data Partitions",
+          "doc": "Specify whether or not to redistribute the data when actor is translucent.\n        Default is false.",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "OSPRay",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "OSPRay Use Scale Array",
+          "doc": "\n          Allows OSPRay implicit points and lines to be sized by an array.\n        ",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "OSPRay Scale Array",
+          "doc": "\n          Choice of an array for OSPRay implicit points and lines sizes.\n        ",
+          "values": [
+            "ElementBlockIds",
+            "Info_Records",
+            "KE",
+            "NSTEPS",
+            "QA_Records",
+            "TMSTEP",
+            "Title",
+            "XMOM",
+            "YMOM",
+            "ZMOM"
+          ],
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "OSPRay Scale Function",
+          "doc": "Set the piecewise function used to map data array to sprite size.\n        ScaleTransferFunction is only used if ScaleByArray is set.",
+          "values": {
+            "PiecewiseFunction": "561"
+          },
+          "type": "proxy",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Glyph Parameters",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Orient",
+          "doc": "If this property is set to 1, the glyphs will be\n        oriented based on the selected orientation vector\n        array.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Orientation Mode",
+          "doc": "Orientation mode indicates if the OrientationArray\n        provides the direction vector for the orientation or the rotations\n        around each axes. Default is DIRECTION.",
+          "values": {
+            "Direction": 0,
+            "Rotation": 1
+          },
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Orientation Vectors",
+          "values": [
+            "ElementBlockIds",
+            "Info_Records",
+            "KE",
+            "NSTEPS",
+            "QA_Records",
+            "TMSTEP",
+            "Title",
+            "XMOM",
+            "YMOM",
+            "ZMOM"
+          ],
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Scaling",
+          "doc": "Enable/Disable scaling of source\n        geometry.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Scale Mode",
+          "values": {
+            "Vector Components": 2,
+            "Magnitude": 1,
+            "No Data Scaling Off": 0
+          },
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Scale Factor",
+          "doc": "The value of this property will be used as a multiplier\n        for scaling the glyphs before adding them to the\n        output.",
+          "range": [],
+          "type": "float",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Scale Array",
+          "values": [
+            "ElementBlockIds",
+            "Info_Records",
+            "KE",
+            "NSTEPS",
+            "QA_Records",
+            "TMSTEP",
+            "Title",
+            "XMOM",
+            "YMOM",
+            "ZMOM"
+          ],
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Glyph Type",
+          "doc": "Specify the source objects.",
+          "values": {
+            "Box": "438",
+            "2D Glyph": "482",
+            "Cylinder": "449",
+            "Pipeline Connection": "493",
+            "Sphere": "471",
+            "Cone": "427",
+            "Arrow": "416",
+            "Line": "460"
+          },
+          "type": "proxy",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Glyph Table",
+          "doc": "When true, the glyph data is expected to be a multiblock\n        dataset, where each top-level node contains a separate glyph which may\n        be selected by a point data array on the input dataset.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Glyph Table Index Array",
+          "values": [
+            "ElementBlockIds",
+            "Info_Records",
+            "KE",
+            "NSTEPS",
+            "QA_Records",
+            "TMSTEP",
+            "Title",
+            "XMOM",
+            "YMOM",
+            "ZMOM"
+          ],
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Composite Glyph Table",
+          "doc": "When true, the glyph data is expected to be a multiblock\n        dataset, where each top-level node contains a separate glyph which may\n        be selected by a point data array on the input dataset.",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "ProxyEditorPropertyWidget",
+      "type": "ProxyEditorPropertyWidget",
+      "name": "DataAxesGrid",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Grid Axes Visibility",
+          "doc": "Used for the checkbox in the UI.",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Data Axes Grid",
+          "values": {
+            "GridAxesRepresentation": "390"
+          },
+          "type": "proxy",
+          "visibilityProperty": "GridAxesVisibility",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Title Texts",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "X Title",
+              "doc": "\n          Set the title string for X axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Title",
+              "doc": "\n          Set the title string for Y axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Title",
+              "doc": "\n          Set the title string for Z axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "X Title Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Title Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Title Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Face Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Faces To Render",
+              "doc": "\n          Set the mask to select faces. The faces rendered will be a subset of the\n          faces selected depending on the status of **CullBackface** and\n          **CullFrontface** properties.\n        ",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Cull Backface",
+              "doc": "\n              Set to true to hide faces of the grid facing away from the camera i.e. hide all\n              back faces.\n            ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": -1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Cull Frontface",
+              "doc": "\n              Set to true to hide faces of the grid facing towards from the camera i.e. hide all\n              front faces.\n            ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": -1
+            },
+            {
+              "widget": "textfield",
+              "name": "Grid Color",
+              "doc": "Color used when coloring the grid wireframe",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": -1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Grid",
+          "doc": "\n          Turn off to not render the plane grids.\n        ",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Edges",
+          "doc": "\n          Turn off to not render the plane edges.\n        ",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Show Ticks",
+          "doc": "\n          Turn off to not render the tick marks.\n        ",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Label Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Label Unique Edges Only",
+              "doc": "\n          Set to true to only label edges shared with 1 face. Note that\n          if all faces are being rendered, this will generate no labels.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Axes To Label",
+              "doc": "\n          Set the mask to select the axes to label. The axes labelled will be a subset of the\n          axes selected depending on which faces are also being rendered.\n        ",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "X Axis Label Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Axis Label Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Axis Label Font Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "X Axis Label Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "X Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for X Axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "X Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the X Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "X Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the X axis. Labels\n          specified by **XAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "X Axis Labels",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Y Axis Label Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "Y Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Y Axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the Y Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Y Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the Y axis. Labels\n          specified by **YAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Y Axis Labels",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Z Axis Label Properties",
+          "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "list-1",
+              "name": "Z Axis Notation",
+              "doc": "\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Z Axis.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "values": {
+                "Mixed": 0,
+                "Fixed": 2,
+                "Scientific": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Axis Precision",
+              "doc": "\n          Get/set the numerical precision to use for the Z Axis, default is 2.\n        ",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Z Axis Use Custom Labels",
+              "doc": "\n          Specify whether to use custom labels for the Z axis. Labels\n          specified by **ZAxisLabels** are used only when\n          this flag is set to 1.\n        ",
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Z Axis Labels",
+              "range": [],
+              "depends": "589:DataAxesGrid:GridAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 0
+            }
+          ],
+          "advanced": 0
+        }
+      ]
+    },
+    {
+      "widget": "ProxyEditorPropertyWidget",
+      "type": "ProxyEditorPropertyWidget",
+      "name": "PolarAxes",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "checkbox",
+          "name": "Visibility",
+          "doc": "Set the visibility of the representation.",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Transform",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Translation",
+              "doc": "Set the polar axes origin position.",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Scale",
+              "doc": "Set the polar axes bounds transform scale.",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Orientation",
+              "doc": "Set the polar axes bounds transform orientation.",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Custom Bounds and Range",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Enable Custom Bounds",
+              "doc": "Activate the use of polar axes custom bounds.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Custom Bounds",
+              "doc": "Set the polar axes custom bounds.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 6
+            },
+            {
+              "widget": "checkbox",
+              "name": "Enable Custom Range",
+              "doc": "Activate the use of polar axes custom range.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Custom Range",
+              "doc": "Set the polar axes custom range.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 2
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Visibility Control",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Polar Axis Visibility",
+              "doc": "Set the visibility of polar axis.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Radial Axes Visibility",
+              "doc": "Set all radial axes visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Draw Radial Gridlines",
+              "doc": "Set the visibility of radial grid lines.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Polar Arcs Visibility",
+              "doc": "Set all polar arcs visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Draw Polar Arcs Gridlines",
+              "doc": "Set the visibility of polar arcs grid lines.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Aspect Control",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Number Of Radial Axes",
+              "doc": "Set the number of radial axes,\n        If value is 0 (the default), the number of radial axes is automatically calculated.\n        ",
+              "range": [
+                {
+                  "max": 100,
+                  "min": 0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Auto Subdivide Polar Axis",
+              "doc": "Automatically compute the number of\n        polar axis ticks and tick size. If true, will override NumberOfPolarAxisTicks,\n        PolarAxisMajorTickSize, LastRadialAxisMajorTickSize, ArcMajorTickSize properties.\n        ",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Number Of Polar Axis",
+              "doc": "Set the number of polar axis and of course polar axis ticks,\n        If value is 0 (the default), the number of polar axis tick\n        is automatically calculated.\n        ignored if AutoSubdividePolarAxis is true.",
+              "range": [
+                {
+                  "max": 100,
+                  "min": 0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Minimum Radius",
+              "doc": "Set the minimum radius, Maximum radius is automatically computed.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Minimum Angle",
+              "doc": "Set the minimum angle.",
+              "range": [
+                {
+                  "max": 180.0,
+                  "min": -180.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Maximum Angle",
+              "doc": "Set the maximum angle.",
+              "range": [
+                {
+                  "max": 180.0,
+                  "min": -180.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Radial Axes Origin To Polar Axis",
+              "doc": "If On, the radial axes are drawn from the angle of the polar Axis\n        (i.e. MinimumAngle) and continue counterclockwise with the step DeltaAngleRadialAxes.\n        if Off, the start angle is 0.0.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Ratio",
+              "doc": "Set the polar ellipse ratio.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.001
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Colors",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Color",
+              "doc": "Set the Polar Axis color.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Arcs Color",
+              "doc": "Set the Polar Arcs color.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Last Radial Axis Color",
+              "doc": "Set the Last Radial Axis color.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Secondary Polar Arcs Color",
+              "doc": "Set the Secondary Polar Arcs color.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "textfield",
+              "name": "Secondary Radial Axes Color",
+              "doc": "Set the Secondary Radial Axes color.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Title and Labels Control",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Title",
+              "doc": "Set the polar axis title.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "str",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Polar Axis Title Visibility",
+              "doc": "Set the visibility of polar axis title.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "list-1",
+              "name": "Polar Axis Title Location",
+              "doc": "Set the location of polar axis title.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Extern": 1,
+                "Bottom": 0
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Polar Label Visibility",
+              "doc": "Set the visibility of polar axis label.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Label Format",
+              "doc": "Set the polar axis label format.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "str",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "list-1",
+              "name": "Polar Label Exponent Location",
+              "doc": "Set the location of exponent.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Extern": 1,
+                "Labels": 2,
+                "Bottom": 0
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Radial Label Visibility",
+              "doc": "Set radial label visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Radial Label Format",
+              "doc": "Set the polar radial label format.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "str",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "list-1",
+              "name": "Radial Label Location",
+              "doc": "Set the location of radial labels.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Extern": 1,
+                "Bottom": 0
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Radial Units Visibility",
+              "doc": "Show radial units in labels (degrees).",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Screen Size",
+              "doc": "Set the screen size to use, which impact label and title\n        relative location to the axes.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Polar Axis Title Font Properties",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Polar Axis Label Font Properties",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Last Radial Axis Text Font Properties",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Secondary Radial Axes Text Font Properties",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "textfield",
+              "name": "Color",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                },
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 3
+            },
+            {
+              "widget": "list-1",
+              "name": "Font Family",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Arial": 0,
+                "Courier": 1,
+                "Times": 2
+              },
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Bold",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Italic",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Font Size",
+              "range": [],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Shadow",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Opacity",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "LOD and Details control",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Enable Distance LOD",
+              "doc": "Set the use of LOD based on distance.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Distance LODThreshold",
+              "doc": "Set the LOD distance threshold to use.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Enable View Angle LOD",
+              "doc": "Set the use of LOD based on the View Angle.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "View Angle LODThreshold",
+              "doc": "Set the LOD View Angle threshold to use.",
+              "range": [
+                {
+                  "max": 360.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Smallest Visible Polar Angle",
+              "doc": "Set the smallest radial angle distinguishable from polar axis.",
+              "range": [
+                {
+                  "max": 2.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Ticks Control",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Polar Ticks Visibility",
+              "doc": "Set all ticks visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Arc Ticks Origin To Polar Axis",
+              "doc": "If On, the ticks are drawn from the angle of the polar Axis\n        (MinimumAngle) and continue counterclockwise with the step Delta Angle Major/Minor.\n        If Off, the start angle is 0.0",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "list-1",
+              "name": "Tick Location",
+              "doc": "Set the location of ticks.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "values": {
+                "Both": 2,
+                "Inside": 0,
+                "Outside": 1
+              },
+              "type": "int",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Axis Tick Visibility",
+              "doc": "Set polar axis and last radial axis tick visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Axis Minor Tick Visibility",
+              "doc": "Set polar axis and last radial axis minor tick visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Arc Tick Visibility",
+              "doc": "Set polar arc tick visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Arc Minor Tick Visibility",
+              "doc": "Set polar arc minor tick visibility.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Delta Angle Major",
+              "doc": "Set the delta between major ticks on last arc.",
+              "range": [
+                {
+                  "max": 359.0,
+                  "min": 1.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Delta Angle Minor",
+              "doc": "Set the delta between minor and major ticks on last arc.",
+              "range": [
+                {
+                  "max": 359.0,
+                  "min": 1.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Major Tick Size",
+              "doc": "Set the polar axis major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Tick Ratio Size",
+              "doc": "Set the polar axis size ratio between major and minor ticks.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Major Tick Thickness",
+              "doc": "Set the thickness of polar axis major ticks.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Polar Axis Tick Ratio Thickness",
+              "doc": "Set the thickness ratio between major and minor ticks of polar axis.\n        ",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Last Radial Axis Major Tick Size",
+              "doc": "Set the last radial axis major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Last Radial Axis Tick Ratio Size",
+              "doc": "Set the last radial axis size ratio between major and minor ticks.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Last Radial Axis Major Tick Thickness",
+              "doc": "Set the thickness of last radial axis major ticks.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Last Radial Axis Tick Ratio Thickness",
+              "doc": "Set the thickness ratio between major and minor ticks of last radial axis.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Arc Major Tick Size",
+              "doc": "Set the arc major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Arc Tick Ratio Size",
+              "doc": "Set the arc size ratio between major and minor ticks.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Arc Major Tick Thickness",
+              "doc": "Set the thickness of arc major ticks.",
+              "range": [
+                {
+                  "max": 100.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            },
+            {
+              "widget": "textfield",
+              "name": "Arc Tick Ratio Thickness",
+              "doc": "Set the thickness ratio between major and minor ticks of arc.",
+              "range": [
+                {
+                  "max": 1.0,
+                  "min": 0.0
+                }
+              ],
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "float",
+              "advanced": 1,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        },
+        {
+          "widget": "PropertyGroup",
+          "name": "Miscellaneous",
+          "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+          "type": null,
+          "children": [
+            {
+              "widget": "checkbox",
+              "name": "Use 2D Mode",
+              "doc": "Set the use of 2D Mode for all axes.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            },
+            {
+              "widget": "checkbox",
+              "name": "Use Log Axis",
+              "doc": "Set the use of Log axis.",
+              "depends": "589:PolarAxes:PolarAxesRepresentation:1",
+              "type": "int",
+              "advanced": 0,
+              "size": 1
+            }
+          ],
+          "advanced": 0
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Annotations",
+      "advanced": 1,
+      "children": [
+        {
+          "widget": "list-1",
+          "name": "Polar Axes",
+          "values": {
+            "PolarAxesRepresentation": "405"
+          },
+          "type": "proxy",
+          "visibilityProperty": "Visibility",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Volume Rendering",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "textfield",
+          "type": "proxy",
+          "name": "Scalar Opacity Function",
+          "advanced": 0,
+          "size": -1
+        },
+        {
+          "widget": "textfield",
+          "type": "float",
+          "name": "Scalar Opacity Unit Distance",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Select Mapper",
+          "doc": "Select the volume mapper to use for Volume\n        rendering.",
+          "values": [
+            "Projected tetra",
+            "Z sweep",
+            "Bunyk ray cast",
+            "Resample To Image"
+          ],
+          "type": "str",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "textfield",
+          "name": "Sampling Dimensions",
+          "doc": "\n        How many linear samples we want along each axis\n        ",
+          "depends": "578:SelectMapper:Resample To Image:1",
+          "range": [],
+          "type": "int",
+          "advanced": 1,
+          "size": 3
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Floating Point Frame Buffer",
+          "doc": "\n          Enable use of floating point frame buffers. If not enabled,\n          you may encounter artifacts when mixing volumes with geometry.\n        ",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "widget": "PropertyGroup",
+      "type": null,
+      "name": "Point Gaussian",
+      "advanced": 0,
+      "children": [
+        {
+          "widget": "textfield",
+          "name": "Gaussian Radius",
+          "doc": "\n          The radius of the gaussian blur for each point.\n        ",
+          "type": "float",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Shader Preset",
+          "values": {
+            "Triangle": 4,
+            "Square Outline": 5,
+            "Gaussian Blur (Default)": 0,
+            "Black-edged circle": 2,
+            "Sphere": 1,
+            "Plain circle": 3
+          },
+          "type": "int",
+          "advanced": 0,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Emissive",
+          "doc": "\n          Should the splat be emissive lke a light source or not. For cosmology emissive should be on. For scanned point clouds typically it woudl be off.\n        ",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Scale Array",
+          "doc": "\n          If this property is on, the Scale Array will be used to determine that radii\n          of the gaussians.  Otherwise the Default Radius will be used.\n        ",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Gaussian Scale Array",
+          "doc": "\n          This property specifies the name of the input array to scale the splats by.\n        ",
+          "values": {
+            "PedigreeNodeId": [
+              "POINTS",
+              "PedigreeNodeId"
+            ],
+            "GlobalNodeId": [
+              "POINTS",
+              "GlobalNodeId"
+            ]
+          },
+          "type": "str",
+          "advanced": 1,
+          "size": 5
+        },
+        {
+          "widget": "list-1",
+          "name": "Scale Transfer Function",
+          "doc": "Set the piecewise function used to map data array to sprite size.\n        ScaleTransferFunction is only used if ScaleByArray is set.",
+          "values": {
+            "PiecewiseFunction": "527"
+          },
+          "type": "proxy",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "checkbox",
+          "name": "Use Opacity Array",
+          "doc": "\n          If this property is on, the Opacity Array will be used to determine the\n          point gaussian sprites.\n        ",
+          "type": "int",
+          "advanced": 1,
+          "size": 1
+        },
+        {
+          "widget": "list-1",
+          "name": "Gaussian Opacity Array",
+          "doc": "\n          This property specifies the name of the input array to map to point opacity.\n        ",
+          "values": {
+            "PedigreeNodeId": [
+              "POINTS",
+              "PedigreeNodeId"
+            ],
+            "GlobalNodeId": [
+              "POINTS",
+              "GlobalNodeId"
+            ]
+          },
+          "type": "str",
+          "advanced": 1,
+          "size": 5
+        },
+        {
+          "widget": "list-1",
+          "name": "Opacity Transfer Function",
+          "doc": "Set the piecewise function used to map data array to sprite opacity.\n        OpacityTransferFunction is only used if ScaleByArray is set and OpacityArray is\n        also given.",
+          "values": {
+            "PiecewiseFunction": "526"
+          },
+          "type": "proxy",
+          "advanced": 1,
+          "size": 1
+        }
+      ]
+    }
+  ],
+  "id": "589",
+  "properties": [
+    {
+      "name": "Representation",
+      "value": "Surface",
+      "id": "589"
+    },
+    {
+      "children": [
+        {
+          "name": "AmbientColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "DiffuseColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        }
+      ],
+      "id": "589:Coloring",
+      "value": false,
+      "name": "Coloring"
+    },
+    {
+      "children": [
+        {
+          "name": "MapScalars",
+          "value": 1,
+          "id": "589"
+        },
+        {
+          "name": "InterpolateScalarsBeforeMapping",
+          "value": 1,
+          "id": "589"
+        }
+      ],
+      "id": "589:Scalar Coloring",
+      "value": false,
+      "name": "Scalar Coloring"
+    },
+    {
+      "children": [
+        {
+          "name": "Opacity",
+          "value": 1.0,
+          "id": "589"
+        },
+        {
+          "name": "PointSize",
+          "value": 2.0,
+          "id": "589"
+        },
+        {
+          "name": "LineWidth",
+          "value": 1.0,
+          "id": "589"
+        }
+      ],
+      "id": "589:Styling",
+      "value": false,
+      "name": "Styling"
+    },
+    {
+      "children": [
+        {
+          "name": "Interpolation",
+          "value": "Gouraud",
+          "id": "589"
+        },
+        {
+          "name": "Specular",
+          "value": 0.0,
+          "id": "589"
+        },
+        {
+          "name": "SpecularColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "SpecularPower",
+          "value": 100.0,
+          "id": "589"
+        },
+        {
+          "name": "Ambient",
+          "value": 0.0,
+          "id": "589"
+        },
+        {
+          "name": "Diffuse",
+          "value": 1.0,
+          "id": "589"
+        }
+      ],
+      "id": "589:Lighting",
+      "value": false,
+      "name": "Lighting"
+    },
+    {
+      "children": [
+        {
+          "name": "EdgeColor",
+          "value": [
+            0.0,
+            0.0,
+            0.5
+          ],
+          "id": "589"
+        }
+      ],
+      "id": "589:Edge Styling",
+      "value": false,
+      "name": "Edge Styling"
+    },
+    {
+      "children": [
+        {
+          "name": "BackfaceRepresentation",
+          "value": "Follow Frontface",
+          "id": "589"
+        },
+        {
+          "name": "BackfaceAmbientColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "BackfaceDiffuseColor",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "BackfaceOpacity",
+          "value": 1.0,
+          "id": "589"
+        }
+      ],
+      "id": "589:Backface Styling",
+      "value": false,
+      "name": "Backface Styling"
+    },
+    {
+      "children": [
+        {
+          "name": "Position",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "Scale",
+          "value": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "Orientation",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "id": "589"
+        },
+        {
+          "name": "Origin",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "id": "589"
+        }
+      ],
+      "id": "589:Transforming",
+      "value": false,
+      "name": "Transforming"
+    },
+    {
+      "children": [
+        {
+          "name": "Pickable",
+          "value": 1,
+          "id": "589"
+        },
+        {
+          "name": "Triangulate",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "NonlinearSubdivisionLevel",
+          "value": 1,
+          "id": "589"
+        },
+        {
+          "name": "BlockColorsDistinctValues",
+          "value": 12,
+          "id": "589"
+        },
+        {
+          "name": "UseDataPartitions",
+          "value": 0,
+          "id": "589"
+        }
+      ],
+      "id": "589:Miscellaneous",
+      "value": false,
+      "name": "Miscellaneous"
+    },
+    {
+      "children": [
+        {
+          "name": "OSPRayUseScaleArray",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "OSPRayScaleArray",
+          "value": "ACCL",
+          "id": "589"
+        },
+        {
+          "name": "OSPRayScaleFunction",
+          "value": "PiecewiseFunction",
+          "id": "589"
+        }
+      ],
+      "id": "589:OSPRay",
+      "value": false,
+      "name": "OSPRay"
+    },
+    {
+      "children": [
+        {
+          "name": "Orient",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "OrientationMode",
+          "value": "Direction",
+          "id": "589"
+        },
+        {
+          "name": "SelectOrientationVectors",
+          "value": "ACCL",
+          "id": "589"
+        },
+        {
+          "name": "Scaling",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "ScaleMode",
+          "value": "No Data Scaling Off",
+          "id": "589"
+        },
+        {
+          "name": "ScaleFactor",
+          "value": 1.9778103828430176,
+          "id": "589"
+        },
+        {
+          "name": "SelectScaleArray",
+          "value": "ACCL",
+          "id": "589"
+        },
+        {
+          "name": "GlyphType",
+          "value": "Arrow",
+          "id": "589"
+        },
+        {
+          "name": "UseGlyphTable",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "GlyphTableIndexArray",
+          "value": "ACCL",
+          "id": "589"
+        },
+        {
+          "name": "UseCompositeGlyphTable",
+          "value": 0,
+          "id": "589"
+        }
+      ],
+      "id": "589:Glyph Parameters",
+      "value": false,
+      "name": "Glyph Parameters"
+    },
+    {
+      "children": [
+        {
+          "name": "GridAxesVisibility",
+          "value": 0,
+          "id": "390"
+        },
+        {
+          "name": "DataAxesGrid",
+          "value": "GridAxesRepresentation",
+          "id": "589"
+        },
+        {
+          "children": [
+            {
+              "name": "XTitle",
+              "value": "X Axis",
+              "id": "390"
+            },
+            {
+              "name": "YTitle",
+              "value": "Y Axis",
+              "id": "390"
+            },
+            {
+              "name": "ZTitle",
+              "value": "Z Axis",
+              "id": "390"
+            }
+          ],
+          "id": "390:Title Texts",
+          "value": false,
+          "name": "Title Texts"
+        },
+        {
+          "children": [
+            {
+              "name": "XTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "XTitleFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "XTitleBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XTitleItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XTitleFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "XTitleShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XTitleOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:X Title Font Properties",
+          "value": false,
+          "name": "X Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "YTitleFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "YTitleBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YTitleItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YTitleFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "YTitleShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YTitleOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:Y Title Font Properties",
+          "value": false,
+          "name": "Y Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "ZTitleFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "ZTitleBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZTitleItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZTitleFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "ZTitleShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZTitleOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:Z Title Font Properties",
+          "value": false,
+          "name": "Z Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "FacesToRender",
+              "value": 63,
+              "id": "390"
+            },
+            {
+              "name": "CullBackface",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "CullFrontface",
+              "value": 1,
+              "id": "390"
+            },
+            {
+              "name": "GridColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            }
+          ],
+          "id": "390:Face Properties",
+          "value": false,
+          "name": "Face Properties"
+        },
+        {
+          "name": "ShowGrid",
+          "value": 0,
+          "id": "390"
+        },
+        {
+          "name": "ShowEdges",
+          "value": 1,
+          "id": "390"
+        },
+        {
+          "name": "ShowTicks",
+          "value": 1,
+          "id": "390"
+        },
+        {
+          "children": [
+            {
+              "name": "LabelUniqueEdgesOnly",
+              "value": 1,
+              "id": "390"
+            },
+            {
+              "name": "AxesToLabel",
+              "value": 63,
+              "id": "390"
+            }
+          ],
+          "id": "390:Label Properties",
+          "value": false,
+          "name": "Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "XLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "XLabelFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "XLabelBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XLabelItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XLabelFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "XLabelShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XLabelOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:X Axis Label Font Properties",
+          "value": false,
+          "name": "X Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "YLabelFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "YLabelBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YLabelItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YLabelFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "YLabelShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YLabelOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:Y Axis Label Font Properties",
+          "value": false,
+          "name": "Y Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "390"
+            },
+            {
+              "name": "ZLabelFontFamily",
+              "value": "Arial",
+              "id": "390"
+            },
+            {
+              "name": "ZLabelBold",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZLabelItalic",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZLabelFontSize",
+              "value": 12,
+              "id": "390"
+            },
+            {
+              "name": "ZLabelShadow",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZLabelOpacity",
+              "value": 1.0,
+              "id": "390"
+            }
+          ],
+          "id": "390:Z Axis Label Font Properties",
+          "value": false,
+          "name": "Z Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "XAxisNotation",
+              "value": "Mixed",
+              "id": "390"
+            },
+            {
+              "name": "XAxisPrecision",
+              "value": 2,
+              "id": "390"
+            },
+            {
+              "name": "XAxisUseCustomLabels",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "XAxisLabels",
+              "value": [],
+              "id": "390"
+            }
+          ],
+          "id": "390:X Axis Label Properties",
+          "value": false,
+          "name": "X Axis Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "YAxisNotation",
+              "value": "Mixed",
+              "id": "390"
+            },
+            {
+              "name": "YAxisPrecision",
+              "value": 2,
+              "id": "390"
+            },
+            {
+              "name": "YAxisUseCustomLabels",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "YAxisLabels",
+              "value": [],
+              "id": "390"
+            }
+          ],
+          "id": "390:Y Axis Label Properties",
+          "value": false,
+          "name": "Y Axis Label Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "ZAxisNotation",
+              "value": "Mixed",
+              "id": "390"
+            },
+            {
+              "name": "ZAxisPrecision",
+              "value": 2,
+              "id": "390"
+            },
+            {
+              "name": "ZAxisUseCustomLabels",
+              "value": 0,
+              "id": "390"
+            },
+            {
+              "name": "ZAxisLabels",
+              "value": [],
+              "id": "390"
+            }
+          ],
+          "id": "390:Z Axis Label Properties",
+          "value": false,
+          "name": "Z Axis Label Properties"
+        }
+      ],
+      "id": "589:DataAxesGrid",
+      "value": false,
+      "name": "DataAxesGrid"
+    },
+    {
+      "children": [
+        {
+          "name": "Visibility",
+          "value": 0,
+          "id": "405"
+        },
+        {
+          "children": [
+            {
+              "name": "Position",
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "Scale",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "Orientation",
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "id": "405"
+            }
+          ],
+          "id": "405:Transform",
+          "value": false,
+          "name": "Transform"
+        },
+        {
+          "children": [
+            {
+              "name": "EnableCustomBounds",
+              "value": [
+                0,
+                0,
+                0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "CustomBounds",
+              "value": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "EnableCustomRange",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "CustomRange",
+              "value": [
+                0.0,
+                1.0
+              ],
+              "id": "405"
+            }
+          ],
+          "id": "405:Custom Bounds and Range",
+          "value": false,
+          "name": "Custom Bounds and Range"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarAxisVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "RadialAxesVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "DrawRadialGridlines",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "PolarArcsVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "DrawPolarArcsGridlines",
+              "value": 1,
+              "id": "405"
+            }
+          ],
+          "id": "405:Visibility Control",
+          "value": false,
+          "name": "Visibility Control"
+        },
+        {
+          "children": [
+            {
+              "name": "NumberOfRadialAxes",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "AutoSubdividePolarAxis",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "NumberOfPolarAxis",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "MinimumRadius",
+              "value": 0.0,
+              "id": "405"
+            },
+            {
+              "name": "MinimumAngle",
+              "value": 0.0,
+              "id": "405"
+            },
+            {
+              "name": "MaximumAngle",
+              "value": 90.0,
+              "id": "405"
+            },
+            {
+              "name": "RadialAxesOriginToPolarAxis",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "Ratio",
+              "value": 1.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Aspect Control",
+          "value": false,
+          "name": "Aspect Control"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarAxisColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "PolarArcsColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "SecondaryPolarArcsColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            }
+          ],
+          "id": "405:Colors",
+          "value": false,
+          "name": "Colors"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarAxisTitle",
+              "value": "Radial Distance",
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleLocation",
+              "value": "Bottom",
+              "id": "405"
+            },
+            {
+              "name": "PolarLabelVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "PolarLabelFormat",
+              "value": "%-#6.3g",
+              "id": "405"
+            },
+            {
+              "name": "PolarLabelExponentLocation",
+              "value": "Labels",
+              "id": "405"
+            },
+            {
+              "name": "RadialLabelVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "RadialLabelFormat",
+              "value": "%-#3.1f",
+              "id": "405"
+            },
+            {
+              "name": "RadialLabelLocation",
+              "value": "Bottom",
+              "id": "405"
+            },
+            {
+              "name": "RadialUnitsVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "ScreenSize",
+              "value": 10.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Title and Labels Control",
+          "value": false,
+          "name": "Title and Labels Control"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarAxisTitleColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleFontFamily",
+              "value": "Arial",
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleBold",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleItalic",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleFontSize",
+              "value": 12,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleShadow",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTitleOpacity",
+              "value": 1.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Polar Axis Title Font Properties",
+          "value": false,
+          "name": "Polar Axis Title Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarAxisLabelColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelFontFamily",
+              "value": "Arial",
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelBold",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelItalic",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelFontSize",
+              "value": 12,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelShadow",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisLabelOpacity",
+              "value": 1.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Polar Axis Label Font Properties",
+          "value": false,
+          "name": "Polar Axis Label Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "LastRadialAxisTextColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextFontFamily",
+              "value": "Arial",
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextBold",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextItalic",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextFontSize",
+              "value": 12,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextShadow",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTextOpacity",
+              "value": 1.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Last Radial Axis Text Font Properties",
+          "value": false,
+          "name": "Last Radial Axis Text Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "SecondaryRadialAxesTextColor",
+              "value": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextFontFamily",
+              "value": "Arial",
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextBold",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextItalic",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextFontSize",
+              "value": 12,
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextShadow",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "SecondaryRadialAxesTextOpacity",
+              "value": 1.0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Secondary Radial Axes Text Font Properties",
+          "value": false,
+          "name": "Secondary Radial Axes Text Font Properties"
+        },
+        {
+          "children": [
+            {
+              "name": "EnableDistanceLOD",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "DistanceLODThreshold",
+              "value": 0.7,
+              "id": "405"
+            },
+            {
+              "name": "EnableViewAngleLOD",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "ViewAngleLODThreshold",
+              "value": 0.7,
+              "id": "405"
+            },
+            {
+              "name": "SmallestVisiblePolarAngle",
+              "value": 0.5,
+              "id": "405"
+            }
+          ],
+          "id": "405:LOD and Details control",
+          "value": false,
+          "name": "LOD and Details control"
+        },
+        {
+          "children": [
+            {
+              "name": "PolarTicksVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "ArcTicksOriginToPolarAxis",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "TickLocation",
+              "value": "Both",
+              "id": "405"
+            },
+            {
+              "name": "AxisTickVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "AxisMinorTickVisibility",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "ArcTickVisibility",
+              "value": 1,
+              "id": "405"
+            },
+            {
+              "name": "ArcMinorTickVisibility",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "DeltaAngleMajor",
+              "value": 10.0,
+              "id": "405"
+            },
+            {
+              "name": "DeltaAngleMinor",
+              "value": 5.0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisMajorTickSize",
+              "value": 0.0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTickRatioSize",
+              "value": 0.3,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisMajorTickThickness",
+              "value": 1.0,
+              "id": "405"
+            },
+            {
+              "name": "PolarAxisTickRatioThickness",
+              "value": 0.5,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisMajorTickSize",
+              "value": 0.0,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTickRatioSize",
+              "value": 0.3,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisMajorTickThickness",
+              "value": 1.0,
+              "id": "405"
+            },
+            {
+              "name": "LastRadialAxisTickRatioThickness",
+              "value": 0.5,
+              "id": "405"
+            },
+            {
+              "name": "ArcMajorTickSize",
+              "value": 0.0,
+              "id": "405"
+            },
+            {
+              "name": "ArcTickRatioSize",
+              "value": 0.3,
+              "id": "405"
+            },
+            {
+              "name": "ArcMajorTickThickness",
+              "value": 1.0,
+              "id": "405"
+            },
+            {
+              "name": "ArcTickRatioThickness",
+              "value": 0.5,
+              "id": "405"
+            }
+          ],
+          "id": "405:Ticks Control",
+          "value": false,
+          "name": "Ticks Control"
+        },
+        {
+          "children": [
+            {
+              "name": "Use2DMode",
+              "value": 0,
+              "id": "405"
+            },
+            {
+              "name": "UseLogAxis",
+              "value": 0,
+              "id": "405"
+            }
+          ],
+          "id": "405:Miscellaneous",
+          "value": false,
+          "name": "Miscellaneous"
+        }
+      ],
+      "id": "589:PolarAxes",
+      "value": false,
+      "name": "PolarAxes"
+    },
+    {
+      "children": [
+        {
+          "name": "PolarAxes",
+          "value": "PolarAxesRepresentation",
+          "id": "589"
+        }
+      ],
+      "id": "589:Annotations",
+      "value": false,
+      "name": "Annotations"
+    },
+    {
+      "children": [
+        {
+          "name": "ScalarOpacityFunction",
+          "value": [],
+          "id": "589"
+        },
+        {
+          "name": "ScalarOpacityUnitDistance",
+          "value": 1.3901072164734267,
+          "id": "589"
+        },
+        {
+          "name": "SelectMapper",
+          "value": "Projected tetra",
+          "id": "589"
+        },
+        {
+          "name": "SamplingDimensions",
+          "value": [
+            128,
+            128,
+            128
+          ],
+          "id": "589"
+        },
+        {
+          "name": "UseFloatingPointFrameBuffer",
+          "value": 1,
+          "id": "589"
+        }
+      ],
+      "id": "589:Volume Rendering",
+      "value": false,
+      "name": "Volume Rendering"
+    },
+    {
+      "children": [
+        {
+          "name": "GaussianRadius",
+          "value": 0.9889051914215088,
+          "id": "589"
+        },
+        {
+          "name": "ShaderPreset",
+          "value": "Sphere",
+          "id": "589"
+        },
+        {
+          "name": "Emissive",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "ScaleByArray",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "SetScaleArray",
+          "value": [
+            "POINTS",
+            "GlobalNodeId"
+          ],
+          "id": "589"
+        },
+        {
+          "name": "ScaleTransferFunction",
+          "value": "PiecewiseFunction",
+          "id": "589"
+        },
+        {
+          "name": "OpacityByArray",
+          "value": 0,
+          "id": "589"
+        },
+        {
+          "name": "OpacityArray",
+          "value": [
+            "POINTS",
+            "GlobalNodeId"
+          ],
+          "id": "589"
+        },
+        {
+          "name": "OpacityTransferFunction",
+          "value": "PiecewiseFunction",
+          "id": "589"
+        }
+      ],
+      "id": "589:Point Gaussian",
+      "value": false,
+      "name": "Point Gaussian"
+    }
+  ]
 }

@@ -17,7 +17,7 @@ const CHOICE_LABELS = {
 //   "closeToLeft": false
 // },
 
-export default function dividerRender(props) {
+export default function render(props) {
   const { divider } = props;
   const formatter = new NumberFormatter(3, [Number(divider.value), Number(divider.uncertainty)]);
 
@@ -92,7 +92,7 @@ export default function dividerRender(props) {
   );
 }
 
-dividerRender.propTypes = {
+render.propTypes = {
   divider: React.PropTypes.object,
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,

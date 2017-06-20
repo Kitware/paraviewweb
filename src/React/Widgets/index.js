@@ -14,6 +14,7 @@ import DropDownWidget                 from './DropDownWidget';
 import EqualizerWidget                from './EqualizerWidget';
 import FileBrowserWidget              from './FileBrowserWidget';
 import GitTreeWidget                  from './GitTreeWidget';
+import InlineSvgIconWidget            from './InlineSvgIconWidget';
 import InlineToggleButtonWidget       from './InlineToggleButtonWidget';
 import LayoutsWidget                  from './LayoutsWidget';
 import LookupTableWidget              from './LookupTableWidget';
@@ -49,6 +50,7 @@ export default {
   EqualizerWidget,
   FileBrowserWidget,
   GitTreeWidget,
+  InlineSvgIconWidget,
   InlineToggleButtonWidget,
   LayoutsWidget,
   LookupTableWidget,

@@ -5,7 +5,13 @@ const typeMapping = {
   'list-1': 'Enum',
   checkbox: 'Checkbox',
   textarea: 'Cell',
+  PropertyGroup: 'PropertyGroup',
+  ProxyEditorPropertyWidget: 'ProxyEditorPropertyWidget',
 };
+
+function isGroupWidget(widgetType) {
+  return widgetType === 'PropertyGroup' || widgetType === 'ProxyEditorPropertyWidget';
+}
 
 function extractSize(ui) {
   if (ui.widget === 'list-n') {
@@ -37,7 +43,10 @@ function extractLayout(ui) {
     console.log('What is the layout for', ui);
     return '2x3';
   }
-  console.log('Could not find layout for', ui);
+
+  if (!isGroupWidget(ui.widget)) {
+    console.log('Could not find layout for', ui);
+  }
   return 'NO_LAYOUT';
 }
 
@@ -85,7 +94,7 @@ export function proxyPropToProp(property, ui) {
   const depId = depList ? depList.join(':') : null;
   const searchString = [ui.name].concat(property.value).join(' ').toLowerCase();
 
-  return {
+  const prop = {
     show(ctx) {
       if (depId && ctx.properties[depId] !== undefined) {
         return (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
@@ -119,6 +128,12 @@ export function proxyPropToProp(property, ui) {
       size: ui.size,
     },
   };
+
+  if (isGroupWidget(ui.widget)) {
+    prop.children = property.children.map((p, idx) => proxyPropToProp(p, ui.children[idx]));
+  }
+
+  return prop;
 }
 
 

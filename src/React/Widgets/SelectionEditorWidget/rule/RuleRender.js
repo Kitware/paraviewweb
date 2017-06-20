@@ -4,7 +4,7 @@ import OperatorRender from './OperatorRender';
 import FiveClauseRender from './FiveClauseRender';
 import DepthMatchingRender from '../DepthMatchingRender';
 
-export default function ruleRender(props) {
+export default function render(props) {
   const ruleSelector = props.rule.type;
   if (ruleSelector === 'logical') {
     return (
@@ -40,7 +40,7 @@ export default function ruleRender(props) {
   return null;
 }
 
-ruleRender.propTypes = {
+render.propTypes = {
   className: React.PropTypes.string,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,

@@ -1,7 +1,7 @@
 import React                    from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyHistogram2DWidget = (props) => {
+export default function render(props) {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newXArray = rootContainer.querySelector('.jsX').value;
@@ -40,18 +40,16 @@ const PlotlyHistogram2DWidget = (props) => {
       </table>
     </div>
   );
-};
+}
 
-PlotlyHistogram2DWidget.propTypes = {
+render.propTypes = {
   chartState: React.PropTypes.object,
   arrays: React.PropTypes.object,
   onChange: React.PropTypes.func,
 };
 
-PlotlyHistogram2DWidget.defaultProps = {
+render.defaultProps = {
   chartState: {},
   arrays: [],
   onChange: () => {},
 };
-
-export default PlotlyHistogram2DWidget;

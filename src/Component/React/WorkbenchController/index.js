@@ -1,4 +1,5 @@
 import React from 'react';
+import style from 'PVWStyle/ComponentReact/WorkbenchController.mcss';
 import LayoutsWidget from '../../../React/Widgets/LayoutsWidget';
 
 import TwoByTwo  from '../../../React/Widgets/LayoutsWidget/TwoByTwo';
@@ -9,8 +10,6 @@ import TwoLeft   from '../../../React/Widgets/LayoutsWidget/TwoLeft';
 import TwoTop    from '../../../React/Widgets/LayoutsWidget/TwoTop';
 import TwoRight  from '../../../React/Widgets/LayoutsWidget/TwoRight';
 import TwoBottom from '../../../React/Widgets/LayoutsWidget/TwoBottom';
-
-import style from 'PVWStyle/ComponentReact/WorkbenchController.mcss';
 
 const LAYOUT_VIEW = {
   '2x2': TwoByTwo,
@@ -23,13 +22,13 @@ const LAYOUT_VIEW = {
   '3xB': TwoBottom,
 };
 
-export default function workbenchController(props) {
+export default function render(props) {
   const options = Object.keys(props.viewports).map((name, idx) => <option key={idx} value={name}>{name}</option>);
   const mapping = [];
   while (mapping.length < props.count) {
     mapping.push('None');
   }
-  Object.keys(props.viewports).forEach(name => {
+  Object.keys(props.viewports).forEach((name) => {
     if (props.viewports[name].viewport !== -1) {
       mapping[props.viewports[name].viewport] = name;
     }
@@ -60,7 +59,7 @@ export default function workbenchController(props) {
     );
 }
 
-workbenchController.propTypes = {
+render.propTypes = {
   onLayoutChange: React.PropTypes.func,
   onViewportChange: React.PropTypes.func,
   activeLayout: React.PropTypes.string,
@@ -68,7 +67,7 @@ workbenchController.propTypes = {
   count: React.PropTypes.number,
 };
 
-workbenchController.defaultProps = {
+render.defaultProps = {
   onLayoutChange: () => {},
   onViewportChange: () => {},
   count: 4,

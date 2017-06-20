@@ -20,7 +20,7 @@ const NEXT_VALUE = {
 
 /* eslint-disable react/no-unused-prop-types */
 
-export default function fiveClauseRender(props) {
+export default function render(props) {
   const { rule } = props;
   const terms = rule.terms;
   const formatter = new NumberFormatter(3, [Number(terms[0]), Number(terms[4])]);
@@ -94,7 +94,7 @@ export default function fiveClauseRender(props) {
     </section>);
 }
 
-fiveClauseRender.propTypes = {
+render.propTypes = {
   getLegend: React.PropTypes.func,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,

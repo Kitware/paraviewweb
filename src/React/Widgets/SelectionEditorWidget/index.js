@@ -1,12 +1,12 @@
 import React from 'react';
 import WidgetTypes from './types';
 
-export default function selectionEditorWidget(props) {
+export default function render(props) {
   const SelectionWidget = WidgetTypes[props.selection ? props.selection.type : 'empty'];
   return <SelectionWidget {...props} />;
 }
 
-selectionEditorWidget.propTypes = {
+render.propTypes = {
   selection: React.PropTypes.object,
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,
@@ -14,6 +14,6 @@ selectionEditorWidget.propTypes = {
   className: React.PropTypes.string,
 };
 
-selectionEditorWidget.defaultProps = {
+render.defaultProps = {
   onChange(selection, isEditDone) {},
 };

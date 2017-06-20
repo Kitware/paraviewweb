@@ -12,7 +12,7 @@ const OPERATOR_LABEL = {
   and: And,
 };
 
-export default function operatorRender(props) {
+export default function render(props) {
   const operator = props.rule.terms[0];
   const subRules = props.rule.terms.filter((r, idx) => (idx > 0));
   return (
@@ -49,7 +49,7 @@ export default function operatorRender(props) {
     </table>);
 }
 
-operatorRender.propTypes = {
+render.propTypes = {
   getLegend: React.PropTypes.func,
   rule: React.PropTypes.object,
   depth: React.PropTypes.number,

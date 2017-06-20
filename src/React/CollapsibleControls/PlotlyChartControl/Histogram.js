@@ -1,7 +1,7 @@
 import React                    from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyHistogramWidget = (props) => {
+export default function render(props) {
   function handleChange(event) {
     const newXArray = event.target.value;
     const forceNewPlot = props.arrays[props.chartState.x] !== props.arrays[newXArray];
@@ -28,18 +28,16 @@ const PlotlyHistogramWidget = (props) => {
       </table>
     </div>
   );
-};
+}
 
-PlotlyHistogramWidget.propTypes = {
+render.propTypes = {
   chartState: React.PropTypes.object,
   arrays: React.PropTypes.object,
   onChange: React.PropTypes.func,
 };
 
-PlotlyHistogramWidget.defaultProps = {
+render.defaultProps = {
   chartState: {},
   arrays: {},
   onChange: () => {},
 };
-
-export default PlotlyHistogramWidget;

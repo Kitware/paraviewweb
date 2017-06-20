@@ -44,7 +44,7 @@ function clampDivider(selection, index, ranges) {
   });
 }
 
-export default function partitionSelection(props) {
+export default function render(props) {
   const onChange = (changedPath, editing = false) => {
     // clone, so we don't step on whatever is current.
     const selection = JSON.parse(JSON.stringify(props.selection));
@@ -98,7 +98,7 @@ export default function partitionSelection(props) {
     </div>);
 }
 
-partitionSelection.propTypes = {
+render.propTypes = {
   children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
   selection: React.PropTypes.object,
   ranges: React.PropTypes.object,

@@ -3,7 +3,7 @@ import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
 /* eslint-disable react/no-unused-prop-types */
 
-const PlotlyScatter3Didget = (props) => {
+export default function render(props) {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newXArray = rootContainer.querySelector('.jsX').value;
@@ -53,18 +53,16 @@ const PlotlyScatter3Didget = (props) => {
       </table>
     </div>
   );
-};
+}
 
-PlotlyScatter3Didget.propTypes = {
+render.propTypes = {
   chartState: React.PropTypes.object,
   arrays: React.PropTypes.object,
   onChange: React.PropTypes.func,
 };
 
-PlotlyScatter3Didget.defaultProps = {
+render.defaultProps = {
   chartState: {},
   arrays: [],
   onChange: () => {},
 };
-
-export default PlotlyScatter3Didget;

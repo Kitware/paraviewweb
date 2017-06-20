@@ -11,7 +11,7 @@ export default React.createClass({
 
   componentDidMount() {
     if (this.props.component) {
-      this.props.component.setContainer(this.refs.container);
+      this.props.component.setContainer(this.container);
       this.props.component.resize();
     }
   },
@@ -35,6 +35,6 @@ export default React.createClass({
   },
 
   render() {
-    return <div className={this.props.className} ref="container"></div>;
+    return <div className={this.props.className} ref={c => (this.container = c)} />;
   },
 });

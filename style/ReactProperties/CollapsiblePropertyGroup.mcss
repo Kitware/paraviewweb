@@ -1,0 +1,54 @@
+.container {
+  width: calc(100% - 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 8px 10px;
+}
+
+.toolbar {
+  line-height: 30px;
+  height: 30px;
+  min-height: 30px;
+  user-select: none;
+  margin-bottom: 5px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.icon {
+  width: 15px;
+}
+
+.expandedIcon {
+  composes: icon;
+  composes: fa             from 'font-awesome/css/font-awesome.css';
+  composes: fa-caret-down  from 'font-awesome/css/font-awesome.css';
+}
+
+.collapsedIcon {
+  composes: icon;
+  composes: fa             from 'font-awesome/css/font-awesome.css';
+  composes: fa-caret-right  from 'font-awesome/css/font-awesome.css';
+}
+
+.title {
+   text-transform: capitalize;
+   font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+.content {
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}

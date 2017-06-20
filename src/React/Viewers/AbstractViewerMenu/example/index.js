@@ -14,6 +14,22 @@ const
     queryDataModel = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/earth/'),
     imageBuilder = new ImageBuilder(queryDataModel);
 
+class FakeRenderer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.resetCamera = this.resetCamera.bind(this);
+  }
+
+  resetCamera() {
+    console.log('reset camera');
+  }
+
+  render() {
+    return (<div />);
+  }
+}
+
+
 ReactDOM.render(
     React.createElement(
         AbstractViewerMenu,
@@ -25,6 +41,7 @@ ReactDOM.render(
                 (<p key='b'>You can put HTML or a React component here, a <em>QueryDataModelWidget</em> for example goes well here.</p>),
                 (<button key='c' onClick={()=>alert('button pressed')}>Press me</button>),
             ],
+            rendererClass: FakeRenderer,
         }),
     bodyElement);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/LayoutsWidget.mcss';
 
-export default function twoBottom(props) {
+export default function render(props) {
   return (
     <table className={props.active === '3xB' ? style.activeTable : style.table} name="3xB" onClick={props.onClick}>
       <tbody>
@@ -16,13 +16,13 @@ export default function twoBottom(props) {
     </table>);
 }
 
-twoBottom.propTypes = {
+render.propTypes = {
   onClick: React.PropTypes.func,
   active: React.PropTypes.string,
   activeRegion: React.PropTypes.number,
 };
 
-twoBottom.defaultProps = {
+render.defaultProps = {
   onClick: () => {},
   activeRegion: -1,
 };
