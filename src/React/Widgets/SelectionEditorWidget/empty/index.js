@@ -1,10 +1,10 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
-export default function emptySelection(props) {
+export default function render(props) {
   return <div className={[style.emptySelection, props.className].join(' ')}>No selection</div>;
 }
 
-emptySelection.propTypes = {
+render.propTypes = {
   className: React.PropTypes.string,
 };

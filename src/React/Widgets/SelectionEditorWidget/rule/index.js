@@ -43,7 +43,7 @@ function ensureRuleNumbers(rule) {
   }
 }
 
-export default function ruleSelection(props) {
+export default function render(props) {
   const rule = props.selection.rule;
   if (!rule || rule.length === 0 || !rule.type) {
     return null;
@@ -122,7 +122,7 @@ export default function ruleSelection(props) {
     />);
 }
 
-ruleSelection.propTypes = {
+render.propTypes = {
   selection: React.PropTypes.object,
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,

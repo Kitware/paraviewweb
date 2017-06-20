@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/LayoutsWidget.mcss';
 
-export default function twoByOne(props) {
+export default function render(props) {
   return (
     <table className={props.active === '2x1' ? style.activeTable : style.table} name="2x1" onClick={props.onClick}>
       <tbody>
@@ -13,13 +13,13 @@ export default function twoByOne(props) {
     </table>);
 }
 
-twoByOne.propTypes = {
+render.propTypes = {
   onClick: React.PropTypes.func,
   active: React.PropTypes.string,
   activeRegion: React.PropTypes.number,
 };
 
-twoByOne.defaultProps = {
+render.defaultProps = {
   onClick: () => {},
   activeRegion: -1,
 };

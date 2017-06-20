@@ -17,7 +17,7 @@ function button(label, action, iconClass) {
   );
 }
 
-export default function annotationStoreEditorWidget(props) {
+export default function render(props) {
   if (!props.annotations) {
     return null;
   }
@@ -83,7 +83,7 @@ export default function annotationStoreEditorWidget(props) {
     </div>);
 }
 
-annotationStoreEditorWidget.propTypes = {
+render.propTypes = {
   annotation: React.PropTypes.object,
   annotations: React.PropTypes.object,
 
@@ -97,7 +97,7 @@ annotationStoreEditorWidget.propTypes = {
   onChange: React.PropTypes.func,
 };
 
-annotationStoreEditorWidget.defaultProps = {
+render.defaultProps = {
   onAnnotationChange(annotation, isEditing) {},
   onChange(action, id, annotation) {},
   rationaleOpen: false,

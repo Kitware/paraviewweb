@@ -28,7 +28,7 @@ const NEXT_VALUE = {
 //   "uncertainty": 15
 // }
 
-export default function fiveClauseRender(props) {
+export default function render(props) {
   const { intervalSpec, fieldName } = props;
   const terms = [
     intervalSpec.interval[0],
@@ -108,7 +108,7 @@ export default function fiveClauseRender(props) {
     </section>);
 }
 
-fiveClauseRender.propTypes = {
+render.propTypes = {
   getLegend: React.PropTypes.func,
   fieldName: React.PropTypes.string,
   intervalSpec: React.PropTypes.object,

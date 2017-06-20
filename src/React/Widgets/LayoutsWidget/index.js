@@ -8,7 +8,7 @@ import TwoTop from './TwoTop';
 import TwoRight from './TwoRight';
 import TwoBottom from './TwoBottom';
 
-export default function layoutsWidget(props) {
+export default function render(props) {
   const onLayoutChange = event => props.onChange(event.currentTarget.getAttribute('name'));
 
   return (
@@ -24,12 +24,12 @@ export default function layoutsWidget(props) {
     </section>);
 }
 
-layoutsWidget.propTypes = {
+render.propTypes = {
   onChange: React.PropTypes.func,
   active: React.PropTypes.string,
   className: React.PropTypes.string,
 };
 
-layoutsWidget.defaultProps = {
+render.defaultProps = {
   onChange: () => {},
 };

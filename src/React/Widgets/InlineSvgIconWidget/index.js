@@ -13,7 +13,7 @@ function validateSvgString(svgString) {
   return !!svgString;
 }
 
-const InlineSvgIconWidget = (props) => {
+export default function render(props) {
   if (!validateSvgString(props.icon)) {
     console.log(`InlineSvgIconWidget won't render, invalid icon property: ${props.icon}`);
     return null;
@@ -31,9 +31,9 @@ const InlineSvgIconWidget = (props) => {
       onClick={props.onClick}
       dangerouslySetInnerHTML={{ __html: props.icon }}
     />);
-};
+}
 
-InlineSvgIconWidget.propTypes = {
+render.propTypes = {
   className: React.PropTypes.string,
   height: React.PropTypes.string,
   icon: React.PropTypes.string,
@@ -42,10 +42,8 @@ InlineSvgIconWidget.propTypes = {
   onClick: React.PropTypes.func,
 };
 
-InlineSvgIconWidget.defaultProps = {
+render.defaultProps = {
   className: '',
   icon: defaultIcon,
   style: {},
 };
-
-export default InlineSvgIconWidget;

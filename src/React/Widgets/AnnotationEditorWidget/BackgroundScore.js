@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
-export default function bgScore(props) {
+export default function render(props) {
   return (
     <div
       className={style.backgroundScore}
@@ -13,7 +13,7 @@ export default function bgScore(props) {
     />);
 }
 
-bgScore.propTypes = {
+render.propTypes = {
   color: React.PropTypes.string,
   index: React.PropTypes.number,
   step: React.PropTypes.number,
@@ -21,7 +21,7 @@ bgScore.propTypes = {
   fullHeight: React.PropTypes.bool,
 };
 
-bgScore.defaultProps = {
+render.defaultProps = {
   index: 0,
   step: 28,
   margin: 1,

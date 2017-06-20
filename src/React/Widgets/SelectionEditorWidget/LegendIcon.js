@@ -1,7 +1,7 @@
 import React from 'react';
 import SvgIconWidget from '../SvgIconWidget';
 
-export default function legendIcon(props) {
+export default function render(props) {
   if (!props.getLegend) {
     return <span>{props.name}</span>;
   }
@@ -20,7 +20,7 @@ export default function legendIcon(props) {
     />);
 }
 
-legendIcon.propTypes = {
+render.propTypes = {
   name: React.PropTypes.string,
   getLegend: React.PropTypes.func,
 

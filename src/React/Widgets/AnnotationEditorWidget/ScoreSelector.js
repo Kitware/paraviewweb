@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
-export default function scoreSelector(props) {
+export default function render(props) {
   const click = (event) => {
     props.onChange(props.name, Number(event.target.getAttribute('data-score')));
   };
@@ -21,7 +21,7 @@ export default function scoreSelector(props) {
     </section>);
 }
 
-scoreSelector.propTypes = {
+render.propTypes = {
   name: React.PropTypes.string,
   score: React.PropTypes.number,
   scores: React.PropTypes.array,
@@ -30,7 +30,7 @@ scoreSelector.propTypes = {
   className: React.PropTypes.string,
 };
 
-scoreSelector.defaultProps = {
+render.defaultProps = {
   name: 'default',
   horizontal: false,
   onChange(name, score) {},

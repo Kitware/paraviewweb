@@ -5,7 +5,7 @@ import FiveClauseRender     from './FiveClauseRender';
 import OperatorRender       from './OperatorRender';
 import SelectionBuilder     from '../../../../Common/Misc/SelectionBuilder';
 
-export default function rangeSelection(props) {
+export default function render(props) {
   const vars = props.selection.range.variables;
 
   let maxDepth = 1;
@@ -94,7 +94,7 @@ export default function rangeSelection(props) {
     </OperatorRender>);
 }
 
-rangeSelection.propTypes = {
+render.propTypes = {
   selection: React.PropTypes.object,
   ranges: React.PropTypes.object,
   onChange: React.PropTypes.func,

@@ -1,7 +1,7 @@
 import React from 'react';
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
-const PlotlyPieChartWidget = (props) => {
+export default function render(props) {
   function handleChange(event) {
     const rootContainer = event.target.parentNode.parentNode.parentNode;
     const newLabelArray = rootContainer.querySelector('.jsLabels').value;
@@ -51,18 +51,16 @@ const PlotlyPieChartWidget = (props) => {
       </table>
     </div>
   );
-};
+}
 
-PlotlyPieChartWidget.propTypes = {
+render.propTypes = {
   chartState: React.PropTypes.object,
   arrays: React.PropTypes.object,
   onChange: React.PropTypes.func,
 };
 
-PlotlyPieChartWidget.defaultProps = {
+render.defaultProps = {
   chartState: {},
   arrays: [],
   onChange: () => {},
 };
-
-export default PlotlyPieChartWidget;

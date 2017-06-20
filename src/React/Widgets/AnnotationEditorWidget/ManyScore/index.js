@@ -8,7 +8,7 @@ import ScoreSelector from '../ScoreSelector';
 import BGSelector from '../BackgroundScore';
 import SelectionEditorWidget from '../../SelectionEditorWidget';
 
-export default function manyScoreAnnotationEditorWidget(props) {
+export default function render(props) {
   return (
     <div className={style.verticalContainer}>
       <section className={style.lineContainer}>
@@ -86,7 +86,7 @@ export default function manyScoreAnnotationEditorWidget(props) {
     </div>);
 }
 
-manyScoreAnnotationEditorWidget.propTypes = {
+render.propTypes = {
   annotation: React.PropTypes.object,
   scores: React.PropTypes.array,
   ranges: React.PropTypes.object,
@@ -98,6 +98,6 @@ manyScoreAnnotationEditorWidget.propTypes = {
   onScoreChange: React.PropTypes.func,
 };
 
-manyScoreAnnotationEditorWidget.defaultProps = {
+render.defaultProps = {
   rationaleOpen: false,
 };

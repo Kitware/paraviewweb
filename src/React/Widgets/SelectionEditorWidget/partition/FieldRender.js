@@ -2,7 +2,7 @@ import React from 'react';
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 import LegendIcon from '../LegendIcon';
 
-export default function fieldRender(props) {
+export default function render(props) {
   return (
     <table className={[props.depth ? style.table : style.rootTable, props.className].join(' ')}>
       <tbody>
@@ -29,7 +29,7 @@ export default function fieldRender(props) {
     </table>);
 }
 
-fieldRender.propTypes = {
+render.propTypes = {
   children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
   getLegend: React.PropTypes.func,
   fieldName: React.PropTypes.string,

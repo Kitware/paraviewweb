@@ -4,6 +4,7 @@ import LightControl                 from './LightControl';
 import LookupTableManagerControl    from './LookupTableManagerControl';
 import MultiViewControl             from './MultiViewControl';
 import PixelOperatorControl         from './PixelOperatorControl';
+import PlotlyChartControl           from './PlotlyChartControl';
 import ProbeControl                 from './ProbeControl';
 import QueryDataModelControl        from './QueryDataModelControl';
 import TimeFloatImageControl        from './TimeFloatImageControl';
@@ -16,6 +17,7 @@ export default {
   LookupTableManagerControl,
   MultiViewControl,
   PixelOperatorControl,
+  PlotlyChartControl,
   ProbeControl,
   QueryDataModelControl,
   TimeFloatImageControl,

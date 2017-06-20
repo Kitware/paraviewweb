@@ -6,7 +6,7 @@ import CollapsibleWidget      from '../../CollapsibleWidget';
 import SelectionEditorWidget  from '../../SelectionEditorWidget';
 import ScoreSelector          from '../ScoreSelector';
 
-export default function oneScoreAnnotationEditorWidget(props) {
+export default function render(props) {
   return (
     <div className={style.verticalContainer}>
       <section className={style.lineContainer}>
@@ -69,7 +69,7 @@ export default function oneScoreAnnotationEditorWidget(props) {
     </div>);
 }
 
-oneScoreAnnotationEditorWidget.propTypes = {
+render.propTypes = {
   annotation: React.PropTypes.object,
   scores: React.PropTypes.array,
   ranges: React.PropTypes.object,
@@ -81,6 +81,6 @@ oneScoreAnnotationEditorWidget.propTypes = {
   onScoreChange: React.PropTypes.func,
 };
 
-oneScoreAnnotationEditorWidget.defaultProps = {
+render.defaultProps = {
   rationaleOpen: false,
 };
