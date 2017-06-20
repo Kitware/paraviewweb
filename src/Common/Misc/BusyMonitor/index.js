@@ -39,9 +39,8 @@ function busyMonitor(publicAPI, model) {
   };
 
   publicAPI.busy = (promise) => {
-    promise.then(success, error);
     checkNotifyStatus(1);
-    return promise;
+    return promise.then(success, error);
   };
 
   publicAPI.busyWrapFunction = fn => (...args) => publicAPI.busy(fn(...args));
