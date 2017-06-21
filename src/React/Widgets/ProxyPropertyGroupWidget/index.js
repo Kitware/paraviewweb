@@ -4,11 +4,11 @@ import equals           from 'mout/src/array/equals';
 import style from 'PVWStyle/ReactWidgets/ProxyPropertyGroup.mcss';
 
 import factory          from '../../Properties/PropertyFactory';
-import { proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
+import { isGroupWidget, proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 function extractProperties(nestedPropsInput, flatPropsOutput) {
   nestedPropsInput.forEach((p) => {
-    if (p.ui.propType === 'group') {
+    if (isGroupWidget(p.ui.propType)) {
       extractProperties(p.children, flatPropsOutput);
     } else {
       flatPropsOutput[p.data.id] = p.data.value;
