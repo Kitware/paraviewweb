@@ -9,7 +9,7 @@ const typeMapping = {
   ProxyEditorPropertyWidget: 'ProxyEditorPropertyWidget',
 };
 
-function isGroupWidget(widgetType) {
+export function isGroupWidget(widgetType) {
   return widgetType === 'PropertyGroup' || widgetType === 'ProxyEditorPropertyWidget';
 }
 
@@ -92,14 +92,15 @@ export function proxyPropToProp(property, ui) {
   const depStatus = depList ? Boolean(Number(depList.pop())) : true;
   const depValue = depList ? depList.pop() : null;
   const depId = depList ? depList.join(':') : null;
-  const searchString = [ui.name].concat(property.value).join(' ').toLowerCase();
+  const searchString = [ui.name].concat(property.value, depList || []).join(' ').toLowerCase();
 
   const prop = {
     show(ctx) {
+      let depTest = true;
       if (depId && ctx.properties[depId] !== undefined) {
-        return (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
+        depTest = (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
       }
-      if (ctx.filter && ctx.filter.length) {
+      if (depTest && ctx.filter && ctx.filter.length) {
         const queries = ctx.filter.toLowerCase().split(' ');
         let match = true;
 
@@ -109,7 +110,7 @@ export function proxyPropToProp(property, ui) {
 
         return match;
       }
-      return !!ctx.advanced || !ui.advanced;
+      return (!!ctx.advanced || !ui.advanced) && depTest;
     },
     ui: {
       propType: typeMapping[ui.widget] || ui.widget,
@@ -142,6 +143,7 @@ export function proxyToProps(proxy) {
 }
 
 export default {
+  isGroupWidget,
   proxyToProps,
   proxyPropToProp,
 };
