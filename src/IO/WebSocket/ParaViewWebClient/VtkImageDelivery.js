@@ -6,6 +6,7 @@ export default function createMethods(session) {
     offRenderChange: subscription => session.unsubscribe(subscription),
     addRenderObserver: viewId => session.call('viewport.image.push.observer.add', [viewId]),
     removeRenderObserver: viewId => session.call('viewport.image.push.observer.remove', [viewId]),
+    enableView: (viewId, enabled) => session.call('viewport.image.push.enabled', [viewId, enabled]),
     viewQuality: (viewId, quality) => session.call('viewport.image.push.quality', [viewId, quality]),
     invalidateCache: viewId => session.call('viewport.image.push.invalidate.cache', [viewId]),
   };

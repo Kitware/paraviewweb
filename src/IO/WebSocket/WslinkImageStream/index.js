@@ -1,4 +1,4 @@
-/* global WebSocket Blob window URL */
+/* global Blob window URL */
 
 import Monologue from 'monologue.js';
 
@@ -8,8 +8,6 @@ const
 export default class WslinkImageStream {
   constructor(client, stillQuality = 100, interactiveQuality = 50, mimeType = 'image/jpeg') {
     this.client = client;
-    // this.ws = null;
-    // this.textMode = true;
     this.metadata = null;
     this.activeURL = null;
     this.fps = 0;
@@ -24,19 +22,17 @@ export default class WslinkImageStream {
     this.viewChanged = this.viewChanged.bind(this);
   }
 
-  // enableView(enabled) {
-    // this.ws.send(JSON.stringify({
-    //   view_id: this.view_id,
-    //   enabled,
-    // }));
-  // }
+  // This functionality is apparently unused.
+  enableView(enabled) {
+    this.client.VtkImageDelivery.enableView(this.view_id, enabled);
+  }
 
   startInteractiveQuality() {
     this.client.VtkImageDelivery.viewQuality(this.view_id, this.interactiveQuality);
   }
 
   stopInteractiveQuality() {
-    this.client.VtkImageDelivery.viewQuality(this.view_id, this.interactiveQuality);
+    this.client.VtkImageDelivery.viewQuality(this.view_id, this.stillQuality);
   }
 
   invalidateCache() {
