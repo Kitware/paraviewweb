@@ -1,79 +1,69 @@
 /* global Blob window URL */
+import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
 
-import Monologue from 'monologue.js';
+function wslinkImageStream(publicAPI, model) {
+  if (!model.client) throw Error('Client must be provided');
 
-const
-  IMAGE_READY = 'image.ready';
+  model.metadata = null;
+  model.activeURL = null;
+  model.fps = 0;
+  model.lastTime = +(new Date());
+  model.view_id = -1;
 
-export default class WslinkImageStream {
-  constructor(client, stillQuality = 100, interactiveQuality = 50, mimeType = 'image/jpeg') {
-    this.client = client;
-    this.metadata = null;
-    this.activeURL = null;
-    this.fps = 0;
-    this.mimeType = mimeType;
-    this.lastTime = +(new Date());
-    this.view_id = -1;
-    this.stillQuality = stillQuality;
-    this.interactiveQuality = interactiveQuality;
-
-    this.lastImageReadyEvent = null;
-
-    this.viewChanged = this.viewChanged.bind(this);
-  }
+  model.lastImageReadyEvent = null;
 
   // This functionality is apparently unused.
-  enableView(enabled) {
-    this.client.VtkImageDelivery.enableView(this.view_id, enabled);
-  }
+  publicAPI.enableView = (enabled) => {
+    model.client.VtkImageDelivery.enableView(model.view_id, enabled);
+  };
 
-  startInteractiveQuality() {
-    this.client.VtkImageDelivery.viewQuality(this.view_id, this.interactiveQuality);
-  }
+  publicAPI.startInteractiveQuality = () => {
+    model.client.VtkImageDelivery.viewQuality(model.view_id, model.interactiveQuality);
+  };
 
-  stopInteractiveQuality() {
-    this.client.VtkImageDelivery.viewQuality(this.view_id, this.stillQuality);
-  }
+  publicAPI.stopInteractiveQuality = () => {
+    model.client.VtkImageDelivery.viewQuality(model.view_id, model.stillQuality);
+  };
 
-  invalidateCache() {
-    this.client.VtkImageDelivery.invalidateCache(this.view_id);
-  }
+  publicAPI.invalidateCache = () => {
+    model.client.VtkImageDelivery.invalidateCache(model.view_id);
+  };
 
-  updateQuality(stillQuality = 100, interactiveQuality = 50) {
-    this.stillQuality = stillQuality;
-    this.interactiveQuality = interactiveQuality;
-  }
+  publicAPI.updateQuality = (stillQuality = 100, interactiveQuality = 50) => {
+    model.stillQuality = stillQuality;
+    model.interactiveQuality = interactiveQuality;
+  };
 
-  unsubscribeRenderTopic() {
-    this.client.VtkImageDelivery.offRenderChange(this.renderTopicSubscription)
+  publicAPI.unsubscribeRenderTopic = () => {
+    model.client.VtkImageDelivery.offRenderChange(model.renderTopicSubscription)
       .then((unsubSuccess) => {
         console.log('Unsubscribe resolved ', unsubSuccess);
       }, (unsubFailure) => {
         console.log('Unsubscribe error ', unsubFailure);
       });
-  }
+  };
 
-  // subscribeRenderTopic() {
-  //   this.client.VtkImageDelivery.onRenderChange(this.viewChanged).then((subscription) => {
-  //     this.renderTopicSubscription = subscription;
+  // subscribeRenderTopic = () => {
+  //   model.client.VtkImageDelivery.onRenderChange(publicAPI.viewChanged).then((subscription) => {
+  //     model.renderTopicSubscription = subscription;
   //   }, (subError) => {
   //     console.log('Failed to subscribe to topic');
   //     console.log(subError);
   //   });
   // }
 
-  removeRenderObserver(viewId) {
-    this.client.VtkImageDelivery.removeRenderObserver(viewId).then((successResult) => {
+  publicAPI.removeRenderObserver = (viewId) => {
+    model.client.VtkImageDelivery.removeRenderObserver(viewId).then((successResult) => {
       console.log(`Removed observer from view ${viewId} succeeded`);
       console.log(successResult);
     }, (failureResult) => {
       console.log(`Failed to remove observer from view ${viewId}`);
       console.log(failureResult);
     });
-  }
+  };
 
   // addRenderObserver(viewId) {
-  //   this.client.VtkImageDelivery.addRenderObserver(viewId).then((successResult) => {
+  //   model.client.VtkImageDelivery.addRenderObserver(viewId).then((successResult) => {
   //     console.log(`Successfully added observer to view ${viewId}`);
   //     console.log(successResult);
   //   }, (failureResult) => {
@@ -82,40 +72,40 @@ export default class WslinkImageStream {
   //   });
   // }
 
-  viewChanged(data) {
+  publicAPI.viewChanged = (data) => {
     const msg = data[0];
     const imgBlob = new Blob([msg.image], {
-      type: this.mimeType,
+      type: model.mimeType,
     });
-    if (this.activeURL) {
-      window.URL.revokeObjectURL(this.activeURL);
-      this.activeURL = null;
+    if (model.activeURL) {
+      window.URL.revokeObjectURL(model.activeURL);
+      model.activeURL = null;
     }
-    this.activeURL = URL.createObjectURL(imgBlob);
+    model.activeURL = URL.createObjectURL(imgBlob);
     const time = +(new Date());
-    this.fps = Math.floor(10000 / (time - this.lastTime)) / 10;
-    this.lastTime = time;
+    model.fps = Math.floor(10000 / (time - model.lastTime)) / 10;
+    model.lastTime = time;
 
-    this.lastImageReadyEvent = {
-      url: this.activeURL,
-      fps: this.fps,
+    model.lastImageReadyEvent = {
+      url: model.activeURL,
+      fps: model.fps,
       metadata: { size: msg.size, id: msg.id },
     };
 
-    this.emit(IMAGE_READY, this.lastImageReadyEvent);
-  }
+    publicAPI.fireImageReady(model.lastImageReadyEvent);
+  };
 
   /* eslint-disable camelcase */
-  connect({ view_id = -1, size = [500, 500] }) {
+  publicAPI.connect = ({ view_id = -1, size = [500, 500] }) => (
     // Subscribe to pubsub topic and add view observer
-    return new Promise((resolve, reject) => {
-      this.view_id = view_id;
-      this.width = size[0];
-      this.height = size[1];
+    new Promise((resolve, reject) => {
+      model.view_id = view_id;
+      model.width = size[0];
+      model.height = size[1];
 
-      this.client.VtkImageDelivery.onRenderChange(this.viewChanged).then((subscription) => {
-        this.renderTopicSubscription = subscription;
-        this.client.VtkImageDelivery.addRenderObserver(view_id).then((successResult) => {
+      model.client.VtkImageDelivery.onRenderChange(publicAPI.viewChanged).then((subscription) => {
+        model.renderTopicSubscription = subscription;
+        model.client.VtkImageDelivery.addRenderObserver(view_id).then((successResult) => {
           console.log(`Successfully added observer to view ${view_id}`);
           console.log(successResult);
           resolve(successResult);
@@ -129,27 +119,42 @@ export default class WslinkImageStream {
         console.log(subError);
         reject(subError);
       });
-    });
-  }
+    })
+  );
   /* eslint-enable camelcase */
 
-  destroy() {
-    this.off();
-    this.removeRenderObserver(this.view_id);
-    this.unsubscribeRenderTopic();
+  publicAPI.destroy = () => {
+    publicAPI.off();
+    publicAPI.removeRenderObserver(model.view_id);
+    publicAPI.unsubscribeRenderTopic();
     // if (this.ws) {
     //   this.ws.close();
     //   this.ws = null;
     // }
-  }
+  };
 
-  onImageReady(callback) {
-    return this.on(IMAGE_READY, callback);
-  }
-
-  getLastImageReadyEvent() {
-    return this.lastImageReadyEvent;
-  }
+  publicAPI.getLastImageReadyEvent = () => (
+    model.lastImageReadyEvent
+  );
 }
 
-Monologue.mixInto(WslinkImageStream);
+const DEFAULT_VALUES = {
+  stillQuality: 100,
+  interactiveQuality: 50,
+  mimeType: 'image/jpeg',
+};
+
+export function extend(publicAPI, model, initialValues = {}) {
+  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+  CompositeClosureHelper.destroy(publicAPI, model);
+  CompositeClosureHelper.event(publicAPI, model, 'ImageReady');
+  CompositeClosureHelper.isA(publicAPI, model, 'WslinkImageStream');
+
+  wslinkImageStream(publicAPI, model);
+}
+
+// ----------------------------------------------------------------------------
+export const newInstance = CompositeClosureHelper.newInstance(extend);
+
+export default { newInstance, extend };
