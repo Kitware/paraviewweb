@@ -98,7 +98,7 @@ export function proxyPropToProp(property, ui) {
     show(ctx) {
       let depTest = true;
       if (depId && ctx.properties[depId] !== undefined) {
-        depTest = (ctx.properties[depId][0] === depValue) ? depStatus : !depStatus;
+        depTest = (ctx.properties[depId][0] === depValue || ctx.properties[depId][0].toString() === depValue) ? depStatus : !depStatus;
       }
       if (depTest && ctx.filter && ctx.filter.length) {
         const queries = ctx.filter.toLowerCase().split(' ');
