@@ -55,14 +55,14 @@ export default class VtkGeometryRenderer extends React.Component {
 
     const panManipulator = vtkTrackballPan.newInstance();
     panManipulator.setButton(1);
-    panManipulator.setShift(false);
-    panManipulator.setControl(true);
+    panManipulator.setShift(true);
+    panManipulator.setControl(false);
     this.interactorStyle.addManipulator(panManipulator);
 
     const zoomManipulator = vtkTrackballZoom.newInstance();
     zoomManipulator.setButton(1);
-    zoomManipulator.setShift(true);
-    zoomManipulator.setControl(false);
+    zoomManipulator.setShift(false);
+    zoomManipulator.setControl(true);
     this.interactorStyle.addManipulator(zoomManipulator);
 
     const rotateManipulator = vtkTrackballRotate.newInstance();
