@@ -123,15 +123,12 @@ function wslinkImageStream(publicAPI, model) {
   );
   /* eslint-enable camelcase */
 
-  publicAPI.destroy = () => {
-    publicAPI.off();
+  function cleanUp() {
     publicAPI.removeRenderObserver(model.view_id);
     publicAPI.unsubscribeRenderTopic();
-    // if (this.ws) {
-    //   this.ws.close();
-    //   this.ws = null;
-    // }
-  };
+  }
+
+  publicAPI.destroy = CompositeClosureHelper.chain(cleanUp, publicAPI.destroy);
 
   publicAPI.getLastImageReadyEvent = () => (
     model.lastImageReadyEvent

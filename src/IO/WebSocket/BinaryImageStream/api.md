@@ -1,5 +1,10 @@
 # BinaryImageStream
 
+{% note warn Deprecated %}
+This class has been migrated to WslinkImageStream, based on [wslink](https://github.com/kitware/wslink)
+When all clients have been migrated to wslink, this class will be removed.
+{% endnote %}
+
 ## constructor(endpointURL, stillQuality=100, interactiveQuality=50, mimeType='image/jpeg')
 
 Create an instance of a binary image stream over WebSocket.

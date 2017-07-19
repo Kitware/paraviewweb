@@ -1,5 +1,10 @@
 # SmartConnect
 
+{% note warn Deprecated %}
+This class has been migrated to [wslink](https://github.com/kitware/wslink)
+When all clients have been migrated to wslink, this class will be removed.
+{% endnote %}
+
 SmartConnect will try to launch a new remote process
 based on the configuration and if that fails or if
 a sessionURL is already provided in the configuration

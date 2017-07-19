@@ -24,6 +24,7 @@ function getTransportObject(url) {
   throw new Error(`Unknown protocol (${protocol}) for url (${url}).  Unable to create transport object.`);
 }
 
+// DEPRECATED: replaced by wslink
 export default class AutobahnConnection {
   constructor(urls, secret = 'vtkweb-secret', retry = false) {
     this.urls = urls;

@@ -1,5 +1,10 @@
 # ProcessLauncher
 
+{% note warn Deprecated %}
+This class has been migrated to [wslink](https://github.com/kitware/wslink)
+When all clients have been migrated to wslink, this class will be removed.
+{% endnote %}
+
 The ProcessLauncher is used in ParaViewWeb to start a new remote 
 server instance to perform interactive 3D post-processing using either
 a VTK or a ParaView backend.

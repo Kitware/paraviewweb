@@ -1,5 +1,9 @@
 # AutobahnConnection
 
+{% note warn Deprecated %}
+This class's functionality has been migrated to [wslink](https://github.com/kitware/wslink)
+When all clients have been migrated to wslink, this class will be removed.
+{% endnote %}
 ## constructor(urls, secret="vtkweb-secret")
 
 Create an instance of Autobahn connection. The urls can either
