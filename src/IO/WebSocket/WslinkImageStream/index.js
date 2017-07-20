@@ -8,7 +8,6 @@ function wslinkImageStream(publicAPI, model) {
   model.activeURL = null;
   model.fps = 0;
   model.lastTime = +(new Date());
-  model.view_id = -1;
 
   model.lastImageReadyEvent = null;
 
@@ -74,6 +73,7 @@ function wslinkImageStream(publicAPI, model) {
 
   publicAPI.viewChanged = (data) => {
     const msg = data[0];
+    if (!msg) return;
     const imgBlob = new Blob([msg.image], {
       type: model.mimeType,
     });
@@ -139,6 +139,7 @@ const DEFAULT_VALUES = {
   stillQuality: 100,
   interactiveQuality: 50,
   mimeType: 'image/jpeg',
+  view_id: -1,
 };
 
 export function extend(publicAPI, model, initialValues = {}) {

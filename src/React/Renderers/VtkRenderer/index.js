@@ -1,6 +1,7 @@
 import React                from 'react';
 
 import BinaryImageStream    from '../../../IO/WebSocket/BinaryImageStream';
+import WslinkImageStream    from '../../../IO/WebSocket/WslinkImageStream';
 import NativeImageRenderer  from '../../../NativeUI/Renderers/NativeImageRenderer';
 import sizeHelper           from '../../../Common/Misc/SizeHelper';
 import VtkWebMouseListener  from '../../../Interaction/Core/VtkWebMouseListener';
@@ -15,7 +16,7 @@ export default React.createClass({
     viewId: React.PropTypes.string,
     interactionTimout: React.PropTypes.number,
     connection: React.PropTypes.object,
-    imageStream: React.PropTypes.object,
+    oldImageStream: React.PropTypes.bool,
     showFPS: React.PropTypes.bool,
     style: React.PropTypes.object,
   },
@@ -23,7 +24,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       className: '',
-      imageStream: null,
+      oldImageStream: false,
       showFPS: false,
       style: {},
       viewId: '-1',
@@ -39,11 +40,11 @@ export default React.createClass({
   componentDidMount() {
     const container = this.rootContainer;
 
-    if (!this.props.imageStream) {
+    if (this.props.oldImageStream) {
       const wsbUrl = `${this.props.connection.urls}b`;
       this.binaryImageStream = new BinaryImageStream(wsbUrl);
     } else {
-      this.binaryImageStream = this.props.imageStream;
+      this.binaryImageStream = WslinkImageStream.newInstance({ client: this.props.client });
     }
     this.mouseListener = new VtkWebMouseListener(this.props.client);
 
