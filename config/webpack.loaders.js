@@ -40,6 +40,10 @@ module.exports = [
     include: /node_modules(\/|\\)vtk.js(\/|\\)/,
     loader: 'babel?presets[]=es2015,presets[]=react',
   }, {
+    test: /\.js$/,
+    include: /node_modules(\/|\\)wslink(\/|\\)/,
+    loader: 'babel?presets[]=es2015',
+  }, {
     test: /\.glsl$/,
     loader: 'shader',
   }, {

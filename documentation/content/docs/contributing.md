@@ -1,3 +1,5 @@
+title: Contributing
+---
 ## Development
 
 We welcome your contribution to the development of ParaViewWeb. This document will help you through the process.

@@ -23,6 +23,7 @@ function autobahnConnect(self) {
   self.gc.push(wsConnection);
 }
 
+// DEPRECATED: replaced by wslink/js/src/SmartConnect
 export default class SmartConnect {
   constructor(config) {
     this.config = config;

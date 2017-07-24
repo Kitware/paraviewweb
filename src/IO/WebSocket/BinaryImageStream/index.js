@@ -5,6 +5,7 @@ import Monologue from 'monologue.js';
 const
   IMAGE_READY = 'image.ready';
 
+// DEPRECATED: replaced by WslinkImageStream
 export default class BinaryImageStream {
   constructor(endpointURL, stillQuality = 100, interactiveQuality = 50, mimeType = 'image/jpeg') {
     this.endpoint = endpointURL;

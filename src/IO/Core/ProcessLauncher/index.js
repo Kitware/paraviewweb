@@ -11,6 +11,7 @@ const
 var
   connections = [];
 
+// DEPRECATED: replaced by wslink/js/src/ProcessLauncher
 export default class ProcessLauncher {
   constructor(endPoint) {
     this.endPoint = endPoint;
