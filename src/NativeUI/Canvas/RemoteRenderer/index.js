@@ -61,7 +61,7 @@ export default class RemoteRenderer {
       }
     };
 
-    this.mouseListener = new VtkWebMouseListener(pvwClient);
+    this.mouseListener = new VtkWebMouseListener(pvwClient, 100, 100, id);
     this.mouseListener.setInteractionDoneCallback((interact) => {
       this.quality = interact ? this.interactiveQuality : this.stillQuality;
       if (!this.render(!interact)) {
