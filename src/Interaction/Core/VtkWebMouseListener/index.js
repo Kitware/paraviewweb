@@ -13,16 +13,17 @@ const NoOp = () => {};
 
 export default class VtkMouseListener {
 
-  constructor(vtkWebClient, width = 100, height = 100) {
+  constructor(vtkWebClient, width = 100, height = 100, viewId = -1) {
     this.client = vtkWebClient;
     this.ready = true;
     this.width = width;
     this.height = height;
+    this.viewId = viewId;
     this.setInteractionDoneCallback();
     this.listeners = {
       drag: (event) => {
         const vtkEvent = {
-          view: -1,
+          view: this.viewId,
           buttonLeft: !event.isFinal,
           buttonMiddle: false,
           buttonRight: false,
@@ -64,7 +65,7 @@ export default class VtkMouseListener {
       },
       zoom: (event) => {
         const vtkEvent = {
-          view: -1,
+          view: this.viewId,
           buttonLeft: false,
           buttonMiddle: false,
           buttonRight: !event.isFinal,
