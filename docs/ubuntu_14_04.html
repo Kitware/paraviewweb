@@ -45,7 +45,8 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/ubuntu_14_04.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="ParaViewWeb on Ubuntu 14.04 LTSIntroductionThis document describes how to set up a ParaViewWeb server instance on a freshly installed Ubuntu Desktop 14.04 LTS.The server version can also be used, but">
-<meta property="og:updated_time" content="2017-05-04T22:40:50.570Z">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-08-15T18:40:49.445Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="ParaViewWeb on Ubuntu 14.04 LTSIntroductionThis document describes how to set up a ParaViewWeb server instance on a freshly installed Ubuntu Desktop 14.04 LTS.The server version can also be used, but">
@@ -115,7 +116,7 @@
 <p>In order to properly install the NVidia drivers, you will need to execute the following command line and restart:</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo nvidia-xconfig</div><div class="line"></div><div class="line"><span class="comment"># =&gt; Reboot</span></div><div class="line"></div><div class="line">$ sudo nvidia-settings</div><div class="line"></div><div class="line"><span class="comment"># =&gt; Make sure your screen and GPU has been properly detected.</span></div></pre></td></tr></table></figure>
 <h3 id="ParaViewWeb-user-creation" class="article-heading"><a href="#ParaViewWeb-user-creation" class="headerlink" title="ParaViewWeb user creation"></a>ParaViewWeb user creation<a class="article-anchor" href="#ParaViewWeb-user-creation" aria-hidden="true"></a></h3><p>Unless you have your own launcher application that will take care of who is running<br>the visualization process based on your SSO system, you may want to simply use<br>the process launcher that comes with ParaView. And if you do so, you might not want that<br>process to run under your ‘powerful’ user.</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line"><span class="comment"># Create a new user</span></div><div class="line">$ adduser pvw-user</div><div class="line"></div><div class="line"><span class="comment"># Add that user to the apache user group</span></div><div class="line">$ usermod <span class="_">-a</span> -G www-data pvw-user</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line"><span class="comment"># Create a new user</span></div><div class="line">$ adduser pvw-user</div><div class="line"></div><div class="line"><span class="comment"># Add that user to the apache user group</span></div><div class="line">$ usermod -a -G www-data pvw-user</div></pre></td></tr></table></figure>
 <p>Then you should make sure that this user will auto login in the graphical environment.<br>This will allow ParaViewWeb to properly use your GPU.</p>
 <h3 id="Setting-up-the-directory-structure-for-later" class="article-heading"><a href="#Setting-up-the-directory-structure-for-later" class="headerlink" title="Setting up the directory structure for later"></a>Setting up the directory structure for later<a class="article-anchor" href="#Setting-up-the-directory-structure-for-later" aria-hidden="true"></a></h3><p>The path provided below are just an example on how to structure the different pieces that will<br>be needed for your web server. But by defining them here it is easier to reference them later on.<br>In the proposed structure, everything will be nested underneath the /data directory.<br>So let’s create those directories.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo mkdir -p /data/pvw /data/pv /data/logs /data/www</div></pre></td></tr></table></figure>
@@ -154,7 +155,7 @@
             + www
             + server
 </code></pre><p>Let’s copy it in our global directory structure and assign it to our ParaViewWeb user:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo cp -r /.../paraview-xxx /data/pv/pv-5.2.0</div><div class="line">$ sudo ln <span class="_">-s</span> /data/pv/pv-5.2.0 /data/pv/pv-current</div><div class="line">$ sudo chown -R pvw-user /data/pv</div><div class="line">$ sudo chgrp -R pvw-user /data/pv</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo cp -r /.../paraview-xxx /data/pv/pv-5.2.0</div><div class="line">$ sudo ln -s /data/pv/pv-5.2.0 /data/pv/pv-current</div><div class="line">$ sudo chown -R pvw-user /data/pv</div><div class="line">$ sudo chgrp -R pvw-user /data/pv</div></pre></td></tr></table></figure>
 <h2 id="Configuration-of-ParaViewWeb-launcher" class="article-heading"><a href="#Configuration-of-ParaViewWeb-launcher" class="headerlink" title="Configuration of ParaViewWeb launcher"></a>Configuration of ParaViewWeb launcher<a class="article-anchor" href="#Configuration-of-ParaViewWeb-launcher" aria-hidden="true"></a></h2><p>We’ve already created the /data/pvw directory to embed the ParaView Process Launcher with its configuration.<br>Let’s structure the content of that directory.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo mkdir -p /data/pvw/bin /data/pvw/conf /data/pvw/data /data/pvw/logs</div></pre></td></tr></table></figure>
 <p>When you edit the configuration file, shown below, be sure to replace <code>YOUR_HOST_NAME_TO_REPLACE</code> with your actual hostname.</p>
@@ -182,7 +183,7 @@
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-05-04T22:40:50.570Z" itemprop="dateModified">Last updated: 2017-05-04</time>
+                <time class="article-footer-updated" datetime="2017-08-15T18:40:49.445Z" itemprop="dateModified">Last updated: 2017-08-15</time>
                 <a href="virtualgl_turbovnc_howto.html" class="article-footer-prev" title="VirtualGL and TurboVNC"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="windows_10.html" class="article-footer-next" title="Windows 10"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

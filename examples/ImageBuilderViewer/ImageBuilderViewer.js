@@ -54,30 +54,36 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _ = __webpack_require__(172);
-
-	var _2 = _interopRequireDefault(_);
-
-	var _QueryDataModel = __webpack_require__(214);
-
-	var _QueryDataModel2 = _interopRequireDefault(_QueryDataModel);
-
-	var _QueryDataModelImageBuilder = __webpack_require__(339);
-
-	var _QueryDataModelImageBuilder2 = _interopRequireDefault(_QueryDataModelImageBuilder);
-
-	var _index = __webpack_require__(341);
+	var _index = __webpack_require__(172);
 
 	var _index2 = _interopRequireDefault(_index);
 
+	__webpack_require__(173);
+
+	var _ = __webpack_require__(177);
+
+	var _2 = _interopRequireDefault(_);
+
+	var _QueryDataModel = __webpack_require__(217);
+
+	var _QueryDataModel2 = _interopRequireDefault(_QueryDataModel);
+
+	var _QueryDataModelImageBuilder = __webpack_require__(342);
+
+	var _QueryDataModelImageBuilder2 = _interopRequireDefault(_QueryDataModelImageBuilder);
+
+	__webpack_require__(344);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// Load CSS
-	__webpack_require__(342);
+	var queryDataModel = new _QueryDataModel2.default(_index2.default, ('/paraviewweb') + '/data/earth/');
 
-	/* global __BASE_PATH__ */
-	var queryDataModel = new _QueryDataModel2.default(_index2.default, ('/paraviewweb') + '/data/earth/'),
-	    imageBuilder = new _QueryDataModelImageBuilder2.default(queryDataModel);
+	// Make sure the widget factory has the widget needed by this example
+
+
+	// Load CSS
+
+	var imageBuilder = new _QueryDataModelImageBuilder2.default(queryDataModel);
 
 	_reactDom2.default.render(_react2.default.createElement(_2.default, { queryDataModel: queryDataModel, imageBuilder: imageBuilder }), document.querySelector('.content'));
 
@@ -361,6 +367,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -1331,45 +1341,43 @@
 	var warning = emptyFunction;
 
 	if (process.env.NODE_ENV !== 'production') {
-	  (function () {
-	    var printWarning = function printWarning(format) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
 	      }
 
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    };
-
-	    warning = function warning(condition, format) {
-	      if (format === undefined) {
-	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	      }
-
-	      if (format.indexOf('Failed Composite propType: ') === 0) {
-	        return; // Ignore CompositeComponent proptype check.
-	      }
-
-	      if (!condition) {
-	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	          args[_key2 - 2] = arguments[_key2];
-	        }
-
-	        printWarning.apply(undefined, [format].concat(args));
-	      }
-	    };
-	  })();
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
 	}
 
 	module.exports = warning;
@@ -17838,18 +17846,11 @@
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
 	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @typechecks
 	 */
@@ -21476,6 +21477,447 @@
 
 /***/ },
 /* 172 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"type": [
+			"tonic-query-data-model"
+		],
+		"arguments": {
+			"phi": {
+				"ui": "slider",
+				"values": [
+					"0",
+					"15",
+					"30",
+					"45",
+					"60",
+					"75",
+					"90",
+					"105",
+					"120",
+					"135",
+					"150",
+					"165",
+					"180",
+					"195",
+					"210",
+					"225",
+					"240",
+					"255",
+					"270",
+					"285",
+					"300",
+					"315",
+					"330",
+					"345"
+				],
+				"loop": "modulo",
+				"bind": {
+					"mouse": {
+						"drag": {
+							"modifier": 0,
+							"coordinate": 0,
+							"step": 10,
+							"orientation": 1
+						}
+					}
+				}
+			},
+			"theta": {
+				"default": 1,
+				"ui": "slider",
+				"values": [
+					"60",
+					"90",
+					"120"
+				],
+				"loop": "reverse",
+				"bind": {
+					"mouse": {
+						"scroll": {
+							"modifier": 0,
+							"coordinate": 1,
+							"step": 0
+						},
+						"drag": {
+							"modifier": 0,
+							"coordinate": 1,
+							"step": 10,
+							"orientation": 1
+						}
+					}
+				}
+			}
+		},
+		"arguments_order": [
+			"theta",
+			"phi"
+		],
+		"data": [
+			{
+				"name": "image",
+				"type": "blob",
+				"mimeType": "image/jpg",
+				"pattern": "{theta}_{phi}.jpg"
+			}
+		],
+		"metadata": {
+			"title": "Earth iso-contours",
+			"description": "Show the computational mesh with temperature and salinity iso-lines for the 40 layers and 120 time steps."
+		}
+	};
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(174);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../css-loader/index.js!../postcss-loader/index.js!./normalize.css", function() {
+				var newContent = require("!!../css-loader/index.js!../postcss-loader/index.js!./normalize.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Prevent adjustments of font size after orientation changes in IE and iOS.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove the margin in all browsers (opinionated).\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n * 2. Add the correct display in IE.\n */\n\narticle,\naside,\ndetails, /* 1 */\nfigcaption,\nfigure,\nfooter,\nheader,\nmain, /* 2 */\nmenu,\nnav,\nsection,\nsummary { /* 1 */\n  display: block;\n}\n\n/**\n * Add the correct display in IE 9-.\n */\n\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n}\n\n/**\n * Add the correct display in iOS 4-7.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\n\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Add the correct display in IE 10-.\n * 1. Add the correct display in IE.\n */\n\ntemplate, /* 1 */\n[hidden] {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\n\na {\n  background-color: transparent; /* 1 */\n  -webkit-text-decoration-skip: objects; /* 2 */\n}\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\n\na:active,\na:hover {\n  outline-width: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\n\nabbr[title] {\n  border-bottom: none; /* 1 */\n  text-decoration: underline; /* 2 */\n  text-decoration: underline dotted; /* 2 */\n}\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\n\nb,\nstrong {\n  font-weight: inherit;\n}\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/**\n * Add the correct font style in Android 4.3-.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Add the correct background and color in IE 9-.\n */\n\nmark {\n  background-color: #ff0;\n  color: #000;\n}\n\n/**\n * Add the correct font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\n\nimg {\n  border-style: none;\n}\n\n/**\n * Hide the overflow in IE.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/**\n * Add the correct margin in IE 8.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\n\nhr {\n  box-sizing: content-box; /* 1 */\n  height: 0; /* 1 */\n  overflow: visible; /* 2 */\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change font properties to `inherit` in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\n\nbutton,\ninput,\nselect,\ntextarea {\n  font: inherit; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Restore the font weight unset by the previous rule.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\n\nbutton,\ninput { /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect { /* 1 */\n  text-transform: none;\n}\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\nhtml [type=\"button\"], /* 1 */\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\n\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\n\nlegend {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n\n[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.\n */\n\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Correct the text style of placeholders in Chrome, Edge, and Safari.\n */\n\n::-webkit-input-placeholder {\n  color: inherit;\n  opacity: 0.54;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21488,15 +21930,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _AbstractViewerMenu = __webpack_require__(173);
+	var _AbstractViewerMenu = __webpack_require__(178);
 
 	var _AbstractViewerMenu2 = _interopRequireDefault(_AbstractViewerMenu);
 
-	var _CollapsibleControlFactory = __webpack_require__(186);
+	var _CollapsibleControlFactory = __webpack_require__(189);
 
 	var _CollapsibleControlFactory2 = _interopRequireDefault(_CollapsibleControlFactory);
 
-	var _ImageRenderer = __webpack_require__(187);
+	var _ImageRenderer = __webpack_require__(190);
 
 	var _ImageRenderer2 = _interopRequireDefault(_ImageRenderer);
 
@@ -21580,7 +22022,7 @@
 	});
 
 /***/ },
-/* 173 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21593,7 +22035,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _AbstractViewerMenu = __webpack_require__(174);
+	var _AbstractViewerMenu = __webpack_require__(179);
 
 	var _AbstractViewerMenu2 = _interopRequireDefault(_AbstractViewerMenu);
 
@@ -21798,19 +22240,21 @@
 	      })
 	    );
 	  }
-	});
+	}
+	/* eslint-enable complexity */
+	);
 
 /***/ },
-/* 174 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(175);
+	var content = __webpack_require__(180);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(185)(content, {});
+	var update = __webpack_require__(176)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21827,15 +22271,15 @@
 	}
 
 /***/ },
-/* 175 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(175)();
 	// imports
-	exports.i(__webpack_require__(177), undefined);
+	exports.i(__webpack_require__(181), undefined);
 
 	// module
-	exports.push([module.id, ".AbstractViewerMenu_container_2fJhY {\n    overflow: hidden;\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    font-size: 16px;\n}\n\n.AbstractViewerMenu_hidden_3O3Jr {\n    display: none;\n}\n\n.AbstractViewerMenu_button_QvM5U {\n    width: 1.52em;\n    height: 1.25em;\n    padding-top: 0.25em;\n\n    text-align: center;\n\n    margin-left: 0.5em;\n\n    /* click cursor */\n    cursor: pointer;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.AbstractViewerMenu_leftButton_1wgad {\n    float: left;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC .AbstractViewerMenu_leftButton_1wgad {\n    display: none;\n}\n\n.AbstractViewerMenu_magicLensButtonIn__Lf-T {\n    border-radius: 5px;\n}\n\n.AbstractViewerMenu_magicLensButtonOut_1sTvl {\n    background: #000;\n}\n\n.AbstractViewerMenu_recordButtonOff_15NRd {\n    color: #000;\n}\n\n.AbstractViewerMenu_recordButtonOn_1A52k {\n    color: #FF0000;\n}\n\n.AbstractViewerMenu_resetCameraButton_w3Abo {\n}\n\n.AbstractViewerMenu_playButton_3Jx9Z {\n}\n\n.AbstractViewerMenu_stopButton_3sGpO {\n}\n\n.AbstractViewerMenu_speedButton_36Tu4 {\n}\n\n.AbstractViewerMenu_animationSpeed_2Qd5i {\n    float: left;\n    height: 1.25em;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC .AbstractViewerMenu_animationSpeed_2Qd5i {\n    display: none;\n}\n\n.AbstractViewerMenu_menuButton_21ZPq {\n    float: right;\n}\n\n.AbstractViewerMenu_collapsedMenuButton_osbNg {\n    width: 1.5em;\n    height: 1.5em;\n    border: 1px solid;\n    border-radius: 50%;\n    border-color: #ccc;\n\n    background-color: #eee;\n}\n\n.AbstractViewerMenu_control_2O8Wc {\n    position: absolute;\n    top: 10px;\n    right: 10px;\n    width: 20%;\n    max-width: 400px;\n    min-width: 300px;\n    z-index: 1;\n\n    border-radius: 5px;\n\n    background-color: rgba(255,255,255,0.3);\n    color: rgba(0,0,0,0.3);\n}\n\n.AbstractViewerMenu_control_2O8Wc:hover {\n    background-color: #fff;\n    color: #000;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC {\n\n    min-width: 1.5em;\n    width: 1.5em;\n    border-radius: 50%;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC:hover {\n    background: none;\n}\n\n.AbstractViewerMenu_control_2O8Wc input[type=number].AbstractViewerMenu_LookupTableWidget__input_fTiLb {\n    color: black;\n}\n\n.AbstractViewerMenu_control_2O8Wc select,\n.AbstractViewerMenu_control_2O8Wc input[type=number],\n.AbstractViewerMenu_control_2O8Wc input[type=text] {\n    background-color: rgba(0,0,0,0);\n}\n\n.AbstractViewerMenu_control_2O8Wc select {\n    -webkit-appearance: none;\n       -moz-appearance: none;\n            appearance: none;\n    padding: 1px 5px;\n    background-image: url(" + __webpack_require__(184) + ");\n    background-repeat: no-repeat;\n    background-position: 99%;\n    background-size: 13px 13px;\n    border-width: 1px;\n    border-color: lightgrey;\n    border-style: solid;\n    border-radius: 3px;\n}\n\n.AbstractViewerMenu_controlContent_3f4Hz {\n    border: 1px solid;\n    border-radius: 0 0 5px 5px;\n    border-color: #ccc;\n\n    padding-left: 5px;\n    padding-bottom: 0.5em;\n\n    max-height: calc(100vh - 55px);\n    overflow-y: auto;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC > .AbstractViewerMenu_controlContent_3f4Hz {\n    display: none;\n}\n\n.AbstractViewerMenu_controlBar_3mUnV {\n    height: 25px;\n    line-height: 25px;\n\n    border: 1px solid;\n    border-radius: 5px 5px 0 0;\n    border-color: #ccc;\n}\n\n.AbstractViewerMenu_control_2O8Wc:hover .AbstractViewerMenu_controlBar_3mUnV {\n    background-color: #eee;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC > .AbstractViewerMenu_controlBar_3mUnV {\n    background: none;\n    border: none;\n    display: inline;\n}\n\n.AbstractViewerMenu_renderer_19DqB {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n\n.AbstractViewerMenu_item_kCtlB {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    box-sizing: border-box;\n    margin-left: 3px;\n    padding-left: 10px;\n    padding-right: 10px;\n}\n\n.AbstractViewerMenu_row_2ppTF {\n    position: relative;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n}\n\n.AbstractViewerMenu_label_tH3LI {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n\n    /* bold */\n    font-weight: bold;\n\n    /* can't select text */\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n/* Start with upper case letter */\n.AbstractViewerMenu_label_tH3LI::first-letter { text-transform: uppercase; }\n\n.AbstractViewerMenu_row_2ppTF > select {\n    width: 100%;\n    background-color: rbga(0,0,0,0);\n}\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px)  {\n    .AbstractViewerMenu_controlBar_3mUnV {\n        height: 40px;\n    }\n\n    .AbstractViewerMenu_controlBar_3mUnV > .AbstractViewerMenu_button_QvM5U {\n        font-size: 1.45em;\n    }\n\n    .AbstractViewerMenu_controlContent_3f4Hz {\n        max-height: calc(100vh - 70px);\n    }\n}\n\n.is-ios-device .AbstractViewerMenu_controlBar_3mUnV {\n    height: 40px;\n}\n\n.is-ios-device .AbstractViewerMenu_controlBar_3mUnV .AbstractViewerMenu_button_QvM5U {\n    font-size: 1.45em;\n}\n\n.is-ios-device .AbstractViewerMenu_controlContent_3f4Hz {\n    max-height: calc(100vh - 70px);\n}\n", ""]);
+	exports.push([module.id, ".AbstractViewerMenu_container_2fJhY {\n    overflow: hidden;\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    font-size: 16px;\n}\n\n.AbstractViewerMenu_hidden_3O3Jr {\n    display: none;\n}\n\n.AbstractViewerMenu_button_QvM5U {\n    width: 1.52em;\n    height: 1.25em;\n    padding-top: 0.25em;\n\n    text-align: center;\n\n    margin-left: 0.5em;\n\n    /* click cursor */\n    cursor: pointer;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n.AbstractViewerMenu_leftButton_1wgad {\n    float: left;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC .AbstractViewerMenu_leftButton_1wgad {\n    display: none;\n}\n\n.AbstractViewerMenu_magicLensButtonIn__Lf-T {\n    border-radius: 5px;\n}\n\n.AbstractViewerMenu_magicLensButtonOut_1sTvl {\n    background: #000;\n}\n\n.AbstractViewerMenu_recordButtonOff_15NRd {\n    color: #000;\n}\n\n.AbstractViewerMenu_recordButtonOn_1A52k {\n    color: #FF0000;\n}\n\n.AbstractViewerMenu_resetCameraButton_w3Abo {\n}\n\n.AbstractViewerMenu_playButton_3Jx9Z {\n}\n\n.AbstractViewerMenu_stopButton_3sGpO {\n}\n\n.AbstractViewerMenu_speedButton_36Tu4 {\n}\n\n.AbstractViewerMenu_animationSpeed_2Qd5i {\n    float: left;\n    height: 1.25em;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC .AbstractViewerMenu_animationSpeed_2Qd5i {\n    display: none;\n}\n\n.AbstractViewerMenu_menuButton_21ZPq {\n    float: right;\n}\n\n.AbstractViewerMenu_collapsedMenuButton_osbNg {\n    width: 1.5em;\n    height: 1.5em;\n    border: 1px solid;\n    border-radius: 50%;\n    border-color: #ccc;\n\n    background-color: #eee;\n}\n\n.AbstractViewerMenu_control_2O8Wc {\n    position: absolute;\n    top: 10px;\n    right: 10px;\n    width: 20%;\n    max-width: 400px;\n    min-width: 300px;\n    z-index: 1;\n\n    border-radius: 5px;\n\n    background-color: rgba(255,255,255,0.3);\n    color: rgba(0,0,0,0.3);\n}\n\n.AbstractViewerMenu_control_2O8Wc:hover {\n    background-color: #fff;\n    color: #000;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC {\n\n    min-width: 1.5em;\n    width: 1.5em;\n    border-radius: 50%;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC:hover {\n    background: none;\n}\n\n.AbstractViewerMenu_control_2O8Wc input[type=number].AbstractViewerMenu_LookupTableWidget__input_fTiLb {\n    color: black;\n}\n\n.AbstractViewerMenu_control_2O8Wc select,\n.AbstractViewerMenu_control_2O8Wc input[type=number],\n.AbstractViewerMenu_control_2O8Wc input[type=text] {\n    background-color: rgba(0,0,0,0);\n}\n\n.AbstractViewerMenu_control_2O8Wc select {\n    -webkit-appearance: none;\n       -moz-appearance: none;\n            appearance: none;\n    padding: 1px 5px;\n    background-image: url(" + __webpack_require__(188) + ");\n    background-repeat: no-repeat;\n    background-position: 99%;\n    background-size: 13px 13px;\n    border-width: 1px;\n    border-color: lightgrey;\n    border-style: solid;\n    border-radius: 3px;\n}\n\n.AbstractViewerMenu_controlContent_3f4Hz {\n    border: 1px solid;\n    border-radius: 0 0 5px 5px;\n    border-color: #ccc;\n\n    padding-left: 5px;\n    padding-bottom: 0.5em;\n\n    max-height: calc(100vh - 55px);\n    overflow-y: auto;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC > .AbstractViewerMenu_controlContent_3f4Hz {\n    display: none;\n}\n\n.AbstractViewerMenu_controlBar_3mUnV {\n    height: 25px;\n    line-height: 25px;\n\n    border: 1px solid;\n    border-radius: 5px 5px 0 0;\n    border-color: #ccc;\n}\n\n.AbstractViewerMenu_control_2O8Wc:hover .AbstractViewerMenu_controlBar_3mUnV {\n    background-color: #eee;\n}\n\n.AbstractViewerMenu_collapsedControl_1t_XC > .AbstractViewerMenu_controlBar_3mUnV {\n    background: none;\n    border: none;\n    display: inline;\n}\n\n.AbstractViewerMenu_renderer_19DqB {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n\n.AbstractViewerMenu_item_kCtlB {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    box-sizing: border-box;\n    margin-left: 3px;\n    padding-left: 10px;\n    padding-right: 10px;\n}\n\n.AbstractViewerMenu_row_2ppTF {\n    position: relative;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n    -ms-flex-direction: row;\n        flex-direction: row;\n}\n\n.AbstractViewerMenu_label_tH3LI {\n    -ms-flex: 1 0 0%;\n        flex: 1 0 0%;\n\n    /* bold */\n    font-weight: bold;\n\n    /* can't select text */\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n\n/* Start with upper case letter */\n.AbstractViewerMenu_label_tH3LI::first-letter { text-transform: uppercase; }\n\n.AbstractViewerMenu_row_2ppTF > select {\n    width: 100%;\n    background-color: rbga(0,0,0,0);\n}\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px)  {\n    .AbstractViewerMenu_controlBar_3mUnV {\n        height: 40px;\n    }\n\n    .AbstractViewerMenu_controlBar_3mUnV > .AbstractViewerMenu_button_QvM5U {\n        font-size: 1.45em;\n    }\n\n    .AbstractViewerMenu_controlContent_3f4Hz {\n        max-height: calc(100vh - 70px);\n    }\n}\n\n.is-ios-device .AbstractViewerMenu_controlBar_3mUnV {\n    height: 40px;\n}\n\n.is-ios-device .AbstractViewerMenu_controlBar_3mUnV .AbstractViewerMenu_button_QvM5U {\n    font-size: 1.45em;\n}\n\n.is-ios-device .AbstractViewerMenu_controlContent_3f4Hz {\n    max-height: calc(100vh - 70px);\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -21844,17 +22288,17 @@
 		"button": "AbstractViewerMenu_button_QvM5U",
 		"leftButton": "AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
 		"collapsedControl": "AbstractViewerMenu_collapsedControl_1t_XC AbstractViewerMenu_control_2O8Wc jsAbstractViewMenuControl",
-		"magicLensButtonIn": "AbstractViewerMenu_magicLensButtonIn__Lf-T " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-search"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
-		"magicLensButtonOut": "AbstractViewerMenu_magicLensButtonOut_1sTvl AbstractViewerMenu_magicLensButtonIn__Lf-T " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-search"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U " + __webpack_require__(177).locals["fa-inverse"] + "",
-		"recordButtonOff": "AbstractViewerMenu_recordButtonOff_15NRd " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-circle-thin"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
-		"recordButtonOn": "AbstractViewerMenu_recordButtonOn_1A52k AbstractViewerMenu_recordButtonOff_15NRd " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-circle-thin"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U " + __webpack_require__(177).locals["fa-circle"] + "",
-		"resetCameraButton": "AbstractViewerMenu_resetCameraButton_w3Abo " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-arrows-alt"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
-		"playButton": "AbstractViewerMenu_playButton_3Jx9Z " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-play"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
-		"stopButton": "AbstractViewerMenu_stopButton_3sGpO " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-stop"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
-		"speedButton": "AbstractViewerMenu_speedButton_36Tu4 " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-clock-o"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"magicLensButtonIn": "AbstractViewerMenu_magicLensButtonIn__Lf-T " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-search"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"magicLensButtonOut": "AbstractViewerMenu_magicLensButtonOut_1sTvl AbstractViewerMenu_magicLensButtonIn__Lf-T " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-search"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U " + __webpack_require__(181).locals["fa-inverse"] + "",
+		"recordButtonOff": "AbstractViewerMenu_recordButtonOff_15NRd " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-circle-thin"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"recordButtonOn": "AbstractViewerMenu_recordButtonOn_1A52k AbstractViewerMenu_recordButtonOff_15NRd " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-circle-thin"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U " + __webpack_require__(181).locals["fa-circle"] + "",
+		"resetCameraButton": "AbstractViewerMenu_resetCameraButton_w3Abo " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-arrows-alt"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"playButton": "AbstractViewerMenu_playButton_3Jx9Z " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-play"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"stopButton": "AbstractViewerMenu_stopButton_3sGpO " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-stop"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
+		"speedButton": "AbstractViewerMenu_speedButton_36Tu4 " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-clock-o"] + " AbstractViewerMenu_leftButton_1wgad AbstractViewerMenu_button_QvM5U",
 		"animationSpeed": "AbstractViewerMenu_animationSpeed_2Qd5i",
-		"menuButton": "AbstractViewerMenu_menuButton_21ZPq " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-bars"] + " AbstractViewerMenu_button_QvM5U",
-		"collapsedMenuButton": "AbstractViewerMenu_collapsedMenuButton_osbNg AbstractViewerMenu_menuButton_21ZPq " + __webpack_require__(177).locals["fa"] + " " + __webpack_require__(177).locals["fa-bars"] + " AbstractViewerMenu_button_QvM5U",
+		"menuButton": "AbstractViewerMenu_menuButton_21ZPq " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-bars"] + " AbstractViewerMenu_button_QvM5U",
+		"collapsedMenuButton": "AbstractViewerMenu_collapsedMenuButton_osbNg AbstractViewerMenu_menuButton_21ZPq " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-bars"] + " AbstractViewerMenu_button_QvM5U",
 		"control": "AbstractViewerMenu_control_2O8Wc jsAbstractViewMenuControl",
 		"LookupTableWidget__input": "AbstractViewerMenu_LookupTableWidget__input_fTiLb",
 		"controlContent": "AbstractViewerMenu_controlContent_3f4Hz",
@@ -21866,71 +22310,15 @@
 	};
 
 /***/ },
-/* 176 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(175)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(178) + ");\n  src: url(" + __webpack_require__(179) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(180) + ") format('woff2'), url(" + __webpack_require__(181) + ") format('woff'), url(" + __webpack_require__(182) + ") format('truetype'), url(" + __webpack_require__(183) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
+	exports.push([module.id, "/*!\n *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(182) + ");\n  src: url(" + __webpack_require__(183) + "?#iefix&v=4.5.0) format('embedded-opentype'), url(" + __webpack_require__(184) + ") format('woff2'), url(" + __webpack_require__(185) + ") format('woff'), url(" + __webpack_require__(186) + ") format('truetype'), url(" + __webpack_require__(187) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome_fa_hnWyg {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome_fa-lg_2C19L {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome_fa-2x_2o5Fl {\n  font-size: 2em;\n}\n.font-awesome_fa-3x_30YuM {\n  font-size: 3em;\n}\n.font-awesome_fa-4x_lsxgd {\n  font-size: 4em;\n}\n.font-awesome_fa-5x_3EQB- {\n  font-size: 5em;\n}\n.font-awesome_fa-fw_3u_fM {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome_fa-ul_1fwNv {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome_fa-ul_1fwNv > li {\n  position: relative;\n}\n.font-awesome_fa-li_1j-Sx {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome_fa-li_1j-Sx.font-awesome_fa-lg_2C19L {\n  left: -1.85714286em;\n}\n.font-awesome_fa-border_3xl6W {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome_fa-pull-left_3PF22 {\n  float: left;\n}\n.font-awesome_fa-pull-right_2PdTO {\n  float: right;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-left_3PF22 {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_fa-pull-right_2PdTO {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome_pull-right_3NC9- {\n  float: right;\n}\n.font-awesome_pull-left_3HkP_ {\n  float: left;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-left_3HkP_ {\n  margin-right: .3em;\n}\n.font-awesome_fa_hnWyg.font-awesome_pull-right_3NC9- {\n  margin-left: .3em;\n}\n.font-awesome_fa-spin_3OhVo {\n  animation: font-awesome_fa-spin_3OhVo 2s infinite linear;\n}\n.font-awesome_fa-pulse_3Tr3D {\n  animation: font-awesome_fa-spin_3OhVo 1s infinite steps(8);\n}\n@keyframes font-awesome_fa-spin_3OhVo {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n.font-awesome_fa-rotate-90_4fPqv {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  transform: rotate(90deg);\n}\n.font-awesome_fa-rotate-180_1__19 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  transform: rotate(180deg);\n}\n.font-awesome_fa-rotate-270_1gDyc {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  transform: rotate(270deg);\n}\n.font-awesome_fa-flip-horizontal_3or2m {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);\n  transform: scale(-1, 1);\n}\n.font-awesome_fa-flip-vertical_38eKG {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);\n  transform: scale(1, -1);\n}\n:root .font-awesome_fa-rotate-90_4fPqv,\n:root .font-awesome_fa-rotate-180_1__19,\n:root .font-awesome_fa-rotate-270_1gDyc,\n:root .font-awesome_fa-flip-horizontal_3or2m,\n:root .font-awesome_fa-flip-vertical_38eKG {\n  filter: none;\n}\n.font-awesome_fa-stack_2X6xB {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome_fa-stack-1x_hGmX_,\n.font-awesome_fa-stack-2x_2ziDh {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome_fa-stack-1x_hGmX_ {\n  line-height: inherit;\n}\n.font-awesome_fa-stack-2x_2ziDh {\n  font-size: 2em;\n}\n.font-awesome_fa-inverse_3DhFk {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome_fa-glass_29DBz:before {\n  content: \"\\F000\";\n}\n.font-awesome_fa-music_1pRnY:before {\n  content: \"\\F001\";\n}\n.font-awesome_fa-search_Fzb5Y:before {\n  content: \"\\F002\";\n}\n.font-awesome_fa-envelope-o_16g79:before {\n  content: \"\\F003\";\n}\n.font-awesome_fa-heart_2iEcF:before {\n  content: \"\\F004\";\n}\n.font-awesome_fa-star_1xzZ_:before {\n  content: \"\\F005\";\n}\n.font-awesome_fa-star-o_v93q1:before {\n  content: \"\\F006\";\n}\n.font-awesome_fa-user_wGZz4:before {\n  content: \"\\F007\";\n}\n.font-awesome_fa-film_Hq9Bo:before {\n  content: \"\\F008\";\n}\n.font-awesome_fa-th-large_1REIm:before {\n  content: \"\\F009\";\n}\n.font-awesome_fa-th_1OqlB:before {\n  content: \"\\F00A\";\n}\n.font-awesome_fa-th-list_16oxS:before {\n  content: \"\\F00B\";\n}\n.font-awesome_fa-check_3Cmpq:before {\n  content: \"\\F00C\";\n}\n.font-awesome_fa-remove_1QlJA:before,\n.font-awesome_fa-close_3gvJ7:before,\n.font-awesome_fa-times_2seNE:before {\n  content: \"\\F00D\";\n}\n.font-awesome_fa-search-plus_3Iwqw:before {\n  content: \"\\F00E\";\n}\n.font-awesome_fa-search-minus_3TjT6:before {\n  content: \"\\F010\";\n}\n.font-awesome_fa-power-off_kdRAL:before {\n  content: \"\\F011\";\n}\n.font-awesome_fa-signal_FQkm5:before {\n  content: \"\\F012\";\n}\n.font-awesome_fa-gear_x99mJ:before,\n.font-awesome_fa-cog_2WUHh:before {\n  content: \"\\F013\";\n}\n.font-awesome_fa-trash-o_Mtuw8:before {\n  content: \"\\F014\";\n}\n.font-awesome_fa-home_3jbd1:before {\n  content: \"\\F015\";\n}\n.font-awesome_fa-file-o_2VlUn:before {\n  content: \"\\F016\";\n}\n.font-awesome_fa-clock-o_p41Lb:before {\n  content: \"\\F017\";\n}\n.font-awesome_fa-road_Vvk-z:before {\n  content: \"\\F018\";\n}\n.font-awesome_fa-download_2CzOG:before {\n  content: \"\\F019\";\n}\n.font-awesome_fa-arrow-circle-o-down_3AAJ_:before {\n  content: \"\\F01A\";\n}\n.font-awesome_fa-arrow-circle-o-up_6t4NA:before {\n  content: \"\\F01B\";\n}\n.font-awesome_fa-inbox_3vfe0:before {\n  content: \"\\F01C\";\n}\n.font-awesome_fa-play-circle-o_1drCV:before {\n  content: \"\\F01D\";\n}\n.font-awesome_fa-rotate-right_1kmO6:before,\n.font-awesome_fa-repeat_2wiiK:before {\n  content: \"\\F01E\";\n}\n.font-awesome_fa-refresh_2xE2F:before {\n  content: \"\\F021\";\n}\n.font-awesome_fa-list-alt_1rYtg:before {\n  content: \"\\F022\";\n}\n.font-awesome_fa-lock_1BAqC:before {\n  content: \"\\F023\";\n}\n.font-awesome_fa-flag_rQ09O:before {\n  content: \"\\F024\";\n}\n.font-awesome_fa-headphones_32xBu:before {\n  content: \"\\F025\";\n}\n.font-awesome_fa-volume-off_3g6NI:before {\n  content: \"\\F026\";\n}\n.font-awesome_fa-volume-down_VMmA0:before {\n  content: \"\\F027\";\n}\n.font-awesome_fa-volume-up_i8OHh:before {\n  content: \"\\F028\";\n}\n.font-awesome_fa-qrcode_1UGo-:before {\n  content: \"\\F029\";\n}\n.font-awesome_fa-barcode_3epli:before {\n  content: \"\\F02A\";\n}\n.font-awesome_fa-tag_1hEGw:before {\n  content: \"\\F02B\";\n}\n.font-awesome_fa-tags_1-9SA:before {\n  content: \"\\F02C\";\n}\n.font-awesome_fa-book_1Yak0:before {\n  content: \"\\F02D\";\n}\n.font-awesome_fa-bookmark_2sCxc:before {\n  content: \"\\F02E\";\n}\n.font-awesome_fa-print_mbIe_:before {\n  content: \"\\F02F\";\n}\n.font-awesome_fa-camera_3FGGW:before {\n  content: \"\\F030\";\n}\n.font-awesome_fa-font_3ehIR:before {\n  content: \"\\F031\";\n}\n.font-awesome_fa-bold_3j91b:before {\n  content: \"\\F032\";\n}\n.font-awesome_fa-italic_3YjJx:before {\n  content: \"\\F033\";\n}\n.font-awesome_fa-text-height_3S8H9:before {\n  content: \"\\F034\";\n}\n.font-awesome_fa-text-width_3XV4e:before {\n  content: \"\\F035\";\n}\n.font-awesome_fa-align-left_3iZJB:before {\n  content: \"\\F036\";\n}\n.font-awesome_fa-align-center_uispF:before {\n  content: \"\\F037\";\n}\n.font-awesome_fa-align-right_16-u0:before {\n  content: \"\\F038\";\n}\n.font-awesome_fa-align-justify_3NbUN:before {\n  content: \"\\F039\";\n}\n.font-awesome_fa-list_3BYao:before {\n  content: \"\\F03A\";\n}\n.font-awesome_fa-dedent_pVwPZ:before,\n.font-awesome_fa-outdent_3dyGV:before {\n  content: \"\\F03B\";\n}\n.font-awesome_fa-indent_3qtEP:before {\n  content: \"\\F03C\";\n}\n.font-awesome_fa-video-camera_2JUMf:before {\n  content: \"\\F03D\";\n}\n.font-awesome_fa-photo_3L583:before,\n.font-awesome_fa-image_1CT_9:before,\n.font-awesome_fa-picture-o_2rR2z:before {\n  content: \"\\F03E\";\n}\n.font-awesome_fa-pencil_3ISe0:before {\n  content: \"\\F040\";\n}\n.font-awesome_fa-map-marker__ZkXj:before {\n  content: \"\\F041\";\n}\n.font-awesome_fa-adjust_30VsR:before {\n  content: \"\\F042\";\n}\n.font-awesome_fa-tint_3d2oA:before {\n  content: \"\\F043\";\n}\n.font-awesome_fa-edit_3-svS:before,\n.font-awesome_fa-pencil-square-o_1bt6e:before {\n  content: \"\\F044\";\n}\n.font-awesome_fa-share-square-o_IoAQM:before {\n  content: \"\\F045\";\n}\n.font-awesome_fa-check-square-o_3-198:before {\n  content: \"\\F046\";\n}\n.font-awesome_fa-arrows_3DD0F:before {\n  content: \"\\F047\";\n}\n.font-awesome_fa-step-backward_gRmyl:before {\n  content: \"\\F048\";\n}\n.font-awesome_fa-fast-backward_1tdiL:before {\n  content: \"\\F049\";\n}\n.font-awesome_fa-backward_27eFX:before {\n  content: \"\\F04A\";\n}\n.font-awesome_fa-play_1QfD7:before {\n  content: \"\\F04B\";\n}\n.font-awesome_fa-pause_2-K_r:before {\n  content: \"\\F04C\";\n}\n.font-awesome_fa-stop_3326j:before {\n  content: \"\\F04D\";\n}\n.font-awesome_fa-forward_QL2Is:before {\n  content: \"\\F04E\";\n}\n.font-awesome_fa-fast-forward_3z2xy:before {\n  content: \"\\F050\";\n}\n.font-awesome_fa-step-forward_3CkwZ:before {\n  content: \"\\F051\";\n}\n.font-awesome_fa-eject_2P_cK:before {\n  content: \"\\F052\";\n}\n.font-awesome_fa-chevron-left_2TrVu:before {\n  content: \"\\F053\";\n}\n.font-awesome_fa-chevron-right_2FC0Z:before {\n  content: \"\\F054\";\n}\n.font-awesome_fa-plus-circle_1gW5a:before {\n  content: \"\\F055\";\n}\n.font-awesome_fa-minus-circle_24f2I:before {\n  content: \"\\F056\";\n}\n.font-awesome_fa-times-circle_15GGs:before {\n  content: \"\\F057\";\n}\n.font-awesome_fa-check-circle_3d-zD:before {\n  content: \"\\F058\";\n}\n.font-awesome_fa-question-circle_2LkeW:before {\n  content: \"\\F059\";\n}\n.font-awesome_fa-info-circle_7D0Nk:before {\n  content: \"\\F05A\";\n}\n.font-awesome_fa-crosshairs_2ipvZ:before {\n  content: \"\\F05B\";\n}\n.font-awesome_fa-times-circle-o_7E1ty:before {\n  content: \"\\F05C\";\n}\n.font-awesome_fa-check-circle-o_2-WqW:before {\n  content: \"\\F05D\";\n}\n.font-awesome_fa-ban_3N6-L:before {\n  content: \"\\F05E\";\n}\n.font-awesome_fa-arrow-left_12ikd:before {\n  content: \"\\F060\";\n}\n.font-awesome_fa-arrow-right_3cLsX:before {\n  content: \"\\F061\";\n}\n.font-awesome_fa-arrow-up_3EjJ4:before {\n  content: \"\\F062\";\n}\n.font-awesome_fa-arrow-down_19pUt:before {\n  content: \"\\F063\";\n}\n.font-awesome_fa-mail-forward_pm8qu:before,\n.font-awesome_fa-share_1UqmT:before {\n  content: \"\\F064\";\n}\n.font-awesome_fa-expand_3cLMR:before {\n  content: \"\\F065\";\n}\n.font-awesome_fa-compress_2eA8C:before {\n  content: \"\\F066\";\n}\n.font-awesome_fa-plus_6J6Jo:before {\n  content: \"\\F067\";\n}\n.font-awesome_fa-minus_30TYM:before {\n  content: \"\\F068\";\n}\n.font-awesome_fa-asterisk_1it1m:before {\n  content: \"\\F069\";\n}\n.font-awesome_fa-exclamation-circle_2SFzV:before {\n  content: \"\\F06A\";\n}\n.font-awesome_fa-gift_2XuBW:before {\n  content: \"\\F06B\";\n}\n.font-awesome_fa-leaf_3t_ZT:before {\n  content: \"\\F06C\";\n}\n.font-awesome_fa-fire_2F3aN:before {\n  content: \"\\F06D\";\n}\n.font-awesome_fa-eye_ZQ8Fy:before {\n  content: \"\\F06E\";\n}\n.font-awesome_fa-eye-slash_3OOyY:before {\n  content: \"\\F070\";\n}\n.font-awesome_fa-warning_3iTUa:before,\n.font-awesome_fa-exclamation-triangle_CSnqP:before {\n  content: \"\\F071\";\n}\n.font-awesome_fa-plane_zzEWn:before {\n  content: \"\\F072\";\n}\n.font-awesome_fa-calendar_Hiai7:before {\n  content: \"\\F073\";\n}\n.font-awesome_fa-random_3fK7H:before {\n  content: \"\\F074\";\n}\n.font-awesome_fa-comment_zpSZ8:before {\n  content: \"\\F075\";\n}\n.font-awesome_fa-magnet_lHFlc:before {\n  content: \"\\F076\";\n}\n.font-awesome_fa-chevron-up_3xOHT:before {\n  content: \"\\F077\";\n}\n.font-awesome_fa-chevron-down_1kr8E:before {\n  content: \"\\F078\";\n}\n.font-awesome_fa-retweet_39_p3:before {\n  content: \"\\F079\";\n}\n.font-awesome_fa-shopping-cart_3e9Os:before {\n  content: \"\\F07A\";\n}\n.font-awesome_fa-folder_3EYxP:before {\n  content: \"\\F07B\";\n}\n.font-awesome_fa-folder-open_3F1Iv:before {\n  content: \"\\F07C\";\n}\n.font-awesome_fa-arrows-v_1QSAw:before {\n  content: \"\\F07D\";\n}\n.font-awesome_fa-arrows-h_3ZZHF:before {\n  content: \"\\F07E\";\n}\n.font-awesome_fa-bar-chart-o_1L01W:before,\n.font-awesome_fa-bar-chart_2yCqc:before {\n  content: \"\\F080\";\n}\n.font-awesome_fa-twitter-square_Vanpe:before {\n  content: \"\\F081\";\n}\n.font-awesome_fa-facebook-square_1QV1U:before {\n  content: \"\\F082\";\n}\n.font-awesome_fa-camera-retro_37Cam:before {\n  content: \"\\F083\";\n}\n.font-awesome_fa-key_REK4V:before {\n  content: \"\\F084\";\n}\n.font-awesome_fa-gears_3uUBl:before,\n.font-awesome_fa-cogs_1SJEQ:before {\n  content: \"\\F085\";\n}\n.font-awesome_fa-comments_1eUBa:before {\n  content: \"\\F086\";\n}\n.font-awesome_fa-thumbs-o-up_1zzMp:before {\n  content: \"\\F087\";\n}\n.font-awesome_fa-thumbs-o-down_2zDaK:before {\n  content: \"\\F088\";\n}\n.font-awesome_fa-star-half_1kyP2:before {\n  content: \"\\F089\";\n}\n.font-awesome_fa-heart-o_2rtBI:before {\n  content: \"\\F08A\";\n}\n.font-awesome_fa-sign-out_3tANt:before {\n  content: \"\\F08B\";\n}\n.font-awesome_fa-linkedin-square_2f8Wh:before {\n  content: \"\\F08C\";\n}\n.font-awesome_fa-thumb-tack_1jvRA:before {\n  content: \"\\F08D\";\n}\n.font-awesome_fa-external-link_2QefG:before {\n  content: \"\\F08E\";\n}\n.font-awesome_fa-sign-in_NND3s:before {\n  content: \"\\F090\";\n}\n.font-awesome_fa-trophy_1sZVt:before {\n  content: \"\\F091\";\n}\n.font-awesome_fa-github-square_3p9Xr:before {\n  content: \"\\F092\";\n}\n.font-awesome_fa-upload_1kXB8:before {\n  content: \"\\F093\";\n}\n.font-awesome_fa-lemon-o_3pHwE:before {\n  content: \"\\F094\";\n}\n.font-awesome_fa-phone_3zGw7:before {\n  content: \"\\F095\";\n}\n.font-awesome_fa-square-o_2QIHX:before {\n  content: \"\\F096\";\n}\n.font-awesome_fa-bookmark-o_24X_j:before {\n  content: \"\\F097\";\n}\n.font-awesome_fa-phone-square_VnqGI:before {\n  content: \"\\F098\";\n}\n.font-awesome_fa-twitter_12GH_:before {\n  content: \"\\F099\";\n}\n.font-awesome_fa-facebook-f_2RU60:before,\n.font-awesome_fa-facebook_1JuFT:before {\n  content: \"\\F09A\";\n}\n.font-awesome_fa-github_uIFGl:before {\n  content: \"\\F09B\";\n}\n.font-awesome_fa-unlock_3o3xn:before {\n  content: \"\\F09C\";\n}\n.font-awesome_fa-credit-card_1yRq7:before {\n  content: \"\\F09D\";\n}\n.font-awesome_fa-feed_3vx3g:before,\n.font-awesome_fa-rss_3qmaL:before {\n  content: \"\\F09E\";\n}\n.font-awesome_fa-hdd-o_1-oSX:before {\n  content: \"\\F0A0\";\n}\n.font-awesome_fa-bullhorn_3dj3e:before {\n  content: \"\\F0A1\";\n}\n.font-awesome_fa-bell_2z-Se:before {\n  content: \"\\F0F3\";\n}\n.font-awesome_fa-certificate_2m_WA:before {\n  content: \"\\F0A3\";\n}\n.font-awesome_fa-hand-o-right_12X8H:before {\n  content: \"\\F0A4\";\n}\n.font-awesome_fa-hand-o-left_3ilyw:before {\n  content: \"\\F0A5\";\n}\n.font-awesome_fa-hand-o-up_1dk80:before {\n  content: \"\\F0A6\";\n}\n.font-awesome_fa-hand-o-down_2K6g3:before {\n  content: \"\\F0A7\";\n}\n.font-awesome_fa-arrow-circle-left_2rcrX:before {\n  content: \"\\F0A8\";\n}\n.font-awesome_fa-arrow-circle-right_3zqgF:before {\n  content: \"\\F0A9\";\n}\n.font-awesome_fa-arrow-circle-up_2pOH2:before {\n  content: \"\\F0AA\";\n}\n.font-awesome_fa-arrow-circle-down_2xcyd:before {\n  content: \"\\F0AB\";\n}\n.font-awesome_fa-globe_3890w:before {\n  content: \"\\F0AC\";\n}\n.font-awesome_fa-wrench_3BVJx:before {\n  content: \"\\F0AD\";\n}\n.font-awesome_fa-tasks_2xaal:before {\n  content: \"\\F0AE\";\n}\n.font-awesome_fa-filter_2Wrnx:before {\n  content: \"\\F0B0\";\n}\n.font-awesome_fa-briefcase_xoYe6:before {\n  content: \"\\F0B1\";\n}\n.font-awesome_fa-arrows-alt_1GZf0:before {\n  content: \"\\F0B2\";\n}\n.font-awesome_fa-group_3RqP9:before,\n.font-awesome_fa-users_9e5mO:before {\n  content: \"\\F0C0\";\n}\n.font-awesome_fa-chain_2sLkY:before,\n.font-awesome_fa-link_2jwCA:before {\n  content: \"\\F0C1\";\n}\n.font-awesome_fa-cloud_1jb6d:before {\n  content: \"\\F0C2\";\n}\n.font-awesome_fa-flask_2OV9p:before {\n  content: \"\\F0C3\";\n}\n.font-awesome_fa-cut_r06nj:before,\n.font-awesome_fa-scissors_3Hu82:before {\n  content: \"\\F0C4\";\n}\n.font-awesome_fa-copy_1mQAm:before,\n.font-awesome_fa-files-o_2teqR:before {\n  content: \"\\F0C5\";\n}\n.font-awesome_fa-paperclip_3_REy:before {\n  content: \"\\F0C6\";\n}\n.font-awesome_fa-save_3-5_V:before,\n.font-awesome_fa-floppy-o_1OSX5:before {\n  content: \"\\F0C7\";\n}\n.font-awesome_fa-square_2pAQU:before {\n  content: \"\\F0C8\";\n}\n.font-awesome_fa-navicon_1SgYS:before,\n.font-awesome_fa-reorder_YSCJ2:before,\n.font-awesome_fa-bars_1OwG2:before {\n  content: \"\\F0C9\";\n}\n.font-awesome_fa-list-ul_C-a3S:before {\n  content: \"\\F0CA\";\n}\n.font-awesome_fa-list-ol_3jYHW:before {\n  content: \"\\F0CB\";\n}\n.font-awesome_fa-strikethrough_2EIQE:before {\n  content: \"\\F0CC\";\n}\n.font-awesome_fa-underline_2YOvi:before {\n  content: \"\\F0CD\";\n}\n.font-awesome_fa-table_E3XPW:before {\n  content: \"\\F0CE\";\n}\n.font-awesome_fa-magic_yvu1E:before {\n  content: \"\\F0D0\";\n}\n.font-awesome_fa-truck_Q5Pmq:before {\n  content: \"\\F0D1\";\n}\n.font-awesome_fa-pinterest_3qfGd:before {\n  content: \"\\F0D2\";\n}\n.font-awesome_fa-pinterest-square_2xOGm:before {\n  content: \"\\F0D3\";\n}\n.font-awesome_fa-google-plus-square_3Z_95:before {\n  content: \"\\F0D4\";\n}\n.font-awesome_fa-google-plus_2wNdx:before {\n  content: \"\\F0D5\";\n}\n.font-awesome_fa-money_16Hk4:before {\n  content: \"\\F0D6\";\n}\n.font-awesome_fa-caret-down_1IJJK:before {\n  content: \"\\F0D7\";\n}\n.font-awesome_fa-caret-up_1rwhG:before {\n  content: \"\\F0D8\";\n}\n.font-awesome_fa-caret-left_1bvu-:before {\n  content: \"\\F0D9\";\n}\n.font-awesome_fa-caret-right_RLtgW:before {\n  content: \"\\F0DA\";\n}\n.font-awesome_fa-columns_33IZP:before {\n  content: \"\\F0DB\";\n}\n.font-awesome_fa-unsorted_2xPjX:before,\n.font-awesome_fa-sort_2wrsA:before {\n  content: \"\\F0DC\";\n}\n.font-awesome_fa-sort-down_2-roM:before,\n.font-awesome_fa-sort-desc_8jmrC:before {\n  content: \"\\F0DD\";\n}\n.font-awesome_fa-sort-up_1yfwG:before,\n.font-awesome_fa-sort-asc_hWcYe:before {\n  content: \"\\F0DE\";\n}\n.font-awesome_fa-envelope_3Zw5Y:before {\n  content: \"\\F0E0\";\n}\n.font-awesome_fa-linkedin_26dMe:before {\n  content: \"\\F0E1\";\n}\n.font-awesome_fa-rotate-left_aBA3H:before,\n.font-awesome_fa-undo_HTtPj:before {\n  content: \"\\F0E2\";\n}\n.font-awesome_fa-legal_13NBi:before,\n.font-awesome_fa-gavel_oCDQf:before {\n  content: \"\\F0E3\";\n}\n.font-awesome_fa-dashboard_mBkza:before,\n.font-awesome_fa-tachometer_2vVTC:before {\n  content: \"\\F0E4\";\n}\n.font-awesome_fa-comment-o_3cn6-:before {\n  content: \"\\F0E5\";\n}\n.font-awesome_fa-comments-o_25TFE:before {\n  content: \"\\F0E6\";\n}\n.font-awesome_fa-flash_2Rwk6:before,\n.font-awesome_fa-bolt_20mOm:before {\n  content: \"\\F0E7\";\n}\n.font-awesome_fa-sitemap_mjZ6x:before {\n  content: \"\\F0E8\";\n}\n.font-awesome_fa-umbrella_yPU48:before {\n  content: \"\\F0E9\";\n}\n.font-awesome_fa-paste_2NikE:before,\n.font-awesome_fa-clipboard_1vdJf:before {\n  content: \"\\F0EA\";\n}\n.font-awesome_fa-lightbulb-o_dEIll:before {\n  content: \"\\F0EB\";\n}\n.font-awesome_fa-exchange_wkTCO:before {\n  content: \"\\F0EC\";\n}\n.font-awesome_fa-cloud-download_sodD2:before {\n  content: \"\\F0ED\";\n}\n.font-awesome_fa-cloud-upload_20ucA:before {\n  content: \"\\F0EE\";\n}\n.font-awesome_fa-user-md_OssdZ:before {\n  content: \"\\F0F0\";\n}\n.font-awesome_fa-stethoscope_H06UV:before {\n  content: \"\\F0F1\";\n}\n.font-awesome_fa-suitcase_3XJb4:before {\n  content: \"\\F0F2\";\n}\n.font-awesome_fa-bell-o_lYaWL:before {\n  content: \"\\F0A2\";\n}\n.font-awesome_fa-coffee_nagqP:before {\n  content: \"\\F0F4\";\n}\n.font-awesome_fa-cutlery_2p30f:before {\n  content: \"\\F0F5\";\n}\n.font-awesome_fa-file-text-o_bh3Lg:before {\n  content: \"\\F0F6\";\n}\n.font-awesome_fa-building-o_LC3Xo:before {\n  content: \"\\F0F7\";\n}\n.font-awesome_fa-hospital-o_3Ohdg:before {\n  content: \"\\F0F8\";\n}\n.font-awesome_fa-ambulance_tS8Ul:before {\n  content: \"\\F0F9\";\n}\n.font-awesome_fa-medkit_FpC5h:before {\n  content: \"\\F0FA\";\n}\n.font-awesome_fa-fighter-jet_Duwiy:before {\n  content: \"\\F0FB\";\n}\n.font-awesome_fa-beer_2lJmW:before {\n  content: \"\\F0FC\";\n}\n.font-awesome_fa-h-square_PVHIr:before {\n  content: \"\\F0FD\";\n}\n.font-awesome_fa-plus-square_2wXvV:before {\n  content: \"\\F0FE\";\n}\n.font-awesome_fa-angle-double-left_3TZ9n:before {\n  content: \"\\F100\";\n}\n.font-awesome_fa-angle-double-right_yLu-W:before {\n  content: \"\\F101\";\n}\n.font-awesome_fa-angle-double-up_EwtO9:before {\n  content: \"\\F102\";\n}\n.font-awesome_fa-angle-double-down_1ccsi:before {\n  content: \"\\F103\";\n}\n.font-awesome_fa-angle-left_3i6_G:before {\n  content: \"\\F104\";\n}\n.font-awesome_fa-angle-right_1BJdz:before {\n  content: \"\\F105\";\n}\n.font-awesome_fa-angle-up_1EmSm:before {\n  content: \"\\F106\";\n}\n.font-awesome_fa-angle-down_2oYaE:before {\n  content: \"\\F107\";\n}\n.font-awesome_fa-desktop_29cDo:before {\n  content: \"\\F108\";\n}\n.font-awesome_fa-laptop_3kb7h:before {\n  content: \"\\F109\";\n}\n.font-awesome_fa-tablet_NLfj4:before {\n  content: \"\\F10A\";\n}\n.font-awesome_fa-mobile-phone_3pP0B:before,\n.font-awesome_fa-mobile_34bB2:before {\n  content: \"\\F10B\";\n}\n.font-awesome_fa-circle-o_30KjV:before {\n  content: \"\\F10C\";\n}\n.font-awesome_fa-quote-left_3-Fjs:before {\n  content: \"\\F10D\";\n}\n.font-awesome_fa-quote-right_k5eai:before {\n  content: \"\\F10E\";\n}\n.font-awesome_fa-spinner_201mr:before {\n  content: \"\\F110\";\n}\n.font-awesome_fa-circle_2SHTA:before {\n  content: \"\\F111\";\n}\n.font-awesome_fa-mail-reply_3xqwq:before,\n.font-awesome_fa-reply_Lun03:before {\n  content: \"\\F112\";\n}\n.font-awesome_fa-github-alt_uuWT9:before {\n  content: \"\\F113\";\n}\n.font-awesome_fa-folder-o_1sPym:before {\n  content: \"\\F114\";\n}\n.font-awesome_fa-folder-open-o_1ONV2:before {\n  content: \"\\F115\";\n}\n.font-awesome_fa-smile-o_3tWZn:before {\n  content: \"\\F118\";\n}\n.font-awesome_fa-frown-o_1nWrW:before {\n  content: \"\\F119\";\n}\n.font-awesome_fa-meh-o_18ZN3:before {\n  content: \"\\F11A\";\n}\n.font-awesome_fa-gamepad_2lTad:before {\n  content: \"\\F11B\";\n}\n.font-awesome_fa-keyboard-o_27MBO:before {\n  content: \"\\F11C\";\n}\n.font-awesome_fa-flag-o_2J7Pw:before {\n  content: \"\\F11D\";\n}\n.font-awesome_fa-flag-checkered_gbQB4:before {\n  content: \"\\F11E\";\n}\n.font-awesome_fa-terminal_1VsIW:before {\n  content: \"\\F120\";\n}\n.font-awesome_fa-code_1e7tP:before {\n  content: \"\\F121\";\n}\n.font-awesome_fa-mail-reply-all_1IFHD:before,\n.font-awesome_fa-reply-all_3bCnq:before {\n  content: \"\\F122\";\n}\n.font-awesome_fa-star-half-empty_19jhm:before,\n.font-awesome_fa-star-half-full_1ezZD:before,\n.font-awesome_fa-star-half-o_3D00w:before {\n  content: \"\\F123\";\n}\n.font-awesome_fa-location-arrow_3VXkt:before {\n  content: \"\\F124\";\n}\n.font-awesome_fa-crop_2TZFT:before {\n  content: \"\\F125\";\n}\n.font-awesome_fa-code-fork_paoZV:before {\n  content: \"\\F126\";\n}\n.font-awesome_fa-unlink_26p_I:before,\n.font-awesome_fa-chain-broken_Hn22e:before {\n  content: \"\\F127\";\n}\n.font-awesome_fa-question_2ZbkT:before {\n  content: \"\\F128\";\n}\n.font-awesome_fa-info_1ilMz:before {\n  content: \"\\F129\";\n}\n.font-awesome_fa-exclamation_3fuWs:before {\n  content: \"\\F12A\";\n}\n.font-awesome_fa-superscript_1RYhR:before {\n  content: \"\\F12B\";\n}\n.font-awesome_fa-subscript_JVyc0:before {\n  content: \"\\F12C\";\n}\n.font-awesome_fa-eraser_2rBMH:before {\n  content: \"\\F12D\";\n}\n.font-awesome_fa-puzzle-piece_2IFdL:before {\n  content: \"\\F12E\";\n}\n.font-awesome_fa-microphone_3nXcS:before {\n  content: \"\\F130\";\n}\n.font-awesome_fa-microphone-slash_Z_xRW:before {\n  content: \"\\F131\";\n}\n.font-awesome_fa-shield_XMAKw:before {\n  content: \"\\F132\";\n}\n.font-awesome_fa-calendar-o_kj_dX:before {\n  content: \"\\F133\";\n}\n.font-awesome_fa-fire-extinguisher_3fi33:before {\n  content: \"\\F134\";\n}\n.font-awesome_fa-rocket_XlX-B:before {\n  content: \"\\F135\";\n}\n.font-awesome_fa-maxcdn_1xLil:before {\n  content: \"\\F136\";\n}\n.font-awesome_fa-chevron-circle-left_1_MOL:before {\n  content: \"\\F137\";\n}\n.font-awesome_fa-chevron-circle-right__6T2M:before {\n  content: \"\\F138\";\n}\n.font-awesome_fa-chevron-circle-up_1vjkl:before {\n  content: \"\\F139\";\n}\n.font-awesome_fa-chevron-circle-down_2q9gj:before {\n  content: \"\\F13A\";\n}\n.font-awesome_fa-html5_3172h:before {\n  content: \"\\F13B\";\n}\n.font-awesome_fa-css3_3hpVz:before {\n  content: \"\\F13C\";\n}\n.font-awesome_fa-anchor_3ADZJ:before {\n  content: \"\\F13D\";\n}\n.font-awesome_fa-unlock-alt_2Wq4F:before {\n  content: \"\\F13E\";\n}\n.font-awesome_fa-bullseye_1MZIB:before {\n  content: \"\\F140\";\n}\n.font-awesome_fa-ellipsis-h_202RW:before {\n  content: \"\\F141\";\n}\n.font-awesome_fa-ellipsis-v_1upHT:before {\n  content: \"\\F142\";\n}\n.font-awesome_fa-rss-square_5GYE_:before {\n  content: \"\\F143\";\n}\n.font-awesome_fa-play-circle_UAxMZ:before {\n  content: \"\\F144\";\n}\n.font-awesome_fa-ticket_1F5lC:before {\n  content: \"\\F145\";\n}\n.font-awesome_fa-minus-square_h2HVc:before {\n  content: \"\\F146\";\n}\n.font-awesome_fa-minus-square-o_YIqSV:before {\n  content: \"\\F147\";\n}\n.font-awesome_fa-level-up_1xIeO:before {\n  content: \"\\F148\";\n}\n.font-awesome_fa-level-down_2edBx:before {\n  content: \"\\F149\";\n}\n.font-awesome_fa-check-square_1CG8J:before {\n  content: \"\\F14A\";\n}\n.font-awesome_fa-pencil-square_1xSld:before {\n  content: \"\\F14B\";\n}\n.font-awesome_fa-external-link-square_3Wmxg:before {\n  content: \"\\F14C\";\n}\n.font-awesome_fa-share-square_26LdW:before {\n  content: \"\\F14D\";\n}\n.font-awesome_fa-compass_1OOV1:before {\n  content: \"\\F14E\";\n}\n.font-awesome_fa-toggle-down_3Snwz:before,\n.font-awesome_fa-caret-square-o-down_UQ4-n:before {\n  content: \"\\F150\";\n}\n.font-awesome_fa-toggle-up_fbKFG:before,\n.font-awesome_fa-caret-square-o-up_-HvQn:before {\n  content: \"\\F151\";\n}\n.font-awesome_fa-toggle-right_3HIQx:before,\n.font-awesome_fa-caret-square-o-right_2vUW_:before {\n  content: \"\\F152\";\n}\n.font-awesome_fa-euro_2xoFh:before,\n.font-awesome_fa-eur_n5HBL:before {\n  content: \"\\F153\";\n}\n.font-awesome_fa-gbp_3qdgg:before {\n  content: \"\\F154\";\n}\n.font-awesome_fa-dollar_1h10_:before,\n.font-awesome_fa-usd_1hyJh:before {\n  content: \"\\F155\";\n}\n.font-awesome_fa-rupee_3C7tP:before,\n.font-awesome_fa-inr_2WkYV:before {\n  content: \"\\F156\";\n}\n.font-awesome_fa-cny_3Xo-t:before,\n.font-awesome_fa-rmb_2fLKc:before,\n.font-awesome_fa-yen_EiyBf:before,\n.font-awesome_fa-jpy_35sB-:before {\n  content: \"\\F157\";\n}\n.font-awesome_fa-ruble_2a47N:before,\n.font-awesome_fa-rouble_1UMZw:before,\n.font-awesome_fa-rub_2Mrww:before {\n  content: \"\\F158\";\n}\n.font-awesome_fa-won_269J2:before,\n.font-awesome_fa-krw_fkiqf:before {\n  content: \"\\F159\";\n}\n.font-awesome_fa-bitcoin_2YfZJ:before,\n.font-awesome_fa-btc_fmXx6:before {\n  content: \"\\F15A\";\n}\n.font-awesome_fa-file_1XL7O:before {\n  content: \"\\F15B\";\n}\n.font-awesome_fa-file-text_211gP:before {\n  content: \"\\F15C\";\n}\n.font-awesome_fa-sort-alpha-asc_2kkSn:before {\n  content: \"\\F15D\";\n}\n.font-awesome_fa-sort-alpha-desc_GMg7L:before {\n  content: \"\\F15E\";\n}\n.font-awesome_fa-sort-amount-asc_1eilc:before {\n  content: \"\\F160\";\n}\n.font-awesome_fa-sort-amount-desc_3nJO9:before {\n  content: \"\\F161\";\n}\n.font-awesome_fa-sort-numeric-asc_2uPFQ:before {\n  content: \"\\F162\";\n}\n.font-awesome_fa-sort-numeric-desc_39gI9:before {\n  content: \"\\F163\";\n}\n.font-awesome_fa-thumbs-up_hpR6m:before {\n  content: \"\\F164\";\n}\n.font-awesome_fa-thumbs-down_1t43Y:before {\n  content: \"\\F165\";\n}\n.font-awesome_fa-youtube-square_2BoKy:before {\n  content: \"\\F166\";\n}\n.font-awesome_fa-youtube_2IcQW:before {\n  content: \"\\F167\";\n}\n.font-awesome_fa-xing_1saB5:before {\n  content: \"\\F168\";\n}\n.font-awesome_fa-xing-square_1eaD0:before {\n  content: \"\\F169\";\n}\n.font-awesome_fa-youtube-play_1YDEq:before {\n  content: \"\\F16A\";\n}\n.font-awesome_fa-dropbox_1QS8k:before {\n  content: \"\\F16B\";\n}\n.font-awesome_fa-stack-overflow_1M_6a:before {\n  content: \"\\F16C\";\n}\n.font-awesome_fa-instagram_Y4xAF:before {\n  content: \"\\F16D\";\n}\n.font-awesome_fa-flickr_27VkD:before {\n  content: \"\\F16E\";\n}\n.font-awesome_fa-adn_3ZNLb:before {\n  content: \"\\F170\";\n}\n.font-awesome_fa-bitbucket_2zNIA:before {\n  content: \"\\F171\";\n}\n.font-awesome_fa-bitbucket-square_3diMl:before {\n  content: \"\\F172\";\n}\n.font-awesome_fa-tumblr_2DPM8:before {\n  content: \"\\F173\";\n}\n.font-awesome_fa-tumblr-square_1D52j:before {\n  content: \"\\F174\";\n}\n.font-awesome_fa-long-arrow-down_3R3Bh:before {\n  content: \"\\F175\";\n}\n.font-awesome_fa-long-arrow-up_3Ui_T:before {\n  content: \"\\F176\";\n}\n.font-awesome_fa-long-arrow-left_rZrhO:before {\n  content: \"\\F177\";\n}\n.font-awesome_fa-long-arrow-right_1Q4ei:before {\n  content: \"\\F178\";\n}\n.font-awesome_fa-apple_7wR3k:before {\n  content: \"\\F179\";\n}\n.font-awesome_fa-windows_3KsI6:before {\n  content: \"\\F17A\";\n}\n.font-awesome_fa-android_36PDL:before {\n  content: \"\\F17B\";\n}\n.font-awesome_fa-linux_34ym5:before {\n  content: \"\\F17C\";\n}\n.font-awesome_fa-dribbble_x9uIT:before {\n  content: \"\\F17D\";\n}\n.font-awesome_fa-skype_Ea6zH:before {\n  content: \"\\F17E\";\n}\n.font-awesome_fa-foursquare_1n-_X:before {\n  content: \"\\F180\";\n}\n.font-awesome_fa-trello_1f6-H:before {\n  content: \"\\F181\";\n}\n.font-awesome_fa-female_8UbaS:before {\n  content: \"\\F182\";\n}\n.font-awesome_fa-male_3fIAX:before {\n  content: \"\\F183\";\n}\n.font-awesome_fa-gittip_1P70a:before,\n.font-awesome_fa-gratipay_30toI:before {\n  content: \"\\F184\";\n}\n.font-awesome_fa-sun-o_31446:before {\n  content: \"\\F185\";\n}\n.font-awesome_fa-moon-o_2n75c:before {\n  content: \"\\F186\";\n}\n.font-awesome_fa-archive_G8JpR:before {\n  content: \"\\F187\";\n}\n.font-awesome_fa-bug_3QlfQ:before {\n  content: \"\\F188\";\n}\n.font-awesome_fa-vk_uXEy4:before {\n  content: \"\\F189\";\n}\n.font-awesome_fa-weibo_2-NA2:before {\n  content: \"\\F18A\";\n}\n.font-awesome_fa-renren_33jrU:before {\n  content: \"\\F18B\";\n}\n.font-awesome_fa-pagelines_tMlzC:before {\n  content: \"\\F18C\";\n}\n.font-awesome_fa-stack-exchange_cY2TP:before {\n  content: \"\\F18D\";\n}\n.font-awesome_fa-arrow-circle-o-right_3haGk:before {\n  content: \"\\F18E\";\n}\n.font-awesome_fa-arrow-circle-o-left_1k4pd:before {\n  content: \"\\F190\";\n}\n.font-awesome_fa-toggle-left_2vhEF:before,\n.font-awesome_fa-caret-square-o-left_3pFCM:before {\n  content: \"\\F191\";\n}\n.font-awesome_fa-dot-circle-o_17nxr:before {\n  content: \"\\F192\";\n}\n.font-awesome_fa-wheelchair_3WaA-:before {\n  content: \"\\F193\";\n}\n.font-awesome_fa-vimeo-square_GF6Wl:before {\n  content: \"\\F194\";\n}\n.font-awesome_fa-turkish-lira_2tQgt:before,\n.font-awesome_fa-try_2mqvx:before {\n  content: \"\\F195\";\n}\n.font-awesome_fa-plus-square-o_3CCN8:before {\n  content: \"\\F196\";\n}\n.font-awesome_fa-space-shuttle_1sPfI:before {\n  content: \"\\F197\";\n}\n.font-awesome_fa-slack_2x_9I:before {\n  content: \"\\F198\";\n}\n.font-awesome_fa-envelope-square_1RnoR:before {\n  content: \"\\F199\";\n}\n.font-awesome_fa-wordpress_2mlfy:before {\n  content: \"\\F19A\";\n}\n.font-awesome_fa-openid_2N0O4:before {\n  content: \"\\F19B\";\n}\n.font-awesome_fa-institution_tJnfB:before,\n.font-awesome_fa-bank_WmxIq:before,\n.font-awesome_fa-university_V4Twh:before {\n  content: \"\\F19C\";\n}\n.font-awesome_fa-mortar-board_5HxIc:before,\n.font-awesome_fa-graduation-cap_2oENr:before {\n  content: \"\\F19D\";\n}\n.font-awesome_fa-yahoo_QGfiL:before {\n  content: \"\\F19E\";\n}\n.font-awesome_fa-google_2aajj:before {\n  content: \"\\F1A0\";\n}\n.font-awesome_fa-reddit_2sNgE:before {\n  content: \"\\F1A1\";\n}\n.font-awesome_fa-reddit-square_29tDM:before {\n  content: \"\\F1A2\";\n}\n.font-awesome_fa-stumbleupon-circle_2GjkO:before {\n  content: \"\\F1A3\";\n}\n.font-awesome_fa-stumbleupon_LQD2_:before {\n  content: \"\\F1A4\";\n}\n.font-awesome_fa-delicious_yUQRj:before {\n  content: \"\\F1A5\";\n}\n.font-awesome_fa-digg_2pzXU:before {\n  content: \"\\F1A6\";\n}\n.font-awesome_fa-pied-piper_3A59t:before {\n  content: \"\\F1A7\";\n}\n.font-awesome_fa-pied-piper-alt_DhiQX:before {\n  content: \"\\F1A8\";\n}\n.font-awesome_fa-drupal_27RJX:before {\n  content: \"\\F1A9\";\n}\n.font-awesome_fa-joomla_SVESO:before {\n  content: \"\\F1AA\";\n}\n.font-awesome_fa-language_2AN5K:before {\n  content: \"\\F1AB\";\n}\n.font-awesome_fa-fax_16wn2:before {\n  content: \"\\F1AC\";\n}\n.font-awesome_fa-building_3_FfX:before {\n  content: \"\\F1AD\";\n}\n.font-awesome_fa-child_IYme9:before {\n  content: \"\\F1AE\";\n}\n.font-awesome_fa-paw_3rRWV:before {\n  content: \"\\F1B0\";\n}\n.font-awesome_fa-spoon_yGnjU:before {\n  content: \"\\F1B1\";\n}\n.font-awesome_fa-cube_36eWV:before {\n  content: \"\\F1B2\";\n}\n.font-awesome_fa-cubes_2pStW:before {\n  content: \"\\F1B3\";\n}\n.font-awesome_fa-behance_2tsBG:before {\n  content: \"\\F1B4\";\n}\n.font-awesome_fa-behance-square_3Dg58:before {\n  content: \"\\F1B5\";\n}\n.font-awesome_fa-steam_2Kj_T:before {\n  content: \"\\F1B6\";\n}\n.font-awesome_fa-steam-square_30fZy:before {\n  content: \"\\F1B7\";\n}\n.font-awesome_fa-recycle_2pec3:before {\n  content: \"\\F1B8\";\n}\n.font-awesome_fa-automobile_32KVm:before,\n.font-awesome_fa-car_2qCRr:before {\n  content: \"\\F1B9\";\n}\n.font-awesome_fa-cab_3lZGc:before,\n.font-awesome_fa-taxi_1F0Od:before {\n  content: \"\\F1BA\";\n}\n.font-awesome_fa-tree_2WVzm:before {\n  content: \"\\F1BB\";\n}\n.font-awesome_fa-spotify_1Sn08:before {\n  content: \"\\F1BC\";\n}\n.font-awesome_fa-deviantart_20N8j:before {\n  content: \"\\F1BD\";\n}\n.font-awesome_fa-soundcloud_1NiQb:before {\n  content: \"\\F1BE\";\n}\n.font-awesome_fa-database_aKxNe:before {\n  content: \"\\F1C0\";\n}\n.font-awesome_fa-file-pdf-o_1s8Iv:before {\n  content: \"\\F1C1\";\n}\n.font-awesome_fa-file-word-o_2gOH-:before {\n  content: \"\\F1C2\";\n}\n.font-awesome_fa-file-excel-o_3UNnS:before {\n  content: \"\\F1C3\";\n}\n.font-awesome_fa-file-powerpoint-o_Q5Zu2:before {\n  content: \"\\F1C4\";\n}\n.font-awesome_fa-file-photo-o_1H-bw:before,\n.font-awesome_fa-file-picture-o_39MJp:before,\n.font-awesome_fa-file-image-o_zM_3R:before {\n  content: \"\\F1C5\";\n}\n.font-awesome_fa-file-zip-o_e1fVq:before,\n.font-awesome_fa-file-archive-o_22xK3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome_fa-file-sound-o_1Y_s4:before,\n.font-awesome_fa-file-audio-o_2-pOB:before {\n  content: \"\\F1C7\";\n}\n.font-awesome_fa-file-movie-o_2PEC0:before,\n.font-awesome_fa-file-video-o_36Qti:before {\n  content: \"\\F1C8\";\n}\n.font-awesome_fa-file-code-o_1RuRL:before {\n  content: \"\\F1C9\";\n}\n.font-awesome_fa-vine_vgume:before {\n  content: \"\\F1CA\";\n}\n.font-awesome_fa-codepen_1NJXz:before {\n  content: \"\\F1CB\";\n}\n.font-awesome_fa-jsfiddle_o_7_l:before {\n  content: \"\\F1CC\";\n}\n.font-awesome_fa-life-bouy_2V_XP:before,\n.font-awesome_fa-life-buoy_1lfIE:before,\n.font-awesome_fa-life-saver_2KZXR:before,\n.font-awesome_fa-support_1N-pk:before,\n.font-awesome_fa-life-ring_2musv:before {\n  content: \"\\F1CD\";\n}\n.font-awesome_fa-circle-o-notch_270Xp:before {\n  content: \"\\F1CE\";\n}\n.font-awesome_fa-ra_3dhKx:before,\n.font-awesome_fa-rebel_2xMsz:before {\n  content: \"\\F1D0\";\n}\n.font-awesome_fa-ge_qbcWz:before,\n.font-awesome_fa-empire_3CYCf:before {\n  content: \"\\F1D1\";\n}\n.font-awesome_fa-git-square_AIT5s:before {\n  content: \"\\F1D2\";\n}\n.font-awesome_fa-git_36zEF:before {\n  content: \"\\F1D3\";\n}\n.font-awesome_fa-y-combinator-square_1hf0W:before,\n.font-awesome_fa-yc-square_WOsgP:before,\n.font-awesome_fa-hacker-news_3WGhY:before {\n  content: \"\\F1D4\";\n}\n.font-awesome_fa-tencent-weibo_25lOY:before {\n  content: \"\\F1D5\";\n}\n.font-awesome_fa-qq_3cCR0:before {\n  content: \"\\F1D6\";\n}\n.font-awesome_fa-wechat_3ravb:before,\n.font-awesome_fa-weixin_2TB91:before {\n  content: \"\\F1D7\";\n}\n.font-awesome_fa-send_1DchU:before,\n.font-awesome_fa-paper-plane_1wIQ_:before {\n  content: \"\\F1D8\";\n}\n.font-awesome_fa-send-o_3JTZP:before,\n.font-awesome_fa-paper-plane-o_1jqnS:before {\n  content: \"\\F1D9\";\n}\n.font-awesome_fa-history_dFmFV:before {\n  content: \"\\F1DA\";\n}\n.font-awesome_fa-circle-thin_gPYOH:before {\n  content: \"\\F1DB\";\n}\n.font-awesome_fa-header_4p7Jk:before {\n  content: \"\\F1DC\";\n}\n.font-awesome_fa-paragraph_1OHxb:before {\n  content: \"\\F1DD\";\n}\n.font-awesome_fa-sliders_3C2rT:before {\n  content: \"\\F1DE\";\n}\n.font-awesome_fa-share-alt_2mGv8:before {\n  content: \"\\F1E0\";\n}\n.font-awesome_fa-share-alt-square_1EGNx:before {\n  content: \"\\F1E1\";\n}\n.font-awesome_fa-bomb_Fud4G:before {\n  content: \"\\F1E2\";\n}\n.font-awesome_fa-soccer-ball-o_flWxm:before,\n.font-awesome_fa-futbol-o_3ynzb:before {\n  content: \"\\F1E3\";\n}\n.font-awesome_fa-tty_YjVy2:before {\n  content: \"\\F1E4\";\n}\n.font-awesome_fa-binoculars_g0ft_:before {\n  content: \"\\F1E5\";\n}\n.font-awesome_fa-plug_39jkp:before {\n  content: \"\\F1E6\";\n}\n.font-awesome_fa-slideshare_2M6J2:before {\n  content: \"\\F1E7\";\n}\n.font-awesome_fa-twitch_15OqF:before {\n  content: \"\\F1E8\";\n}\n.font-awesome_fa-yelp_2lItp:before {\n  content: \"\\F1E9\";\n}\n.font-awesome_fa-newspaper-o_6R2hq:before {\n  content: \"\\F1EA\";\n}\n.font-awesome_fa-wifi_3HiNk:before {\n  content: \"\\F1EB\";\n}\n.font-awesome_fa-calculator_3jgwb:before {\n  content: \"\\F1EC\";\n}\n.font-awesome_fa-paypal_wq3li:before {\n  content: \"\\F1ED\";\n}\n.font-awesome_fa-google-wallet_25T9N:before {\n  content: \"\\F1EE\";\n}\n.font-awesome_fa-cc-visa_3dKqJ:before {\n  content: \"\\F1F0\";\n}\n.font-awesome_fa-cc-mastercard_1tFrQ:before {\n  content: \"\\F1F1\";\n}\n.font-awesome_fa-cc-discover_zI26e:before {\n  content: \"\\F1F2\";\n}\n.font-awesome_fa-cc-amex_-2Umy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome_fa-cc-paypal_1_FSM:before {\n  content: \"\\F1F4\";\n}\n.font-awesome_fa-cc-stripe_2UDg2:before {\n  content: \"\\F1F5\";\n}\n.font-awesome_fa-bell-slash_3Ib9i:before {\n  content: \"\\F1F6\";\n}\n.font-awesome_fa-bell-slash-o_3ksnm:before {\n  content: \"\\F1F7\";\n}\n.font-awesome_fa-trash_3JBuo:before {\n  content: \"\\F1F8\";\n}\n.font-awesome_fa-copyright_1hITT:before {\n  content: \"\\F1F9\";\n}\n.font-awesome_fa-at_f4Ch1:before {\n  content: \"\\F1FA\";\n}\n.font-awesome_fa-eyedropper_3FcO7:before {\n  content: \"\\F1FB\";\n}\n.font-awesome_fa-paint-brush_1pD7A:before {\n  content: \"\\F1FC\";\n}\n.font-awesome_fa-birthday-cake_3po72:before {\n  content: \"\\F1FD\";\n}\n.font-awesome_fa-area-chart_3lnd7:before {\n  content: \"\\F1FE\";\n}\n.font-awesome_fa-pie-chart_33WHw:before {\n  content: \"\\F200\";\n}\n.font-awesome_fa-line-chart_30mvo:before {\n  content: \"\\F201\";\n}\n.font-awesome_fa-lastfm_PtiUx:before {\n  content: \"\\F202\";\n}\n.font-awesome_fa-lastfm-square_MYtJW:before {\n  content: \"\\F203\";\n}\n.font-awesome_fa-toggle-off_37j_t:before {\n  content: \"\\F204\";\n}\n.font-awesome_fa-toggle-on_ewbXL:before {\n  content: \"\\F205\";\n}\n.font-awesome_fa-bicycle_1NM2E:before {\n  content: \"\\F206\";\n}\n.font-awesome_fa-bus_3SgQl:before {\n  content: \"\\F207\";\n}\n.font-awesome_fa-ioxhost_2FHLb:before {\n  content: \"\\F208\";\n}\n.font-awesome_fa-angellist_3mWIU:before {\n  content: \"\\F209\";\n}\n.font-awesome_fa-cc_2gDjr:before {\n  content: \"\\F20A\";\n}\n.font-awesome_fa-shekel_32Xbx:before,\n.font-awesome_fa-sheqel_r9gc9:before,\n.font-awesome_fa-ils_2rphi:before {\n  content: \"\\F20B\";\n}\n.font-awesome_fa-meanpath_1bP8s:before {\n  content: \"\\F20C\";\n}\n.font-awesome_fa-buysellads_1EZ84:before {\n  content: \"\\F20D\";\n}\n.font-awesome_fa-connectdevelop_lFfNs:before {\n  content: \"\\F20E\";\n}\n.font-awesome_fa-dashcube_3TPe8:before {\n  content: \"\\F210\";\n}\n.font-awesome_fa-forumbee_2aFHV:before {\n  content: \"\\F211\";\n}\n.font-awesome_fa-leanpub_1O2QB:before {\n  content: \"\\F212\";\n}\n.font-awesome_fa-sellsy_2-Jzm:before {\n  content: \"\\F213\";\n}\n.font-awesome_fa-shirtsinbulk_1R30o:before {\n  content: \"\\F214\";\n}\n.font-awesome_fa-simplybuilt_SwF0E:before {\n  content: \"\\F215\";\n}\n.font-awesome_fa-skyatlas_A7cMa:before {\n  content: \"\\F216\";\n}\n.font-awesome_fa-cart-plus_3yJKe:before {\n  content: \"\\F217\";\n}\n.font-awesome_fa-cart-arrow-down_2JrEM:before {\n  content: \"\\F218\";\n}\n.font-awesome_fa-diamond_rt3b9:before {\n  content: \"\\F219\";\n}\n.font-awesome_fa-ship_2OfXG:before {\n  content: \"\\F21A\";\n}\n.font-awesome_fa-user-secret_1Yk8o:before {\n  content: \"\\F21B\";\n}\n.font-awesome_fa-motorcycle_3hzEC:before {\n  content: \"\\F21C\";\n}\n.font-awesome_fa-street-view_1GICB:before {\n  content: \"\\F21D\";\n}\n.font-awesome_fa-heartbeat_1jUmO:before {\n  content: \"\\F21E\";\n}\n.font-awesome_fa-venus_156Bm:before {\n  content: \"\\F221\";\n}\n.font-awesome_fa-mars_goj_J:before {\n  content: \"\\F222\";\n}\n.font-awesome_fa-mercury_3xn4l:before {\n  content: \"\\F223\";\n}\n.font-awesome_fa-intersex_7AU6q:before,\n.font-awesome_fa-transgender_1vmGU:before {\n  content: \"\\F224\";\n}\n.font-awesome_fa-transgender-alt_3mFjr:before {\n  content: \"\\F225\";\n}\n.font-awesome_fa-venus-double_1EhXf:before {\n  content: \"\\F226\";\n}\n.font-awesome_fa-mars-double_23qjT:before {\n  content: \"\\F227\";\n}\n.font-awesome_fa-venus-mars_2juhA:before {\n  content: \"\\F228\";\n}\n.font-awesome_fa-mars-stroke_3j02v:before {\n  content: \"\\F229\";\n}\n.font-awesome_fa-mars-stroke-v_21zWw:before {\n  content: \"\\F22A\";\n}\n.font-awesome_fa-mars-stroke-h_NAEPy:before {\n  content: \"\\F22B\";\n}\n.font-awesome_fa-neuter_15DlS:before {\n  content: \"\\F22C\";\n}\n.font-awesome_fa-genderless_t5AI_:before {\n  content: \"\\F22D\";\n}\n.font-awesome_fa-facebook-official_jfxWm:before {\n  content: \"\\F230\";\n}\n.font-awesome_fa-pinterest-p_3dWB3:before {\n  content: \"\\F231\";\n}\n.font-awesome_fa-whatsapp_J02DP:before {\n  content: \"\\F232\";\n}\n.font-awesome_fa-server_3u1Oo:before {\n  content: \"\\F233\";\n}\n.font-awesome_fa-user-plus_1lnbu:before {\n  content: \"\\F234\";\n}\n.font-awesome_fa-user-times_B6k3E:before {\n  content: \"\\F235\";\n}\n.font-awesome_fa-hotel_twAEq:before,\n.font-awesome_fa-bed_3zxC7:before {\n  content: \"\\F236\";\n}\n.font-awesome_fa-viacoin_1p3ob:before {\n  content: \"\\F237\";\n}\n.font-awesome_fa-train_2YY80:before {\n  content: \"\\F238\";\n}\n.font-awesome_fa-subway_3aQJs:before {\n  content: \"\\F239\";\n}\n.font-awesome_fa-medium_1H4Gf:before {\n  content: \"\\F23A\";\n}\n.font-awesome_fa-yc_3pFuR:before,\n.font-awesome_fa-y-combinator_1u0iT:before {\n  content: \"\\F23B\";\n}\n.font-awesome_fa-optin-monster_3CZ47:before {\n  content: \"\\F23C\";\n}\n.font-awesome_fa-opencart_2eRe1:before {\n  content: \"\\F23D\";\n}\n.font-awesome_fa-expeditedssl_2WngL:before {\n  content: \"\\F23E\";\n}\n.font-awesome_fa-battery-4_RSyHm:before,\n.font-awesome_fa-battery-full_28an4:before {\n  content: \"\\F240\";\n}\n.font-awesome_fa-battery-3_1SZoR:before,\n.font-awesome_fa-battery-three-quarters_3HGut:before {\n  content: \"\\F241\";\n}\n.font-awesome_fa-battery-2_2q0gH:before,\n.font-awesome_fa-battery-half_ADDBG:before {\n  content: \"\\F242\";\n}\n.font-awesome_fa-battery-1_3RoGP:before,\n.font-awesome_fa-battery-quarter_2xLnr:before {\n  content: \"\\F243\";\n}\n.font-awesome_fa-battery-0_pGakD:before,\n.font-awesome_fa-battery-empty_2TxG4:before {\n  content: \"\\F244\";\n}\n.font-awesome_fa-mouse-pointer_24qyQ:before {\n  content: \"\\F245\";\n}\n.font-awesome_fa-i-cursor_b-XNs:before {\n  content: \"\\F246\";\n}\n.font-awesome_fa-object-group_f82ev:before {\n  content: \"\\F247\";\n}\n.font-awesome_fa-object-ungroup_1mxgT:before {\n  content: \"\\F248\";\n}\n.font-awesome_fa-sticky-note_2ygYS:before {\n  content: \"\\F249\";\n}\n.font-awesome_fa-sticky-note-o_uHPRL:before {\n  content: \"\\F24A\";\n}\n.font-awesome_fa-cc-jcb_mcB5F:before {\n  content: \"\\F24B\";\n}\n.font-awesome_fa-cc-diners-club_2SEIp:before {\n  content: \"\\F24C\";\n}\n.font-awesome_fa-clone_1dqxB:before {\n  content: \"\\F24D\";\n}\n.font-awesome_fa-balance-scale_1TLPZ:before {\n  content: \"\\F24E\";\n}\n.font-awesome_fa-hourglass-o_1SNFw:before {\n  content: \"\\F250\";\n}\n.font-awesome_fa-hourglass-1_2aI9h:before,\n.font-awesome_fa-hourglass-start_3wtcf:before {\n  content: \"\\F251\";\n}\n.font-awesome_fa-hourglass-2_3duyo:before,\n.font-awesome_fa-hourglass-half_VHRaz:before {\n  content: \"\\F252\";\n}\n.font-awesome_fa-hourglass-3_1CRzM:before,\n.font-awesome_fa-hourglass-end_2Z9_h:before {\n  content: \"\\F253\";\n}\n.font-awesome_fa-hourglass_1cFtL:before {\n  content: \"\\F254\";\n}\n.font-awesome_fa-hand-grab-o_b25vk:before,\n.font-awesome_fa-hand-rock-o_112vq:before {\n  content: \"\\F255\";\n}\n.font-awesome_fa-hand-stop-o_RTFxN:before,\n.font-awesome_fa-hand-paper-o_QsN35:before {\n  content: \"\\F256\";\n}\n.font-awesome_fa-hand-scissors-o_NJKCd:before {\n  content: \"\\F257\";\n}\n.font-awesome_fa-hand-lizard-o_2Mt2X:before {\n  content: \"\\F258\";\n}\n.font-awesome_fa-hand-spock-o_2zhLy:before {\n  content: \"\\F259\";\n}\n.font-awesome_fa-hand-pointer-o_1-1J6:before {\n  content: \"\\F25A\";\n}\n.font-awesome_fa-hand-peace-o_2pDbl:before {\n  content: \"\\F25B\";\n}\n.font-awesome_fa-trademark_2YmAL:before {\n  content: \"\\F25C\";\n}\n.font-awesome_fa-registered_2PIjk:before {\n  content: \"\\F25D\";\n}\n.font-awesome_fa-creative-commons_3yzOj:before {\n  content: \"\\F25E\";\n}\n.font-awesome_fa-gg_1jxwW:before {\n  content: \"\\F260\";\n}\n.font-awesome_fa-gg-circle_-Bm1G:before {\n  content: \"\\F261\";\n}\n.font-awesome_fa-tripadvisor_1Kn8E:before {\n  content: \"\\F262\";\n}\n.font-awesome_fa-odnoklassniki_lrIeV:before {\n  content: \"\\F263\";\n}\n.font-awesome_fa-odnoklassniki-square_b-bSU:before {\n  content: \"\\F264\";\n}\n.font-awesome_fa-get-pocket_1zZQJ:before {\n  content: \"\\F265\";\n}\n.font-awesome_fa-wikipedia-w_1Cdpe:before {\n  content: \"\\F266\";\n}\n.font-awesome_fa-safari_3TQrJ:before {\n  content: \"\\F267\";\n}\n.font-awesome_fa-chrome_-dxJj:before {\n  content: \"\\F268\";\n}\n.font-awesome_fa-firefox_2InFw:before {\n  content: \"\\F269\";\n}\n.font-awesome_fa-opera_UBUEN:before {\n  content: \"\\F26A\";\n}\n.font-awesome_fa-internet-explorer_1nFTU:before {\n  content: \"\\F26B\";\n}\n.font-awesome_fa-tv_3cVCb:before,\n.font-awesome_fa-television_1oye_:before {\n  content: \"\\F26C\";\n}\n.font-awesome_fa-contao_1Raai:before {\n  content: \"\\F26D\";\n}\n.font-awesome_fa-500px_1QfNu:before {\n  content: \"\\F26E\";\n}\n.font-awesome_fa-amazon_2KhH9:before {\n  content: \"\\F270\";\n}\n.font-awesome_fa-calendar-plus-o_2EO18:before {\n  content: \"\\F271\";\n}\n.font-awesome_fa-calendar-minus-o_2A9gw:before {\n  content: \"\\F272\";\n}\n.font-awesome_fa-calendar-times-o_3a887:before {\n  content: \"\\F273\";\n}\n.font-awesome_fa-calendar-check-o_1bEdE:before {\n  content: \"\\F274\";\n}\n.font-awesome_fa-industry_5-sxe:before {\n  content: \"\\F275\";\n}\n.font-awesome_fa-map-pin_-DkdU:before {\n  content: \"\\F276\";\n}\n.font-awesome_fa-map-signs_2S38y:before {\n  content: \"\\F277\";\n}\n.font-awesome_fa-map-o_21xVI:before {\n  content: \"\\F278\";\n}\n.font-awesome_fa-map_KoElW:before {\n  content: \"\\F279\";\n}\n.font-awesome_fa-commenting_3crfp:before {\n  content: \"\\F27A\";\n}\n.font-awesome_fa-commenting-o_3vPy2:before {\n  content: \"\\F27B\";\n}\n.font-awesome_fa-houzz_3uMPg:before {\n  content: \"\\F27C\";\n}\n.font-awesome_fa-vimeo_BCAw2:before {\n  content: \"\\F27D\";\n}\n.font-awesome_fa-black-tie_36KSS:before {\n  content: \"\\F27E\";\n}\n.font-awesome_fa-fonticons_1iLaa:before {\n  content: \"\\F280\";\n}\n.font-awesome_fa-reddit-alien_8M0ZA:before {\n  content: \"\\F281\";\n}\n.font-awesome_fa-edge_SKxLn:before {\n  content: \"\\F282\";\n}\n.font-awesome_fa-credit-card-alt_3K4Hb:before {\n  content: \"\\F283\";\n}\n.font-awesome_fa-codiepie_3exdZ:before {\n  content: \"\\F284\";\n}\n.font-awesome_fa-modx_VNOMM:before {\n  content: \"\\F285\";\n}\n.font-awesome_fa-fort-awesome_cOs8o:before {\n  content: \"\\F286\";\n}\n.font-awesome_fa-usb_1Zb-H:before {\n  content: \"\\F287\";\n}\n.font-awesome_fa-product-hunt_3zOPt:before {\n  content: \"\\F288\";\n}\n.font-awesome_fa-mixcloud_7qwu5:before {\n  content: \"\\F289\";\n}\n.font-awesome_fa-scribd_2eBei:before {\n  content: \"\\F28A\";\n}\n.font-awesome_fa-pause-circle_3q_lF:before {\n  content: \"\\F28B\";\n}\n.font-awesome_fa-pause-circle-o_3G2_g:before {\n  content: \"\\F28C\";\n}\n.font-awesome_fa-stop-circle_Fuwsc:before {\n  content: \"\\F28D\";\n}\n.font-awesome_fa-stop-circle-o_3d-BX:before {\n  content: \"\\F28E\";\n}\n.font-awesome_fa-shopping-bag_2WDzp:before {\n  content: \"\\F290\";\n}\n.font-awesome_fa-shopping-basket_r0TVD:before {\n  content: \"\\F291\";\n}\n.font-awesome_fa-hashtag_29Ewd:before {\n  content: \"\\F292\";\n}\n.font-awesome_fa-bluetooth_2jUgH:before {\n  content: \"\\F293\";\n}\n.font-awesome_fa-bluetooth-b_3uxZ5:before {\n  content: \"\\F294\";\n}\n.font-awesome_fa-percent_2z_PP:before {\n  content: \"\\F295\";\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -22656,301 +23044,49 @@
 	};
 
 /***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "db812d8a70a4e88e888744c1c9a27e89.woff2";
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "a35720c2fed2c7f043bc7e4ffb45e073.woff";
-
-/***/ },
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "a3de2170e4e9df77161ea5d3f31b2668.ttf";
+	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
 
 /***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "f775f9cca88e21d45bebe185b27c0e5b.svg";
+	module.exports = __webpack_require__.p + "32400f4e08932a94d8bfd2422702c446.eot";
 
 /***/ },
 /* 184 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAD6AAAA+gBtXtSawAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIUSURBVEiJ7ZfPaxNBFMe/bzSbRDZaghdngqyI4MHelGIPSvEg/h2l9SwFEYoXEVEKFfRUsP+HULxo61n0oIjoIskMITnIxl/JknkeGqGKmd0Z9SK+4+z3fT8zb2dm3wKBkSTJTJIkM6H5+0MTR6PROgAGsBiSTyFJSqkLzLwFgJj5kjHm4V8HN5vNg7Va7QWAo5OhThRFp9I0/eDjI3zB9Xp9bQ8UANRwOLzt6+O1YqXUAjM/+kUeA7iotd7642Ap5QEAzwEcnyJJ8zyf7fV6H8v4+ZT6jgMKAEmlUrlV1qzUiqWU8wCeoHiilpkXjDGPfxs8KfEzACfKTBLAu/F4PNvtdj+5RIWlZuabHlAAOCaEuFEkcq641WrNWWt3AOzzAAOABXBea709TeC8Mpl5nog2PaHf4wyAqeD/8e+Hc1crpa4AOBno/arT6dyd9tC5q4noqbV2DWHH6ZxL4DTMsqwTx/EhIjrrCV7XWjuPYeHNVa1WVwG89IC+FkJcLxIVgtM0/UpEi9gtX1FYZl5qt9tfioSl3t1gMGg3Go3DAOYKpPeNMRtlPH2+x9cAvHE8T/M8Xy1rVhqstf4shFjCbpvzczCA5bLdB+B5TLIsS+M4PkJEp3+gMm8YY+75eHl3mdbaFSJ6u2fofZ7nV319vMGTzmIZk5Iz8+V+vz/w9QkOKeWmlPJBaH7wv1MURSuhuQDwDY+Crx8jQ1SvAAAAAElFTkSuQmCC"
+	module.exports = __webpack_require__.p + "db812d8a70a4e88e888744c1c9a27e89.woff2";
 
 /***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
+	module.exports = __webpack_require__.p + "a35720c2fed2c7f043bc7e4ffb45e073.woff";
 
 /***/ },
 /* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "a3de2170e4e9df77161ea5d3f31b2668.ttf";
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "f775f9cca88e21d45bebe185b27c0e5b.svg";
+
+/***/ },
+/* 188 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAD6AAAA+gBtXtSawAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIUSURBVEiJ7ZfPaxNBFMe/bzSbRDZaghdngqyI4MHelGIPSvEg/h2l9SwFEYoXEVEKFfRUsP+HULxo61n0oIjoIskMITnIxl/JknkeGqGKmd0Z9SK+4+z3fT8zb2dm3wKBkSTJTJIkM6H5+0MTR6PROgAGsBiSTyFJSqkLzLwFgJj5kjHm4V8HN5vNg7Va7QWAo5OhThRFp9I0/eDjI3zB9Xp9bQ8UANRwOLzt6+O1YqXUAjM/+kUeA7iotd7642Ap5QEAzwEcnyJJ8zyf7fV6H8v4+ZT6jgMKAEmlUrlV1qzUiqWU8wCeoHiilpkXjDGPfxs8KfEzACfKTBLAu/F4PNvtdj+5RIWlZuabHlAAOCaEuFEkcq641WrNWWt3AOzzAAOABXBea709TeC8Mpl5nog2PaHf4wyAqeD/8e+Hc1crpa4AOBno/arT6dyd9tC5q4noqbV2DWHH6ZxL4DTMsqwTx/EhIjrrCV7XWjuPYeHNVa1WVwG89IC+FkJcLxIVgtM0/UpEi9gtX1FYZl5qt9tfioSl3t1gMGg3Go3DAOYKpPeNMRtlPH2+x9cAvHE8T/M8Xy1rVhqstf4shFjCbpvzczCA5bLdB+B5TLIsS+M4PkJEp3+gMm8YY+75eHl3mdbaFSJ6u2fofZ7nV319vMGTzmIZk5Iz8+V+vz/w9QkOKeWmlPJBaH7wv1MURSuhuQDwDY+Crx8jQ1SvAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 189 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23000,7 +23136,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23013,27 +23149,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
-	var _ImageRenderer = __webpack_require__(193);
+	var _ImageRenderer = __webpack_require__(196);
 
 	var _ImageRenderer2 = _interopRequireDefault(_ImageRenderer);
 
-	var _ContentEditableWidget = __webpack_require__(195);
+	var _ContentEditableWidget = __webpack_require__(198);
 
 	var _ContentEditableWidget2 = _interopRequireDefault(_ContentEditableWidget);
 
-	var _ImageExporter = __webpack_require__(196);
+	var _ImageExporter = __webpack_require__(199);
 
 	var _ImageExporter2 = _interopRequireDefault(_ImageExporter);
 
-	var _SizeHelper = __webpack_require__(198);
+	var _SizeHelper = __webpack_require__(201);
 
 	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
-	var _MouseHandler = __webpack_require__(201);
+	var _MouseHandler = __webpack_require__(204);
 
 	var _MouseHandler2 = _interopRequireDefault(_MouseHandler);
 
@@ -23605,7 +23741,7 @@
 	exports.default = ImageRenderer;
 
 /***/ },
-/* 188 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -23620,7 +23756,7 @@
 		/* istanbul ignore if  */
 		if ( true ) {
 			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(189), __webpack_require__(191) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(192), __webpack_require__(194) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
 				return factory( _, riveter, root );
 			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		/* istanbul ignore else  */
@@ -24072,7 +24208,7 @@
 
 
 /***/ },
-/* 189 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -36427,10 +36563,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(193)(module), (function() { return this; }())))
 
 /***/ },
-/* 190 */
+/* 193 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -36446,7 +36582,7 @@
 
 
 /***/ },
-/* 191 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36460,7 +36596,7 @@
 	(function (root, factory) {
 	    if (true) {
 	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(192)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(195)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
 	            return factory(_, root);
 	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module === "object" && module.exports) {
@@ -36637,7 +36773,7 @@
 	}));
 
 /***/ },
-/* 192 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -43799,19 +43935,19 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(193)(module), (function() { return this; }())))
 
 /***/ },
-/* 193 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(194);
+	var content = __webpack_require__(197);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(185)(content, {});
+	var update = __webpack_require__(176)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -43828,10 +43964,10 @@
 	}
 
 /***/ },
-/* 194 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(175)();
 	// imports
 
 
@@ -43853,7 +43989,7 @@
 	};
 
 /***/ },
-/* 195 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43941,10 +44077,12 @@
 	      dangerouslySetInnerHTML: { __html: this.props.html }
 	    });
 	  }
-	});
+	}
+	/* eslint-enable react/no-danger */
+	);
 
 /***/ },
-/* 196 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43955,7 +44093,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global XMLHttpRequest Image */
 
-	var _CanvasOffscreenBuffer = __webpack_require__(197);
+	var _CanvasOffscreenBuffer = __webpack_require__(200);
 
 	var _CanvasOffscreenBuffer2 = _interopRequireDefault(_CanvasOffscreenBuffer);
 
@@ -44073,7 +44211,7 @@
 	exports.default = ImageExporter;
 
 /***/ },
-/* 197 */
+/* 200 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -44155,7 +44293,7 @@
 	exports.default = CanvasOffscreenBuffer;
 
 /***/ },
-/* 198 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44164,11 +44302,11 @@
 	  value: true
 	});
 
-	var _Observable = __webpack_require__(199);
+	var _Observable = __webpack_require__(202);
 
 	var _Observable2 = _interopRequireDefault(_Observable);
 
-	var _Debounce = __webpack_require__(200);
+	var _Debounce = __webpack_require__(203);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44255,7 +44393,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44266,7 +44404,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -44296,7 +44434,7 @@
 	_monologue2.default.mixInto(Observable);
 
 /***/ },
-/* 200 */
+/* 203 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44340,7 +44478,7 @@
 	};
 
 /***/ },
-/* 201 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44351,15 +44489,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _hammerjs = __webpack_require__(202);
+	var _hammerjs = __webpack_require__(205);
 
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 
-	var _merge = __webpack_require__(203);
+	var _merge = __webpack_require__(206);
 
 	var _merge2 = _interopRequireDefault(_merge);
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -44681,7 +44819,7 @@
 	_monologue2.default.mixInto(MouseHandler);
 
 /***/ },
-/* 202 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
@@ -47330,10 +47468,10 @@
 
 
 /***/ },
-/* 203 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(204), __webpack_require__(205), __webpack_require__(212)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, deepClone, isObject) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(207), __webpack_require__(208), __webpack_require__(215)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, deepClone, isObject) {
 
 	    /**
 	     * Deep merge objects.
@@ -47374,7 +47512,7 @@
 
 
 /***/ },
-/* 204 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -47392,10 +47530,10 @@
 
 
 /***/ },
-/* 205 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(206), __webpack_require__(210), __webpack_require__(207), __webpack_require__(208)], __WEBPACK_AMD_DEFINE_RESULT__ = function (clone, forOwn, kindOf, isPlainObject) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(209), __webpack_require__(213), __webpack_require__(210), __webpack_require__(211)], __WEBPACK_AMD_DEFINE_RESULT__ = function (clone, forOwn, kindOf, isPlainObject) {
 
 	    /**
 	     * Recursively clone native types.
@@ -47443,10 +47581,10 @@
 
 
 /***/ },
-/* 206 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(207), __webpack_require__(208), __webpack_require__(209)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf, isPlainObject, mixIn) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(210), __webpack_require__(211), __webpack_require__(212)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf, isPlainObject, mixIn) {
 
 	    /**
 	     * Clone native types.
@@ -47496,7 +47634,7 @@
 
 
 /***/ },
-/* 207 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -47522,7 +47660,7 @@
 
 
 /***/ },
-/* 208 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -47541,10 +47679,10 @@
 
 
 /***/ },
-/* 209 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(210)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn){
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(213)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn){
 
 	    /**
 	    * Combine properties from all the objects into first one.
@@ -47575,10 +47713,10 @@
 
 
 /***/ },
-/* 210 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(204), __webpack_require__(211)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, forIn) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(207), __webpack_require__(214)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, forIn) {
 
 	    /**
 	     * Similar to Array/forEach but works over object properties and fixes Don't
@@ -47599,10 +47737,10 @@
 
 
 /***/ },
-/* 211 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(204)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(207)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn) {
 
 	    var _hasDontEnumBug,
 	        _dontEnums;
@@ -47681,10 +47819,10 @@
 
 
 /***/ },
-/* 212 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(213)], __WEBPACK_AMD_DEFINE_RESULT__ = function (isKind) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(216)], __WEBPACK_AMD_DEFINE_RESULT__ = function (isKind) {
 	    /**
 	     */
 	    function isObject(val) {
@@ -47695,10 +47833,10 @@
 
 
 /***/ },
-/* 213 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(207)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(210)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf) {
 	    /**
 	     * Check if value is from a specific "kind".
 	     */
@@ -47710,7 +47848,7 @@
 
 
 /***/ },
-/* 214 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
@@ -47721,35 +47859,35 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global Image */
 
-	var _hasOwn = __webpack_require__(216);
+	var _hasOwn = __webpack_require__(219);
 
 	var _hasOwn2 = _interopRequireDefault(_hasOwn);
 
-	var _max = __webpack_require__(217);
+	var _max = __webpack_require__(220);
 
 	var _max2 = _interopRequireDefault(_max);
 
-	var _min = __webpack_require__(229);
+	var _min = __webpack_require__(232);
 
 	var _min2 = _interopRequireDefault(_min);
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
-	var _now = __webpack_require__(231);
+	var _now = __webpack_require__(234);
 
 	var _now2 = _interopRequireDefault(_now);
 
-	var _omit = __webpack_require__(232);
+	var _omit = __webpack_require__(235);
 
 	var _omit2 = _interopRequireDefault(_omit);
 
-	var _size = __webpack_require__(236);
+	var _size = __webpack_require__(239);
 
 	var _size2 = _interopRequireDefault(_size);
 
-	var _DataManager = __webpack_require__(237);
+	var _DataManager = __webpack_require__(240);
 
 	var _DataManager2 = _interopRequireDefault(_DataManager);
 
@@ -48629,10 +48767,10 @@
 
 
 	_monologue2.default.mixInto(QueryDataModel);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(215).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(218).setImmediate))
 
 /***/ },
-/* 215 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
@@ -48711,10 +48849,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(215).setImmediate, __webpack_require__(215).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(218).setImmediate, __webpack_require__(218).clearImmediate))
 
 /***/ },
-/* 216 */
+/* 219 */
 /***/ function(module, exports) {
 
 	
@@ -48732,11 +48870,11 @@
 
 
 /***/ },
-/* 217 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrMax = __webpack_require__(218);
-	var values = __webpack_require__(228);
+	var arrMax = __webpack_require__(221);
+	var values = __webpack_require__(231);
 
 	    /**
 	     * Returns maximum value inside object.
@@ -48750,10 +48888,10 @@
 
 
 /***/ },
-/* 218 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var makeIterator = __webpack_require__(219);
+	var makeIterator = __webpack_require__(222);
 
 	    /**
 	     * Return maximum value inside array
@@ -48790,12 +48928,12 @@
 
 
 /***/ },
-/* 219 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(220);
-	var prop = __webpack_require__(221);
-	var deepMatches = __webpack_require__(222);
+	var identity = __webpack_require__(223);
+	var prop = __webpack_require__(224);
+	var deepMatches = __webpack_require__(225);
 
 	    /**
 	     * Converts argument into a valid iterator.
@@ -48830,7 +48968,7 @@
 
 
 /***/ },
-/* 220 */
+/* 223 */
 /***/ function(module, exports) {
 
 	
@@ -48848,7 +48986,7 @@
 
 
 /***/ },
-/* 221 */
+/* 224 */
 /***/ function(module, exports) {
 
 	
@@ -48868,11 +49006,11 @@
 
 
 /***/ },
-/* 222 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var forOwn = __webpack_require__(223);
-	var isArray = __webpack_require__(225);
+	var forOwn = __webpack_require__(226);
+	var isArray = __webpack_require__(228);
 
 	    function containsMatch(array, pattern) {
 	        var i = -1, length = array.length;
@@ -48930,11 +49068,11 @@
 
 
 /***/ },
-/* 223 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hasOwn = __webpack_require__(216);
-	var forIn = __webpack_require__(224);
+	var hasOwn = __webpack_require__(219);
+	var forIn = __webpack_require__(227);
 
 	    /**
 	     * Similar to Array/forEach but works over object properties and fixes Don't
@@ -48955,10 +49093,10 @@
 
 
 /***/ },
-/* 224 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hasOwn = __webpack_require__(216);
+	var hasOwn = __webpack_require__(219);
 
 	    var _hasDontEnumBug,
 	        _dontEnums;
@@ -49037,10 +49175,10 @@
 
 
 /***/ },
-/* 225 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isKind = __webpack_require__(226);
+	var isKind = __webpack_require__(229);
 	    /**
 	     */
 	    var isArray = Array.isArray || function (val) {
@@ -49051,10 +49189,10 @@
 
 
 /***/ },
-/* 226 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var kindOf = __webpack_require__(227);
+	var kindOf = __webpack_require__(230);
 	    /**
 	     * Check if value is from a specific "kind".
 	     */
@@ -49066,7 +49204,7 @@
 
 
 /***/ },
-/* 227 */
+/* 230 */
 /***/ function(module, exports) {
 
 	
@@ -49092,10 +49230,10 @@
 
 
 /***/ },
-/* 228 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var forOwn = __webpack_require__(223);
+	var forOwn = __webpack_require__(226);
 
 	    /**
 	     * Get object values
@@ -49114,11 +49252,11 @@
 
 
 /***/ },
-/* 229 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrMin = __webpack_require__(230);
-	var values = __webpack_require__(228);
+	var arrMin = __webpack_require__(233);
+	var values = __webpack_require__(231);
 
 	    /**
 	     * Returns minimum value inside object.
@@ -49132,10 +49270,10 @@
 
 
 /***/ },
-/* 230 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var makeIterator = __webpack_require__(219);
+	var makeIterator = __webpack_require__(222);
 
 	    /**
 	     * Return minimum value inside array
@@ -49172,7 +49310,7 @@
 
 
 /***/ },
-/* 231 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -49196,11 +49334,11 @@
 
 
 /***/ },
-/* 232 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var slice = __webpack_require__(233);
-	var contains = __webpack_require__(234);
+	var slice = __webpack_require__(236);
+	var contains = __webpack_require__(237);
 
 	    /**
 	     * Return a copy of the object, filtered to only contain properties except the blacklisted keys.
@@ -49223,7 +49361,7 @@
 
 
 /***/ },
-/* 233 */
+/* 236 */
 /***/ function(module, exports) {
 
 	
@@ -49264,10 +49402,10 @@
 
 
 /***/ },
-/* 234 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var indexOf = __webpack_require__(235);
+	var indexOf = __webpack_require__(238);
 
 	    /**
 	     * If array contains values.
@@ -49280,7 +49418,7 @@
 
 
 /***/ },
-/* 235 */
+/* 238 */
 /***/ function(module, exports) {
 
 	
@@ -49314,10 +49452,10 @@
 
 
 /***/ },
-/* 236 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var forOwn = __webpack_require__(223);
+	var forOwn = __webpack_require__(226);
 
 	    /**
 	     * Get object size
@@ -49336,7 +49474,7 @@
 
 
 /***/ },
-/* 237 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49350,23 +49488,23 @@
 	// Module dependencies and constants
 
 
-	var _jszip = __webpack_require__(238);
+	var _jszip = __webpack_require__(241);
 
 	var _jszip2 = _interopRequireDefault(_jszip);
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
-	var _request = __webpack_require__(336);
+	var _request = __webpack_require__(339);
 
 	var _request2 = _interopRequireDefault(_request);
 
-	var _htmlRequest = __webpack_require__(337);
+	var _htmlRequest = __webpack_require__(340);
 
 	var _htmlRequest2 = _interopRequireDefault(_htmlRequest);
 
-	var _pattern = __webpack_require__(338);
+	var _pattern = __webpack_require__(341);
 
 	var _pattern2 = _interopRequireDefault(_pattern);
 
@@ -49762,7 +49900,7 @@
 	_monologue2.default.mixInto(DataManager);
 
 /***/ },
-/* 238 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49802,10 +49940,10 @@
 	        return newObj;
 	    };
 	}
-	JSZip.prototype = __webpack_require__(239);
-	JSZip.prototype.loadAsync = __webpack_require__(327);
-	JSZip.support = __webpack_require__(242);
-	JSZip.defaults = __webpack_require__(298);
+	JSZip.prototype = __webpack_require__(242);
+	JSZip.prototype.loadAsync = __webpack_require__(330);
+	JSZip.support = __webpack_require__(245);
+	JSZip.defaults = __webpack_require__(301);
 
 	// TODO find a better way to handle this version,
 	// a require('package.json').version doesn't work with webpack, see #327
@@ -49815,25 +49953,25 @@
 	    return new JSZip().loadAsync(content, options);
 	};
 
-	JSZip.external = __webpack_require__(288);
+	JSZip.external = __webpack_require__(291);
 	module.exports = JSZip;
 
 
 /***/ },
-/* 239 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var utf8 = __webpack_require__(240);
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
-	var StreamHelper = __webpack_require__(292);
-	var defaults = __webpack_require__(298);
-	var CompressedObject = __webpack_require__(299);
-	var ZipObject = __webpack_require__(304);
-	var generate = __webpack_require__(305);
-	var nodejsUtils = __webpack_require__(266);
-	var NodejsStreamInputAdapter = __webpack_require__(326);
+	var utf8 = __webpack_require__(243);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
+	var StreamHelper = __webpack_require__(295);
+	var defaults = __webpack_require__(301);
+	var CompressedObject = __webpack_require__(302);
+	var ZipObject = __webpack_require__(307);
+	var generate = __webpack_require__(308);
+	var nodejsUtils = __webpack_require__(269);
+	var NodejsStreamInputAdapter = __webpack_require__(329);
 
 
 	/**
@@ -50215,15 +50353,15 @@
 
 
 /***/ },
-/* 240 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
-	var support = __webpack_require__(242);
-	var nodejsUtils = __webpack_require__(266);
-	var GenericWorker = __webpack_require__(291);
+	var utils = __webpack_require__(244);
+	var support = __webpack_require__(245);
+	var nodejsUtils = __webpack_require__(269);
+	var GenericWorker = __webpack_require__(294);
 
 	/**
 	 * The following functions come from pako, from pako/lib/utils/strings
@@ -50496,16 +50634,16 @@
 
 
 /***/ },
-/* 241 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var support = __webpack_require__(242);
-	var base64 = __webpack_require__(265);
-	var nodejsUtils = __webpack_require__(266);
-	var setImmediate = __webpack_require__(267);
-	var external = __webpack_require__(288);
+	var support = __webpack_require__(245);
+	var base64 = __webpack_require__(268);
+	var nodejsUtils = __webpack_require__(269);
+	var setImmediate = __webpack_require__(270);
+	var external = __webpack_require__(291);
 
 
 	/**
@@ -50980,7 +51118,7 @@
 
 
 /***/ },
-/* 242 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -51017,15 +51155,15 @@
 	}
 
 	try {
-	    exports.nodestream = !!__webpack_require__(247).Readable;
+	    exports.nodestream = !!__webpack_require__(250).Readable;
 	} catch(e) {
 	    exports.nodestream = false;
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(246).Buffer))
 
 /***/ },
-/* 243 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -51038,9 +51176,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(244)
-	var ieee754 = __webpack_require__(245)
-	var isArray = __webpack_require__(246)
+	var base64 = __webpack_require__(247)
+	var ieee754 = __webpack_require__(248)
+	var isArray = __webpack_require__(249)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -52818,10 +52956,10 @@
 	  return val !== val // eslint-disable-line no-self-compare
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(246).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 244 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -52941,7 +53079,7 @@
 
 
 /***/ },
-/* 245 */
+/* 248 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -53031,7 +53169,7 @@
 
 
 /***/ },
-/* 246 */
+/* 249 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -53042,7 +53180,7 @@
 
 
 /***/ },
-/* 247 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -53053,11 +53191,11 @@
 	 * reduce the final size of the bundle (only one stream implementation, not
 	 * two).
 	 */
-	module.exports = __webpack_require__(248);
+	module.exports = __webpack_require__(251);
 
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -53083,15 +53221,15 @@
 
 	module.exports = Stream;
 
-	var EE = __webpack_require__(249).EventEmitter;
-	var inherits = __webpack_require__(250);
+	var EE = __webpack_require__(252).EventEmitter;
+	var inherits = __webpack_require__(253);
 
 	inherits(Stream, EE);
-	Stream.Readable = __webpack_require__(251);
-	Stream.Writable = __webpack_require__(261);
-	Stream.Duplex = __webpack_require__(262);
-	Stream.Transform = __webpack_require__(263);
-	Stream.PassThrough = __webpack_require__(264);
+	Stream.Readable = __webpack_require__(254);
+	Stream.Writable = __webpack_require__(264);
+	Stream.Duplex = __webpack_require__(265);
+	Stream.Transform = __webpack_require__(266);
+	Stream.PassThrough = __webpack_require__(267);
 
 	// Backwards-compat with node 0.4.x
 	Stream.Stream = Stream;
@@ -53190,7 +53328,7 @@
 
 
 /***/ },
-/* 249 */
+/* 252 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -53498,7 +53636,7 @@
 
 
 /***/ },
-/* 250 */
+/* 253 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -53527,24 +53665,24 @@
 
 
 /***/ },
-/* 251 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {exports = module.exports = __webpack_require__(252);
-	exports.Stream = __webpack_require__(248);
+	/* WEBPACK VAR INJECTION */(function(process) {exports = module.exports = __webpack_require__(255);
+	exports.Stream = __webpack_require__(251);
 	exports.Readable = exports;
-	exports.Writable = __webpack_require__(257);
-	exports.Duplex = __webpack_require__(256);
-	exports.Transform = __webpack_require__(259);
-	exports.PassThrough = __webpack_require__(260);
+	exports.Writable = __webpack_require__(260);
+	exports.Duplex = __webpack_require__(259);
+	exports.Transform = __webpack_require__(262);
+	exports.PassThrough = __webpack_require__(263);
 	if (!process.browser && process.env.READABLE_STREAM === 'disable') {
-	  module.exports = __webpack_require__(248);
+	  module.exports = __webpack_require__(251);
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 252 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -53571,17 +53709,17 @@
 	module.exports = Readable;
 
 	/*<replacement>*/
-	var isArray = __webpack_require__(253);
+	var isArray = __webpack_require__(256);
 	/*</replacement>*/
 
 
 	/*<replacement>*/
-	var Buffer = __webpack_require__(243).Buffer;
+	var Buffer = __webpack_require__(246).Buffer;
 	/*</replacement>*/
 
 	Readable.ReadableState = ReadableState;
 
-	var EE = __webpack_require__(249).EventEmitter;
+	var EE = __webpack_require__(252).EventEmitter;
 
 	/*<replacement>*/
 	if (!EE.listenerCount) EE.listenerCount = function(emitter, type) {
@@ -53589,18 +53727,18 @@
 	};
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(248);
+	var Stream = __webpack_require__(251);
 
 	/*<replacement>*/
-	var util = __webpack_require__(254);
-	util.inherits = __webpack_require__(250);
+	var util = __webpack_require__(257);
+	util.inherits = __webpack_require__(253);
 	/*</replacement>*/
 
 	var StringDecoder;
 
 
 	/*<replacement>*/
-	var debug = __webpack_require__(255);
+	var debug = __webpack_require__(258);
 	if (debug && debug.debuglog) {
 	  debug = debug.debuglog('stream');
 	} else {
@@ -53612,7 +53750,7 @@
 	util.inherits(Readable, Stream);
 
 	function ReadableState(options, stream) {
-	  var Duplex = __webpack_require__(256);
+	  var Duplex = __webpack_require__(259);
 
 	  options = options || {};
 
@@ -53673,14 +53811,14 @@
 	  this.encoding = null;
 	  if (options.encoding) {
 	    if (!StringDecoder)
-	      StringDecoder = __webpack_require__(258).StringDecoder;
+	      StringDecoder = __webpack_require__(261).StringDecoder;
 	    this.decoder = new StringDecoder(options.encoding);
 	    this.encoding = options.encoding;
 	  }
 	}
 
 	function Readable(options) {
-	  var Duplex = __webpack_require__(256);
+	  var Duplex = __webpack_require__(259);
 
 	  if (!(this instanceof Readable))
 	    return new Readable(options);
@@ -53783,7 +53921,7 @@
 	// backwards compatibility.
 	Readable.prototype.setEncoding = function(enc) {
 	  if (!StringDecoder)
-	    StringDecoder = __webpack_require__(258).StringDecoder;
+	    StringDecoder = __webpack_require__(261).StringDecoder;
 	  this._readableState.decoder = new StringDecoder(enc);
 	  this._readableState.encoding = enc;
 	  return this;
@@ -54502,7 +54640,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 253 */
+/* 256 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -54511,7 +54649,7 @@
 
 
 /***/ },
-/* 254 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -54622,16 +54760,16 @@
 	  return Object.prototype.toString.call(o);
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(246).Buffer))
 
 /***/ },
-/* 255 */
+/* 258 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 256 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -54672,12 +54810,12 @@
 
 
 	/*<replacement>*/
-	var util = __webpack_require__(254);
-	util.inherits = __webpack_require__(250);
+	var util = __webpack_require__(257);
+	util.inherits = __webpack_require__(253);
 	/*</replacement>*/
 
-	var Readable = __webpack_require__(252);
-	var Writable = __webpack_require__(257);
+	var Readable = __webpack_require__(255);
+	var Writable = __webpack_require__(260);
 
 	util.inherits(Duplex, Readable);
 
@@ -54727,7 +54865,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 257 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -54758,18 +54896,18 @@
 	module.exports = Writable;
 
 	/*<replacement>*/
-	var Buffer = __webpack_require__(243).Buffer;
+	var Buffer = __webpack_require__(246).Buffer;
 	/*</replacement>*/
 
 	Writable.WritableState = WritableState;
 
 
 	/*<replacement>*/
-	var util = __webpack_require__(254);
-	util.inherits = __webpack_require__(250);
+	var util = __webpack_require__(257);
+	util.inherits = __webpack_require__(253);
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(248);
+	var Stream = __webpack_require__(251);
 
 	util.inherits(Writable, Stream);
 
@@ -54780,7 +54918,7 @@
 	}
 
 	function WritableState(options, stream) {
-	  var Duplex = __webpack_require__(256);
+	  var Duplex = __webpack_require__(259);
 
 	  options = options || {};
 
@@ -54868,7 +55006,7 @@
 	}
 
 	function Writable(options) {
-	  var Duplex = __webpack_require__(256);
+	  var Duplex = __webpack_require__(259);
 
 	  // Writable ctor is applied to Duplexes, though they're not
 	  // instanceof Writable, they're instanceof Readable.
@@ -55211,7 +55349,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 258 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -55235,7 +55373,7 @@
 	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var Buffer = __webpack_require__(243).Buffer;
+	var Buffer = __webpack_require__(246).Buffer;
 
 	var isBufferEncoding = Buffer.isEncoding
 	  || function(encoding) {
@@ -55438,7 +55576,7 @@
 
 
 /***/ },
-/* 259 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -55507,11 +55645,11 @@
 
 	module.exports = Transform;
 
-	var Duplex = __webpack_require__(256);
+	var Duplex = __webpack_require__(259);
 
 	/*<replacement>*/
-	var util = __webpack_require__(254);
-	util.inherits = __webpack_require__(250);
+	var util = __webpack_require__(257);
+	util.inherits = __webpack_require__(253);
 	/*</replacement>*/
 
 	util.inherits(Transform, Duplex);
@@ -55653,7 +55791,7 @@
 
 
 /***/ },
-/* 260 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -55683,11 +55821,11 @@
 
 	module.exports = PassThrough;
 
-	var Transform = __webpack_require__(259);
+	var Transform = __webpack_require__(262);
 
 	/*<replacement>*/
-	var util = __webpack_require__(254);
-	util.inherits = __webpack_require__(250);
+	var util = __webpack_require__(257);
+	util.inherits = __webpack_require__(253);
 	/*</replacement>*/
 
 	util.inherits(PassThrough, Transform);
@@ -55705,27 +55843,6 @@
 
 
 /***/ },
-/* 261 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(257)
-
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(256)
-
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(259)
-
-
-/***/ },
 /* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -55736,9 +55853,30 @@
 /* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(259)
+
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(262)
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(263)
+
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
-	var utils = __webpack_require__(241);
-	var support = __webpack_require__(242);
+	var utils = __webpack_require__(244);
+	var support = __webpack_require__(245);
 	// private property
 	var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
@@ -55845,7 +55983,7 @@
 
 
 /***/ },
-/* 266 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -55883,34 +56021,34 @@
 	    }
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(246).Buffer))
 
 /***/ },
-/* 267 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(268);
-	module.exports = __webpack_require__(271).setImmediate;
+	__webpack_require__(271);
+	module.exports = __webpack_require__(274).setImmediate;
 
 /***/ },
-/* 268 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $export = __webpack_require__(269)
-	  , $task   = __webpack_require__(284);
+	var $export = __webpack_require__(272)
+	  , $task   = __webpack_require__(287);
 	$export($export.G + $export.B, {
 	  setImmediate:   $task.set,
 	  clearImmediate: $task.clear
 	});
 
 /***/ },
-/* 269 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global    = __webpack_require__(270)
-	  , core      = __webpack_require__(271)
-	  , ctx       = __webpack_require__(272)
-	  , hide      = __webpack_require__(274)
+	var global    = __webpack_require__(273)
+	  , core      = __webpack_require__(274)
+	  , ctx       = __webpack_require__(275)
+	  , hide      = __webpack_require__(277)
 	  , PROTOTYPE = 'prototype';
 
 	var $export = function(type, name, source){
@@ -55970,7 +56108,7 @@
 	module.exports = $export;
 
 /***/ },
-/* 270 */
+/* 273 */
 /***/ function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -55979,18 +56117,18 @@
 	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 271 */
+/* 274 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '2.3.0'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 272 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(273);
+	var aFunction = __webpack_require__(276);
 	module.exports = function(fn, that, length){
 	  aFunction(fn);
 	  if(that === undefined)return fn;
@@ -56011,7 +56149,7 @@
 	};
 
 /***/ },
-/* 273 */
+/* 276 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -56020,12 +56158,12 @@
 	};
 
 /***/ },
-/* 274 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var dP         = __webpack_require__(275)
-	  , createDesc = __webpack_require__(283);
-	module.exports = __webpack_require__(279) ? function(object, key, value){
+	var dP         = __webpack_require__(278)
+	  , createDesc = __webpack_require__(286);
+	module.exports = __webpack_require__(282) ? function(object, key, value){
 	  return dP.f(object, key, createDesc(1, value));
 	} : function(object, key, value){
 	  object[key] = value;
@@ -56033,15 +56171,15 @@
 	};
 
 /***/ },
-/* 275 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var anObject       = __webpack_require__(276)
-	  , IE8_DOM_DEFINE = __webpack_require__(278)
-	  , toPrimitive    = __webpack_require__(282)
+	var anObject       = __webpack_require__(279)
+	  , IE8_DOM_DEFINE = __webpack_require__(281)
+	  , toPrimitive    = __webpack_require__(285)
 	  , dP             = Object.defineProperty;
 
-	exports.f = __webpack_require__(279) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	exports.f = __webpack_require__(282) ? Object.defineProperty : function defineProperty(O, P, Attributes){
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -56054,17 +56192,17 @@
 	};
 
 /***/ },
-/* 276 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(277);
+	var isObject = __webpack_require__(280);
 	module.exports = function(it){
 	  if(!isObject(it))throw TypeError(it + ' is not an object!');
 	  return it;
 	};
 
 /***/ },
-/* 277 */
+/* 280 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -56072,24 +56210,24 @@
 	};
 
 /***/ },
-/* 278 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = !__webpack_require__(279) && !__webpack_require__(280)(function(){
-	  return Object.defineProperty(__webpack_require__(281)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+	module.exports = !__webpack_require__(282) && !__webpack_require__(283)(function(){
+	  return Object.defineProperty(__webpack_require__(284)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 	});
 
 /***/ },
-/* 279 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(280)(function(){
+	module.exports = !__webpack_require__(283)(function(){
 	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 	});
 
 /***/ },
-/* 280 */
+/* 283 */
 /***/ function(module, exports) {
 
 	module.exports = function(exec){
@@ -56101,11 +56239,11 @@
 	};
 
 /***/ },
-/* 281 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(277)
-	  , document = __webpack_require__(270).document
+	var isObject = __webpack_require__(280)
+	  , document = __webpack_require__(273).document
 	  // in old IE typeof document.createElement is 'object'
 	  , is = isObject(document) && isObject(document.createElement);
 	module.exports = function(it){
@@ -56113,11 +56251,11 @@
 	};
 
 /***/ },
-/* 282 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(277);
+	var isObject = __webpack_require__(280);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	module.exports = function(it, S){
@@ -56130,7 +56268,7 @@
 	};
 
 /***/ },
-/* 283 */
+/* 286 */
 /***/ function(module, exports) {
 
 	module.exports = function(bitmap, value){
@@ -56143,14 +56281,14 @@
 	};
 
 /***/ },
-/* 284 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ctx                = __webpack_require__(272)
-	  , invoke             = __webpack_require__(285)
-	  , html               = __webpack_require__(286)
-	  , cel                = __webpack_require__(281)
-	  , global             = __webpack_require__(270)
+	var ctx                = __webpack_require__(275)
+	  , invoke             = __webpack_require__(288)
+	  , html               = __webpack_require__(289)
+	  , cel                = __webpack_require__(284)
+	  , global             = __webpack_require__(273)
 	  , process            = global.process
 	  , setTask            = global.setImmediate
 	  , clearTask          = global.clearImmediate
@@ -56185,7 +56323,7 @@
 	    delete queue[id];
 	  };
 	  // Node.js 0.8-
-	  if(__webpack_require__(287)(process) == 'process'){
+	  if(__webpack_require__(290)(process) == 'process'){
 	    defer = function(id){
 	      process.nextTick(ctx(run, id, 1));
 	    };
@@ -56223,7 +56361,7 @@
 	};
 
 /***/ },
-/* 285 */
+/* 288 */
 /***/ function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -56244,13 +56382,13 @@
 	};
 
 /***/ },
-/* 286 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(270).document && document.documentElement;
+	module.exports = __webpack_require__(273).document && document.documentElement;
 
 /***/ },
-/* 287 */
+/* 290 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -56260,7 +56398,7 @@
 	};
 
 /***/ },
-/* 288 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* global Promise */
@@ -56273,7 +56411,7 @@
 	if (typeof Promise !== "undefined") {
 	    ES6Promise = Promise;
 	} else {
-	    ES6Promise = __webpack_require__(289);
+	    ES6Promise = __webpack_require__(292);
 	}
 
 	/**
@@ -56285,11 +56423,11 @@
 
 
 /***/ },
-/* 289 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var immediate = __webpack_require__(290);
+	var immediate = __webpack_require__(293);
 
 	/* istanbul ignore next */
 	function INTERNAL() {}
@@ -56544,7 +56682,7 @@
 
 
 /***/ },
-/* 290 */
+/* 293 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -56620,7 +56758,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 291 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -56889,22 +57027,22 @@
 
 
 /***/ },
-/* 292 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 
-	var utils = __webpack_require__(241);
-	var ConvertWorker = __webpack_require__(293);
-	var GenericWorker = __webpack_require__(291);
-	var base64 = __webpack_require__(265);
-	var support = __webpack_require__(242);
-	var external = __webpack_require__(288);
+	var utils = __webpack_require__(244);
+	var ConvertWorker = __webpack_require__(296);
+	var GenericWorker = __webpack_require__(294);
+	var base64 = __webpack_require__(268);
+	var support = __webpack_require__(245);
+	var external = __webpack_require__(291);
 
 	var NodejsStreamOutputAdapter = null;
 	if (support.nodestream) {
 	    try {
-	        NodejsStreamOutputAdapter = __webpack_require__(294);
+	        NodejsStreamOutputAdapter = __webpack_require__(297);
 	    } catch(e) {}
 	}
 
@@ -57112,16 +57250,16 @@
 
 	module.exports = StreamHelper;
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(246).Buffer))
 
 /***/ },
-/* 293 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var GenericWorker = __webpack_require__(291);
-	var utils = __webpack_require__(241);
+	var GenericWorker = __webpack_require__(294);
+	var utils = __webpack_require__(244);
 
 	/**
 	 * A worker which convert chunks to a specified type.
@@ -57147,14 +57285,14 @@
 
 
 /***/ },
-/* 294 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Readable = __webpack_require__(247).Readable;
+	var Readable = __webpack_require__(250).Readable;
 
-	var util = __webpack_require__(295);
+	var util = __webpack_require__(298);
 	util.inherits(NodejsStreamOutputAdapter, Readable);
 
 	/**
@@ -57195,7 +57333,7 @@
 
 
 /***/ },
-/* 295 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -57723,7 +57861,7 @@
 	}
 	exports.isPrimitive = isPrimitive;
 
-	exports.isBuffer = __webpack_require__(296);
+	exports.isBuffer = __webpack_require__(299);
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -57767,7 +57905,7 @@
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(297);
+	exports.inherits = __webpack_require__(300);
 
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -57788,7 +57926,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(3)))
 
 /***/ },
-/* 296 */
+/* 299 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -57799,7 +57937,7 @@
 	}
 
 /***/ },
-/* 297 */
+/* 300 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -57828,7 +57966,7 @@
 
 
 /***/ },
-/* 298 */
+/* 301 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57845,16 +57983,16 @@
 
 
 /***/ },
-/* 299 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var external = __webpack_require__(288);
-	var DataWorker = __webpack_require__(300);
-	var DataLengthProbe = __webpack_require__(301);
-	var Crc32Probe = __webpack_require__(302);
-	var DataLengthProbe = __webpack_require__(301);
+	var external = __webpack_require__(291);
+	var DataWorker = __webpack_require__(303);
+	var DataLengthProbe = __webpack_require__(304);
+	var Crc32Probe = __webpack_require__(305);
+	var DataLengthProbe = __webpack_require__(304);
 
 	/**
 	 * Represent a compressed object, with everything needed to decompress it.
@@ -57926,13 +58064,13 @@
 
 
 /***/ },
-/* 300 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
 
 	// the size of the generated chunks
 	// TODO expose this as a public variable
@@ -58048,13 +58186,13 @@
 
 
 /***/ },
-/* 301 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
 
 	/**
 	 * A worker which calculate the total length of the data flowing through.
@@ -58083,14 +58221,14 @@
 
 
 /***/ },
-/* 302 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var GenericWorker = __webpack_require__(291);
-	var crc32 = __webpack_require__(303);
-	var utils = __webpack_require__(241);
+	var GenericWorker = __webpack_require__(294);
+	var crc32 = __webpack_require__(306);
+	var utils = __webpack_require__(244);
 
 	/**
 	 * A worker which calculate the crc32 of the data flowing through.
@@ -58113,12 +58251,12 @@
 
 
 /***/ },
-/* 303 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
+	var utils = __webpack_require__(244);
 
 	/**
 	 * The following functions come from pako, from pako/lib/zlib/crc32.js
@@ -58197,16 +58335,16 @@
 
 
 /***/ },
-/* 304 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var StreamHelper = __webpack_require__(292);
-	var DataWorker = __webpack_require__(300);
-	var utf8 = __webpack_require__(240);
-	var CompressedObject = __webpack_require__(299);
-	var GenericWorker = __webpack_require__(291);
+	var StreamHelper = __webpack_require__(295);
+	var DataWorker = __webpack_require__(303);
+	var utf8 = __webpack_require__(243);
+	var CompressedObject = __webpack_require__(302);
+	var GenericWorker = __webpack_require__(294);
 
 	/**
 	 * A simple object representing a file in the zip file.
@@ -58327,13 +58465,13 @@
 
 
 /***/ },
-/* 305 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var compressions = __webpack_require__(306);
-	var ZipFileWorker = __webpack_require__(324);
+	var compressions = __webpack_require__(309);
+	var ZipFileWorker = __webpack_require__(327);
 
 	/**
 	 * Find the compression to use.
@@ -58390,12 +58528,12 @@
 
 
 /***/ },
-/* 306 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var GenericWorker = __webpack_require__(291);
+	var GenericWorker = __webpack_require__(294);
 
 	exports.STORE = {
 	    magic: "\x00\x00",
@@ -58406,19 +58544,19 @@
 	        return new GenericWorker("STORE decompression");
 	    }
 	};
-	exports.DEFLATE = __webpack_require__(307);
+	exports.DEFLATE = __webpack_require__(310);
 
 
 /***/ },
-/* 307 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var USE_TYPEDARRAY = (typeof Uint8Array !== 'undefined') && (typeof Uint16Array !== 'undefined') && (typeof Uint32Array !== 'undefined');
 
-	var pako = __webpack_require__(308);
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
+	var pako = __webpack_require__(311);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
 
 	var ARRAY_TYPE = USE_TYPEDARRAY ? "uint8array" : "array";
 
@@ -58484,17 +58622,17 @@
 
 
 /***/ },
-/* 308 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Top level file is just a mixin of submodules & constants
 	'use strict';
 
-	var assign    = __webpack_require__(309).assign;
+	var assign    = __webpack_require__(312).assign;
 
-	var deflate   = __webpack_require__(310);
-	var inflate   = __webpack_require__(318);
-	var constants = __webpack_require__(322);
+	var deflate   = __webpack_require__(313);
+	var inflate   = __webpack_require__(321);
+	var constants = __webpack_require__(325);
 
 	var pako = {};
 
@@ -58504,7 +58642,7 @@
 
 
 /***/ },
-/* 309 */
+/* 312 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -58612,17 +58750,17 @@
 
 
 /***/ },
-/* 310 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
-	var zlib_deflate = __webpack_require__(311);
-	var utils        = __webpack_require__(309);
-	var strings      = __webpack_require__(316);
-	var msg          = __webpack_require__(315);
-	var ZStream      = __webpack_require__(317);
+	var zlib_deflate = __webpack_require__(314);
+	var utils        = __webpack_require__(312);
+	var strings      = __webpack_require__(319);
+	var msg          = __webpack_require__(318);
+	var ZStream      = __webpack_require__(320);
 
 	var toString = Object.prototype.toString;
 
@@ -59018,7 +59156,7 @@
 
 
 /***/ },
-/* 311 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59042,11 +59180,11 @@
 	//   misrepresented as being the original software.
 	// 3. This notice may not be removed or altered from any source distribution.
 
-	var utils   = __webpack_require__(309);
-	var trees   = __webpack_require__(312);
-	var adler32 = __webpack_require__(313);
-	var crc32   = __webpack_require__(314);
-	var msg     = __webpack_require__(315);
+	var utils   = __webpack_require__(312);
+	var trees   = __webpack_require__(315);
+	var adler32 = __webpack_require__(316);
+	var crc32   = __webpack_require__(317);
+	var msg     = __webpack_require__(318);
 
 	/* Public constants ==========================================================*/
 	/* ===========================================================================*/
@@ -60898,7 +61036,7 @@
 
 
 /***/ },
-/* 312 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60922,7 +61060,7 @@
 	//   misrepresented as being the original software.
 	// 3. This notice may not be removed or altered from any source distribution.
 
-	var utils = __webpack_require__(309);
+	var utils = __webpack_require__(312);
 
 	/* Public constants ==========================================================*/
 	/* ===========================================================================*/
@@ -62124,7 +62262,7 @@
 
 
 /***/ },
-/* 313 */
+/* 316 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62181,7 +62319,7 @@
 
 
 /***/ },
-/* 314 */
+/* 317 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62246,7 +62384,7 @@
 
 
 /***/ },
-/* 315 */
+/* 318 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62284,14 +62422,14 @@
 
 
 /***/ },
-/* 316 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// String encode/decode helpers
 	'use strict';
 
 
-	var utils = __webpack_require__(309);
+	var utils = __webpack_require__(312);
 
 
 	// Quick check if we can use fast array to bin string conversion
@@ -62475,7 +62613,7 @@
 
 
 /***/ },
-/* 317 */
+/* 320 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62528,19 +62666,19 @@
 
 
 /***/ },
-/* 318 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
-	var zlib_inflate = __webpack_require__(319);
-	var utils        = __webpack_require__(309);
-	var strings      = __webpack_require__(316);
-	var c            = __webpack_require__(322);
-	var msg          = __webpack_require__(315);
-	var ZStream      = __webpack_require__(317);
-	var GZheader     = __webpack_require__(323);
+	var zlib_inflate = __webpack_require__(322);
+	var utils        = __webpack_require__(312);
+	var strings      = __webpack_require__(319);
+	var c            = __webpack_require__(325);
+	var msg          = __webpack_require__(318);
+	var ZStream      = __webpack_require__(320);
+	var GZheader     = __webpack_require__(326);
 
 	var toString = Object.prototype.toString;
 
@@ -62952,7 +63090,7 @@
 
 
 /***/ },
-/* 319 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62976,11 +63114,11 @@
 	//   misrepresented as being the original software.
 	// 3. This notice may not be removed or altered from any source distribution.
 
-	var utils         = __webpack_require__(309);
-	var adler32       = __webpack_require__(313);
-	var crc32         = __webpack_require__(314);
-	var inflate_fast  = __webpack_require__(320);
-	var inflate_table = __webpack_require__(321);
+	var utils         = __webpack_require__(312);
+	var adler32       = __webpack_require__(316);
+	var crc32         = __webpack_require__(317);
+	var inflate_fast  = __webpack_require__(323);
+	var inflate_table = __webpack_require__(324);
 
 	var CODES = 0;
 	var LENS = 1;
@@ -64514,7 +64652,7 @@
 
 
 /***/ },
-/* 320 */
+/* 323 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -64865,7 +65003,7 @@
 
 
 /***/ },
-/* 321 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64889,7 +65027,7 @@
 	//   misrepresented as being the original software.
 	// 3. This notice may not be removed or altered from any source distribution.
 
-	var utils = __webpack_require__(309);
+	var utils = __webpack_require__(312);
 
 	var MAXBITS = 15;
 	var ENOUGH_LENS = 852;
@@ -65214,7 +65352,7 @@
 
 
 /***/ },
-/* 322 */
+/* 325 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65288,7 +65426,7 @@
 
 
 /***/ },
-/* 323 */
+/* 326 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65352,16 +65490,16 @@
 
 
 /***/ },
-/* 324 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
-	var utf8 = __webpack_require__(240);
-	var crc32 = __webpack_require__(303);
-	var signature = __webpack_require__(325);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
+	var utf8 = __webpack_require__(243);
+	var crc32 = __webpack_require__(306);
+	var signature = __webpack_require__(328);
 
 	/**
 	 * Transform an integer into a string in hexadecimal.
@@ -65898,7 +66036,7 @@
 
 
 /***/ },
-/* 325 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65911,13 +66049,13 @@
 
 
 /***/ },
-/* 326 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var utils = __webpack_require__(241);
-	var GenericWorker = __webpack_require__(291);
+	var utils = __webpack_require__(244);
+	var GenericWorker = __webpack_require__(294);
 
 	/**
 	 * A worker that use a nodejs stream as source.
@@ -65991,17 +66129,17 @@
 
 
 /***/ },
-/* 327 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var utils = __webpack_require__(241);
-	var external = __webpack_require__(288);
-	var utf8 = __webpack_require__(240);
-	var utils = __webpack_require__(241);
-	var ZipEntries = __webpack_require__(328);
-	var Crc32Probe = __webpack_require__(302);
-	var nodejsUtils = __webpack_require__(266);
+	var utils = __webpack_require__(244);
+	var external = __webpack_require__(291);
+	var utf8 = __webpack_require__(243);
+	var utils = __webpack_require__(244);
+	var ZipEntries = __webpack_require__(331);
+	var Crc32Probe = __webpack_require__(305);
+	var nodejsUtils = __webpack_require__(269);
 
 	/**
 	 * Check the CRC32 of an entry.
@@ -66079,16 +66217,16 @@
 
 
 /***/ },
-/* 328 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var readerFor = __webpack_require__(329);
-	var utils = __webpack_require__(241);
-	var sig = __webpack_require__(325);
-	var ZipEntry = __webpack_require__(335);
-	var utf8 = __webpack_require__(240);
-	var support = __webpack_require__(242);
+	var readerFor = __webpack_require__(332);
+	var utils = __webpack_require__(244);
+	var sig = __webpack_require__(328);
+	var ZipEntry = __webpack_require__(338);
+	var utf8 = __webpack_require__(243);
+	var support = __webpack_require__(245);
 	//  class ZipEntries {{{
 	/**
 	 * All the entries in the zip file.
@@ -66347,17 +66485,17 @@
 
 
 /***/ },
-/* 329 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(241);
-	var support = __webpack_require__(242);
-	var ArrayReader = __webpack_require__(330);
-	var StringReader = __webpack_require__(332);
-	var NodeBufferReader = __webpack_require__(333);
-	var Uint8ArrayReader = __webpack_require__(334);
+	var utils = __webpack_require__(244);
+	var support = __webpack_require__(245);
+	var ArrayReader = __webpack_require__(333);
+	var StringReader = __webpack_require__(335);
+	var NodeBufferReader = __webpack_require__(336);
+	var Uint8ArrayReader = __webpack_require__(337);
 
 	/**
 	 * Create a reader adapted to the data.
@@ -66383,12 +66521,12 @@
 
 
 /***/ },
-/* 330 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var DataReader = __webpack_require__(331);
-	var utils = __webpack_require__(241);
+	var DataReader = __webpack_require__(334);
+	var utils = __webpack_require__(244);
 
 	function ArrayReader(data) {
 	    DataReader.call(this, data);
@@ -66446,11 +66584,11 @@
 
 
 /***/ },
-/* 331 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var utils = __webpack_require__(241);
+	var utils = __webpack_require__(244);
 
 	function DataReader(data) {
 	    this.data = data; // type : see implementation
@@ -66568,12 +66706,12 @@
 
 
 /***/ },
-/* 332 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var DataReader = __webpack_require__(331);
-	var utils = __webpack_require__(241);
+	var DataReader = __webpack_require__(334);
+	var utils = __webpack_require__(244);
 
 	function StringReader(data) {
 	    DataReader.call(this, data);
@@ -66612,12 +66750,12 @@
 
 
 /***/ },
-/* 333 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Uint8ArrayReader = __webpack_require__(334);
-	var utils = __webpack_require__(241);
+	var Uint8ArrayReader = __webpack_require__(337);
+	var utils = __webpack_require__(244);
 
 	function NodeBufferReader(data) {
 	    Uint8ArrayReader.call(this, data);
@@ -66637,12 +66775,12 @@
 
 
 /***/ },
-/* 334 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var ArrayReader = __webpack_require__(330);
-	var utils = __webpack_require__(241);
+	var ArrayReader = __webpack_require__(333);
+	var utils = __webpack_require__(244);
 
 	function Uint8ArrayReader(data) {
 	    ArrayReader.call(this, data);
@@ -66665,17 +66803,17 @@
 
 
 /***/ },
-/* 335 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var readerFor = __webpack_require__(329);
-	var utils = __webpack_require__(241);
-	var CompressedObject = __webpack_require__(299);
-	var crc32fn = __webpack_require__(303);
-	var utf8 = __webpack_require__(240);
-	var compressions = __webpack_require__(306);
-	var support = __webpack_require__(242);
+	var readerFor = __webpack_require__(332);
+	var utils = __webpack_require__(244);
+	var CompressedObject = __webpack_require__(302);
+	var crc32fn = __webpack_require__(306);
+	var utf8 = __webpack_require__(243);
+	var compressions = __webpack_require__(309);
+	var support = __webpack_require__(245);
 
 	var MADE_BY_DOS = 0x00;
 	var MADE_BY_UNIX = 0x03;
@@ -66963,7 +67101,7 @@
 
 
 /***/ },
-/* 336 */
+/* 339 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -67080,7 +67218,7 @@
 	};
 
 /***/ },
-/* 337 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67089,7 +67227,7 @@
 	  value: true
 	});
 
-	var _base64Js = __webpack_require__(244);
+	var _base64Js = __webpack_require__(247);
 
 	function getContent(url) {
 	  var el = document.querySelector('.webResource[data-url="' + url + '"]');
@@ -67146,7 +67284,7 @@
 	};
 
 /***/ },
-/* 338 */
+/* 341 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -67238,7 +67376,7 @@
 	exports.default = PatternMap;
 
 /***/ },
-/* 339 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67249,7 +67387,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _AbstractImageBuilder2 = __webpack_require__(340);
+	var _AbstractImageBuilder2 = __webpack_require__(343);
 
 	var _AbstractImageBuilder3 = _interopRequireDefault(_AbstractImageBuilder2);
 
@@ -67323,7 +67461,7 @@
 	exports.default = QueryDataModelImageBuilder;
 
 /***/ },
-/* 340 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67334,7 +67472,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _monologue = __webpack_require__(188);
+	var _monologue = __webpack_require__(191);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -67494,116 +67632,137 @@
 	_monologue2.default.mixInto(AbstractImageBuilder);
 
 /***/ },
-/* 341 */
-/***/ function(module, exports) {
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-		"type": [
-			"tonic-query-data-model"
-		],
-		"arguments": {
-			"phi": {
-				"ui": "slider",
-				"values": [
-					"0",
-					"15",
-					"30",
-					"45",
-					"60",
-					"75",
-					"90",
-					"105",
-					"120",
-					"135",
-					"150",
-					"165",
-					"180",
-					"195",
-					"210",
-					"225",
-					"240",
-					"255",
-					"270",
-					"285",
-					"300",
-					"315",
-					"330",
-					"345"
-				],
-				"loop": "modulo",
-				"bind": {
-					"mouse": {
-						"drag": {
-							"modifier": 0,
-							"coordinate": 0,
-							"step": 10,
-							"orientation": 1
-						}
-					}
-				}
-			},
-			"theta": {
-				"default": 1,
-				"ui": "slider",
-				"values": [
-					"60",
-					"90",
-					"120"
-				],
-				"loop": "reverse",
-				"bind": {
-					"mouse": {
-						"scroll": {
-							"modifier": 0,
-							"coordinate": 1,
-							"step": 0
-						},
-						"drag": {
-							"modifier": 0,
-							"coordinate": 1,
-							"step": 10,
-							"orientation": 1
-						}
-					}
-				}
-			}
-		},
-		"arguments_order": [
-			"theta",
-			"phi"
-		],
-		"data": [
-			{
-				"name": "image",
-				"type": "blob",
-				"mimeType": "image/jpg",
-				"pattern": "{theta}_{phi}.jpg"
-			}
-		],
-		"metadata": {
-			"title": "Earth iso-contours",
-			"description": "Show the computational mesh with temperature and salinity iso-lines for the 40 layers and 120 time steps."
-		}
-	};
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ = __webpack_require__(189);
+
+	var _2 = _interopRequireDefault(_);
+
+	var _QueryDataModelControl = __webpack_require__(345);
+
+	var _QueryDataModelControl2 = _interopRequireDefault(_QueryDataModelControl);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_2.default.registerWidget('QueryDataModelWidget', function (_ref) {
+	  var queryDataModel = _ref.queryDataModel,
+	      handleExploration = _ref.handleExploration;
+	  return _react2.default.createElement(_QueryDataModelControl2.default, {
+	    key: 'QueryDataModel',
+	    handleExploration: !!handleExploration,
+	    model: queryDataModel
+	  });
+	});
 
 /***/ },
-/* 342 */
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _QueryDataModelControl = __webpack_require__(346);
+
+	var _QueryDataModelControl2 = _interopRequireDefault(_QueryDataModelControl);
+
+	var _CollapsibleWidget = __webpack_require__(348);
+
+	var _CollapsibleWidget2 = _interopRequireDefault(_CollapsibleWidget);
+
+	var _DataListenerMixin = __webpack_require__(351);
+
+	var _DataListenerMixin2 = _interopRequireDefault(_DataListenerMixin);
+
+	var _DataListenerUpdateMixin = __webpack_require__(352);
+
+	var _DataListenerUpdateMixin2 = _interopRequireDefault(_DataListenerUpdateMixin);
+
+	var _ToggleIconButtonWidget = __webpack_require__(353);
+
+	var _ToggleIconButtonWidget2 = _interopRequireDefault(_ToggleIconButtonWidget);
+
+	var _QueryDataModelWidget = __webpack_require__(356);
+
+	var _QueryDataModelWidget2 = _interopRequireDefault(_QueryDataModelWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'QueryDataModelControl',
+
+	  propTypes: {
+	    handleExploration: _react2.default.PropTypes.bool,
+	    model: _react2.default.PropTypes.object
+	  },
+
+	  mixins: [_DataListenerMixin2.default, _DataListenerUpdateMixin2.default],
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      handleExploration: false
+	    };
+	  },
+	  toggleExploration: function toggleExploration(enabled) {
+	    this.props.model.exploreQuery(enabled, true, !this.props.handleExploration);
+	  },
+	  render: function render() {
+	    var exploreButton = _react2.default.createElement(_ToggleIconButtonWidget2.default, {
+	      key: 'explore-button',
+	      icon: _QueryDataModelControl2.default.exploreIcon,
+	      onChange: this.toggleExploration,
+	      value: this.props.model.exploreState.animate
+	    });
+
+	    return _react2.default.createElement(
+	      _CollapsibleWidget2.default,
+	      {
+	        title: 'Parameters',
+	        key: 'QueryDataModelWidget_parent',
+	        visible: this.props.model.originalData.arguments_order.length > 0,
+	        activeSubTitle: true,
+	        subtitle: exploreButton
+	      },
+	      _react2.default.createElement(_QueryDataModelWidget2.default, {
+	        key: 'QueryDataModelWidget',
+	        model: this.props.model
+	      })
+	    );
+	  }
+	});
+
+/***/ },
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(343);
+	var content = __webpack_require__(347);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(185)(content, {});
+	var update = __webpack_require__(176)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!../css-loader/index.js!../postcss-loader/index.js!./normalize.css", function() {
-				var newContent = require("!!../css-loader/index.js!../postcss-loader/index.js!./normalize.css");
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./QueryDataModelControl.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./QueryDataModelControl.mcss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -67613,18 +67772,800 @@
 	}
 
 /***/ },
-/* 343 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(175)();
 	// imports
-
+	exports.i(__webpack_require__(181), undefined);
 
 	// module
-	exports.push([module.id, "/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Prevent adjustments of font size after orientation changes in IE and iOS.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove the margin in all browsers (opinionated).\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n * 2. Add the correct display in IE.\n */\n\narticle,\naside,\ndetails, /* 1 */\nfigcaption,\nfigure,\nfooter,\nheader,\nmain, /* 2 */\nmenu,\nnav,\nsection,\nsummary { /* 1 */\n  display: block;\n}\n\n/**\n * Add the correct display in IE 9-.\n */\n\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n}\n\n/**\n * Add the correct display in iOS 4-7.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\n\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Add the correct display in IE 10-.\n * 1. Add the correct display in IE.\n */\n\ntemplate, /* 1 */\n[hidden] {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\n\na {\n  background-color: transparent; /* 1 */\n  -webkit-text-decoration-skip: objects; /* 2 */\n}\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\n\na:active,\na:hover {\n  outline-width: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\n\nabbr[title] {\n  border-bottom: none; /* 1 */\n  text-decoration: underline; /* 2 */\n  text-decoration: underline dotted; /* 2 */\n}\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\n\nb,\nstrong {\n  font-weight: inherit;\n}\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/**\n * Add the correct font style in Android 4.3-.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Add the correct background and color in IE 9-.\n */\n\nmark {\n  background-color: #ff0;\n  color: #000;\n}\n\n/**\n * Add the correct font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\n\nimg {\n  border-style: none;\n}\n\n/**\n * Hide the overflow in IE.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/**\n * Add the correct margin in IE 8.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\n\nhr {\n  box-sizing: content-box; /* 1 */\n  height: 0; /* 1 */\n  overflow: visible; /* 2 */\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change font properties to `inherit` in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\n\nbutton,\ninput,\nselect,\ntextarea {\n  font: inherit; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Restore the font weight unset by the previous rule.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\n\nbutton,\ninput { /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect { /* 1 */\n  text-transform: none;\n}\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\nhtml [type=\"button\"], /* 1 */\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\n\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\n\nlegend {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n\n[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.\n */\n\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Correct the text style of placeholders in Chrome, Edge, and Safari.\n */\n\n::-webkit-input-placeholder {\n  color: inherit;\n  opacity: 0.54;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n", ""]);
+	exports.push([module.id, ".QueryDataModelControl_exploreIcon_1B32n {\n}\n", ""]);
 
 	// exports
+	exports.locals = {
+		"exploreIcon": "QueryDataModelControl_exploreIcon_1B32n " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + " " + __webpack_require__(181).locals["fa-compass"] + ""
+	};
 
+/***/ },
+/* 348 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CollapsibleWidget = __webpack_require__(349);
+
+	var _CollapsibleWidget2 = _interopRequireDefault(_CollapsibleWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'CollapsibleWidget',
+
+	  propTypes: {
+	    children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.array]),
+	    onChange: _react2.default.PropTypes.func,
+	    open: _react2.default.PropTypes.bool,
+	    subtitle: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.string, _react2.default.PropTypes.array]),
+	    title: _react2.default.PropTypes.string,
+	    visible: _react2.default.PropTypes.bool,
+	    activeSubTitle: _react2.default.PropTypes.bool,
+	    disableCollapse: _react2.default.PropTypes.bool
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      title: '',
+	      subtitle: '',
+	      open: true,
+	      visible: true,
+	      disableCollapse: false
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      open: this.props.open
+	    };
+	  },
+	  toggleOpen: function toggleOpen() {
+	    if (this.props.disableCollapse && this.state.open) {
+	      return;
+	    }
+	    var newState = !this.state.open;
+	    this.setState({ open: newState });
+
+	    if (this.props.onChange) {
+	      this.props.onChange(newState);
+	    }
+	  },
+	  isCollapsed: function isCollapsed() {
+	    return this.state.open === false;
+	  },
+	  isExpanded: function isExpanded() {
+	    return this.state.open === true;
+	  },
+	  render: function render() {
+	    var localStyle = {};
+	    if (!this.props.visible) {
+	      localStyle.display = 'none';
+	    }
+	    return _react2.default.createElement(
+	      'section',
+	      { className: _CollapsibleWidget2.default.container, style: localStyle },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _CollapsibleWidget2.default.header },
+	        _react2.default.createElement(
+	          'div',
+	          { onClick: this.toggleOpen },
+	          _react2.default.createElement('i', { className: _CollapsibleWidget2.default[this.state.open ? 'caret' : 'caretClosed'] }),
+	          _react2.default.createElement(
+	            'strong',
+	            { className: _CollapsibleWidget2.default.title },
+	            this.props.title
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: this.props.activeSubTitle ? _CollapsibleWidget2.default.subtitleActive : _CollapsibleWidget2.default.subtitle },
+	          this.props.subtitle
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: _CollapsibleWidget2.default[this.state.open ? 'visibleContent' : 'hiddenContent'] },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 349 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(350);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./CollapsibleWidget.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./CollapsibleWidget.mcss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+	exports.i(__webpack_require__(181), undefined);
+
+	// module
+	exports.push([module.id, ".CollapsibleWidget_container_3dsOC {\n  width: 100%;\n  padding: 0;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  clear: both;\n}\n\n.CollapsibleWidget_header_2jlW9 {\n  position: relative;\n  left: 0;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  display: inline-block;\n  padding: 0;\n  border: none;\n  background-color: rgba(0,0,0,0);\n  width: 100%;\n  text-align: left;\n}\n\n.CollapsibleWidget_caret_4nxYT {\n    transition: transform .2s ease;\n}\n\n.CollapsibleWidget_caretClosed_2wYFq {\n    transform: rotate(-90deg);\n}\n\n.CollapsibleWidget_title_f2tO1 {}\n\n.CollapsibleWidget_subtitle_2EvxW {\n  position: absolute;\n  right: 15px;\n  top: 0;\n  left: 5px;\n  text-align: right;\n  z-index: -1;\n}\n\n.CollapsibleWidget_subtitleActive_1hqN3 {\n  position: absolute;\n  right: 15px;\n  top: 0;\n}\n\n.CollapsibleWidget_visibleContent_3naaC {\n  padding: 5px 15px 0px 15px;\n}\n\n.CollapsibleWidget_hiddenContent_3XIsb {\n  display: none;\n}\n\n@media screen and (max-device-width: 400px) {\n    .CollapsibleWidget_caret_4nxYT {\n        font-size: 1.45em;\n    }\n}\n\n.is-ios-device .CollapsibleWidget_caret_4nxYT {\n    font-size: 1.45em;\n}\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "CollapsibleWidget_container_3dsOC",
+		"header": "CollapsibleWidget_header_2jlW9",
+		"caret": "CollapsibleWidget_caret_4nxYT " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + " " + __webpack_require__(181).locals["fa-caret-down"] + "",
+		"caretClosed": "CollapsibleWidget_caretClosed_2wYFq CollapsibleWidget_caret_4nxYT " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + " " + __webpack_require__(181).locals["fa-caret-down"] + "",
+		"title": "CollapsibleWidget_title_f2tO1",
+		"subtitle": "CollapsibleWidget_subtitle_2EvxW",
+		"subtitleActive": "CollapsibleWidget_subtitleActive_1hqN3",
+		"visibleContent": "CollapsibleWidget_visibleContent_3naaC",
+		"hiddenContent": "CollapsibleWidget_hiddenContent_3XIsb"
+	};
+
+/***/ },
+/* 351 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  // Attach listener by default
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      listener: true
+	    };
+	  },
+	  attachListener: function attachListener(dataModel) {
+	    this.dataSubscription = dataModel.onStateChange(this.dataListenerCallback);
+	  },
+	  detachListener: function detachListener() {
+	    if (this.dataSubscription) {
+	      this.dataSubscription.unsubscribe();
+	      this.dataSubscription = null;
+	    }
+	  },
+
+
+	  // Auto mount listener unless notified otherwise
+	  componentWillMount: function componentWillMount() {
+	    this.detachListener();
+	    if (this.props.listener) {
+	      this.attachListener(this.props.model);
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.detachListener();
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    var previousDataModel = this.props.model,
+	        nextDataModel = nextProps.model;
+
+	    if (previousDataModel !== nextDataModel) {
+	      this.detachListener();
+	      this.attachListener(nextDataModel);
+	    }
+	  }
+	};
+
+/***/ },
+/* 352 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  // Callback for data handler
+	  dataListenerCallback: function dataListenerCallback(data, envelope) {
+	    this.forceUpdate();
+	  }
+	};
+
+/***/ },
+/* 353 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ToggleIconButtonWidget = __webpack_require__(354);
+
+	var _ToggleIconButtonWidget2 = _interopRequireDefault(_ToggleIconButtonWidget);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'ToggleIconButtonWidget',
+
+	  propTypes: {
+	    alwaysOn: _react2.default.PropTypes.bool,
+	    className: _react2.default.PropTypes.string,
+	    icon: _react2.default.PropTypes.string,
+	    iconDisabled: _react2.default.PropTypes.string,
+	    name: _react2.default.PropTypes.string,
+	    onChange: _react2.default.PropTypes.func,
+	    toggle: _react2.default.PropTypes.bool,
+	    value: _react2.default.PropTypes.bool
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      className: '',
+	      value: true,
+	      icon: 'fa-sun-o',
+	      toggle: true,
+	      name: 'toggle-button'
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      enabled: this.props.value
+	    };
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (nextProps.value !== this.state.enabled) {
+	      this.setState({ enabled: nextProps.value });
+	    }
+	  },
+	  buttonClicked: function buttonClicked() {
+	    var enabled = this.props.toggle ? !this.state.enabled : this.state.enabled;
+	    if (this.props.onChange) {
+	      this.props.onChange(enabled, this.props.name);
+	    }
+	    if (this.props.toggle) {
+	      this.setState({ enabled: enabled });
+	    }
+	  },
+	  render: function render() {
+	    var classList = [this.props.className];
+	    var enabled = this.state.enabled || this.props.alwaysOn;
+	    if (this.props.iconDisabled) {
+	      classList.push(enabled ? this.props.icon : this.props.iconDisabled);
+	      classList.push(_ToggleIconButtonWidget2.default.enabledButton);
+	    } else {
+	      classList.push(this.props.icon);
+	      classList.push(enabled ? _ToggleIconButtonWidget2.default.enabledButton : _ToggleIconButtonWidget2.default.disabledButton);
+	    }
+	    return _react2.default.createElement('i', { className: classList.join(' '), onClick: this.buttonClicked });
+	  }
+	});
+
+/***/ },
+/* 354 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(355);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./ToggleIconButtonWidget.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./ToggleIconButtonWidget.mcss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 355 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+	exports.i(__webpack_require__(181), undefined);
+
+	// module
+	exports.push([module.id, ".ToggleIconButtonWidget_button_1gP3b {\n    cursor: pointer;\n}\n\n.ToggleIconButtonWidget_enabledButton_kVsAJ {\n    color: black;\n}\n\n.ToggleIconButtonWidget_disabledButton_3phnV {\n    color: grey;\n}\n\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px) {\n\n    .ToggleIconButtonWidget_button_1gP3b {\n        font-size: 1.4em;\n        height: 1.5em;\n    }\n\n}\n\n.is-ios-device .ToggleIconButtonWidget_button_1gP3b {\n    font-size: 1.4em;\n    height: 1.5em;\n}\n", ""]);
+
+	// exports
+	exports.locals = {
+		"button": "ToggleIconButtonWidget_button_1gP3b " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + "",
+		"enabledButton": "ToggleIconButtonWidget_enabledButton_kVsAJ ToggleIconButtonWidget_button_1gP3b " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + "",
+		"disabledButton": "ToggleIconButtonWidget_disabledButton_3phnV ToggleIconButtonWidget_button_1gP3b " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-fw"] + ""
+	};
+
+/***/ },
+/* 356 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _QueryDataModelWidget = __webpack_require__(357);
+
+	var _QueryDataModelWidget2 = _interopRequireDefault(_QueryDataModelWidget);
+
+	var _String = __webpack_require__(359);
+
+	var _String2 = _interopRequireDefault(_String);
+
+	var _Number = __webpack_require__(360);
+
+	var _Number2 = _interopRequireDefault(_Number);
+
+	var _DataListenerMixin = __webpack_require__(351);
+
+	var _DataListenerMixin2 = _interopRequireDefault(_DataListenerMixin);
+
+	var _DataListenerUpdateMixin = __webpack_require__(352);
+
+	var _DataListenerUpdateMixin2 = _interopRequireDefault(_DataListenerUpdateMixin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * This React component expect the following input properties:
+	 *   - model:
+	 *       Expect a QueryDataModel instance.
+	 *   - listener:
+	 *       Expect a Boolean based on the automatic data model registration for listening.
+	 *       Default value is true and false for the sub components.
+	 */
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'QueryDataModelWidget',
+
+	  propTypes: {
+	    model: _react2.default.PropTypes.object
+	  },
+
+	  mixins: [_DataListenerMixin2.default, _DataListenerUpdateMixin2.default],
+
+	  render: function render() {
+	    var model = this.props.model,
+	        args = model.originalData.arguments,
+	        orderList = model.originalData.arguments_order.filter(function (name) {
+	      return args[name].values.length > 1;
+	    });
+
+	    return _react2.default.createElement(
+	      'div',
+	      { className: _QueryDataModelWidget2.default.container },
+	      orderList.map(function (name) {
+	        if (model.getUiType(name) === 'list') {
+	          return _react2.default.createElement(_String2.default, {
+	            key: name,
+	            model: model,
+	            arg: name,
+	            listener: false
+	          });
+	        } else if (model.getUiType(name) === 'slider') {
+	          return _react2.default.createElement(_Number2.default, {
+	            key: name,
+	            model: model,
+	            arg: name,
+	            listener: false
+	          });
+	        }
+	        return null;
+	      })
+	    );
+	  }
+	});
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(358);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./QueryDataModelWidget.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./QueryDataModelWidget.mcss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 358 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+	exports.i(__webpack_require__(181), undefined);
+
+	// module
+	exports.push([module.id, ".QueryDataModelWidget_container_3t8tq {\n    min-width: 5em;\n    width: 100%;\n    box-sizing: border-box;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.QueryDataModelWidget_item_204ou {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1;\n        flex: 1;\n    -ms-flex-direction: column;\n        flex-direction: column;\n    box-sizing: border-box;\n    margin-top: 10px;\n    border-left: 1px solid #aaa;\n    margin-left: 2px;\n    padding-left: 10px;\n    padding-right: 10px;\n}\n\n.QueryDataModelWidget_itemActive_3Qr6d {\n\n    border-left: 3px solid #000;\n    margin-left: 0;\n}\n\n.QueryDataModelWidget_row_1HE23 {\n    position: relative;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex: 1;\n        flex: 1;\n    -ms-flex-direction: row;\n        flex-direction: row;\n    margin-top: 5px;\n}\n\n.QueryDataModelWidget_label_2pF0L {\n    -ms-flex: 1;\n        flex: 1;\n\n    /* bold */\n    font-weight: bold;\n\n    /* can't select text */\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n\n    /* click pointer */\n    cursor: pointer;\n\n    text-align: left;\n}\n\n.QueryDataModelWidget_label_2pF0L::first-letter {\n    text-transform: uppercase;\n}\n\n.QueryDataModelWidget_mobileOnly_31K1j {\n    display: none;\n}\n\n.QueryDataModelWidget_hidden_GDIST {\n    display: none;\n}\n\n.QueryDataModelWidget_itemControl_1eXPI {\n    display: -ms-flexbox;\n    display: flex;\n    width: 4em;\n    -ms-flex: none;\n        flex: none;\n    -ms-flex-pack: end;\n        justify-content: flex-end;\n}\n\n.QueryDataModelWidget_itemControlValue_tBDBl {\n    position: absolute;\n    top: 0;\n    right: 0;\n\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.QueryDataModelWidget_controlButton_LHxXJ {\n    cursor: pointer;\n\n    padding-left: 5px;\n    padding-right: 5px;\n}\n\n.QueryDataModelWidget_nextButton_1EOwg {\n}\n\n.QueryDataModelWidget_previousButton_2AnIi {\n}\n\n.QueryDataModelWidget_firstButton_3Hn6Q {\n}\n\n.QueryDataModelWidget_lastButton_2nH41 {\n}\n\n\n.QueryDataModelWidget_slider_2vNL9 {\n    -ms-flex: 1;\n        flex: 1;\n}\n\n.QueryDataModelWidget_input_29BG0 {\n    width: 100%;\n}\n\n@media screen and (max-width: 400px),\nscreen and (orientation: landscape) and (max-device-width: 400px) {\n    .QueryDataModelWidget_mobileOnly_31K1j {\n        display: -ms-flexbox;\n        display: flex;\n    }\n\n    .QueryDataModelWidget_itemControl_1eXPI {\n        -ms-flex: 1;\n            flex: 1;\n        -ms-flex-pack: center;\n            justify-content: center;\n    }\n\n    .QueryDataModelWidget_controlButton_LHxXJ {\n        font-size: 1.4em;\n        padding: 0;\n        text-align: center;\n        -ms-flex-positive: 1;\n            flex-grow: 1;\n        height: 1.5em;\n    }\n\n    .QueryDataModelWidget_noMobile_341ac {\n        display: none;\n    }\n\n    input[type=\"range\"]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n                appearance: none;\n        width: 25px;\n        height: 25px;\n        border: 1px solid gray;\n        background-color: white;\n        border-radius: 50%;\n    }\n\n    /* while the style is the same as above, neither will render if grouped */\n    input[type=\"range\"]::-moz-range-thumb {\n        -moz-appearance: none;\n             appearance: none;\n        width: 25px;\n        height: 25px;\n        border: 1px solid gray;\n        background-color: white;\n        border-radius: 50%;\n    }\n}\n\n.is-ios-device .QueryDataModelWidget_mobileOnly_31K1j {\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.is-ios-device .QueryDataModelWidget_itemControl_1eXPI {\n    -ms-flex: 1;\n        flex: 1;\n    -ms-flex-pack: center;\n        justify-content: center;\n}\n\n.is-ios-device .QueryDataModelWidget_controlButton_LHxXJ {\n    font-size: 1.4em;\n    padding: 0;\n    text-align: center;\n    -ms-flex-positive: 1;\n        flex-grow: 1;\n    height: 1.5em;\n}\n\n.is-ios-device .QueryDataModelWidget_noMobile_341ac {\n    display: none;\n}\n\n.is-ios-device input[type=\"range\"]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n            appearance: none;\n    width: 25px;\n    height: 25px;\n    border: 1px solid gray;\n    background-color: white;\n    border-radius: 50%;\n}\n\n/* while the style is the same as above, neither will render if grouped */\n.is-ios-device input[type=\"range\"]::-moz-range-thumb {\n    -moz-appearance: none;\n         appearance: none;\n    width: 25px;\n    height: 25px;\n    border: 1px solid gray;\n    background-color: white;\n    border-radius: 50%;\n}\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "QueryDataModelWidget_container_3t8tq",
+		"item": "QueryDataModelWidget_item_204ou",
+		"itemActive": "QueryDataModelWidget_itemActive_3Qr6d QueryDataModelWidget_item_204ou",
+		"row": "QueryDataModelWidget_row_1HE23",
+		"label": "QueryDataModelWidget_label_2pF0L",
+		"mobileOnly": "QueryDataModelWidget_mobileOnly_31K1j",
+		"hidden": "QueryDataModelWidget_hidden_GDIST",
+		"itemControl": "QueryDataModelWidget_itemControl_1eXPI",
+		"itemControlValue": "QueryDataModelWidget_itemControlValue_tBDBl",
+		"controlButton": "QueryDataModelWidget_controlButton_LHxXJ",
+		"nextButton": "QueryDataModelWidget_nextButton_1EOwg " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-plus"] + " QueryDataModelWidget_controlButton_LHxXJ",
+		"previousButton": "QueryDataModelWidget_previousButton_2AnIi " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-minus"] + " QueryDataModelWidget_controlButton_LHxXJ",
+		"firstButton": "QueryDataModelWidget_firstButton_3Hn6Q " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-step-backward"] + " QueryDataModelWidget_controlButton_LHxXJ",
+		"lastButton": "QueryDataModelWidget_lastButton_2nH41 " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-step-forward"] + " QueryDataModelWidget_controlButton_LHxXJ",
+		"slider": "QueryDataModelWidget_slider_2vNL9",
+		"input": "QueryDataModelWidget_input_29BG0",
+		"noMobile": "QueryDataModelWidget_noMobile_341ac"
+	};
+
+/***/ },
+/* 359 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _QueryDataModelWidget = __webpack_require__(357);
+
+	var _QueryDataModelWidget2 = _interopRequireDefault(_QueryDataModelWidget);
+
+	var _DataListenerMixin = __webpack_require__(351);
+
+	var _DataListenerMixin2 = _interopRequireDefault(_DataListenerMixin);
+
+	var _DataListenerUpdateMixin = __webpack_require__(352);
+
+	var _DataListenerUpdateMixin2 = _interopRequireDefault(_DataListenerUpdateMixin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * This React component expect the following input properties:
+	 *   - model:
+	 *       Expect a QueryDataModel instance.
+	 *   - listener:
+	 *       Expect a Boolean based on the automatic data model registration for listening.
+	 *       Default value is true but that should be false is nested.
+	 *   - arg:
+	 *       Expect the name of the argument this String UI element control within the model.
+	 */
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'ParameterSet.String',
+
+	  propTypes: {
+	    arg: _react2.default.PropTypes.string,
+	    model: _react2.default.PropTypes.object.isRequired
+	  },
+
+	  mixins: [_DataListenerMixin2.default, _DataListenerUpdateMixin2.default],
+
+	  handleChange: function handleChange(event) {
+	    if (this.props.model.setValue(this.props.arg, event.target.value)) {
+	      this.props.model.lazyFetchData();
+	    }
+	  },
+	  grabFocus: function grabFocus() {
+	    this.select.focus();
+	  },
+	  toggleAnimation: function toggleAnimation() {
+	    this.props.model.toggleAnimationFlag(this.props.arg);
+	    this.setState({});
+	  },
+	  render: function render() {
+	    var _this = this;
+
+	    return _react2.default.createElement(
+	      'div',
+	      { className: this.props.model.getAnimationFlag(this.props.arg) ? _QueryDataModelWidget2.default.itemActive : _QueryDataModelWidget2.default.item },
+	      _react2.default.createElement(
+	        'div',
+	        { className: [_QueryDataModelWidget2.default.row, _QueryDataModelWidget2.default.label].join(' '), onClick: this.toggleAnimation },
+	        this.props.model.label(this.props.arg)
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: _QueryDataModelWidget2.default.row, onMouseEnter: this.grabFocus },
+	        _react2.default.createElement(
+	          'select',
+	          {
+	            className: _QueryDataModelWidget2.default.input,
+	            ref: function ref(c) {
+	              _this.select = c;
+	            },
+	            value: this.props.model.getValue(this.props.arg),
+	            onChange: this.handleChange
+	          },
+	          this.props.model.getValues(this.props.arg).map(function (v) {
+	            return _react2.default.createElement(
+	              'option',
+	              { key: v, value: v },
+	              v
+	            );
+	          })
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _QueryDataModelWidget = __webpack_require__(357);
+
+	var _QueryDataModelWidget2 = _interopRequireDefault(_QueryDataModelWidget);
+
+	var _DataListenerMixin = __webpack_require__(351);
+
+	var _DataListenerMixin2 = _interopRequireDefault(_DataListenerMixin);
+
+	var _DataListenerUpdateMixin = __webpack_require__(352);
+
+	var _DataListenerUpdateMixin2 = _interopRequireDefault(_DataListenerUpdateMixin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * This React component expect the following input properties:
+	 *   - model:
+	 *       Expect a QueryDataModel instance.
+	 *   - listener:
+	 *       Expect a Boolean based on the automatic data model registration for listening.
+	 *       Default value is true but that should be false is nested.
+	 *   - arg:
+	 *       Expect the name of the argument this Number UI element control within the model.
+	 */
+	exports.default = _react2.default.createClass({
+
+	  displayName: 'Number',
+
+	  propTypes: {
+	    arg: _react2.default.PropTypes.string,
+	    model: _react2.default.PropTypes.object.isRequired
+	  },
+
+	  mixins: [_DataListenerMixin2.default, _DataListenerUpdateMixin2.default],
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      advanced: false,
+	      button: false,
+	      slider: false
+	    };
+	  },
+	  onIndexChange: function onIndexChange(event) {
+	    if (this.props.model.setIndex(this.props.arg, Number(event.target.value))) {
+	      this.props.model.lazyFetchData();
+	    }
+	  },
+	  previous: function previous() {
+	    if (this.props.model.previous(this.props.arg)) {
+	      this.props.model.lazyFetchData();
+	      this.slider.focus();
+	    }
+	  },
+	  next: function next() {
+	    if (this.props.model.next(this.props.arg)) {
+	      this.props.model.lazyFetchData();
+	      this.slider.focus();
+	    }
+	  },
+	  first: function first() {
+	    if (this.props.model.first(this.props.arg)) {
+	      this.props.model.lazyFetchData();
+	      this.slider.focus();
+	    }
+	  },
+	  last: function last() {
+	    if (this.props.model.last(this.props.arg)) {
+	      this.props.model.lazyFetchData();
+	      this.slider.focus();
+	    }
+	  },
+	  updateMode: function updateMode(event) {
+	    if (this.state.advanced !== event.altKey) {
+	      this.setState({ advanced: event.altKey });
+	    }
+	  },
+	  resetState: function resetState(event) {
+	    this.setState({ advanced: false });
+	  },
+	  enableButtons: function enableButtons(event) {
+	    this.setState({ button: true });
+	    this.slider.focus();
+	  },
+	  disableButtons: function disableButtons() {
+	    this.setState({ button: false, advanced: false });
+	  },
+	  grabFocus: function grabFocus() {
+	    this.slider.focus();
+	  },
+	  toggleAnimation: function toggleAnimation() {
+	    this.props.model.toggleAnimationFlag(this.props.arg);
+	    this.setState({});
+	  },
+	  render: function render() {
+	    var _this = this;
+
+	    return _react2.default.createElement(
+	      'div',
+	      {
+	        className: this.props.model.getAnimationFlag(this.props.arg) ? _QueryDataModelWidget2.default.itemActive : _QueryDataModelWidget2.default.item,
+	        onKeyDown: this.updateMode,
+	        onKeyUp: this.resetState,
+	        onMouseLeave: this.disableButtons
+	      },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _QueryDataModelWidget2.default.row },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _QueryDataModelWidget2.default.label, onClick: this.toggleAnimation },
+	          this.props.model.label(this.props.arg)
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _QueryDataModelWidget2.default.mobileOnly },
+	          this.props.model.getValue(this.props.arg)
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            className: [_QueryDataModelWidget2.default.itemControl, _QueryDataModelWidget2.default.noMobile].join(' '),
+	            onMouseEnter: this.enableButtons,
+	            onMouseLeave: this.disableButtons
+	          },
+	          _react2.default.createElement(
+	            'div',
+	            { className: this.state.button ? _QueryDataModelWidget2.default.hidden : _QueryDataModelWidget2.default.itemControlValue },
+	            this.props.model.getValue(this.props.arg)
+	          ),
+	          _react2.default.createElement('i', {
+	            className: this.state.button ? this.state.advanced ? _QueryDataModelWidget2.default.firstButton : _QueryDataModelWidget2.default.previousButton : _QueryDataModelWidget2.default.hidden,
+	            onClick: this.state.advanced ? this.first : this.previous
+	          }),
+	          _react2.default.createElement('i', {
+	            className: this.state.button ? this.state.advanced ? _QueryDataModelWidget2.default.lastButton : _QueryDataModelWidget2.default.nextButton : _QueryDataModelWidget2.default.hidden,
+	            onClick: this.state.advanced ? this.last : this.next
+	          })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: [_QueryDataModelWidget2.default.row, _QueryDataModelWidget2.default.mobileOnly].join(' ') },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _QueryDataModelWidget2.default.itemControl },
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('i', {
+	            className: _QueryDataModelWidget2.default.firstButton,
+	            onClick: this.first
+	          }),
+	          _react2.default.createElement('i', {
+	            className: _QueryDataModelWidget2.default.lastButton,
+	            onClick: this.last
+	          }),
+	          _react2.default.createElement('i', {
+	            className: _QueryDataModelWidget2.default.previousButton,
+	            onClick: this.previous
+	          }),
+	          _react2.default.createElement('i', {
+	            className: _QueryDataModelWidget2.default.nextButton,
+	            onClick: this.next
+	          })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: _QueryDataModelWidget2.default.row },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _QueryDataModelWidget2.default.slider, onMouseEnter: this.grabFocus },
+	          _react2.default.createElement('input', {
+	            className: _QueryDataModelWidget2.default.input,
+	            ref: function ref(c) {
+	              _this.slider = c;
+	            },
+	            type: 'range',
+	            min: '0',
+	            max: this.props.model.getSize(this.props.arg) - 1,
+	            value: this.props.model.getIndex(this.props.arg),
+	            onChange: this.onIndexChange
+	          })
+	        )
+	      )
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

@@ -61,7 +61,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Load CSS
-	__webpack_require__(212); /* global document */
+	__webpack_require__(218); /* global document */
 
 
 	var container = document.querySelector('.content');
@@ -476,6 +476,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -1446,45 +1450,43 @@
 	var warning = emptyFunction;
 
 	if (process.env.NODE_ENV !== 'production') {
-	  (function () {
-	    var printWarning = function printWarning(format) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
 	      }
 
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    };
-
-	    warning = function warning(condition, format) {
-	      if (format === undefined) {
-	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	      }
-
-	      if (format.indexOf('Failed Composite propType: ') === 0) {
-	        return; // Ignore CompositeComponent proptype check.
-	      }
-
-	      if (!condition) {
-	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	          args[_key2 - 2] = arguments[_key2];
-	        }
-
-	        printWarning.apply(undefined, [format].concat(args));
-	      }
-	    };
-	  })();
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
 	}
 
 	module.exports = warning;
@@ -17953,18 +17955,11 @@
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
 	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @typechecks
 	 */
@@ -22050,17 +22045,25 @@
 
 	var _CheckboxProperty2 = _interopRequireDefault(_CheckboxProperty);
 
-	var _EnumProperty = __webpack_require__(200);
+	var _CollapsiblePropertyGroup = __webpack_require__(200);
+
+	var _CollapsiblePropertyGroup2 = _interopRequireDefault(_CollapsiblePropertyGroup);
+
+	var _EnumProperty = __webpack_require__(203);
 
 	var _EnumProperty2 = _interopRequireDefault(_EnumProperty);
 
-	var _MapProperty = __webpack_require__(203);
+	var _MapProperty = __webpack_require__(206);
 
 	var _MapProperty2 = _interopRequireDefault(_MapProperty);
 
-	var _SliderProperty = __webpack_require__(207);
+	var _SliderProperty = __webpack_require__(210);
 
 	var _SliderProperty2 = _interopRequireDefault(_SliderProperty);
+
+	var _PropertyGroup = __webpack_require__(215);
+
+	var _PropertyGroup2 = _interopRequireDefault(_PropertyGroup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22082,6 +22085,12 @@
 	  },
 	  Map: function Map(prop, viewData, onChange) {
 	    return _react2.default.createElement(_MapProperty2.default, { key: prop.data.id, data: prop.data, ui: prop.ui, viewData: viewData, show: prop.show, onChange: onChange || prop.onChange });
+	  },
+	  Propertygroup: function Propertygroup(prop, viewData, onChange) {
+	    return _react2.default.createElement(_PropertyGroup2.default, { key: prop.data.id, prop: prop, viewData: viewData, show: prop.show, onChange: onChange });
+	  },
+	  Proxyeditorpropertywidget: function Proxyeditorpropertywidget(prop, viewData, onChange) {
+	    return _react2.default.createElement(_CollapsiblePropertyGroup2.default, { key: prop.data.id, prop: prop, viewData: viewData, show: prop.show, onChange: onChange });
 	  }
 	};
 
@@ -23962,6 +23971,116 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = render;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CollapsiblePropertyGroup = __webpack_require__(201);
+
+	var _CollapsiblePropertyGroup2 = _interopRequireDefault(_CollapsiblePropertyGroup);
+
+	var _PropertyFactory = __webpack_require__(177);
+
+	var _PropertyFactory2 = _interopRequireDefault(_PropertyFactory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function render(props) {
+	  var isCollapsed = !props.prop.data.value[0];
+	  var id = props.prop.data.id;
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: props.show(props.viewData) ? _CollapsiblePropertyGroup2.default.container : _CollapsiblePropertyGroup2.default.hidden },
+	    _react2.default.createElement(
+	      'div',
+	      { className: _CollapsiblePropertyGroup2.default.toolbar, onClick: function onClick() {
+	          return props.onChange({ collapseType: 'ProxyEditorPropertyWidget', id: id, value: !isCollapsed });
+	        } },
+	      _react2.default.createElement('i', { className: isCollapsed ? _CollapsiblePropertyGroup2.default.collapsedIcon : _CollapsiblePropertyGroup2.default.expandedIcon }),
+	      _react2.default.createElement(
+	        'span',
+	        { className: _CollapsiblePropertyGroup2.default.title },
+	        props.prop.ui.label
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: isCollapsed ? _CollapsiblePropertyGroup2.default.hidden : _CollapsiblePropertyGroup2.default.content },
+	      props.prop.children.map(function (p) {
+	        return (0, _PropertyFactory2.default)(p, props.viewData, props.onChange);
+	      })
+	    )
+	  );
+	}
+
+	render.propTypes = {
+	  show: _react2.default.PropTypes.func,
+	  prop: _react2.default.PropTypes.object,
+	  viewData: _react2.default.PropTypes.object,
+	  onChange: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(202);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./CollapsiblePropertyGroup.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./CollapsiblePropertyGroup.mcss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+	exports.i(__webpack_require__(181), undefined);
+
+	// module
+	exports.push([module.id, ".CollapsiblePropertyGroup_container_Wm3Z_ {\n  width: calc(100% - 20px);\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-pack: center;\n      justify-content: center;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  padding: 8px 10px;\n}\n\n.CollapsiblePropertyGroup_toolbar_2eSJ4 {\n  line-height: 30px;\n  height: 30px;\n  min-height: 30px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  margin-bottom: 5px;\n\n  display: -ms-flexbox;\n\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n  -ms-flex-align: center;\n      align-items: center;\n  cursor: pointer;\n  font-weight: 500;\n}\n\n.CollapsiblePropertyGroup_icon_JyroF {\n  width: 15px;\n}\n\n.CollapsiblePropertyGroup_expandedIcon_2J5Pa {\n}\n\n.CollapsiblePropertyGroup_collapsedIcon_2Nr6m {\n}\n\n.CollapsiblePropertyGroup_title_GEM28 {\n   text-transform: capitalize;\n   font-weight: bold;\n}\n\n.CollapsiblePropertyGroup_hidden_raA9g {\n  display: none;\n}\n\n.CollapsiblePropertyGroup_content_I4Bsu {\n  border: 1px solid #aaa;\n  border-radius: 5px;\n  margin-bottom: 5px;\n}\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "CollapsiblePropertyGroup_container_Wm3Z_",
+		"toolbar": "CollapsiblePropertyGroup_toolbar_2eSJ4",
+		"icon": "CollapsiblePropertyGroup_icon_JyroF",
+		"expandedIcon": "CollapsiblePropertyGroup_expandedIcon_2J5Pa CollapsiblePropertyGroup_icon_JyroF " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-caret-down"] + "",
+		"collapsedIcon": "CollapsiblePropertyGroup_collapsedIcon_2Nr6m CollapsiblePropertyGroup_icon_JyroF " + __webpack_require__(181).locals["fa"] + " " + __webpack_require__(181).locals["fa-caret-right"] + "",
+		"title": "CollapsiblePropertyGroup_title_GEM28",
+		"hidden": "CollapsiblePropertyGroup_hidden_raA9g",
+		"content": "CollapsiblePropertyGroup_content_I4Bsu"
+	};
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _react = __webpack_require__(1);
 
@@ -23971,7 +24090,7 @@
 
 	var _CellProperty2 = _interopRequireDefault(_CellProperty);
 
-	var _EnumProperty = __webpack_require__(201);
+	var _EnumProperty = __webpack_require__(204);
 
 	var _EnumProperty2 = _interopRequireDefault(_EnumProperty);
 
@@ -24135,13 +24254,13 @@
 	});
 
 /***/ },
-/* 201 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(202);
+	var content = __webpack_require__(205);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(176)(content, {});
@@ -24161,7 +24280,7 @@
 	}
 
 /***/ },
-/* 202 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(175)();
@@ -24180,7 +24299,7 @@
 	};
 
 /***/ },
-/* 203 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24197,7 +24316,7 @@
 
 	var _CellProperty2 = _interopRequireDefault(_CellProperty);
 
-	var _MapProperty = __webpack_require__(204);
+	var _MapProperty = __webpack_require__(207);
 
 	var _MapProperty2 = _interopRequireDefault(_MapProperty);
 
@@ -24205,7 +24324,7 @@
 
 	var _BlockMixin2 = _interopRequireDefault(_BlockMixin);
 
-	var _KeyValuePair = __webpack_require__(206);
+	var _KeyValuePair = __webpack_require__(209);
 
 	var _KeyValuePair2 = _interopRequireDefault(_KeyValuePair);
 
@@ -24335,13 +24454,13 @@
 	});
 
 /***/ },
-/* 204 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(205);
+	var content = __webpack_require__(208);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(176)(content, {});
@@ -24361,7 +24480,7 @@
 	}
 
 /***/ },
-/* 205 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(175)();
@@ -24382,7 +24501,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24395,7 +24514,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _MapProperty = __webpack_require__(204);
+	var _MapProperty = __webpack_require__(207);
 
 	var _MapProperty2 = _interopRequireDefault(_MapProperty);
 
@@ -24472,7 +24591,7 @@
 	});
 
 /***/ },
-/* 207 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24493,7 +24612,7 @@
 
 	var _BlockMixin2 = _interopRequireDefault(_BlockMixin);
 
-	var _Slider = __webpack_require__(208);
+	var _Slider = __webpack_require__(211);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
@@ -24601,7 +24720,7 @@
 	});
 
 /***/ },
-/* 208 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24616,7 +24735,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _NumberSliderWidget = __webpack_require__(209);
+	var _NumberSliderWidget = __webpack_require__(212);
 
 	var _NumberSliderWidget2 = _interopRequireDefault(_NumberSliderWidget);
 
@@ -24650,7 +24769,7 @@
 	});
 
 /***/ },
-/* 209 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24663,7 +24782,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _NumberSliderWidget = __webpack_require__(210);
+	var _NumberSliderWidget = __webpack_require__(213);
 
 	var _NumberSliderWidget2 = _interopRequireDefault(_NumberSliderWidget);
 
@@ -24744,13 +24863,13 @@
 	});
 
 /***/ },
-/* 210 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(211);
+	var content = __webpack_require__(214);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(176)(content, {});
@@ -24770,7 +24889,7 @@
 	}
 
 /***/ },
-/* 211 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(175)();
@@ -24788,13 +24907,116 @@
 	};
 
 /***/ },
-/* 212 */
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = render;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _PropertyGroup = __webpack_require__(216);
+
+	var _PropertyGroup2 = _interopRequireDefault(_PropertyGroup);
+
+	var _PropertyFactory = __webpack_require__(177);
+
+	var _PropertyFactory2 = _interopRequireDefault(_PropertyFactory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function render(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: props.show(props.viewData) ? _PropertyGroup2.default.container : _PropertyGroup2.default.hidden },
+	    _react2.default.createElement(
+	      'div',
+	      { className: _PropertyGroup2.default.toolbar },
+	      _react2.default.createElement(
+	        'span',
+	        { className: _PropertyGroup2.default.title },
+	        props.prop.ui.label
+	      )
+	    ),
+	    _react2.default.createElement('div', { className: _PropertyGroup2.default.separator }),
+	    _react2.default.createElement(
+	      'div',
+	      { className: _PropertyGroup2.default.content },
+	      props.prop.children.map(function (p) {
+	        return (0, _PropertyFactory2.default)(p, props.viewData, props.onChange);
+	      })
+	    )
+	  );
+	}
+
+	render.propTypes = {
+	  show: _react2.default.PropTypes.func,
+	  prop: _react2.default.PropTypes.object,
+	  viewData: _react2.default.PropTypes.object,
+	  onChange: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(213);
+	var content = __webpack_require__(217);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(176)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./PropertyGroup.mcss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!../../node_modules/postcss-loader/index.js!./PropertyGroup.mcss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(175)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".PropertyGroup_container_2v5_R {\n  width: 100%;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-pack: center;\n      justify-content: center;\n  -ms-flex-align: stretch;\n      align-items: stretch;\n  padding: 8px 0;\n}\n\n.PropertyGroup_toolbar_3eXRu {\n  line-height: 30px;\n  height: 30px;\n  min-height: 30px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  margin: 0 10px 5px 10px;\n\n  display: -ms-flexbox;\n\n  display: flex;\n  -ms-flex-direction: row;\n      flex-direction: row;\n  -ms-flex-pack: start;\n      justify-content: flex-start;\n  -ms-flex-align: center;\n      align-items: center;\n  font-weight: 500;\n}\n\n.PropertyGroup_separator_2vaIQ {\n  border: 1px solid black;\n  margin: 0 10px;\n  position: relative;\n  top: -10px;\n}\n\n.PropertyGroup_title_3aj-1 {\n   text-transform: capitalize;\n   font-weight: bold;\n}\n\n.PropertyGroup_hidden_lWrQD {\n  display: none;\n}\n\n.PropertyGroup_content_2xUS9 {\n  width: 100%;\n}\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "PropertyGroup_container_2v5_R",
+		"toolbar": "PropertyGroup_toolbar_3eXRu",
+		"separator": "PropertyGroup_separator_2vaIQ",
+		"title": "PropertyGroup_title_3aj-1",
+		"hidden": "PropertyGroup_hidden_lWrQD",
+		"content": "PropertyGroup_content_2xUS9"
+	};
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(219);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(176)(content, {});
@@ -24814,7 +25036,7 @@
 	}
 
 /***/ },
-/* 213 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(175)();

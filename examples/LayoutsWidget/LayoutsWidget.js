@@ -340,6 +340,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -1310,45 +1314,43 @@
 	var warning = emptyFunction;
 
 	if (process.env.NODE_ENV !== 'production') {
-	  (function () {
-	    var printWarning = function printWarning(format) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
 	      }
 
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    };
-
-	    warning = function warning(condition, format) {
-	      if (format === undefined) {
-	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	      }
-
-	      if (format.indexOf('Failed Composite propType: ') === 0) {
-	        return; // Ignore CompositeComponent proptype check.
-	      }
-
-	      if (!condition) {
-	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	          args[_key2 - 2] = arguments[_key2];
-	        }
-
-	        printWarning.apply(undefined, [format].concat(args));
-	      }
-	    };
-	  })();
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
 	}
 
 	module.exports = warning;
@@ -17817,18 +17819,11 @@
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
 	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @typechecks
 	 */
@@ -21462,7 +21457,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = layoutsWidget;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -21502,7 +21497,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function layoutsWidget(props) {
+	function render(props) {
 	  var onLayoutChange = function onLayoutChange(event) {
 	    return props.onChange(event.currentTarget.getAttribute('name'));
 	  };
@@ -21521,13 +21516,13 @@
 	  );
 	}
 
-	layoutsWidget.propTypes = {
+	render.propTypes = {
 	  onChange: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  className: _react2.default.PropTypes.string
 	};
 
-	layoutsWidget.defaultProps = {
+	render.defaultProps = {
 	  onChange: function onChange() {}
 	};
 
@@ -21540,7 +21535,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoByTwo;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -21552,7 +21547,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoByTwo(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '2x2' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '2x2', onClick: props.onClick },
@@ -21575,13 +21570,13 @@
 	  );
 	}
 
-	twoByTwo.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoByTwo.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -21948,7 +21943,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = oneByTwo;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -21960,7 +21955,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function oneByTwo(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '1x2' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '1x2', onClick: props.onClick },
@@ -21981,13 +21976,13 @@
 	  );
 	}
 
-	oneByTwo.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	oneByTwo.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22001,7 +21996,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoByOne;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22013,7 +22008,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoByOne(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '2x1' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '2x1', onClick: props.onClick },
@@ -22030,13 +22025,13 @@
 	  );
 	}
 
-	twoByOne.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoByOne.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22050,7 +22045,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = oneByOne;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22062,7 +22057,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function oneByOne(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '1x1' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '1x1', onClick: props.onClick },
@@ -22078,13 +22073,13 @@
 	  );
 	}
 
-	oneByOne.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	oneByOne.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22098,7 +22093,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoLeft;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22110,7 +22105,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoLeft(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '3xL' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xL', onClick: props.onClick },
@@ -22132,13 +22127,13 @@
 	  );
 	}
 
-	twoLeft.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoLeft.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22152,7 +22147,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoTop;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22164,7 +22159,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoTop(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '3xT' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xT', onClick: props.onClick },
@@ -22186,13 +22181,13 @@
 	  );
 	}
 
-	twoTop.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoTop.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22206,7 +22201,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoRight;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22218,7 +22213,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoRight(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '3xR' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xR', onClick: props.onClick },
@@ -22240,13 +22235,13 @@
 	  );
 	}
 
-	twoRight.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoRight.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
@@ -22260,7 +22255,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = twoBottom;
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -22272,7 +22267,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function twoBottom(props) {
+	function render(props) {
 	  return _react2.default.createElement(
 	    'table',
 	    { className: props.active === '3xB' ? _LayoutsWidget2.default.activeTable : _LayoutsWidget2.default.table, name: '3xB', onClick: props.onClick },
@@ -22294,13 +22289,13 @@
 	  );
 	}
 
-	twoBottom.propTypes = {
+	render.propTypes = {
 	  onClick: _react2.default.PropTypes.func,
 	  active: _react2.default.PropTypes.string,
 	  activeRegion: _react2.default.PropTypes.number
 	};
 
-	twoBottom.defaultProps = {
+	render.defaultProps = {
 	  onClick: function onClick() {},
 	  activeRegion: -1
 	};
