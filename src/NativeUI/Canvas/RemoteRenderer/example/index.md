@@ -133,7 +133,7 @@ vtkpython vtk_server.py --port 1234
 import os
 
 # import paraview modules.
-from paraview.web import wslink      as pv_wslink
+from paraview.web import pv_wslink
 from paraview.web import protocols as pv_protocols
 
 from paraview import simple
@@ -151,12 +151,13 @@ except ImportError:
 # =============================================================================
 
 class _DemoServer(pv_wslink.PVServerProtocol):
-
+    authKey = "wslink-secret"
     def initialize(self):
         # Bring used components
         self.registerVtkWebProtocol(pv_protocols.ParaViewWebMouseHandler())
         self.registerVtkWebProtocol(pv_protocols.ParaViewWebViewPort())
         self.registerVtkWebProtocol(pv_protocols.ParaViewWebViewPortImageDelivery())
+        self.updateSecret(_DemoServer.authKey)
 
         # Disable interactor-based render calls
         simple.GetRenderView().EnableRenderOnInteraction = 0
