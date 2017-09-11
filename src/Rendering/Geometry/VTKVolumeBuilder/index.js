@@ -28,6 +28,9 @@ export default class VTKVolumeBuilder {
       if (data.scene) {
         this.imageDataModel.loadScene(data.scene.data);
       }
+      if (data.clusters) {
+        this.imageDataModel.loadClusters(this.queryDataModel, data.clusters);
+      }
     });
 
     // Handle LookupTable change

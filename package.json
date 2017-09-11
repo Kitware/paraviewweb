@@ -7,11 +7,13 @@
         "url": "git+https://github.com/kitware/paraviewweb.git"
     },
     "license": "BSD-3-Clause",
-    "bugs": { "url": "https://github.com/kitware/paraviewweb/issues" },
+    "bugs": {
+        "url": "https://github.com/kitware/paraviewweb/issues"
+    },
     "homepage": "https://github.com/kitware/paraviewweb#readme",
-    "engines" : {
-      "npm" : ">=3.0.0",
-      "node": ">=4.0.0"
+    "engines": {
+        "npm": ">=3.0.0",
+        "node": ">=4.0.0"
     },
     "main": "./dist/ParaViewWeb.js",
     "dependencies": {
@@ -22,9 +24,8 @@
         "plotly.js": "1.14.0",
         "jszip": "3.1.3",
         "base64-js": "1.2.0",
-        "vtk.js": "3.0.1",
+        "vtk.js": "3.3.0",
         "wslink": "0.1.3",
-
         "commander": "2.9.0",
         "shelljs": "0.7.4",
         "gh-pages": "0.11.0"
@@ -32,27 +33,19 @@
     "devDependencies": {
         "monologue.js": "0.3.5",
         "mout": "1.0.0",
-
         "react": "15.3.1",
         "react-dom": "15.3.1",
-
         "d3": "3.5.17",
-
         "axios": "0.14.0",
         "gl-matrix": "2.3.1",
         "hammerjs": "2.0.8",
-
         "font-awesome": "4.5.0",
         "normalize.css": "4.1.1",
-
         "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz",
-
         "kw-web-suite": "2.2.1",
         "kw-doc": "1.0.15",
-
         "babel-plugin-istanbul": "2.0.0",
         "babel-polyfill": "6.16.0",
-
         "karma": "1.2.0",
         "karma-chrome-launcher": "2.0.0",
         "karma-coverage": "1.1.1",
@@ -60,11 +53,8 @@
         "karma-tap": "2.1.4",
         "karma-tap-pretty-reporter": "1.1.0",
         "karma-webpack": "1.8.0",
-
         "electron": "1.3.4",
-
         "resemblejs": "2.2.1",
-
         "tap-spec": "4.1.1",
         "tap-markdown": "1.2.1",
         "tape": "4.6.0",
@@ -72,22 +62,16 @@
     },
     "scripts": {
         "install:global": "npm install -g commitizen@2.5.0",
-
-        "bin:fix-autobahn" : "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
-
-        "doc"           : "kw-doc -c ./documentation/config.js",
-        "doc:www"       : "kw-doc -c ./documentation/config.js -s",
+        "bin:fix-autobahn": "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
+        "doc": "kw-doc -c ./documentation/config.js",
+        "doc:www": "kw-doc -c ./documentation/config.js -s",
         "predoc:publish": "./tools/install-data/install-sample-data-cli.js",
-        "doc:publish"   : "kw-doc -c ./documentation/config.js -p",
-
-
-        "build"         : "npm run bin:fix-autobahn && webpack --progress --colors",
-        "build:release" : "npm run bin:fix-autobahn && (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
-
-        "test"          : "karma start karma.conf.js",
-        "test:travis"   : "karma start karma.conf.js --browsers Electron --single-run",
-
-        "commit"        : "git cz",
+        "doc:publish": "kw-doc -c ./documentation/config.js -p",
+        "build": "npm run bin:fix-autobahn && webpack --progress --colors",
+        "build:release": "npm run bin:fix-autobahn && (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
+        "test": "karma start karma.conf.js",
+        "test:travis": "karma start karma.conf.js --browsers Electron --single-run",
+        "commit": "git cz",
         "semantic-release": "semantic-release pre && npm publish && semantic-release post"
     },
     "config": {
