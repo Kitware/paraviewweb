@@ -26,9 +26,7 @@ export default class VTKSLICDataModel {
       }
     } else {
       this.slicSource.set(queryDataModel.originalData.SLIC);
-      while (this.slicSource.getNumberOfClusters()) {
-        this.slicSource.removeCluster(0);
-      }
+      this.slicSource.removeAllClusters();
 
       const clusters = new Float32Array(clusterData.data);
       const dataSize = clusters.length;
