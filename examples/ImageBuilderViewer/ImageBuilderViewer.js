@@ -21926,6 +21926,10 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21944,82 +21948,111 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _react2.default.createClass({
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  displayName: 'ImageBuilderViewer',
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	  propTypes: {
-	    config: _react2.default.PropTypes.object,
-	    imageBuilder: _react2.default.PropTypes.object.isRequired,
-	    menuAddOn: _react2.default.PropTypes.array,
-	    queryDataModel: _react2.default.PropTypes.object.isRequired,
-	    userData: _react2.default.PropTypes.object
-	  },
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      config: {},
-	      userData: {}
-	    };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    this.attachListener(this.props.imageBuilder);
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var previousDataModel = this.props.imageBuilder,
-	        nextDataModel = nextProps.imageBuilder;
+	var ImageBuilderViewer = function (_React$Component) {
+	  _inherits(ImageBuilderViewer, _React$Component);
 
-	    if (previousDataModel !== nextDataModel) {
-	      this.detachListener();
-	      if (this.props.config.MagicLens) {
-	        this.attachListener(nextDataModel);
+	  function ImageBuilderViewer() {
+	    _classCallCheck(this, ImageBuilderViewer);
+
+	    return _possibleConstructorReturn(this, (ImageBuilderViewer.__proto__ || Object.getPrototypeOf(ImageBuilderViewer)).apply(this, arguments));
+	  }
+
+	  _createClass(ImageBuilderViewer, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.attachListener(this.props.imageBuilder);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var previousDataModel = this.props.imageBuilder,
+	          nextDataModel = nextProps.imageBuilder;
+
+	      if (previousDataModel !== nextDataModel) {
+	        this.detachListener();
+	        if (this.props.config.MagicLens) {
+	          this.attachListener(nextDataModel);
+	        }
 	      }
 	    }
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.detachListener();
-	  },
-	  attachListener: function attachListener(dataModel) {
-	    var _this = this;
-
-	    this.detachListener();
-	    if (dataModel && dataModel.onModelChange) {
-	      this.changeSubscription = dataModel.onModelChange(function (data, envelope) {
-	        _this.forceUpdate();
-	      });
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.detachListener();
 	    }
-	  },
-	  detachListener: function detachListener() {
-	    if (this.changeSubscription) {
-	      this.changeSubscription.unsubscribe();
-	      this.changeSubscription = null;
-	    }
-	  },
-	  render: function render() {
-	    var queryDataModel = this.props.queryDataModel,
-	        magicLensController = this.props.config.MagicLens ? this.props.imageBuilder : null,
-	        imageBuilder = this.props.config.MagicLens ? this.props.imageBuilder.getActiveImageBuilder() : this.props.imageBuilder,
-	        controlWidgets = _CollapsibleControlFactory2.default.getWidgets(imageBuilder);
+	  }, {
+	    key: 'attachListener',
+	    value: function attachListener(dataModel) {
+	      var _this2 = this;
 
-	    // Add menuAddOn if any at the top
-	    if (this.props.menuAddOn) {
-	      controlWidgets = this.props.menuAddOn.concat(controlWidgets);
+	      this.detachListener();
+	      if (dataModel && dataModel.onModelChange) {
+	        this.changeSubscription = dataModel.onModelChange(function (data, envelope) {
+	          _this2.forceUpdate();
+	        });
+	      }
 	    }
+	  }, {
+	    key: 'detachListener',
+	    value: function detachListener() {
+	      if (this.changeSubscription) {
+	        this.changeSubscription.unsubscribe();
+	        this.changeSubscription = null;
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var queryDataModel = this.props.queryDataModel,
+	          magicLensController = this.props.config.MagicLens ? this.props.imageBuilder : null,
+	          imageBuilder = this.props.config.MagicLens ? this.props.imageBuilder.getActiveImageBuilder() : this.props.imageBuilder,
+	          controlWidgets = _CollapsibleControlFactory2.default.getWidgets(imageBuilder);
 
-	    return _react2.default.createElement(
-	      _AbstractViewerMenu2.default,
-	      {
-	        queryDataModel: queryDataModel,
-	        magicLensController: magicLensController,
-	        imageBuilder: imageBuilder,
-	        userData: this.props.userData,
-	        config: this.props.config || {},
-	        rendererClass: _ImageRenderer2.default
-	      },
-	      controlWidgets
-	    );
-	  }
-	});
+	      // Add menuAddOn if any at the top
+	      if (this.props.menuAddOn) {
+	        controlWidgets = this.props.menuAddOn.concat(controlWidgets);
+	      }
+
+	      return _react2.default.createElement(
+	        _AbstractViewerMenu2.default,
+	        _extends({}, this.props, {
+
+	          queryDataModel: queryDataModel,
+	          magicLensController: magicLensController,
+	          imageBuilder: imageBuilder,
+	          userData: this.props.userData,
+	          config: this.props.config || {},
+	          rendererClass: _ImageRenderer2.default
+	        }),
+	        controlWidgets
+	      );
+	    }
+	  }]);
+
+	  return ImageBuilderViewer;
+	}(_react2.default.Component);
+
+	exports.default = ImageBuilderViewer;
+
+
+	ImageBuilderViewer.propTypes = {
+	  config: _react2.default.PropTypes.object,
+	  imageBuilder: _react2.default.PropTypes.object.isRequired,
+	  menuAddOn: _react2.default.PropTypes.array,
+	  queryDataModel: _react2.default.PropTypes.object.isRequired,
+	  userData: _react2.default.PropTypes.object
+	};
+
+	ImageBuilderViewer.defaultProps = {
+	  config: {},
+	  userData: {}
+	};
 
 /***/ },
 /* 178 */
@@ -22031,6 +22064,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -22041,208 +22076,271 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _react2.default.createClass({
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  displayName: 'AbstractViewerMenu',
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	  propTypes: {
-	    children: _react2.default.PropTypes.array,
-	    config: _react2.default.PropTypes.object,
-	    geometryBuilder: _react2.default.PropTypes.object,
-	    imageBuilder: _react2.default.PropTypes.object,
-	    chartBuilder: _react2.default.PropTypes.object,
-	    layout: _react2.default.PropTypes.string,
-	    magicLensController: _react2.default.PropTypes.object,
-	    mouseListener: _react2.default.PropTypes.object,
-	    queryDataModel: _react2.default.PropTypes.object,
-	    renderer: _react2.default.PropTypes.string,
-	    rendererClass: _react2.default.PropTypes.func,
-	    renderers: _react2.default.PropTypes.object,
-	    userData: _react2.default.PropTypes.object
-	  },
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      config: {},
-	      renderer: 'ImageRenderer'
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      collapsed: true,
-	      speedIdx: 0,
-	      speeds: [20, 50, 100, 200, 500],
+	var AbstractViewerMenu = function (_React$Component) {
+	  _inherits(AbstractViewerMenu, _React$Component);
+
+	  function AbstractViewerMenu(props) {
+	    _classCallCheck(this, AbstractViewerMenu);
+
+	    var _this = _possibleConstructorReturn(this, (AbstractViewerMenu.__proto__ || Object.getPrototypeOf(AbstractViewerMenu)).call(this, props));
+
+	    _this.state = {
+	      collapsed: props.initialStateCollapsed,
+	      speedIdx: props.initialStateSpeedIdx,
+	      speeds: props.initialStateSpeeds,
 	      record: false
 	    };
-	  },
 
+	    // Bind methods
+	    _this.componentWillMount = _this.componentWillMount.bind(_this);
+	    _this.componentWillReceiveProps = _this.componentWillReceiveProps.bind(_this);
+	    _this.componentWillUnmount = _this.componentWillUnmount.bind(_this);
+
+	    _this.toggleRecord = _this.toggleRecord.bind(_this);
+	    _this.togglePanel = _this.togglePanel.bind(_this);
+	    _this.toggleLens = _this.toggleLens.bind(_this);
+	    _this.resetCamera = _this.resetCamera.bind(_this);
+	    _this.play = _this.play.bind(_this);
+	    _this.stop = _this.stop.bind(_this);
+	    _this.updateSpeed = _this.updateSpeed.bind(_this);
+	    return _this;
+	  }
 
 	  // Auto mount listener unless notified otherwise
-	  componentWillMount: function componentWillMount() {
-	    this.attachListener(this.props.queryDataModel);
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var previousDataModel = this.props.queryDataModel,
-	        nextDataModel = nextProps.queryDataModel;
 
-	    if (previousDataModel !== nextDataModel) {
+
+	  _createClass(AbstractViewerMenu, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.attachListener(this.props.queryDataModel);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var previousDataModel = this.props.queryDataModel,
+	          nextDataModel = nextProps.queryDataModel;
+
+	      if (previousDataModel !== nextDataModel) {
+	        this.detachListener();
+	        this.attachListener(nextDataModel);
+	      }
+	    }
+
+	    // Auto unmount listener
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
 	      this.detachListener();
-	      this.attachListener(nextDataModel);
 	    }
-	  },
-
-
-	  // Auto unmount listener
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.detachListener();
-	  },
-	  getRenderer: function getRenderer() {
-	    return this.renderer;
-	  },
-	  attachListener: function attachListener(dataModel) {
-	    var _this = this;
-
-	    this.detachListener();
-	    this.queryDataModelChangeSubscription = dataModel.onStateChange(function (data, envelope) {
-	      _this.forceUpdate();
-	    });
-	  },
-	  detachListener: function detachListener() {
-	    if (this.queryDataModelChangeSubscription) {
-	      this.queryDataModelChangeSubscription.unsubscribe();
-	      this.queryDataModelChangeSubscription = null;
+	  }, {
+	    key: 'getRenderer',
+	    value: function getRenderer() {
+	      return this.renderer;
 	    }
-	  },
-	  toggleRecord: function toggleRecord() {
-	    var record = !this.state.record;
-	    this.setState({ record: record });
-	    this.getRenderer().recordImages(record);
-	  },
-	  togglePanel: function togglePanel() {
-	    this.setState({ collapsed: !this.state.collapsed });
-	    this.props.queryDataModel.fetchData();
-	  },
-	  toggleLens: function toggleLens() {
-	    var magicLensController = this.props.magicLensController;
-	    if (magicLensController) {
-	      magicLensController.toggleLens();
-	      this.forceUpdate();
+	  }, {
+	    key: 'attachListener',
+	    value: function attachListener(dataModel) {
+	      var _this2 = this;
+
+	      this.detachListener();
+	      this.queryDataModelChangeSubscription = dataModel.onStateChange(function (data, envelope) {
+	        _this2.forceUpdate();
+	      });
 	    }
-	  },
-	  resetCamera: function resetCamera() {
-	    if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
-	      this.renderer.resetCamera();
+	  }, {
+	    key: 'detachListener',
+	    value: function detachListener() {
+	      if (this.queryDataModelChangeSubscription) {
+	        this.queryDataModelChangeSubscription.unsubscribe();
+	        this.queryDataModelChangeSubscription = null;
+	      }
 	    }
-	  },
-	  play: function play() {
-	    this.props.queryDataModel.animate(true, this.state.speeds[this.state.speedIdx]);
-	  },
-	  stop: function stop() {
-	    this.props.queryDataModel.animate(false);
-	  },
-	  updateSpeed: function updateSpeed() {
-	    var newIdx = (this.state.speedIdx + 1) % this.state.speeds.length,
-	        queryDataModel = this.props.queryDataModel;
-
-	    this.setState({ speedIdx: newIdx });
-	    if (queryDataModel.isAnimating()) {
-	      queryDataModel.animate(true, this.state.speeds[newIdx]);
+	  }, {
+	    key: 'toggleRecord',
+	    value: function toggleRecord() {
+	      var record = !this.state.record;
+	      this.setState({ record: record });
+	      this.getRenderer().recordImages(record);
 	    }
-	  },
+	  }, {
+	    key: 'togglePanel',
+	    value: function togglePanel() {
+	      this.setState({ collapsed: !this.state.collapsed });
+	      this.props.queryDataModel.fetchData();
+	    }
+	  }, {
+	    key: 'toggleLens',
+	    value: function toggleLens() {
+	      var magicLensController = this.props.magicLensController;
+	      if (magicLensController) {
+	        magicLensController.toggleLens();
+	        this.forceUpdate();
+	      }
+	    }
+	  }, {
+	    key: 'resetCamera',
+	    value: function resetCamera() {
+	      if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
+	        this.renderer.resetCamera();
+	      }
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      this.props.queryDataModel.animate(true, this.state.speeds[this.state.speedIdx]);
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      this.props.queryDataModel.animate(false);
+	    }
+	  }, {
+	    key: 'updateSpeed',
+	    value: function updateSpeed() {
+	      var newIdx = (this.state.speedIdx + 1) % this.state.speeds.length,
+	          queryDataModel = this.props.queryDataModel;
 
+	      this.setState({ speedIdx: newIdx });
+	      if (queryDataModel.isAnimating()) {
+	        queryDataModel.animate(true, this.state.speeds[newIdx]);
+	      }
+	    }
 
-	  /* eslint-disable complexity */
-	  render: function render() {
-	    var _this2 = this;
+	    /* eslint-disable complexity */
 
-	    var Renderer = this.props.rendererClass;
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
 
-	    var queryDataModel = this.props.queryDataModel;
-	    var magicLensController = this.props.magicLensController;
-	    var rootImageBuilder = magicLensController || this.props.imageBuilder;
-	    var serverRecording = !!this.props.config.Recording;
+	      var Renderer = this.props.rendererClass;
 
-	    return _react2.default.createElement(
-	      'div',
-	      { className: _AbstractViewerMenu2.default.container },
-	      _react2.default.createElement(
+	      var queryDataModel = this.props.queryDataModel;
+	      var magicLensController = this.props.magicLensController;
+	      var rootImageBuilder = magicLensController || this.props.imageBuilder;
+	      var serverRecording = !!this.props.config.Recording;
+
+	      return _react2.default.createElement(
 	        'div',
-	        {
-	          className: this.state.collapsed ? _AbstractViewerMenu2.default.collapsedControl : _AbstractViewerMenu2.default.control
-	        },
+	        { className: _AbstractViewerMenu2.default.container },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _AbstractViewerMenu2.default.controlBar },
-	          _react2.default.createElement('i', {
-	            className: magicLensController ? magicLensController.isFront() ? _AbstractViewerMenu2.default.magicLensButtonIn : _AbstractViewerMenu2.default.magicLensButtonOut : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.toggleLens
-	          }),
-	          _react2.default.createElement('i', {
-	            className: serverRecording && this.props.renderer === 'ImageRenderer' && this.props.imageBuilder.handleRecord ? this.state.record ? _AbstractViewerMenu2.default.recordButtonOn : _AbstractViewerMenu2.default.recordButtonOff : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.toggleRecord
-	          }),
-	          _react2.default.createElement('i', {
-	            className: ['ImageRenderer', 'GeometryRenderer'].indexOf(this.props.renderer) !== -1 ? _AbstractViewerMenu2.default.resetCameraButton : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.resetCamera
-	          }),
-	          _react2.default.createElement('i', {
-	            className: queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? _AbstractViewerMenu2.default.playButton : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.play
-	          }),
-	          _react2.default.createElement('i', {
-	            className: queryDataModel.isAnimating() ? _AbstractViewerMenu2.default.stopButton : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.stop
-	          }),
-	          _react2.default.createElement('i', {
-	            className: queryDataModel.hasAnimationFlag() ? _AbstractViewerMenu2.default.speedButton : _AbstractViewerMenu2.default.hidden,
-	            onClick: this.updateSpeed
-	          }),
+	          {
+	            className: this.state.collapsed ? _AbstractViewerMenu2.default.collapsedControl : _AbstractViewerMenu2.default.control
+	          },
 	          _react2.default.createElement(
-	            'i',
-	            {
-	              className: queryDataModel.hasAnimationFlag() ? _AbstractViewerMenu2.default.animationSpeed : _AbstractViewerMenu2.default.hidden,
+	            'div',
+	            { className: _AbstractViewerMenu2.default.controlBar },
+	            _react2.default.createElement('i', {
+	              className: magicLensController ? magicLensController.isFront() ? _AbstractViewerMenu2.default.magicLensButtonIn : _AbstractViewerMenu2.default.magicLensButtonOut : _AbstractViewerMenu2.default.hidden,
+	              onClick: this.toggleLens
+	            }),
+	            _react2.default.createElement('i', {
+	              className: serverRecording && this.props.renderer === 'ImageRenderer' && this.props.imageBuilder.handleRecord ? this.state.record ? _AbstractViewerMenu2.default.recordButtonOn : _AbstractViewerMenu2.default.recordButtonOff : _AbstractViewerMenu2.default.hidden,
+	              onClick: this.toggleRecord
+	            }),
+	            _react2.default.createElement('i', {
+	              className: ['ImageRenderer', 'GeometryRenderer'].indexOf(this.props.renderer) !== -1 ? _AbstractViewerMenu2.default.resetCameraButton : _AbstractViewerMenu2.default.hidden,
+	              onClick: this.resetCamera
+	            }),
+	            _react2.default.createElement('i', {
+	              className: queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? _AbstractViewerMenu2.default.playButton : _AbstractViewerMenu2.default.hidden,
+	              onClick: this.play
+	            }),
+	            _react2.default.createElement('i', {
+	              className: queryDataModel.isAnimating() ? _AbstractViewerMenu2.default.stopButton : _AbstractViewerMenu2.default.hidden,
+	              onClick: this.stop
+	            }),
+	            _react2.default.createElement('i', {
+	              className: queryDataModel.hasAnimationFlag() ? _AbstractViewerMenu2.default.speedButton : _AbstractViewerMenu2.default.hidden,
 	              onClick: this.updateSpeed
-	            },
-	            this.state.speeds[this.state.speedIdx] + 'ms'
+	            }),
+	            _react2.default.createElement(
+	              'i',
+	              {
+	                className: queryDataModel.hasAnimationFlag() ? _AbstractViewerMenu2.default.animationSpeed : _AbstractViewerMenu2.default.hidden,
+	                onClick: this.updateSpeed
+	              },
+	              this.state.speeds[this.state.speedIdx] + 'ms'
+	            ),
+	            _react2.default.createElement('i', {
+	              className: this.state.collapsed ? _AbstractViewerMenu2.default.collapsedMenuButton : _AbstractViewerMenu2.default.menuButton,
+	              onClick: this.togglePanel
+	            })
 	          ),
-	          _react2.default.createElement('i', {
-	            className: this.state.collapsed ? _AbstractViewerMenu2.default.collapsedMenuButton : _AbstractViewerMenu2.default.menuButton,
-	            onClick: this.togglePanel
-	          })
+	          _react2.default.createElement(
+	            'div',
+	            { className: _AbstractViewerMenu2.default.controlContent },
+	            this.props.children
+	          )
 	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _AbstractViewerMenu2.default.controlContent },
-	          this.props.children
-	        )
-	      ),
-	      _react2.default.createElement(Renderer
-	      // Common
-	      , { className: _AbstractViewerMenu2.default.renderer,
-	        ref: function ref(c) {
-	          _this2.renderer = c;
-	        },
-	        userData: this.props.userData
+	        _react2.default.createElement(Renderer
+	        // Common
+	        , { className: _AbstractViewerMenu2.default.renderer,
+	          ref: function ref(c) {
+	            _this3.renderer = c;
+	          },
+	          userData: this.props.userData
 
-	        // ImageRenderer
-	        , imageBuilder: rootImageBuilder,
-	        listener: this.props.mouseListener || (rootImageBuilder && rootImageBuilder.getListeners ? rootImageBuilder.getListeners() : null)
+	          // ImageRenderer
+	          , imageBuilder: rootImageBuilder,
+	          listener: this.props.mouseListener || (rootImageBuilder && rootImageBuilder.getListeners ? rootImageBuilder.getListeners() : null)
 
-	        // MultiViewRenderer
-	        , renderers: this.props.renderers,
-	        layout: this.props.layout
+	          // MultiViewRenderer
+	          , renderers: this.props.renderers,
+	          layout: this.props.layout
 
-	        // GeometryRenderer
-	        , geometryBuilder: this.props.geometryBuilder
+	          // GeometryRenderer
+	          , geometryBuilder: this.props.geometryBuilder
 
-	        // PlotlyRenderer
-	        , chartBuilder: this.props.chartBuilder
-	      })
-	    );
-	  }
-	}
-	/* eslint-enable complexity */
-	);
+	          // PlotlyRenderer
+	          , chartBuilder: this.props.chartBuilder
+	        })
+	      );
+	    }
+	    /* eslint-enable complexity */
+
+	  }]);
+
+	  return AbstractViewerMenu;
+	}(_react2.default.Component);
+
+	exports.default = AbstractViewerMenu;
+
+
+	AbstractViewerMenu.propTypes = {
+	  children: _react2.default.PropTypes.array,
+	  config: _react2.default.PropTypes.object,
+	  geometryBuilder: _react2.default.PropTypes.object,
+	  imageBuilder: _react2.default.PropTypes.object,
+	  chartBuilder: _react2.default.PropTypes.object,
+	  layout: _react2.default.PropTypes.string,
+	  magicLensController: _react2.default.PropTypes.object,
+	  mouseListener: _react2.default.PropTypes.object,
+	  queryDataModel: _react2.default.PropTypes.object,
+	  renderer: _react2.default.PropTypes.string,
+	  rendererClass: _react2.default.PropTypes.func,
+	  renderers: _react2.default.PropTypes.object,
+	  userData: _react2.default.PropTypes.object,
+	  initialStateCollapsed: _react2.default.PropTypes.bool,
+	  initialStateSpeedIdx: _react2.default.PropTypes.number,
+	  initialStateSpeeds: _react2.default.PropTypes.array
+	};
+
+	AbstractViewerMenu.defaultProps = {
+	  config: {},
+	  renderer: 'ImageRenderer',
+	  initialStateCollapsed: true,
+	  initialStateSpeedIdx: 0,
+	  initialStateSpeeds: [20, 50, 100, 200, 500]
+	};
 
 /***/ },
 /* 179 */
