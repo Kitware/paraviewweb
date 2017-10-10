@@ -1,7 +1,7 @@
 module.exports = [
   {
     test: /\.svg$/,
-    loader: 'svg-sprite',
+    loader: 'svg-sprite-loader',
     exclude: /fonts/,
   }, {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -15,13 +15,13 @@ module.exports = [
     loader: 'url-loader?limit=8192',
   }, {
     test: /\.css$/,
-    loader: 'style!css!postcss',
+    loader: 'style-loader!css-loader!postcss-loader',
   }, {
     test: /\.mcss$/,
-    loader: 'style!css?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss',
+    loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss-loader',
   }, {
     test: /\.c$/i,
-    loader: 'shader',
+    loader: 'shader-loader',
   }, {
     test: /\.json$/,
     loader: 'json-loader',
@@ -34,21 +34,21 @@ module.exports = [
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)paraviewweb(\/|\\)/,
-    loader: 'babel?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=es2015,presets[]=react',
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)vtk.js(\/|\\)/,
-    loader: 'babel?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=es2015,presets[]=react',
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)wslink(\/|\\)/,
-    loader: 'babel?presets[]=es2015',
+    loader: 'babel-loader?presets[]=es2015',
   }, {
     test: /\.glsl$/,
-    loader: 'shader',
+    loader: 'shader-loader',
   }, {
     test: /\.js$/,
     exclude: /node_modules/,
-    loader: 'babel?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=es2015,presets[]=react',
   },
 ];
