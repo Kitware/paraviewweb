@@ -1,7 +1,7 @@
 module.exports = [
   {
     test: /\.svg$/,
-    loader: 'svg-sprite-loader',
+    loader: 'svg-sprite-loader?runtimeCompat=true',
     exclude: /fonts/,
   }, {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
