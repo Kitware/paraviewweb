@@ -75,7 +75,9 @@ export default class CompositeControlContainer {
       const controlWidth = width < (this.targetWidth + 20) ? (width - 20) : this.targetWidth;
 
       controlDiv.style.width = `${controlWidth}px`;
-      controlDiv.style.height = `${height - 45}px`;
+      controlDiv.style.maxHeight = `${height - 45}px`;
+      controlDiv.style.overflowX = 'hidden';
+      controlDiv.style.overflowY = 'auto';
 
       this.mainViewport.resize();
       this.controlViewport.resize();

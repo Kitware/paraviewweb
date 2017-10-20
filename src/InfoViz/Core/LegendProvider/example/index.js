@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React              from 'react';
 import ReactDOM           from 'react-dom';
 
-import LegendHelper from '..';
+import LegendProvider from '..';
 import SvgIconWidget from '../../../../React/Widgets/SvgIconWidget';
 
 const legendEntries = [
@@ -114,7 +114,7 @@ const priorityOptions = [
   [],
 ];
 
-const legend = LegendHelper.newInstance({ legendEntries });
+const legend = LegendProvider.newInstance({ legendEntries });
 const container = document.querySelector('.content');
 //
 
