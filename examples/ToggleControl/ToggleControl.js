@@ -54,7 +54,11 @@
 
 	var _BackgroundColor2 = _interopRequireDefault(_BackgroundColor);
 
-	__webpack_require__(16);
+	var _Spacer = __webpack_require__(16);
+
+	var _Spacer2 = _interopRequireDefault(_Spacer);
+
+	__webpack_require__(17);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65,8 +69,9 @@
 	container.style.height = '100vh';
 
 	var green = new _BackgroundColor2.default('green');
-	var red = new _BackgroundColor2.default('red');
-	var toggleView = new _2.default(green, red);
+	var spacer = new _Spacer2.default('200px');
+
+	var toggleView = new _2.default(green, spacer);
 
 	toggleView.setContainer(container);
 	toggleView.render();
@@ -181,7 +186,9 @@
 	        var controlWidth = width < this.targetWidth + 20 ? width - 20 : this.targetWidth;
 
 	        controlDiv.style.width = controlWidth + 'px';
-	        // controlDiv.style.height = `${height - 45}px`;
+	        controlDiv.style.maxHeight = height - 45 + 'px';
+	        controlDiv.style.overflowX = 'hidden';
+	        controlDiv.style.overflowY = 'auto';
 
 	        this.mainViewport.resize();
 	        this.controlViewport.resize();
@@ -519,7 +526,7 @@
 	exports.i(__webpack_require__(7), undefined);
 
 	// module
-	exports.push([module.id, ".ToggleControl_jsControlButton_3BSDE, .ToggleControl_jsControlContent_YBoXr {}\n\n.ToggleControl_container_XUh0R {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.ToggleControl_toggleControlButton_1OPxf {\n  cursor: pointer;\n  float: right;\n  line-height: 1.5em;\n  height: 1.5em;\n  padding: 0 5px;\n}\n\n.ToggleControl_control_1cG0k {\n  z-index: 10;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 5px;\n  opacity: 0.5;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.ToggleControl_control_1cG0k * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ToggleControl_control_1cG0k:hover {\n  opacity: 1;\n}\n\n.ToggleControl_controlContent_mzF5w {\n  display: none;\n  position: relative;\n  border-top: 1px solid black;\n  min-height: 100px;\n}\n", ""]);
+	exports.push([module.id, ".ToggleControl_jsControlButton_3BSDE, .ToggleControl_jsControlContent_YBoXr {}\n\n.ToggleControl_container_XUh0R {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.ToggleControl_toggleControlButton_1OPxf {\n  cursor: pointer;\n  float: right;\n  line-height: 1.5em;\n  height: 1.5em;\n  padding: 0 5px;\n}\n\n.ToggleControl_control_1cG0k {\n  z-index: 10;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 5px;\n  opacity: 0.5;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.ToggleControl_control_1cG0k * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ToggleControl_control_1cG0k:hover {\n  opacity: 1;\n}\n\n.ToggleControl_controlContent_mzF5w {\n  display: none;\n  position: relative;\n  border-top: 1px solid black;\n  min-height: 1em;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -1674,12 +1681,74 @@
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/* global document */
+	/* eslint-disable class-methods-use-this */
+
+	var NativeSpacerComponent = function () {
+	  function NativeSpacerComponent() {
+	    var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '30px';
+
+	    _classCallCheck(this, NativeSpacerComponent);
+
+	    this.container = null;
+	    this.size = size;
+	    this.spacer = document.createElement('div');
+	    this.spacer.style.position = 'relative';
+	    this.spacer.style.width = size;
+	    this.spacer.style.height = size;
+	  }
+
+	  _createClass(NativeSpacerComponent, [{
+	    key: 'setContainer',
+	    value: function setContainer(el) {
+	      if (this.container && this.container !== el) {
+	        // Remove us from previous container
+	        this.container.removeChild(this.spacer);
+	      }
+
+	      this.container = el;
+	      if (this.container) {
+	        this.container.appendChild(this.spacer);
+	      }
+	    }
+	  }, {
+	    key: 'resize',
+	    value: function resize() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {}
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      this.setContainer(null);
+	    }
+	  }]);
+
+	  return NativeSpacerComponent;
+	}();
+
+	exports.default = NativeSpacerComponent;
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(17);
+	var content = __webpack_require__(18);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(14)(content, {});
@@ -1699,7 +1768,7 @@
 	}
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();

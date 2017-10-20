@@ -21327,7 +21327,9 @@
 	        var controlWidth = width < this.targetWidth + 20 ? width - 20 : this.targetWidth;
 
 	        controlDiv.style.width = controlWidth + 'px';
-	        // controlDiv.style.height = `${height - 45}px`;
+	        controlDiv.style.maxHeight = height - 45 + 'px';
+	        controlDiv.style.overflowX = 'hidden';
+	        controlDiv.style.overflowY = 'auto';
 
 	        this.mainViewport.resize();
 	        this.controlViewport.resize();
@@ -21665,7 +21667,7 @@
 	exports.i(__webpack_require__(19), undefined);
 
 	// module
-	exports.push([module.id, ".ToggleControl_jsControlButton_3BSDE, .ToggleControl_jsControlContent_YBoXr {}\n\n.ToggleControl_container_XUh0R {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.ToggleControl_toggleControlButton_1OPxf {\n  cursor: pointer;\n  float: right;\n  line-height: 1.5em;\n  height: 1.5em;\n  padding: 0 5px;\n}\n\n.ToggleControl_control_1cG0k {\n  z-index: 10;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 5px;\n  opacity: 0.5;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.ToggleControl_control_1cG0k * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ToggleControl_control_1cG0k:hover {\n  opacity: 1;\n}\n\n.ToggleControl_controlContent_mzF5w {\n  display: none;\n  position: relative;\n  border-top: 1px solid black;\n  min-height: 100px;\n}\n", ""]);
+	exports.push([module.id, ".ToggleControl_jsControlButton_3BSDE, .ToggleControl_jsControlContent_YBoXr {}\n\n.ToggleControl_container_XUh0R {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.ToggleControl_toggleControlButton_1OPxf {\n  cursor: pointer;\n  float: right;\n  line-height: 1.5em;\n  height: 1.5em;\n  padding: 0 5px;\n}\n\n.ToggleControl_control_1cG0k {\n  z-index: 10;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 5px;\n  opacity: 0.5;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.ToggleControl_control_1cG0k * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.ToggleControl_control_1cG0k:hover {\n  opacity: 1;\n}\n\n.ToggleControl_controlContent_mzF5w {\n  display: none;\n  position: relative;\n  border-top: 1px solid black;\n  min-height: 1em;\n}\n", ""]);
 
 	// exports
 	exports.locals = {
