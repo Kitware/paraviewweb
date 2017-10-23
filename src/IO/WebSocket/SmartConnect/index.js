@@ -57,6 +57,13 @@ export default class SmartConnect {
         autobahnConnect(this);
       }));
       this.subscriptions.push(launcher.onError((data, envelope) => {
+        // Check if the launcher was present but returned some kind of error,
+        // in which case, we should propagate the error
+        if (envelope && envelope.topic && envelope.topic === 'launcher.error') {
+          this.errorForwarder(envelope.topic, envelope);
+          return;
+        }
+
         // Try to use standard connection URL
         this.config.sessionURL = DEFAULT_SESSION_URL;
         autobahnConnect(this);
