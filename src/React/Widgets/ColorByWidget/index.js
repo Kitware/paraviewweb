@@ -28,10 +28,14 @@ export default React.createClass({
     opacityPoints: React.PropTypes.array,
     onOpacityPointsChange: React.PropTypes.func,
     opacityEditorSize: React.PropTypes.array,
+    useGaussian: React.PropTypes.bool,
+    gaussians: React.PropTypes.array,
   },
 
   getDefaultProps() {
     return {
+      useGaussian: false,
+      gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
       min: 0,
       max: 1,
     };

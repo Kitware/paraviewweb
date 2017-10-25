@@ -5,6 +5,7 @@ import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 import PresetListWidget   from '../PresetListWidget';
 import ScalarRangeWidget  from '../ScalarRangeWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
+import PieceWiseGaussianFunctionEditorWidget from '../PieceWiseGaussianFunctionEditorWidget';
 
 export default React.createClass({
 
@@ -25,6 +26,14 @@ export default React.createClass({
     onOpacityPointsChange: React.PropTypes.func,
     onOpacityEditModeChange: React.PropTypes.func,
     opacityEditorSize: React.PropTypes.array,
+    useGaussian: React.PropTypes.bool,
+    gaussians: React.PropTypes.array,
+  },
+
+  getDefaultProps() {
+    return {
+      opacityEditorSize: [-1, 96],
+    };
   },
 
   getInitialState() {
@@ -90,7 +99,7 @@ export default React.createClass({
             max={this.props.max}
             onApply={this.updateRange}
           />
-          {this.state.activeAdvanceView === '2' ?
+          {this.state.activeAdvanceView === '2' && !this.props.useGaussian ?
             <PieceWiseFunctionEditorWidget
               points={this.props.opacityPoints}
               rangeMin={this.props.min}
@@ -100,6 +109,18 @@ export default React.createClass({
               height={this.props.opacityEditorSize[1]}
               width={this.props.opacityEditorSize[0]}
               hidePointControl={this.props.hidePointControl}
+            /> : null
+          }
+          {this.state.activeAdvanceView === '2' && this.props.useGaussian ?
+            <PieceWiseGaussianFunctionEditorWidget
+              points={this.props.opacityPoints}
+              gaussians={this.props.gaussians}
+              rangeMin={this.props.min}
+              rangeMax={this.props.max}
+              onChange={this.props.onOpacityPointsChange}
+              onEditModeChange={this.props.onOpacityEditModeChange}
+              height={this.props.opacityEditorSize[1]}
+              width={this.props.opacityEditorSize[0]}
             /> : null
           }
         </div>
