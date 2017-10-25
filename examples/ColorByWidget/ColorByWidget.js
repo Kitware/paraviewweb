@@ -58,15 +58,15 @@
 
 	var _2 = _interopRequireDefault(_);
 
-	var _sourceProxy = __webpack_require__(227);
+	var _sourceProxy = __webpack_require__(232);
 
 	var _sourceProxy2 = _interopRequireDefault(_sourceProxy);
 
-	var _representationProxy = __webpack_require__(228);
+	var _representationProxy = __webpack_require__(233);
 
 	var _representationProxy2 = _interopRequireDefault(_representationProxy);
 
-	var _presets = __webpack_require__(229);
+	var _presets = __webpack_require__(234);
 
 	var _presets2 = _interopRequireDefault(_presets);
 
@@ -75,15 +75,16 @@
 	var scalarBar = 'iVBORw0KGgoAAAANSUhEUgAAAgAAAAABCAIAAAAn2YEhAAAGDElEQVQ4EQEBBv75ATtMwAAAAAECAgAAAAECAQAAAAEBAgAAAAICAQAAAAECAgAAAAEBAQAAAAECAgAAAAECAQAAAAECAgAAAAIBAQAAAAECAgAAAAECAQAAAAECAQAAAAEBAgAAAAICAQAAAAECAQAAAAEBAgAAAAECAQAAAAICAQAAAAEBAQAAAAECAgAAAAECAQAAAAIBAQAAAAECAQAAAAECAQAAAAEBAgAAAAICAQAAAAECAQAAAAEBAQAAAAICAQAAAAEBAQAAAAECAQAAAAECAQAAAAIBAQAAAAECAQAAAAEBAQAAAAICAQAAAAEBAAAAAAECAQAAAAIBAQAAAAECAQAAAAEBAQAAAAICAAAAAAEBAQAAAAECAQAAAAIBAQAAAAECAAAAAAEBAQAAAAICAAAAAAEBAQAAAAICAQAAAAEBAAAAAAEBAQAAAAICAAAAAAEBAQAAAAEBAAAAAAICAQAAAAEBAAAAAAIBAAAAAAECAQAAAAEBAAAAAAIBAAAAAAECAQAAAAEBAAAAAAIBAAAAAAEBAAAAAAICAAAAAAEBAQAAAAEBAAAAAAIBAAAAAAEBAAAAAAIBAAAAAAEBAAAAAAECAAAAAAIBAAAAAAEBAAAAAAEBAAAAAAIBAAAAAAEBAAAAAAEB/wAAAAIBAAAAAAEBAAAAAAIBAAAAAAEBAAAAAAEB/wAAAAIBAAAAAAEAAAAAAAEB/wAAAAIBAAAAAAEBAAAAAAEB/wAAAAEBAAAAAAIA/wAAAAEBAAAAAAEB/wAAAAIBAAAAAAEA/wAAAAEBAAAAAAEB/wAAAAIA/wAAAAEBAAAAAAEB/wAAAAEA/wAAAAIBAAAAAAEA/wAAAAEB/wAAAAEA/wAAAAEBAAAAAAIA/wAAAAEB/wAAAAEA/wAAAAEB/wAAAAEA/wAAAAEB/wAAAAIA/wAAAAEA/wAAAAEB/wAAAAEA/wAAAAEA/wAAAAEA/wAAAAEB/wAAAAEA/wAAAAEA/wAAAAEA/wAAAAEA/wAAAAEA/gAAAAEB/wAAAAH//wAAAAEA/gAAAAH//wAAAAEA/wAAAAH//gAAAAEA/wAAAAH//gAAAAEA/wAAAAH//gAAAAH//wAAAAEA/wAAAAH//gAAAAH//wAAAAEA/gAAAAH//wAAAAD//gAAAAH//wAAAAEA/gAAAAD//wAAAAH//gAAAAH//wAAAAD//gAAAAH//gAAAAEA/wAAAAD//gAAAAH//wAAAAD//gAAAAH//wAAAAD//gAAAAH//wAAAAD//gAAAAD//gAAAAH//wAAAAD+/gAAAAD//wAAAAH//gAAAAD//wAAAAD//gAAAAD//gAAAAH//wAAAAD+/gAAAAD//wAAAAD//gAAAAD//wAAAAD+/gAAAAD//gAAAAD//wAAAAD+/gAAAAD//wAAAAD//gAAAAD+/wAAAAD//gAAAAD//gAAAAD+/wAAAAD//gAAAAD+/wAAAP///gAAAAD+/wAAAAD//gAAAAD+/gAAAP///wAAAAD+/gAAAAD//wAAAP/+/gAAAAD//wAAAAD+/gAAAP/+/wAAAAD//gAAAP/+/wAAAAD+/gAAAP///wAAAAD+/gAAAP/+/wAAAAD//gAAAP/+/wAAAP/+/gAAAAD//wAAAP/+/gAAAAD+/wAAAP/+/gAAAP/+/wAAAP///gAAAAD+/wAAAP/+/gAAAP/+/wAAAP/+/gAAAP/+/wAAAP/+/wAAAAD//gAAAP/+/wAAAP/+/gAAAP/+/wAAAP/+/wAAAP/+/gAAAP/+/wAAAP/+/wAAAP/+/gAAAP/+/wAAAP/+/wAAAP/+/gAAAP79/wAAAP/+/wAAAP/+/gAAAP/+/wAAAP/+/wAAAP/+/wAAAP79/gAAAP/+/wAAAP/+/wAAAP/+/wAAAP79/gAAAP/+/wAAAP/9/wAAAP7+/wAAAP/9/wAAAP/+/gAAAP79/wAAAP/9/wAAAP79/wAAAP/9/wAAAP/9/wAAAP79/gAAAP/8/wAAAP78/wAAAP/8/wAAAP77/wAAAP/6/wAAAP75/wAAAAH4Uu+CshkNAAAAAElFTkSuQmCC';
 
 	// Load CSS
-	__webpack_require__(230);
+	__webpack_require__(235);
 
 	var container = document.querySelector('.content');
+	var useGaussian = true;
 
 	function onChange(event) {
 	    console.log(event);
 	}
 
-	_reactDom2.default.render(_react2.default.createElement(_2.default, { source: _sourceProxy2.default, representation: _representationProxy2.default, scalarBar: scalarBar, onChange: onChange, presets: _presets2.default }), container);
+	_reactDom2.default.render(_react2.default.createElement(_2.default, { source: _sourceProxy2.default, representation: _representationProxy2.default, scalarBar: scalarBar, onChange: onChange, presets: _presets2.default, useGaussian: useGaussian }), container);
 
 	document.body.style.margin = '10px';
 
@@ -21526,11 +21527,15 @@
 	    source: _react2.default.PropTypes.object,
 	    opacityPoints: _react2.default.PropTypes.array,
 	    onOpacityPointsChange: _react2.default.PropTypes.func,
-	    opacityEditorSize: _react2.default.PropTypes.array
+	    opacityEditorSize: _react2.default.PropTypes.array,
+	    useGaussian: _react2.default.PropTypes.bool,
+	    gaussians: _react2.default.PropTypes.array
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
+	      useGaussian: false,
+	      gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
 	      min: 0,
 	      max: 1
 	    };
@@ -22895,6 +22900,10 @@
 
 	var _PieceWiseFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseFunctionEditorWidget);
 
+	var _PieceWiseGaussianFunctionEditorWidget = __webpack_require__(227);
+
+	var _PieceWiseGaussianFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseGaussianFunctionEditorWidget);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
@@ -22915,9 +22924,16 @@
 	    opacityPoints: _react2.default.PropTypes.array,
 	    onOpacityPointsChange: _react2.default.PropTypes.func,
 	    onOpacityEditModeChange: _react2.default.PropTypes.func,
-	    opacityEditorSize: _react2.default.PropTypes.array
+	    opacityEditorSize: _react2.default.PropTypes.array,
+	    useGaussian: _react2.default.PropTypes.bool,
+	    gaussians: _react2.default.PropTypes.array
 	  },
 
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      opacityEditorSize: [-1, 96]
+	    };
+	  },
 	  getInitialState: function getInitialState() {
 	    return {
 	      activeAdvanceView: '0'
@@ -22982,7 +22998,7 @@
 	          max: this.props.max,
 	          onApply: this.updateRange
 	        }),
-	        this.state.activeAdvanceView === '2' ? _react2.default.createElement(_PieceWiseFunctionEditorWidget2.default, {
+	        this.state.activeAdvanceView === '2' && !this.props.useGaussian ? _react2.default.createElement(_PieceWiseFunctionEditorWidget2.default, {
 	          points: this.props.opacityPoints,
 	          rangeMin: this.props.min,
 	          rangeMax: this.props.max,
@@ -22991,6 +23007,16 @@
 	          height: this.props.opacityEditorSize[1],
 	          width: this.props.opacityEditorSize[0],
 	          hidePointControl: this.props.hidePointControl
+	        }) : null,
+	        this.state.activeAdvanceView === '2' && this.props.useGaussian ? _react2.default.createElement(_PieceWiseGaussianFunctionEditorWidget2.default, {
+	          points: this.props.opacityPoints,
+	          gaussians: this.props.gaussians,
+	          rangeMin: this.props.min,
+	          rangeMax: this.props.max,
+	          onChange: this.props.onOpacityPointsChange,
+	          onEditModeChange: this.props.onOpacityEditModeChange,
+	          height: this.props.opacityEditorSize[1],
+	          width: this.props.opacityEditorSize[0]
 	        }) : null
 	      )
 	    );
@@ -45377,6 +45403,2112 @@
 
 /***/ },
 /* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _PiecewiseGaussianWidget = __webpack_require__(228);
+
+	var _PiecewiseGaussianWidget2 = _interopRequireDefault(_PiecewiseGaussianWidget);
+
+	var _SizeHelper = __webpack_require__(222);
+
+	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PieceWiseGaussianFunctionEditorWidget = function (_React$Component) {
+	  _inherits(PieceWiseGaussianFunctionEditorWidget, _React$Component);
+
+	  function PieceWiseGaussianFunctionEditorWidget(props) {
+	    _classCallCheck(this, PieceWiseGaussianFunctionEditorWidget);
+
+	    var _this = _possibleConstructorReturn(this, (PieceWiseGaussianFunctionEditorWidget.__proto__ || Object.getPrototypeOf(PieceWiseGaussianFunctionEditorWidget)).call(this, props));
+
+	    _this.state = {
+	      height: props.height,
+	      width: props.width
+	    };
+
+	    _this.widget = _PiecewiseGaussianWidget2.default.newInstance({ numberOfBins: 256, size: [props.width, props.height] });
+	    _this.widget.updateStyle({
+	      backgroundColor: 'rgba(100, 100, 100, 0.5)',
+	      strokeColor: 'rgb(0, 0, 0)',
+	      activeColor: 'rgb(255, 255, 255)',
+	      handleColor: 'rgb(50, 150, 50)',
+	      strokeWidth: 2,
+	      activeStrokeWidth: 3,
+	      iconSize: 0,
+	      padding: 10
+	    });
+
+	    // Bind methods
+	    _this.updateDimensions = _this.updateDimensions.bind(_this);
+	    _this.pushOpacities = _this.pushOpacities.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(PieceWiseGaussianFunctionEditorWidget, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      this.widget.setContainer(this.rootContainer);
+	      this.widget.render();
+	      this.widget.bindMouseListeners();
+	      this.widget.onOpacityChange(function () {
+	        var gaussians = _this2.widget.get('gaussians').gaussians;
+	        var nodes = _this2.widget.getOpacityNodes();
+	        if (_this2.props.onChange) {
+	          _this2.props.onChange(nodes, gaussians);
+	        }
+	      });
+	      if (this.props.onEditModeChange) {
+	        this.widget.onAnimation(this.props.onEditModeChange);
+	      }
+
+	      if (this.props.width === -1 || this.props.height === -1) {
+	        this.sizeSubscription = _SizeHelper2.default.onSizeChange(this.updateDimensions);
+	        _SizeHelper2.default.startListening();
+	        this.updateDimensions();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(newProps) {
+	      var widgetGaussians = JSON.stringify(this.widget.get('gaussians').gaussians);
+	      if (JSON.stringify(this.props.gaussians) !== widgetGaussians) {
+	        console.log('replace gaussians');
+	        this.widget.set({ gaussians: this.props.gaussians });
+	        this.widget.render();
+	      }
+	      if (this.props.width === -1 || this.props.height === -1) {
+	        this.updateDimensions();
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      this.widget.render();
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (this.sizeSubscription) {
+	        this.sizeSubscription.unsubscribe();
+	        this.sizeSubscription = null;
+	        this.widget.unbindMouseListeners();
+	        this.widget.delete(); // Remove subscriptions
+	        this.widget = null;
+	      }
+	    }
+	  }, {
+	    key: 'pushOpacities',
+	    value: function pushOpacities() {
+	      this.props.onEditModeChange();
+	    }
+	  }, {
+	    key: 'updateDimensions',
+	    value: function updateDimensions() {
+	      var _sizeHelper$getSize = _SizeHelper2.default.getSize(this.rootContainer, true),
+	          clientWidth = _sizeHelper$getSize.clientWidth,
+	          clientHeight = _sizeHelper$getSize.clientHeight;
+
+	      if (this.props.width === -1) {
+	        this.setState({ width: clientWidth });
+	      }
+	      if (this.props.height === -1) {
+	        this.setState({ height: clientHeight });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      this.widget.setSize(this.state.width, this.state.height);
+	      return _react2.default.createElement('div', { style: { overflow: 'hidden', minHeigh: '10px', minWidth: '10px' }, ref: function ref(c) {
+	          return _this3.rootContainer = c;
+	        } });
+	    }
+	  }]);
+
+	  return PieceWiseGaussianFunctionEditorWidget;
+	}(_react2.default.Component);
+
+	exports.default = PieceWiseGaussianFunctionEditorWidget;
+
+
+	PieceWiseGaussianFunctionEditorWidget.defaultProps = {
+	  height: 200,
+	  width: -1,
+	  points: [],
+	  gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }]
+	};
+
+	PieceWiseGaussianFunctionEditorWidget.propTypes = {
+	  points: _react2.default.PropTypes.array,
+	  gaussians: _react2.default.PropTypes.array,
+	  rangeMin: _react2.default.PropTypes.number,
+	  rangeMax: _react2.default.PropTypes.number,
+	  onChange: _react2.default.PropTypes.func,
+	  onEditModeChange: _react2.default.PropTypes.func,
+	  height: _react2.default.PropTypes.number,
+	  width: _react2.default.PropTypes.number
+	};
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.newInstance = exports.STATIC = undefined;
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	exports.extend = extend;
+
+	var _macro = __webpack_require__(230);
+
+	var _macro2 = _interopRequireDefault(_macro);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	/* eslint-disable no-continue */
+
+	// ----------------------------------------------------------------------------
+	// Global structures
+	// ----------------------------------------------------------------------------
+
+	var MIN_GAUSSIAN_WIDTH = 0.001;
+
+	var ACTION_TO_CURSOR = {
+	  adjustPosition: '-webkit-grab',
+	  adjustHeight: 'row-resize',
+	  adjustBias: 'crosshair',
+	  adjustWidth: 'col-resize'
+	};
+
+	var TOUCH_CLICK = [];
+
+	// ----------------------------------------------------------------------------
+	// Global methods
+	// ----------------------------------------------------------------------------
+
+	var ACTIONS = {
+	  adjustPosition: function adjustPosition(x, y, originalXY, gaussian, originalGaussian) {
+	    var xOffset = originalGaussian.position - originalXY[0];
+	    gaussian.position = x + xOffset;
+	  },
+	  adjustHeight: function adjustHeight(x, y, originalXY, gaussian, originalGaussian) {
+	    gaussian.height = 1 - y;
+	    gaussian.height = Math.min(1, Math.max(0, gaussian.height));
+	  },
+	  adjustBias: function adjustBias(x, y, originalXY, gaussian, originalGaussian) {
+	    gaussian.xBias = originalGaussian.xBias - (originalXY[0] - x) / gaussian.height;
+	    gaussian.yBias = originalGaussian.yBias + 4 * (originalXY[1] - y) / gaussian.height;
+	    // Clamps
+	    gaussian.xBias = Math.max(-1, Math.min(1, gaussian.xBias));
+	    gaussian.yBias = Math.max(0, Math.min(2, gaussian.yBias));
+	  },
+	  adjustWidth: function adjustWidth(x, y, originalXY, gaussian, originalGaussian) {
+	    gaussian.width = originalGaussian.width - (originalXY[0] - x);
+	    if (gaussian.width < MIN_GAUSSIAN_WIDTH) {
+	      gaussian.width = MIN_GAUSSIAN_WIDTH;
+	    }
+	  }
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function computeOpacities(gaussians) {
+	  var sampling = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 256;
+
+	  var opacities = [];
+	  while (opacities.length < sampling) {
+	    opacities.push(0);
+	  }
+
+	  gaussians.forEach(function (_ref) {
+	    var position = _ref.position,
+	        height = _ref.height,
+	        width = _ref.width,
+	        xBias = _ref.xBias,
+	        yBias = _ref.yBias;
+
+	    for (var i = 0; i < sampling; i++) {
+	      var x = i / (sampling - 1);
+
+	      // clamp non-zero values to pos +/- width
+	      if (x > position + width || x < position - width) {
+	        if (opacities[i] < 0.0) {
+	          opacities[i] = 0.0;
+	        }
+	        continue;
+	      }
+
+	      // non-zero width
+	      var correctedWidth = width < MIN_GAUSSIAN_WIDTH ? MIN_GAUSSIAN_WIDTH : width;
+
+	      // translate the original x to a new x based on the xbias
+	      var x0 = 0;
+	      if (xBias === 0 || x === position + xBias) {
+	        x0 = x;
+	      } else if (x > position + xBias) {
+	        if (correctedWidth === xBias) {
+	          x0 = position;
+	        } else {
+	          x0 = position + (x - position - xBias) * (correctedWidth / (correctedWidth - xBias));
+	        }
+	      } else if (-correctedWidth === xBias) {
+	        // (x < pos+xBias)
+	        x0 = position;
+	      } else {
+	        x0 = position - (x - position - xBias) * (correctedWidth / (correctedWidth + xBias));
+	      }
+
+	      // center around 0 and normalize to -1,1
+	      var x1 = (x0 - position) / correctedWidth;
+
+	      // do a linear interpolation between:
+	      //    a gaussian and a parabola        if 0 < yBias <1
+	      //    a parabola and a step function   if 1 < yBias <2
+	      var h0a = Math.exp(-(4 * x1 * x1));
+	      var h0b = 1.0 - x1 * x1;
+	      var h0c = 1.0;
+	      var h1 = void 0;
+	      if (yBias < 1) {
+	        h1 = yBias * h0b + (1 - yBias) * h0a;
+	      } else {
+	        h1 = (2 - yBias) * h0b + (yBias - 1) * h0c;
+	      }
+	      var h2 = height * h1;
+
+	      // perform the MAX over different gaussians, not the sum
+	      if (h2 > opacities[i]) {
+	        opacities[i] = h2;
+	      }
+	    }
+	  });
+
+	  return opacities;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function drawChart(ctx, area, values) {
+	  var style = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { lineWidth: 1, strokeStyle: '#000' };
+
+	  var verticalScale = area[3];
+	  var horizontalScale = area[2] / (values.length - 1);
+	  var height = ctx.canvas.height;
+	  var fill = !!style.fillStyle;
+
+	  ctx.lineWidth = style.lineWidth;
+	  ctx.strokeStyle = style.strokeStyle;
+
+	  ctx.beginPath();
+	  ctx.moveTo(area[0], height - area[1]);
+
+	  values.forEach(function (value, index) {
+	    ctx.lineTo(area[0] + index * horizontalScale, Math.max(area[1], height - (area[1] + value * verticalScale)));
+	  });
+
+	  if (fill) {
+	    ctx.fillStyle = style.fillStyle;
+	    ctx.lineTo(area[0] + area[2], area[1] + area[3]);
+
+	    if (style.clip) {
+	      ctx.clip();
+	      return;
+	    }
+
+	    ctx.fill();
+	  }
+	  ctx.stroke();
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function updateColorCanvas(colorTransferFunction, width, rangeToUse, canvas) {
+	  var workCanvas = canvas || document.createElement('canvas');
+	  workCanvas.setAttribute('width', width);
+	  workCanvas.setAttribute('height', 256);
+	  var ctx = workCanvas.getContext('2d');
+
+	  var rgba = colorTransferFunction.getUint8Table(rangeToUse[0], rangeToUse[1], width, 4);
+	  var pixelsArea = ctx.getImageData(0, 0, width, 256);
+	  for (var lineIdx = 0; lineIdx < 256; lineIdx++) {
+	    pixelsArea.data.set(rgba, lineIdx * 4 * width);
+	  }
+
+	  var nbValues = 256 * width * 4;
+	  var lineSize = width * 4;
+	  for (var i = 3; i < nbValues; i += 4) {
+	    pixelsArea.data[i] = 255 - Math.floor(i / lineSize);
+	  }
+
+	  ctx.putImageData(pixelsArea, 0, 0);
+	  return workCanvas;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function normalizeCoordinates(x, y, subRectangeArea) {
+	  return [(x - subRectangeArea[0]) / subRectangeArea[2], (y - subRectangeArea[1]) / subRectangeArea[3]];
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function findGaussian(x, gaussians) {
+	  var distances = gaussians.map(function (g) {
+	    return Math.abs(g.position - x);
+	  });
+	  var min = Math.min.apply(Math, _toConsumableArray(distances));
+	  return distances.indexOf(min);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function createListener(callback) {
+	  var preventDefault = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+	  return function (e) {
+	    var offsetX = e.offsetX,
+	        offsetY = e.offsetY;
+
+	    if (preventDefault) {
+	      e.preventDefault();
+	    }
+	    callback(offsetX, offsetY);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function createTouchClickListener() {
+	  for (var _len = arguments.length, callbacks = Array(_len), _key = 0; _key < _len; _key++) {
+	    callbacks[_key] = arguments[_key];
+	  }
+
+	  var id = TOUCH_CLICK.length;
+	  TOUCH_CLICK.push({ callbacks: callbacks, timeout: 0, deltaT: 200, count: 0, ready: false });
+	  return id;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function processTouchClicks() {
+	  TOUCH_CLICK.filter(function (t) {
+	    return t.ready;
+	  }).forEach(function (touchHandle) {
+	    touchHandle.callbacks.forEach(function (callback) {
+	      if (callback.touches === touchHandle.touches && callback.clicks === touchHandle.count) {
+	        callback.action.apply(callback, _toConsumableArray(touchHandle.singleTouche));
+	      }
+	    });
+
+	    // Clear state
+	    touchHandle.ts = 0;
+	    touchHandle.count = 0;
+	    touchHandle.touches = 0;
+	    touchHandle.ready = false;
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function createTouchListener(id, callback) {
+	  var nbTouches = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+	  var preventDefault = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+	  return function (e) {
+	    var targetBounds = e.target.getBoundingClientRect();
+	    var relativeTouches = Array.prototype.map.call(e.touches, function (t) {
+	      return [t.pageX - targetBounds.left, t.pageY - targetBounds.top];
+	    });
+	    var singleTouche = relativeTouches.reduce(function (a, b) {
+	      return [a[0] + b[0], a[1] + b[1]];
+	    }, [0, 0]).map(function (v) {
+	      return v / e.touches.length;
+	    });
+
+	    if (e.type === 'touchstart') {
+	      clearTimeout(TOUCH_CLICK[id].timeout);
+	      TOUCH_CLICK[id].ts = e.timeStamp;
+	      TOUCH_CLICK[id].singleTouche = singleTouche;
+	      TOUCH_CLICK[id].touches = e.touches.length;
+	    } else if (e.type === 'touchmove') {
+	      TOUCH_CLICK[id].ts = 0;
+	      TOUCH_CLICK[id].count = 0;
+	      TOUCH_CLICK[id].ready = false;
+	    } else if (e.type === 'touchend') {
+	      if (e.timeStamp - TOUCH_CLICK[id].ts < TOUCH_CLICK[id].deltaT) {
+	        TOUCH_CLICK[id].count += 1;
+	        TOUCH_CLICK[id].ready = true;
+	        if (preventDefault) {
+	          e.preventDefault();
+	        }
+	        TOUCH_CLICK[id].timeout = setTimeout(processTouchClicks, TOUCH_CLICK[id].deltaT);
+	      } else {
+	        TOUCH_CLICK[id].ready = false;
+	      }
+	    }
+
+	    if (e.touches.length === nbTouches) {
+	      callback.apply(undefined, _toConsumableArray(singleTouche));
+	      if (preventDefault) {
+	        e.preventDefault();
+	      }
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function listenerSelector(condition, ok, ko) {
+	  return function (e) {
+	    return condition() ? ok(e) : ko(e);
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Static API
+	// ----------------------------------------------------------------------------
+
+	var STATIC = exports.STATIC = {
+	  computeOpacities: computeOpacities,
+	  drawChart: drawChart,
+	  normalizeCoordinates: normalizeCoordinates,
+	  findGaussian: findGaussian,
+	  createListener: createListener,
+	  listenerSelector: listenerSelector
+	};
+
+	// ----------------------------------------------------------------------------
+	// vtkPiecewiseGaussianWidget methods
+	// ----------------------------------------------------------------------------
+
+	function vtkPiecewiseGaussianWidget(publicAPI, model) {
+	  // Set our className
+	  model.classHierarchy.push('vtkPiecewiseGaussianWidget');
+
+	  if (!model.canvas) {
+	    model.canvas = document.createElement('canvas');
+	  }
+
+	  publicAPI.setContainer = function (el) {
+	    if (model.container && model.container !== el) {
+	      model.container.removeChild(model.canvas);
+	    }
+	    if (model.container !== el) {
+	      model.container = el;
+	      if (model.container) {
+	        model.container.appendChild(model.canvas);
+	      }
+	      publicAPI.modified();
+	    }
+	  };
+
+	  publicAPI.addGaussian = function (position, height, width, xBias, yBias) {
+	    var nextIndex = model.gaussians.length;
+	    model.gaussians.push({ position: position, height: height, width: width, xBias: xBias, yBias: yBias });
+	    model.opacities = computeOpacities(model.gaussians, model.piecewiseSize);
+	    publicAPI.invokeOpacityChange(publicAPI);
+	    publicAPI.modified();
+	    return nextIndex;
+	  };
+
+	  publicAPI.removeGaussian = function (index) {
+	    model.gaussians.splice(index, 1);
+	    model.opacities = computeOpacities(model.gaussians, model.piecewiseSize);
+	    publicAPI.invokeOpacityChange(publicAPI);
+	    publicAPI.modified();
+	  };
+
+	  publicAPI.setSize = function (width, height) {
+	    model.canvas.setAttribute('width', width);
+	    model.canvas.setAttribute('height', height);
+
+	    if (model.size[0] !== width || model.size[1] !== height) {
+	      model.size = [width, height];
+	      publicAPI.modified();
+	    }
+	  };
+
+	  publicAPI.updateStyle = function (style) {
+	    model.style = Object.assign({}, model.style, style);
+	    publicAPI.modified();
+	  };
+
+	  publicAPI.setDataArray = function (array) {
+	    var numberOfBinToConsider = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+	    var numberOfBinsToSkip = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+	    model.histogramArray = array;
+	    var size = array.length;
+	    var max = array[0];
+	    var min = array[0];
+	    for (var i = 1; i < size; i++) {
+	      max = Math.max(max, array[i]);
+	      min = Math.min(min, array[i]);
+	    }
+
+	    var delta = max - min;
+	    model.dataRange = [min, max];
+	    model.histogram = [];
+	    while (model.histogram.length < model.numberOfBins) {
+	      model.histogram.push(0);
+	    }
+	    array.forEach(function (value) {
+	      var idx = Math.floor((model.numberOfBins - 1) * (Number(value) - min) / delta);
+	      model.histogram[idx] += 1;
+	    });
+
+	    // Smart Rescale Histogram
+	    var sampleSize = Math.min(numberOfBinToConsider, model.histogram.length - numberOfBinsToSkip);
+	    var sortedArray = [].concat(model.histogram);
+	    sortedArray.sort(function (a, b) {
+	      return Number(a) - Number(b);
+	    });
+	    for (var _i = 0; _i < numberOfBinsToSkip; _i++) {
+	      sortedArray.pop();
+	    }
+	    while (sortedArray.length > sampleSize) {
+	      sortedArray.shift();
+	    }
+	    var mean = sortedArray.reduce(function (a, b) {
+	      return a + b;
+	    }, 0) / sampleSize;
+
+	    model.histogram = model.histogram.map(function (v) {
+	      return v / mean;
+	    });
+	    publicAPI.modified();
+	  };
+
+	  publicAPI.onClick = function (x, y) {
+	    var _normalizeCoordinates = normalizeCoordinates(x, y, model.graphArea),
+	        _normalizeCoordinates2 = _slicedToArray(_normalizeCoordinates, 2),
+	        xNormalized = _normalizeCoordinates2[0],
+	        yNormalized = _normalizeCoordinates2[1];
+
+	    if (xNormalized < 0 && model.style.iconSize > 1) {
+	      // Control buttons
+	      var delta = model.style.iconSize + model.style.padding;
+	      var offset = delta;
+	      var buttonIdx = 0;
+	      while (y > offset) {
+	        buttonIdx += 1;
+	        offset += delta;
+	      }
+	      switch (buttonIdx) {
+	        case 0:
+	          {
+	            var gaussianIdx = publicAPI.addGaussian(0, 1, 0.1, 0, 0);
+	            var gaussian = model.gaussians[gaussianIdx];
+	            var originalGaussian = Object.assign({}, gaussian);
+	            var action = ACTIONS.adjustPosition;
+	            model.activeGaussian = gaussianIdx;
+	            model.selectedGaussian = gaussianIdx;
+
+	            // Fake active action
+	            setImmediate(function () {
+	              publicAPI.onDown(x, y);
+	              model.dragAction = { position: [0, 0], action: action, gaussian: gaussian, originalGaussian: originalGaussian };
+	            });
+	            break;
+	          }
+	        case 1:
+	          {
+	            if (model.selectedGaussian !== -1) {
+	              publicAPI.removeGaussian(model.selectedGaussian);
+	            }
+	            break;
+	          }
+	        default:
+	          {
+	            model.selectedGaussian = -1;
+	            model.dragAction = null;
+	          }
+	      }
+	    } else if (xNormalized < 0 || xNormalized > 1 || yNormalized < 0 || yNormalized > 1) {
+	      model.selectedGaussian = -1;
+	      model.dragAction = null;
+	    } else {
+	      var newSelected = findGaussian(xNormalized, model.gaussians);
+	      if (newSelected !== model.selectedGaussian) {
+	        model.selectedGaussian = newSelected;
+	        publicAPI.modified();
+	      }
+	    }
+	    return true;
+	  };
+
+	  publicAPI.onHover = function (x, y) {
+	    var _normalizeCoordinates3 = normalizeCoordinates(x, y, model.graphArea),
+	        _normalizeCoordinates4 = _slicedToArray(_normalizeCoordinates3, 2),
+	        xNormalized = _normalizeCoordinates4[0],
+	        yNormalized = _normalizeCoordinates4[1];
+
+	    var newActive = xNormalized < 0 ? model.selectedGaussian : findGaussian(xNormalized, model.gaussians);
+	    model.canvas.style.cursor = 'default';
+	    var gaussian = model.gaussians[newActive];
+	    if (gaussian && xNormalized >= 0) {
+	      var invY = 1 - yNormalized;
+	      var tolerance = 10 / model.canvas.height;
+	      var actionName = null;
+	      if (invY > gaussian.height + tolerance) {
+	        actionName = 'adjustPosition';
+	      } else if (invY > gaussian.height - tolerance) {
+	        if (Math.abs(xNormalized - gaussian.position) < tolerance) {
+	          actionName = 'adjustHeight';
+	        } else {
+	          actionName = 'adjustPosition';
+	        }
+	      } else if (invY > gaussian.height * 0.5 + tolerance) {
+	        actionName = 'adjustPosition';
+	      } else if (invY > gaussian.height * 0.5 - tolerance) {
+	        if (Math.abs(xNormalized - gaussian.position) < tolerance) {
+	          actionName = 'adjustBias';
+	        } else {
+	          actionName = 'adjustPosition';
+	        }
+	      } else if (invY > tolerance) {
+	        actionName = 'adjustPosition';
+	      } else {
+	        actionName = 'adjustWidth';
+	      }
+	      model.canvas.style.cursor = ACTION_TO_CURSOR[actionName];
+	      var action = ACTIONS[actionName];
+	      var originalGaussian = Object.assign({}, gaussian);
+	      model.dragAction = { position: [xNormalized, yNormalized], action: action, gaussian: gaussian, originalGaussian: originalGaussian };
+	    }
+
+	    if (newActive !== model.activeGaussian) {
+	      model.activeGaussian = newActive;
+	      publicAPI.modified();
+	    }
+	    return true;
+	  };
+
+	  publicAPI.onDown = function (x, y) {
+	    if (!model.mouseIsDown) {
+	      publicAPI.invokeAnimation(true);
+	    }
+	    model.mouseIsDown = true;
+	    var xNormalized = normalizeCoordinates(x, y, model.graphArea)[0];
+	    var newSelected = findGaussian(xNormalized, model.gaussians);
+	    if (newSelected !== model.selectedGaussian && xNormalized > 0) {
+	      model.selectedGaussian = newSelected;
+	      publicAPI.modified();
+	    }
+	    return true;
+	  };
+
+	  publicAPI.onDrag = function (x, y) {
+	    if (model.dragAction) {
+	      var _normalizeCoordinates5 = normalizeCoordinates(x, y, model.graphArea),
+	          _normalizeCoordinates6 = _slicedToArray(_normalizeCoordinates5, 2),
+	          xNormalized = _normalizeCoordinates6[0],
+	          yNormalized = _normalizeCoordinates6[1];
+
+	      var _model$dragAction = model.dragAction,
+	          position = _model$dragAction.position,
+	          gaussian = _model$dragAction.gaussian,
+	          originalGaussian = _model$dragAction.originalGaussian,
+	          action = _model$dragAction.action;
+
+	      action(xNormalized, yNormalized, position, gaussian, originalGaussian);
+	      model.opacities = computeOpacities(model.gaussians, model.piecewiseSize);
+	      publicAPI.invokeOpacityChange(publicAPI, true);
+	      publicAPI.modified();
+	    }
+	    return true;
+	  };
+
+	  publicAPI.onUp = function (x, y) {
+	    if (model.mouseIsDown) {
+	      publicAPI.invokeAnimation(false);
+	    }
+	    model.mouseIsDown = false;
+	    return true;
+	  };
+
+	  publicAPI.onLeave = function (x, y) {
+	    publicAPI.onUp(x, y);
+	    model.canvas.style.cursor = 'default';
+	    model.activeGaussian = -1;
+	    publicAPI.modified();
+	    return true;
+	  };
+
+	  publicAPI.onAddGaussian = function (x, y) {
+	    var _normalizeCoordinates7 = normalizeCoordinates(x, y, model.graphArea),
+	        _normalizeCoordinates8 = _slicedToArray(_normalizeCoordinates7, 2),
+	        xNormalized = _normalizeCoordinates8[0],
+	        yNormalized = _normalizeCoordinates8[1];
+
+	    if (xNormalized >= 0) {
+	      publicAPI.addGaussian(xNormalized, 1 - yNormalized, 0.1, 0, 0);
+	    }
+	    return true;
+	  };
+
+	  publicAPI.onRemoveGaussian = function (x, y) {
+	    var xNormalized = normalizeCoordinates(x, y, model.graphArea)[0];
+	    var newSelected = findGaussian(xNormalized, model.gaussians);
+	    if (xNormalized >= 0 && newSelected !== -1) {
+	      publicAPI.removeGaussian(newSelected);
+	    }
+	    return true;
+	  };
+
+	  publicAPI.bindMouseListeners = function () {
+	    if (!model.listeners) {
+	      var isDown = function isDown() {
+	        return !!model.mouseIsDown;
+	      };
+	      var touchId = createTouchClickListener({
+	        clicks: 1,
+	        touches: 1,
+	        action: publicAPI.onClick
+	      }, {
+	        clicks: 2,
+	        touches: 1,
+	        action: publicAPI.onAddGaussian
+	      }, {
+	        clicks: 2,
+	        touches: 2,
+	        action: publicAPI.onRemoveGaussian
+	      });
+
+	      model.listeners = {
+	        mousemove: listenerSelector(isDown, createListener(publicAPI.onDrag), createListener(publicAPI.onHover)),
+	        dblclick: createListener(publicAPI.onAddGaussian),
+	        contextmenu: createListener(publicAPI.onRemoveGaussian),
+	        click: createListener(publicAPI.onClick),
+	        mouseup: createListener(publicAPI.onUp),
+	        mousedown: createListener(publicAPI.onDown),
+	        mouseout: createListener(publicAPI.onLeave),
+
+	        touchstart: createTouchListener(touchId, _macro2.default.chain(publicAPI.onHover, publicAPI.onDown)),
+	        touchmove: listenerSelector(isDown, createTouchListener(touchId, publicAPI.onDrag), createTouchListener(touchId, publicAPI.onHover)),
+	        touchend: createTouchListener(touchId, publicAPI.onUp, 0) // touchend have 0 touch event...
+	      };
+	      Object.keys(model.listeners).forEach(function (eventType) {
+	        model.canvas.addEventListener(eventType, model.listeners[eventType], false);
+	      });
+	    }
+	  };
+
+	  publicAPI.unbindMouseListeners = function () {
+	    if (model.listeners) {
+	      Object.keys(model.listeners).forEach(function (eventType) {
+	        model.canvas.removeEventListener(eventType, model.listeners[eventType]);
+	      });
+	      delete model.listeners;
+	    }
+	  };
+
+	  publicAPI.render = function () {
+	    var ctx = model.canvas.getContext('2d');
+	    ctx.imageSmoothingEnabled = true;
+
+	    var _model$size = _slicedToArray(model.size, 2),
+	        width = _model$size[0],
+	        height = _model$size[1];
+
+	    var offset = model.style.padding;
+	    var graphArea = [Math.floor(model.style.iconSize + offset), Math.floor(offset), Math.ceil(width - 2 * offset - model.style.iconSize), Math.ceil(height - 2 * offset)];
+	    model.graphArea = graphArea;
+
+	    // Clear canvas
+	    ctx.clearRect(0, 0, width, height);
+	    ctx.lineJoin = 'round';
+	    ctx.fillStyle = model.style.backgroundColor;
+	    ctx.fillRect.apply(ctx, graphArea);
+
+	    if (model.style.iconSize > 1) {
+	      // Draw icons
+	      // +
+	      var halfSize = Math.round(model.style.iconSize / 2 - model.style.strokeWidth);
+	      var center = Math.round(halfSize + offset + model.style.strokeWidth);
+	      ctx.beginPath();
+	      ctx.lineWidth = model.style.buttonStrokeWidth;
+	      ctx.strokeStyle = model.style.buttonStrokeColor;
+	      ctx.arc(center - offset / 2, center, halfSize, 0, 2 * Math.PI, false);
+	      ctx.fillStyle = model.style.buttonFillColor;
+	      ctx.fill();
+	      ctx.stroke();
+	      ctx.moveTo(center - halfSize + model.style.strokeWidth + 2 - offset / 2, center);
+	      ctx.lineTo(center + halfSize - model.style.strokeWidth - 2 - offset / 2, center);
+	      ctx.stroke();
+	      ctx.moveTo(center - offset / 2, center - halfSize + model.style.strokeWidth + 2);
+	      ctx.lineTo(center - offset / 2, center + halfSize - model.style.strokeWidth - 2);
+	      ctx.stroke();
+
+	      // -
+	      if (model.selectedGaussian === -1) {
+	        ctx.fillStyle = model.style.buttonDisableFillColor;
+	        ctx.lineWidth = model.style.buttonDisableStrokeWidth;
+	        ctx.strokeStyle = model.style.buttonDisableStrokeColor;
+	      } else {
+	        ctx.fillStyle = model.style.buttonFillColor;
+	        ctx.lineWidth = model.style.buttonStrokeWidth;
+	        ctx.strokeStyle = model.style.buttonStrokeColor;
+	      }
+	      ctx.beginPath();
+	      ctx.arc(center - offset / 2, center + offset / 2 + model.style.iconSize, halfSize, 0, 2 * Math.PI, false);
+	      ctx.fill();
+	      ctx.stroke();
+	      ctx.moveTo(center - halfSize + model.style.strokeWidth + 2 - offset / 2, center + offset / 2 + model.style.iconSize);
+	      ctx.lineTo(center + halfSize - model.style.strokeWidth - 2 - offset / 2, center + offset / 2 + model.style.iconSize);
+	      ctx.stroke();
+	    }
+
+	    // Draw histogram
+	    drawChart(ctx, graphArea, model.histogram, { lineWidth: 1, strokeStyle: model.style.histogramColor, fillStyle: model.style.histogramColor });
+
+	    // Draw gaussians
+	    drawChart(ctx, graphArea, model.opacities, { lineWidth: model.style.strokeWidth, strokeStyle: model.style.strokeColor });
+
+	    // Draw color function if any
+	    if (model.colorTransferFunction) {
+	      var rangeToUse = model.dataRange || model.colorTransferFunction.getMappingRange();
+	      if (!model.colorCanvas || model.colorCanvasMTime < model.colorTransferFunction.getMTime()) {
+	        model.colorCanvasMTime = model.colorTransferFunction.getMTime();
+	        model.colorCanvas = updateColorCanvas(model.colorTransferFunction, graphArea[2], rangeToUse, model.colorCanvas);
+	      }
+	      ctx.save();
+	      drawChart(ctx, graphArea, model.opacities, { lineWidth: 1, strokeStyle: 'rgba(0,0,0,0)', fillStyle: 'rgba(0,0,0,1)', clip: true });
+	      ctx.drawImage(model.colorCanvas, graphArea[0], graphArea[1]);
+	      ctx.restore();
+	    }
+
+	    // Draw active guassian
+	    var activeGaussian = model.gaussians[model.activeGaussian] || model.gaussians[model.selectedGaussian];
+	    if (activeGaussian) {
+	      var activeOpacities = computeOpacities([activeGaussian], graphArea[2]);
+	      drawChart(ctx, graphArea, activeOpacities, { lineWidth: model.style.activeStrokeWidth, strokeStyle: model.style.activeColor });
+	      // Draw controls
+	      var xCenter = graphArea[0] + activeGaussian.position * graphArea[2];
+	      var yTop = graphArea[1] + (1 - activeGaussian.height) * graphArea[3];
+	      var yMiddle = graphArea[1] + (1 - 0.5 * activeGaussian.height) * graphArea[3];
+	      var yBottom = graphArea[1] + graphArea[3];
+	      var widthInPixel = activeGaussian.width * graphArea[2];
+	      ctx.lineWidth = model.style.handleWidth;
+	      ctx.strokeStyle = model.style.handleColor;
+	      ctx.fillStyle = model.style.backgroundColor;
+	      ctx.beginPath();
+	      ctx.moveTo(xCenter, graphArea[1] + (1 - activeGaussian.height) * graphArea[3]);
+	      ctx.lineTo(xCenter, graphArea[1] + graphArea[3]);
+	      ctx.stroke();
+	      // Height
+	      ctx.beginPath();
+	      ctx.arc(xCenter, yTop, 6, 0, 2 * Math.PI);
+	      ctx.fill();
+	      ctx.stroke();
+	      // Bias
+	      var radius = Math.min(widthInPixel * 0.1, activeGaussian.height * graphArea[3] * 0.2);
+	      ctx.beginPath();
+	      ctx.rect(xCenter - radius, yMiddle - radius, radius * 2, radius * 2);
+	      ctx.fill();
+	      ctx.stroke();
+	      ctx.beginPath();
+	      // Width
+	      var sliderWidth = widthInPixel * 0.8;
+	      ctx.rect(xCenter - sliderWidth, yBottom - 5, 2 * sliderWidth, 10);
+	      ctx.fill();
+	      ctx.stroke();
+	    }
+	  };
+
+	  publicAPI.getOpacityNodes = function (dataRange) {
+	    var rangeToUse = dataRange || model.dataRange;
+	    var delta = (rangeToUse[1] - rangeToUse[0]) / (model.opacities.length - 1);
+	    var nodes = [];
+	    var midpoint = 0.5;
+	    var sharpness = 0;
+	    model.opacities.forEach(function (y, index) {
+	      var x = rangeToUse[0] + delta * index;
+	      nodes.push({ x: x, y: y, midpoint: midpoint, sharpness: sharpness });
+	    });
+	    return nodes;
+	  };
+
+	  publicAPI.applyOpacity = function (piecewiseFunction, dataRange) {
+	    var nodes = publicAPI.getOpacityNodes(dataRange);
+	    piecewiseFunction.removeAllPoints();
+	    piecewiseFunction.set({ nodes: nodes }, true);
+	    piecewiseFunction.sortAndUpdateRange();
+	  };
+
+	  // Trigger rendering for any modified event
+	  publicAPI.onModified(publicAPI.render);
+	  publicAPI.setSize.apply(publicAPI, _toConsumableArray(model.size));
+	}
+
+	// ----------------------------------------------------------------------------
+	// Object factory
+	// ----------------------------------------------------------------------------
+
+	var DEFAULT_VALUES = {
+	  histogram: [],
+	  numberOfBins: 256,
+	  histogramArray: null,
+	  dataRange: [0, 1],
+	  gaussians: [],
+	  opacities: [],
+	  size: [600, 300],
+	  piecewiseSize: 256,
+	  colorCanvasMTime: 0,
+	  style: {
+	    backgroundColor: 'rgba(255, 255, 255, 1)',
+	    histogramColor: 'rgba(200, 200, 200, 0.5)',
+	    strokeColor: 'rgb(0, 0, 0)',
+	    activeColor: 'rgb(0, 0, 150)',
+	    buttonDisableFillColor: 'rgba(255, 255, 255, 0.5)',
+	    buttonDisableStrokeColor: 'rgba(0, 0, 0, 0.5)',
+	    buttonStrokeColor: 'rgba(0, 0, 0, 1)',
+	    buttonFillColor: 'rgba(255, 255, 255, 1)',
+	    handleColor: 'rgb(0, 150, 0)',
+	    strokeWidth: 2,
+	    activeStrokeWidth: 3,
+	    buttonStrokeWidth: 1.5,
+	    handleWidth: 3,
+	    iconSize: 20,
+	    padding: 10
+	  },
+	  activeGaussian: -1,
+	  selectedGaussian: -1
+	};
+
+	// ----------------------------------------------------------------------------
+
+	function extend(publicAPI, model) {
+	  var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	  Object.assign(model, DEFAULT_VALUES, initialValues);
+
+	  // Object methods
+	  _macro2.default.obj(publicAPI, model);
+	  _macro2.default.setGet(publicAPI, model, ['piecewiseSize', 'numberOfBins', 'colorTransferFunction']);
+	  _macro2.default.get(publicAPI, model, ['size', 'canvas']);
+	  _macro2.default.event(publicAPI, model, 'opacityChange');
+	  _macro2.default.event(publicAPI, model, 'animation');
+
+	  // Object specific methods
+	  vtkPiecewiseGaussianWidget(publicAPI, model);
+	}
+
+	// ----------------------------------------------------------------------------
+
+	var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtkPiecewiseGaussianWidget');
+
+	// ----------------------------------------------------------------------------
+
+	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(229).setImmediate))
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
+	var apply = Function.prototype.apply;
+	var slice = Array.prototype.slice;
+	var immediateIds = {};
+	var nextImmediateId = 0;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) { timeout.close(); };
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// That's not how node.js implements it but the exposed api is the same.
+	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+	  var id = nextImmediateId++;
+	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+	  immediateIds[id] = true;
+
+	  nextTick(function onNextTick() {
+	    if (immediateIds[id]) {
+	      // fn.call() is faster so we optimize for the common use-case
+	      // @see http://jsperf.com/call-apply-segu
+	      if (args) {
+	        fn.apply(null, args);
+	      } else {
+	        fn.call(null);
+	      }
+	      // Prevent ids from leaking
+	      exports.clearImmediate(id);
+	    }
+	  });
+
+	  return id;
+	};
+
+	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+	  delete immediateIds[id];
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(229).setImmediate, __webpack_require__(229).clearImmediate))
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.getCurrentGlobalMTime = getCurrentGlobalMTime;
+	exports.setLoggerFunction = setLoggerFunction;
+	exports.vtkLogMacro = vtkLogMacro;
+	exports.vtkInfoMacro = vtkInfoMacro;
+	exports.vtkDebugMacro = vtkDebugMacro;
+	exports.vtkErrorMacro = vtkErrorMacro;
+	exports.vtkWarningMacro = vtkWarningMacro;
+	exports.capitalize = capitalize;
+	exports.safeArrays = safeArrays;
+	exports.enumToString = enumToString;
+	exports.getStateArrayMapFunc = getStateArrayMapFunc;
+	exports.obj = obj;
+	exports.get = get;
+	exports.set = set;
+	exports.setGet = setGet;
+	exports.getArray = getArray;
+	exports.setArray = setArray;
+	exports.setGetArray = setGetArray;
+	exports.getReference = getReference;
+	exports.setFrom = setFrom;
+	exports.algo = algo;
+	exports.event = event;
+	exports.newInstance = newInstance;
+	exports.chain = chain;
+	exports.isVtkObject = isVtkObject;
+	exports.traverseInstanceTree = traverseInstanceTree;
+	exports.debounce = debounce;
+
+	var _vtk = __webpack_require__(231);
+
+	var _vtk2 = _interopRequireDefault(_vtk);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var globalMTime = 0;
+
+	function getCurrentGlobalMTime() {
+	  return globalMTime;
+	}
+
+	// ----------------------------------------------------------------------------
+	// Loggins function calls
+	// ----------------------------------------------------------------------------
+	/* eslint-disable no-prototype-builtins                                      */
+
+	var fakeConsole = {};
+	function noOp() {}
+
+	var consoleMethods = ['log', 'debug', 'info', 'warn', 'error', 'time', 'timeEnd', 'group', 'groupEnd'];
+	consoleMethods.forEach(function (methodName) {
+	  fakeConsole[methodName] = noOp;
+	});
+
+	global.console = window.console.hasOwnProperty('log') ? window.console : fakeConsole;
+
+	var loggerFunctions = {
+	  debug: noOp, // Don't print debug by default
+	  error: global.console.error || noOp,
+	  info: global.console.info || noOp,
+	  log: global.console.log || noOp,
+	  warn: global.console.warn || noOp
+	};
+
+	function setLoggerFunction(name, fn) {
+	  if (loggerFunctions[name]) {
+	    loggerFunctions[name] = fn || noOp;
+	  }
+	}
+
+	function vtkLogMacro() {
+	  loggerFunctions.log.apply(loggerFunctions, arguments);
+	}
+
+	function vtkInfoMacro() {
+	  loggerFunctions.info.apply(loggerFunctions, arguments);
+	}
+
+	function vtkDebugMacro() {
+	  loggerFunctions.debug.apply(loggerFunctions, arguments);
+	}
+
+	function vtkErrorMacro() {
+	  loggerFunctions.error.apply(loggerFunctions, arguments);
+	}
+
+	function vtkWarningMacro() {
+	  loggerFunctions.warn.apply(loggerFunctions, arguments);
+	}
+
+	// ----------------------------------------------------------------------------
+	// capitilze provided string
+	// ----------------------------------------------------------------------------
+
+	function capitalize(str) {
+	  return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+
+	// ----------------------------------------------------------------------------
+	// Array helper
+	// ----------------------------------------------------------------------------
+
+	function safeArrays(model) {
+	  Object.keys(model).forEach(function (key) {
+	    if (Array.isArray(model[key])) {
+	      model[key] = [].concat(model[key]);
+	    }
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function enumToString(e, value) {
+	  return Object.keys(e).find(function (key) {
+	    return e[key] === value;
+	  });
+	}
+
+	function getStateArrayMapFunc(item) {
+	  if (item.isA) {
+	    return item.getState();
+	  }
+	  return item;
+	}
+
+	// ----------------------------------------------------------------------------
+	// vtkObject: modified(), onModified(callback), delete()
+	// ----------------------------------------------------------------------------
+
+	function obj() {
+	  var publicAPI = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	  // Ensure each instance as a unique ref of array
+	  safeArrays(model);
+
+	  var callbacks = [];
+	  model.mtime = Number.isInteger(model.mtime) ? model.mtime : ++globalMTime;
+	  model.classHierarchy = ['vtkObject'];
+
+	  function off(index) {
+	    callbacks[index] = null;
+	  }
+
+	  function on(index) {
+	    function unsubscribe() {
+	      off(index);
+	    }
+	    return Object.freeze({ unsubscribe: unsubscribe });
+	  }
+
+	  publicAPI.isDeleted = function () {
+	    return !!model.deleted;
+	  };
+
+	  publicAPI.modified = function () {
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return;
+	    }
+
+	    model.mtime = ++globalMTime;
+	    callbacks.forEach(function (callback) {
+	      return callback && callback(publicAPI);
+	    });
+	  };
+
+	  publicAPI.onModified = function (callback) {
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return null;
+	    }
+
+	    var index = callbacks.length;
+	    callbacks.push(callback);
+	    return on(index);
+	  };
+
+	  publicAPI.getMTime = function () {
+	    return model.mtime;
+	  };
+
+	  publicAPI.isA = function (className) {
+	    return model.classHierarchy.indexOf(className) !== -1;
+	  };
+
+	  publicAPI.getClassName = function () {
+	    var depth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+	    return model.classHierarchy[model.classHierarchy.length - 1 - depth];
+	  };
+
+	  publicAPI.set = function () {
+	    var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var noWarning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	    var noFunction = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	    var ret = false;
+	    Object.keys(map).forEach(function (name) {
+	      var fn = noFunction ? null : publicAPI['set' + capitalize(name)];
+	      if (fn && Array.isArray(map[name])) {
+	        ret = fn.apply(undefined, _toConsumableArray(map[name])) || ret;
+	      } else if (fn) {
+	        ret = fn(map[name]) || ret;
+	      } else {
+	        // Set data on model directly
+	        if (['mtime'].indexOf(name) === -1 && !noWarning) {
+	          vtkWarningMacro('Warning: Set value to model directly ' + name + ', ' + map[name]);
+	        }
+	        model[name] = map[name];
+	        ret = true;
+	      }
+	    });
+	    return ret;
+	  };
+
+	  publicAPI.get = function () {
+	    for (var _len = arguments.length, list = Array(_len), _key = 0; _key < _len; _key++) {
+	      list[_key] = arguments[_key];
+	    }
+
+	    if (!list.length) {
+	      return model;
+	    }
+	    var subset = {};
+	    list.forEach(function (name) {
+	      subset[name] = model[name];
+	    });
+	    return subset;
+	  };
+
+	  publicAPI.getOneProperty = function (val) {
+	    return model[val];
+	  };
+
+	  publicAPI.delete = function () {
+	    Object.keys(model).forEach(function (field) {
+	      return delete model[field];
+	    });
+	    callbacks.forEach(function (el, index) {
+	      return off(index);
+	    });
+
+	    // Flag the instance being deleted
+	    model.deleted = true;
+	  };
+
+	  // Add serialization support
+	  publicAPI.getState = function () {
+	    var jsonArchive = Object.assign({}, model, { vtkClass: publicAPI.getClassName() });
+
+	    // Convert every vtkObject to its serializable form
+	    Object.keys(jsonArchive).forEach(function (keyName) {
+	      if (jsonArchive[keyName] === null || jsonArchive[keyName] === undefined) {
+	        delete jsonArchive[keyName];
+	      } else if (jsonArchive[keyName].isA) {
+	        jsonArchive[keyName] = jsonArchive[keyName].getState();
+	      } else if (Array.isArray(jsonArchive[keyName])) {
+	        jsonArchive[keyName] = jsonArchive[keyName].map(getStateArrayMapFunc);
+	      }
+	    });
+
+	    // Sort resulting object by key name
+	    var sortedObj = {};
+	    Object.keys(jsonArchive).sort().forEach(function (name) {
+	      sortedObj[name] = jsonArchive[name];
+	    });
+
+	    // Remove mtime
+	    if (sortedObj.mtime) {
+	      delete sortedObj.mtime;
+	    }
+
+	    return sortedObj;
+	  };
+
+	  // Add shallowCopy(otherInstance) support
+	  publicAPI.shallowCopy = function (other) {
+	    var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	    if (other.getClassName() !== publicAPI.getClassName()) {
+	      throw new Error('Cannot ShallowCopy ' + other.getClassName() + ' into ' + publicAPI.getClassName());
+	    }
+	    var otherModel = other.get();
+
+	    var keyList = Object.keys(model).sort();
+	    var otherKeyList = Object.keys(otherModel).sort();
+
+	    otherKeyList.forEach(function (key) {
+	      var keyIdx = keyList.indexOf(key);
+	      if (keyIdx === -1) {
+	        if (debug) {
+	          vtkDebugMacro('add ' + key + ' in shallowCopy');
+	        }
+	      } else {
+	        keyList.splice(keyIdx, 1);
+	      }
+	      model[key] = otherModel[key];
+	    });
+	    if (keyList.length && debug) {
+	      vtkDebugMacro('Untouched keys: ' + keyList.join(', '));
+	    }
+
+	    publicAPI.modified();
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// getXXX: add getters
+	// ----------------------------------------------------------------------------
+
+	function get(publicAPI, model, fieldNames) {
+	  fieldNames.forEach(function (field) {
+	    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+	      publicAPI['get' + capitalize(field.name)] = function () {
+	        return model[field.name];
+	      };
+	    } else {
+	      publicAPI['get' + capitalize(field)] = function () {
+	        return model[field];
+	      };
+	    }
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// setXXX: add setters
+	// ----------------------------------------------------------------------------
+
+	var objectSetterMap = {
+	  enum: function _enum(publicAPI, model, field) {
+	    return function (value) {
+	      if (typeof value === 'string') {
+	        if (field.enum[value] !== undefined) {
+	          if (model[field.name] !== field.enum[value]) {
+	            model[field.name] = field.enum[value];
+	            publicAPI.modified();
+	            return true;
+	          }
+	          return false;
+	        }
+	        vtkErrorMacro('Set Enum with invalid argument ' + field + ', ' + value);
+	        throw new RangeError('Set Enum with invalid string argument');
+	      }
+	      if (typeof value === 'number') {
+	        if (model[field.name] !== value) {
+	          if (Object.keys(field.enum).map(function (key) {
+	            return field.enum[key];
+	          }).indexOf(value) !== -1) {
+	            model[field.name] = value;
+	            publicAPI.modified();
+	            return true;
+	          }
+	          vtkErrorMacro('Set Enum outside numeric range ' + field + ', ' + value);
+	          throw new RangeError('Set Enum outside numeric range');
+	        }
+	        return false;
+	      }
+	      vtkErrorMacro('Set Enum with invalid argument (String/Number) ' + field + ', ' + value);
+	      throw new TypeError('Set Enum with invalid argument (String/Number)');
+	    };
+	  }
+	};
+
+	function findSetter(field) {
+	  if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+	    var fn = objectSetterMap[field.type];
+	    if (fn) {
+	      return function (publicAPI, model) {
+	        return fn(publicAPI, model, field);
+	      };
+	    }
+
+	    vtkErrorMacro('No setter for field ' + field);
+	    throw new TypeError('No setter for field');
+	  }
+	  return function getSetter(publicAPI, model) {
+	    return function setter(value) {
+	      if (model.deleted) {
+	        vtkErrorMacro('instance deleted - cannot call any method');
+	        return false;
+	      }
+
+	      if (model[field] !== value) {
+	        model[field] = value;
+	        publicAPI.modified();
+	        return true;
+	      }
+	      return false;
+	    };
+	  };
+	}
+
+	function set(publicAPI, model, fields) {
+	  fields.forEach(function (field) {
+	    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+	      publicAPI['set' + capitalize(field.name)] = findSetter(field)(publicAPI, model);
+	    } else {
+	      publicAPI['set' + capitalize(field)] = findSetter(field)(publicAPI, model);
+	    }
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// set/get XXX: add both setters and getters
+	// ----------------------------------------------------------------------------
+
+	function setGet(publicAPI, model, fieldNames) {
+	  get(publicAPI, model, fieldNames);
+	  set(publicAPI, model, fieldNames);
+	}
+
+	// ----------------------------------------------------------------------------
+	// getXXX: add getters for object of type array
+	// ----------------------------------------------------------------------------
+
+	function getArray(publicAPI, model, fieldNames) {
+	  fieldNames.forEach(function (field) {
+	    // by default return a copy to be safe unless noModify is true
+	    publicAPI['get' + capitalize(field)] = function () {
+	      var noModify = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+	      if (noModify) {
+	        return model[field];
+	      }
+	      return [].concat(model[field]);
+	    };
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// setXXX: add setter for object of type array
+	// if 'defaultVal' is supplied, shorter arrays will be padded to 'size' with 'defaultVal'
+	// ----------------------------------------------------------------------------
+
+	function setArray(publicAPI, model, fieldNames, size) {
+	  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+
+	  fieldNames.forEach(function (field) {
+	    publicAPI['set' + capitalize(field)] = function () {
+	      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	        args[_key2] = arguments[_key2];
+	      }
+
+	      if (model.deleted) {
+	        vtkErrorMacro('instance deleted - cannot call any method');
+	        return false;
+	      }
+
+	      var array = args;
+	      // allow an array passed as a single arg.
+	      if (array.length === 1 && Array.isArray(array[0])) {
+	        array = array[0];
+	      }
+
+	      if (array.length !== size) {
+	        if (array.length < size && defaultVal !== undefined) {
+	          array = [].concat(array);
+	          while (array.length < size) {
+	            array.push(defaultVal);
+	          }
+	        } else {
+	          throw new RangeError('Invalid number of values for array setter');
+	        }
+	      }
+	      var changeDetected = false;
+	      model[field].forEach(function (item, index) {
+	        if (item !== array[index]) {
+	          if (changeDetected) {
+	            return;
+	          }
+	          changeDetected = true;
+	        }
+	      });
+
+	      if (changeDetected || model[field].length !== array.length) {
+	        model[field] = [].concat(array);
+	        publicAPI.modified();
+	      }
+	      return true;
+	    };
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// set/get XXX: add setter and getter for object of type array
+	// ----------------------------------------------------------------------------
+
+	function setGetArray(publicAPI, model, fieldNames, size) {
+	  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+
+	  getArray(publicAPI, model, fieldNames);
+	  setArray(publicAPI, model, fieldNames, size, defaultVal);
+	}
+
+	// ----------------------------------------------------------------------------
+	// get{xxx}ByReference: add a fast getter with no check
+	// ----------------------------------------------------------------------------
+
+	function getReference(publicAPI, model, fieldNames) {
+	  fieldNames.forEach(function (field) {
+	    publicAPI['get' + capitalize(field) + 'ByReference'] = function () {
+	      return model.field;
+	    };
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// set{xxx}From: add setter for arrays with no object creation or mark modified
+	// ----------------------------------------------------------------------------
+
+	function setFrom(publicAPI, model, fieldNames) {
+	  fieldNames.forEach(function (field) {
+	    publicAPI['set' + capitalize(field) + 'From'] = function (otherArray) {
+	      var target = model[field];
+	      otherArray.forEach(function (v, i) {
+	        target[i] = v;
+	      });
+	    };
+	  });
+	}
+
+	// ----------------------------------------------------------------------------
+	// vtkAlgorithm: setInputData(), setInputConnection(), getOutput(), getOutputPort()
+	// ----------------------------------------------------------------------------
+
+	function algo(publicAPI, model, numberOfInputs, numberOfOutputs) {
+	  if (model.inputData) {
+	    model.inputData = model.inputData.map(_vtk2.default);
+	  } else {
+	    model.inputData = [];
+	  }
+
+	  if (model.inputConnection) {
+	    model.inputConnection = model.inputConnection.map(_vtk2.default);
+	  } else {
+	    model.inputConnection = [];
+	  }
+
+	  if (model.output) {
+	    model.output = model.output.map(_vtk2.default);
+	  } else {
+	    model.output = [];
+	  }
+
+	  if (model.inputArrayToProcess) {
+	    model.inputArrayToProcess = model.inputArrayToProcess.map(_vtk2.default);
+	  } else {
+	    model.inputArrayToProcess = [];
+	  }
+
+	  // Methods
+	  function setInputData(dataset) {
+	    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return;
+	    }
+	    if (model.inputData[port] !== dataset || model.inputConnection[port]) {
+	      model.inputData[port] = dataset;
+	      model.inputConnection[port] = null;
+	      if (publicAPI.modified) {
+	        publicAPI.modified();
+	      }
+	    }
+	  }
+
+	  function getInputData() {
+	    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+	    if (model.inputConnection[port]) {
+	      model.inputData[port] = model.inputConnection[port]();
+	    }
+	    return model.inputData[port];
+	  }
+
+	  function setInputConnection(outputPort) {
+	    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return;
+	    }
+	    model.inputData[port] = null;
+	    model.inputConnection[port] = outputPort;
+	  }
+
+	  function getInputConnection() {
+	    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+	    return model.inputConnection[port];
+	  }
+
+	  function getOutputData() {
+	    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return null;
+	    }
+	    if (publicAPI.shouldUpdate()) {
+	      // console.log('update filter', publicAPI.getClassName());
+	      publicAPI.update();
+	    }
+	    return model.output[port];
+	  }
+
+	  publicAPI.shouldUpdate = function () {
+	    var localMTime = model.mtime;
+	    var count = numberOfOutputs;
+	    var minOutputMTime = Infinity;
+	    while (count--) {
+	      if (!model.output[count]) {
+	        return true;
+	      }
+	      var mt = model.output[count].getMTime();
+	      if (mt < localMTime) {
+	        return true;
+	      }
+	      if (mt < minOutputMTime) {
+	        minOutputMTime = mt;
+	      }
+	    }
+
+	    count = numberOfInputs;
+	    while (count--) {
+	      if (model.inputConnection[count] && model.inputConnection[count].filter.shouldUpdate()) {
+	        return true;
+	      }
+	    }
+
+	    count = numberOfInputs;
+	    while (count--) {
+	      if (publicAPI.getInputData(count) && publicAPI.getInputData(count).getMTime() > minOutputMTime) {
+	        return true;
+	      }
+	    }
+	    return false;
+	  };
+
+	  function getOutputPort() {
+	    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+	    var outputPortAccess = function outputPortAccess() {
+	      return getOutputData(port);
+	    };
+	    // Add reference to filter
+	    outputPortAccess.filter = publicAPI;
+	    return outputPortAccess;
+	  }
+
+	  // Handle input if needed
+	  if (numberOfInputs) {
+	    // Reserve inputs
+	    var count = numberOfInputs;
+	    while (count--) {
+	      model.inputData.push(null);
+	      model.inputConnection.push(null);
+	    }
+
+	    // Expose public methods
+	    publicAPI.setInputData = setInputData;
+	    publicAPI.setInputConnection = setInputConnection;
+	    publicAPI.getInputData = getInputData;
+	    publicAPI.getInputConnection = getInputConnection;
+	  }
+
+	  if (numberOfOutputs) {
+	    publicAPI.getOutputData = getOutputData;
+	    publicAPI.getOutputPort = getOutputPort;
+	  }
+
+	  publicAPI.update = function () {
+	    var ins = [];
+	    if (numberOfInputs) {
+	      var _count = 0;
+	      while (_count < numberOfInputs) {
+	        ins[_count] = publicAPI.getInputData(_count);
+	        _count++;
+	      }
+	    }
+	    if (publicAPI.shouldUpdate()) {
+	      publicAPI.requestData(ins, model.output);
+	    }
+	  };
+
+	  publicAPI.getNumberOfInputPorts = function () {
+	    return numberOfInputs;
+	  };
+	  publicAPI.getNumberOfOutputPorts = function () {
+	    return numberOfOutputs;
+	  };
+
+	  publicAPI.getInputArrayToProcess = function (inputPort) {
+	    var arrayDesc = model.inputArrayToProcess[inputPort];
+	    var ds = model.inputData[inputPort];
+	    if (arrayDesc && ds) {
+	      return ds['get' + arrayDesc.fieldAssociation]().getArray(arrayDesc.arrayName);
+	    }
+	    return null;
+	  };
+	  publicAPI.setInputArrayToProcess = function (inputPort, arrayName, fieldAssociation) {
+	    var attributeType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'Scalars';
+
+	    while (model.inputArrayToProcess.length < inputPort) {
+	      model.inputArrayToProcess.push(null);
+	    }
+	    model.inputArrayToProcess[inputPort] = { arrayName: arrayName, fieldAssociation: fieldAssociation, attributeType: attributeType };
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Event handling: onXXX(callback), invokeXXX(args...)
+	// ----------------------------------------------------------------------------
+
+	function event(publicAPI, model, eventName) {
+	  var _arguments = arguments;
+
+	  var callbacks = [];
+	  var previousDelete = publicAPI.delete;
+
+	  function off(index) {
+	    callbacks[index] = null;
+	  }
+
+	  function on(index) {
+	    function unsubscribe() {
+	      off(index);
+	    }
+	    return Object.freeze({ unsubscribe: unsubscribe });
+	  }
+
+	  publicAPI['invoke' + capitalize(eventName)] = function () {
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return;
+	    }
+	    /* eslint-disable prefer-rest-params */
+	    callbacks.forEach(function (callback) {
+	      return callback && callback.apply(publicAPI, _arguments);
+	    });
+	    /* eslint-enable prefer-rest-params */
+	  };
+
+	  publicAPI['on' + capitalize(eventName)] = function (callback) {
+	    if (model.deleted) {
+	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return null;
+	    }
+
+	    var index = callbacks.length;
+	    callbacks.push(callback);
+	    return on(index);
+	  };
+
+	  publicAPI.delete = function () {
+	    previousDelete();
+	    callbacks.forEach(function (el, index) {
+	      return off(index);
+	    });
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// newInstance
+	// ----------------------------------------------------------------------------
+
+	function newInstance(extend, className) {
+	  var constructor = function constructor() {
+	    var initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	    var model = {};
+	    var publicAPI = {};
+	    extend(publicAPI, model, initialValues);
+	    return Object.freeze(publicAPI);
+	  };
+
+	  // Register constructor to factory
+	  if (className) {
+	    _vtk2.default.register(className, constructor);
+	  }
+
+	  return constructor;
+	}
+
+	// ----------------------------------------------------------------------------
+	// Chain function calls
+	// ----------------------------------------------------------------------------
+
+	function chain() {
+	  for (var _len3 = arguments.length, fn = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	    fn[_key3] = arguments[_key3];
+	  }
+
+	  return function () {
+	    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+	      args[_key4] = arguments[_key4];
+	    }
+
+	    return fn.filter(function (i) {
+	      return !!i;
+	    }).forEach(function (i) {
+	      return i.apply(undefined, args);
+	    });
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Some utility methods for vtk objects
+	// ----------------------------------------------------------------------------
+
+	function isVtkObject(instance) {
+	  return instance && instance.isA && instance.isA('vtkObject');
+	}
+
+	function traverseInstanceTree(instance, extractFunction) {
+	  var accumulator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+	  var visitedInstances = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+
+	  if (isVtkObject(instance)) {
+	    if (visitedInstances.indexOf(instance) >= 0) {
+	      // avoid cycles
+	      return accumulator;
+	    }
+
+	    visitedInstances.push(instance);
+	    var result = extractFunction(instance);
+	    if (result !== undefined) {
+	      accumulator.push(result);
+	    }
+
+	    // Now go through this instance's model
+	    var model = instance.get();
+	    Object.keys(model).forEach(function (key) {
+	      var modelObj = model[key];
+	      if (Array.isArray(modelObj)) {
+	        modelObj.forEach(function (subObj) {
+	          traverseInstanceTree(subObj, extractFunction, accumulator, visitedInstances);
+	        });
+	      } else {
+	        traverseInstanceTree(modelObj, extractFunction, accumulator, visitedInstances);
+	      }
+	    });
+	  }
+
+	  return accumulator;
+	}
+
+	// ----------------------------------------------------------------------------
+	// Returns a function, that, as long as it continues to be invoked, will not
+	// be triggered. The function will be called after it stops being called for
+	// N milliseconds. If `immediate` is passed, trigger the function on the
+	// leading edge, instead of the trailing.
+
+	function debounce(func, wait, immediate) {
+	  var _this = this;
+
+	  var timeout;
+	  return function () {
+	    for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+	      args[_key5] = arguments[_key5];
+	    }
+
+	    var context = _this;
+	    var later = function later() {
+	      timeout = null;
+	      if (!immediate) {
+	        func.apply(context, args);
+	      }
+	    };
+	    var callNow = immediate && !timeout;
+	    clearTimeout(timeout);
+	    timeout = setTimeout(later, wait);
+	    if (callNow) {
+	      func.apply(context, args);
+	    }
+	  };
+	}
+
+	// ----------------------------------------------------------------------------
+	// Default export
+	// ----------------------------------------------------------------------------
+
+	exports.default = {
+	  algo: algo,
+	  capitalize: capitalize,
+	  chain: chain,
+	  enumToString: enumToString,
+	  event: event,
+	  get: get,
+	  getArray: getArray,
+	  getCurrentGlobalMTime: getCurrentGlobalMTime,
+	  getStateArrayMapFunc: getStateArrayMapFunc,
+	  isVtkObject: isVtkObject,
+	  newInstance: newInstance,
+	  obj: obj,
+	  safeArrays: safeArrays,
+	  set: set,
+	  setArray: setArray,
+	  setGet: setGet,
+	  setGetArray: setGetArray,
+	  setLoggerFunction: setLoggerFunction,
+	  traverseInstanceTree: traverseInstanceTree,
+	  vtkDebugMacro: vtkDebugMacro,
+	  vtkErrorMacro: vtkErrorMacro,
+	  vtkInfoMacro: vtkInfoMacro,
+	  vtkLogMacro: vtkLogMacro,
+	  vtkWarningMacro: vtkWarningMacro,
+	  debounce: debounce
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 231 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = vtk;
+	exports.register = register;
+	var factoryMapping = {
+	  vtkObject: function vtkObject() {
+	    return null;
+	  }
+	};
+
+	function vtk(obj) {
+	  if (obj === null || obj === undefined) {
+	    return obj;
+	  }
+	  if (obj.isA) {
+	    return obj;
+	  }
+	  if (!obj.vtkClass) {
+	    if (global.console && global.console.error) {
+	      global.console.error('Invalid VTK object');
+	    }
+	    return null;
+	  }
+	  var constructor = factoryMapping[obj.vtkClass];
+	  if (!constructor) {
+	    if (global.console && global.console.error) {
+	      global.console.error('No vtk class found for Object of type ' + obj.vtkClass);
+	    }
+	    return null;
+	  }
+
+	  // Shallow copy object
+	  var model = Object.assign({}, obj);
+
+	  // Convert into vtkObject any nested key
+	  Object.keys(model).forEach(function (keyName) {
+	    if (model[keyName] && _typeof(model[keyName]) === 'object' && model[keyName].vtkClass) {
+	      model[keyName] = vtk(model[keyName]);
+	    }
+	  });
+
+	  // Return the root
+	  var newInst = constructor(model);
+	  if (newInst && newInst.modified) {
+	    newInst.modified();
+	  }
+	  return newInst;
+	}
+
+	function register(vtkClassName, constructor) {
+	  factoryMapping[vtkClassName] = constructor;
+	}
+
+	// Nest register method under the vtk function
+	vtk.register = register;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -46900,7 +49032,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 233 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -51393,7 +53525,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -51574,13 +53706,13 @@
 	};
 
 /***/ },
-/* 230 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(231);
+	var content = __webpack_require__(236);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(183)(content, {});
@@ -51600,7 +53732,7 @@
 	}
 
 /***/ },
-/* 231 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(175)();
