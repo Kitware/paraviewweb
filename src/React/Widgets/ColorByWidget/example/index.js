@@ -12,6 +12,7 @@ const scalarBar = 'iVBORw0KGgoAAAANSUhEUgAAAgAAAAABCAIAAAAn2YEhAAAGDElEQVQ4EQEBB
 require('normalize.css');
 
 const container = document.querySelector('.content');
+const useGaussian = true;
 
 function onChange(event) {
   console.log(event);
@@ -20,7 +21,7 @@ function onChange(event) {
 ReactDOM.render(
     React.createElement(
         ColorByWidget,
-        { source, representation, scalarBar, onChange, presets }),
+        { source, representation, scalarBar, onChange, presets, useGaussian }),
     container);
 
 document.body.style.margin = '10px';
