@@ -115,6 +115,7 @@ export default React.createClass({
             <PieceWiseGaussianFunctionEditorWidget
               points={this.props.opacityPoints}
               gaussians={this.props.gaussians}
+              bgImage={this.props.scalarBar}
               rangeMin={this.props.min}
               rangeMax={this.props.max}
               onChange={this.props.onOpacityPointsChange}
