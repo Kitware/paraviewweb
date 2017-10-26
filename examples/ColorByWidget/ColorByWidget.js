@@ -23011,6 +23011,7 @@
 	        this.state.activeAdvanceView === '2' && this.props.useGaussian ? _react2.default.createElement(_PieceWiseGaussianFunctionEditorWidget2.default, {
 	          points: this.props.opacityPoints,
 	          gaussians: this.props.gaussians,
+	          bgImage: this.props.scalarBar,
 	          rangeMin: this.props.min,
 	          rangeMax: this.props.max,
 	          onChange: this.props.onOpacityPointsChange,
@@ -45457,10 +45458,11 @@
 	      iconSize: 0,
 	      padding: 10
 	    });
+	    _this.bgImage = new Image();
 
 	    // Bind methods
 	    _this.updateDimensions = _this.updateDimensions.bind(_this);
-	    _this.pushOpacities = _this.pushOpacities.bind(_this);
+	    _this.updateWidget = _this.updateWidget.bind(_this);
 	    return _this;
 	  }
 
@@ -45470,17 +45472,19 @@
 	      var _this2 = this;
 
 	      this.widget.setContainer(this.rootContainer);
-	      this.widget.render();
 	      this.widget.bindMouseListeners();
-	      this.widget.onOpacityChange(function () {
-	        var gaussians = _this2.widget.get('gaussians').gaussians;
-	        var nodes = _this2.widget.getOpacityNodes();
-	        if (_this2.props.onChange) {
-	          _this2.props.onChange(nodes, gaussians);
-	        }
-	      });
+
 	      if (this.props.onEditModeChange) {
-	        this.widget.onAnimation(this.props.onEditModeChange);
+	        this.widget.onAnimation(function (editting) {
+	          if (!editting) {
+	            if (_this2.props.onChange) {
+	              var gaussians = _this2.widget.get('gaussians').gaussians;
+	              var nodes = _this2.widget.getOpacityNodes();
+	              _this2.props.onChange(nodes, gaussians);
+	            }
+	          }
+	          _this2.props.onEditModeChange(editting);
+	        });
 	      }
 
 	      if (this.props.width === -1 || this.props.height === -1) {
@@ -45488,16 +45492,11 @@
 	        _SizeHelper2.default.startListening();
 	        this.updateDimensions();
 	      }
+	      this.updateWidget();
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(newProps) {
-	      var widgetGaussians = JSON.stringify(this.widget.get('gaussians').gaussians);
-	      if (JSON.stringify(this.props.gaussians) !== widgetGaussians) {
-	        console.log('replace gaussians');
-	        this.widget.set({ gaussians: this.props.gaussians });
-	        this.widget.render();
-	      }
 	      if (this.props.width === -1 || this.props.height === -1) {
 	        this.updateDimensions();
 	      }
@@ -45505,7 +45504,7 @@
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
-	      this.widget.render();
+	      this.updateWidget();
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -45517,11 +45516,6 @@
 	        this.widget.delete(); // Remove subscriptions
 	        this.widget = null;
 	      }
-	    }
-	  }, {
-	    key: 'pushOpacities',
-	    value: function pushOpacities() {
-	      this.props.onEditModeChange();
 	    }
 	  }, {
 	    key: 'updateDimensions',
@@ -45536,6 +45530,19 @@
 	      if (this.props.height === -1) {
 	        this.setState({ height: clientHeight });
 	      }
+	    }
+	  }, {
+	    key: 'updateWidget',
+	    value: function updateWidget() {
+	      if (this.props.gaussians) {
+	        this.widget.setGaussians(this.props.gaussians);
+	      }
+	      if (this.props.bgImage) {
+	        this.bgImage.src = 'data:image/png;base64,' + this.props.bgImage;
+	        this.widget.setBackgroundImage(this.bgImage);
+	      }
+
+	      this.widget.render();
 	    }
 	  }, {
 	    key: 'render',
@@ -45559,7 +45566,8 @@
 	  height: 200,
 	  width: -1,
 	  points: [],
-	  gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }]
+	  gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
+	  bgImage: null
 	};
 
 	PieceWiseGaussianFunctionEditorWidget.propTypes = {
@@ -45570,7 +45578,8 @@
 	  onChange: _react2.default.PropTypes.func,
 	  onEditModeChange: _react2.default.PropTypes.func,
 	  height: _react2.default.PropTypes.number,
-	  width: _react2.default.PropTypes.number
+	  width: _react2.default.PropTypes.number,
+	  bgImage: _react2.default.PropTypes.string
 	};
 
 /***/ },
@@ -45634,7 +45643,7 @@
 	    gaussian.yBias = Math.max(0, Math.min(2, gaussian.yBias));
 	  },
 	  adjustWidth: function adjustWidth(x, y, originalXY, gaussian, originalGaussian) {
-	    gaussian.width = originalGaussian.width - (originalXY[0] - x);
+	    gaussian.width = originalGaussian.position < x ? originalGaussian.width - (originalXY[0] - x) : originalGaussian.width + (originalXY[0] - x);
 	    if (gaussian.width < MIN_GAUSSIAN_WIDTH) {
 	      gaussian.width = MIN_GAUSSIAN_WIDTH;
 	    }
@@ -45771,6 +45780,17 @@
 	  }
 
 	  ctx.putImageData(pixelsArea, 0, 0);
+	  return workCanvas;
+	}
+
+	// ----------------------------------------------------------------------------
+
+	function updateColorCanvasFromImage(img, width, canvas) {
+	  var workCanvas = canvas || document.createElement('canvas');
+	  workCanvas.setAttribute('width', width);
+	  workCanvas.setAttribute('height', 256);
+	  var ctx = workCanvas.getContext('2d');
+	  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, 256);
 	  return workCanvas;
 	}
 
@@ -45930,6 +45950,16 @@
 	      }
 	      publicAPI.modified();
 	    }
+	  };
+
+	  publicAPI.setGaussians = function (gaussians) {
+	    if (model.gaussians === gaussians) {
+	      return;
+	    }
+	    model.gaussians = gaussians;
+	    model.opacities = computeOpacities(model.gaussians, model.piecewiseSize);
+	    publicAPI.invokeOpacityChange(publicAPI);
+	    publicAPI.modified();
 	  };
 
 	  publicAPI.addGaussian = function (position, height, width, xBias, yBias) {
@@ -46306,6 +46336,12 @@
 	      drawChart(ctx, graphArea, model.opacities, { lineWidth: 1, strokeStyle: 'rgba(0,0,0,0)', fillStyle: 'rgba(0,0,0,1)', clip: true });
 	      ctx.drawImage(model.colorCanvas, graphArea[0], graphArea[1]);
 	      ctx.restore();
+	    } else if (model.backgroundImage) {
+	      model.colorCanvas = updateColorCanvasFromImage(model.backgroundImage, graphArea[2], model.colorCanvas);
+	      ctx.save();
+	      drawChart(ctx, graphArea, model.opacities, { lineWidth: 1, strokeStyle: 'rgba(0,0,0,0)', fillStyle: 'rgba(0,0,0,1)', clip: true });
+	      ctx.drawImage(model.colorCanvas, graphArea[0], graphArea[1]);
+	      ctx.restore();
 	    }
 
 	    // Draw active guassian
@@ -46415,7 +46451,7 @@
 
 	  // Object methods
 	  _macro2.default.obj(publicAPI, model);
-	  _macro2.default.setGet(publicAPI, model, ['piecewiseSize', 'numberOfBins', 'colorTransferFunction']);
+	  _macro2.default.setGet(publicAPI, model, ['piecewiseSize', 'numberOfBins', 'colorTransferFunction', 'backgroundImage']);
 	  _macro2.default.get(publicAPI, model, ['size', 'canvas']);
 	  _macro2.default.event(publicAPI, model, 'opacityChange');
 	  _macro2.default.event(publicAPI, model, 'animation');
@@ -46545,8 +46581,6 @@
 	exports.getArray = getArray;
 	exports.setArray = setArray;
 	exports.setGetArray = setGetArray;
-	exports.getReference = getReference;
-	exports.setFrom = setFrom;
 	exports.algo = algo;
 	exports.event = event;
 	exports.newInstance = newInstance;
@@ -46683,9 +46717,13 @@
 	    return !!model.deleted;
 	  };
 
-	  publicAPI.modified = function () {
+	  publicAPI.modified = function (otherMTime) {
 	    if (model.deleted) {
 	      vtkErrorMacro('instance deleted - cannot call any method');
+	      return;
+	    }
+
+	    if (otherMTime && otherMTime < model.mtime) {
 	      return;
 	    }
 
@@ -46758,7 +46796,7 @@
 	    return subset;
 	  };
 
-	  publicAPI.getOneProperty = function (val) {
+	  publicAPI.getReferenceByName = function (val) {
 	    return model[val];
 	  };
 
@@ -46940,19 +46978,17 @@
 	}
 
 	// ----------------------------------------------------------------------------
-	// getXXX: add getters for object of type array
+	// getXXX: add getters for object of type array with copy to be safe
+	// getXXXByReference: add getters for object of type array without copy
 	// ----------------------------------------------------------------------------
 
 	function getArray(publicAPI, model, fieldNames) {
 	  fieldNames.forEach(function (field) {
-	    // by default return a copy to be safe unless noModify is true
 	    publicAPI['get' + capitalize(field)] = function () {
-	      var noModify = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-	      if (noModify) {
-	        return model[field];
-	      }
 	      return [].concat(model[field]);
+	    };
+	    publicAPI['get' + capitalize(field) + 'ByReference'] = function () {
+	      return model[field];
 	    };
 	  });
 	}
@@ -46960,6 +46996,7 @@
 	// ----------------------------------------------------------------------------
 	// setXXX: add setter for object of type array
 	// if 'defaultVal' is supplied, shorter arrays will be padded to 'size' with 'defaultVal'
+	// set...From: fast path to copy the content of an array to the current one without call to modified.
 	// ----------------------------------------------------------------------------
 
 	function setArray(publicAPI, model, fieldNames, size) {
@@ -47008,6 +47045,13 @@
 	      }
 	      return true;
 	    };
+
+	    publicAPI['set' + capitalize(field) + 'From'] = function (otherArray) {
+	      var target = model[field];
+	      otherArray.forEach(function (v, i) {
+	        target[i] = v;
+	      });
+	    };
 	  });
 	}
 
@@ -47020,33 +47064,6 @@
 
 	  getArray(publicAPI, model, fieldNames);
 	  setArray(publicAPI, model, fieldNames, size, defaultVal);
-	}
-
-	// ----------------------------------------------------------------------------
-	// get{xxx}ByReference: add a fast getter with no check
-	// ----------------------------------------------------------------------------
-
-	function getReference(publicAPI, model, fieldNames) {
-	  fieldNames.forEach(function (field) {
-	    publicAPI['get' + capitalize(field) + 'ByReference'] = function () {
-	      return model.field;
-	    };
-	  });
-	}
-
-	// ----------------------------------------------------------------------------
-	// set{xxx}From: add setter for arrays with no object creation or mark modified
-	// ----------------------------------------------------------------------------
-
-	function setFrom(publicAPI, model, fieldNames) {
-	  fieldNames.forEach(function (field) {
-	    publicAPI['set' + capitalize(field) + 'From'] = function (otherArray) {
-	      var target = model[field];
-	      otherArray.forEach(function (v, i) {
-	        target[i] = v;
-	      });
-	    };
-	  });
 	}
 
 	// ----------------------------------------------------------------------------
@@ -47244,8 +47261,6 @@
 	// ----------------------------------------------------------------------------
 
 	function event(publicAPI, model, eventName) {
-	  var _arguments = arguments;
-
 	  var callbacks = [];
 	  var previousDelete = publicAPI.delete;
 
@@ -47260,7 +47275,9 @@
 	    return Object.freeze({ unsubscribe: unsubscribe });
 	  }
 
-	  publicAPI['invoke' + capitalize(eventName)] = function () {
+	  function invoke() {
+	    var _arguments = arguments;
+
 	    if (model.deleted) {
 	      vtkErrorMacro('instance deleted - cannot call any method');
 	      return;
@@ -47270,7 +47287,9 @@
 	      return callback && callback.apply(publicAPI, _arguments);
 	    });
 	    /* eslint-enable prefer-rest-params */
-	  };
+	  }
+
+	  publicAPI['invoke' + capitalize(eventName)] = invoke;
 
 	  publicAPI['on' + capitalize(eventName)] = function (callback) {
 	    if (model.deleted) {
