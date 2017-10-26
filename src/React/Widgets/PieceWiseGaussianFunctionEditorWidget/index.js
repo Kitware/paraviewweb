@@ -23,25 +23,28 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
       iconSize: 0,
       padding: 10,
     });
+    this.bgImage = new Image();
 
     // Bind methods
     this.updateDimensions = this.updateDimensions.bind(this);
-    this.pushOpacities = this.pushOpacities.bind(this);
+    this.updateWidget = this.updateWidget.bind(this);
   }
 
   componentDidMount() {
     this.widget.setContainer(this.rootContainer);
-    this.widget.render();
     this.widget.bindMouseListeners();
-    this.widget.onOpacityChange(() => {
-      const gaussians = this.widget.get('gaussians').gaussians;
-      const nodes = this.widget.getOpacityNodes();
-      if (this.props.onChange) {
-        this.props.onChange(nodes, gaussians);
-      }
-    });
+
     if (this.props.onEditModeChange) {
-      this.widget.onAnimation(this.props.onEditModeChange);
+      this.widget.onAnimation((editting) => {
+        if (!editting) {
+          if (this.props.onChange) {
+            const gaussians = this.widget.get('gaussians').gaussians;
+            const nodes = this.widget.getOpacityNodes();
+            this.props.onChange(nodes, gaussians);
+          }
+        }
+        this.props.onEditModeChange(editting);
+      });
     }
 
     if (this.props.width === -1 || this.props.height === -1) {
@@ -49,22 +52,17 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
       sizeHelper.startListening();
       this.updateDimensions();
     }
+    this.updateWidget();
   }
 
   componentWillReceiveProps(newProps) {
-    const widgetGaussians = JSON.stringify(this.widget.get('gaussians').gaussians);
-    if (JSON.stringify(this.props.gaussians) !== widgetGaussians) {
-      console.log('replace gaussians');
-      this.widget.set({ gaussians: this.props.gaussians });
-      this.widget.render();
-    }
     if (this.props.width === -1 || this.props.height === -1) {
       this.updateDimensions();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.widget.render();
+    this.updateWidget();
   }
 
   componentWillUnmount() {
@@ -77,10 +75,6 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
     }
   }
 
-  pushOpacities() {
-    this.props.onEditModeChange();
-  }
-
   updateDimensions() {
     const { clientWidth, clientHeight } =
       sizeHelper.getSize(this.rootContainer, true);
@@ -90,6 +84,18 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
     if (this.props.height === -1) {
       this.setState({ height: clientHeight });
     }
+  }
+
+  updateWidget() {
+    if (this.props.gaussians) {
+      this.widget.setGaussians(this.props.gaussians);
+    }
+    if (this.props.bgImage) {
+      this.bgImage.src = `data:image/png;base64,${this.props.bgImage}`;
+      this.widget.setBackgroundImage(this.bgImage);
+    }
+
+    this.widget.render();
   }
 
   render() {
@@ -105,6 +111,7 @@ PieceWiseGaussianFunctionEditorWidget.defaultProps = {
   width: -1,
   points: [],
   gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
+  bgImage: null,
 };
 
 PieceWiseGaussianFunctionEditorWidget.propTypes = {
@@ -116,4 +123,5 @@ PieceWiseGaussianFunctionEditorWidget.propTypes = {
   onEditModeChange: React.PropTypes.func,
   height: React.PropTypes.number,
   width: React.PropTypes.number,
+  bgImage: React.PropTypes.string,
 };
