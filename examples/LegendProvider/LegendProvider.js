@@ -30800,6 +30800,7 @@
 	//     - fireMutualInformationSubscriptionChange(request)
 	//     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
 	//     - setMutualInformation(data)
+	//     - hasMutualInformation(request, variable)
 	//     - destroy()
 	// ----------------------------------------------------------------------------
 
@@ -30895,6 +30896,24 @@
 	        return flushDataToListener(dataListener, data);
 	      });
 	    }
+	  };
+
+	  // Retrieve data for a single variable from our cache, given current request.
+	  // Call from inside on{dataName}SubscriptionChange to find out if
+	  // cache needs to be updated.
+	  publicAPI['has' + capitalize(dataName)] = function (inRequest, variable) {
+	    try {
+	      if (inRequest) {
+	        var request = Object.assign({}, inRequest, { variables: [variable] });
+	        var dataToForward = dataHandler.get(model[dataContainerName], request, null);
+	        if (dataToForward) {
+	          return true;
+	        }
+	      }
+	    } catch (err) {
+	      console.log('has ' + dataName + ' error caught:', err);
+	    }
+	    return false;
 	  };
 
 	  publicAPI.destroy = chain(off, publicAPI.destroy);
