@@ -725,10 +725,8 @@ function parallelCoordinate(publicAPI, model) {
 
   publicAPI.setScores = (scores) => {
     model.scores = scores;
-    if (!model.visibleScores && scores) {
-      publicAPI.setVisibleScoresForSelection(scores.map((score, idx) => idx));
-    }
     if (model.scores) {
+      publicAPI.setVisibleScoresForSelection(scores.map((score, idx) => idx));
       model.scores.forEach((score, idx) => {
         scoreToColor[idx] = toColorArray(score.color);
       });
