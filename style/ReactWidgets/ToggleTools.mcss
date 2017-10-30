@@ -1,0 +1,28 @@
+.container {
+}
+
+.fullSize {
+  width: 100%;
+  height: 100%;
+}
+
+.baseIcon {
+  float: right;
+  cursor: pointer;
+  margin-top: 2px;
+  margin-right: 10px;
+  padding: 2px;
+  border: 2px solid #777;
+  opacity: 1.0;
+  border-radius: 5px;
+}
+
+.iconOn {
+  composes: baseIcon;
+  background-color: #eee;
+}
+
+.iconOff {
+  composes: baseIcon;
+  background-color: #ccc;
+}

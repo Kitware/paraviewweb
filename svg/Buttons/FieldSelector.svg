@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>FieldSelector</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="FieldSelector">
+            <polygon id="Triangle" stroke="#000000" stroke-width="5" fill="#7ED321" points="60 19 90 79 30 79"></polygon>
+            <ellipse id="Oval" stroke="#000000" stroke-width="5" fill="#FF6A45" cx="60" cy="207" rx="30" ry="30"></ellipse>
+            <polygon id="Star" stroke="#000000" stroke-width="5" fill="#4990E2" points="60 143 42.3664424 152.27051 45.7341523 132.635255 31.4683045 118.72949 51.1832212 115.864745 60 98 68.8167788 115.864745 88.5316955 118.72949 74.2658477 132.635255 77.6335576 152.27051"></polygon>
+            <path d="M114,207 L234,207" id="Path-2" stroke="#979797" stroke-width="30" transform="translate(174.000000, 207.000000) scale(1, -1) translate(-174.000000, -207.000000) "></path>
+            <path d="M114,128 L234,128" id="Path-2" stroke="#979797" stroke-width="30" transform="translate(174.000000, 128.000000) scale(1, -1) translate(-174.000000, -128.000000) "></path>
+            <path d="M114,49 L234,49" id="Path-2" stroke="#979797" stroke-width="30" transform="translate(174.000000, 49.000000) scale(1, -1) translate(-174.000000, -49.000000) "></path>
+        </g>
+    </g>
+</svg>

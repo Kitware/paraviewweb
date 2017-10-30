@@ -1,0 +1,18 @@
+.closeControlBtn {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-close      from 'font-awesome/css/font-awesome.css';
+  pointer-events: auto;
+  text-align: center;
+  border: none;
+  background: none;
+  right: 0px;
+  padding: 2px 5px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.overlayTitle {
+  font-weight: bold;
+  font-size: large;
+}
