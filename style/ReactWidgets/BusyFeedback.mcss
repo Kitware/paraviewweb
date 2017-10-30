@@ -1,0 +1,27 @@
+.container {
+  float: left;
+  font-size: 30px;
+  position: relative;
+  top: -5px;
+}
+
+.idle {
+  composes: fa    from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw from 'font-awesome/css/font-awesome.css';
+}
+
+.busy {
+  composes: idle;
+  composes: fa-spin from 'font-awesome/css/font-awesome.css';
+  composes: fa-spinner from 'font-awesome/css/font-awesome.css';
+}
+
+.busyLg {
+  composes: busy;
+  composes: fa-lg from 'font-awesome/css/font-awesome.css';
+}
+
+.hidden {
+  composes: idle;
+  display: none;
+}

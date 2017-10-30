@@ -1,6 +1,7 @@
 import ActionListWidget               from './ActionListWidget';
 import AnnotationEditorWidget         from './AnnotationEditorWidget';
 import AnnotationStoreEditorWidget    from './AnnotationStoreEditorWidget';
+import BusyFeedback                   from './BusyFeedback';
 import ButtonSelectorWidget           from './ButtonSelectorWidget';
 import CollapsibleWidget              from './CollapsibleWidget';
 import ColorByWidget                  from './ColorByWidget';
@@ -20,6 +21,7 @@ import LayoutsWidget                  from './LayoutsWidget';
 import LookupTableWidget              from './LookupTableWidget';
 import NumberInputWidget              from './NumberInputWidget';
 import NumberSliderWidget             from './NumberSliderWidget';
+import OverlayTitleBar                from './OverlayTitleBar';
 import PieceWiseFunctionEditorWidget  from './PieceWiseFunctionEditorWidget';
 import PresetListWidget               from './PresetListWidget';
 import ProxyEditorWidget              from './ProxyEditorWidget';
@@ -37,6 +39,7 @@ export default {
   ActionListWidget,
   AnnotationEditorWidget,
   AnnotationStoreEditorWidget,
+  BusyFeedback,
   ButtonSelectorWidget,
   CollapsibleWidget,
   ColorByWidget,
@@ -56,6 +59,7 @@ export default {
   LookupTableWidget,
   NumberInputWidget,
   NumberSliderWidget,
+  OverlayTitleBar,
   PieceWiseFunctionEditorWidget,
   PresetListWidget,
   ProxyEditorWidget,
