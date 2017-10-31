@@ -132,6 +132,15 @@ export function proxyPropToProp(property, ui) {
 
   if (isGroupWidget(ui.widget)) {
     prop.children = property.children.map((p, idx) => proxyPropToProp(p, ui.children[idx]));
+    prop.show = (ctx) => {
+      let visible = false;
+      prop.children.forEach((propChild) => {
+        if (propChild.show(ctx)) {
+          visible = true;
+        }
+      });
+      return visible;
+    };
   }
 
   return prop;
