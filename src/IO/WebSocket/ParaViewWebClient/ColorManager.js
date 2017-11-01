@@ -16,8 +16,8 @@ export default function createMethods(session) {
     colorBy: (representation, colorMode, arrayLocation = 'POINTS', arrayName = '', vectorMode = 'Magnitude', vectorComponent = 0, rescale = false) => {
       return session.call('pv.color.manager.color.by', [representation, colorMode, arrayLocation, arrayName, vectorMode, vectorComponent, rescale]);
     },
-    setOpacityFunctionPoints: (arrayName, pointArray) => {
-      return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray]);
+    setOpacityFunctionPoints: (arrayName, pointArray, enableSurfaceOpacity = false) => {
+      return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray, enableSurfaceOpacity]);
     },
     getOpacityFunctionPoints: (arrayName) => {
       return session.call('pv.color.manager.opacity.points.get', [arrayName]);
@@ -36,6 +36,12 @@ export default function createMethods(session) {
     },
     getSurfaceOpacity: (representation) => {
       return session.call('pv.color.manager.surface.opacity.get', [representation]);
+    },
+    setSurfaceOpacityByArray: (arrayName, enabled) => {
+      return session.call('pv.color.manager.surface.opacity.by.array.set', [arrayName, enabled]);
+    },
+    getSurfaceOpacityByArray: (arrayName) => {
+      return session.call('pv.color.manager.surface.opacity.by.array.get', [arrayName]);
     },
     selectColorMap: (representation, paletteName) => {
       return session.call('pv.color.manager.select.preset', [representation, paletteName]);

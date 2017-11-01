@@ -53,13 +53,14 @@
     border-radius: 15px;
     padding: 2px 15px;
     flex: 1 0 0%;
-    border: 1px solid #ddd;
+    border: 1px solid #aaa;
     line-height: normal;
     min-width: 10px;
+    outline: none;
 }
 
-.filter:active, .filter:focus {
-    border: 1px solid #aaa;
+.filter:focus {
+    border: 1.5px solid rgb(29, 147, 249);
 }
 
 .validateButton {
