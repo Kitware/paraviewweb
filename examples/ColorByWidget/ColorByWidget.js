@@ -21535,7 +21535,6 @@
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      useGaussian: false,
-	      gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
 	      min: 0,
 	      max: 1
 	    };
@@ -45434,6 +45433,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var defaultGaussians = '[{ "position": 0.5, "height": 1, "width": 0.5, "xBias": 0.55, "yBias": 0.55 }]';
+
 	var PieceWiseGaussianFunctionEditorWidget = function (_React$Component) {
 	  _inherits(PieceWiseGaussianFunctionEditorWidget, _React$Component);
 
@@ -45444,7 +45445,8 @@
 
 	    _this.state = {
 	      height: props.height,
-	      width: props.width
+	      width: props.width,
+	      gaussians: props.gaussians ? props.gaussians : JSON.parse(defaultGaussians)
 	    };
 
 	    _this.widget = _PiecewiseGaussianWidget2.default.newInstance({ numberOfBins: 256, size: [props.width, props.height] });
@@ -45497,6 +45499,8 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(newProps) {
+	      var gaussians = !newProps.gaussians ? JSON.parse(defaultGaussians) : newProps.gaussians;
+	      this.setState({ gaussians: gaussians });
 	      if (this.props.width === -1 || this.props.height === -1) {
 	        this.updateDimensions();
 	      }
@@ -45534,8 +45538,8 @@
 	  }, {
 	    key: 'updateWidget',
 	    value: function updateWidget() {
-	      if (this.props.gaussians) {
-	        this.widget.setGaussians(this.props.gaussians);
+	      if (this.state.gaussians) {
+	        this.widget.setGaussians(this.state.gaussians);
 	      }
 	      if (this.props.bgImage) {
 	        this.bgImage.src = 'data:image/png;base64,' + this.props.bgImage;
@@ -45566,7 +45570,6 @@
 	  height: 200,
 	  width: -1,
 	  points: [],
-	  gaussians: [{ position: 0.5, height: 1, width: 0.5, xBias: 0.55, yBias: 0.55 }],
 	  bgImage: null
 	};
 

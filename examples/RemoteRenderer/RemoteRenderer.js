@@ -25777,7 +25777,9 @@
 	      return session.call('pv.color.manager.color.by', [representation, colorMode, arrayLocation, arrayName, vectorMode, vectorComponent, rescale]);
 	    },
 	    setOpacityFunctionPoints: function setOpacityFunctionPoints(arrayName, pointArray) {
-	      return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray]);
+	      var enableSurfaceOpacity = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	      return session.call('pv.color.manager.opacity.points.set', [arrayName, pointArray, enableSurfaceOpacity]);
 	    },
 	    getOpacityFunctionPoints: function getOpacityFunctionPoints(arrayName) {
 	      return session.call('pv.color.manager.opacity.points.get', [arrayName]);
@@ -25798,6 +25800,12 @@
 	    },
 	    getSurfaceOpacity: function getSurfaceOpacity(representation) {
 	      return session.call('pv.color.manager.surface.opacity.get', [representation]);
+	    },
+	    setSurfaceOpacityByArray: function setSurfaceOpacityByArray(arrayName, enabled) {
+	      return session.call('pv.color.manager.surface.opacity.by.array.set', [arrayName, enabled]);
+	    },
+	    getSurfaceOpacityByArray: function getSurfaceOpacityByArray(arrayName) {
+	      return session.call('pv.color.manager.surface.opacity.by.array.get', [arrayName]);
 	    },
 	    selectColorMap: function selectColorMap(representation, paletteName) {
 	      return session.call('pv.color.manager.select.preset', [representation, paletteName]);
