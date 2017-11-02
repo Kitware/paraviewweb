@@ -71,6 +71,16 @@ function wslinkImageStream(publicAPI, model) {
   //   });
   // }
 
+  publicAPI.setViewId = (viewId) => {
+    if (model.view_id === viewId) {
+      return false;
+    }
+    model.client.VtkImageDelivery.removeRenderObserver(model.view_id);
+    model.view_id = viewId;
+    model.client.VtkImageDelivery.addRenderObserver(model.view_id);
+    return true;
+  };
+
   publicAPI.viewChanged = (data) => {
     const msg = data[0];
     if (!msg) return;
@@ -106,6 +116,9 @@ function wslinkImageStream(publicAPI, model) {
       model.client.VtkImageDelivery.onRenderChange(publicAPI.viewChanged).then((subscription) => {
         model.renderTopicSubscription = subscription;
         model.client.VtkImageDelivery.addRenderObserver(view_id).then((successResult) => {
+          if (successResult.viewId) {
+            model.view_id = successResult.viewId;
+          }
           console.log(`Successfully added observer to view ${view_id}`);
           console.log(successResult);
           resolve(successResult);

@@ -64,7 +64,7 @@ export default React.createClass({
       const { clientWidth, clientHeight } = sizeHelper.getSize(container);
       /* eslint-enable no-shadow */
       this.mouseListener.updateSize(clientWidth, clientHeight);
-      this.props.client.session.call('viewport.size.update', [-1, clientWidth, clientHeight]);
+      this.props.client.session.call('viewport.size.update', [parseInt(this.props.viewId, 10), clientWidth, clientHeight]);
     });
 
     // Create render
@@ -79,6 +79,16 @@ export default React.createClass({
         this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
       });
+  },
+
+  componentWillReceiveProps(nextProps) {
+    const viewIdAsNumber = Number(nextProps.viewId);
+    if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
+      if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
+        this.binaryImageStream.invalidateCache();
+        sizeHelper.triggerChange();
+      }
+    }
   },
 
   componentWillUnmount() {
