@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 5px 0 5px;
+}
+
+.container > * {
+  margin-bottom: 5px;
+}
+
+.resetCameraButton {
+  composes: fa            from 'font-awesome/css/font-awesome.css';
+  composes: fa-fw         from 'font-awesome/css/font-awesome.css';
+  composes: fa-arrows-alt from 'font-awesome/css/font-awesome.css';
+  cursor: pointer;
+}
+
+.container i {
+  width: 40px;
+  border-color: #777;
+  border-width: 2px;
+}
+
+.container button {
+  border-color: #777;
+  border-width: 2px;
+}
