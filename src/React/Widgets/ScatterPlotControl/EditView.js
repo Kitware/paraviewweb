@@ -1,11 +1,11 @@
 import React            from 'react';
 import style from 'PVWStyle/ReactWidgets/ScatterPlotControl.mcss';
-// import SvgIconWidget    from 'paraviewweb/src/React/Widgets/SvgIconWidget';
+import SvgIconWidget    from '../SvgIconWidget';
 
-// import ExtremesBest     from '../../../../../svg/PwfPresets/ExtremesBest.svg';
-// import HighestBest      from '../../../../../svg/PwfPresets/HighestBest.svg';
-// import LowestBest       from '../../../../../svg/PwfPresets/LowestBest.svg';
-// import MiddleBest       from '../../../../../svg/PwfPresets/MiddleBest.svg';
+import ExtremesBest     from '../../../../svg/PwfPresets/ExtremesBest.svg';
+import HighestBest      from '../../../../svg/PwfPresets/HighestBest.svg';
+import LowestBest       from '../../../../svg/PwfPresets/LowestBest.svg';
+import MiddleBest       from '../../../../svg/PwfPresets/MiddleBest.svg';
 
 import points           from './icons/points.png';
 import sphere           from './icons/sphere.png';
@@ -23,14 +23,9 @@ const REPRESENTATIONS = [
   { key: 'Sphere', icon: sphere },
 ];
 
-// FIXME: This mapping comes from the agreement previously held between count toolbar
-// FIXME: and parallel coordinates.  The mapping between these names and values should
-// FIXME: likely be formalized somewhere.
+// Filled from props.
 const ACTIVE_SCORE_MAPPING = {
-  unselected: -1,
-  no: 0,
-  maybe: 1,
-  yes: 2,
+  unselected: -999,
 };
 
 /* eslint-disable react/jsx-no-bind */
@@ -56,14 +51,15 @@ export default function EditView(props) {
 
   scores.forEach((scoreObj) => {
     scoreMap[scoreObj.name] = scoreObj.color;
+    ACTIVE_SCORE_MAPPING[scoreObj.name] = scoreObj.value;
   });
 
-  // const functionPresets = [
-  //   { icon: HighestBest, key: 'HighestBest' },
-  //   { icon: LowestBest, key: 'LowestBest' },
-  //   { icon: MiddleBest, key: 'MiddleBest' },
-  //   { icon: ExtremesBest, key: 'ExtremesBest' },
-  // ];
+  const functionPresets = [
+    { icon: HighestBest, key: 'HighestBest' },
+    { icon: LowestBest, key: 'LowestBest' },
+    { icon: MiddleBest, key: 'MiddleBest' },
+    { icon: ExtremesBest, key: 'ExtremesBest' },
+  ];
 
   const toggleActiveScore = label => (() => {
     const score = ACTIVE_SCORE_MAPPING[label];
@@ -177,17 +173,19 @@ export default function EditView(props) {
         <section className={ style.property }>
           <label>Emphasis</label>
           <div className={ style.pwfFunctionContainer }>
-            { Object.keys(colorMaps).map(name => (<div key={name} className={ style.pwfButtonContainer }>
-              <img
-                height={'20px'}
-                width={'55px'}
-                title={name}
-                alt={name}
-                src={`data:image/png;base64,${colorMaps[name]}`}
-                className={model.colorMapName === name ? style.selectedPresetButton : style.presetButton}
-                onClick={e => onChange(applyChange(model, 'colorMapName', name))}
-              />
-            </div>))}
+            { Object.keys(colorMaps).map(name => (
+              <div key={name} className={ style.pwfButtonContainer }>
+                <img
+                  height={'20px'}
+                  width={'55px'}
+                  title={name}
+                  alt={name}
+                  src={`data:image/png;base64,${colorMaps[name]}`}
+                  className={model.colorMapName === name ? style.selectedPresetButton : style.presetButton}
+                  onClick={e => onChange(applyChange(model, 'colorMapName', name))}
+                />
+              </div>
+            ))}
           </div>
         </section>
         <section className={ style.property }>
@@ -215,46 +213,19 @@ export default function EditView(props) {
       <section className={ style.property } key="color-group-user-sel-options">
         <label>Legend</label>
         <div className={ style.pwfFunctionContainer }>
-          <div
-            className={activeScores.indexOf(ACTIVE_SCORE_MAPPING.unselected) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
-            onClick={toggleActiveScore('unselected')}
-            style={{
-              background: scoreMap.unselected,
-              float: 'left',
-            }}
-          >
-            <span className={style.colorLegendPatchText}>Unselected</span>
-          </div>
-          <div
-            className={activeScores.indexOf(ACTIVE_SCORE_MAPPING.no) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
-            onClick={toggleActiveScore('no')}
-            style={{
-              background: scoreMap.no,
-              float: 'left',
-            }}
-          >
-            <span className={style.colorLegendPatchText}>No</span>
-          </div>
-          <div
-            className={activeScores.indexOf(ACTIVE_SCORE_MAPPING.maybe) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
-            onClick={toggleActiveScore('maybe')}
-            style={{
-              background: scoreMap.maybe,
-              float: 'left',
-            }}
-          >
-            <span className={style.colorLegendPatchText}>Maybe</span>
-          </div>
-          <div
-            className={activeScores.indexOf(ACTIVE_SCORE_MAPPING.yes) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
-            onClick={toggleActiveScore('yes')}
-            style={{
-              background: scoreMap.yes,
-              float: 'left',
-            }}
-          >
-            <span className={style.colorLegendPatchText}>Yes</span>
-          </div>
+          { Object.keys(ACTIVE_SCORE_MAPPING).map((scoreName, i) => (
+            <div
+              key={i}
+              className={activeScores.indexOf(scoreName) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
+              onClick={toggleActiveScore(scoreName)}
+              style={{
+                background: scoreMap[scoreName],
+                float: 'left',
+              }}
+            >
+              <span className={style.colorLegendPatchText}>{scoreName}</span>
+            </div>
+          ))}
         </div>
       </section>);
   }
@@ -319,21 +290,21 @@ export default function EditView(props) {
         </section>);
 
       // Prevent showing presets in case of user selection
-      // if (model.pointSizeBy !== 'user selection') {
-      //   sizeGroup.push(
-      //     <section key="sprite-size-function" className={ style.property }>
-      //       <label>Size</label>
-      //       <div className={ style.pwfFunctionContainer }>
-      //         {functionPresets.map(p => (<div key={p.key} title={p.key} className={ style.pwfButtonContainer }>
-      //           <SvgIconWidget
-      //             icon={p.icon}
-      //             className={model.pointSizeFunction === p.key ? style.selectedPwfButton : style.pwfButton}
-      //             onClick={e => onChange(applyChange(model, 'pointSizeFunction', p.key))}
-      //           />
-      //         </div>))}
-      //       </div>
-      //     </section>);
-      // }
+      if (model.pointSizeBy !== 'user selection') {
+        sizeGroup.push(
+          <section key="sprite-size-function" className={ style.property }>
+            <label>Size</label>
+            <div className={ style.pwfFunctionContainer }>
+              {functionPresets.map(p => (<div key={p.key} title={p.key} className={ style.pwfButtonContainer }>
+                <SvgIconWidget
+                  icon={p.icon}
+                  className={model.pointSizeFunction === p.key ? style.selectedPwfButton : style.pwfButton}
+                  onClick={e => onChange(applyChange(model, 'pointSizeFunction', p.key))}
+                />
+              </div>))}
+            </div>
+          </section>);
+      }
     }
   } else { // no sprites, just regular points
     sizeGroup.push(
@@ -370,19 +341,19 @@ export default function EditView(props) {
         </select>
       </section>);
 
-    // opacityGroup.push(
-    //   <section key="sprite-opacity-function" className={ style.property }>
-    //     <label>Mapping</label>
-    //     <div className={ style.pwfFunctionContainer }>
-    //       {functionPresets.map(p => (<div key={p.key} title={p.key} className={ style.pwfButtonContainer }>
-    //         <SvgIconWidget
-    //           icon={p.icon}
-    //           className={model.opacityFunction === p.key ? style.selectedPwfButton : style.pwfButton}
-    //           onClick={e => onChange(applyChange(model, 'opacityFunction', p.key))}
-    //         />
-    //       </div>))}
-    //     </div>
-    //   </section>);
+    opacityGroup.push(
+      <section key="sprite-opacity-function" className={ style.property }>
+        <label>Mapping</label>
+        <div className={ style.pwfFunctionContainer }>
+          {functionPresets.map(p => (<div key={p.key} title={p.key} className={ style.pwfButtonContainer }>
+            <SvgIconWidget
+              icon={p.icon}
+              className={model.opacityFunction === p.key ? style.selectedPwfButton : style.pwfButton}
+              onClick={e => onChange(applyChange(model, 'opacityFunction', p.key))}
+            />
+          </div>))}
+        </div>
+      </section>);
   }
 
   return (
