@@ -45,6 +45,7 @@ export default function EditView(props) {
   const colorGroup = [];
   const sizeGroup = [];
   const opacityGroup = [];
+  const addOnGroup = [];
   const scoreMap = {
     unselected: '#CCCCCC',
   };
@@ -114,38 +115,52 @@ export default function EditView(props) {
       <label>Axes</label>
     </section>);
 
-  axesGroup.push(
-    <section className={ style.property } key="axes-group-x">
-      <label>X</label>
-      <select
-        value={ model.x }
-        onChange={ e => onChange(applyChange(model, 'x', e.target.value)) }
-      >
-        { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
-      </select>
-    </section>);
+  if (model.hasMesh) {
+    axesGroup.push(
+      <section className={ style.property } key="axes-group">
+        <label>Show mesh</label>
+        <input
+          type="checkbox"
+          style={{ marginTop: 5, flex: 'none' }}
+          checked={ model.showMesh }
+          onChange={ e => onChange(applyChange(model, 'showMesh', !model.showMesh)) }
+        />
+      </section>);
+  }
+  if (!model.showMesh) {
+    axesGroup.push(
+      <section className={ style.property } key="axes-group-x">
+        <label>X</label>
+        <select
+          value={ model.x }
+          onChange={ e => onChange(applyChange(model, 'x', e.target.value)) }
+        >
+          { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
+        </select>
+      </section>);
 
-  axesGroup.push(
-    <section className={ style.property } key="axes-group-y">
-      <label>Y</label>
-      <select
-        value={ model.y }
-        onChange={ e => onChange(applyChange(model, 'y', e.target.value)) }
-      >
-        { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
-      </select>
-    </section>);
+    axesGroup.push(
+      <section className={ style.property } key="axes-group-y">
+        <label>Y</label>
+        <select
+          value={ model.y }
+          onChange={ e => onChange(applyChange(model, 'y', e.target.value)) }
+        >
+          { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
+        </select>
+      </section>);
 
-  axesGroup.push(
-    <section className={ style.property } key="axes-group-z">
-      <label>Z</label>
-      <select
-        value={ model.z }
-        onChange={ e => onChange(applyChange(model, 'z', e.target.value)) }
-      >
-        { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
-      </select>
-    </section>);
+    axesGroup.push(
+      <section className={ style.property } key="axes-group-z">
+        <label>Z</label>
+        <select
+          value={ model.z }
+          onChange={ e => onChange(applyChange(model, 'z', e.target.value)) }
+        >
+          { model.arrayList.map(txt => <option key={txt} value={txt}>{ txt }</option>) }
+        </select>
+      </section>);
+  }
 
   //
   // Color
@@ -356,13 +371,8 @@ export default function EditView(props) {
       </section>);
   }
 
-  return (
-    <div className={ style.container } >
-      { spriteGroup }
-      { axesGroup }
-      { colorGroup }
-      { sizeGroup }
-      { opacityGroup }
+  if (model.enableStats) {
+    addOnGroup.push(
       <section className={ style.property } key="misc-group-render-stats">
         <label style={{ marginTop: 20 }}>Show Render Stats</label>
         <input
@@ -371,7 +381,17 @@ export default function EditView(props) {
           checked={ model.showRenderStats }
           onChange={ e => onChange(applyChange(model, 'showRenderStats', !model.showRenderStats)) }
         />
-      </section>
+      </section>);
+  }
+
+  return (
+    <div className={ style.container } >
+      { spriteGroup }
+      { axesGroup }
+      { colorGroup }
+      { sizeGroup }
+      { opacityGroup }
+      { addOnGroup }
     </div>);
 }
 
