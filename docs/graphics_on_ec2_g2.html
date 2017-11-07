@@ -46,7 +46,7 @@
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="Setting up a graphics environment on an EC2 instanceIntroductionThis document covers setting up a graphics environment suitable for doing hardware rendering on an Amazon EC2 instance.  So far, all gra">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-11-06T21:26:31.388Z">
+<meta property="og:updated_time" content="2017-11-07T21:45:28.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="Setting up a graphics environment on an EC2 instanceIntroductionThis document covers setting up a graphics environment suitable for doing hardware rendering on an Amazon EC2 instance.  So far, all gra">
@@ -102,7 +102,7 @@
               <div class="article-content" itemprop="articleBody">
                 <h1 id="Setting-up-a-graphics-environment-on-an-EC2-instance" class="article-heading"><a href="#Setting-up-a-graphics-environment-on-an-EC2-instance" class="headerlink" title="Setting up a graphics environment on an EC2 instance"></a>Setting up a graphics environment on an EC2 instance<a class="article-anchor" href="#Setting-up-a-graphics-environment-on-an-EC2-instance" aria-hidden="true"></a></h1><h2 id="Introduction" class="article-heading"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction<a class="article-anchor" href="#Introduction" aria-hidden="true"></a></h2><p>This document covers setting up a graphics environment suitable for doing hardware rendering on an Amazon EC2 instance.  So far, all graphics instances we have worked with come with NVidia GRID gpus, and this document focuses on steps to prepare for using those graphics cards.  We have worked with several flavors of AMI at this point, and each one seems to differ slightly in how the graphics environment is prepared.  In this document, we will attempt to add a new section each time we encounter a new type of AMI with different setup instructions.</p>
 <p>Something common to all types of instances is how you can verify that your graphics card is set properly for ParaViewWeb hardware rendering.  Basically, if you can run an X server, and use it to run glxinfo, and see acceptable output, you’re ready to go:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo X :0 &amp;</div><div class="line">$ <span class="built_in">export</span> DISPLAY=:0.0</div><div class="line">$ glxinfo</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo X :0 &amp;</span><br><span class="line">$ <span class="built_in">export</span> DISPLAY=:0.0</span><br><span class="line">$ glxinfo</span><br></pre></td></tr></table></figure>
 <p>Scroll up through glxinfo output and look for lines containing OpenGL version info, it should mention NVidia.  For example:</p>
 <pre><code>OpenGL vendor string: NVIDIA Corporation
 OpenGL renderer string: GRID K520/PCIe/SSE2
@@ -253,7 +253,7 @@ $ sudo apt-get dist-upgrade
 </code></pre>
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-11-06T21:26:31.388Z" itemprop="dateModified">Last updated: 2017-11-06</time>
+                <time class="article-footer-updated" datetime="2017-11-07T21:45:28.889Z" itemprop="dateModified">Last updated: 2017-11-07</time>
                 <a href="launching_examples.html" class="article-footer-prev" title="Examples"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="os_mesa.html" class="article-footer-next" title="Offscreen OSMesa"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               

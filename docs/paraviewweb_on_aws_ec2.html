@@ -46,7 +46,7 @@
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="How to set up an EC2 AMI instance to run ParaViewWebNoticeTo reduce the amount of content duplication in these guides, most of this document has been re-organized into other guides.  We have left its">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-11-06T21:26:31.396Z">
+<meta property="og:updated_time" content="2017-11-07T21:45:28.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
 <meta name="twitter:description" content="How to set up an EC2 AMI instance to run ParaViewWebNoticeTo reduce the amount of content duplication in these guides, most of this document has been re-organized into other guides.  We have left its">
@@ -112,20 +112,20 @@
 </code></pre><p>You should replace this with the actual hostname of a running instance. Additionally, whenever you secure shell into your instance, it is possible that you will get a message from the system regarding the installation of updates.  You may want to do that before you begin.</p>
 <h2 id="Package-install-and-graphics-environment-setup" class="article-heading"><a href="#Package-install-and-graphics-environment-setup" class="headerlink" title="Package install and graphics environment setup"></a>Package install and graphics environment setup<a class="article-anchor" href="#Package-install-and-graphics-environment-setup" aria-hidden="true"></a></h2><p>Some of the packages to be installed were related to building Apache, see the <a href="apache_front_end.html">Apache as a front end</a> guide for details.  For information about graphics environment setup, please see the <a href="graphics_on_ec2_g2.html">EC2 Graphics Setup</a> guide.</p>
 <h2 id="ParaView" class="article-heading"><a href="#ParaView" class="headerlink" title="ParaView"></a>ParaView<a class="article-anchor" href="#ParaView" aria-hidden="true"></a></h2><p>The instructions for setting up ParaView have been simplified by a python script recently added to the ParaView superbuild.  You can download the script directly from <a href="http://www.paraview.org/gitweb?p=ParaViewSuperbuild.git;a=blob_plain;f=Scripts/pvw-setup.py;hb=HEAD" target="_blank" rel="external">here</a>.  Then you just run:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ python pvw-setup.py</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ python pvw-setup.py</span><br></pre></td></tr></table></figure>
 <p>and answer the prompts.  This will download the release version of ParaView, as well as documentation and data, and set up a website with links to the ParaViewWeb applications.</p>
 <p>At this point, you can check to make sure that at least the static content is available by pointing your browser at the instance.  As an example, you can paste a URL like the following one into your browser’s location bar:</p>
 <pre><code>http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com
 </code></pre><p>Just make sure to use the correct instance DNS name.</p>
 <h2 id="Apache" class="article-heading"><a href="#Apache" class="headerlink" title="Apache"></a>Apache<a class="article-anchor" href="#Apache" aria-hidden="true"></a></h2><p>Instructions for configuring (and also building) Apache can now be found in the <a href="apache_front_end.html">Apache as a front end</a> guide.</p>
 <h2 id="Configure-and-run-the-launcher" class="article-heading"><a href="#Configure-and-run-the-launcher" class="headerlink" title="Configure and run the launcher"></a>Configure and run the launcher<a class="article-anchor" href="#Configure-and-run-the-launcher" aria-hidden="true"></a></h2><p>Once the launcher is configured and ready, there are a few more steps before you can start it.  The final steps involve starting an X server (in the background), setting the DISPLAY environment variable, and finally running the launcher itself (also in the background).</p>
-<h3 id="Prepare-to-render" class="article-heading"><a href="#Prepare-to-render" class="headerlink" title="Prepare to render"></a>Prepare to render<a class="article-anchor" href="#Prepare-to-render" aria-hidden="true"></a></h3><figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo X :0 &amp;</div><div class="line">$ <span class="built_in">export</span> DISPLAY=:0.0</div></pre></td></tr></table></figure>
+<h3 id="Prepare-to-render" class="article-heading"><a href="#Prepare-to-render" class="headerlink" title="Prepare to render"></a>Prepare to render<a class="article-anchor" href="#Prepare-to-render" aria-hidden="true"></a></h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo X :0 &amp;</span><br><span class="line">$ <span class="built_in">export</span> DISPLAY=:0.0</span><br></pre></td></tr></table></figure>
 <h3 id="Start-the-launcher" class="article-heading"><a href="#Start-the-launcher" class="headerlink" title="Start the launcher"></a>Start the launcher<a class="article-anchor" href="#Start-the-launcher" aria-hidden="true"></a></h3><p>Now you can start the launcher.  See the appropriate guide (<a href="python_launcher.html">Python Launcher</a>) for how to start the launcher.</p>
 <h2 id="Final-Testing" class="article-heading"><a href="#Final-Testing" class="headerlink" title="Final Testing"></a>Final Testing<a class="article-anchor" href="#Final-Testing" aria-hidden="true"></a></h2><p>Now your instance should be set up to run ParaViewWeb.  Go back to your browser and choose any of the applications linked from the ParaViewWeb page you tested above.</p>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-11-06T21:26:31.396Z" itemprop="dateModified">Last updated: 2017-11-06</time>
+                <time class="article-footer-updated" datetime="2017-11-07T21:45:28.893Z" itemprop="dateModified">Last updated: 2017-11-07</time>
                 <a href="index.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
