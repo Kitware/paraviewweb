@@ -39,19 +39,17 @@
   <!-- RSS -->
   <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
   <!-- Open Graph -->
-  <meta name="description" content="Ansible playbookAnsible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration. Being designed for multi-tier de">
+  <meta name="description" content="Ansible playbookOur current playbook as been deprecated and we hope to provide an updated version soon.Please contact us if you need us to help you.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ParaViewWeb">
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/ansible.html">
 <meta property="og:site_name" content="ParaViewWeb">
-<meta property="og:description" content="Ansible playbookAnsible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration. Being designed for multi-tier de">
+<meta property="og:description" content="Ansible playbookOur current playbook as been deprecated and we hope to provide an updated version soon.Please contact us if you need us to help you.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://kitware.github.io/paraviewweb/docs/nvidia-setting.jpg">
-<meta property="og:updated_time" content="2017-11-07T21:45:28.885Z">
+<meta property="og:updated_time" content="2017-11-08T19:48:06.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
-<meta name="twitter:description" content="Ansible playbookAnsible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration. Being designed for multi-tier de">
-<meta name="twitter:image" content="https://kitware.github.io/paraviewweb/docs/nvidia-setting.jpg">
+<meta name="twitter:description" content="Ansible playbookOur current playbook as been deprecated and we hope to provide an updated version soon.Please contact us if you need us to help you.">
   <!-- Google Analytics -->
   
 <script>
@@ -102,114 +100,11 @@
                 <h1 class="article-title" itemprop="name"></h1>
               </header>
               <div class="article-content" itemprop="articleBody">
-                <h1 id="Ansible-playbook" class="article-heading"><a href="#Ansible-playbook" class="headerlink" title="Ansible playbook"></a>Ansible playbook<a class="article-anchor" href="#Ansible-playbook" aria-hidden="true"></a></h1><p>Ansible is a simple automation engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration.</p>
-<p>Being designed for multi-tier deployments since day one, Ansible models your IT infrastructure by describing how all of your systems inter-relate, rather than just managing one system at a time.</p>
-<p>It uses no agents and no additional custom security infrastructure, just a SSH connection is needed.</p>
-<p>ParaViewWeb provides an Ansible Playbook for:</p>
-<p>1) Configuring Apache to do the WebSocket forwarding and WebSite serving<br>2) Install ParaView<br>3) Configure X to auto login so ParaView can use it for its rendering<br>4) Install Nvidia drivers<br>5) Configure ParaView Launcher for ParaViewWeb Visualizer as a service</p>
-<p>The possible OS targets are:</p>
-<ul>
-<li>Linux Ubuntu 14.04 LTS</li>
-<li>CentOS 7</li>
-</ul>
-<h2 id="Prerequisites" class="article-heading"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites<a class="article-anchor" href="#Prerequisites" aria-hidden="true"></a></h2><p>On the source machine:</p>
-<p>1) <a href="http://www.ansible.com/" target="_blank" rel="external">Ansible (2.0.0.2 or greater)</a> need to be installed.</p>
-<p>On the target machine:</p>
-<p>1) SSH configured so the source machine can connect without authentication<br>2) The used used for SSH should be a <strong>password less sudoer</strong></p>
-<h2 id="Provisioning" class="article-heading"><a href="#Provisioning" class="headerlink" title="Provisioning"></a>Provisioning<a class="article-anchor" href="#Provisioning" aria-hidden="true"></a></h2><p>Create an inventory file with the following content:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[all]</span><br><span class="line">target_Hostname_or_IP</span><br></pre></td></tr></table></figure>
-<p>Run the following command line:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/Kitware/paraviewweb.git</span><br><span class="line">$ ansible-playbook                       \</span><br><span class="line">   -i /path/to/your/myInventory_file.txt \</span><br><span class="line">   paraviewweb/tools/ansible/site.yml    \</span><br><span class="line">   -u &lt;your passwordless ssh user here&gt;  \</span><br><span class="line">   -e hostname=&lt;the hostname to use to connect to apache&gt; \</span><br><span class="line">   -e gpu=&lt;yes|no&gt; \</span><br><span class="line">   -e install_nvidia_driver=&lt;yes|no&gt; \</span><br></pre></td></tr></table></figure>
-<ul>
-<li>If gpu is set to ‘no’ the Mesa LLVM pipeline will be used for rendering.</li>
-</ul>
-<h2 id="Installation-Structure" class="article-heading"><a href="#Installation-Structure" class="headerlink" title="Installation Structure"></a>Installation Structure<a class="article-anchor" href="#Installation-Structure" aria-hidden="true"></a></h2><h3 id="Common-to-distributions" class="article-heading"><a href="#Common-to-distributions" class="headerlink" title="Common to distributions"></a>Common to distributions<a class="article-anchor" href="#Common-to-distributions" aria-hidden="true"></a></h3><ul>
-<li><code>/opt/paraview</code> - ParaView installation</li>
-<li><code>/etc/opt/paraview/launcher.json</code> - Launcher configuration file</li>
-<li><code>/home/&lt;pvw_user&gt;/data</code> - Sample test data</li>
-<li><code>&lt;proxy_db_path&gt;</code> - Path to Apache websocket proxy file. Default is <code>/var/opt/paraview/proxy.txt</code></li>
-<li><code>/var/log/paraview</code> - ParaViewWeb log files</li>
-</ul>
-<h3 id="Ubuntu" class="article-heading"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu<a class="article-anchor" href="#Ubuntu" aria-hidden="true"></a></h3><ul>
-<li><code>/etc/init/pvw-launcher.conf</code> - Launcher service configuration</li>
-<li><code>/etc/apache2/sites-available/pvw.conf</code> - Apache site configuration</li>
-<li><code>&lt;pvw_site_root&gt;</code> - Root of ParaViewWeb site. Default is <code>/opt/paraview/share/paraview-5.0/www/</code></li>
-</ul>
-<h3 id="CentOS-RedHat" class="article-heading"><a href="#CentOS-RedHat" class="headerlink" title="CentOS/RedHat"></a>CentOS/RedHat<a class="article-anchor" href="#CentOS-RedHat" aria-hidden="true"></a></h3><ul>
-<li><code>/etc/systemd/system/pvw-launcher.service</code> - Launcher service configuration</li>
-<li><code>/etc/httpd/conf.d/pvw.conf</code>- Apache site configuration</li>
-<li><code>/var/www/html</code> - Root of ParaViewWeb site</li>
-</ul>
-<h2 id="Testing" class="article-heading"><a href="#Testing" class="headerlink" title="Testing"></a>Testing<a class="article-anchor" href="#Testing" aria-hidden="true"></a></h2><p>To validate the setup, you can connect to the following URL</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http://&lt;the hostname to use to connect to apache&gt;/visualizer</span><br></pre></td></tr></table></figure>
-<h2 id="EC2-Deployment" class="article-heading"><a href="#EC2-Deployment" class="headerlink" title="EC2 Deployment"></a>EC2 Deployment<a class="article-anchor" href="#EC2-Deployment" aria-hidden="true"></a></h2><p>The following section illustrate the usage of our ansible script in an EC2 setup.</p>
-<h3 id="Launch-Instance" class="article-heading"><a href="#Launch-Instance" class="headerlink" title="Launch Instance"></a>Launch Instance<a class="article-anchor" href="#Launch-Instance" aria-hidden="true"></a></h3><ol>
-<li>Choose an Amazon Machine Image (AMI)<ul>
-<li>Ubuntu Server 14.04 LTS (HVM), SSD Volume Type - ami-01f05461</li>
-</ul>
-</li>
-<li>Choose an Instance Type<ul>
-<li>GPU instances (g2.2xlarge or g2.8xlarge) &lt;= This will provide the best rendering performance</li>
-</ul>
-</li>
-<li>Configure Instance Details</li>
-<li>Add Storage</li>
-<li>Tag Instance</li>
-<li>Configure Security Group</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Protocol</th>
-<th>Port</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SSH</td>
-<td>TCP</td>
-<td>22</td>
-<td>Anywhere</td>
-<td>0.0.0.0/0</td>
-</tr>
-<tr>
-<td>HTTP</td>
-<td>TCP</td>
-<td>80</td>
-<td>Anywhere</td>
-<td>0.0.0.0/0</td>
-</tr>
-</tbody>
-</table>
-<p>When launching the instance you may want to re-use or create a new Key pair.</p>
-<p>Here we assume we create a new one named <code>paraview-52</code> which should trigger a download of a <code>paraview-52.pem</code> file on your computer. </p>
-<p>Now that your instance is starting, you should be able to click on the button <strong>View Instances</strong> at the bottom-right of the page which should lead you to a table with all your instances.<br>At that point, you may want to name it <code>paraview-52</code> and remember both the public IP or DNS name as you will need them later.</p>
-<p>In our case we have: </p>
-<ul>
-<li><strong>Public DNS Name:</strong> <code>ec2-35-163-16-21.us-west-2.compute.amazonaws.com</code> </li>
-<li><strong>Public IP:</strong> <code>35.163.16.21</code>.</li>
-</ul>
-<h3 id="Provisioning-Setup" class="article-heading"><a href="#Provisioning-Setup" class="headerlink" title="Provisioning Setup"></a>Provisioning Setup<a class="article-anchor" href="#Provisioning-Setup" aria-hidden="true"></a></h3><p>For this provisioning example, we will gather all we need within a single directory. The following commands will create that directory and fill it with the various pieces needed.</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Create our working directory</span></span><br><span class="line">$ mkdir pv52-ec2</span><br><span class="line">$ <span class="built_in">cd</span> pv52-ec2</span><br><span class="line"></span><br><span class="line"><span class="comment"># Move our SSH key and set proper security permission</span></span><br><span class="line">$ mv ~/Downloads/paraview-52.pem .</span><br><span class="line">$ chmod 600 ./paraview-52.pem </span><br><span class="line"></span><br><span class="line"><span class="comment"># Get ParaViewWeb</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/Kitware/paraviewweb.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Edit inventory file</span></span><br><span class="line">$ vi ./ec2-instance.txt</span><br><span class="line"></span><br><span class="line">[all]</span><br><span class="line">35.163.16.21</span><br></pre></td></tr></table></figure>
-<h3 id="Running-the-provisionning" class="article-heading"><a href="#Running-the-provisionning" class="headerlink" title="Running the provisionning"></a>Running the provisionning<a class="article-anchor" href="#Running-the-provisionning" aria-hidden="true"></a></h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ansible-playbook                                              \</span><br><span class="line">   -i ./ec2-instance.txt                                        \</span><br><span class="line">   paraviewweb/tools/ansible/site.yml                           \</span><br><span class="line">   -u ubuntu                                                    \</span><br><span class="line">   -e hostname=ec2-35-163-16-21.us-west-2.compute.amazonaws.com \</span><br><span class="line">   -e gpu=yes                                                   \</span><br><span class="line">   -e install_nvidia_driver=no                                  \</span><br><span class="line">   --private-key=./paraview-52.pem</span><br></pre></td></tr></table></figure>
-<p>Since the ansible script won’t install the drivers for the GPU you will have to do it yourself following the instruction from <a href="http://www.nvidia.com/Download/index.aspx?lang=en-us" target="_blank" rel="external">NVidia</a></p>
-<p>The driver we used at the time of this documentation was:</p>
-<center><br><img src="nvidia-setting.jpg" width="60%"><br></center>
-
-<p>Here is the expected output of the previous command:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">PLAY [Common configuration] ****************************************************</span><br><span class="line"></span><br><span class="line">TASK [setup] *******************************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [common : Create ParaViewWeb user] ****************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [common : include] ********************************************************</span><br><span class="line">included: /Users/seb/Desktop/pv52-ec2/paraviewweb/tools/ansible/roles/common/tasks/./Ubuntu.yml <span class="keyword">for</span> 35.163.16.21</span><br><span class="line"></span><br><span class="line">TASK [common : Ensure packages cache is up to date (Ubuntu)] *******************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">PLAY [Install ParaView] ********************************************************</span><br><span class="line"></span><br><span class="line">TASK [setup] *******************************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : include_vars] *************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Install ParaView prerequisite packages] ***********************</span><br><span class="line">changed: [35.163.16.21] =&gt; (item=[u<span class="string">'xorg'</span>, u<span class="string">'slim'</span>, u<span class="string">'mesa-common-dev'</span>, u<span class="string">'libxt-dev'</span>])</span><br><span class="line"></span><br><span class="line">TASK [paraview : <span class="built_in">stat</span> ParaView download] ***************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Download ParaView] ********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Install ParaView] *********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : <span class="built_in">stat</span> ParaView version specific install directory] *************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Move install specfic directory name to <span class="string">'paraview'</span>] ************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Find ParaView version directory] ******************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Set ParaView versioned library directory] *********************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Find ParaView version shared directory] ***********************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Set ParaView versioned shared directory] **********************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Create ParaView data directory] *******************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Create ParaView configuration directory] **********************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : <span class="built_in">stat</span> ParaView sample data download] ***************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Download sample data] *****************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Create data directory] ****************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Install ParaView sample data] *********************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Create LightViz data directory] *******************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Create Web directory] *****************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Install Visualizer Web directory] *****************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Install LightViz Web directory] *******************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : include] ******************************************************</span><br><span class="line">included: /Users/seb/Desktop/pv52-ec2/paraviewweb/tools/ansible/roles/paraview/tasks/./Ubuntu.yml <span class="keyword">for</span> 35.163.16.21</span><br><span class="line"></span><br><span class="line">TASK [paraview : Step up ParaViewWeb user to auto login to start X] ************</span><br><span class="line">changed: [35.163.16.21] =&gt; (item=&#123;u<span class="string">'regex'</span>: u<span class="string">'^#auto_login          no$'</span>, u<span class="string">'line'</span>: u<span class="string">'auto_login          yes'</span>&#125;)</span><br><span class="line">changed: [35.163.16.21] =&gt; (item=&#123;u<span class="string">'regex'</span>: u<span class="string">'^#default_user        simone$'</span>, u<span class="string">'line'</span>: u<span class="string">'default_user        pvw-user'</span>&#125;)</span><br><span class="line"></span><br><span class="line">TASK [paraview : Run nvida-xconfig] ********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Restart server] ***********************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [paraview : Waiting <span class="keyword">for</span> server to come back up] ***************************</span><br><span class="line">ok: [35.163.16.21 -&gt; localhost]</span><br><span class="line"></span><br><span class="line">PLAY [Install Apache] **********************************************************</span><br><span class="line"></span><br><span class="line">TASK [setup] *******************************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : include_vars] ***************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Install apache] *************************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Create proxy mapping file] **************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Fix Web directory ownership] ************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : include] ********************************************************</span><br><span class="line">included: /Users/seb/Desktop/pv52-ec2/paraviewweb/tools/ansible/roles/apache/tasks/./Ubuntu.yml <span class="keyword">for</span> 35.163.16.21</span><br><span class="line"></span><br><span class="line">TASK [apache : Enable mod_proxy] ***********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Enable mod_rewrite] *********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Enable mod_proxy_http] ******************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Enable mod_proxy_wstunnel] **************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Disable the default site] ***************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Copy over config] ***********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Enable pvw-web site] ********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [apache : Update directory] ***********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">RUNNING HANDLER [apache : restart apache2] *************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">PLAY [Setup ParaViewWeb launcher] **********************************************</span><br><span class="line"></span><br><span class="line">TASK [setup] *******************************************************************</span><br><span class="line">ok: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [launcher : Create ParaView <span class="built_in">log</span> directory] ********************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [launcher : include] ******************************************************</span><br><span class="line">included: /Users/seb/Desktop/pv52-ec2/paraviewweb/tools/ansible/roles/launcher/tasks/./Ubuntu.yml <span class="keyword">for</span> 35.163.16.21</span><br><span class="line"></span><br><span class="line">TASK [launcher : Install launcher as service] **********************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [launcher : Start launcher] ***********************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">TASK [launcher : Template launcher config] *************************************</span><br><span class="line">changed: [35.163.16.21]</span><br><span class="line"></span><br><span class="line">PLAY RECAP *********************************************************************</span><br><span class="line">35.163.16.21               : ok=53   changed=34   unreachable=0    failed=0</span><br></pre></td></tr></table></figure>
-<p>Once the playbook is done, you should be able to connect to either application with the following links assuming you’ve updated the hostname to be the one you created.</p>
-<ul>
-<li><a href="http://ec2-35-163-16-21.us-west-2.compute.amazonaws.com/visualizer" target="_blank" rel="external">http://ec2-35-163-16-21.us-west-2.compute.amazonaws.com/visualizer</a></li>
-<li><a href="http://ec2-35-163-16-21.us-west-2.compute.amazonaws.com/lightviz" target="_blank" rel="external">http://ec2-35-163-16-21.us-west-2.compute.amazonaws.com/lightviz</a></li>
-</ul>
+                <h1 id="Ansible-playbook" class="article-heading"><a href="#Ansible-playbook" class="headerlink" title="Ansible playbook"></a>Ansible playbook<a class="article-anchor" href="#Ansible-playbook" aria-hidden="true"></a></h1><p>Our current playbook as been deprecated and we hope to provide an updated version soon.<br>Please <a href="http://www.kitware.com/products/support.html" target="_blank" rel="external">contact us</a> if you need us to help you.</p>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-11-07T21:45:28.885Z" itemprop="dateModified">Last updated: 2017-11-07</time>
+                <time class="article-footer-updated" datetime="2017-11-08T19:48:06.795Z" itemprop="dateModified">Last updated: 2017-11-08</time>
                 <a href="windows_10.html" class="article-footer-prev" title="Windows 10"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="vagrant.html" class="article-footer-next" title="Vangrant setup"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -218,7 +113,7 @@
           <aside id="article-toc" role="navigation">
             <div id="article-toc-inner">
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ansible-playbook"><span class="toc-text">Ansible playbook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Prerequisites"><span class="toc-text">Prerequisites</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Provisioning"><span class="toc-text">Provisioning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Installation-Structure"><span class="toc-text">Installation Structure</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Common-to-distributions"><span class="toc-text">Common to distributions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ubuntu"><span class="toc-text">Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CentOS-RedHat"><span class="toc-text">CentOS/RedHat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Testing"><span class="toc-text">Testing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EC2-Deployment"><span class="toc-text">EC2 Deployment</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Launch-Instance"><span class="toc-text">Launch Instance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Provisioning-Setup"><span class="toc-text">Provisioning Setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Running-the-provisionning"><span class="toc-text">Running the provisionning</span></a></li></ol></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ansible-playbook"><span class="toc-text">Ansible playbook</span></a></li></ol>
               <a href="#" id="article-toc-top">Back to Top</a>
             </div>
           </aside>

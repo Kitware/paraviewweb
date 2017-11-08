@@ -39,17 +39,17 @@
   <!-- RSS -->
   <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
   <!-- Open Graph -->
-  <meta name="description" content="ParaView 4.4 AMIsHardwareWhen you are instantiating an Amazon Machine Image (AMI), you should use:  Hardware with GPU: g2.2xlarge Security rule: http + ssh (80+22)  SoftwareOS: Ubuntu 14.04 LTSUser: e">
+  <meta name="description" content="ParaViewWeb AMIsWe are currently building a demo server for the SuperComputing conference and we are hoping to provide an updated AMI soon using ParaView 5.5. Please contact us if you need us to build">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ParaViewWeb">
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/ami.html">
 <meta property="og:site_name" content="ParaViewWeb">
-<meta property="og:description" content="ParaView 4.4 AMIsHardwareWhen you are instantiating an Amazon Machine Image (AMI), you should use:  Hardware with GPU: g2.2xlarge Security rule: http + ssh (80+22)  SoftwareOS: Ubuntu 14.04 LTSUser: e">
+<meta property="og:description" content="ParaViewWeb AMIsWe are currently building a demo server for the SuperComputing conference and we are hoping to provide an updated AMI soon using ParaView 5.5. Please contact us if you need us to build">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-11-07T21:45:28.885Z">
+<meta property="og:updated_time" content="2017-11-08T19:48:06.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ParaViewWeb">
-<meta name="twitter:description" content="ParaView 4.4 AMIsHardwareWhen you are instantiating an Amazon Machine Image (AMI), you should use:  Hardware with GPU: g2.2xlarge Security rule: http + ssh (80+22)  SoftwareOS: Ubuntu 14.04 LTSUser: e">
+<meta name="twitter:description" content="ParaViewWeb AMIsWe are currently building a demo server for the SuperComputing conference and we are hoping to provide an updated AMI soon using ParaView 5.5. Please contact us if you need us to build">
   <!-- Google Analytics -->
   
 <script>
@@ -100,67 +100,12 @@
                 <h1 class="article-title" itemprop="name"></h1>
               </header>
               <div class="article-content" itemprop="articleBody">
-                <h2 id="ParaView-4-4-AMIs" class="article-heading"><a href="#ParaView-4-4-AMIs" class="headerlink" title="ParaView 4.4 AMIs"></a>ParaView 4.4 AMIs<a class="article-anchor" href="#ParaView-4-4-AMIs" aria-hidden="true"></a></h2><h3 id="Hardware" class="article-heading"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware<a class="article-anchor" href="#Hardware" aria-hidden="true"></a></h3><p>When you are instantiating an Amazon Machine Image (AMI), you should use:</p>
-<ul>
-<li>Hardware with GPU: g2.2xlarge</li>
-<li>Security rule: http + ssh (80+22)</li>
-</ul>
-<h3 id="Software" class="article-heading"><a href="#Software" class="headerlink" title="Software"></a>Software<a class="article-anchor" href="#Software" aria-hidden="true"></a></h3><p><strong>OS:</strong> Ubuntu 14.04 LTS<br><strong>User:</strong> ec2-user</p>
-<p>The machine at startup will:</p>
-<ul>
-<li>Start X for ParaView</li>
-<li>Configure Apache with the current DNS name of the machine</li>
-<li>Configure the launcher with the proper hostname.</li>
-<li>Start ParaViewWeb launcher</li>
-</ul>
-<p>Once started (~5 minutes), you can access the machine like the following:</p>
-<ul>
-<li><a href="http://ec2-198-51-100-1.compute-1.amazonaws.com/apps/Visualizer" target="_blank" rel="external">http://ec2-198-51-100-1.compute-1.amazonaws.com/apps/Visualizer</a></li>
-</ul>
-<h3 id="AMIs" class="article-heading"><a href="#AMIs" class="headerlink" title="AMIs"></a>AMIs<a class="article-anchor" href="#AMIs" aria-hidden="true"></a></h3><table>
-<thead>
-<tr>
-<th>Region</th>
-<th>Name</th>
-<th>AMI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>US East (N. Virginia)</td>
-<td>ParaViewWeb-4.4-public</td>
-<td>ami-34f3f65e</td>
-</tr>
-<tr>
-<td>US West (Oregon)</td>
-<td>ParaViewWeb-4.4-public</td>
-<td>ami-6b739c0b</td>
-</tr>
-</tbody>
-</table>
-<h2 id="ParaView-5-2-AMIs" class="article-heading"><a href="#ParaView-5-2-AMIs" class="headerlink" title="ParaView 5.2 AMIs"></a>ParaView 5.2 AMIs<a class="article-anchor" href="#ParaView-5-2-AMIs" aria-hidden="true"></a></h2><h3 id="Hardware-1" class="article-heading"><a href="#Hardware-1" class="headerlink" title="Hardware"></a>Hardware<a class="article-anchor" href="#Hardware-1" aria-hidden="true"></a></h3><p>When you are instantiating an AMI, you should use:</p>
-<ul>
-<li>Hardware with GPU: g2.2xlarge</li>
-<li>Security rule: http + ssh (80+22)</li>
-</ul>
-<h3 id="Software-1" class="article-heading"><a href="#Software-1" class="headerlink" title="Software"></a>Software<a class="article-anchor" href="#Software-1" aria-hidden="true"></a></h3><p><strong>OS:</strong> Ubuntu 16.04 LTS<br><strong>User:</strong> ec2-user</p>
-<p>The machine at startup will:</p>
-<ul>
-<li>Start X for ParaView</li>
-<li>Configure Apache with the current DNS name of the machine</li>
-<li>Configure the launcher with the proper hostname.</li>
-<li>Start ParaViewWeb launcher</li>
-</ul>
-<p>Once started (~5 minutes), you can access the machine like the following:</p>
-<ul>
-<li><a href="http://ec2-198-51-100-1.compute-1.amazonaws.com/Visualizer" target="_blank" rel="external">http://ec2-198-51-100-1.compute-1.amazonaws.com/Visualizer</a></li>
-<li><a href="http://ec2-198-51-100-1.compute-1.amazonaws.com/LightViz" target="_blank" rel="external">http://ec2-198-51-100-1.compute-1.amazonaws.com/LightViz</a></li>
-</ul>
-<h3 id="AMIs-1" class="article-heading"><a href="#AMIs-1" class="headerlink" title="AMIs"></a>AMIs<a class="article-anchor" href="#AMIs-1" aria-hidden="true"></a></h3><p>Please <a href="http://www.kitware.com/products/support.html" target="_blank" rel="external">contact us</a> if you need us to build a VM for you or you can follow our <a href="ansible.html#EC2-Deployment">Ansible guide for EC2</a></p>
+                <h2 id="ParaViewWeb-AMIs" class="article-heading"><a href="#ParaViewWeb-AMIs" class="headerlink" title="ParaViewWeb AMIs"></a>ParaViewWeb AMIs<a class="article-anchor" href="#ParaViewWeb-AMIs" aria-hidden="true"></a></h2><p>We are currently building a demo server for the SuperComputing conference and we are hoping to provide an updated AMI soon using ParaView 5.5.</p>
+<p>Please <a href="http://www.kitware.com/products/support.html" target="_blank" rel="external">contact us</a> if you need us to build a VM for you.</p>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2017-11-07T21:45:28.885Z" itemprop="dateModified">Last updated: 2017-11-07</time>
+                <time class="article-footer-updated" datetime="2017-11-08T19:48:06.795Z" itemprop="dateModified">Last updated: 2017-11-08</time>
                 <a href="apache_front_end.html" class="article-footer-prev" title="Using Apache"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="launcher_api.html" class="article-footer-next" title="API"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -169,7 +114,7 @@
           <aside id="article-toc" role="navigation">
             <div id="article-toc-inner">
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ParaView-4-4-AMIs"><span class="toc-text">ParaView 4.4 AMIs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware"><span class="toc-text">Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Software"><span class="toc-text">Software</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AMIs"><span class="toc-text">AMIs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParaView-5-2-AMIs"><span class="toc-text">ParaView 5.2 AMIs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-1"><span class="toc-text">Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Software-1"><span class="toc-text">Software</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AMIs-1"><span class="toc-text">AMIs</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ParaViewWeb-AMIs"><span class="toc-text">ParaViewWeb AMIs</span></a></li></ol>
               <a href="#" id="article-toc-top">Back to Top</a>
             </div>
           </aside>
