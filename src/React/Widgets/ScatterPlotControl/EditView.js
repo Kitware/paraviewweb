@@ -52,8 +52,10 @@ export default function EditView(props) {
 
   scores.forEach((scoreObj) => {
     scoreMap[scoreObj.name] = scoreObj.color;
-    ACTIVE_SCORE_MAPPING[scoreObj.name] = scoreObj.value;
+    ACTIVE_SCORE_MAPPING[scoreObj.name] = scoreObj.index;
   });
+  // unselected index is one beyond the scores indices.
+  ACTIVE_SCORE_MAPPING.unselected = scores.length;
 
   const functionPresets = [
     { icon: HighestBest, key: 'HighestBest' },
@@ -67,6 +69,7 @@ export default function EditView(props) {
     const scoreIdx = activeScores.indexOf(score);
     if (scoreIdx < 0) {
       activeScores.push(score);
+      activeScores.sort((a, b) => (a - b));
     } else {
       activeScores.splice(scoreIdx, 1);
     }
@@ -231,7 +234,7 @@ export default function EditView(props) {
           { Object.keys(ACTIVE_SCORE_MAPPING).map((scoreName, i) => (
             <div
               key={i}
-              className={activeScores.indexOf(scoreName) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
+              className={activeScores.indexOf(ACTIVE_SCORE_MAPPING[scoreName]) >= 0 ? style.colorLegendPatch : style.inactiveColorLegendPatch}
               onClick={toggleActiveScore(scoreName)}
               style={{
                 background: scoreMap[scoreName],

@@ -21,7 +21,8 @@ export default class ScatterPlotCameraControl extends React.Component {
 
     // Rescale axis...
     this.resetCamera = () => {
-      this.props.manager.resetCamera(props.name);
+      // force a rescale/reset.
+      this.props.manager.resetCamera(props.name, true);
     };
 
     // Action mapping
