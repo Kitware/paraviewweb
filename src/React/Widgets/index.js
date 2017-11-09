@@ -10,6 +10,7 @@ import ColorPickerWidget              from './ColorPickerWidget';
 import CompositePipelineWidget        from './CompositePipelineWidget';
 import ContentEditableWidget          from './ContentEditableWidget';
 import Coordinate2DWidget             from './Coordinate2DWidget';
+import CountToolbar                   from './CountToolbar';
 import DoubleSliderWidget             from './DoubleSliderWidget';
 import DropDownWidget                 from './DropDownWidget';
 import EqualizerWidget                from './EqualizerWidget';
@@ -29,6 +30,8 @@ import ProxyPropertyGroupWidget       from './ProxyPropertyGroupWidget';
 import QueryDataModelWidget           from './QueryDataModelWidget';
 import ResplendentWidget              from './ResplendentWidget';
 import ScalarRangeWidget              from './ScalarRangeWidget';
+import ScatterPlotCameraControl       from './ScatterPlotCameraControl';
+import ScatterPlotControl             from './ScatterPlotControl';
 import SelectionEditorWidget          from './SelectionEditorWidget';
 import SvgIconWidget                  from './SvgIconWidget';
 import TextInputWidget                from './TextInputWidget';
@@ -48,6 +51,7 @@ export default {
   CompositePipelineWidget,
   ContentEditableWidget,
   Coordinate2DWidget,
+  CountToolbar,
   DoubleSliderWidget,
   DropDownWidget,
   EqualizerWidget,
@@ -67,6 +71,8 @@ export default {
   QueryDataModelWidget,
   ResplendentWidget,
   ScalarRangeWidget,
+  ScatterPlotCameraControl,
+  ScatterPlotControl,
   SelectionEditorWidget,
   SvgIconWidget,
   TextInputWidget,
