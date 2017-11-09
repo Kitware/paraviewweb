@@ -764,6 +764,10 @@ export default function init(inPublicAPI, inModel) {
       .attr('type', 'number')
       .attr('step', 'any')
       .style('width', '6em');
+    if (!model.showUncertainty) {
+      // if we aren't supposed to show uncertainty, hide this row.
+      tr2.style('display', 'none');
+    }
     dPopupDiv
       .append('div').classed(style.scoreDashSpacer, true);
     dPopupDiv

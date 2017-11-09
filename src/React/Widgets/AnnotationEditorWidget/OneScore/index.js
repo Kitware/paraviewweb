@@ -75,6 +75,7 @@ render.propTypes = {
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
   rationaleOpen: React.PropTypes.bool,
+  showUncertainty: React.PropTypes.bool,
 
   onSelectionChange: React.PropTypes.func,
   onAnnotationChange: React.PropTypes.func,
@@ -83,4 +84,5 @@ render.propTypes = {
 
 render.defaultProps = {
   rationaleOpen: false,
+  showUncertainty: true,
 };

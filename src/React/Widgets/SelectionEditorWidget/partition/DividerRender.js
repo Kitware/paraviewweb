@@ -70,7 +70,7 @@ export default function render(props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      {(divider.uncertainty !== undefined) ? (
+      {(divider.uncertainty !== undefined && props.showUncertainty) ? (
         <span>
           {/* plus-minus unicode character: &#xb1; */}
           <div className={style.inequality}>&#xb1;
@@ -97,4 +97,5 @@ render.propTypes = {
   path: React.PropTypes.array,
   onChange: React.PropTypes.func,
   onDelete: React.PropTypes.func,
+  showUncertainty: React.PropTypes.bool,
 };

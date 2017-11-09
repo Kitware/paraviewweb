@@ -92,6 +92,7 @@ export default function render(props) {
             path={['dividers', idx]}
             key={idx}
             getLegend={props.getLegend}
+            showUncertainty={props.showUncertainty}
           />
         )}
       </FieldRender>
@@ -105,5 +106,9 @@ render.propTypes = {
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
   className: React.PropTypes.string,
+  showUncertainty: React.PropTypes.bool,
 };
 
+render.defaultProps = {
+  showUncertainty: true,
+};
