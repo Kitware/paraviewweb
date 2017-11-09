@@ -92,9 +92,11 @@ render.propTypes = {
   onChange: React.PropTypes.func,
   getLegend: React.PropTypes.func,
   rationaleOpen: React.PropTypes.bool,
+  showUncertainty: React.PropTypes.bool,
 };
 
 render.defaultProps = {
   onChange(annotation, isEditDone) {},
   rationaleOpen: false,
+  showUncertainty: true,
 };

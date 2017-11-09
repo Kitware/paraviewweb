@@ -98,6 +98,7 @@ export default class AnnotationEditorTool extends React.Component {
               ranges={this.state.ranges}
               onChange={this.onAnnotationChange}
               getLegend={this.props.provider.getLegend}
+              showUncertainty={this.props.showUncertainty}
             />
           </div>
         </OverlayWindow>
@@ -108,6 +109,7 @@ export default class AnnotationEditorTool extends React.Component {
 AnnotationEditorTool.propTypes = {
   provider: React.PropTypes.object,
   size: React.PropTypes.string,
+  showUncertainty: React.PropTypes.bool,
 
   activeWindow: React.PropTypes.object,
   onActiveWindow: React.PropTypes.func,
@@ -115,4 +117,5 @@ AnnotationEditorTool.propTypes = {
 
 AnnotationEditorTool.defaultProps = {
   size: '35px',
+  showUncertainty: true,
 };

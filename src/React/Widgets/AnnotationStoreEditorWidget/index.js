@@ -69,6 +69,7 @@ export default function render(props) {
             getLegend={props.getLegend}
             onChange={props.onAnnotationChange}
             rationaleOpen={props.rationaleOpen}
+            showUncertainty={props.showUncertainty}
           />
         </section>
       </div>
@@ -91,6 +92,7 @@ render.propTypes = {
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
   rationaleOpen: React.PropTypes.bool,
+  showUncertainty: React.PropTypes.bool,
   ignoreGeneration: React.PropTypes.bool,
 
   onAnnotationChange: React.PropTypes.func,
@@ -101,5 +103,6 @@ render.defaultProps = {
   onAnnotationChange(annotation, isEditing) {},
   onChange(action, id, annotation) {},
   rationaleOpen: false,
+  showUncertainty: true,
   ignoreGeneration: false,
 };

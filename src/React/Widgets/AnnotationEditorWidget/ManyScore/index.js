@@ -29,6 +29,7 @@ export default function render(props) {
           ranges={props.ranges}
           getLegend={props.getLegend}
           onChange={props.onSelectionChange}
+          showUncertainty={props.showUncertainty}
         >
           {props.annotation.score.map((score, idx, array) =>
             <BGSelector
@@ -92,6 +93,7 @@ render.propTypes = {
   ranges: React.PropTypes.object,
   getLegend: React.PropTypes.func,
   rationaleOpen: React.PropTypes.bool,
+  showUncertainty: React.PropTypes.bool,
 
   onSelectionChange: React.PropTypes.func,
   onAnnotationChange: React.PropTypes.func,
@@ -100,4 +102,5 @@ render.propTypes = {
 
 render.defaultProps = {
   rationaleOpen: false,
+  showUncertainty: true,
 };
