@@ -194,8 +194,7 @@
 
 .userSelLegendEntry {
   float: left;
-  padding-left: 3px;
-  padding-top: 3px;
+  padding: 3px 2px 0 2px;
   font-weight: bold;
   font-size: smaller;
   margin-left: 5px;
@@ -206,7 +205,7 @@
 .colorLegendPatch {
   composes: userSelLegendEntry;
   flex: 1 0 auto;
-  width: 55px;
+  min-width: 36px;
   height: 25px;
   border-radius: 5px;
   border: 2px solid black;
