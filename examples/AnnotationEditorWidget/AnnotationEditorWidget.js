@@ -30464,13 +30464,15 @@
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
 	  getLegend: _react2.default.PropTypes.func,
-	  rationaleOpen: _react2.default.PropTypes.bool
+	  rationaleOpen: _react2.default.PropTypes.bool,
+	  showUncertainty: _react2.default.PropTypes.bool
 	};
 
 	render.defaultProps = {
 	  onChange: function onChange(annotation, isEditDone) {},
 
-	  rationaleOpen: false
+	  rationaleOpen: false,
+	  showUncertainty: true
 	};
 
 /***/ },
@@ -30969,6 +30971,7 @@
 	  ranges: _react2.default.PropTypes.object,
 	  getLegend: _react2.default.PropTypes.func,
 	  rationaleOpen: _react2.default.PropTypes.bool,
+	  showUncertainty: _react2.default.PropTypes.bool,
 
 	  onSelectionChange: _react2.default.PropTypes.func,
 	  onAnnotationChange: _react2.default.PropTypes.func,
@@ -30976,7 +30979,8 @@
 	};
 
 	render.defaultProps = {
-	  rationaleOpen: false
+	  rationaleOpen: false,
+	  showUncertainty: true
 	};
 
 /***/ },
@@ -32187,7 +32191,8 @@
 	          divider: divider,
 	          path: ['dividers', idx],
 	          key: idx,
-	          getLegend: props.getLegend
+	          getLegend: props.getLegend,
+	          showUncertainty: props.showUncertainty
 	        });
 	      })
 	    )
@@ -32200,7 +32205,12 @@
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
 	  getLegend: _react2.default.PropTypes.func,
-	  className: _react2.default.PropTypes.string
+	  className: _react2.default.PropTypes.string,
+	  showUncertainty: _react2.default.PropTypes.bool
+	};
+
+	render.defaultProps = {
+	  showUncertainty: true
 	};
 
 /***/ },
@@ -32914,7 +32924,7 @@
 	      onChange: onChange,
 	      onBlur: onBlur
 	    }),
-	    divider.uncertainty !== undefined ? _react2.default.createElement(
+	    divider.uncertainty !== undefined && props.showUncertainty ? _react2.default.createElement(
 	      'span',
 	      null,
 	      _react2.default.createElement(
@@ -32940,7 +32950,8 @@
 	  divider: _react2.default.PropTypes.object,
 	  path: _react2.default.PropTypes.array,
 	  onChange: _react2.default.PropTypes.func,
-	  onDelete: _react2.default.PropTypes.func
+	  onDelete: _react2.default.PropTypes.func,
+	  showUncertainty: _react2.default.PropTypes.bool
 	};
 
 /***/ },
@@ -44034,7 +44045,8 @@
 	          selection: props.annotation.selection,
 	          ranges: props.ranges,
 	          getLegend: props.getLegend,
-	          onChange: props.onSelectionChange
+	          onChange: props.onSelectionChange,
+	          showUncertainty: props.showUncertainty
 	        },
 	        props.annotation.score.map(function (score, idx, array) {
 	          return _react2.default.createElement(_BackgroundScore2.default, {
@@ -44110,6 +44122,7 @@
 	  ranges: _react2.default.PropTypes.object,
 	  getLegend: _react2.default.PropTypes.func,
 	  rationaleOpen: _react2.default.PropTypes.bool,
+	  showUncertainty: _react2.default.PropTypes.bool,
 
 	  onSelectionChange: _react2.default.PropTypes.func,
 	  onAnnotationChange: _react2.default.PropTypes.func,
@@ -44117,7 +44130,8 @@
 	};
 
 	render.defaultProps = {
-	  rationaleOpen: false
+	  rationaleOpen: false,
+	  showUncertainty: true
 	};
 
 /***/ },

@@ -31681,7 +31681,8 @@
 	          divider: divider,
 	          path: ['dividers', idx],
 	          key: idx,
-	          getLegend: props.getLegend
+	          getLegend: props.getLegend,
+	          showUncertainty: props.showUncertainty
 	        });
 	      })
 	    )
@@ -31694,7 +31695,12 @@
 	  ranges: _react2.default.PropTypes.object,
 	  onChange: _react2.default.PropTypes.func,
 	  getLegend: _react2.default.PropTypes.func,
-	  className: _react2.default.PropTypes.string
+	  className: _react2.default.PropTypes.string,
+	  showUncertainty: _react2.default.PropTypes.bool
+	};
+
+	render.defaultProps = {
+	  showUncertainty: true
 	};
 
 /***/ },
@@ -32408,7 +32414,7 @@
 	      onChange: onChange,
 	      onBlur: onBlur
 	    }),
-	    divider.uncertainty !== undefined ? _react2.default.createElement(
+	    divider.uncertainty !== undefined && props.showUncertainty ? _react2.default.createElement(
 	      'span',
 	      null,
 	      _react2.default.createElement(
@@ -32434,7 +32440,8 @@
 	  divider: _react2.default.PropTypes.object,
 	  path: _react2.default.PropTypes.array,
 	  onChange: _react2.default.PropTypes.func,
-	  onDelete: _react2.default.PropTypes.func
+	  onDelete: _react2.default.PropTypes.func,
+	  showUncertainty: _react2.default.PropTypes.bool
 	};
 
 /***/ },

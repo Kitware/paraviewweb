@@ -33191,7 +33191,9 @@
 	  dragMargin: 8,
 	  selectedDef: null,
 
-	  numberOfBins: 32
+	  numberOfBins: 32,
+	  // display UI for setting uncertainty at dividers.
+	  showUncertainty: true
 	};
 
 	// ----------------------------------------------------------------------------
@@ -33203,8 +33205,8 @@
 
 	  _CompositeClosureHelper2.default.destroy(publicAPI, model);
 	  _CompositeClosureHelper2.default.isA(publicAPI, model, 'VizComponent');
-	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
-	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins']);
+	  _CompositeClosureHelper2.default.get(publicAPI, model, ['provider', 'container', 'numberOfBins', 'showUncertainty']);
+	  _CompositeClosureHelper2.default.set(publicAPI, model, ['numberOfBins', 'showUncertainty']);
 	  _CompositeClosureHelper2.default.dynamicArray(publicAPI, model, 'readOnlyFields');
 
 	  histogramSelector(publicAPI, model);
@@ -44508,6 +44510,10 @@
 	    var tr2 = table.append('tr');
 	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).text('Uncertainty:');
 	    tr2.append('td').classed(_HistogramSelector2.default.popupCell, true).append('input').classed(_HistogramSelector2.default.jsDividerUncertaintyInput, true).attr('type', 'number').attr('step', 'any').style('width', '6em');
+	    if (!model.showUncertainty) {
+	      // if we aren't supposed to show uncertainty, hide this row.
+	      tr2.style('display', 'none');
+	    }
 	    dPopupDiv.append('div').classed(_HistogramSelector2.default.scoreDashSpacer, true);
 	    dPopupDiv.append('div').style('text-align', 'center').append('input').classed(_HistogramSelector2.default.scoreButton, true).style('align', 'center').attr('type', 'button').attr('value', 'Delete Divider').on('click', function () {
 	      finishDivider(model.selectedDef, model.selectedDef.hobj, true);
