@@ -5,7 +5,7 @@
   tags:
     - launcher
 
-- include: ./{{ ansible_distribution }}.yml
+- include_tasks: ./{{ ansible_distribution }}.yml
 
 - name: Template launcher config
   become: yes

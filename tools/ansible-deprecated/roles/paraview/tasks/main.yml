@@ -18,6 +18,7 @@
   get_url:
     url="http://www.paraview.org/files/v5.2/{{paraview_download_filename}}.tar.gz"
     dest="/var/tmp"
+    validate_certs=False
   register: paraview_tarball
   when: not paraview_download_stat.stat.exists
   tags:
@@ -100,6 +101,7 @@
   get_url:
     url="http://www.paraview.org/files/v3.8/ParaViewData-3.8.1.tar.gz"
     dest="/var/tmp"
+    validate_certs=False
   register: paraview_data_tarball
   when: not paraview_data_download_stat.stat.exists
   tags:
@@ -165,7 +167,7 @@
   tags:
     - paraview
 
-- include: ./{{ ansible_distribution }}.yml
+- include_tasks: ./{{ ansible_distribution }}.yml
 
 - name: Restart server
   become: yes

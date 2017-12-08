@@ -4,4 +4,4 @@
   user: name={{pvw_user}}
   tags: common
 
-- include: ./{{ ansible_distribution }}.yml
+- include_tasks: ./{{ ansible_distribution }}.yml
