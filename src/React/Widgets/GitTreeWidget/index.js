@@ -1,4 +1,5 @@
 import React      from 'react';
+import PropTypes from 'prop-types';
 import style      from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
@@ -113,80 +114,34 @@ function fillActives(model, activeIds = []) {
   });
 }
 
-export default React.createClass({
-  displayName: 'GitTreeWidget',
-
-  propTypes: {
-    activeCircleStrokeColor: React.PropTypes.string,
-    actives: React.PropTypes.array,
-    deltaX: React.PropTypes.number,
-    deltaY: React.PropTypes.number,
-    enableDelete: React.PropTypes.bool,
-    fontSize: React.PropTypes.number,
-    margin: React.PropTypes.number,
-    multiselect: React.PropTypes.bool,
-    nodes: React.PropTypes.array,
-    notVisibleCircleFillColor: React.PropTypes.string,
-    offset: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    palette: React.PropTypes.array,
-    radius: React.PropTypes.number,
-    rootId: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.instanceOf(null), // this could have some problematic effect
-    ]),
-    stroke: React.PropTypes.number,
-    style: React.PropTypes.object,
-    textColor: React.PropTypes.array,
-    textWeight: React.PropTypes.array,
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ]),
-  },
-
-  getDefaultProps() {
-    return {
-      nodes: [],
-      actives: [],
-      style: {},
-
-      enableDelete: false,
-      deltaX: 20,
-      deltaY: 30,
-      fontSize: 16,
-      margin: 3,
-      multiselect: false,
-      offset: 15,
-      palette: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
-      radius: 6,
-      rootId: '0',
-      stroke: 3,
-      width: 500,
-      activeCircleStrokeColor: 'black', // if 'null', the branch color will be used
-      notVisibleCircleFillColor: 'white', // if 'null', the branch color will be used
-      textColor: ['black', 'white'], // Normal, Active
-      textWeight: ['normal', 'bold'], // Normal, Active
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class GitTreeWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       actives: [],
       nodes: [],
       branches: [],
       forks: [],
     };
-  },
+
+    // Bind callback
+    this.processData = this.processData.bind(this);
+    this.toggleActive = this.toggleActive.bind(this);
+    this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.deleteNode = this.deleteNode.bind(this);
+    // this.renderNodes = this.renderNodes.bind(this);
+    // this.renderBranches = this.renderBranches.bind(this);
+    // this.renderActives = this.renderActives.bind(this);
+    // this.renderDeleteActions = this.renderDeleteActions.bind(this);
+  }
 
   componentWillMount() {
     this.processData(this.props.nodes, this.props.actives);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this.processData(nextProps.nodes, nextProps.actives);
-  },
+  }
 
   processData(list, activeIds = []) {
     var model = generateModel(list, this.props.rootId),
@@ -207,7 +162,7 @@ export default React.createClass({
 
     // Save computed structure to state
     this.setState({ nodes, branches, forks, actives, leaves });
-  },
+  }
 
   toggleActive(event) {
     var { actives, nodes } = this.state;
@@ -245,7 +200,7 @@ export default React.createClass({
         this.props.onChange({ type: 'active', changeSet });
       }
     }
-  },
+  }
 
   toggleVisibility(event) {
     var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
@@ -263,7 +218,7 @@ export default React.createClass({
 
       this.props.onChange({ type: 'visibility', changeSet });
     }
-  },
+  }
 
   deleteNode(event) {
     if (this.props.onChange) {
@@ -274,7 +229,7 @@ export default React.createClass({
 
       this.props.onChange({ type: 'delete', changeSet });
     }
-  },
+  }
 
   renderNodes() {
     return this.state.nodes.map((el, index) => {
@@ -332,7 +287,7 @@ export default React.createClass({
           </text>
         </g>);
     });
-  },
+  }
 
   renderBranches() {
     const { deltaX, deltaY, offset, palette, stroke } = this.props;
@@ -351,7 +306,7 @@ export default React.createClass({
           strokeWidth={stroke}
         />);
     });
-  },
+  }
 
   renderForks() {
     const { deltaX, deltaY, offset, palette, radius, stroke } = this.props;
@@ -375,7 +330,7 @@ export default React.createClass({
           fill="transparent"
         />);
     });
-  },
+  }
 
   renderActives() {
     const { margin, deltaY } = this.props;
@@ -391,7 +346,7 @@ export default React.createClass({
         height={deltaY - margin}
       />
     );
-  },
+  }
 
   renderDeleteActions() {
     if (!this.props.enableDelete) {
@@ -416,7 +371,7 @@ export default React.createClass({
         >&#xf014;
         </text>);
     });
-  },
+  }
 
   render() {
     return (
@@ -433,5 +388,60 @@ export default React.createClass({
         {this.renderNodes()}
         {this.renderDeleteActions()}
       </svg>);
-  },
-});
+  }
+}
+
+
+GitTreeWidget.propTypes = {
+  activeCircleStrokeColor: PropTypes.string,
+  actives: PropTypes.array,
+  deltaX: PropTypes.number,
+  deltaY: PropTypes.number,
+  enableDelete: PropTypes.bool,
+  fontSize: PropTypes.number,
+  margin: PropTypes.number,
+  multiselect: PropTypes.bool,
+  nodes: PropTypes.array,
+  notVisibleCircleFillColor: PropTypes.string,
+  offset: PropTypes.number,
+  onChange: PropTypes.func,
+  palette: PropTypes.array,
+  radius: PropTypes.number,
+  rootId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(null), // this could have some problematic effect
+  ]),
+  stroke: PropTypes.number,
+  style: PropTypes.object,
+  textColor: PropTypes.array,
+  textWeight: PropTypes.array,
+  width: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+};
+
+GitTreeWidget.defaultProps = {
+  nodes: [],
+  actives: [],
+  style: {},
+
+  enableDelete: false,
+  deltaX: 20,
+  deltaY: 30,
+  fontSize: 16,
+  margin: 3,
+  multiselect: false,
+  offset: 15,
+  palette: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
+  radius: 6,
+  rootId: '0',
+  stroke: 3,
+  width: 500,
+  activeCircleStrokeColor: 'black', // if 'null', the branch color will be used
+  notVisibleCircleFillColor: 'white', // if 'null', the branch color will be used
+  textColor: ['black', 'white'], // Normal, Active
+  textWeight: ['normal', 'bold'], // Normal, Active
+};
+
