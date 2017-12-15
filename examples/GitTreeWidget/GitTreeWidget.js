@@ -30286,19 +30286,31 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(330);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GitTreeWidget = __webpack_require__(501);
+	var _propTypes = __webpack_require__(501);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _GitTreeWidget = __webpack_require__(509);
 
 	var _GitTreeWidget2 = _interopRequireDefault(_GitTreeWidget);
 
-	var _SizeHelper = __webpack_require__(505);
+	var _SizeHelper = __webpack_require__(513);
 
 	var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -30421,387 +30433,1332 @@
 	  });
 	}
 
-	exports.default = _react2.default.createClass({
-	  displayName: 'GitTreeWidget',
+	var GitTreeWidget = function (_React$Component) {
+	  _inherits(GitTreeWidget, _React$Component);
 
-	  propTypes: {
-	    activeCircleStrokeColor: _react2.default.PropTypes.string,
-	    actives: _react2.default.PropTypes.array,
-	    deltaX: _react2.default.PropTypes.number,
-	    deltaY: _react2.default.PropTypes.number,
-	    enableDelete: _react2.default.PropTypes.bool,
-	    fontSize: _react2.default.PropTypes.number,
-	    margin: _react2.default.PropTypes.number,
-	    multiselect: _react2.default.PropTypes.bool,
-	    nodes: _react2.default.PropTypes.array,
-	    notVisibleCircleFillColor: _react2.default.PropTypes.string,
-	    offset: _react2.default.PropTypes.number,
-	    onChange: _react2.default.PropTypes.func,
-	    palette: _react2.default.PropTypes.array,
-	    radius: _react2.default.PropTypes.number,
-	    rootId: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number, _react2.default.PropTypes.instanceOf(null)] // this could have some problematic effect
-	    ),
-	    stroke: _react2.default.PropTypes.number,
-	    style: _react2.default.PropTypes.object,
-	    textColor: _react2.default.PropTypes.array,
-	    textWeight: _react2.default.PropTypes.array,
-	    width: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number])
-	  },
+	  function GitTreeWidget(props) {
+	    _classCallCheck(this, GitTreeWidget);
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      nodes: [],
-	      actives: [],
-	      style: {},
+	    var _this = _possibleConstructorReturn(this, (GitTreeWidget.__proto__ || Object.getPrototypeOf(GitTreeWidget)).call(this, props));
 
-	      enableDelete: false,
-	      deltaX: 20,
-	      deltaY: 30,
-	      fontSize: 16,
-	      margin: 3,
-	      multiselect: false,
-	      offset: 15,
-	      palette: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
-	      radius: 6,
-	      rootId: '0',
-	      stroke: 3,
-	      width: 500,
-	      activeCircleStrokeColor: 'black', // if 'null', the branch color will be used
-	      notVisibleCircleFillColor: 'white', // if 'null', the branch color will be used
-	      textColor: ['black', 'white'], // Normal, Active
-	      textWeight: ['normal', 'bold'] // Normal, Active
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
+	    _this.state = {
 	      actives: [],
 	      nodes: [],
 	      branches: [],
 	      forks: []
 	    };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    this.processData(this.props.nodes, this.props.actives);
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    this.processData(nextProps.nodes, nextProps.actives);
-	  },
-	  processData: function processData(list) {
-	    var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-	    var model = generateModel(list, this.props.rootId),
-	        tree = model.tree,
-	        leaves = model.leaves,
-	        rootId = model.rootId,
-	        nodes = model.nodes,
-	        branches = model.branches,
-	        forks = model.forks,
-	        actives = model.actives;
 
-	    // Assign each node position starting from the root
-	    tree[rootId].forEach(function (rootNode) {
-	      return assignNodePosition(model, rootNode, 0);
-	    });
+	    // Bind callback
+	    _this.processData = _this.processData.bind(_this);
+	    _this.toggleActive = _this.toggleActive.bind(_this);
+	    _this.toggleVisibility = _this.toggleVisibility.bind(_this);
+	    _this.deleteNode = _this.deleteNode.bind(_this);
+	    // this.renderNodes = this.renderNodes.bind(this);
+	    // this.renderBranches = this.renderBranches.bind(this);
+	    // this.renderActives = this.renderActives.bind(this);
+	    // this.renderDeleteActions = this.renderDeleteActions.bind(this);
+	    return _this;
+	  }
 
-	    // Update active list
-	    fillActives(model, activeIds);
+	  _createClass(GitTreeWidget, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.processData(this.props.nodes, this.props.actives);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.processData(nextProps.nodes, nextProps.actives);
+	    }
+	  }, {
+	    key: 'processData',
+	    value: function processData(list) {
+	      var activeIds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+	      var model = generateModel(list, this.props.rootId),
+	          tree = model.tree,
+	          leaves = model.leaves,
+	          rootId = model.rootId,
+	          nodes = model.nodes,
+	          branches = model.branches,
+	          forks = model.forks,
+	          actives = model.actives;
 
-	    // Create branches and forks starting from the leaves
-	    leaves.forEach(function (leaf) {
-	      return extractBranchesAndForks(model, leaf);
-	    });
+	      // Assign each node position starting from the root
+	      tree[rootId].forEach(function (rootNode) {
+	        return assignNodePosition(model, rootNode, 0);
+	      });
 
-	    // Sort forks for better rendering
-	    forks.sort(function (a, b) {
-	      return a.toX > b.toX;
-	    });
+	      // Update active list
+	      fillActives(model, activeIds);
 
-	    // Save computed structure to state
-	    this.setState({ nodes: nodes, branches: branches, forks: forks, actives: actives, leaves: leaves });
-	  },
-	  toggleActive: function toggleActive(event) {
-	    var _state = this.state,
-	        actives = _state.actives,
-	        nodes = _state.nodes;
+	      // Create branches and forks starting from the leaves
+	      leaves.forEach(function (leaf) {
+	        return extractBranchesAndForks(model, leaf);
+	      });
+
+	      // Sort forks for better rendering
+	      forks.sort(function (a, b) {
+	        return a.toX > b.toX;
+	      });
+
+	      // Save computed structure to state
+	      this.setState({ nodes: nodes, branches: branches, forks: forks, actives: actives, leaves: leaves });
+	    }
+	  }, {
+	    key: 'toggleActive',
+	    value: function toggleActive(event) {
+	      var _state = this.state,
+	          actives = _state.actives,
+	          nodes = _state.nodes;
 
 
-	    if (event.target.nodeName !== 'circle' && !event.target.classList.contains(_GitTreeWidget2.default.iconText)) {
-	      var size = _SizeHelper2.default.getSize(this.rootContainer),
-	          deltaY = this.props.deltaY,
-	          originTop = size.clientRect.y || size.clientRect.top,
-	          yVal = Math.floor((event.clientY - originTop) / deltaY),
-	          index = actives.indexOf(yVal);
+	      if (event.target.nodeName !== 'circle' && !event.target.classList.contains(_GitTreeWidget2.default.iconText)) {
+	        var size = _SizeHelper2.default.getSize(this.rootContainer),
+	            deltaY = this.props.deltaY,
+	            originTop = size.clientRect.y || size.clientRect.top,
+	            yVal = Math.floor((event.clientY - originTop) / deltaY),
+	            index = actives.indexOf(yVal);
 
-	      // command key for osx, control key for windows
-	      if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
-	        if (index === -1) {
-	          actives.push(yVal);
+	        // command key for osx, control key for windows
+	        if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
+	          if (index === -1) {
+	            actives.push(yVal);
+	          } else {
+	            actives.splice(index, 1);
+	          }
 	        } else {
-	          actives.splice(index, 1);
+	          actives = [yVal];
 	        }
-	      } else {
-	        actives = [yVal];
+	        this.setState({ actives: actives });
+
+	        if (this.props.onChange) {
+	          var changeSet = [],
+	              active = true;
+
+	          actives.forEach(function (idx) {
+	            var _nodes$idx = nodes[idx],
+	                id = _nodes$idx.id,
+	                parent = _nodes$idx.parent,
+	                name = _nodes$idx.name,
+	                visible = _nodes$idx.visible;
+
+	            var userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
+	            changeSet.push(Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData));
+	          });
+
+	          this.props.onChange({ type: 'active', changeSet: changeSet });
+	        }
 	      }
-	      this.setState({ actives: actives });
+	    }
+	  }, {
+	    key: 'toggleVisibility',
+	    value: function toggleVisibility(event) {
+	      var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+	          _state2 = this.state,
+	          actives = _state2.actives,
+	          nodes = _state2.nodes,
+	          node = nodes[yVal];
+
+
+	      node.visible = !node.visible;
+	      this.setState({ nodes: nodes });
 
 	      if (this.props.onChange) {
-	        var changeSet = [],
-	            active = true;
+	        var id = node.id,
+	            parent = node.parent,
+	            name = node.name,
+	            visible = node.visible,
+	            active = actives.indexOf(yVal) !== -1,
+	            userData = node.userData ? { userData: node.userData } : null,
+	            changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData)];
 
-	        actives.forEach(function (idx) {
-	          var _nodes$idx = nodes[idx],
-	              id = _nodes$idx.id,
-	              parent = _nodes$idx.parent,
-	              name = _nodes$idx.name,
-	              visible = _nodes$idx.visible;
 
-	          var userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
-	          changeSet.push(Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData));
-	        });
-
-	        this.props.onChange({ type: 'active', changeSet: changeSet });
+	        this.props.onChange({ type: 'visibility', changeSet: changeSet });
 	      }
 	    }
-	  },
-	  toggleVisibility: function toggleVisibility(event) {
-	    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-	        _state2 = this.state,
-	        actives = _state2.actives,
-	        nodes = _state2.nodes,
-	        node = nodes[yVal];
+	  }, {
+	    key: 'deleteNode',
+	    value: function deleteNode(event) {
+	      if (this.props.onChange) {
+	        var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
+	            _state$nodes$yVal = this.state.nodes[yVal],
+	            id = _state$nodes$yVal.id,
+	            parent = _state$nodes$yVal.parent,
+	            name = _state$nodes$yVal.name,
+	            visible = _state$nodes$yVal.visible,
+	            userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null,
+	            changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible }, userData)];
 
 
-	    node.visible = !node.visible;
-	    this.setState({ nodes: nodes });
-
-	    if (this.props.onChange) {
-	      var id = node.id,
-	          parent = node.parent,
-	          name = node.name,
-	          visible = node.visible,
-	          active = actives.indexOf(yVal) !== -1,
-	          userData = node.userData ? { userData: node.userData } : null,
-	          changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible, active: active }, userData)];
-
-
-	      this.props.onChange({ type: 'visibility', changeSet: changeSet });
+	        this.props.onChange({ type: 'delete', changeSet: changeSet });
+	      }
 	    }
-	  },
-	  deleteNode: function deleteNode(event) {
-	    if (this.props.onChange) {
-	      var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-	          _state$nodes$yVal = this.state.nodes[yVal],
-	          id = _state$nodes$yVal.id,
-	          parent = _state$nodes$yVal.parent,
-	          name = _state$nodes$yVal.name,
-	          visible = _state$nodes$yVal.visible,
-	          userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null,
-	          changeSet = [Object.assign({ id: id, parent: parent, name: name, visible: visible }, userData)];
+	  }, {
+	    key: 'renderNodes',
+	    value: function renderNodes() {
+	      var _this2 = this;
+
+	      return this.state.nodes.map(function (el, index) {
+	        var _props = _this2.props,
+	            activeCircleStrokeColor = _props.activeCircleStrokeColor,
+	            deltaX = _props.deltaX,
+	            deltaY = _props.deltaY,
+	            fontSize = _props.fontSize,
+	            notVisibleCircleFillColor = _props.notVisibleCircleFillColor,
+	            offset = _props.offset,
+	            palette = _props.palette,
+	            radius = _props.radius,
+	            stroke = _props.stroke,
+	            textColor = _props.textColor,
+	            textWeight = _props.textWeight,
+	            isActive = _this2.state.actives.includes(index),
+	            isVisible = !!el.visible,
+	            branchColor = palette[el.x % palette.length];
+
+	        // Styles
 
 
-	      this.props.onChange({ type: 'delete', changeSet: changeSet });
+	        var currentTextColor = textColor[isActive ? 1 : 0];
+	        var weight = textWeight[isActive ? 1 : 0];
+	        var strokeColor = isActive ? activeCircleStrokeColor : branchColor || branchColor;
+	        var fillColor = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
+
+	        // Positions
+	        var cx = deltaX * el.x + offset,
+	            cy = deltaY * el.y + deltaY / 2,
+	            tx = cx + radius * 2,
+	            ty = cy + (radius - 1);
+
+	        return _react2.default.createElement(
+	          'g',
+	          { key: 'node-' + index, className: _GitTreeWidget2.default.cursor },
+	          _react2.default.createElement('circle', {
+	            'data-id': el.y,
+	            cx: cx,
+	            cy: cy,
+	            r: radius,
+	            stroke: strokeColor,
+	            strokeWidth: stroke,
+	            fill: fillColor,
+	            onClick: _this2.toggleVisibility
+	          }),
+	          _react2.default.createElement(
+	            'text',
+	            {
+	              className: _GitTreeWidget2.default.regularText,
+	              'data-id': el.y,
+	              x: tx,
+	              y: ty,
+	              fill: currentTextColor,
+	              fontWeight: weight,
+	              fontSize: fontSize
+	            },
+	            el.name
+	          )
+	        );
+	      });
 	    }
-	  },
-	  renderNodes: function renderNodes() {
-	    var _this = this;
-
-	    return this.state.nodes.map(function (el, index) {
-	      var _props = _this.props,
-	          activeCircleStrokeColor = _props.activeCircleStrokeColor,
-	          deltaX = _props.deltaX,
-	          deltaY = _props.deltaY,
-	          fontSize = _props.fontSize,
-	          notVisibleCircleFillColor = _props.notVisibleCircleFillColor,
-	          offset = _props.offset,
-	          palette = _props.palette,
-	          radius = _props.radius,
-	          stroke = _props.stroke,
-	          textColor = _props.textColor,
-	          textWeight = _props.textWeight,
-	          isActive = _this.state.actives.includes(index),
-	          isVisible = !!el.visible,
-	          branchColor = palette[el.x % palette.length];
-
-	      // Styles
+	  }, {
+	    key: 'renderBranches',
+	    value: function renderBranches() {
+	      var _props2 = this.props,
+	          deltaX = _props2.deltaX,
+	          deltaY = _props2.deltaY,
+	          offset = _props2.offset,
+	          palette = _props2.palette,
+	          stroke = _props2.stroke;
 
 
-	      var currentTextColor = textColor[isActive ? 1 : 0];
-	      var weight = textWeight[isActive ? 1 : 0];
-	      var strokeColor = isActive ? activeCircleStrokeColor : branchColor || branchColor;
-	      var fillColor = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
+	      return this.state.branches.map(function (el, index) {
+	        var x1 = deltaX * el.x + offset,
+	            y1 = deltaY * el.y + deltaY / 2,
+	            y2 = deltaY * el.to + deltaY / 2,
+	            strokeColor = palette[el.x % palette.length];
 
-	      // Positions
-	      var cx = deltaX * el.x + offset,
-	          cy = deltaY * el.y + deltaY / 2,
-	          tx = cx + radius * 2,
-	          ty = cy + (radius - 1);
+	        return _react2.default.createElement('path', {
+	          key: 'branch-' + index,
+	          d: 'M' + x1 + ',' + y1 + ' L' + x1 + ',' + y2,
+	          stroke: strokeColor,
+	          strokeWidth: stroke
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'renderForks',
+	    value: function renderForks() {
+	      var _props3 = this.props,
+	          deltaX = _props3.deltaX,
+	          deltaY = _props3.deltaY,
+	          offset = _props3.offset,
+	          palette = _props3.palette,
+	          radius = _props3.radius,
+	          stroke = _props3.stroke;
 
-	      return _react2.default.createElement(
-	        'g',
-	        { key: 'node-' + index, className: _GitTreeWidget2.default.cursor },
-	        _react2.default.createElement('circle', {
-	          'data-id': el.y,
-	          cx: cx,
-	          cy: cy,
-	          r: radius,
+
+	      return this.state.forks.map(function (el, index) {
+	        var x1 = deltaX * el.x + offset,
+	            y1 = deltaY * el.y + deltaY / 2 + radius,
+	            x2 = deltaX * el.toX + offset,
+	            y2 = deltaY * el.toY + deltaY / 2 + radius,
+	            strokeColor = palette[el.toX % palette.length],
+	            dPath = 'M' + x1 + ',' + y1 + ' ' + ('Q' + x1 + ',' + (y1 + deltaY / 3) + ',' + (x1 + x2) / 2 + ',' + (y1 + deltaY / 3) + ' ') + ('T' + x2 + ',' + (y1 + deltaY) + ' L' + x2 + ',' + y2);
+
+	        return _react2.default.createElement('path', {
+	          key: 'fork-' + index,
+	          d: dPath,
 	          stroke: strokeColor,
 	          strokeWidth: stroke,
-	          fill: fillColor,
-	          onClick: _this.toggleVisibility
-	        }),
-	        _react2.default.createElement(
+	          fill: 'transparent'
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'renderActives',
+	    value: function renderActives() {
+	      var _this3 = this;
+
+	      var _props4 = this.props,
+	          margin = _props4.margin,
+	          deltaY = _props4.deltaY;
+
+
+	      return this.state.actives.map(function (el, index) {
+	        return _react2.default.createElement('rect', {
+	          key: 'active-' + index,
+	          'data-id': _this3.state.nodes[el].y,
+	          x: '-50',
+	          width: '1000',
+	          fill: '#999',
+	          y: el * deltaY + margin / 2,
+	          height: deltaY - margin
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'renderDeleteActions',
+	    value: function renderDeleteActions() {
+	      var _this4 = this;
+
+	      if (!this.props.enableDelete) {
+	        return null;
+	      }
+
+	      var _props5 = this.props,
+	          deltaY = _props5.deltaY,
+	          width = _props5.width,
+	          offset = _props5.offset,
+	          textColor = _props5.textColor,
+	          radius = _props5.radius;
+
+
+	      return this.state.leaves.map(function (node, idx) {
+	        var isActive = _this4.state.actives.includes(node.y),
+	            currentTextColor = textColor[isActive ? 1 : 0];
+
+	        return _react2.default.createElement(
 	          'text',
 	          {
-	            className: _GitTreeWidget2.default.regularText,
-	            'data-id': el.y,
-	            x: tx,
-	            y: ty,
-	            fill: currentTextColor,
-	            fontWeight: weight,
-	            fontSize: fontSize
+	            key: 'delete-' + idx,
+	            className: _GitTreeWidget2.default.iconText,
+	            onClick: _this4.deleteNode,
+	            'data-id': node.y,
+	            x: Number(width) - offset - 10,
+	            y: deltaY * node.y + deltaY / 2 + (radius - 1),
+	            fill: currentTextColor
 	          },
-	          el.name
-	        )
-	      );
-	    });
-	  },
-	  renderBranches: function renderBranches() {
-	    var _props2 = this.props,
-	        deltaX = _props2.deltaX,
-	        deltaY = _props2.deltaY,
-	        offset = _props2.offset,
-	        palette = _props2.palette,
-	        stroke = _props2.stroke;
-
-
-	    return this.state.branches.map(function (el, index) {
-	      var x1 = deltaX * el.x + offset,
-	          y1 = deltaY * el.y + deltaY / 2,
-	          y2 = deltaY * el.to + deltaY / 2,
-	          strokeColor = palette[el.x % palette.length];
-
-	      return _react2.default.createElement('path', {
-	        key: 'branch-' + index,
-	        d: 'M' + x1 + ',' + y1 + ' L' + x1 + ',' + y2,
-	        stroke: strokeColor,
-	        strokeWidth: stroke
+	          '\uF014'
+	        );
 	      });
-	    });
-	  },
-	  renderForks: function renderForks() {
-	    var _props3 = this.props,
-	        deltaX = _props3.deltaX,
-	        deltaY = _props3.deltaY,
-	        offset = _props3.offset,
-	        palette = _props3.palette,
-	        radius = _props3.radius,
-	        stroke = _props3.stroke;
-
-
-	    return this.state.forks.map(function (el, index) {
-	      var x1 = deltaX * el.x + offset,
-	          y1 = deltaY * el.y + deltaY / 2 + radius,
-	          x2 = deltaX * el.toX + offset,
-	          y2 = deltaY * el.toY + deltaY / 2 + radius,
-	          strokeColor = palette[el.toX % palette.length],
-	          dPath = 'M' + x1 + ',' + y1 + ' ' + ('Q' + x1 + ',' + (y1 + deltaY / 3) + ',' + (x1 + x2) / 2 + ',' + (y1 + deltaY / 3) + ' ') + ('T' + x2 + ',' + (y1 + deltaY) + ' L' + x2 + ',' + y2);
-
-	      return _react2.default.createElement('path', {
-	        key: 'fork-' + index,
-	        d: dPath,
-	        stroke: strokeColor,
-	        strokeWidth: stroke,
-	        fill: 'transparent'
-	      });
-	    });
-	  },
-	  renderActives: function renderActives() {
-	    var _this2 = this;
-
-	    var _props4 = this.props,
-	        margin = _props4.margin,
-	        deltaY = _props4.deltaY;
-
-
-	    return this.state.actives.map(function (el, index) {
-	      return _react2.default.createElement('rect', {
-	        key: 'active-' + index,
-	        'data-id': _this2.state.nodes[el].y,
-	        x: '-50',
-	        width: '1000',
-	        fill: '#999',
-	        y: el * deltaY + margin / 2,
-	        height: deltaY - margin
-	      });
-	    });
-	  },
-	  renderDeleteActions: function renderDeleteActions() {
-	    var _this3 = this;
-
-	    if (!this.props.enableDelete) {
-	      return null;
 	    }
-
-	    var _props5 = this.props,
-	        deltaY = _props5.deltaY,
-	        width = _props5.width,
-	        offset = _props5.offset,
-	        textColor = _props5.textColor,
-	        radius = _props5.radius;
-
-
-	    return this.state.leaves.map(function (node, idx) {
-	      var isActive = _this3.state.actives.includes(node.y),
-	          currentTextColor = textColor[isActive ? 1 : 0];
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this5 = this;
 
 	      return _react2.default.createElement(
-	        'text',
+	        'svg',
 	        {
-	          key: 'delete-' + idx,
-	          className: _GitTreeWidget2.default.iconText,
-	          onClick: _this3.deleteNode,
-	          'data-id': node.y,
-	          x: Number(width) - offset - 10,
-	          y: deltaY * node.y + deltaY / 2 + (radius - 1),
-	          fill: currentTextColor
+	          ref: function ref(c) {
+	            return _this5.rootContainer = c;
+	          },
+	          style: this.props.style,
+	          width: this.props.width,
+	          height: this.props.deltaY * this.state.nodes.length + 'px',
+	          onClick: this.toggleActive
 	        },
-	        '\uF014'
+	        this.renderActives(),
+	        this.renderBranches(),
+	        this.renderForks(),
+	        this.renderNodes(),
+	        this.renderDeleteActions()
 	      );
-	    });
-	  },
-	  render: function render() {
-	    var _this4 = this;
+	    }
+	  }]);
 
-	    return _react2.default.createElement(
-	      'svg',
-	      {
-	        ref: function ref(c) {
-	          return _this4.rootContainer = c;
-	        },
-	        style: this.props.style,
-	        width: this.props.width,
-	        height: this.props.deltaY * this.state.nodes.length + 'px',
-	        onClick: this.toggleActive
-	      },
-	      this.renderActives(),
-	      this.renderBranches(),
-	      this.renderForks(),
-	      this.renderNodes(),
-	      this.renderDeleteActions()
-	    );
-	  }
-	});
+	  return GitTreeWidget;
+	}(_react2.default.Component);
+
+	exports.default = GitTreeWidget;
+
+
+	GitTreeWidget.propTypes = {
+	  activeCircleStrokeColor: _propTypes2.default.string,
+	  actives: _propTypes2.default.array,
+	  deltaX: _propTypes2.default.number,
+	  deltaY: _propTypes2.default.number,
+	  enableDelete: _propTypes2.default.bool,
+	  fontSize: _propTypes2.default.number,
+	  margin: _propTypes2.default.number,
+	  multiselect: _propTypes2.default.bool,
+	  nodes: _propTypes2.default.array,
+	  notVisibleCircleFillColor: _propTypes2.default.string,
+	  offset: _propTypes2.default.number,
+	  onChange: _propTypes2.default.func,
+	  palette: _propTypes2.default.array,
+	  radius: _propTypes2.default.number,
+	  rootId: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number, _propTypes2.default.instanceOf(null)] // this could have some problematic effect
+	  ),
+	  stroke: _propTypes2.default.number,
+	  style: _propTypes2.default.object,
+	  textColor: _propTypes2.default.array,
+	  textWeight: _propTypes2.default.array,
+	  width: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number])
+	};
+
+	GitTreeWidget.defaultProps = {
+	  nodes: [],
+	  actives: [],
+	  style: {},
+
+	  enableDelete: false,
+	  deltaX: 20,
+	  deltaY: 30,
+	  fontSize: 16,
+	  margin: 3,
+	  multiselect: false,
+	  offset: 15,
+	  palette: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
+	  radius: 6,
+	  rootId: '0',
+	  stroke: 3,
+	  width: 500,
+	  activeCircleStrokeColor: 'black', // if 'null', the branch color will be used
+	  notVisibleCircleFillColor: 'white', // if 'null', the branch color will be used
+	  textColor: ['black', 'white'], // Normal, Active
+	  textWeight: ['normal', 'bold'] // Normal, Active
+	};
 
 /***/ },
 /* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	if (process.env.NODE_ENV !== 'production') {
+	  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+	    Symbol.for &&
+	    Symbol.for('react.element')) ||
+	    0xeac7;
+
+	  var isValidElement = function(object) {
+	    return typeof object === 'object' &&
+	      object !== null &&
+	      object.$$typeof === REACT_ELEMENT_TYPE;
+	  };
+
+	  // By explicitly using `prop-types` you are opting into new development behavior.
+	  // http://fb.me/prop-types-in-prod
+	  var throwOnDirectAccess = true;
+	  module.exports = __webpack_require__(502)(isValidElement, throwOnDirectAccess);
+	} else {
+	  // By explicitly using `prop-types` you are opting into new production behavior.
+	  // http://fb.me/prop-types-in-prod
+	  module.exports = __webpack_require__(508)();
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(326)))
+
+/***/ },
+/* 502 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	'use strict';
+
+	var emptyFunction = __webpack_require__(503);
+	var invariant = __webpack_require__(504);
+	var warning = __webpack_require__(505);
+	var assign = __webpack_require__(332);
+
+	var ReactPropTypesSecret = __webpack_require__(506);
+	var checkPropTypes = __webpack_require__(507);
+
+	module.exports = function(isValidElement, throwOnDirectAccess) {
+	  /* global Symbol */
+	  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+	  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+	  /**
+	   * Returns the iterator method function contained on the iterable object.
+	   *
+	   * Be sure to invoke the function with the iterable as context:
+	   *
+	   *     var iteratorFn = getIteratorFn(myIterable);
+	   *     if (iteratorFn) {
+	   *       var iterator = iteratorFn.call(myIterable);
+	   *       ...
+	   *     }
+	   *
+	   * @param {?object} maybeIterable
+	   * @return {?function}
+	   */
+	  function getIteratorFn(maybeIterable) {
+	    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+	    if (typeof iteratorFn === 'function') {
+	      return iteratorFn;
+	    }
+	  }
+
+	  /**
+	   * Collection of methods that allow declaration and validation of props that are
+	   * supplied to React components. Example usage:
+	   *
+	   *   var Props = require('ReactPropTypes');
+	   *   var MyArticle = React.createClass({
+	   *     propTypes: {
+	   *       // An optional string prop named "description".
+	   *       description: Props.string,
+	   *
+	   *       // A required enum prop named "category".
+	   *       category: Props.oneOf(['News','Photos']).isRequired,
+	   *
+	   *       // A prop named "dialog" that requires an instance of Dialog.
+	   *       dialog: Props.instanceOf(Dialog).isRequired
+	   *     },
+	   *     render: function() { ... }
+	   *   });
+	   *
+	   * A more formal specification of how these methods are used:
+	   *
+	   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+	   *   decl := ReactPropTypes.{type}(.isRequired)?
+	   *
+	   * Each and every declaration produces a function with the same signature. This
+	   * allows the creation of custom validation functions. For example:
+	   *
+	   *  var MyLink = React.createClass({
+	   *    propTypes: {
+	   *      // An optional string or URI prop named "href".
+	   *      href: function(props, propName, componentName) {
+	   *        var propValue = props[propName];
+	   *        if (propValue != null && typeof propValue !== 'string' &&
+	   *            !(propValue instanceof URI)) {
+	   *          return new Error(
+	   *            'Expected a string or an URI for ' + propName + ' in ' +
+	   *            componentName
+	   *          );
+	   *        }
+	   *      }
+	   *    },
+	   *    render: function() {...}
+	   *  });
+	   *
+	   * @internal
+	   */
+
+	  var ANONYMOUS = '<<anonymous>>';
+
+	  // Important!
+	  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+	  var ReactPropTypes = {
+	    array: createPrimitiveTypeChecker('array'),
+	    bool: createPrimitiveTypeChecker('boolean'),
+	    func: createPrimitiveTypeChecker('function'),
+	    number: createPrimitiveTypeChecker('number'),
+	    object: createPrimitiveTypeChecker('object'),
+	    string: createPrimitiveTypeChecker('string'),
+	    symbol: createPrimitiveTypeChecker('symbol'),
+
+	    any: createAnyTypeChecker(),
+	    arrayOf: createArrayOfTypeChecker,
+	    element: createElementTypeChecker(),
+	    instanceOf: createInstanceTypeChecker,
+	    node: createNodeChecker(),
+	    objectOf: createObjectOfTypeChecker,
+	    oneOf: createEnumTypeChecker,
+	    oneOfType: createUnionTypeChecker,
+	    shape: createShapeTypeChecker,
+	    exact: createStrictShapeTypeChecker,
+	  };
+
+	  /**
+	   * inlined Object.is polyfill to avoid requiring consumers ship their own
+	   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+	   */
+	  /*eslint-disable no-self-compare*/
+	  function is(x, y) {
+	    // SameValue algorithm
+	    if (x === y) {
+	      // Steps 1-5, 7-10
+	      // Steps 6.b-6.e: +0 != -0
+	      return x !== 0 || 1 / x === 1 / y;
+	    } else {
+	      // Step 6.a: NaN == NaN
+	      return x !== x && y !== y;
+	    }
+	  }
+	  /*eslint-enable no-self-compare*/
+
+	  /**
+	   * We use an Error-like object for backward compatibility as people may call
+	   * PropTypes directly and inspect their output. However, we don't use real
+	   * Errors anymore. We don't inspect their stack anyway, and creating them
+	   * is prohibitively expensive if they are created too often, such as what
+	   * happens in oneOfType() for any type before the one that matched.
+	   */
+	  function PropTypeError(message) {
+	    this.message = message;
+	    this.stack = '';
+	  }
+	  // Make `instanceof Error` still work for returned errors.
+	  PropTypeError.prototype = Error.prototype;
+
+	  function createChainableTypeChecker(validate) {
+	    if (process.env.NODE_ENV !== 'production') {
+	      var manualPropTypeCallCache = {};
+	      var manualPropTypeWarningCount = 0;
+	    }
+	    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+	      componentName = componentName || ANONYMOUS;
+	      propFullName = propFullName || propName;
+
+	      if (secret !== ReactPropTypesSecret) {
+	        if (throwOnDirectAccess) {
+	          // New behavior only for users of `prop-types` package
+	          invariant(
+	            false,
+	            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+	            'Use `PropTypes.checkPropTypes()` to call them. ' +
+	            'Read more at http://fb.me/use-check-prop-types'
+	          );
+	        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
+	          // Old behavior for people using React.PropTypes
+	          var cacheKey = componentName + ':' + propName;
+	          if (
+	            !manualPropTypeCallCache[cacheKey] &&
+	            // Avoid spamming the console because they are often not actionable except for lib authors
+	            manualPropTypeWarningCount < 3
+	          ) {
+	            warning(
+	              false,
+	              'You are manually calling a React.PropTypes validation ' +
+	              'function for the `%s` prop on `%s`. This is deprecated ' +
+	              'and will throw in the standalone `prop-types` package. ' +
+	              'You may be seeing this warning due to a third-party PropTypes ' +
+	              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
+	              propFullName,
+	              componentName
+	            );
+	            manualPropTypeCallCache[cacheKey] = true;
+	            manualPropTypeWarningCount++;
+	          }
+	        }
+	      }
+	      if (props[propName] == null) {
+	        if (isRequired) {
+	          if (props[propName] === null) {
+	            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+	          }
+	          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+	        }
+	        return null;
+	      } else {
+	        return validate(props, propName, componentName, location, propFullName);
+	      }
+	    }
+
+	    var chainedCheckType = checkType.bind(null, false);
+	    chainedCheckType.isRequired = checkType.bind(null, true);
+
+	    return chainedCheckType;
+	  }
+
+	  function createPrimitiveTypeChecker(expectedType) {
+	    function validate(props, propName, componentName, location, propFullName, secret) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+	      if (propType !== expectedType) {
+	        // `propValue` being instance of, say, date/regexp, pass the 'object'
+	        // check, but we can offer a more precise error message here rather than
+	        // 'of type `object`'.
+	        var preciseType = getPreciseType(propValue);
+
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createAnyTypeChecker() {
+	    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+	  }
+
+	  function createArrayOfTypeChecker(typeChecker) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (typeof typeChecker !== 'function') {
+	        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+	      }
+	      var propValue = props[propName];
+	      if (!Array.isArray(propValue)) {
+	        var propType = getPropType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+	      }
+	      for (var i = 0; i < propValue.length; i++) {
+	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+	        if (error instanceof Error) {
+	          return error;
+	        }
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createElementTypeChecker() {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      if (!isValidElement(propValue)) {
+	        var propType = getPropType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createInstanceTypeChecker(expectedClass) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (!(props[propName] instanceof expectedClass)) {
+	        var expectedClassName = expectedClass.name || ANONYMOUS;
+	        var actualClassName = getClassName(props[propName]);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createEnumTypeChecker(expectedValues) {
+	    if (!Array.isArray(expectedValues)) {
+	      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
+	      return emptyFunction.thatReturnsNull;
+	    }
+
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      for (var i = 0; i < expectedValues.length; i++) {
+	        if (is(propValue, expectedValues[i])) {
+	          return null;
+	        }
+	      }
+
+	      var valuesString = JSON.stringify(expectedValues);
+	      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createObjectOfTypeChecker(typeChecker) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (typeof typeChecker !== 'function') {
+	        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+	      }
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+	      }
+	      for (var key in propValue) {
+	        if (propValue.hasOwnProperty(key)) {
+	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+	          if (error instanceof Error) {
+	            return error;
+	          }
+	        }
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createUnionTypeChecker(arrayOfTypeCheckers) {
+	    if (!Array.isArray(arrayOfTypeCheckers)) {
+	      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+	      return emptyFunction.thatReturnsNull;
+	    }
+
+	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	      var checker = arrayOfTypeCheckers[i];
+	      if (typeof checker !== 'function') {
+	        warning(
+	          false,
+	          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+	          'received %s at index %s.',
+	          getPostfixForTypeWarning(checker),
+	          i
+	        );
+	        return emptyFunction.thatReturnsNull;
+	      }
+	    }
+
+	    function validate(props, propName, componentName, location, propFullName) {
+	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	        var checker = arrayOfTypeCheckers[i];
+	        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+	          return null;
+	        }
+	      }
+
+	      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createNodeChecker() {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (!isNode(props[propName])) {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createShapeTypeChecker(shapeTypes) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+	      }
+	      for (var key in shapeTypes) {
+	        var checker = shapeTypes[key];
+	        if (!checker) {
+	          continue;
+	        }
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+	        if (error) {
+	          return error;
+	        }
+	      }
+	      return null;
+	    }
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createStrictShapeTypeChecker(shapeTypes) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+	      }
+	      // We need to check all keys in case some are required but missing from
+	      // props.
+	      var allKeys = assign({}, props[propName], shapeTypes);
+	      for (var key in allKeys) {
+	        var checker = shapeTypes[key];
+	        if (!checker) {
+	          return new PropTypeError(
+	            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+	            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+	            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+	          );
+	        }
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+	        if (error) {
+	          return error;
+	        }
+	      }
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function isNode(propValue) {
+	    switch (typeof propValue) {
+	      case 'number':
+	      case 'string':
+	      case 'undefined':
+	        return true;
+	      case 'boolean':
+	        return !propValue;
+	      case 'object':
+	        if (Array.isArray(propValue)) {
+	          return propValue.every(isNode);
+	        }
+	        if (propValue === null || isValidElement(propValue)) {
+	          return true;
+	        }
+
+	        var iteratorFn = getIteratorFn(propValue);
+	        if (iteratorFn) {
+	          var iterator = iteratorFn.call(propValue);
+	          var step;
+	          if (iteratorFn !== propValue.entries) {
+	            while (!(step = iterator.next()).done) {
+	              if (!isNode(step.value)) {
+	                return false;
+	              }
+	            }
+	          } else {
+	            // Iterator will provide entry [k,v] tuples rather than values.
+	            while (!(step = iterator.next()).done) {
+	              var entry = step.value;
+	              if (entry) {
+	                if (!isNode(entry[1])) {
+	                  return false;
+	                }
+	              }
+	            }
+	          }
+	        } else {
+	          return false;
+	        }
+
+	        return true;
+	      default:
+	        return false;
+	    }
+	  }
+
+	  function isSymbol(propType, propValue) {
+	    // Native Symbol.
+	    if (propType === 'symbol') {
+	      return true;
+	    }
+
+	    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+	    if (propValue['@@toStringTag'] === 'Symbol') {
+	      return true;
+	    }
+
+	    // Fallback for non-spec compliant Symbols which are polyfilled.
+	    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+	      return true;
+	    }
+
+	    return false;
+	  }
+
+	  // Equivalent of `typeof` but with special handling for array and regexp.
+	  function getPropType(propValue) {
+	    var propType = typeof propValue;
+	    if (Array.isArray(propValue)) {
+	      return 'array';
+	    }
+	    if (propValue instanceof RegExp) {
+	      // Old webkits (at least until Android 4.0) return 'function' rather than
+	      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+	      // passes PropTypes.object.
+	      return 'object';
+	    }
+	    if (isSymbol(propType, propValue)) {
+	      return 'symbol';
+	    }
+	    return propType;
+	  }
+
+	  // This handles more types than `getPropType`. Only used for error messages.
+	  // See `createPrimitiveTypeChecker`.
+	  function getPreciseType(propValue) {
+	    if (typeof propValue === 'undefined' || propValue === null) {
+	      return '' + propValue;
+	    }
+	    var propType = getPropType(propValue);
+	    if (propType === 'object') {
+	      if (propValue instanceof Date) {
+	        return 'date';
+	      } else if (propValue instanceof RegExp) {
+	        return 'regexp';
+	      }
+	    }
+	    return propType;
+	  }
+
+	  // Returns a string that is postfixed to a warning about an invalid type.
+	  // For example, "undefined" or "of type array"
+	  function getPostfixForTypeWarning(value) {
+	    var type = getPreciseType(value);
+	    switch (type) {
+	      case 'array':
+	      case 'object':
+	        return 'an ' + type;
+	      case 'boolean':
+	      case 'date':
+	      case 'regexp':
+	        return 'a ' + type;
+	      default:
+	        return type;
+	    }
+	  }
+
+	  // Returns class name of the object, if any.
+	  function getClassName(propValue) {
+	    if (!propValue.constructor || !propValue.constructor.name) {
+	      return ANONYMOUS;
+	    }
+	    return propValue.constructor.name;
+	  }
+
+	  ReactPropTypes.checkPropTypes = checkPropTypes;
+	  ReactPropTypes.PropTypes = ReactPropTypes;
+
+	  return ReactPropTypes;
+	};
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(326)))
+
+/***/ },
+/* 503 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 *
+	 * 
+	 */
+
+	function makeEmptyFunction(arg) {
+	  return function () {
+	    return arg;
+	  };
+	}
+
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	var emptyFunction = function emptyFunction() {};
+
+	emptyFunction.thatReturns = makeEmptyFunction;
+	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+	emptyFunction.thatReturnsThis = function () {
+	  return this;
+	};
+	emptyFunction.thatReturnsArgument = function (arg) {
+	  return arg;
+	};
+
+	module.exports = emptyFunction;
+
+/***/ },
+/* 504 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 *
+	 */
+
+	'use strict';
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	      error.name = 'Invariant Violation';
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	}
+
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(326)))
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 *
+	 */
+
+	'use strict';
+
+	var emptyFunction = __webpack_require__(503);
+
+	/**
+	 * Similar to invariant but only logs a warning if the condition is not met.
+	 * This can be used to log issues in development environments in critical
+	 * paths. Removing the logging code for production environments will keep the
+	 * same logic and follow the same code paths.
+	 */
+
+	var warning = emptyFunction;
+
+	if (process.env.NODE_ENV !== 'production') {
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
+	      }
+
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
+	}
+
+	module.exports = warning;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(326)))
+
+/***/ },
+/* 506 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	'use strict';
+
+	var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+	module.exports = ReactPropTypesSecret;
+
+
+/***/ },
+/* 507 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	'use strict';
+
+	if (process.env.NODE_ENV !== 'production') {
+	  var invariant = __webpack_require__(504);
+	  var warning = __webpack_require__(505);
+	  var ReactPropTypesSecret = __webpack_require__(506);
+	  var loggedTypeFailures = {};
+	}
+
+	/**
+	 * Assert that the values match with the type specs.
+	 * Error messages are memorized and will only be shown once.
+	 *
+	 * @param {object} typeSpecs Map of name to a ReactPropType
+	 * @param {object} values Runtime values that need to be type-checked
+	 * @param {string} location e.g. "prop", "context", "child context"
+	 * @param {string} componentName Name of the component for error messages.
+	 * @param {?Function} getStack Returns the component stack.
+	 * @private
+	 */
+	function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    for (var typeSpecName in typeSpecs) {
+	      if (typeSpecs.hasOwnProperty(typeSpecName)) {
+	        var error;
+	        // Prop type validation may throw. In case they do, we don't want to
+	        // fail the render phase where it didn't fail before. So we log it.
+	        // After these have been cleaned up, we'll let them throw.
+	        try {
+	          // This is intentionally an invariant that gets caught. It's the same
+	          // behavior as without this statement except with a better message.
+	          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+	        } catch (ex) {
+	          error = ex;
+	        }
+	        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+	        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+	          // Only monitor this failure once because there tends to be a lot of the
+	          // same error.
+	          loggedTypeFailures[error.message] = true;
+
+	          var stack = getStack ? getStack() : '';
+
+	          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+	        }
+	      }
+	    }
+	  }
+	}
+
+	module.exports = checkPropTypes;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(326)))
+
+/***/ },
+/* 508 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	'use strict';
+
+	var emptyFunction = __webpack_require__(503);
+	var invariant = __webpack_require__(504);
+	var ReactPropTypesSecret = __webpack_require__(506);
+
+	module.exports = function() {
+	  function shim(props, propName, componentName, location, propFullName, secret) {
+	    if (secret === ReactPropTypesSecret) {
+	      // It is still safe when called from React.
+	      return;
+	    }
+	    invariant(
+	      false,
+	      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+	      'Use PropTypes.checkPropTypes() to call them. ' +
+	      'Read more at http://fb.me/use-check-prop-types'
+	    );
+	  };
+	  shim.isRequired = shim;
+	  function getShim() {
+	    return shim;
+	  };
+	  // Important!
+	  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+	  var ReactPropTypes = {
+	    array: shim,
+	    bool: shim,
+	    func: shim,
+	    number: shim,
+	    object: shim,
+	    string: shim,
+	    symbol: shim,
+
+	    any: shim,
+	    arrayOf: getShim,
+	    element: shim,
+	    instanceOf: getShim,
+	    node: shim,
+	    objectOf: getShim,
+	    oneOf: getShim,
+	    oneOfType: getShim,
+	    shape: getShim,
+	    exact: getShim
+	  };
+
+	  ReactPropTypes.checkPropTypes = emptyFunction;
+	  ReactPropTypes.PropTypes = ReactPropTypes;
+
+	  return ReactPropTypes;
+	};
+
+
+/***/ },
+/* 509 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(502);
+	var content = __webpack_require__(510);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(504)(content, {});
+	var update = __webpack_require__(512)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -30818,10 +31775,10 @@
 	}
 
 /***/ },
-/* 502 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(503)();
+	exports = module.exports = __webpack_require__(511)();
 	// imports
 
 
@@ -30836,7 +31793,7 @@
 	};
 
 /***/ },
-/* 503 */
+/* 511 */
 /***/ function(module, exports) {
 
 	/*
@@ -30892,7 +31849,7 @@
 
 
 /***/ },
-/* 504 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31144,7 +32101,7 @@
 
 
 /***/ },
-/* 505 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31153,11 +32110,11 @@
 	  value: true
 	});
 
-	var _Observable = __webpack_require__(506);
+	var _Observable = __webpack_require__(514);
 
 	var _Observable2 = _interopRequireDefault(_Observable);
 
-	var _Debounce = __webpack_require__(512);
+	var _Debounce = __webpack_require__(520);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31244,7 +32201,7 @@
 	};
 
 /***/ },
-/* 506 */
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31255,7 +32212,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _monologue = __webpack_require__(507);
+	var _monologue = __webpack_require__(515);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -31285,7 +32242,7 @@
 	_monologue2.default.mixInto(Observable);
 
 /***/ },
-/* 507 */
+/* 515 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -31300,7 +32257,7 @@
 		/* istanbul ignore if  */
 		if ( true ) {
 			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(508), __webpack_require__(510) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(516), __webpack_require__(518) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
 				return factory( _, riveter, root );
 			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		/* istanbul ignore else  */
@@ -31752,7 +32709,7 @@
 
 
 /***/ },
-/* 508 */
+/* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -44107,10 +45064,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(509)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(517)(module), (function() { return this; }())))
 
 /***/ },
-/* 509 */
+/* 517 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -44126,7 +45083,7 @@
 
 
 /***/ },
-/* 510 */
+/* 518 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -44140,7 +45097,7 @@
 	(function (root, factory) {
 	    if (true) {
 	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(511)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(519)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
 	            return factory(_, root);
 	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module === "object" && module.exports) {
@@ -44317,7 +45274,7 @@
 	}));
 
 /***/ },
-/* 511 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -51479,10 +52436,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(509)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(517)(module), (function() { return this; }())))
 
 /***/ },
-/* 512 */
+/* 520 */
 /***/ function(module, exports) {
 
 	"use strict";
