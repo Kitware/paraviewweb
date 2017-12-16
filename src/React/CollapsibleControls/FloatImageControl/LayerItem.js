@@ -1,44 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
-export default React.createClass({
-
-  displayName: 'FloatImageControl.LayerItem',
-
-  propTypes: {
-    item: React.PropTypes.object.isRequired,
-    model: React.PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    return {
+export default class FloatImageControlLayerItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       change: false,
       dropDown: false,
     };
-  },
+
+    // Bind callback
+    this.toggleMesh = this.toggleMesh.bind(this);
+    this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
+    this.updateColorBy = this.updateColorBy.bind(this);
+  }
 
   toggleMesh() {
     if (this.props.item.hasMesh) {
       this.props.model.updateMaskLayerVisibility(this.props.item.name, !this.props.item.meshActive);
       this.setState({ change: !this.state.change });
     }
-  },
+  }
 
   toggleVisibility() {
     this.props.model.updateLayerVisibility(this.props.item.name, !this.props.item.active);
     this.setState({ change: !this.state.change });
-  },
+  }
 
   toggleDropDown() {
     if (this.props.item.arrays.length > 1) {
       this.setState({ dropDown: !this.state.dropDown });
     }
-  },
+  }
 
   updateColorBy(event) {
     this.props.model.updateLayerColorBy(this.props.item.name, event.target.dataset.color);
     this.toggleDropDown();
-  },
+  }
 
   render() {
     var layer = this.props.item,
@@ -81,5 +82,10 @@ export default React.createClass({
           </div>
         </div>
       </div>);
-  },
-});
+  }
+}
+
+FloatImageControlLayerItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  model: PropTypes.object.isRequired,
+};

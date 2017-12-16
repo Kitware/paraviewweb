@@ -1,4 +1,5 @@
-import React                from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
 import BinaryImageStream    from '../../../IO/WebSocket/BinaryImageStream';
 import WslinkImageStream    from '../../../IO/WebSocket/WslinkImageStream';
@@ -6,36 +7,11 @@ import NativeImageRenderer  from '../../../NativeUI/Renderers/NativeImageRendere
 import sizeHelper           from '../../../Common/Misc/SizeHelper';
 import VtkWebMouseListener  from '../../../Interaction/Core/VtkWebMouseListener';
 
-export default React.createClass({
-
-  displayName: 'VtkRenderer',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    client: React.PropTypes.object,
-    viewId: React.PropTypes.string,
-    interactionTimout: React.PropTypes.number,
-    connection: React.PropTypes.object,
-    oldImageStream: React.PropTypes.bool,
-    showFPS: React.PropTypes.bool,
-    style: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      className: '',
-      oldImageStream: false,
-      showFPS: false,
-      style: {},
-      viewId: '-1',
-      interactionTimout: 500,
-    };
-  },
-
+export default class VtkRenderer extends React.Component {
   componentWillMount() {
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
-  },
+  }
 
   componentDidMount() {
     const container = this.rootContainer;
@@ -79,7 +55,7 @@ export default React.createClass({
         this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
       });
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     const viewIdAsNumber = Number(nextProps.viewId);
@@ -89,7 +65,7 @@ export default React.createClass({
         sizeHelper.triggerChange();
       }
     }
-  },
+  }
 
   componentWillUnmount() {
     if (this.mouseListener) {
@@ -111,10 +87,29 @@ export default React.createClass({
       this.binaryImageStream.destroy();
       this.binaryImageStream = null;
     }
-  },
+  }
 
   render() {
     return <div className={this.props.className} style={this.props.style} ref={c => (this.rootContainer = c)} />;
-  },
-});
+  }
+}
 
+VtkRenderer.propTypes = {
+  className: PropTypes.string,
+  client: PropTypes.object,
+  viewId: PropTypes.string,
+  interactionTimout: PropTypes.number,
+  connection: PropTypes.object,
+  oldImageStream: PropTypes.bool,
+  showFPS: PropTypes.bool,
+  style: PropTypes.object,
+};
+
+VtkRenderer.defaultProps = {
+  className: '',
+  oldImageStream: false,
+  showFPS: false,
+  style: {},
+  viewId: '-1',
+  interactionTimout: 500,
+};

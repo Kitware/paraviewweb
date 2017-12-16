@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/AnnotationStoreEditorWidget.mcss';
 import deepEquals from 'mout/src/lang/deepEquals';
@@ -85,18 +86,18 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  annotation: React.PropTypes.object,
-  annotations: React.PropTypes.object,
+  annotation: PropTypes.object,
+  annotations: PropTypes.object,
 
-  scores: React.PropTypes.array,
-  ranges: React.PropTypes.object,
-  getLegend: React.PropTypes.func,
-  rationaleOpen: React.PropTypes.bool,
-  showUncertainty: React.PropTypes.bool,
-  ignoreGeneration: React.PropTypes.bool,
+  scores: PropTypes.array,
+  ranges: PropTypes.object,
+  getLegend: PropTypes.func,
+  rationaleOpen: PropTypes.bool,
+  showUncertainty: PropTypes.bool,
+  ignoreGeneration: PropTypes.bool,
 
-  onAnnotationChange: React.PropTypes.func,
-  onChange: React.PropTypes.func,
+  onAnnotationChange: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 render.defaultProps = {

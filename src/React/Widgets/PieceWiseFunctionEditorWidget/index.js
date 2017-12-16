@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import equals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/ReactWidgets/PieceWiseFunctionEditorWidget.mcss';
@@ -11,36 +12,23 @@ import sizeHelper from '../../../Common/Misc/SizeHelper';
 import plusIcon from '../../../../svg/colors/Plus.svg';
 import trashIcon from '../../../../svg/colors/Trash.svg';
 
-export default React.createClass({
-
-  displayName: 'PieceWiseFunctionEditorWidget',
-
-  propTypes: {
-    points: React.PropTypes.array,
-    rangeMin: React.PropTypes.number,
-    rangeMax: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    onEditModeChange: React.PropTypes.func,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    hidePointControl: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      height: 200,
-      width: -1,
-      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
-    };
-  },
-
-  getInitialState() {
-    return {
-      height: this.props.height,
-      width: this.props.width,
+export default class PieceWiseFunctionEditorWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      height: props.height,
+      width: props.width,
       activePoint: -1,
     };
-  },
+
+    // Bind callback
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.updatePoints = this.updatePoints.bind(this);
+    this.updateActivePointDataValue = this.updateActivePointDataValue.bind(this);
+    this.updateActivePointOpacity = this.updateActivePointOpacity.bind(this);
+    this.addPoint = this.addPoint.bind(this);
+    this.removePoint = this.removePoint.bind(this);
+  }
 
   componentDidMount() {
     const canvas = this.canvas;
@@ -56,7 +44,7 @@ export default React.createClass({
       sizeHelper.startListening();
       this.updateDimensions();
     }
-  },
+  }
 
   componentWillReceiveProps(newProps) {
     const newState = {};
@@ -76,14 +64,14 @@ export default React.createClass({
       this.updateDimensions();
     }
     this.setState(newState);
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.width !== prevState.width ||
         this.state.height !== prevState.height) {
       this.editor.render();
     }
-  },
+  }
 
   componentWillUnmount() {
     if (this.sizeSubscription) {
@@ -92,7 +80,7 @@ export default React.createClass({
       this.editor.destroy(); // Remove subscriptions
       this.editor = null;
     }
-  },
+  }
 
   updateDimensions() {
     const { clientWidth, clientHeight } =
@@ -103,7 +91,7 @@ export default React.createClass({
     if (this.props.height === -1) {
       this.setState({ height: clientHeight });
     }
-  },
+  }
 
   updatePoints(newPoints, envelope) {
     const activePoint = this.editor.activeIndex;
@@ -124,7 +112,7 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(newDataPoints);
     }
-  },
+  }
 
   updateActivePointDataValue(e) {
     if (this.state.activePoint === -1) {
@@ -140,7 +128,7 @@ export default React.createClass({
     points[this.state.activePoint].x =
       (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
     this.editor.setControlPoints(points, this.state.activePoint);
-  },
+  }
 
   updateActivePointOpacity(e) {
     if (this.state.activePoint === -1) {
@@ -155,7 +143,7 @@ export default React.createClass({
     }));
     points[this.state.activePoint].y = value;
     this.editor.setControlPoints(points, this.state.activePoint);
-  },
+  }
 
   addPoint(e) {
     const points = this.props.points.map(pt => ({
@@ -171,7 +159,7 @@ export default React.createClass({
       y2: 0.5,
     });
     this.editor.setControlPoints(points, points.length - 1);
-  },
+  }
 
   removePoint(e) {
     if (this.state.activePoint === -1) {
@@ -186,7 +174,7 @@ export default React.createClass({
     points.splice(this.state.activePoint, 1);
     this.editor.setActivePoint(-1);
     this.editor.setControlPoints(points);
-  },
+  }
 
   render() {
     const activePointDataValue = ((this.state.activePoint !== -1 ?
@@ -236,5 +224,22 @@ export default React.createClass({
         }
       </div>
     );
-  },
-});
+  }
+}
+
+PieceWiseFunctionEditorWidget.propTypes = {
+  points: PropTypes.array,
+  rangeMin: PropTypes.number,
+  rangeMax: PropTypes.number,
+  onChange: PropTypes.func,
+  onEditModeChange: PropTypes.func,
+  height: PropTypes.number,
+  width: PropTypes.number,
+  hidePointControl: PropTypes.bool,
+};
+
+PieceWiseFunctionEditorWidget.defaultProps = {
+  height: 200,
+  width: -1,
+  points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+};

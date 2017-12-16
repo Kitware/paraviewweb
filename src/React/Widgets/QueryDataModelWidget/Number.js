@@ -1,9 +1,7 @@
-import React                    from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
-
-import DataListenerMixin        from './DataListenerMixin';
-import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
+import style from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
 /**
  * This React component expect the following input properties:
@@ -15,86 +13,131 @@ import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
  *   - arg:
  *       Expect the name of the argument this Number UI element control within the model.
  */
-export default React.createClass({
-
-  displayName: 'Number',
-
-  propTypes: {
-    arg: React.PropTypes.string,
-    model: React.PropTypes.object.isRequired,
-  },
-
-  mixins: [DataListenerMixin, DataListenerUpdateMixin],
-
-  getInitialState() {
-    return {
+export default class ParameterSetNumber extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       advanced: false,
       button: false,
       slider: false,
     };
-  },
+
+    // Bind callback
+    this.onIndexChange = this.onIndexChange.bind(this);
+    this.previous = this.previous.bind(this);
+    this.next = this.next.bind(this);
+    this.first = this.first.bind(this);
+    this.last = this.last.bind(this);
+    this.updateMode = this.updateMode.bind(this);
+    this.resetState = this.resetState.bind(this);
+    this.enableButtons = this.enableButtons.bind(this);
+    this.disableButtons = this.disableButtons.bind(this);
+    this.grabFocus = this.grabFocus.bind(this);
+    this.toggleAnimation = this.toggleAnimation.bind(this);
+
+    this.attachListener = this.attachListener.bind(this);
+    this.detachListener = this.detachListener.bind(this);
+    this.dataListenerCallback = this.dataListenerCallback.bind(this);
+  }
+
+  componentWillMount() {
+    this.detachListener();
+    if (this.props.listener) {
+      this.attachListener(this.props.model);
+    }
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    var previousDataModel = this.props.model,
+      nextDataModel = nextProps.model;
+
+    if (previousDataModel !== nextDataModel) {
+      this.detachListener();
+      this.attachListener(nextDataModel);
+    }
+  }
+
+  componentWillUnmount() {
+    this.detachListener();
+  }
 
   onIndexChange(event) {
     if (this.props.model.setIndex(this.props.arg, Number(event.target.value))) {
       this.props.model.lazyFetchData();
     }
-  },
+  }
+
+  attachListener(dataModel) {
+    this.dataSubscription = dataModel.onStateChange(this.dataListenerCallback);
+  }
+
+  detachListener() {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = null;
+    }
+  }
+
+  dataListenerCallback(data, envelope) {
+    this.forceUpdate();
+  }
 
   previous() {
     if (this.props.model.previous(this.props.arg)) {
       this.props.model.lazyFetchData();
       this.slider.focus();
     }
-  },
+  }
 
   next() {
     if (this.props.model.next(this.props.arg)) {
       this.props.model.lazyFetchData();
       this.slider.focus();
     }
-  },
+  }
 
   first() {
     if (this.props.model.first(this.props.arg)) {
       this.props.model.lazyFetchData();
       this.slider.focus();
     }
-  },
+  }
 
   last() {
     if (this.props.model.last(this.props.arg)) {
       this.props.model.lazyFetchData();
       this.slider.focus();
     }
-  },
+  }
 
   updateMode(event) {
     if (this.state.advanced !== event.altKey) {
       this.setState({ advanced: event.altKey });
     }
-  },
+  }
 
   resetState(event) {
     this.setState({ advanced: false });
-  },
+  }
 
   enableButtons(event) {
     this.setState({ button: true });
     this.slider.focus();
-  },
+  }
 
   disableButtons() {
     this.setState({ button: false, advanced: false });
-  },
+  }
 
   grabFocus() {
     this.slider.focus();
-  },
+  }
 
   toggleAnimation() {
     this.props.model.toggleAnimationFlag(this.props.arg);
     this.setState({});
-  },
+  }
 
   render() {
     return (
@@ -165,5 +208,16 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+
+ParameterSetNumber.propTypes = {
+  listener: PropTypes.bool,
+  arg: PropTypes.string,
+  model: PropTypes.object.isRequired,
+};
+
+ParameterSetNumber.defaultProps = {
+  listener: true,
+};

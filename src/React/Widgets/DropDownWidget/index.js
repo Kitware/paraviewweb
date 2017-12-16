@@ -1,35 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/DropDownWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'DropDownWidget',
-
-  propTypes: {
-    field: React.PropTypes.string,
-    fields: React.PropTypes.array,
-    onChange: React.PropTypes.func,
-  },
-
-  getInitialState() {
-    return {
+export default class DropDownWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       open: false,
-      field: this.props.field || this.props.fields[0],
+      field: props.field || props.fields[0],
     };
-  },
+
+    // Bind callback
+    this.setField = this.setField.bind(this);
+    this.toggleDropdown = this.toggleDropdown.bind(this);
+  }
 
   getField(e) {
     return this.state.field;
-  },
+  }
 
   setField(e) {
     this.setState({ field: e.target.innerHTML });
     this.props.onChange(e.target.innerHTML);
-  },
+  }
 
   toggleDropdown() {
     this.setState({ open: !this.state.open });
-  },
+  }
 
   render() {
     return (
@@ -51,6 +49,11 @@ export default React.createClass({
         </ul>
       </div>
     );
-  },
+  }
+}
 
-});
+DropDownWidget.propTypes = {
+  field: PropTypes.string,
+  fields: PropTypes.array,
+  onChange: PropTypes.func,
+};

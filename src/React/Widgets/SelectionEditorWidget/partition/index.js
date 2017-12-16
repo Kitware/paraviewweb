@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FieldRender      from './FieldRender';
 import DividerRender    from './DividerRender';
@@ -100,13 +101,13 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
-  selection: React.PropTypes.object,
-  ranges: React.PropTypes.object,
-  onChange: React.PropTypes.func,
-  getLegend: React.PropTypes.func,
-  className: React.PropTypes.string,
-  showUncertainty: React.PropTypes.bool,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  selection: PropTypes.object,
+  ranges: PropTypes.object,
+  onChange: PropTypes.func,
+  getLegend: PropTypes.func,
+  className: PropTypes.string,
+  showUncertainty: PropTypes.bool,
 };
 
 render.defaultProps = {

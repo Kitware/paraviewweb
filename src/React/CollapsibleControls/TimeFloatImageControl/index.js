@@ -1,28 +1,34 @@
-import React                    from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style                    from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
+import style from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
 import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
 import ToggleIconButtonWidget   from '../../Widgets/ToggleIconButtonWidget';
 
-export default React.createClass({
-
-  displayName: 'TimeFloatImageControl',
-
-  propTypes: {
-    model: React.PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    return {
+export default class TimeFloatImageControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       change: false,
     };
-  },
+
+    // Bind callback
+    this.onActiveView = this.onActiveView.bind(this);
+    this.attachListener = this.attachListener.bind(this);
+    this.removeListener = this.removeListener.bind(this);
+    this.addProbe = this.addProbe.bind(this);
+    this.removeProbe = this.removeProbe.bind(this);
+    this.updateProbe = this.updateProbe.bind(this);
+    this.updateActive = this.updateActive.bind(this);
+    this.toggleProbe = this.toggleProbe.bind(this);
+    this.sortProbes = this.sortProbes.bind(this);
+  }
 
   componentWillMount() {
     this.attachListener();
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     var previous = this.props.model,
@@ -33,37 +39,36 @@ export default React.createClass({
       this.attachListener();
       this.setState({ change: !this.state.change });
     }
-  },
+  }
 
   componentWillUnmount() {
     this.removeListener();
-  },
-
+  }
 
   onActiveView(obj, activeView) {
     this.props.model.setActiveView(activeView);
     this.forceUpdate();
-  },
+  }
 
   attachListener() {
     this.removeListener();
     this.subscription = this.props.model.probeManager.onChange(() => {
       this.forceUpdate();
     });
-  },
+  }
 
   removeListener() {
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription = null;
     }
-  },
+  }
 
   addProbe() {
     this.props.model.probeManager.addProbe();
     this.props.model.render();
     this.forceUpdate();
-  },
+  }
 
   removeProbe() {
     const activeProbe = this.props.model.probeManager.getActiveProbe();
@@ -72,7 +77,7 @@ export default React.createClass({
       this.props.model.render();
       this.forceUpdate();
     }
-  },
+  }
 
   updateProbe(event) {
     const name = event.target.name;
@@ -87,12 +92,12 @@ export default React.createClass({
       extent[idx] = Number(value);
       activeProbe.updateExtent(...extent);
     }
-  },
+  }
 
   updateActive(e) {
     const name = e.target.value;
     this.props.model.probeManager.setActiveProbe(name);
-  },
+  }
 
   toggleProbe(e) {
     var target = e.target;
@@ -102,11 +107,11 @@ export default React.createClass({
     const name = target.dataset.name;
     const enable = !Number(target.dataset.active);
     this.props.model.enableProbe(name, enable);
-  },
+  }
 
   sortProbes() {
     this.props.model.sortProbesByName();
-  },
+  }
 
   render() {
     const probeManager = this.props.model.probeManager;
@@ -168,5 +173,9 @@ export default React.createClass({
           )}
         </CollapsibleWidget>
       </div>);
-  },
-});
+  }
+}
+
+TimeFloatImageControl.propTypes = {
+  model: PropTypes.object.isRequired,
+};

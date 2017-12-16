@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 export default function DepthMatchingRender(props) {
@@ -29,7 +31,7 @@ export default function DepthMatchingRender(props) {
 }
 
 DepthMatchingRender.propTypes = {
-  children: React.PropTypes.object,
-  depth: React.PropTypes.number,
-  maxDepth: React.PropTypes.number,
+  children: PropTypes.object,
+  depth: PropTypes.number,
+  maxDepth: PropTypes.number,
 };

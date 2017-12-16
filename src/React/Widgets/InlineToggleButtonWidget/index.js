@@ -1,33 +1,20 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
+
 import equals from 'mout/src/object/equals';
+
 import style  from 'PVWStyle/ReactWidgets/InlineToggleButtonWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'InlineToggleButtonWidget',
-
-  propTypes: {
-    active: React.PropTypes.number,
-    activeColor: React.PropTypes.string,
-    defaultColor: React.PropTypes.string,
-    height: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    options: React.PropTypes.array.isRequired,
-  },
-
-  getDefaultProps() {
-    return {
-      activeColor: '#fff',
-      defaultColor: '#ccc',
-      height: '1em',
+export default class InlineToggleButtonWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIdx: props.active || 0,
     };
-  },
 
-  getInitialState() {
-    return {
-      activeIdx: this.props.active || 0,
-    };
-  },
+    // Bind callback
+    this.activateButton = this.activateButton.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     var previous = this.props,
@@ -38,7 +25,7 @@ export default React.createClass({
         activeIdx: next.active || 0,
       });
     }
-  },
+  }
 
   activateButton(e) {
     const activeIdx = Number(e.target.dataset.idx);
@@ -46,7 +33,7 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(this.props.options[activeIdx], activeIdx);
     }
-  },
+  }
 
   render() {
     const currentActive = this.state.activeIdx,
@@ -106,5 +93,21 @@ export default React.createClass({
           return null;
         })}
       </div>);
-  },
-});
+  }
+}
+
+
+InlineToggleButtonWidget.propTypes = {
+  active: PropTypes.number,
+  activeColor: PropTypes.string,
+  defaultColor: PropTypes.string,
+  height: PropTypes.string,
+  onChange: PropTypes.func,
+  options: PropTypes.array.isRequired,
+};
+
+InlineToggleButtonWidget.defaultProps = {
+  activeColor: '#fff',
+  defaultColor: '#ccc',
+  height: '1em',
+};

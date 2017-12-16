@@ -1,6 +1,7 @@
-import React            from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import style            from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 import Ineq             from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq            from '../../../../../svg/Operations/Ineqq.svg';
@@ -109,10 +110,10 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  getLegend: React.PropTypes.func,
-  fieldName: React.PropTypes.string,
-  intervalSpec: React.PropTypes.object,
-  path: React.PropTypes.array,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
+  getLegend: PropTypes.func,
+  fieldName: PropTypes.string,
+  intervalSpec: PropTypes.object,
+  path: PropTypes.array,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
 };

@@ -1,5 +1,8 @@
-import React        from 'react';
-import style        from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import style from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+
 import AdvancedView from './AdvancedView';
 
 const SEP = ':|:';
@@ -12,36 +15,10 @@ function doubleToHex(number) {
   return str;
 }
 
-export default React.createClass({
-
-  displayName: 'ColorByWidget',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    presets: React.PropTypes.object,
-    representation: React.PropTypes.object,
-    scalarBar: React.PropTypes.string,
-    source: React.PropTypes.object,
-    opacityPoints: React.PropTypes.array,
-    onOpacityPointsChange: React.PropTypes.func,
-    opacityEditorSize: React.PropTypes.array,
-    useGaussian: React.PropTypes.bool,
-    gaussians: React.PropTypes.array,
-  },
-
-  getDefaultProps() {
-    return {
-      useGaussian: false,
-      min: 0,
-      max: 1,
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class ColorByWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       advancedView: false,
       colorValue: SEP,
       colorValues: [],
@@ -50,15 +27,22 @@ export default React.createClass({
       scalarBarVisible: false,
       solidColor: '#fff',
     };
-  },
+
+    // Bind callback
+    this.onRepresentationChange = this.onRepresentationChange.bind(this);
+    this.onColorChange = this.onColorChange.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.toggleScalarBar = this.toggleScalarBar.bind(this);
+    this.toggleAdvancedView = this.toggleAdvancedView.bind(this);
+  }
 
   componentWillMount() {
     this.updateState(this.props);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this.updateState(nextProps);
-  },
+  }
 
   onRepresentationChange(event) {
     const representationValue = event.target.value;
@@ -73,7 +57,7 @@ export default React.createClass({
         }],
       });
     }
-  },
+  }
 
   onColorChange(event) {
     var scalarBarVisible = this.state.scalarBarVisible;
@@ -102,7 +86,7 @@ export default React.createClass({
         rescale,
       });
     }
-  },
+  }
 
   updateState(props) {
     if (!props.source || !props.representation) {
@@ -129,7 +113,7 @@ export default React.createClass({
       solidColor,
       colorMode,
     });
-  },
+  }
 
   toggleScalarBar() {
     var scalarBarVisible = !this.state.scalarBarVisible;
@@ -147,12 +131,12 @@ export default React.createClass({
         visible: scalarBarVisible,
       });
     }
-  },
+  }
 
   toggleAdvancedView() {
     const advancedView = !this.state.advancedView;
     this.setState({ advancedView });
-  },
+  }
 
   render() {
     if (!this.props.source || !this.props.representation) {
@@ -208,5 +192,28 @@ export default React.createClass({
         </div>
         <AdvancedView visible={this.state.advancedView} {...this.props} />
       </div>);
-  },
-});
+  }
+}
+
+
+ColorByWidget.propTypes = {
+  className: PropTypes.string,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  onChange: PropTypes.func,
+  presets: PropTypes.object,
+  representation: PropTypes.object,
+  scalarBar: PropTypes.string,
+  source: PropTypes.object,
+  opacityPoints: PropTypes.array,
+  onOpacityPointsChange: PropTypes.func,
+  opacityEditorSize: PropTypes.array,
+  useGaussian: PropTypes.bool,
+  gaussians: PropTypes.array,
+};
+
+ColorByWidget.defaultProps = {
+  useGaussian: false,
+  min: 0,
+  max: 1,
+};

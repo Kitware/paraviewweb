@@ -1,57 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/TextInputWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'TextInputWidget',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    placeholder: React.PropTypes.string,
-    value: React.PropTypes.string,
-    maxWidth: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    editing: React.PropTypes.bool,
-    escEndsEdit: React.PropTypes.bool,
-    blurEndsEdit: React.PropTypes.bool,
-    grabFocus: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      value: '',
-      className: '',
-      icon: `${style.checkIcon}`,
-      editing: false,
-      escEndsEdit: false,
-      blurEndsEdit: true,
-      grabFocus: false,
+export default class TextInputWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: props.editing,
+      valueRep: props.value,
     };
-  },
 
-  getInitialState() {
-    return {
-      editing: this.props.editing,
-      valueRep: this.props.value,
-    };
-  },
+    // Bind callback
+    this.isEditing = this.isEditing.bind(this);
+    this.valueChange = this.valueChange.bind(this);
+    this.endEditing = this.endEditing.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+  }
 
   componentDidMount() {
     if (this.props.grabFocus && this.textInput) {
       this.textInput.focus();
     }
-  },
+  }
 
   isEditing() {
     return this.state.editing;
-  },
+  }
 
   valueChange(e) {
     var newVal = e.target.value;
     this.setState({ editing: true, valueRep: newVal });
-  },
+  }
 
   endEditing() {
     if (!this.state.editing) return;
@@ -63,7 +43,7 @@ export default React.createClass({
     } else {
       this.props.onChange(this.state.valueRep);
     }
-  },
+  }
 
   handleKeyUp(e) {
     if (!this.textInput) return;
@@ -80,7 +60,7 @@ export default React.createClass({
         });
       }
     }
-  },
+  }
 
   render() {
     const inlineStyle = this.props.maxWidth ? { maxWidth: this.props.maxWidth } : {};
@@ -101,5 +81,30 @@ export default React.createClass({
         }
         <i className={[this.state.editing ? style.editingButton : style.button, this.props.icon].join(' ')} onClick={this.endEditing} />
       </div>);
-  },
-});
+  }
+}
+
+
+TextInputWidget.propTypes = {
+  className: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  maxWidth: PropTypes.string,
+  icon: PropTypes.string,
+  editing: PropTypes.bool,
+  escEndsEdit: PropTypes.bool,
+  blurEndsEdit: PropTypes.bool,
+  grabFocus: PropTypes.bool,
+};
+
+TextInputWidget.defaultProps = {
+  value: '',
+  className: '',
+  icon: `${style.checkIcon}`,
+  editing: false,
+  escEndsEdit: false,
+  blurEndsEdit: true,
+  grabFocus: false,
+};

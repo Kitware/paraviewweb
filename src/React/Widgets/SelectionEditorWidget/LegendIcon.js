@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SvgIconWidget from '../SvgIconWidget';
 
 export default function render(props) {
@@ -21,12 +23,12 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  name: React.PropTypes.string,
-  getLegend: React.PropTypes.func,
+  name: PropTypes.string,
+  getLegend: PropTypes.func,
 
-  width: React.PropTypes.string,
-  height: React.PropTypes.string,
-  style: React.PropTypes.object,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  style: PropTypes.object,
 
-  onClick: React.PropTypes.func,
+  onClick: PropTypes.func,
 };

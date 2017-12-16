@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
 
 /**
@@ -8,24 +10,23 @@ import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
  *   - item:
  *       Root of the tree
  */
-export default React.createClass({
+export default class CompositePipelineWidgetChildItem extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'CompositePipelineWidget.ChildItem',
-
-  propTypes: {
-    item: React.PropTypes.object,
-    layer: React.PropTypes.string,
-    model: React.PropTypes.object,
-  },
+    // Bind callback
+    this.toggleActiveLayer = this.toggleActiveLayer.bind(this);
+    this.updateOpacity = this.updateOpacity.bind(this);
+  }
 
   toggleActiveLayer(event) {
     this.props.model.toggleLayerActive(this.props.layer);
-  },
+  }
 
   updateOpacity(e) {
     this.props.model.setOpacity(this.props.layer, e.target.value);
     this.forceUpdate();
-  },
+  }
 
   render() {
     var inEditMode = this.props.model.isLayerInEditMode(this.props.layer),
@@ -51,6 +52,12 @@ export default React.createClass({
           onChange={this.updateOpacity}
         />
       </div>);
-  },
+  }
+}
 
-});
+
+CompositePipelineWidgetChildItem.propTypes = {
+  item: PropTypes.object,
+  layer: PropTypes.string,
+  model: PropTypes.object,
+};

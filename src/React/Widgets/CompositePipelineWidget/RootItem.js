@@ -1,6 +1,9 @@
-import React        from 'react';
-import style        from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
-import ChildItem    from './ChildItem';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
+
+import ChildItem from './ChildItem';
 
 /**
  * This React component expect the following input properties:
@@ -11,25 +14,24 @@ import ChildItem    from './ChildItem';
  *   - layer:
  *       Layer id.
  */
-export default React.createClass({
-
-  displayName: 'CompositePipelineWidget.RootItem',
-
-  propTypes: {
-    item: React.PropTypes.object,
-    layer: React.PropTypes.string,
-    model: React.PropTypes.object,
-  },
-
-  getInitialState() {
-    return {
+export default class CompositePipelineWidgetRootItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       dropDown: false,
     };
-  },
+
+    // Bind callback
+    this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
+    this.updateColorBy = this.updateColorBy.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.updateOpacity = this.updateOpacity.bind(this);
+  }
 
   toggleVisibility() {
     this.props.model.toggleLayerVisible(this.props.layer);
-  },
+  }
 
   toggleDropDown() {
     if (this.props.model.getColor(this.props.layer).length > 1) {
@@ -37,21 +39,21 @@ export default React.createClass({
         dropDown: !this.state.dropDown,
       });
     }
-  },
+  }
 
   updateColorBy(event) {
     this.props.model.setActiveColor(this.props.layer, event.target.dataset.color);
     this.toggleDropDown();
-  },
+  }
 
   toggleEditMode() {
     this.props.model.toggleEditMode(this.props.layer);
-  },
+  }
 
   updateOpacity(e) {
     this.props.model.setOpacity(this.props.layer, e.target.value);
     this.forceUpdate();
-  },
+  }
 
   render() {
     var model = this.props.model,
@@ -111,5 +113,12 @@ export default React.createClass({
           )}
         </div>
       </div>);
-  },
-});
+  }
+}
+
+
+CompositePipelineWidgetRootItem.propTypes = {
+  item: PropTypes.object,
+  layer: PropTypes.string,
+  model: PropTypes.object,
+};

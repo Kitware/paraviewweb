@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
@@ -72,18 +73,18 @@ export default class ScatterPlotControlTool extends React.Component {
 }
 
 ScatterPlotControlTool.propTypes = {
-  provider: React.PropTypes.object,
-  size: React.PropTypes.string,
+  provider: PropTypes.object,
+  size: PropTypes.string,
 
-  scatterPlotManager: React.PropTypes.object,
-  scatterPlotId: React.PropTypes.string,
+  scatterPlotManager: PropTypes.object,
+  scatterPlotId: PropTypes.string,
 
-  activeScores: React.PropTypes.array,
-  onActiveScoresChange: React.PropTypes.func,
+  activeScores: PropTypes.array,
+  onActiveScoresChange: PropTypes.func,
 
-  activeWindow: React.PropTypes.object,
-  onActiveWindow: React.PropTypes.func,
-  overlayVisible: React.PropTypes.bool,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
+  overlayVisible: PropTypes.bool,
 };
 
 ScatterPlotControlTool.defaultProps = {

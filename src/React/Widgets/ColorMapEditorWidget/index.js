@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ColorMapEditorWidget.mcss';
 
@@ -11,46 +12,28 @@ import opacityIcon from '../../../../svg/colors/Opacity.svg';
 import timeIcon from '../../../../svg/colors/Time.svg';
 import datasetIcon from '../../../../svg/colors/DataSet.svg';
 
-export default React.createClass({
-
-  displayName: 'ColorMapEditorWidget',
-
-  propTypes: {
-    currentOpacityPoints: React.PropTypes.array,
-    currentPreset: React.PropTypes.string,
-    dataRangeMin: React.PropTypes.number,
-    dataRangeMax: React.PropTypes.number,
-    presets: React.PropTypes.object,
-    rangeMin: React.PropTypes.number,
-    rangeMax: React.PropTypes.number,
-    onOpacityTransferFunctionChanged: React.PropTypes.func,
-    onPresetChanged: React.PropTypes.func,
-    onRangeEdited: React.PropTypes.func,
-    onScaleRangeToCurrent: React.PropTypes.func,
-    onScaleRangeOverTime: React.PropTypes.func,
-    pieceWiseHeight: React.PropTypes.number,
-    pieceWiseWidth: React.PropTypes.number,
-  },
-
-  getDefaultProps() {
-    return {
-      pieceWiseHeight: 200,
-      pieceWiseWidth: -1,
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class ColorMapEditorWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       showOpacityControls: false,
       showPresetSelection: false,
     };
-  },
+
+    // Bind callback
+    this.onOpacityTransferFunctionChanged = this.onOpacityTransferFunctionChanged.bind(this);
+    this.toggleShowOpacityControls = this.toggleShowOpacityControls.bind(this);
+    this.toggleShowPresetSelection = this.toggleShowPresetSelection.bind(this);
+    this.rangeMinChanged = this.rangeMinChanged.bind(this);
+    this.rangeMaxChanged = this.rangeMaxChanged.bind(this);
+    this.presetChanged = this.presetChanged.bind(this);
+  }
 
   onOpacityTransferFunctionChanged(newPoints) {
     if (this.props.onOpacityTransferFunctionChanged) {
       this.props.onOpacityTransferFunctionChanged(newPoints);
     }
-  },
+  }
 
   toggleShowOpacityControls() {
     const newState = { showOpacityControls: !this.state.showOpacityControls };
@@ -58,7 +41,7 @@ export default React.createClass({
       newState.showPresetSelection = false;
     }
     this.setState(newState);
-  },
+  }
 
   toggleShowPresetSelection() {
     const newState = { showPresetSelection: !this.state.showPresetSelection };
@@ -66,27 +49,27 @@ export default React.createClass({
       newState.showOpacityControls = false;
     }
     this.setState(newState);
-  },
+  }
 
   rangeMinChanged(e) {
     const newMin = parseFloat(e.target.value);
     if (this.props.onRangeEdited) {
       this.props.onRangeEdited([newMin, this.props.rangeMax]);
     }
-  },
+  }
 
   rangeMaxChanged(e) {
     const newMax = parseFloat(e.target.value);
     if (this.props.onRangeEdited) {
       this.props.onRangeEdited([this.props.rangeMin, newMax]);
     }
-  },
+  }
 
   presetChanged(name) {
     if (this.props.onPresetChanged) {
       this.props.onPresetChanged(name);
     }
-  },
+  }
 
   render() {
     const presets = this.props.presets;
@@ -163,5 +146,27 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+ColorMapEditorWidget.propTypes = {
+  currentOpacityPoints: PropTypes.array,
+  currentPreset: PropTypes.string,
+  dataRangeMin: PropTypes.number,
+  dataRangeMax: PropTypes.number,
+  presets: PropTypes.object,
+  rangeMin: PropTypes.number,
+  rangeMax: PropTypes.number,
+  onOpacityTransferFunctionChanged: PropTypes.func,
+  onPresetChanged: PropTypes.func,
+  onRangeEdited: PropTypes.func,
+  onScaleRangeToCurrent: PropTypes.func,
+  onScaleRangeOverTime: PropTypes.func,
+  pieceWiseHeight: PropTypes.number,
+  pieceWiseWidth: PropTypes.number,
+};
+
+ColorMapEditorWidget.defaultProps = {
+  pieceWiseHeight: 200,
+  pieceWiseWidth: -1,
+};

@@ -1,30 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import style from 'PVWStyle/ReactWidgets/ScalarRangeWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'ScalarRangeWidget',
-
-  propTypes: {
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    onApply: React.PropTypes.func,
-    visible: React.PropTypes.bool,
-  },
-
-  getInitialState() {
-    return {
-      max: this.props.max || 1,
-      min: this.props.min || 0,
+export default class ScalarRangeWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      max: props.max || 1,
+      min: props.min || 0,
     };
-  },
+
+    // Bind callback
+    this.updateRange = this.updateRange.bind(this);
+    this.apply = this.apply.bind(this);
+  }
+
 
   componentWillReceiveProps(nextProps) {
     const { min, max } = nextProps;
     if (this.state.min !== min || this.state.max !== max) {
       this.setState({ min, max });
     }
-  },
+  }
 
   updateRange(event) {
     const name = event.target.name,
@@ -33,7 +30,7 @@ export default React.createClass({
     if (!isNaN(parseFloat(value)) && isFinite(value)) {
       this.setState({ [name]: value });
     }
-  },
+  }
 
   apply(event) {
     var { min, max } = this.state;
@@ -45,7 +42,7 @@ export default React.createClass({
     if (this.props.onApply) {
       this.props.onApply({ type, min, max });
     }
-  },
+  }
 
   render() {
     if (!this.props.visible) {
@@ -76,5 +73,12 @@ export default React.createClass({
           <i onClick={this.apply} data-type="custom" className={style.customRangeIcon} />
         </div>
       </div>);
-  },
-});
+  }
+}
+
+ScalarRangeWidget.propTypes = {
+  max: PropTypes.number,
+  min: PropTypes.number,
+  onApply: PropTypes.func,
+  visible: PropTypes.bool,
+};

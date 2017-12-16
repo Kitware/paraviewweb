@@ -1,27 +1,28 @@
-import React                from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import LayoutsWidget        from '../../Widgets/LayoutsWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import LayoutsWidget     from '../../Widgets/LayoutsWidget';
 
 /**
  * This React component expect the following input properties:
  *   - renderer:
  *       Expect a MultiViewRenderer instance.
  */
-export default React.createClass({
-
-  displayName: 'MultiViewControl',
-
-  propTypes: {
-    renderer: React.PropTypes.object,
-  },
-
-  getInitialState() {
-    return {
+export default class MultiViewControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       renderMethod: '',
       layout: '',
     };
-  },
+
+    // Bind callback
+    this.onLayoutChange = this.onLayoutChange.bind(this);
+    this.onRenderMethodChange = this.onRenderMethodChange.bind(this);
+    this.onLayoutChangeCallback = this.onLayoutChangeCallback.bind(this);
+    this.onActiveViewportCallback = this.onActiveViewportCallback.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.renderer && nextProps.renderer) {
@@ -33,7 +34,7 @@ export default React.createClass({
         layout: renderer.getActiveLayout(),
       });
     }
-  },
+  }
 
   componentWillUnmount() {
     if (this.layoutSubscription) {
@@ -44,28 +45,28 @@ export default React.createClass({
       this.renderMethodSubscription.unsubscribe();
       this.renderMethodSubscription = null;
     }
-  },
+  }
 
   onLayoutChange(layout) {
     this.props.renderer.setLayout(layout);
-  },
+  }
 
   onRenderMethodChange(event) {
     var renderMethod = event.target.value;
     this.props.renderer.setRenderMethod(renderMethod);
-  },
+  }
 
   onLayoutChangeCallback(data, envelope) {
     this.setState({
       layout: data,
     });
-  },
+  }
 
   onActiveViewportCallback(data, envelope) {
     this.setState({
       renderMethod: data.name,
     });
-  },
+  }
 
   render() {
     var renderer = this.props.renderer,
@@ -91,5 +92,9 @@ export default React.createClass({
         </CollapsibleWidget>
       </div>
     );
-  },
-});
+  }
+}
+
+MultiViewControl.propTypes = {
+  renderer: PropTypes.object,
+};

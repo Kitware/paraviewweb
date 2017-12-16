@@ -1,8 +1,10 @@
-import React                from 'react';
-import style                from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import ColorPicker          from '../ColorPickerWidget';
-import NumberInputWidget    from '../NumberInputWidget';
+import style from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
+
+import ColorPicker       from '../ColorPickerWidget';
+import NumberInputWidget from '../NumberInputWidget';
 
 const STYLE = {
   range: {
@@ -57,35 +59,46 @@ const STYLE = {
  *       Expect a reference to the lookup table manager to use.
  *
  */
-export default React.createClass({
-
-  displayName: 'LookupTableWidget',
-
-  propTypes: {
-    inverse: React.PropTypes.bool,
-    lookupTable: React.PropTypes.object.isRequired,
-    lookupTableManager: React.PropTypes.object,
-    originalRange: React.PropTypes.array,
-  },
-
-  getInitialState() {
-    return {
+export default class LookupTableWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       mode: 'none',
-      activePreset: this.props.lookupTable.getPresets()[0],
+      activePreset: props.lookupTable.getPresets()[0],
       currentControlPointIndex: 0,
       internal_lut: false,
-      originalRange: this.props.originalRange,
+      originalRange: props.originalRange,
     };
-  },
+
+    // Bind callback
+    this.setPreset = this.setPreset.bind(this);
+    this.updateScalarRange = this.updateScalarRange.bind(this);
+    this.addControlPoint = this.addControlPoint.bind(this);
+    this.deleteControlPoint = this.deleteControlPoint.bind(this);
+    this.nextControlPoint = this.nextControlPoint.bind(this);
+    this.previousControlPoint = this.previousControlPoint.bind(this);
+    this.updateScalar = this.updateScalar.bind(this);
+    this.updateRGB = this.updateRGB.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.togglePresetMode = this.togglePresetMode.bind(this);
+    this.attachListener = this.attachListener.bind(this);
+    this.removeListener = this.removeListener.bind(this);
+    this.updateOriginalRange = this.updateOriginalRange.bind(this);
+    this.resetRange = this.resetRange.bind(this);
+    this.changePreset = this.changePreset.bind(this);
+    this.nextPreset = this.nextPreset.bind(this);
+    this.previousPreset = this.previousPreset.bind(this);
+    this.deltaPreset = this.deltaPreset.bind(this);
+  }
 
   componentWillMount() {
     this.attachListener(this.props.lookupTable);
-  },
+  }
 
   componentDidMount() {
     var canvas = this.canvas;
     this.props.lookupTable.drawToCanvas(canvas);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.lookupTable !== this.props.lookupTable) {
@@ -95,7 +108,7 @@ export default React.createClass({
     if (this.props.originalRange[0] !== nextProps.originalRange[0] || this.props.originalRange[1] !== nextProps.originalRange[1]) {
       this.setState({ originalRange: nextProps.originalRange });
     }
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.internal_lut) {
@@ -116,16 +129,16 @@ export default React.createClass({
         ctx.putImageData(imageData, 0, 0);
       }
     }
-  },
+  }
 
   componentWillUnmount() {
     this.removeListener();
-  },
+  }
 
   setPreset(event) {
     this.props.lookupTable.setPreset(event.target.dataset.name);
     this.togglePresetMode();
-  },
+  }
 
   updateScalarRange() {
     const originalRange = this.props.lookupTable.getScalarRange();
@@ -134,7 +147,7 @@ export default React.createClass({
 
     this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
     this.forceUpdate();
-  },
+  }
 
   addControlPoint() {
     var newIdx = this.props.lookupTable.addControlPoint({
@@ -144,13 +157,13 @@ export default React.createClass({
       b: 0,
     });
     this.setState({ currentControlPointIndex: newIdx });
-  },
+  }
 
   deleteControlPoint() {
     if (this.props.lookupTable.removeControlPoint(this.state.currentControlPointIndex)) {
       this.forceUpdate();
     }
-  },
+  }
 
   nextControlPoint() {
     var newIdx = this.state.currentControlPointIndex + 1;
@@ -158,7 +171,7 @@ export default React.createClass({
     if (newIdx < this.props.lookupTable.getNumberOfControlPoints()) {
       this.setState({ currentControlPointIndex: newIdx });
     }
-  },
+  }
 
   previousControlPoint() {
     var newIdx = this.state.currentControlPointIndex - 1;
@@ -166,7 +179,7 @@ export default React.createClass({
     if (newIdx > -1) {
       this.setState({ currentControlPointIndex: newIdx });
     }
-  },
+  }
 
   updateScalar(newVal) {
     var scalarRange = this.props.lookupTable.getScalarRange(),
@@ -182,7 +195,7 @@ export default React.createClass({
     });
     this.setState({ currentControlPointIndex: newIdx });
     this.forceUpdate();
-  },
+  }
 
   updateRGB(rgb) {
     var controlPoint = this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex);
@@ -194,7 +207,7 @@ export default React.createClass({
       b: rgb[2] / 255,
     });
     this.setState({ currentControlPointIndex: newIdx });
-  },
+  }
 
   toggleEditMode() {
     if (this.state.mode === 'none' || this.state.mode !== 'edit') {
@@ -202,7 +215,7 @@ export default React.createClass({
     } else {
       this.setState({ mode: 'none', internal_lut: false });
     }
-  },
+  }
 
   togglePresetMode() {
     if (this.state.mode === 'none' || this.state.mode !== 'preset') {
@@ -211,46 +224,46 @@ export default React.createClass({
     } else {
       this.setState({ mode: 'none', internal_lut: false });
     }
-  },
+  }
 
   attachListener(lut) {
     this.subscription = lut.onChange((data, envelope) => {
       this.forceUpdate();
     });
-  },
+  }
 
   removeListener() {
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription = null;
     }
-  },
+  }
 
   updateOriginalRange(min, max) {
     console.log(`Someone asked LookupTableWidget to update original range to [${min}, ${max}]`);
     this.setState({ originalRange: [min, max] });
-  },
+  }
 
   resetRange() {
     const range = this.state.originalRange;
     const currentRange = this.props.lookupTable.getScalarRange();
     console.log(`LookupTableWidget current range: [${currentRange[0]}, ${currentRange[1]}], new range: [${range[0]}, ${range[1]}]`);
     this.props.lookupTable.setScalarRange(range[0], range[1]);
-  },
+  }
 
   changePreset(event) {
     var delta = event.detail || event.deltaY || event.deltaX;
     event.preventDefault();
     this.deltaPreset(delta);
-  },
+  }
 
   nextPreset() {
     this.deltaPreset(1);
-  },
+  }
 
   previousPreset() {
     this.deltaPreset(-1);
-  },
+  }
 
   deltaPreset(delta) {
     var presets = this.props.lookupTable.getPresets(),
@@ -274,7 +287,7 @@ export default React.createClass({
       lut.drawToCanvas(this.canvas);
     }
     this.setState({ activePreset: newPreset });
-  },
+  }
 
   render() {
     var scalarRange = this.props.lookupTable.getScalarRange(),
@@ -373,5 +386,12 @@ export default React.createClass({
           />
         </div>
       </div>);
-  },
-});
+  }
+}
+
+LookupTableWidget.propTypes = {
+  inverse: PropTypes.bool,
+  lookupTable: PropTypes.object.isRequired,
+  lookupTableManager: PropTypes.object,
+  originalRange: PropTypes.array,
+};

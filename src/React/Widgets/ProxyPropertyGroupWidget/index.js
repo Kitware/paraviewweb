@@ -1,9 +1,10 @@
-import React            from 'react';
-import equals           from 'mout/src/array/equals';
+import React     from 'react';
+import PropTypes from 'prop-types';
+import equals    from 'mout/src/array/equals';
 
 import style from 'PVWStyle/ReactWidgets/ProxyPropertyGroup.mcss';
 
-import factory          from '../../Properties/PropertyFactory';
+import factory                         from '../../Properties/PropertyFactory';
 import { isGroupWidget, proxyToProps } from '../../../Common/Misc/ConvertProxyProperty';
 
 function extractProperties(nestedPropsInput, flatPropsOutput) {
@@ -16,33 +17,19 @@ function extractProperties(nestedPropsInput, flatPropsOutput) {
   });
 }
 
-export default React.createClass({
-
-  displayName: 'ProxyPropertyGroup',
-
-  propTypes: {
-    advanced: React.PropTypes.bool,
-    collapsed: React.PropTypes.bool,
-    filter: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    onCollapseChange: React.PropTypes.func,
-    proxy: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      advanced: false,
-      collapsed: false,
-    };
-  },
-
-  getInitialState() {
-    return {
-      collapsed: this.props.collapsed,
+export default class ProxyPropertyGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapsed: props.collapsed,
       changeSet: {},
-      properties: proxyToProps(this.props.proxy),
+      properties: proxyToProps(props.proxy),
     };
-  },
+
+    // Callback binding
+    this.toggleCollapsedMode = this.toggleCollapsedMode.bind(this);
+    this.valueChange = this.valueChange.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     var previous = this.props.proxy,
@@ -54,7 +41,7 @@ export default React.createClass({
         changeSet: {},
       });
     }
-  },
+  }
 
   toggleCollapsedMode() {
     const collapsed = !this.state.collapsed;
@@ -62,7 +49,7 @@ export default React.createClass({
       this.props.onCollapseChange(this.props.proxy.name, collapsed);
     }
     this.setState({ collapsed });
-  },
+  }
 
   valueChange(change) {
     if (change.collapseType) {
@@ -75,7 +62,7 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(changeSet);
     }
-  },
+  }
 
   render() {
     const properties = {};
@@ -98,5 +85,19 @@ export default React.createClass({
           {this.state.properties.map(p => factory(p, ctx, this.valueChange))}
         </div>
       </div>);
-  },
-});
+  }
+}
+
+ProxyPropertyGroup.propTypes = {
+  advanced: PropTypes.bool,
+  collapsed: PropTypes.bool,
+  filter: PropTypes.string,
+  onChange: PropTypes.func,
+  onCollapseChange: PropTypes.func,
+  proxy: PropTypes.object,
+};
+
+ProxyPropertyGroup.defaultProps = {
+  advanced: false,
+  collapsed: false,
+};

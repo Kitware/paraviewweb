@@ -1,6 +1,7 @@
-import React          from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import style          from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
 import And            from '../../../../../svg/Operations/And.svg';
 import Or             from '../../../../../svg/Operations/Or.svg';
@@ -40,8 +41,8 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  children: React.PropTypes.array,
-  operator: React.PropTypes.string,
-  depth: React.PropTypes.number,
-  className: React.PropTypes.string,
+  children: PropTypes.array,
+  operator: PropTypes.string,
+  depth: PropTypes.number,
+  className: PropTypes.string,
 };

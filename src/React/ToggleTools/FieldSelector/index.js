@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
@@ -79,12 +80,12 @@ export default class FieldSelectorTool extends React.Component {
 }
 
 FieldSelectorTool.propTypes = {
-  provider: React.PropTypes.object,
-  size: React.PropTypes.string,
+  provider: PropTypes.object,
+  size: PropTypes.string,
 
-  activeWindow: React.PropTypes.object,
-  onActiveWindow: React.PropTypes.func,
-  overlayVisible: React.PropTypes.bool,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
+  overlayVisible: PropTypes.bool,
 };
 
 FieldSelectorTool.defaultProps = {

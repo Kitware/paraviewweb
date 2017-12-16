@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ActionListWidget.mcss';
 
-export default React.createClass({
+export default class ActionListWidget extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'ActionListWidget',
-
-  propTypes: {
-    list: React.PropTypes.array.isRequired,
-    onClick: React.PropTypes.func,
-  },
+    // Bind callback
+    this.processClick = this.processClick.bind(this);
+  }
 
   processClick(event) {
     var target = event.target;
@@ -19,7 +20,7 @@ export default React.createClass({
     if (this.props.onClick) {
       this.props.onClick(target.dataset.name, target.dataset.action, target.dataset.user);
     }
-  },
+  }
 
   render() {
     var list = [];
@@ -40,5 +41,11 @@ export default React.createClass({
     });
 
     return <ul className={style.list}>{list}</ul>;
-  },
-});
+  }
+}
+
+
+ActionListWidget.propTypes = {
+  list: PropTypes.array.isRequired,
+  onClick: PropTypes.func,
+};

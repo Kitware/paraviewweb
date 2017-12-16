@@ -4,6 +4,33 @@ import React               from 'react';
 import ReactDOM            from 'react-dom';
 import TestUtils           from 'react/lib/ReactTestUtils';
 
+class Mock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      val: 25,
+      name: 'razzmatazz',
+    };
+
+    // Bind callback
+    this.updateVal = this.updateVal.bind(this);
+  }
+
+  updateVal(e) {
+    this.setState({ val: e.target.value, name: e.target.name });
+  }
+
+  render() {
+    return (
+      <NumberSliderControl
+        name={newName}
+        min={20} max={30}
+        value={this.state.val}
+        onChange={this.updateVal}
+      />);
+  }
+}
+
 describe('NumberSliderControl', function() {
     afterEach(function(done) {
         ReactDOM.unmountComponentAtNode(document.body);
@@ -35,23 +62,9 @@ describe('NumberSliderControl', function() {
     it('keeps the values of two inputs the same', function() {
 
         var oldName = 'razzmatazz',
-            newName = 'pogo',
-            Mock = React.createClass({
-                getInitialState() {
-                    return {val: 25, name: 'razzmatazz'};
-                },
-                updateVal(e) {
-                    this.setState({val: e.target.value, name: e.target.name});
-                },
-                render() {
-                    return (<NumberSliderControl name={newName}
-                        min={20} max={30}
-                        value={this.state.val}
-                        onChange={this.updateVal}/>);
-                }
-            });
+            newName = 'pogo';
 
-        var el = TestUtils.renderIntoDocument(<Mock/>),
+        var el = TestUtils.renderIntoDocument(<Mock />),
             newVal = '28',
             inputSlider = ReactDOM.findDOMNode(el).querySelector('input[type=range]'),
             inputField  = ReactDOM.findDOMNode(el).querySelector('input[type=number]');

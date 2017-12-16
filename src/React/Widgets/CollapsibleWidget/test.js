@@ -4,6 +4,26 @@ import React                from 'react';
 import ReactDOM             from 'react-dom';
 import TestUtils            from 'react/lib/ReactTestUtils';
 
+class TestCollapsibleElement extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+
+    // Bind callback
+    this.updateVal = this.updateVal.bind(this);
+  }
+
+  updateVal(newOpenVal) {
+    this.setState({open: newOpenVal});
+  }
+
+  render() {
+    return (<CollapsibleElement open={this.state.open} onChange={this.updateVal}/>);
+  }
+}
+
 describe('CollapsibleElement', function() {
 
     afterEach(function(done) {
@@ -37,21 +57,10 @@ describe('CollapsibleElement', function() {
     });
 
     it('can take an onChange listener', function() {
-        var Mock = React.createClass({
-            getInitialState() {
-                return {open: false};
-            },
-            updateVal(newOpenVal) {
-                this.setState({open: newOpenVal});
-            },
-            render() {
-                return (<CollapsibleElement open={this.state.open} onChange={this.updateVal}/>);
-            }
-        }),
-            el = TestUtils.renderIntoDocument(<Mock />),
-            header = TestUtils.findRenderedDOMComponentWithClass(el, 'clickable-area');
+        var el = TestUtils.renderIntoDocument(<TestCollapsibleElement />);
+        var header = TestUtils.findRenderedDOMComponentWithClass(el, 'clickable-area');
 
-            TestUtils.Simulate.click(header);
-            expect(el.state.open).toEqual(true);
+        TestUtils.Simulate.click(header);
+        expect(el.state.open).toEqual(true);
     });
 });

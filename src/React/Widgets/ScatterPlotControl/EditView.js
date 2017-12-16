@@ -1,5 +1,8 @@
-import React            from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ScatterPlotControl.mcss';
+
 import SvgIconWidget    from '../SvgIconWidget';
 
 import ExtremesBest     from '../../../../svg/PwfPresets/ExtremesBest.svg';
@@ -399,12 +402,12 @@ export default function EditView(props) {
 }
 
 EditView.propTypes = {
-  model: React.PropTypes.object,
-  colorMaps: React.PropTypes.object,
-  getScalarRange: React.PropTypes.func,
-  scores: React.PropTypes.array,
-  activeScores: React.PropTypes.array,
-  onActiveScoresChange: React.PropTypes.func,
-  onChange: React.PropTypes.func,
-  toggleEditMode: React.PropTypes.func,
+  model: PropTypes.object,
+  colorMaps: PropTypes.object,
+  getScalarRange: PropTypes.func,
+  scores: PropTypes.array,
+  activeScores: PropTypes.array,
+  onActiveScoresChange: PropTypes.func,
+  onChange: PropTypes.func,
+  toggleEditMode: PropTypes.func,
 };

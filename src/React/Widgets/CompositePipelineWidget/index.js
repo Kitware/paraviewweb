@@ -1,5 +1,8 @@
 import React    from 'react';
-import style    from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
+import PropTypes from 'prop-types';
+
+import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
+
 import RootItem from './RootItem';
 
 /**
@@ -7,17 +10,10 @@ import RootItem from './RootItem';
  *   - model:
  *       Expect a CompositePipelineModel instance.
  */
-export default React.createClass({
-
-  displayName: 'CompositePipelineWidget',
-
-  propTypes: {
-    model: React.PropTypes.object.isRequired,
-  },
-
+export default class CompositePipelineWidget extends React.Component {
   componentDidMount() {
     this.attachListener(this.props.model);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     var previous = this.props.model,
@@ -27,25 +23,25 @@ export default React.createClass({
       this.detachListener();
       this.attachListener(next);
     }
-  },
+  }
 
   // Auto unmount listener
   componentWillUnmount() {
     this.detachListener();
-  },
+  }
 
   attachListener(pipelineModel) {
     this.pipelineSubscription = pipelineModel.onChange((data, envelope) => {
       this.forceUpdate();
     });
-  },
+  }
 
   detachListener() {
     if (this.pipelineSubscription) {
       this.pipelineSubscription.unsubscribe();
       this.pipelineSubscription = null;
     }
-  },
+  }
 
   render() {
     var pipelineModel = this.props.model,
@@ -62,5 +58,11 @@ export default React.createClass({
           />
         )}
       </div>);
-  },
-});
+  }
+}
+
+
+CompositePipelineWidget.propTypes = {
+  model: PropTypes.object.isRequired,
+};
+

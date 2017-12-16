@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
+
 import NumberFormatter, { sciNotationRegExp } from '../../../../Common/Misc/NumberFormatter';
 import SvgIconWidget from '../../SvgIconWidget';
 import Ineq from '../../../../../svg/Operations/Ineq.svg';
@@ -93,9 +96,9 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  divider: React.PropTypes.object,
-  path: React.PropTypes.array,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  showUncertainty: React.PropTypes.bool,
+  divider: PropTypes.object,
+  path: PropTypes.array,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  showUncertainty: PropTypes.bool,
 };

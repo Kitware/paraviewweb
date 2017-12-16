@@ -1,36 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/CollapsibleWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'CollapsibleWidget',
-
-  propTypes: {
-    children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
-    onChange: React.PropTypes.func,
-    open: React.PropTypes.bool,
-    subtitle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.string, React.PropTypes.array]),
-    title: React.PropTypes.string,
-    visible: React.PropTypes.bool,
-    activeSubTitle: React.PropTypes.bool,
-    disableCollapse: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      title: '',
-      subtitle: '',
-      open: true,
-      visible: true,
-      disableCollapse: false,
+export default class CollapsibleWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: props.open,
     };
-  },
 
-  getInitialState() {
-    return {
-      open: this.props.open,
-    };
-  },
+    // Bind callback
+    this.toggleOpen = this.toggleOpen.bind(this);
+  }
 
   toggleOpen() {
     if (this.props.disableCollapse && this.state.open) {
@@ -42,15 +24,15 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(newState);
     }
-  },
+  }
 
   isCollapsed() {
     return this.state.open === false;
-  },
+  }
 
   isExpanded() {
     return this.state.open === true;
-  },
+  }
 
   render() {
     var localStyle = {};
@@ -72,5 +54,24 @@ export default React.createClass({
         </div>
       </section>
     );
-  },
-});
+  }
+}
+
+CollapsibleWidget.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onChange: PropTypes.func,
+  open: PropTypes.bool,
+  subtitle: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.array]),
+  title: PropTypes.string,
+  visible: PropTypes.bool,
+  activeSubTitle: PropTypes.bool,
+  disableCollapse: PropTypes.bool,
+};
+
+CollapsibleWidget.defaultProps = {
+  title: '',
+  subtitle: '',
+  open: true,
+  visible: true,
+  disableCollapse: false,
+};

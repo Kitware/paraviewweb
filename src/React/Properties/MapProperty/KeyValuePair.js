@@ -1,22 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import style from 'PVWStyle/ReactProperties/MapProperty.mcss';
 
-export default React.createClass({
+export default class KeyValuePair extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'KeyValuePair',
-
-  propTypes: {
-    idx: React.PropTypes.number,
-    label: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    value: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      label: '',
-    };
-  },
+    // Bind callback
+    this.removeItem = this.removeItem.bind(this);
+    this.valueChange = this.valueChange.bind(this);
+  }
 
   removeItem(e) {
     if (this.props.onChange) {
@@ -24,7 +17,7 @@ export default React.createClass({
         this.props.onChange(this.props.idx);
       }
     }
-  },
+  }
 
   valueChange(e) {
     const value = e.target.value;
@@ -37,7 +30,7 @@ export default React.createClass({
         this.props.onChange(null, name, value);
       }
     }
-  },
+  }
 
   render() {
     return (
@@ -64,5 +57,16 @@ export default React.createClass({
           <i className={style.deleteButton} onClick={this.removeItem} />
         </td>
       </tr>);
-  },
-});
+  }
+}
+
+KeyValuePair.propTypes = {
+  idx: PropTypes.number,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.object,
+};
+
+KeyValuePair.defaultProps = {
+  label: '',
+};

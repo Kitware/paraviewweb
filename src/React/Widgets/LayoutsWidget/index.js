@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import TwoByTwo from './TwoByTwo';
 import OneByTwo from './OneByTwo';
 import TwoByOne from './TwoByOne';
@@ -25,9 +27,9 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  onChange: React.PropTypes.func,
-  active: React.PropTypes.string,
-  className: React.PropTypes.string,
+  onChange: PropTypes.func,
+  active: PropTypes.string,
+  className: PropTypes.string,
 };
 
 render.defaultProps = {

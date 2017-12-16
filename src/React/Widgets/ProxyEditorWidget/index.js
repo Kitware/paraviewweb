@@ -1,47 +1,39 @@
-import React            from 'react';
-import style            from 'PVWStyle/ReactWidgets/ProxyEditorWidget.mcss';
-import PropertyGroup    from '../ProxyPropertyGroupWidget';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-export default React.createClass({
+import style         from 'PVWStyle/ReactWidgets/ProxyEditorWidget.mcss';
+import PropertyGroup from '../ProxyPropertyGroupWidget';
 
-  displayName: 'ProxyEditorWidget',
-
-  propTypes: {
-    advanced: React.PropTypes.bool,
-    children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
-    onApply: React.PropTypes.func,
-    sections: React.PropTypes.array.isRequired,
-    onCollapseChange: React.PropTypes.func,
-  },
-
-  getDefaultProps() {
-    return {
-      advanced: false,
-    };
-  },
-
-  getInitialState() {
-    return {
-      advanced: this.props.advanced,
+export default class ProxyEditorWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      advanced: props.advanced,
       changeSet: {},
       filter: null,
     };
-  },
+
+    // Callback binding
+    this.toggleAdvanced = this.toggleAdvanced.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
+    this.updateChangeSet = this.updateChangeSet.bind(this);
+    this.applyChanges = this.applyChanges.bind(this);
+  }
 
   toggleAdvanced() {
     const advanced = !this.state.advanced;
     this.setState({ advanced });
-  },
+  }
 
   updateFilter(event) {
     const filter = event.target.value;
     this.setState({ filter });
-  },
+  }
 
   updateChangeSet(change) {
     const changeSet = Object.assign({}, this.state.changeSet, change);
     this.setState({ changeSet });
-  },
+  }
 
   applyChanges() {
     if (this.props.onApply) {
@@ -49,7 +41,7 @@ export default React.createClass({
     }
     // Reset changeSet
     this.setState({ changeSet: {} });
-  },
+  }
 
   render() {
     const changeCount = Object.keys(this.state.changeSet).length;
@@ -86,5 +78,18 @@ export default React.createClass({
           )}
         </div>
       </div>);
-  },
-});
+  }
+}
+
+ProxyEditorWidget.propTypes = {
+  advanced: PropTypes.bool,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onApply: PropTypes.func,
+  sections: PropTypes.array.isRequired,
+  onCollapseChange: PropTypes.func,
+};
+
+ProxyEditorWidget.defaultProps = {
+  advanced: false,
+};
+

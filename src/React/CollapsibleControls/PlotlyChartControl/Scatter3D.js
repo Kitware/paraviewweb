@@ -1,4 +1,6 @@
-import React                    from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -56,9 +58,9 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  chartState: React.PropTypes.object,
-  arrays: React.PropTypes.object,
-  onChange: React.PropTypes.func,
+  chartState: PropTypes.object,
+  arrays: PropTypes.object,
+  onChange: PropTypes.func,
 };
 
 render.defaultProps = {

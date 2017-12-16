@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
@@ -107,12 +108,12 @@ export default class AnnotationEditorTool extends React.Component {
 }
 
 AnnotationEditorTool.propTypes = {
-  provider: React.PropTypes.object,
-  size: React.PropTypes.string,
-  showUncertainty: React.PropTypes.bool,
+  provider: PropTypes.object,
+  size: PropTypes.string,
+  showUncertainty: PropTypes.bool,
 
-  activeWindow: React.PropTypes.object,
-  onActiveWindow: React.PropTypes.func,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 };
 
 AnnotationEditorTool.defaultProps = {

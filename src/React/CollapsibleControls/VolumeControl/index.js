@@ -1,23 +1,14 @@
-import React                from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style                from 'PVWStyle/ReactCollapsibleControls/VolumeControl.mcss';
+import style from 'PVWStyle/ReactCollapsibleControls/VolumeControl.mcss';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import EqualizerWidget      from '../../Widgets/EqualizerWidget';
-import LightButton          from '../../Widgets/ToggleIconButtonWidget';
-import LookupTableWidget    from '../../Widgets/LookupTableWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import EqualizerWidget   from '../../Widgets/EqualizerWidget';
+import LightButton       from '../../Widgets/ToggleIconButtonWidget';
+import LookupTableWidget from '../../Widgets/LookupTableWidget';
 
-export default React.createClass({
-
-  displayName: 'VolumeControl',
-
-  propTypes: {
-    computation: React.PropTypes.object.isRequired,
-    equalizer: React.PropTypes.object.isRequired,
-    intensity: React.PropTypes.object,
-    lookupTable: React.PropTypes.object.isRequired,
-  },
-
+export default class VolumeControl extends React.Component {
   componentWillMount() {
     this.equalizerSubscription = this.props.equalizer.onChange(() => {
       this.forceUpdate();
@@ -28,7 +19,7 @@ export default React.createClass({
     this.computationSubscription = this.props.computation.onChange(() => {
       this.forceUpdate();
     });
-  },
+  }
 
   componentWillUnmount() {
     if (this.equalizerSubscription) {
@@ -43,7 +34,7 @@ export default React.createClass({
       this.computationSubscription.unsubscribe();
       this.computationSubscription = null;
     }
-  },
+  }
 
   render() {
     var equalizer = this.props.equalizer,
@@ -95,5 +86,12 @@ export default React.createClass({
           />
         </CollapsibleWidget>
       </div>);
-  },
-});
+  }
+}
+
+VolumeControl.propTypes = {
+  computation: PropTypes.object.isRequired,
+  equalizer: PropTypes.object.isRequired,
+  intensity: PropTypes.object,
+  lookupTable: PropTypes.object.isRequired,
+};

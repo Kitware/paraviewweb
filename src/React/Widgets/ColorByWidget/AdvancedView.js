@@ -1,46 +1,23 @@
-import React              from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style              from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 
 import PresetListWidget   from '../PresetListWidget';
 import ScalarRangeWidget  from '../ScalarRangeWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
 import PieceWiseGaussianFunctionEditorWidget from '../PieceWiseGaussianFunctionEditorWidget';
 
-export default React.createClass({
+export default class ColorByWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { activeAdvanceView: '0' };
 
-  displayName: 'ColorByWidget',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    presets: React.PropTypes.object,
-    representation: React.PropTypes.object,
-    scalarBar: React.PropTypes.string,
-    source: React.PropTypes.object,
-    visible: React.PropTypes.bool,
-    hidePointControl: React.PropTypes.bool,
-    opacityPoints: React.PropTypes.array,
-    onOpacityPointsChange: React.PropTypes.func,
-    onOpacityEditModeChange: React.PropTypes.func,
-    opacityEditorSize: React.PropTypes.array,
-    useGaussian: React.PropTypes.bool,
-    gaussians: React.PropTypes.array,
-  },
-
-  getDefaultProps() {
-    return {
-      opacityEditorSize: [-1, 96],
-    };
-  },
-
-  getInitialState() {
-    return {
-      activeAdvanceView: '0',
-    };
-  },
+    // Bind callback
+    this.updatePreset = this.updatePreset.bind(this);
+    this.updateRange = this.updateRange.bind(this);
+    this.updateActiveView = this.updateActiveView.bind(this);
+  }
 
   updatePreset(name) {
     if (this.props.onChange) {
@@ -50,7 +27,7 @@ export default React.createClass({
         preset: name,
       });
     }
-  },
+  }
 
   updateRange(options) {
     options.proxyId = this.props.source.id;
@@ -60,12 +37,12 @@ export default React.createClass({
         options,
       });
     }
-  },
+  }
 
   updateActiveView(event) {
     const activeAdvanceView = event.target.dataset.idx;
     this.setState({ activeAdvanceView });
-  },
+  }
 
   render() {
     return (
@@ -126,11 +103,34 @@ export default React.createClass({
           }
         </div>
       </div>);
-  },
-});
+  }
+}
 
 // <i
 //   data-idx="3"
 //   onClick={this.updateActiveView}
 //   className={this.state.activeAdvanceView === '3' ? style.activeColorEditIcon : style.colorEditIcon}
 // ></i>
+
+ColorByWidget.propTypes = {
+  className: PropTypes.string,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  onChange: PropTypes.func,
+  presets: PropTypes.object,
+  representation: PropTypes.object,
+  scalarBar: PropTypes.string,
+  source: PropTypes.object,
+  visible: PropTypes.bool,
+  hidePointControl: PropTypes.bool,
+  opacityPoints: PropTypes.array,
+  onOpacityPointsChange: PropTypes.func,
+  onOpacityEditModeChange: PropTypes.func,
+  opacityEditorSize: PropTypes.array,
+  useGaussian: PropTypes.bool,
+  gaussians: PropTypes.array,
+};
+
+ColorByWidget.defaultProps = {
+  opacityEditorSize: [-1, 96],
+};

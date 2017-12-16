@@ -1,25 +1,26 @@
-import React                from 'react';
-import NumberSliderWidget   from '../../Widgets/NumberSliderWidget';
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default React.createClass({
+import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
+import CollapsibleWidget  from '../../Widgets/CollapsibleWidget';
 
-  displayName: 'ProbeControl',
+function getImageBuilder(props) {
+  let imageBuilder = props.imageBuilder;
 
-  propTypes: {
-    imageBuilder: React.PropTypes.object.isRequired,
-    imageBuilders: React.PropTypes.object,
-  },
+  if (!imageBuilder) {
+    const key = Object.keys(props.imageBuilders)[0];
+    imageBuilder = props.imageBuilders[key].builder;
+  }
 
-  getDefaultProps() {
-    return {
-      imageBuilders: {},
-    };
-  },
+  return imageBuilder;
+}
 
-  getInitialState() {
-    var imageBuilder = this.getImageBuilder(this.props);
-    return {
+export default class ProbeControl extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const imageBuilder = getImageBuilder(props);
+    this.state = {
       probe: [
         imageBuilder.getProbe()[0],
         imageBuilder.getProbe()[1],
@@ -27,19 +28,29 @@ export default React.createClass({
       ],
       showFieldValue: true,
     };
-  },
+
+    // Bind callback
+    this.getImageBuilder = getImageBuilder;
+    this.onProbeVisibilityChange = this.onProbeVisibilityChange.bind(this);
+    this.getImageBuilder = this.getImageBuilder.bind(this);
+    this.attachImageBuilderListeners = this.attachImageBuilderListeners.bind(this);
+    this.detachImageBuilderListeners = this.detachImageBuilderListeners.bind(this);
+    this.updateRenderMethod = this.updateRenderMethod.bind(this);
+    this.probeChange = this.probeChange.bind(this);
+  }
 
   componentWillMount() {
     this.attachImageBuilderListeners(this.getImageBuilder(this.props));
-  },
+  }
 
-  /* eslint-disable react/no-did-mount-set-state */
+  /* eslint-disable */
   componentDidMount() {
+    this.isReady = true;
     this.setState({
       showFieldValue: this.probeInput.isExpanded(),
     });
-  },
-  /* eslint-enable react/no-did-mount-set-state */
+  }
+  /* eslint-enable */
 
   componentWillReceiveProps(nextProps) {
     var previousImageBuilder = this.getImageBuilder(this.props),
@@ -48,11 +59,12 @@ export default React.createClass({
     if (previousImageBuilder !== nextImageBuilder) {
       this.attachImageBuilderListeners(nextImageBuilder);
     }
-  },
+  }
 
   componentWillUnmount() {
+    this.isReady = false;
     this.detachImageBuilderListeners();
-  },
+  }
 
   onProbeVisibilityChange(isProbeOpen) {
     this.setState({
@@ -72,24 +84,13 @@ export default React.createClass({
         this.props.imageBuilder.render();
       }
     });
-  },
-
-  getImageBuilder(props) {
-    var imageBuilder = props.imageBuilder;
-
-    if (!imageBuilder) {
-      const key = Object.keys(props.imageBuilders)[0];
-      imageBuilder = props.imageBuilders[key].builder;
-    }
-
-    return imageBuilder;
-  },
+  }
 
   attachImageBuilderListeners(imageBuilder) {
     this.detachImageBuilderListeners();
     this.probeListenerSubscription = imageBuilder.onProbeChange((probe, envelope) => {
       var field = imageBuilder.getFieldValueAtProbeLocation();
-      if (this.isMounted()) {
+      if (this.isReady) {
         this.setState({
           probe, field,
         });
@@ -98,13 +99,13 @@ export default React.createClass({
 
     this.probeDataListenerSubscription = imageBuilder.onProbeLineReady((data, envelope) => {
       var field = imageBuilder.getFieldValueAtProbeLocation();
-      if (this.isMounted() && field !== this.state.field) {
+      if (this.isReady && field !== this.state.field) {
         this.setState({
           field,
         });
       }
     });
-  },
+  }
 
   detachImageBuilderListeners() {
     if (this.probeListenerSubscription) {
@@ -115,7 +116,7 @@ export default React.createClass({
       this.probeDataListenerSubscription.unsubscribe();
       this.probeDataListenerSubscription = null;
     }
-  },
+  }
 
   updateRenderMethod(event) {
     if (this.props.imageBuilder) {
@@ -123,7 +124,7 @@ export default React.createClass({
       this.props.imageBuilder.render();
       this.forceUpdate();
     }
-  },
+  }
 
   probeChange(event) {
     var value = Number(event.target.value),
@@ -133,7 +134,7 @@ export default React.createClass({
     probe[idx] = value;
 
     this.getImageBuilder(this.props).setProbe(probe[0], probe[1], probe[2]);
-  },
+  }
 
   render() {
     var imageBuilder = this.getImageBuilder(this.props),
@@ -193,5 +194,14 @@ export default React.createClass({
         </CollapsibleWidget>
       </div>
     );
-  },
-});
+  }
+}
+
+ProbeControl.propTypes = {
+  imageBuilder: PropTypes.object.isRequired,
+  imageBuilders: PropTypes.object,
+};
+
+ProbeControl.defaultProps = {
+  imageBuilders: {},
+};

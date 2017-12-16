@@ -1,36 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/NumberSliderWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'NumberSliderWidget',
-
-  propTypes: {
-    max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    min: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    step: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    value: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  },
-
-  getDefaultProps() {
-    return {
-      max: 100,
-      min: 0,
-      step: 1,
-      value: 50,
+export default class NumberSliderWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      max: props.max,
+      min: props.min,
+      step: props.step,
+      value: props.value,
     };
-  },
 
-  getInitialState() {
-    return {
-      max: this.props.max,
-      min: this.props.min,
-      step: this.props.step,
-      value: this.props.value,
-    };
-  },
+    // Bind callback
+    this.valInput = this.valInput.bind(this);
+    this.value = this.value.bind(this);
+  }
 
   valInput(e) {
     this.setState({ value: e.target.value });
@@ -40,7 +26,7 @@ export default React.createClass({
       }
       this.props.onChange(e);
     }
-  },
+  }
 
   value(newVal) {
     if (newVal === null || newVal === undefined) {
@@ -50,7 +36,7 @@ export default React.createClass({
     const value = Math.max(this.state.min, Math.min(newVal, this.state.max));
     this.setState({ value });
     return value;
-  },
+  }
 
   render() {
     var [min, max] = [this.props.min, this.props.max];
@@ -72,5 +58,21 @@ export default React.createClass({
           max={max} min={min} step="any"
         />
       </div>);
-  },
-});
+  }
+}
+
+NumberSliderWidget.propTypes = {
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
+NumberSliderWidget.defaultProps = {
+  max: 100,
+  min: 0,
+  step: 1,
+  value: 50,
+};

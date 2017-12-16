@@ -1,10 +1,10 @@
-import React                    from 'react';
-import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import ListWidget               from './String';
-import NumberWidget             from './Number';
-import DataListenerMixin        from './DataListenerMixin';
-import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
+import style from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
+
+import ListWidget   from './String';
+import NumberWidget from './Number';
 
 /**
  * This React component expect the following input properties:
@@ -14,15 +14,52 @@ import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
  *       Expect a Boolean based on the automatic data model registration for listening.
  *       Default value is true and false for the sub components.
  */
-export default React.createClass({
+export default class QueryDataModelWidget extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'QueryDataModelWidget',
+    // Bind callback
+    this.attachListener = this.attachListener.bind(this);
+    this.detachListener = this.detachListener.bind(this);
+    this.dataListenerCallback = this.dataListenerCallback.bind(this);
+  }
 
-  propTypes: {
-    model: React.PropTypes.object,
-  },
+  // Auto mount listener unless notified otherwise
+  componentWillMount() {
+    this.detachListener();
+    if (this.props.listener) {
+      this.attachListener(this.props.model);
+    }
+  }
 
-  mixins: [DataListenerMixin, DataListenerUpdateMixin],
+  componentWillReceiveProps(nextProps) {
+    var previousDataModel = this.props.model,
+      nextDataModel = nextProps.model;
+
+    if (previousDataModel !== nextDataModel) {
+      this.detachListener();
+      this.attachListener(nextDataModel);
+    }
+  }
+
+  componentWillUnmount() {
+    this.detachListener();
+  }
+
+  attachListener(dataModel) {
+    this.dataSubscription = dataModel.onStateChange(this.dataListenerCallback);
+  }
+
+  detachListener() {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = null;
+    }
+  }
+
+  dataListenerCallback(data, envelope) {
+    this.forceUpdate();
+  }
 
   render() {
     var model = this.props.model,
@@ -52,5 +89,14 @@ export default React.createClass({
           return null;
         })}
       </div>);
-  },
-});
+  }
+}
+
+QueryDataModelWidget.propTypes = {
+  listener: PropTypes.bool,
+  model: PropTypes.object,
+};
+
+QueryDataModelWidget.defaultProps = {
+  listener: true,
+};

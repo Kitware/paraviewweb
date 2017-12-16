@@ -1,44 +1,27 @@
-import equals       from 'mout/src/array/equals';
-import React        from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import equals from 'mout/src/array/equals';
 
 import style from 'PVWStyle/ReactWidgets/EqualizerWidget.mcss';
 
 import MouseHandler from '../../../Interaction/Core/MouseHandler';
-
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
-export default React.createClass({
-
-  displayName: 'EqualizerWidget',
-
-  propTypes: {
-    colors: React.PropTypes.array,
-    height: React.PropTypes.number,
-    layers: React.PropTypes.array,
-    onChange: React.PropTypes.func,
-    spacing: React.PropTypes.number,
-    stroke: React.PropTypes.string,
-    width: React.PropTypes.number,
-  },
-
-  getDefaultProps() {
-    return {
-      layers: [1, 1, 1, 1, 1, 1, 1],
-      colors: ['#0000ff', '#ffffff', '#ff0000'],
-      stroke: '#000000',
-      height: 120,
-      width: 300,
-      spacing: 2,
+export default class EqualizerWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      layers: props.layers,
+      width: props.width,
+      height: props.height,
     };
-  },
 
-  getInitialState() {
-    return {
-      layers: this.props.layers,
-      width: this.props.width,
-      height: this.props.height,
-    };
-  },
+    // Bind callback
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.draw = this.draw.bind(this);
+    this.clicked = this.clicked.bind(this);
+  }
 
   componentWillMount() {
     // Listen to window resize
@@ -46,7 +29,7 @@ export default React.createClass({
 
     // Make sure we monitor window size if it is not already the case
     SizeHelper.startListening();
-  },
+  }
 
   componentDidMount() {
     this.updateDimensions();
@@ -56,7 +39,7 @@ export default React.createClass({
       click: this.clicked,
       drag: this.clicked,
     });
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     const layers = nextProps.layers;
@@ -64,11 +47,11 @@ export default React.createClass({
     if (!equals(this.state.layers, layers)) {
       this.setState({ layers });
     }
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     this.draw();
-  },
+  }
 
   componentWillUnmount() {
     this.mouseHandler.destroy();
@@ -77,7 +60,7 @@ export default React.createClass({
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
     }
-  },
+  }
 
   updateDimensions() {
     var el = this.rootContainer.parentNode,
@@ -88,7 +71,7 @@ export default React.createClass({
       return true;
     }
     return false;
-  },
+  }
 
   draw() {
     var ctx = this.canvas.getContext('2d');
@@ -129,7 +112,7 @@ export default React.createClass({
     //   ctx.fillRect(spacing*1.5, (1+i)*yStep + 2 * spacing, width - 3.5 * spacing, 1);
     //   ctx.stroke();
     // }
-  },
+  }
 
   clicked(e) {
     var rect = this.canvas.getClientRects()[0],
@@ -149,7 +132,7 @@ export default React.createClass({
       this.props.onChange(layers);
     }
     this.draw();
-  },
+  }
 
   render() {
     return (
@@ -162,5 +145,24 @@ export default React.createClass({
         />
       </div>
     );
-  },
-});
+  }
+}
+
+EqualizerWidget.propTypes = {
+  colors: PropTypes.array,
+  height: PropTypes.number,
+  layers: PropTypes.array,
+  onChange: PropTypes.func,
+  spacing: PropTypes.number,
+  stroke: PropTypes.string,
+  width: PropTypes.number,
+};
+
+EqualizerWidget.defaultProps = {
+  layers: [1, 1, 1, 1, 1, 1, 1],
+  colors: ['#0000ff', '#ffffff', '#ff0000'],
+  stroke: '#000000',
+  height: 120,
+  width: 300,
+  spacing: 2,
+};

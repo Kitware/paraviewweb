@@ -4,6 +4,22 @@ import React             from 'react';
 import ReactDOM          from 'react-dom';
 import TestUtils         from 'react/lib/ReactTestUtils';
 
+class Mock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { x: 0, y: 0 };
+    this.updateCoords = this.updateCoords.bind(this);
+  }
+
+  updateCoords(newVals) {
+    this.setState({ x: newVals.x, y: newVals.y });
+  }
+
+  render() {
+    return (<CoordinateControl onChange={this.updateCoords} />);
+  }
+}
+
 describe('CoordinateControl', function() {
     afterEach(function(done) {
         ReactDOM.unmountComponentAtNode(document.body);
@@ -59,18 +75,7 @@ describe('CoordinateControl', function() {
         expect(el.coordinates()).toEqual({x: convertToCoord(newXVal, size), y: -convertToCoord(newYVal, size)});
     });
     it('triggers a given onChange function', function() {
-        var Mock = React.createClass({
-            getInitialState() {
-                return {x:0, y:0};
-            },
-            updateCoords(newVals) {
-                this.setState({x:newVals.x, y:newVals.y});
-            },
-            render() {
-                return (<CoordinateControl onChange={this.updateCoords}/>);
-            }
-        });
-        var el = TestUtils.renderIntoDocument(<Mock/>),
+        var el = TestUtils.renderIntoDocument(<Mock />),
             input = TestUtils.scryRenderedDOMComponentsWithTag(el, 'input')[0],
             newXVal = 0.88;
 

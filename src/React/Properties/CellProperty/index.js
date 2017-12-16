@@ -1,25 +1,48 @@
-import React            from 'react';
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import BlockMixin       from '../PropertyFactory/BlockMixin';
+import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+
 import layouts          from './layouts';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
-export default React.createClass({
+export default class CellProperty extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.data,
+      helpOpen: false,
+      ui: props.ui,
+    };
 
-  displayName: 'CellProperty',
+    // Callback binding
+    this.valueChange = this.valueChange.bind(this);
+    this.addValue = this.addValue.bind(this);
+    this.helpToggled = this.helpToggled.bind(this);
+  }
 
-  propTypes: {
-    data: React.PropTypes.object.isRequired,
-    help: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    show: React.PropTypes.func,
-    ui: React.PropTypes.object.isRequired,
-    viewData: React.PropTypes.object,
-  },
+  componentWillMount() {
+    var newState = {};
+    if (this.props.ui.default && !this.props.data.value) {
+      newState.data = this.state.data;
+      newState.data.value = this.props.ui.default;
+    }
 
-  mixins: [BlockMixin],
+    if (Object.keys(newState).length > 0) {
+      this.setState(newState);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const data = nextProps.data;
+
+    if (this.state.data !== data) {
+      this.setState({
+        data,
+      });
+    }
+  }
 
   valueChange(idx, newVal) {
     var newData = this.state.data;
@@ -35,7 +58,7 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(newData);
     }
-  },
+  }
 
   addValue() {
     var newData = this.state.data,
@@ -68,7 +91,13 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(newData);
     }
-  },
+  }
+
+  helpToggled(open) {
+    this.setState({
+      helpOpen: open,
+    });
+  }
 
   render() {
     return (
@@ -98,6 +127,20 @@ export default React.createClass({
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
       </div>);
-  },
-});
+  }
+}
 /* eslint-enable react/no-danger */
+
+CellProperty.propTypes = {
+  data: PropTypes.object.isRequired,
+  help: PropTypes.string,
+  onChange: PropTypes.func,
+  show: PropTypes.func,
+  ui: PropTypes.object.isRequired,
+  viewData: PropTypes.object,
+};
+
+CellProperty.defaultProps = {
+  name: '',
+  help: '',
+};
