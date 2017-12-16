@@ -66442,13 +66442,13 @@
 	 *   - arg:
 	 *       Expect the name of the argument this Number UI element control within the model.
 	 */
-	var Number = function (_React$Component) {
-	  _inherits(Number, _React$Component);
+	var ParameterSetNumber = function (_React$Component) {
+	  _inherits(ParameterSetNumber, _React$Component);
 
-	  function Number(props) {
-	    _classCallCheck(this, Number);
+	  function ParameterSetNumber(props) {
+	    _classCallCheck(this, ParameterSetNumber);
 
-	    var _this = _possibleConstructorReturn(this, (Number.__proto__ || Object.getPrototypeOf(Number)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (ParameterSetNumber.__proto__ || Object.getPrototypeOf(ParameterSetNumber)).call(this, props));
 
 	    _this.state = {
 	      advanced: false,
@@ -66475,7 +66475,7 @@
 	    return _this;
 	  }
 
-	  _createClass(Number, [{
+	  _createClass(ParameterSetNumber, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.detachListener();
@@ -66686,19 +66686,19 @@
 	    }
 	  }]);
 
-	  return Number;
+	  return ParameterSetNumber;
 	}(_react2.default.Component);
 
-	exports.default = Number;
+	exports.default = ParameterSetNumber;
 
 
-	Number.propTypes = {
+	ParameterSetNumber.propTypes = {
 	  listener: _propTypes2.default.bool,
 	  arg: _propTypes2.default.string,
 	  model: _propTypes2.default.object.isRequired
 	};
 
-	Number.defaultProps = {
+	ParameterSetNumber.defaultProps = {
 	  listener: true
 	};
 
