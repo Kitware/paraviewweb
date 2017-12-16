@@ -54,7 +54,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(24);
+	var _reactDom = __webpack_require__(21);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -85,15 +85,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _propTypes = __webpack_require__(16);
+	var _propTypes = __webpack_require__(13);
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _ColorPickerWidget = __webpack_require__(19);
+	var _ColorPickerWidget = __webpack_require__(16);
 
 	var _ColorPickerWidget2 = _interopRequireDefault(_ColorPickerWidget);
 
-	var _defaultSwatches = __webpack_require__(23);
+	var _defaultSwatches = __webpack_require__(20);
 
 	var _defaultSwatches2 = _interopRequireDefault(_defaultSwatches);
 
@@ -2215,9 +2215,9 @@
 	'use strict';
 
 	if (process.env.NODE_ENV !== 'production') {
-	  var invariant = __webpack_require__(12);
-	  var warning = __webpack_require__(13);
-	  var ReactPropTypesSecret = __webpack_require__(15);
+	  var invariant = __webpack_require__(9);
+	  var warning = __webpack_require__(10);
+	  var ReactPropTypesSecret = __webpack_require__(12);
 	  var loggedTypeFailures = {};
 	}
 
@@ -2269,174 +2269,6 @@
 
 /***/ },
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var validateFormat = function validateFormat(format) {};
-
-	if (process.env.NODE_ENV !== 'production') {
-	  validateFormat = function validateFormat(format) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  };
-	}
-
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	      error.name = 'Invariant Violation';
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	}
-
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	var emptyFunction = __webpack_require__(14);
-
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
-
-	var warning = emptyFunction;
-
-	if (process.env.NODE_ENV !== 'production') {
-	  var printWarning = function printWarning(format) {
-	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	      args[_key - 1] = arguments[_key];
-	    }
-
-	    var argIndex = 0;
-	    var message = 'Warning: ' + format.replace(/%s/g, function () {
-	      return args[argIndex++];
-	    });
-	    if (typeof console !== 'undefined') {
-	      console.error(message);
-	    }
-	    try {
-	      // --- Welcome to debugging React ---
-	      // This error was thrown as a convenience so that you can use this stack
-	      // to find the callsite that caused this warning to fire.
-	      throw new Error(message);
-	    } catch (x) {}
-	  };
-
-	  warning = function warning(condition, format) {
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
-	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	        args[_key2 - 2] = arguments[_key2];
-	      }
-
-	      printWarning.apply(undefined, [format].concat(args));
-	    }
-	  };
-	}
-
-	module.exports = warning;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 * 
-	 */
-
-	function makeEmptyFunction(arg) {
-	  return function () {
-	    return arg;
-	  };
-	}
-
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	var emptyFunction = function emptyFunction() {};
-
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function () {
-	  return this;
-	};
-	emptyFunction.thatReturnsArgument = function (arg) {
-	  return arg;
-	};
-
-	module.exports = emptyFunction;
-
-/***/ },
-/* 15 */
 /***/ function(module, exports) {
 
 	/**
@@ -2454,7 +2286,7 @@
 
 
 /***/ },
-/* 16 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2479,17 +2311,17 @@
 	  // By explicitly using `prop-types` you are opting into new development behavior.
 	  // http://fb.me/prop-types-in-prod
 	  var throwOnDirectAccess = true;
-	  module.exports = __webpack_require__(17)(isValidElement, throwOnDirectAccess);
+	  module.exports = __webpack_require__(14)(isValidElement, throwOnDirectAccess);
 	} else {
 	  // By explicitly using `prop-types` you are opting into new production behavior.
 	  // http://fb.me/prop-types-in-prod
-	  module.exports = __webpack_require__(18)();
+	  module.exports = __webpack_require__(15)();
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 17 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2501,12 +2333,12 @@
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(14);
-	var invariant = __webpack_require__(12);
-	var warning = __webpack_require__(13);
+	var emptyFunction = __webpack_require__(7);
+	var invariant = __webpack_require__(9);
+	var warning = __webpack_require__(10);
 	var assign = __webpack_require__(5);
 
-	var ReactPropTypesSecret = __webpack_require__(15);
+	var ReactPropTypesSecret = __webpack_require__(12);
 	var checkPropTypes = __webpack_require__(11);
 
 	module.exports = function(isValidElement, throwOnDirectAccess) {
@@ -3038,7 +2870,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 18 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3050,9 +2882,9 @@
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(14);
-	var invariant = __webpack_require__(12);
-	var ReactPropTypesSecret = __webpack_require__(15);
+	var emptyFunction = __webpack_require__(7);
+	var invariant = __webpack_require__(9);
+	var ReactPropTypesSecret = __webpack_require__(12);
 
 	module.exports = function() {
 	  function shim(props, propName, componentName, location, propFullName, secret) {
@@ -3102,16 +2934,16 @@
 
 
 /***/ },
-/* 19 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(20);
+	var content = __webpack_require__(17);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(22)(content, {});
+	var update = __webpack_require__(19)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3128,10 +2960,10 @@
 	}
 
 /***/ },
-/* 20 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(21)();
+	exports = module.exports = __webpack_require__(18)();
 	// imports
 
 
@@ -3149,7 +2981,7 @@
 	};
 
 /***/ },
-/* 21 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/*
@@ -3205,7 +3037,7 @@
 
 
 /***/ },
-/* 22 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -3457,13 +3289,13 @@
 
 
 /***/ },
-/* 23 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAABsCAYAAAB6kUkRAAAAAXNSR0IArs4c6QAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAABWdJREFUeAHt3EFq40AQBdCZQQcK5P5HEPhGM2ZAO6dCFS26ynnZGNLdcvl9+6OVfv99/v1K/J2Jvf+3pg9k38D+lQKf6YsJOE2280AyYOnuDCv/3n/yR5wgQIAAgY4CCr1jKmYiQIBAQUChF9AcIUCAQEcBhd4xFTMRIECgIKDQC2iOECBAoKOAQu+YipkIECBQEFDoBTRHCBAg0FFAoXdMxUwECBAoCCj0ApojBAgQ6Cig0DumYiYCBAgUBBR6Ac0RAgQIdBQ4zjP3tIbzM/kwiOynzo2TvfqP239zWgVPARfQvj7SLGDpfh1VbSUXsDv0mrJTBAgQaCeg0NtFYiACBAjUBBR6zc0pAgQItBNQ6O0iMRABAgRqAgq95uYUAQIE2gko9HaRGIgAAQI1AYVec3OKAAEC7QQUertIDESAAIGagEKvuTlFgACBdgIKvV0kBiJAgEBNQKHX3JwiQIBAO4EjO1G7ZzW0Gygrmtufe7JD7to9dwu4Zy5rpvph6T7R7v0Fu0Nf8710FQIECGwXUOjbIzAAAQIE1ggo9DWOrkKAAIHtAgp9ewQGIECAwBoBhb7G0VUIECCwXUChb4/AAAQIEFgjoNDXOLoKAQIEtgso9O0RGIAAAQJrBBT6GkdXIUCAwHYBhb49AgMQIEBgjYBCX+PoKgQIENgucJxn7mkK5+e9zyK4XST3cW8fZ7jm7T75NxBw3mzOiWbpPuF6/YLdoc/5LpuUAAECoYBCD3ksEiBAYI6AQp+TlUkJECAQCij0kMciAQIE5ggo9DlZmZQAAQKhgEIPeSwSIEBgjoBCn5OVSQkQIBAKKPSQxyIBAgTmCCj0OVmZlAABAqGAQg95LBIgQGCOgEKfk5VJCRAgEAoc4eqLxceL/731v5If+OOtMd7xwwn4HVO9PlMy3eex2b9gd+hX8l4JECAwXEChDw/Q+AQIELgEFPol4ZUAAQLDBRT68ACNT4AAgUtAoV8SXgkQIDBcQKEPD9D4BAgQuAQU+iXhlQABAsMFFPrwAI1PgACBS0ChXxJeCRAgMFxAoQ8P0PgECBC4BBT6JeGVAAECwwWO8zxzHyG7P3d1uzcLJL8Nm6f19mkBAafJJh1whz4pLbMSIEAgEFDoAY4lAgQITBJQ6JPSMisBAgQCAYUe4FgiQIDAJAGFPiktsxIgQCAQUOgBjiUCBAhMElDok9IyKwECBAIBhR7gWCJAgMAkAYU+KS2zEiBAIBBQ6AGOJQIECEwSUOiT0jIrAQIEAoEjWHu95Fkur12a/tejO5oGs2osAa+SbHqdXMDu0JvGaCwCBAhkBRR6Vsx+AgQINBVQ6E2DMRYBAgSyAgo9K2Y/AQIEmgoo9KbBGIsAAQJZAYWeFbOfAAECTQUUetNgjEWAAIGsgELPitlPgACBpgIKvWkwxiJAgEBWQKFnxewnQIBAUwGF3jQYYxEgQCArcJyezZI127o/92SHraN684qAgCtqg87cG7A79EFfBaMSIEAgElDokY41AgQIDBJQ6IPCMioBAgQiAYUe6VgjQIDAIAGFPigsoxIgQCASUOiRjjUCBAgMElDog8IyKgECBCIBhR7pWCNAgMAgAYU+KCyjEiBAIBJQ6JGONQIECAwSUOiDwjIqAQIEIoHj8XhE69ZuFrj3yQ43D+/y3wsI+HujxI58W30krl7Zem/A2endoVcydIYAAQINBRR6w1CMRIAAgYqAQq+oOUOAAIGGAgq9YShGIkCAQEVAoVfUnCFAgEBDAYXeMBQjESBAoCKg0CtqzhAgQKChgEJvGIqRCBAgUBFQ6BU1ZwgQINBQQKE3DMVIBAgQqAgo9IqaMwQIEGgo8A9bODHAkaf7RwAAAABJRU5ErkJggg=="
 
 /***/ },
-/* 24 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -3500,15 +3332,15 @@
 	  // DCE check should happen before ReactDOM bundle executes so that
 	  // DevTools can report bad minification during injection.
 	  checkDCE();
-	  module.exports = __webpack_require__(25);
+	  module.exports = __webpack_require__(22);
 	} else {
-	  module.exports = __webpack_require__(34);
+	  module.exports = __webpack_require__(31);
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 25 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @license React v16.2.0
@@ -3523,7 +3355,7 @@
 	/*
 	 Modernizr 3.0.0pre (Custom Build) | MIT
 	*/
-	'use strict';var aa=__webpack_require__(2),l=__webpack_require__(26),B=__webpack_require__(5),C=__webpack_require__(7),ba=__webpack_require__(27),da=__webpack_require__(28),ea=__webpack_require__(29),fa=__webpack_require__(30),ia=__webpack_require__(33),D=__webpack_require__(6);
+	'use strict';var aa=__webpack_require__(2),l=__webpack_require__(23),B=__webpack_require__(5),C=__webpack_require__(7),ba=__webpack_require__(24),da=__webpack_require__(25),ea=__webpack_require__(26),fa=__webpack_require__(27),ia=__webpack_require__(30),D=__webpack_require__(6);
 	function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 	var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 	var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -3743,7 +3575,7 @@
 
 
 /***/ },
-/* 26 */
+/* 23 */
 /***/ function(module, exports) {
 
 	/**
@@ -3781,7 +3613,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 27 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -3861,7 +3693,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 28 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3902,7 +3734,7 @@
 	module.exports = getActiveElement;
 
 /***/ },
-/* 29 */
+/* 26 */
 /***/ function(module, exports) {
 
 	/**
@@ -3972,7 +3804,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 30 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3986,7 +3818,7 @@
 	 * 
 	 */
 
-	var isTextNode = __webpack_require__(31);
+	var isTextNode = __webpack_require__(28);
 
 	/*eslint-disable no-bitwise */
 
@@ -4014,7 +3846,7 @@
 	module.exports = containsNode;
 
 /***/ },
-/* 31 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4028,7 +3860,7 @@
 	 * @typechecks
 	 */
 
-	var isNode = __webpack_require__(32);
+	var isNode = __webpack_require__(29);
 
 	/**
 	 * @param {*} object The object to check.
@@ -4041,7 +3873,7 @@
 	module.exports = isTextNode;
 
 /***/ },
-/* 32 */
+/* 29 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4068,7 +3900,7 @@
 	module.exports = isNode;
 
 /***/ },
-/* 33 */
+/* 30 */
 /***/ function(module, exports) {
 
 	/**
@@ -4097,7 +3929,7 @@
 	module.exports = focusNode;
 
 /***/ },
-/* 34 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @license React v16.2.0
@@ -4120,18 +3952,18 @@
 	var React = __webpack_require__(2);
 	var invariant = __webpack_require__(9);
 	var warning = __webpack_require__(10);
-	var ExecutionEnvironment = __webpack_require__(26);
+	var ExecutionEnvironment = __webpack_require__(23);
 	var _assign = __webpack_require__(5);
 	var emptyFunction = __webpack_require__(7);
-	var EventListener = __webpack_require__(27);
-	var getActiveElement = __webpack_require__(28);
-	var shallowEqual = __webpack_require__(29);
-	var containsNode = __webpack_require__(30);
-	var focusNode = __webpack_require__(33);
+	var EventListener = __webpack_require__(24);
+	var getActiveElement = __webpack_require__(25);
+	var shallowEqual = __webpack_require__(26);
+	var containsNode = __webpack_require__(27);
+	var focusNode = __webpack_require__(30);
 	var emptyObject = __webpack_require__(6);
 	var checkPropTypes = __webpack_require__(11);
-	var hyphenateStyleName = __webpack_require__(35);
-	var camelizeStyleName = __webpack_require__(37);
+	var hyphenateStyleName = __webpack_require__(32);
+	var camelizeStyleName = __webpack_require__(34);
 
 	/**
 	 * WARNING: DO NOT manually require this module.
@@ -19498,7 +19330,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 35 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19512,7 +19344,7 @@
 
 	'use strict';
 
-	var hyphenate = __webpack_require__(36);
+	var hyphenate = __webpack_require__(33);
 
 	var msPattern = /^ms-/;
 
@@ -19539,7 +19371,7 @@
 	module.exports = hyphenateStyleName;
 
 /***/ },
-/* 36 */
+/* 33 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -19574,7 +19406,7 @@
 	module.exports = hyphenate;
 
 /***/ },
-/* 37 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19588,7 +19420,7 @@
 
 	'use strict';
 
-	var camelize = __webpack_require__(38);
+	var camelize = __webpack_require__(35);
 
 	var msPattern = /^-ms-/;
 
@@ -19616,7 +19448,7 @@
 	module.exports = camelizeStyleName;
 
 /***/ },
-/* 38 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
