@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
@@ -50,12 +51,12 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  getLegend: React.PropTypes.func,
-  rule: React.PropTypes.object,
-  depth: React.PropTypes.number,
-  maxDepth: React.PropTypes.number,
-  path: React.PropTypes.array,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  className: React.PropTypes.string,
+  getLegend: PropTypes.func,
+  rule: PropTypes.object,
+  depth: PropTypes.number,
+  maxDepth: PropTypes.number,
+  path: PropTypes.array,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  className: PropTypes.string,
 };

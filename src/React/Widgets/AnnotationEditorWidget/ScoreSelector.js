@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function render(props) {
@@ -22,12 +24,12 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  name: React.PropTypes.string,
-  score: React.PropTypes.number,
-  scores: React.PropTypes.array,
-  onChange: React.PropTypes.func,
-  horizontal: React.PropTypes.bool,
-  className: React.PropTypes.string,
+  name: PropTypes.string,
+  score: PropTypes.number,
+  scores: PropTypes.array,
+  onChange: PropTypes.func,
+  horizontal: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 render.defaultProps = {

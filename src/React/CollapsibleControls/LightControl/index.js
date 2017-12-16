@@ -1,23 +1,23 @@
-import React                from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style                from 'PVWStyle/ReactCollapsibleControls/LightControl.mcss';
+import style from 'PVWStyle/ReactCollapsibleControls/LightControl.mcss';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import Coordinate2DWidget   from '../../Widgets/Coordinate2DWidget';
-import LightButton          from '../../Widgets/ToggleIconButtonWidget';
-import NumberInputWidget    from '../../Widgets/NumberInputWidget';
+import CollapsibleWidget  from '../../Widgets/CollapsibleWidget';
+import Coordinate2DWidget from '../../Widgets/Coordinate2DWidget';
+import LightButton        from '../../Widgets/ToggleIconButtonWidget';
+import NumberInputWidget  from '../../Widgets/NumberInputWidget';
 
-export default React.createClass({
+export default class LightControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = props.light.getLightProperties().lightTerms;
 
-  displayName: 'LightControl',
-
-  propTypes: {
-    light: React.PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    return this.props.light.getLightProperties().lightTerms;
-  },
+    // Bind callback
+    this.onLightTermsChange = this.onLightTermsChange.bind(this);
+    this.onLightPositionChange = this.onLightPositionChange.bind(this);
+    this.toggleLight = this.toggleLight.bind(this);
+  }
 
   onLightTermsChange(newVal, name) {
     var newState = {};
@@ -28,17 +28,17 @@ export default React.createClass({
         lightTerms: newState,
       });
     });
-  },
+  }
 
   onLightPositionChange(event) {
     this.props.light.setLightProperties({
       lightPosition: event,
     });
-  },
+  }
 
   toggleLight(enabled) {
     this.props.light.setLightingEnabled(enabled);
-  },
+  }
 
   render() {
     var lightButton = <LightButton key="enable-light-button" onChange={this.toggleLight} value={this.props.light.getLightingEnabled()} />;
@@ -79,5 +79,11 @@ export default React.createClass({
         </section>
       </CollapsibleWidget>
     );
-  },
-});
+  }
+}
+
+
+LightControl.propTypes = {
+  light: PropTypes.object.isRequired,
+};
+

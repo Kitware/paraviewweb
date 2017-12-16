@@ -1,8 +1,7 @@
-/* global Image */
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import React      from 'react';
-
-import style      from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
 
 import swatchURL  from './defaultSwatches.png';
 
@@ -19,36 +18,35 @@ import swatchURL  from './defaultSwatches.png';
  *       Image URL that should be used for color picking.
  *       Default value is a base64 encoded swatch.
  */
-export default React.createClass({
+export default class ColorPickerWidget extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'ColorPickerWidget',
-
-  propTypes: {
-    color: React.PropTypes.array,
-    onChange: React.PropTypes.func,
-    swatch: React.PropTypes.string,
-  },
-
-  getDefaultProps() {
-    return { color: [0, 0, 0], swatch: swatchURL };
-  },
-
-  getInitialState() {
     this.image = new Image();
-    this.image.src = this.props.swatch;
-    return {
-      swatch: this.props.swatch,
-      color: this.props.color,
+    this.image.src = props.swatch;
+    this.state = {
+      swatch: props.swatch,
+      color: props.color,
       preview: false,
-      originalColor: [this.props.color[0], this.props.color[1], this.props.color[2]],
+      originalColor: [
+        props.color[0],
+        props.color[1],
+        props.color[2],
+      ],
     };
-  },
+
+    // Bind callback
+    this.showColor = this.showColor.bind(this);
+    this.rgbColorChange = this.rgbColorChange.bind(this);
+    this.updateColor = this.updateColor.bind(this);
+    this.updateSwatch = this.updateSwatch.bind(this);
+  }
 
   componentDidMount() {
     var ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
-  },
+  }
 
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-update-set-state */
@@ -63,7 +61,7 @@ export default React.createClass({
       ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
       ctx.fillRect(0, 0, 1, 1);
     }
-  },
+  }
   /* eslint-enable react/no-did-update-set-state */
 
   showColor(event) {
@@ -100,7 +98,7 @@ export default React.createClass({
     } else {
       this.setState({ color: [color[0], color[1], color[2]], preview: true });
     }
-  },
+  }
 
   rgbColorChange(event) {
     var color = this.state.color,
@@ -118,16 +116,16 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(color);
     }
-  },
+  }
 
   updateColor(color) {
     this.setState({ originalColor: color });
-  },
+  }
 
   updateSwatch(url) {
     this.image.src = url;
     this.setState({ swatch: url });
-  },
+  }
 
   render() {
     return (
@@ -181,5 +179,17 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+ColorPickerWidget.propTypes = {
+  color: PropTypes.array,
+  onChange: PropTypes.func,
+  swatch: PropTypes.string,
+};
+
+ColorPickerWidget.defaultProps = {
+  color: [0, 0, 0],
+  swatch: swatchURL,
+};
+

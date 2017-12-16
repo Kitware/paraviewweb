@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ComponentReact/WorkbenchController.mcss';
 import LayoutsWidget from '../../../React/Widgets/LayoutsWidget';
 
@@ -60,11 +62,11 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  onLayoutChange: React.PropTypes.func,
-  onViewportChange: React.PropTypes.func,
-  activeLayout: React.PropTypes.string,
-  viewports: React.PropTypes.object,
-  count: React.PropTypes.number,
+  onLayoutChange: PropTypes.func,
+  onViewportChange: PropTypes.func,
+  activeLayout: PropTypes.string,
+  viewports: PropTypes.object,
+  count: PropTypes.number,
 };
 
 render.defaultProps = {

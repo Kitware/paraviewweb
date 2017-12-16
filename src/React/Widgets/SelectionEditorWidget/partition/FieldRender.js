@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 import LegendIcon from '../LegendIcon';
 
@@ -30,9 +32,9 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
-  getLegend: React.PropTypes.func,
-  fieldName: React.PropTypes.string,
-  depth: React.PropTypes.number,
-  className: React.PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  getLegend: PropTypes.func,
+  fieldName: PropTypes.string,
+  depth: PropTypes.number,
+  className: PropTypes.string,
 };

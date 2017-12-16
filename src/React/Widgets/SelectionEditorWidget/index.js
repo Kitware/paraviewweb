@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import WidgetTypes from './types';
 
 export default function render(props) {
@@ -7,11 +9,11 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  selection: React.PropTypes.object,
-  ranges: React.PropTypes.object,
-  onChange: React.PropTypes.func,
-  getLegend: React.PropTypes.func,
-  className: React.PropTypes.string,
+  selection: PropTypes.object,
+  ranges: PropTypes.object,
+  onChange: PropTypes.func,
+  getLegend: PropTypes.func,
+  className: PropTypes.string,
 };
 
 render.defaultProps = {

@@ -1,32 +1,18 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
+
 import style  from 'PVWStyle/ReactWidgets/PresetListWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'PresetListWidget',
-
-  propTypes: {
-    activeName: React.PropTypes.string,
-    height: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    presets: React.PropTypes.object,
-    visible: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      activeName: '',
-      height: '1em',
-      presets: {},
-      visible: true,
+export default class PresetListWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeName: props.activeName,
     };
-  },
 
-  getInitialState() {
-    return {
-      activeName: this.props.activeName,
-    };
-  },
+    // Bind callback
+    this.updateActive = this.updateActive.bind(this);
+  }
 
   updateActive(event) {
     const activeName = event.target.dataset.name;
@@ -34,7 +20,7 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(activeName);
     }
-  },
+  }
 
   render() {
     if (!this.props.presets || !this.props.visible) {
@@ -62,5 +48,20 @@ export default React.createClass({
         )}
         <div className={style.bottomPadding} />
       </div>);
-  },
-});
+  }
+}
+
+PresetListWidget.propTypes = {
+  activeName: PropTypes.string,
+  height: PropTypes.string,
+  onChange: PropTypes.func,
+  presets: PropTypes.object,
+  visible: PropTypes.bool,
+};
+
+PresetListWidget.defaultProps = {
+  activeName: '',
+  height: '1em',
+  presets: {},
+  visible: true,
+};

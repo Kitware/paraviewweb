@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/OverlayTitleBar.mcss';
 
 export default function overlayTitleBar(props) {
@@ -10,9 +12,9 @@ export default function overlayTitleBar(props) {
 }
 
 overlayTitleBar.propTypes = {
-  title: React.PropTypes.string,
-  name: React.PropTypes.string,
-  onClose: React.PropTypes.func,
+  title: PropTypes.string,
+  name: PropTypes.string,
+  onClose: PropTypes.func,
 };
 
 overlayTitleBar.defaultProps = {

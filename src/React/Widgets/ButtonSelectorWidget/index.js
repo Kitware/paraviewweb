@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ButtonSelectorWidget.mcss';
 
-export default React.createClass({
+export default class ButtonSelectorWidget extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'ButtonSelectorWidget',
-
-  propTypes: {
-    list: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func,
-  },
+    // Bind callback
+    this.processItem = this.processItem.bind(this);
+  }
 
   processItem(event) {
     var name = event.target.name,
@@ -23,7 +24,7 @@ export default React.createClass({
         }
       }
     }
-  },
+  }
 
   render() {
     var list = [];
@@ -33,5 +34,10 @@ export default React.createClass({
     });
 
     return <section className={style.container}>{list}</section>;
-  },
-});
+  }
+}
+
+ButtonSelectorWidget.propTypes = {
+  list: PropTypes.array.isRequired,
+  onChange: PropTypes.func,
+};

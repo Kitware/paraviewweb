@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ScatterPlotControl.mcss';
 
 import LegendView from './LegendView';
@@ -51,7 +53,7 @@ export default class ScatterPlotControl extends React.Component {
 }
 
 ScatterPlotControl.propTypes = {
-  manager: React.PropTypes.object,
-  activeScores: React.PropTypes.array,
-  onActiveScoresChange: React.PropTypes.func,
+  manager: PropTypes.object,
+  activeScores: PropTypes.array,
+  onActiveScoresChange: PropTypes.func,
 };

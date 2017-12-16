@@ -1,7 +1,9 @@
-import equals       from 'mout/src/object/equals';
-import React        from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style        from 'PVWStyle/ReactWidgets/Coordinate2DWidget.mcss';
+import equals from 'mout/src/object/equals';
+
+import style from 'PVWStyle/ReactWidgets/Coordinate2DWidget.mcss';
 
 import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
@@ -11,34 +13,27 @@ import MouseHandler from '../../../Interaction/Core/MouseHandler';
   with two number inputs next to it
 */
 
-export default React.createClass({
+function limitValue(val) {
+  return Math.max(-1.0, Math.min(val, 1.0));
+}
 
-  displayName: 'Coordinate2DWidget',
-
-  propTypes: {
-    height: React.PropTypes.number,
-    hideXY: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-    width: React.PropTypes.number,
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
-  },
-
-  getDefaultProps() {
-    return {
-      width: 50,
-      height: 50,
-      x: 0,
-      y: 0,
+export default class Coordinate2DWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      x: props.x,
+      y: props.y,
     };
-  },
 
-  getInitialState() {
-    return {
-      x: this.props.x,
-      y: this.props.y,
-    };
-  },
+    // Bind callback
+    this.updateCoordinates = this.updateCoordinates.bind(this);
+    this.updateX = this.updateX.bind(this);
+    this.updateY = this.updateY.bind(this);
+    this.pointerAction = this.pointerAction.bind(this);
+    this.drawControl = this.drawControl.bind(this);
+    this.drawControl = this.drawControl.bind(this);
+    this.drawPlus = this.drawPlus.bind(this);
+  }
 
   componentDidMount() {
     this.drawControl();
@@ -49,19 +44,19 @@ export default React.createClass({
       mouseup: this.pointerAction,
       drag: this.pointerAction,
     });
-  },
+  }
 
   componentDidUpdate(nextProps, nextState) {
     this.drawControl();
-  },
+  }
 
   componentWillUnmount() {
     this.mouseHandler.destroy();
-  },
+  }
 
   coordinates() {
     return { x: this.state.x, y: this.state.y };
-  },
+  }
 
   updateCoordinates(coords) {
     var newCoords = {},
@@ -69,7 +64,7 @@ export default React.createClass({
 
     ['x', 'y'].forEach((el) => {
       if ({}.hasOwnProperty.call(coords, el)) {
-        newCoords[el] = this.limitValue(parseFloat(coords[el]));
+        newCoords[el] = limitValue(parseFloat(coords[el]));
         newVals = true;
       }
     });
@@ -77,22 +72,18 @@ export default React.createClass({
     if (newVals) {
       this.setState(newCoords);
     }
-  },
-
-  limitValue(val) {
-    return Math.max(-1.0, Math.min(val, 1.0));
-  },
+  }
 
   // no need to limit the values, for updateX/Y, the input already does that.
   updateX(e) {
     var newVal = parseFloat(e.target.value);
     this.setState({ x: newVal });
-  },
+  }
 
   updateY(e) {
     var newVal = parseFloat(e.target.value);
     this.setState({ y: newVal });
-  },
+  }
 
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
@@ -100,10 +91,10 @@ export default React.createClass({
     var x = e.pointers[0].clientX - rect.left - (this.props.width / 2),
       y = -(e.pointers[0].clientY - rect.top - (this.props.height / 2));
     this.setState({
-      x: this.limitValue(x / (this.props.width / 2)),
-      y: this.limitValue(y / (this.props.height / 2)),
+      x: limitValue(x / (this.props.width / 2)),
+      y: limitValue(y / (this.props.height / 2)),
     });
-  },
+  }
 
   drawControl() {
     var ctx = this.canvas.getContext('2d'),
@@ -134,7 +125,7 @@ export default React.createClass({
         this.props.onChange(this.lastSharedState);
       }
     }
-  },
+  }
 
   drawPlus(color, location_) {
     const ctx = this.canvas.getContext('2d');
@@ -167,7 +158,7 @@ export default React.createClass({
     ctx.moveTo(location.x - lineLen, location.y);
     ctx.lineTo(location.x + lineLen, location.y);
     ctx.stroke();
-  },
+  }
 
   render() {
     return (
@@ -197,5 +188,21 @@ export default React.createClass({
         </section >
       </section>
     );
-  },
-});
+  }
+}
+
+Coordinate2DWidget.propTypes = {
+  height: PropTypes.number,
+  hideXY: PropTypes.bool,
+  onChange: PropTypes.func,
+  width: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
+};
+
+Coordinate2DWidget.defaultProps = {
+  width: 50,
+  height: 50,
+  x: 0,
+  y: 0,
+};

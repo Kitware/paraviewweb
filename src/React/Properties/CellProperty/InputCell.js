@@ -1,38 +1,25 @@
-import React    from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
+
 import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
 import convert  from '../../../Common/Misc/Convert';
 import validate from '../../../Common/Misc/Validate';
 
-export default React.createClass({
-
-  displayName: 'InputCell',
-
-  propTypes: {
-    domain: React.PropTypes.object,
-    idx: React.PropTypes.number.isRequired,
-    label: React.PropTypes.string,
-    noEmpty: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-    type: React.PropTypes.string,
-    value: React.PropTypes.any,
-  },
-
-  getDefaultProps() {
-    return {
-      label: '',
-      idx: 0,
-      value: '',
-      type: 'string',
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class InputCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       editing: false,
-      valueRep: this.props.value,
+      valueRep: props.value,
     };
-  },
+
+    // Callback binding
+    this.getTooltip = this.getTooltip.bind(this);
+    this.applyDomains = this.applyDomains.bind(this);
+    this.valueChange = this.valueChange.bind(this);
+    this.endEditing = this.endEditing.bind(this);
+  }
 
   getTooltip() {
     var tooltip = '';
@@ -52,7 +39,7 @@ export default React.createClass({
     }
 
     return tooltip;
-  },
+  }
 
   applyDomains(idx, val) {
     if (!this.props.domain) {
@@ -70,7 +57,7 @@ export default React.createClass({
       }
     }
     return newValue;
-  },
+  }
 
   valueChange(e) {
     var newVal = e.target.value;
@@ -87,13 +74,13 @@ export default React.createClass({
       propVal = this.applyDomains(this.props.idx, propVal);
       this.props.onChange(this.props.idx, propVal);
     }
-  },
+  }
 
   endEditing() {
     this.setState({
       editing: false,
     });
-  },
+  }
 
   render() {
     return (
@@ -107,5 +94,22 @@ export default React.createClass({
           onBlur={this.endEditing}
         />
       </td>);
-  },
-});
+  }
+}
+
+InputCell.propTypes = {
+  domain: PropTypes.object,
+  idx: PropTypes.number.isRequired,
+  label: PropTypes.string,
+  noEmpty: PropTypes.bool,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.any,
+};
+
+InputCell.defaultProps = {
+  label: '',
+  idx: 0,
+  value: '',
+  type: 'string',
+};

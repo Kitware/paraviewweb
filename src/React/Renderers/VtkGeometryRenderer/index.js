@@ -1,6 +1,7 @@
 /* global window */
 
-import React                           from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import vtkOpenGLRenderWindow           from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
 import vtkSynchronizableRenderWindow   from 'vtk.js/Sources/Rendering/Misc/SynchronizableRenderWindow';
@@ -257,21 +258,21 @@ export default class VtkGeometryRenderer extends React.Component {
 }
 
 VtkGeometryRenderer.propTypes = {
-  className: React.PropTypes.string,
-  showFPS: React.PropTypes.bool,
-  style: React.PropTypes.object,
-  viewId: React.PropTypes.string,
-  interactionTimout: React.PropTypes.number,
-  synchronizerContextName: React.PropTypes.string,
-  resizeOnWindowResize: React.PropTypes.bool,
-  clearOneTimeUpdatersOnUnmount: React.PropTypes.bool,
-  clearInstanceCacheOnUnmount: React.PropTypes.bool,
-  clearArrayCacheOnUnmount: React.PropTypes.bool,
-  onImageReady: React.PropTypes.func,
-  viewIdUpdated: React.PropTypes.func,
-  onBusyChange: React.PropTypes.func,
-  client: React.PropTypes.object,
-  connection: React.PropTypes.object,
+  className: PropTypes.string,
+  showFPS: PropTypes.bool,
+  style: PropTypes.object,
+  viewId: PropTypes.string,
+  interactionTimout: PropTypes.number,
+  synchronizerContextName: PropTypes.string,
+  resizeOnWindowResize: PropTypes.bool,
+  clearOneTimeUpdatersOnUnmount: PropTypes.bool,
+  clearInstanceCacheOnUnmount: PropTypes.bool,
+  clearArrayCacheOnUnmount: PropTypes.bool,
+  onImageReady: PropTypes.func,
+  viewIdUpdated: PropTypes.func,
+  onBusyChange: PropTypes.func,
+  client: PropTypes.object,
+  connection: PropTypes.object,
 };
 
 VtkGeometryRenderer.defaultProps = {

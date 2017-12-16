@@ -1,51 +1,43 @@
-import React                from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import AbstractViewerMenu   from '../AbstractViewerMenu';
-import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
+import AbstractViewerMenu from '../AbstractViewerMenu';
+import WidgetFactory      from '../../CollapsibleControls/CollapsibleControlFactory';
 
 // import GeometryRenderer  from '../../Renderers/GeometryRenderer';
 // import ImageRenderer     from '../../Renderers/ImageRenderer';
 // import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
 import PlotlyRenderer       from '../../Renderers/PlotlyRenderer';
 
-export default React.createClass({
+export default function ChartViewer(props) {
+  let controlWidgets = WidgetFactory.getWidgets(props.chartBuilder);
 
-  displayName: 'ChartViewer',
+  // Add menuAddOn if any at the top
+  if (props.menuAddOn) {
+    controlWidgets = props.menuAddOn.concat(controlWidgets);
+  }
 
-  propTypes: {
-    config: React.PropTypes.object,
-    chartBuilder: React.PropTypes.object.isRequired,
-    menuAddOn: React.PropTypes.array,
-    queryDataModel: React.PropTypes.object.isRequired,
-    userData: React.PropTypes.object,
-  },
+  return (
+    <AbstractViewerMenu
+      queryDataModel={props.queryDataModel}
+      chartBuilder={props.chartBuilder}
+      renderer="PlotlyRenderer"
+      rendererClass={PlotlyRenderer}
+      config={props.config || {}}
+    >
+      {controlWidgets}
+    </AbstractViewerMenu>
+  );
+}
 
-  getDefaultProps() {
-    return {
-      config: {},
-    };
-  },
+ChartViewer.propTypes = {
+  config: PropTypes.object,
+  chartBuilder: PropTypes.object.isRequired,
+  menuAddOn: PropTypes.array,
+  queryDataModel: PropTypes.object.isRequired,
+  userData: PropTypes.object,
+};
 
-  render() {
-    var queryDataModel = this.props.queryDataModel,
-      chartBuilder = this.props.chartBuilder,
-      controlWidgets = WidgetFactory.getWidgets(chartBuilder);
-
-    // Add menuAddOn if any at the top
-    if (this.props.menuAddOn) {
-      controlWidgets = this.props.menuAddOn.concat(controlWidgets);
-    }
-
-    return (
-      <AbstractViewerMenu
-        queryDataModel={queryDataModel}
-        chartBuilder={chartBuilder}
-        renderer="PlotlyRenderer"
-        rendererClass={PlotlyRenderer}
-        config={this.props.config || {}}
-      >
-        {controlWidgets}
-      </AbstractViewerMenu>
-    );
-  },
-});
+ChartViewer.defaultProps = {
+  config: {},
+};

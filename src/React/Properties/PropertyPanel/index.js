@@ -1,32 +1,22 @@
 import React    from 'react';
+import PropTypes from 'prop-types';
+
 import style    from 'PVWStyle/ReactProperties/PropertyPanel.mcss';
 import factory  from '../PropertyFactory';
 
-export default React.createClass({
+export default class PropertyPanel extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'PropertyPanel',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    input: React.PropTypes.array,
-    labels: React.PropTypes.object,
-    onChange: React.PropTypes.func,
-    viewData: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      className: '',
-      input: [],
-      viewData: {},
-    };
-  },
+    // Bind callback
+    this.valueChange = this.valueChange.bind(this);
+  }
 
   valueChange(newVal) {
     if (this.props.onChange) {
       this.props.onChange(newVal);
     }
-  },
+  }
 
   render() {
     var viewData = this.props.viewData,
@@ -43,5 +33,19 @@ export default React.createClass({
       <section className={[this.props.className, style.propertyPanel].join(' ')}>
         {this.props.input.map(uiContainer)}
       </section>);
-  },
-});
+  }
+}
+
+PropertyPanel.propTypes = {
+  className: PropTypes.string,
+  input: PropTypes.array,
+  labels: PropTypes.object,
+  onChange: PropTypes.func,
+  viewData: PropTypes.object,
+};
+
+PropertyPanel.defaultProps = {
+  className: '',
+  input: [],
+  viewData: {},
+};

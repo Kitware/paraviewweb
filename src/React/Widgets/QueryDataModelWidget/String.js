@@ -1,9 +1,7 @@
-import React                    from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style                    from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
-
-import DataListenerMixin        from './DataListenerMixin';
-import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
+import style from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
 /**
  * This React component expect the following input properties:
@@ -15,31 +13,70 @@ import DataListenerUpdateMixin  from './DataListenerUpdateMixin';
  *   - arg:
  *       Expect the name of the argument this String UI element control within the model.
  */
-export default React.createClass({
+export default class ParameterSetString extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'ParameterSet.String',
+    // Bind callback
+    this.attachListener = this.attachListener.bind(this);
+    this.detachListener = this.detachListener.bind(this);
+    this.dataListenerCallback = this.dataListenerCallback.bind(this);
 
-  propTypes: {
-    arg: React.PropTypes.string,
-    model: React.PropTypes.object.isRequired,
-  },
+    this.handleChange = this.handleChange.bind(this);
+    this.grabFocus = this.grabFocus.bind(this);
+    this.toggleAnimation = this.toggleAnimation.bind(this);
+  }
 
-  mixins: [DataListenerMixin, DataListenerUpdateMixin],
+  componentWillMount() {
+    this.detachListener();
+    if (this.props.listener) {
+      this.attachListener(this.props.model);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var previousDataModel = this.props.model,
+      nextDataModel = nextProps.model;
+
+    if (previousDataModel !== nextDataModel) {
+      this.detachListener();
+      this.attachListener(nextDataModel);
+    }
+  }
+
+  componentWillUnmount() {
+    this.detachListener();
+  }
+
+  attachListener(dataModel) {
+    this.dataSubscription = dataModel.onStateChange(this.dataListenerCallback);
+  }
+
+  detachListener() {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = null;
+    }
+  }
+
+  dataListenerCallback(data, envelope) {
+    this.forceUpdate();
+  }
 
   handleChange(event) {
     if (this.props.model.setValue(this.props.arg, event.target.value)) {
       this.props.model.lazyFetchData();
     }
-  },
+  }
 
   grabFocus() {
     this.select.focus();
-  },
+  }
 
   toggleAnimation() {
     this.props.model.toggleAnimationFlag(this.props.arg);
     this.setState({});
-  },
+  }
 
   render() {
     return (
@@ -61,6 +98,15 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
+  }
+}
 
-});
+ParameterSetString.propTypes = {
+  listener: PropTypes.bool,
+  arg: PropTypes.string,
+  model: PropTypes.object.isRequired,
+};
+
+ParameterSetString.defaultProps = {
+  listener: true,
+};

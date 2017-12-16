@@ -1,5 +1,6 @@
-import React            from 'react';
-import Monologue        from 'monologue.js';
+import React     from 'react';
+import PropTypes from 'prop-types';
+import Monologue from 'monologue.js';
 
 import layoutFunctions  from './Layouts';
 import sizeHelper       from '../../../Common/Misc/SizeHelper';
@@ -9,38 +10,41 @@ const layoutNames = Object.keys(layoutFunctions);
 const ACTIVE_VIEWPORT_CHANGE = 'multiview-viewport-active-change';
 const LAYOUT_CHANGE = 'multiview-layout-change';
 
+function getLayouts() {
+  return layoutNames;
+}
+
 /**
  * This React component expect the following input properties:
  */
-const MultiViewRenderer = React.createClass({
-
-  displayName: 'MultiViewRenderer',
-
-  propTypes: {
-    activeColor: React.PropTypes.string,
-    borderColor: React.PropTypes.string,
-    crosshairColor: React.PropTypes.string,
-    layout: React.PropTypes.string,
-    renderers: React.PropTypes.object,
-    spacing: React.PropTypes.number,
-  },
-
-  getDefaultProps() {
-    return {
-      spacing: 10,
-      borderColor: '#000000',
-      activeColor: '#0000FF',
-      crosshairColor: '#000000',
-      renderers: {},
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class MultiViewRenderer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       width: 200,
       height: 200,
     };
-  },
+
+    // static
+    this.getLayouts = getLayouts;
+
+    // Bind callback
+    this.onActiveViewportChange = this.onActiveViewportChange.bind(this);
+    this.onLayoutChange = this.onLayoutChange.bind(this);
+    this.getActiveLayout = this.getActiveLayout.bind(this);
+    this.setLayout = this.setLayout.bind(this);
+    this.setRenderMethod = this.setRenderMethod.bind(this);
+    this.getRenderMethods = this.getRenderMethods.bind(this);
+    this.getActiveRenderMethod = this.getActiveRenderMethod.bind(this);
+    this.getViewPort = this.getViewPort.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.dragCallback = this.dragCallback.bind(this);
+    this.clickCallback = this.clickCallback.bind(this);
+    this.zoomCallback = this.zoomCallback.bind(this);
+    this.drawViewport = this.drawViewport.bind(this);
+    this.drawViewportByName = this.drawViewportByName.bind(this);
+    this.drawLayout = this.drawLayout.bind(this);
+  }
 
   componentWillMount() {
     var drawViewportByName = this.drawViewportByName;
@@ -82,7 +86,7 @@ const MultiViewRenderer = React.createClass({
 
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
-  },
+  }
 
   componentDidMount() {
     this.updateDimensions();
@@ -95,11 +99,11 @@ const MultiViewRenderer = React.createClass({
       click: this.clickCallback,
       zoom: this.zoomCallback,
     });
-  },
+  }
 
   componentDidUpdate(nextProps, nextState) {
     this.drawLayout();
-  },
+  }
 
   componentWillUnmount() {
     this.off();
@@ -115,29 +119,25 @@ const MultiViewRenderer = React.createClass({
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
     }
-  },
+  }
 
   onActiveViewportChange(callback) {
     return this.on(ACTIVE_VIEWPORT_CHANGE, callback);
-  },
+  }
 
   onLayoutChange(callback) {
     return this.on(LAYOUT_CHANGE, callback);
-  },
+  }
 
   getActiveLayout() {
     return this.layout;
-  },
-
-  getLayouts() {
-    return layoutNames;
-  },
+  }
 
   setLayout(name) {
     this.layout = name;
     this.drawLayout();
     this.emit(LAYOUT_CHANGE, name);
-  },
+  }
 
   setRenderMethod(name) {
     this.viewports.forEach((viewport) => {
@@ -147,11 +147,11 @@ const MultiViewRenderer = React.createClass({
       }
     });
     this.drawViewportByName(null);
-  },
+  }
 
   getRenderMethods() {
     return Object.keys(this.props.renderers);
-  },
+  }
 
   getActiveRenderMethod() {
     var name = 'No render method';
@@ -161,7 +161,7 @@ const MultiViewRenderer = React.createClass({
       }
     });
     return name;
-  },
+  }
 
   getViewPort(event) {
     var count = this.viewports.length,
@@ -177,7 +177,7 @@ const MultiViewRenderer = React.createClass({
     }
 
     return null;
-  },
+  }
 
   updateDimensions() {
     var el = this.canvasRenderer.parentNode,
@@ -191,7 +191,7 @@ const MultiViewRenderer = React.createClass({
       return true;
     }
     return false;
-  },
+  }
 
   dragCallback(event, envelope) {
     var viewport = this.getViewPort(event);
@@ -224,7 +224,7 @@ const MultiViewRenderer = React.createClass({
       this.dragCenter = false;
       this.dragInViewport = null;
     }
-  },
+  }
 
   clickCallback(event, envelope) {
     // Reset any previous drag state
@@ -258,7 +258,7 @@ const MultiViewRenderer = React.createClass({
 
     // Redraw the outline with the appropriate color for active
     this.drawLayout();
-  },
+  }
 
   zoomCallback(event, envelope) {
     var viewport = this.getViewPort(event);
@@ -277,7 +277,7 @@ const MultiViewRenderer = React.createClass({
         listeners.zoom(event, envelope);
       }
     }
-  },
+  }
 
   drawViewport(viewport) {
     var renderer = this.props.renderers[viewport.name],
@@ -342,7 +342,7 @@ const MultiViewRenderer = React.createClass({
         console.log('Error in MultiLayoutRenderer::drawViewport', err);
       }
     }
-  },
+  }
 
   drawViewportByName(name) {
     var renderer = name ? this.props.renderers[name] : null;
@@ -358,7 +358,7 @@ const MultiViewRenderer = React.createClass({
         this.drawViewport(viewport);
       }
     });
-  },
+  }
 
   drawLayout() {
     var ctx = this.canvasRenderer.getContext('2d'),
@@ -396,7 +396,7 @@ const MultiViewRenderer = React.createClass({
     }
 
     this.drawViewportByName(null);
-  },
+  }
 
   render() {
     return (
@@ -407,11 +407,25 @@ const MultiViewRenderer = React.createClass({
         height={this.state.height}
       />
     );
-  },
-});
+  }
+}
+
+MultiViewRenderer.propTypes = {
+  activeColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  crosshairColor: PropTypes.string,
+  layout: PropTypes.string,
+  renderers: PropTypes.object,
+  spacing: PropTypes.number,
+};
+
+MultiViewRenderer.defaultProps = {
+  spacing: 10,
+  borderColor: '#000000',
+  activeColor: '#0000FF',
+  crosshairColor: '#000000',
+  renderers: {},
+};
 
 // Add Observer pattern to the class using Monologue.js
 Monologue.mixInto(MultiViewRenderer);
-
-// Export the class definition
-export default MultiViewRenderer;

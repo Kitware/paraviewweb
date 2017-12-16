@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 import WorkbenchController from '../../../Component/React/WorkbenchController';
@@ -84,13 +85,13 @@ export default class WorkbenchLayoutTool extends React.Component {
 }
 
 WorkbenchLayoutTool.propTypes = {
-  provider: React.PropTypes.object,
-  size: React.PropTypes.string,
+  provider: PropTypes.object,
+  size: PropTypes.string,
 
-  workbench: React.PropTypes.object,
+  workbench: PropTypes.object,
 
-  activeWindow: React.PropTypes.object,
-  onActiveWindow: React.PropTypes.func,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 };
 
 WorkbenchLayoutTool.defaultProps = {

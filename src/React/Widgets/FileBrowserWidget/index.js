@@ -1,40 +1,35 @@
-/* global atob btoa */
-
 import React      from 'react';
+import PropTypes from 'prop-types';
+
 import style      from 'PVWStyle/ReactWidgets/FileBrowserWidget.mcss';
+
 import ActionList from '../ActionListWidget';
 
-export default React.createClass({
-
-  displayName: 'FileBrowserWidget',
-
-  propTypes: {
-    directories: React.PropTypes.array.isRequired,
-    files: React.PropTypes.array.isRequired,
-    groups: React.PropTypes.array.isRequired,
-    onAction: React.PropTypes.func,
-    path: React.PropTypes.array.isRequired,
-  },
-
-  getInitialState() {
-    return {
+export default class FileBrowserWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       list: [],
     };
-  },
+
+    // Bind callback
+    this.onPathChange = this.onPathChange.bind(this);
+    this.onAction = this.onAction.bind(this);
+  }
 
   componentDidMount() {
     this.processProps(this.props);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this.processProps(nextProps);
-  },
+  }
 
   onAction(name, action, data) {
     if (this.props.onAction) {
       this.props.onAction(action, name, data.length ? JSON.parse(atob(data)) : null);
     }
-  },
+  }
 
   onPathChange(event) {
     var target = event.target;
@@ -49,7 +44,7 @@ export default React.createClass({
       }
       this.props.onAction('path', path.join('/'), path);
     }
-  },
+  }
 
   processProps(props) {
     const list = [];
@@ -68,7 +63,7 @@ export default React.createClass({
       list.push({ name, icon: style.fileIcon, action: 'file' });
     });
     this.setState({ list });
-  },
+  }
 
   render() {
     return (
@@ -83,5 +78,13 @@ export default React.createClass({
         </ul>
         <ActionList list={this.state.list} onClick={this.onAction} />
       </div>);
-  },
-});
+  }
+}
+
+FileBrowserWidget.propTypes = {
+  directories: PropTypes.array.isRequired,
+  files: PropTypes.array.isRequired,
+  groups: PropTypes.array.isRequired,
+  onAction: PropTypes.func,
+  path: PropTypes.array.isRequired,
+};

@@ -1,4 +1,6 @@
 import React     from 'react';
+import PropTypes from 'prop-types';
+
 import style     from 'PVWStyle/ReactProperties/PropertyGroup.mcss';
 import factory   from '../../Properties/PropertyFactory';
 
@@ -16,8 +18,8 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  show: React.PropTypes.func,
-  prop: React.PropTypes.object,
-  viewData: React.PropTypes.object,
-  onChange: React.PropTypes.func,
+  show: PropTypes.func,
+  prop: PropTypes.object,
+  viewData: PropTypes.object,
+  onChange: PropTypes.func,
 };

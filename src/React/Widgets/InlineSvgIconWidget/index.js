@@ -1,4 +1,5 @@
-import React       from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // Note the default icon uses the viewBox attribute to create a coordinate system,
 // but does not specify height or width attributes on the svg element itself.  This
@@ -13,6 +14,7 @@ function validateSvgString(svgString) {
   return !!svgString;
 }
 
+/* eslint-disable  react/no-danger */
 export default function render(props) {
   if (!validateSvgString(props.icon)) {
     console.log(`InlineSvgIconWidget won't render, invalid icon property: ${props.icon}`);
@@ -32,14 +34,15 @@ export default function render(props) {
       dangerouslySetInnerHTML={{ __html: props.icon }}
     />);
 }
+/* eslint-enable  react/no-danger */
 
 render.propTypes = {
-  className: React.PropTypes.string,
-  height: React.PropTypes.string,
-  icon: React.PropTypes.string,
-  width: React.PropTypes.string,
-  style: React.PropTypes.object,
-  onClick: React.PropTypes.func,
+  className: PropTypes.string,
+  height: PropTypes.string,
+  icon: PropTypes.string,
+  width: PropTypes.string,
+  style: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 render.defaultProps = {

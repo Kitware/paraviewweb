@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import vtkPiecewiseGaussianWidget from 'vtk.js/Sources/Interaction/Widgets/PiecewiseGaussianWidget';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
@@ -119,13 +121,13 @@ PieceWiseGaussianFunctionEditorWidget.defaultProps = {
 };
 
 PieceWiseGaussianFunctionEditorWidget.propTypes = {
-  points: React.PropTypes.array,
-  gaussians: React.PropTypes.array,
-  rangeMin: React.PropTypes.number,
-  rangeMax: React.PropTypes.number,
-  onChange: React.PropTypes.func,
-  onEditModeChange: React.PropTypes.func,
-  height: React.PropTypes.number,
-  width: React.PropTypes.number,
-  bgImage: React.PropTypes.string,
+  points: PropTypes.array,
+  gaussians: PropTypes.array,
+  rangeMin: PropTypes.number,
+  rangeMax: PropTypes.number,
+  onChange: PropTypes.func,
+  onEditModeChange: PropTypes.func,
+  height: PropTypes.number,
+  width: PropTypes.number,
+  bgImage: PropTypes.string,
 };

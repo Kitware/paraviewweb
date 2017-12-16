@@ -1,9 +1,10 @@
-import equals       from 'mout/src/object/equals';
-import React        from 'react';
+import equals    from 'mout/src/object/equals';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import style        from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
+import style from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
 
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
+import sizeHelper from '../../../Common/Misc/SizeHelper';
 
 
 function interpolate(values, xRatio) {
@@ -18,43 +19,23 @@ function interpolate(values, xRatio) {
 /**
  * This React component expect the following input properties:
  */
-export default React.createClass({
-
-  displayName: 'LineChartViewer',
-
-  propTypes: {
-    colors: React.PropTypes.array,
-    cursor: React.PropTypes.number,
-    data: React.PropTypes.any.isRequired,
-    height: React.PropTypes.number,
-    legend: React.PropTypes.bool,
-    width: React.PropTypes.number,
-    userData: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      colors: [
-        '#e1002a',
-        '#417dc0',
-        '#1d9a57',
-        '#e9bc2f',
-        '#9b3880',
-      ],
-      height: 200,
-      legend: false,
-      width: 200,
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class LineChartViewer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       fieldsColors: {},
-      height: this.props.height / 2,
-      legend: this.props.legend,
-      width: this.props.width / 2,
+      height: props.height / 2,
+      legend: props.legend,
+      width: props.width / 2,
     };
-  },
+
+    // Bind callback
+    this.onMove = this.onMove.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.toggleLegend = this.toggleLegend.bind(this);
+    this.drawChart = this.drawChart.bind(this);
+    this.drawField = this.drawField.bind(this);
+  }
 
   componentWillMount() {
     this.xPosition = 0;
@@ -63,34 +44,36 @@ export default React.createClass({
 
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
-  },
+  }
 
   componentDidMount() {
+    this.isReady = true;
     this.updateDimensions();
     // this.drawChart();
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     this.drawChart();
-  },
+  }
 
   componentWillUnmount() {
+    this.isReady = false;
     // Remove window listener
     if (this.sizeSubscription) {
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
     }
-  },
+  }
 
   onMove(event) {
     this.xPosition = event.clientX - (event.target.getClientRects()[0].x || event.target.getClientRects()[0].left);
 
     // Update fields values
 
-    if (this.isMounted() && this.state.legend) {
+    if (this.isReady && this.state.legend) {
       this.drawChart();
     }
-  },
+  }
 
   updateDimensions() {
     this.xPosition = 0;
@@ -106,11 +89,11 @@ export default React.createClass({
       return true;
     }
     return false;
-  },
+  }
 
   toggleLegend() {
     this.setState({ legend: !this.state.legend });
-  },
+  }
 
   drawChart() {
     if (!this.props.data) {
@@ -161,7 +144,7 @@ export default React.createClass({
       ctx.lineTo(this.props.cursor * ctx.canvas.width, ctx.canvas.height);
       ctx.stroke();
     }
-  },
+  }
 
   drawField(ctx, fieldIndex, values, range) {
     var min = Number.MAX_VALUE,
@@ -212,7 +195,7 @@ export default React.createClass({
     ctx.stroke();
 
     return [min, max];
-  },
+  }
 
   render() {
     var legend = [];
@@ -252,5 +235,28 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+LineChartViewer.propTypes = {
+  colors: PropTypes.array,
+  cursor: PropTypes.number,
+  data: PropTypes.any.isRequired,
+  height: PropTypes.number,
+  legend: PropTypes.bool,
+  width: PropTypes.number,
+  userData: PropTypes.object,
+};
+
+LineChartViewer.defaultProps = {
+  colors: [
+    '#e1002a',
+    '#417dc0',
+    '#1d9a57',
+    '#e9bc2f',
+    '#9b3880',
+  ],
+  height: 200,
+  legend: false,
+  width: 200,
+};

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/LayoutsWidget.mcss';
 
 export default function render(props) {
@@ -17,9 +19,9 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  onClick: React.PropTypes.func,
-  active: React.PropTypes.string,
-  activeRegion: React.PropTypes.number,
+  onClick: PropTypes.func,
+  active: PropTypes.string,
+  activeRegion: PropTypes.number,
 };
 
 render.defaultProps = {

@@ -1,28 +1,55 @@
-import React            from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import style            from 'PVWStyle/ReactProperties/CellProperty.mcss';
-import styleProp        from 'PVWStyle/ReactProperties/MapProperty.mcss';
+import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import styleProp from 'PVWStyle/ReactProperties/MapProperty.mcss';
 
-import BlockMixin       from '../PropertyFactory/BlockMixin';
 import KeyValuePair     from './KeyValuePair';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
-export default React.createClass({
+export default class MapProperty extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.data,
+      helpOpen: false,
+      ui: props.ui,
+    };
 
-  displayName: 'MapProperty',
+    // Bind callback
+    this.valueChange = this.valueChange.bind(this);
+    this.addEntry = this.addEntry.bind(this);
+    this.helpToggled = this.helpToggled.bind(this);
+  }
 
-  propTypes: {
-    data: React.PropTypes.object.isRequired,
-    help: React.PropTypes.string,
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    show: React.PropTypes.func,
-    ui: React.PropTypes.object.isRequired,
-    viewData: React.PropTypes.object,
-  },
+  componentWillMount() {
+    var newState = {};
+    if (this.props.ui.default && !this.props.data.value) {
+      newState.data = this.state.data;
+      newState.data.value = this.props.ui.default;
+    }
 
-  mixins: [BlockMixin],
+    if (Object.keys(newState).length > 0) {
+      this.setState(newState);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const data = nextProps.data;
+
+    if (this.state.data !== data) {
+      this.setState({
+        data,
+      });
+    }
+  }
+
+  helpToggled(open) {
+    this.setState({
+      helpOpen: open,
+    });
+  }
 
   valueChange(idx, key, value) {
     const { data } = this.state;
@@ -36,13 +63,13 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(data);
     }
-  },
+  }
 
   addEntry() {
     const { data } = this.state;
     data.value.push({ name: '', value: '' });
     this.setState({ data });
-  },
+  }
 
   render() {
     const mapper = () => {
@@ -93,5 +120,21 @@ export default React.createClass({
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
       </div>);
-  },
-});
+  }
+}
+/* eslint-enable react/no-danger */
+
+MapProperty.propTypes = {
+  data: PropTypes.object.isRequired,
+  help: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  show: PropTypes.func,
+  ui: PropTypes.object.isRequired,
+  viewData: PropTypes.object,
+};
+
+MapProperty.defaultProps = {
+  name: '',
+  help: '',
+};

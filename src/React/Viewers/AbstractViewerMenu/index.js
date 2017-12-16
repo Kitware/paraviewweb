@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactViewers/AbstractViewerMenu.mcss';
 
 export default class AbstractViewerMenu extends React.Component {
@@ -13,10 +15,6 @@ export default class AbstractViewerMenu extends React.Component {
     };
 
     // Bind methods
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-    this.componentWillUnmount = this.componentWillUnmount.bind(this);
-
     this.toggleRecord = this.toggleRecord.bind(this);
     this.togglePanel = this.togglePanel.bind(this);
     this.toggleLens = this.toggleLens.bind(this);
@@ -31,6 +29,10 @@ export default class AbstractViewerMenu extends React.Component {
     this.attachListener(this.props.queryDataModel);
   }
 
+  componentDidMount() {
+    this.isReady = true;
+  }
+
   componentWillReceiveProps(nextProps) {
     var previousDataModel = this.props.queryDataModel,
       nextDataModel = nextProps.queryDataModel;
@@ -43,6 +45,7 @@ export default class AbstractViewerMenu extends React.Component {
 
   // Auto unmount listener
   componentWillUnmount() {
+    this.isReady = false;
     this.detachListener();
   }
 
@@ -84,7 +87,7 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   resetCamera() {
-    if (this.isMounted() && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
+    if (this.isReady && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
       this.renderer.resetCamera();
     }
   }
@@ -191,22 +194,22 @@ export default class AbstractViewerMenu extends React.Component {
 }
 
 AbstractViewerMenu.propTypes = {
-  children: React.PropTypes.array,
-  config: React.PropTypes.object,
-  geometryBuilder: React.PropTypes.object,
-  imageBuilder: React.PropTypes.object,
-  chartBuilder: React.PropTypes.object,
-  layout: React.PropTypes.string,
-  magicLensController: React.PropTypes.object,
-  mouseListener: React.PropTypes.object,
-  queryDataModel: React.PropTypes.object,
-  renderer: React.PropTypes.string,
-  rendererClass: React.PropTypes.func,
-  renderers: React.PropTypes.object,
-  userData: React.PropTypes.object,
-  initialStateCollapsed: React.PropTypes.bool,
-  initialStateSpeedIdx: React.PropTypes.number,
-  initialStateSpeeds: React.PropTypes.array,
+  children: PropTypes.array,
+  config: PropTypes.object,
+  geometryBuilder: PropTypes.object,
+  imageBuilder: PropTypes.object,
+  chartBuilder: PropTypes.object,
+  layout: PropTypes.string,
+  magicLensController: PropTypes.object,
+  mouseListener: PropTypes.object,
+  queryDataModel: PropTypes.object,
+  renderer: PropTypes.string,
+  rendererClass: PropTypes.func,
+  renderers: PropTypes.object,
+  userData: PropTypes.object,
+  initialStateCollapsed: PropTypes.bool,
+  initialStateSpeedIdx: PropTypes.number,
+  initialStateSpeeds: PropTypes.array,
 };
 
 AbstractViewerMenu.defaultProps = {

@@ -1,42 +1,24 @@
-import React from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ToggleIconButtonWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'ToggleIconButtonWidget',
-
-  propTypes: {
-    alwaysOn: React.PropTypes.bool,
-    className: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    iconDisabled: React.PropTypes.string,
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    toggle: React.PropTypes.bool,
-    value: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      className: '',
-      value: true,
-      icon: 'fa-sun-o',
-      toggle: true,
-      name: 'toggle-button',
+export default class ToggleIconButtonWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      enabled: props.value,
     };
-  },
 
-  getInitialState() {
-    return {
-      enabled: this.props.value,
-    };
-  },
+    // Callback binding
+    this.buttonClicked = this.buttonClicked.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.state.enabled) {
       this.setState({ enabled: nextProps.value });
     }
-  },
+  }
 
   buttonClicked() {
     var enabled = this.props.toggle ? !this.state.enabled : this.state.enabled;
@@ -46,7 +28,7 @@ export default React.createClass({
     if (this.props.toggle) {
       this.setState({ enabled });
     }
-  },
+  }
 
   render() {
     const classList = [this.props.className];
@@ -59,5 +41,24 @@ export default React.createClass({
       classList.push(enabled ? style.enabledButton : style.disabledButton);
     }
     return <i className={classList.join(' ')} onClick={this.buttonClicked} />;
-  },
-});
+  }
+}
+
+ToggleIconButtonWidget.propTypes = {
+  alwaysOn: PropTypes.bool,
+  className: PropTypes.string,
+  icon: PropTypes.string,
+  iconDisabled: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  toggle: PropTypes.bool,
+  value: PropTypes.bool,
+};
+
+ToggleIconButtonWidget.defaultProps = {
+  className: '',
+  value: true,
+  icon: 'fa-sun-o',
+  toggle: true,
+  name: 'toggle-button',
+};

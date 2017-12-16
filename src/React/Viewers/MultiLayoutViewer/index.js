@@ -1,28 +1,23 @@
-import React                from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import AbstractViewerMenu   from '../AbstractViewerMenu';
-import MultiViewControl     from '../../CollapsibleControls/MultiViewControl';
-import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
-import MultiViewRenderer    from '../../Renderers/MultiLayoutRenderer';
+import AbstractViewerMenu from '../AbstractViewerMenu';
+import MultiViewControl   from '../../CollapsibleControls/MultiViewControl';
+import WidgetFactory      from '../../CollapsibleControls/CollapsibleControlFactory';
+import MultiViewRenderer  from '../../Renderers/MultiLayoutRenderer';
 
-export default React.createClass({
-
-  displayName: 'MultiLayoutViewer',
-
-  propTypes: {
-    layout: React.PropTypes.string,
-    menuAddOn: React.PropTypes.array,
-    queryDataModel: React.PropTypes.object.isRequired,
-    renderers: React.PropTypes.object.isRequired,
-    userData: React.PropTypes.object,
-  },
-
-  getInitialState() {
-    return {
+export default class MultiLayoutViewer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       activeRenderer: null,
       renderer: null,
     };
-  },
+
+    // Bind callback
+    this.attachListener = this.attachListener.bind(this);
+    this.detachListener = this.detachListener.bind(this);
+  }
 
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-mount-set-state */
@@ -36,7 +31,7 @@ export default React.createClass({
         activeRenderer: this.props.renderers[data.name],
       });
     });
-  },
+  }
   /* eslint-enable react/no-did-mount-set-state */
 
   componentWillUpdate(nextProps, nextState) {
@@ -49,7 +44,7 @@ export default React.createClass({
       this.detachListener();
       this.attachListener(nextDataModel);
     }
-  },
+  }
 
   // Auto unmount listener
   componentWillUnmount() {
@@ -58,7 +53,7 @@ export default React.createClass({
       this.activeViewportSubscription.unsubscribe();
       this.activeViewportSubscription = null;
     }
-  },
+  }
 
   attachListener(dataModel) {
     this.detachListener();
@@ -67,14 +62,14 @@ export default React.createClass({
         this.forceUpdate();
       });
     }
-  },
+  }
 
   detachListener() {
     if (this.queryDataModelChangeSubscription) {
       this.queryDataModelChangeSubscription.unsubscribe();
       this.queryDataModelChangeSubscription = null;
     }
-  },
+  }
 
   render() {
     var queryDataModel = (this.state.activeRenderer && this.state.activeRenderer.builder && this.state.activeRenderer.builder.queryDataModel)
@@ -102,5 +97,13 @@ export default React.createClass({
         <MultiViewControl renderer={this.state.renderer} />
         {controlWidgets}
       </AbstractViewerMenu>);
-  },
-});
+  }
+}
+
+MultiLayoutViewer.propTypes = {
+  layout: PropTypes.string,
+  menuAddOn: PropTypes.array,
+  queryDataModel: PropTypes.object.isRequired,
+  renderers: PropTypes.object.isRequired,
+  userData: PropTypes.object,
+};

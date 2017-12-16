@@ -1,26 +1,20 @@
-/* global window */
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import React        from 'react';
-import sizeHelper   from '../../../Common/Misc/SizeHelper';
+import sizeHelper from '../../../Common/Misc/SizeHelper';
 
-export default React.createClass({
-
-  displayName: 'GeometryRenderer',
-
-  propTypes: {
-    geometryBuilder: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {};
-  },
-
-  getInitialState() {
-    return {
+export default class GeometryRenderer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       width: 200,
       height: 200,
     };
-  },
+
+    // Bind callback
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.resetCamera = this.resetCamera.bind(this);
+  }
 
   componentWillMount() {
     // Listen to window resize
@@ -28,7 +22,7 @@ export default React.createClass({
 
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
-  },
+  }
 
   componentDidMount() {
     if (this.props.geometryBuilder) {
@@ -36,11 +30,11 @@ export default React.createClass({
       this.props.geometryBuilder.render();
     }
     this.updateDimensions();
-  },
+  }
 
   componentDidUpdate(nextProps, nextState) {
     this.updateDimensions();
-  },
+  }
 
   componentWillUnmount() {
     // Remove window listener
@@ -48,7 +42,7 @@ export default React.createClass({
       this.sizeSubscription.unsubscribe();
       this.sizeSubscription = null;
     }
-  },
+  }
 
   updateDimensions() {
     var el = this.canvasRenderer.parentNode,
@@ -66,13 +60,13 @@ export default React.createClass({
       return true;
     }
     return false;
-  },
+  }
 
   resetCamera() {
     if (this.props.geometryBuilder) {
       this.props.geometryBuilder.resetCamera();
     }
-  },
+  }
 
   render() {
     return (
@@ -82,5 +76,12 @@ export default React.createClass({
         width={this.state.width}
         height={this.state.height}
       />);
-  },
-});
+  }
+}
+
+GeometryRenderer.propTypes = {
+  geometryBuilder: PropTypes.object,
+};
+
+GeometryRenderer.defaultProps = {
+};

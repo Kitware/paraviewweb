@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ScatterPlotCameraControl.mcss';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
 
@@ -70,6 +72,6 @@ export default class ScatterPlotCameraControl extends React.Component {
 }
 
 ScatterPlotCameraControl.propTypes = {
-  manager: React.PropTypes.object,
-  name: React.PropTypes.string,
+  manager: PropTypes.object,
+  name: PropTypes.string,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import OperatorRender from './OperatorRender';
 import FiveClauseRender from './FiveClauseRender';
@@ -41,12 +42,12 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  className: React.PropTypes.string,
-  rule: React.PropTypes.object,
-  depth: React.PropTypes.number,
-  maxDepth: React.PropTypes.number,
-  path: React.PropTypes.array,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  getLegend: React.PropTypes.func,
+  className: PropTypes.string,
+  rule: PropTypes.object,
+  depth: PropTypes.number,
+  maxDepth: PropTypes.number,
+  path: PropTypes.array,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  getLegend: PropTypes.func,
 };

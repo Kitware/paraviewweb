@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/CountToolbar.mcss';
 
@@ -165,7 +166,7 @@ export default class CountToolbar extends React.Component {
 }
 
 CountToolbar.propTypes = {
-  provider: React.PropTypes.object,
-  onChange: React.PropTypes.func,
-  activeScores: React.PropTypes.array,
+  provider: PropTypes.object,
+  onChange: PropTypes.func,
+  activeScores: PropTypes.array,
 };

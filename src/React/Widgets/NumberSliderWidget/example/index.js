@@ -1,25 +1,32 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import NumberSliderWidget from '..';
-import React              from 'react';
-import ReactDOM           from 'react-dom';
 
 // Load CSS
 require('normalize.css');
 
-const ColorField = React.createClass({
+class ColorField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      r: 30,
+      g: 60,
+      b: 90,
+    };
 
-  displayName: 'NumberSliderWidget-Example',
-
-  getInitialState(){
-    return {r:30, g:60, b:90};
-  },
+    // Bind callback
+    this.updateVal = this.updateVal.bind(this);
+    this.drawColor = this.drawColor.bind(this);
+  }
 
   componentDidMount() {
     this.drawColor();
-  },
+  }
 
   componentDidUpdate() {
     this.drawColor();
-  },
+  }
 
   updateVal(e) {
     var which = e.target.name,
@@ -27,7 +34,7 @@ const ColorField = React.createClass({
         toUpdate = {};
     toUpdate[which] = newVal;
     this.setState(toUpdate);
-  },
+  }
 
   drawColor() {
     var ctx = ReactDOM.findDOMNode(this.refs.canvas).getContext('2d'),
@@ -36,7 +43,7 @@ const ColorField = React.createClass({
     ctx.fillStyle = `rgb(${this.state.r}, ${this.state.g}, ${this.state.b})`;
     ctx.rect(0,0,width,height);
     ctx.fill();
-  },
+  }
 
   render() {
     var [r,g,b] = [this.state.r, this.state.g, this.state.b];
@@ -48,7 +55,7 @@ const ColorField = React.createClass({
         <canvas ref="canvas" width="50" height="50"></canvas>
       </section>
     );
-  },
-});
+  }
+}
 
-ReactDOM.render(<ColorField/>, document.querySelector('.content'));
+ReactDOM.render(<ColorField />, document.querySelector('.content'));

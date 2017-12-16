@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
@@ -102,14 +103,14 @@ export default class ParallelCoordinatesTool extends React.Component {
 }
 
 ParallelCoordinatesTool.propTypes = {
-  provider: React.PropTypes.object,
-  size: React.PropTypes.string,
+  provider: PropTypes.object,
+  size: PropTypes.string,
 
-  activeWindow: React.PropTypes.object,
-  onActiveWindow: React.PropTypes.func,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 
-  showOnlySelection: React.PropTypes.bool,
-  partitionScores: React.PropTypes.array,
+  showOnlySelection: PropTypes.bool,
+  partitionScores: PropTypes.array,
 };
 
 ParallelCoordinatesTool.defaultProps = {

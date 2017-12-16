@@ -1,26 +1,30 @@
-import React                from 'react';
-import style                from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import LayerItem            from './LayerItem';
-import NumberSliderWidget   from '../../Widgets/NumberSliderWidget';
+import style from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
-export default React.createClass({
+import CollapsibleWidget  from '../../Widgets/CollapsibleWidget';
+import LayerItem          from './LayerItem';
+import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
 
-  displayName: 'FloatImageControl',
-
-  propTypes: {
-    model: React.PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    this.attachListener(this.props.model);
-    return {
+export default class FloatImageControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       change: false,
-      x: this.props.model.dimensions[0] / 2,
-      y: this.props.model.dimensions[1] / 2,
+      x: props.model.dimensions[0] / 2,
+      y: props.model.dimensions[1] / 2,
     };
-  },
+
+    this.attachListener(props.model);
+
+    // Bind callback
+    this.onProbeChange = this.onProbeChange.bind(this);
+    this.attachListener = this.attachListener.bind(this);
+    this.detachListener = this.detachListener.bind(this);
+    this.updateLight = this.updateLight.bind(this);
+    this.toggleProbe = this.toggleProbe.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     var previous = this.props.model,
@@ -33,7 +37,7 @@ export default React.createClass({
       // Force redraw
       this.setState({ change: !this.state.change });
     }
-  },
+  }
 
   onProbeChange(e) {
     var name = e.target.name,
@@ -43,25 +47,25 @@ export default React.createClass({
     newState[name] = newVal;
     this.setState(newState);
     this.props.model.getTimeChart(newState.x, newState.y);
-  },
+  }
 
   attachListener(model) {
     this.changeSubscription = model.onProbeChange((data, envelope) => {
       this.forceUpdate();
     });
-  },
+  }
 
   detachListener() {
     if (this.changeSubscription) {
       this.changeSubscription.unsubscribe();
       this.changeSubscription = null;
     }
-  },
+  }
 
   updateLight(event) {
     this.props.model.setLight(255 - event.target.value);
     this.setState({ change: !this.state.change });
-  },
+  }
 
   toggleProbe(newVal) {
     this.props.model.getTimeProbe().enabled = !!newVal;
@@ -74,7 +78,7 @@ export default React.createClass({
 
     this.props.model.getTimeProbe().triggerChange();
     this.props.model.render();
-  },
+  }
 
   render() {
     var floatImageModel = this.props.model,
@@ -135,5 +139,9 @@ export default React.createClass({
         </CollapsibleWidget>
       </div>
       );
-  },
-});
+  }
+}
+
+FloatImageControl.propTypes = {
+  model: PropTypes.object.isRequired,
+};

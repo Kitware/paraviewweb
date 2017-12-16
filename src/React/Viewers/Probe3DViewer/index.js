@@ -1,43 +1,32 @@
-import React                        from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
-import style                        from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
+import style from 'PVWStyle/ReactViewers/Probe3DViewer.mcss';
 
-import AbstractViewerMenu           from '../AbstractViewerMenu';
-import LineChartViewer              from '../LineChartViewer';
-import LookupTableManagerControl    from '../../CollapsibleControls/LookupTableManagerControl';
-import ProbeControl                 from '../../CollapsibleControls/ProbeControl';
-import CollapsibleWidget            from '../../Widgets/CollapsibleWidget';
-import QueryDataModelWidget         from '../../Widgets/QueryDataModelWidget';
-import ImageRenderer                from '../../Renderers/ImageRenderer';
+import AbstractViewerMenu        from '../AbstractViewerMenu';
+import LineChartViewer           from '../LineChartViewer';
+import LookupTableManagerControl from '../../CollapsibleControls/LookupTableManagerControl';
+import ProbeControl              from '../../CollapsibleControls/ProbeControl';
+import CollapsibleWidget         from '../../Widgets/CollapsibleWidget';
+import QueryDataModelWidget      from '../../Widgets/QueryDataModelWidget';
+import ImageRenderer             from '../../Renderers/ImageRenderer';
 
-const
-  renderAxisMap = {
-    XY: [0, 1, 2],
-    ZY: [2, 1, 0],
-    XZ: [0, 2, 1],
-  },
-  chartAxisNames = ['x', 'y', 'z'];
+const chartAxisNames = ['x', 'y', 'z'];
+const renderAxisMap = {
+  XY: [0, 1, 2],
+  ZY: [2, 1, 0],
+  XZ: [0, 2, 1],
+};
 
-export default React.createClass({
-
-  displayName: 'Probe3DViewer',
-
-  propTypes: {
-    imageBuilder: React.PropTypes.object.isRequired,
-    probe: React.PropTypes.bool,
-    queryDataModel: React.PropTypes.object.isRequired,
-    userData: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      probe: true,
-    };
-  },
-
-  getInitialState() {
-    return {
-      probe: [this.props.imageBuilder.getProbe()[0], this.props.imageBuilder.getProbe()[1], this.props.imageBuilder.getProbe()[2]],
+export default class Probe3DViewer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      probe: [
+        props.imageBuilder.getProbe()[0],
+        props.imageBuilder.getProbe()[1],
+        props.imageBuilder.getProbe()[2],
+      ],
       chartVisible: false,
       chartSize: {
         width: 300,
@@ -49,7 +38,15 @@ export default React.createClass({
       },
       chartAxis: 0,
     };
-  },
+
+    // Bind callback
+    this.onChartVisibilityChange = this.onChartVisibilityChange.bind(this);
+    this.validateChartAxis = this.validateChartAxis.bind(this);
+    this.updateChart = this.updateChart.bind(this);
+    this.dragOn = this.dragOn.bind(this);
+    this.dragOff = this.dragOff.bind(this);
+    this.dragChart = this.dragChart.bind(this);
+  }
 
   // Auto mount listener unless notified otherwise
   componentWillMount() {
@@ -82,13 +79,13 @@ export default React.createClass({
     this.probeListenerSubscription = imageBuilder.onProbeChange((probe, envelope) => {
       this.setState({ probe });
     });
-  },
+  }
 
   componentDidUpdate() {
     if (this.state.chartVisible) {
       this.chartViewer.updateDimensions();
     }
-  },
+  }
 
   // Auto unmount listener
   componentWillUnmount() {
@@ -108,14 +105,14 @@ export default React.createClass({
       this.probeListenerSubscription.unsubscribe();
       this.probeListenerSubscription = null;
     }
-  },
+  }
 
   onChartVisibilityChange(isOpen) {
     if (isOpen) {
       this.validateChartAxis();
     }
     this.setState({ chartVisible: isOpen });
-  },
+  }
 
   validateChartAxis() {
     var renderCoords = this.props.imageBuilder.getRenderMethod(),
@@ -129,7 +126,7 @@ export default React.createClass({
       this.liveChartAxis = chartAxis;
       this.setState({ chartAxis, chartData });
     }
-  },
+  }
 
   updateChart(event) {
     var idx = Number(event.target.getAttribute('data-index')),
@@ -138,7 +135,7 @@ export default React.createClass({
 
     this.liveChartAxis = idx;
     this.setState({ chartData, chartAxis: idx });
-  },
+  }
 
   dragOn(event) {
     var el = this.chartContainer,
@@ -147,11 +144,11 @@ export default React.createClass({
 
     this.dragChartFlag = true;
     this.dragPosition = [event.clientX - left, event.clientY - top];
-  },
+  }
 
   dragOff() {
     this.dragChartFlag = false;
-  },
+  }
 
   dragChart(event) {
     if (this.dragChartFlag) {
@@ -159,7 +156,7 @@ export default React.createClass({
       el.style.left = `${(event.clientX - this.dragPosition[0])}px`;
       el.style.top = `${(event.clientY - this.dragPosition[1])}px`;
     }
-  },
+  }
 
   render() {
     const queryDataModel = this.props.queryDataModel;
@@ -248,5 +245,17 @@ export default React.createClass({
           />
         </div>
       </div>);
-  },
-});
+  }
+}
+
+
+Probe3DViewer.propTypes = {
+  imageBuilder: PropTypes.object.isRequired,
+  probe: PropTypes.bool,
+  queryDataModel: PropTypes.object.isRequired,
+  userData: PropTypes.object,
+};
+
+Probe3DViewer.defaultProps = {
+  probe: true,
+};

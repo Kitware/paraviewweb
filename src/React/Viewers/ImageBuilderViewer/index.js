@@ -1,4 +1,5 @@
-import React                from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import AbstractViewerMenu   from '../AbstractViewerMenu';
 import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
@@ -71,11 +72,11 @@ export default class ImageBuilderViewer extends React.Component {
 }
 
 ImageBuilderViewer.propTypes = {
-  config: React.PropTypes.object,
-  imageBuilder: React.PropTypes.object.isRequired,
-  menuAddOn: React.PropTypes.array,
-  queryDataModel: React.PropTypes.object.isRequired,
-  userData: React.PropTypes.object,
+  config: PropTypes.object,
+  imageBuilder: PropTypes.object.isRequired,
+  menuAddOn: PropTypes.array,
+  queryDataModel: PropTypes.object.isRequired,
+  userData: PropTypes.object,
 };
 
 ImageBuilderViewer.defaultProps = {

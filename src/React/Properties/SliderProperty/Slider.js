@@ -1,14 +1,15 @@
-import React                from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
+
 import NumberSliderControl  from '../../Widgets/NumberSliderWidget';
 
-export default React.createClass({
+export default class Slider extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'Slider',
-
-  propTypes: {
-    idx: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-  },
+    // Bind callback
+    this.valueChange = this.valueChange.bind(this);
+  }
 
   valueChange(e) {
     if (this.props.onChange) {
@@ -18,7 +19,7 @@ export default React.createClass({
         this.props.onChange(null, e.target.value);
       }
     }
-  },
+  }
 
   render() {
     var propsCopy = Object.assign({}, this.props);
@@ -26,5 +27,11 @@ export default React.createClass({
     delete propsCopy.idx;
 
     return <NumberSliderControl {...propsCopy} onChange={this.valueChange} />;
-  },
-});
+  }
+}
+
+Slider.propTypes = {
+  idx: PropTypes.number,
+  onChange: PropTypes.func,
+};
+

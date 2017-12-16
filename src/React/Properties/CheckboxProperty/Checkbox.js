@@ -1,23 +1,15 @@
-import React from 'react';
+import React     from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactProperties/CheckboxProperty.mcss';
 
-export default React.createClass({
+export default class Checkbox extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'Checkbox',
-
-  propTypes: {
-    idx: React.PropTypes.number,
-    label: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    value: React.PropTypes.bool,
-  },
-
-  getDefaultProps() {
-    return {
-      value: false,
-      label: '',
-    };
-  },
+    // Callback binding
+    this.valueChange = this.valueChange.bind(this);
+  }
 
   valueChange(e) {
     if (this.props.onChange) {
@@ -27,7 +19,7 @@ export default React.createClass({
         this.props.onChange(null, e.target.checked);
       }
     }
-  },
+  }
 
   render() {
     return (
@@ -40,5 +32,17 @@ export default React.createClass({
           onChange={this.valueChange}
         />
       </div>);
-  },
-});
+  }
+}
+
+Checkbox.propTypes = {
+  idx: PropTypes.number,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.bool,
+};
+
+Checkbox.defaultProps = {
+  value: false,
+  label: '',
+};

@@ -1,14 +1,13 @@
-/* global Image document */
+import React     from 'react';
+import PropTypes from 'prop-types';
+import Monologue from 'monologue.js';
 
-import React            from 'react';
-import Monologue        from 'monologue.js';
+import style from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
-import style            from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
-
-import ContentEditable  from '../../Widgets/ContentEditableWidget';
-import ImageExporter    from '../../../Common/Misc/ImageExporter';
-import sizeHelper       from '../../../Common/Misc/SizeHelper';
-import MouseHandler     from '../../../Interaction/Core/MouseHandler';
+import ContentEditable from '../../Widgets/ContentEditableWidget';
+import ImageExporter   from '../../../Common/Misc/ImageExporter';
+import sizeHelper      from '../../../Common/Misc/SizeHelper';
+import MouseHandler    from '../../../Interaction/Core/MouseHandler';
 
 const DRAW_DONE = 'ImageRenderer.draw.done';
 
@@ -136,44 +135,41 @@ function drawToCanvasAsBuffer() {
  *   - renderCanvas({ outputSize: [width, height], canvas: canvasDomElement, area: [x,y,width,height], crosshair: [x,y]})
  *   - resetCamera()
  */
-const ImageRenderer = React.createClass({
+export default class ImageRenderer extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'ImageRenderer',
+    const metadata = props.imageBuilder ? props.imageBuilder.queryDataModel.originalData.metadata : {} || {};
+    const title = metadata.title || 'No title';
+    const description = metadata.description || 'No description';
 
-  propTypes: {
-    crosshairColor: React.PropTypes.string,
-    imageBuilder: React.PropTypes.object,
-    listener: React.PropTypes.object,
-    maxZoom: React.PropTypes.number,
-    minZoom: React.PropTypes.number,
-    modifiers: React.PropTypes.array,
-    pressRadius: React.PropTypes.number,
-    userData: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      minZoom: 0.1,
-      maxZoom: 10,
-      crosshairColor: '#000',
-      modifiers: [0, 2],
-      pressRadius: 50,
-      userData: {},
-    };
-  },
-
-  getInitialState() {
-    var metadata = this.props.imageBuilder ? this.props.imageBuilder.queryDataModel.originalData.metadata || {} : {},
-      title = metadata.title || 'No title',
-      description = metadata.description || 'No description';
-    return {
+    this.state = {
       width: 200,
       height: 200,
       dialog: false,
       title,
       description,
     };
-  },
+
+    // Bind callback
+    this.onDrawDone = this.onDrawDone.bind(this);
+    this.getRenderingCanvas = this.getRenderingCanvas.bind(this);
+    this.enableLocalRendering = this.enableLocalRendering.bind(this);
+    this.updateMetadata = this.updateMetadata.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
+    this.toggleDialog = this.toggleDialog.bind(this);
+    this.recordImages = this.recordImages.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.zoomCallback = this.zoomCallback.bind(this);
+    this.dragCallback = this.dragCallback.bind(this);
+    this.clickCallback = this.clickCallback.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.resetCamera = this.resetCamera.bind(this);
+    this.drawDone = this.drawDone.bind(this);
+    this.renderImage = this.renderImage.bind(this);
+    this.renderCanvas = this.renderCanvas.bind(this);
+  }
 
   componentWillMount() {
     this.enableLocalRendering();
@@ -213,7 +209,7 @@ const ImageRenderer = React.createClass({
     // Add image exporter
     this.sendToServer = false;
     this.imageExporter = new ImageExporter();
-  },
+  }
 
   componentDidMount() {
     this.updateDimensions();
@@ -256,7 +252,7 @@ const ImageRenderer = React.createClass({
     if (this.props.imageBuilder && this.props.imageBuilder.setRenderer) {
       this.props.imageBuilder.setRenderer(this);
     }
-  },
+  }
 
   componentDidUpdate(nextProps, nextState) {
     this.mouseHandler.setEnable(!nextProps.userData.disableMouseListener);
@@ -264,7 +260,7 @@ const ImageRenderer = React.createClass({
     if (this.imageToDraw.drawToCanvas) {
       this.imageToDraw.drawToCanvas();
     }
-  },
+  }
 
   componentWillUnmount() {
     this.off();
@@ -298,19 +294,19 @@ const ImageRenderer = React.createClass({
     if (this.props.imageBuilder && this.props.imageBuilder.setRenderer) {
       this.props.imageBuilder.setRenderer(null);
     }
-  },
+  }
 
   onDrawDone(callback) {
     return this.on(DRAW_DONE, callback);
-  },
+  }
 
   getRenderingCanvas() {
     return this.canvasRenderer;
-  },
+  }
 
   enableLocalRendering(enable = true) {
     this.enableRendering = enable;
-  },
+  }
 
   updateMetadata() {
     this.setState({
@@ -322,23 +318,23 @@ const ImageRenderer = React.createClass({
       image: this.thumbnail.src,
       path: this.props.imageBuilder.queryDataModel.basepath,
     });
-  },
+  }
 
   updateTitle(event) {
     var title = event.target.value;
     this.setState({ title });
-  },
+  }
 
   updateDescription(event) {
     var description = event.target.value;
     this.setState({ description });
-  },
+  }
 
   toggleDialog() {
     this.setState({
       dialog: !this.state.dialog,
     });
-  },
+  }
 
   handleKeyDown(event) {
     if (event.keyCode === 82) {
@@ -368,11 +364,11 @@ const ImageRenderer = React.createClass({
         dialog: !this.state.dialog,
       });
     }
-  },
+  }
 
   recordImages(record) {
     this.sendToServer = record;
-  },
+  }
 
   zoomCallback(event, envelope) {
     var eventManaged = false;
@@ -423,7 +419,7 @@ const ImageRenderer = React.createClass({
 
     // Store center
     this.baseCenter = [this.center[0], this.center[1]];
-  },
+  }
 
   dragCallback(event, envelope) {
     var eventManaged = false;
@@ -459,7 +455,7 @@ const ImageRenderer = React.createClass({
         this.imageToDraw.drawToCanvas();
       }
     }
-  },
+  }
 
   clickCallback(event, envelope) {
     // Extend event with active area
@@ -469,7 +465,7 @@ const ImageRenderer = React.createClass({
     if (this.props.listener && this.props.listener.click) {
       this.props.listener.click(event, envelope);
     }
-  },
+  }
 
   updateDimensions() {
     if (!this.rootContainer) {
@@ -486,7 +482,7 @@ const ImageRenderer = React.createClass({
       return true;
     }
     return false;
-  },
+  }
 
   resetCamera() {
     var w = this.state.width,
@@ -501,16 +497,16 @@ const ImageRenderer = React.createClass({
     this.center = [0.5, 0.5];
 
     image.drawToCanvas();
-  },
+  }
 
   drawDone() {
     this.emit(DRAW_DONE, this);
-  },
+  }
 
   renderImage(data) {
     this.imageToDraw.drawToCanvas = drawToCanvasAsImage;
     this.imageToDraw.src = data.url;
-  },
+  }
 
   renderCanvas(data) {
     this.imageToDraw.drawToCanvas = drawToCanvasAsBuffer;
@@ -530,7 +526,7 @@ const ImageRenderer = React.createClass({
     } else {
       this.imageToDraw.drawToCanvas();
     }
-  },
+  }
 
   render() {
     return (
@@ -565,9 +561,27 @@ const ImageRenderer = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+ImageRenderer.propTypes = {
+  crosshairColor: PropTypes.string,
+  imageBuilder: PropTypes.object,
+  listener: PropTypes.object,
+  maxZoom: PropTypes.number,
+  minZoom: PropTypes.number,
+  modifiers: PropTypes.array,
+  pressRadius: PropTypes.number,
+  userData: PropTypes.object,
+};
+
+ImageRenderer.defaultProps = {
+  minZoom: 0.1,
+  maxZoom: 10,
+  crosshairColor: '#000',
+  modifiers: [0, 2],
+  pressRadius: 50,
+  userData: {},
+};
 
 Monologue.mixInto(ImageRenderer);
-
-export default ImageRenderer;

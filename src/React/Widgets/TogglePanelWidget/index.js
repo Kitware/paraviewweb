@@ -1,36 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/TogglePanelWidget.mcss';
 
-export default React.createClass({
-
-  displayName: 'TogglePanelWidget',
-
-  propTypes: {
-    anchor: React.PropTypes.array,
-    children: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
-    panelVisible: React.PropTypes.bool,
-    position: React.PropTypes.array,
-    size: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {
-      anchor: ['top', 'right'],
-      children: [],
-      panelVisible: false,
-      position: ['top', 'left'],
-      size: {
-        button: ['2em', '2em'],
-        panel: ['400px'],
-      },
+export default class TogglePanelWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      panelVisible: props.panelVisible,
     };
-  },
 
-  getInitialState() {
-    return {
-      panelVisible: this.props.panelVisible,
-    };
-  },
+    // Bind callback
+    this.togglePanel = this.togglePanel.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.state.enabled) {
@@ -39,16 +21,16 @@ export default React.createClass({
     if (nextProps.panelVisible !== this.state.panelVisible) {
       this.setState({ panelVisible: nextProps.panelVisible });
     }
-  },
+  }
 
   togglePanel() {
     const panelVisible = !this.state.panelVisible;
     this.setState({ panelVisible });
-  },
+  }
 
   render() {
-    const buttonAnchor = this.props.anchor.join(' '),
-      panelAnchor = this.props.position.join(' ');
+    const buttonAnchor = this.props.anchor.join(' ');
+    const panelAnchor = this.props.position.join(' ');
 
     return (
       <div
@@ -80,5 +62,24 @@ export default React.createClass({
           </div>
         </div>
       </div>);
+  }
+}
+
+TogglePanelWidget.propTypes = {
+  anchor: PropTypes.array,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  panelVisible: PropTypes.bool,
+  position: PropTypes.array,
+  size: PropTypes.object,
+};
+
+TogglePanelWidget.defaultProps = {
+  anchor: ['top', 'right'],
+  children: [],
+  panelVisible: false,
+  position: ['top', 'left'],
+  size: {
+    button: ['2em', '2em'],
+    panel: ['400px'],
   },
-});
+};

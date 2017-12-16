@@ -1,4 +1,6 @@
 import React     from 'react';
+import PropTypes from 'prop-types';
+
 import style     from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -155,59 +157,25 @@ function createDragHandlers(thisObj) {
   };
 }
 
-export default React.createClass({
-
-  displayName: 'OverlayWindow',
-
-  propTypes: {
-    children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]),
-    cloneChildren: React.PropTypes.bool,
-    height: React.PropTypes.number,
-    hotCornerExtra: React.PropTypes.number,  // FIXME: Constrain to (positive) integer?
-    marginSize: React.PropTypes.number,
-    minContentHeight: React.PropTypes.number,
-    minContentWidth: React.PropTypes.number,
-    onResize: React.PropTypes.func,
-    onActive: React.PropTypes.func,
-    title: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element, React.PropTypes.array, React.PropTypes.object]),
-    titleBarHeight: React.PropTypes.number,
-    front: React.PropTypes.bool,
-    visible: React.PropTypes.bool,
-    width: React.PropTypes.number,
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
-  },
-
-  getDefaultProps() {
-    return {
-      cloneChildren: false,
-      height: 100,
-      hotCornerExtra: 2,
-      marginSize: 5,
-      minContentHeight: 2,
-      minContentWidth: 2,
-      resizable: true,
-      title: null,
-      titleBarHeight: 25,
-      visible: true,
-      width: 200,
-      front: false,
-      onActive: () => {},
-      x: 10,
-      y: 10,
-    };
-  },
-
-  getInitialState() {
-    return {
-      x: this.props.x,
-      y: this.props.y,
-      height: this.props.height,
-      width: this.props.width,
+export default class OverlayWindow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      x: props.x,
+      y: props.y,
+      height: props.height,
+      width: props.width,
       cursor: null,
       dragging: false,
     };
-  },
+
+    // Bind callback
+    this.computeActionRegion = this.computeActionRegion.bind(this);
+    this.hotCornerDown = this.hotCornerDown.bind(this);
+    this.mouseMove = this.mouseMove.bind(this);
+    this.mouseDown = this.mouseDown.bind(this);
+    this.mouseUp = this.mouseUp.bind(this);
+  }
 
   componentWillMount() {
     this.lastScreenY = 0;
@@ -218,13 +186,13 @@ export default React.createClass({
     this.setLastScreenY = (y) => { this.lastScreenY = y; };
     this.handlerMap = createDragHandlers(this);
     this.dragHandler = this.mouseMove;
-  },
+  }
 
   componentDidMount() {
     if (this.props.onResize) {
       this.props.onResize(this.state.width, this.state.height, this);
     }
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.width !== prevState.width || this.state.height !== prevState.height) {
@@ -232,7 +200,7 @@ export default React.createClass({
         this.props.onResize(this.state.width, this.state.height, this);
       }
     }
-  },
+  }
 
   computeActionRegion(evt) {
     const actionStruct = {
@@ -276,7 +244,7 @@ export default React.createClass({
     }
 
     return actionStruct;
-  },
+  }
 
   hotCornerDown(evt) {
     evt.stopPropagation();
@@ -301,12 +269,12 @@ export default React.createClass({
       default:
         break;
     }
-  },
+  }
 
   mouseMove(evt) {
     const actionStruct = this.computeActionRegion(evt);
     this.setState({ cursor: actionStruct.cursor });
-  },
+  }
 
   mouseDown(evt) {
     const actionStruct = this.computeActionRegion(evt);
@@ -316,14 +284,14 @@ export default React.createClass({
       this.setState({ cursor: actionStruct.cursor, dragging: true });
       this.props.onActive(true, this);
     }
-  },
+  }
 
   mouseUp(evt) {
     const actionStruct = this.computeActionRegion(evt);
     this.dragHandler = this.mouseMove;
     this.setState({ cursor: actionStruct.cursor, dragging: false });
     setImmediate(() => this.props.onActive(false, this));
-  },
+  }
 
   render() {
     if (!this.props.visible) {
@@ -434,5 +402,42 @@ export default React.createClass({
           </div>
         </div>
       </div>);
-  },
-});
+  }
+}
+
+OverlayWindow.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  cloneChildren: PropTypes.bool,
+  height: PropTypes.number,
+  hotCornerExtra: PropTypes.number,  // FIXME: Constrain to (positive) integer?
+  marginSize: PropTypes.number,
+  minContentHeight: PropTypes.number,
+  minContentWidth: PropTypes.number,
+  onResize: PropTypes.func,
+  onActive: PropTypes.func,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.array, PropTypes.object]),
+  titleBarHeight: PropTypes.number,
+  front: PropTypes.bool,
+  visible: PropTypes.bool,
+  width: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
+};
+
+OverlayWindow.defaultProps = {
+  cloneChildren: false,
+  height: 100,
+  hotCornerExtra: 2,
+  marginSize: 5,
+  minContentHeight: 2,
+  minContentWidth: 2,
+  resizable: true,
+  title: null,
+  titleBarHeight: 25,
+  visible: true,
+  width: 200,
+  front: false,
+  onActive: () => {},
+  x: 10,
+  y: 10,
+};

@@ -24,6 +24,8 @@ module.exports = {
     'jsx-a11y/label-has-for': 0,
     'no-console': 0,
     'import/no-named-as-default-member': 0,
+    'import/no-named-as-default': 0,
+    'import/no-extraneous-dependencies': 0,
   },
   'settings': {
     'import/resolver': 'webpack'

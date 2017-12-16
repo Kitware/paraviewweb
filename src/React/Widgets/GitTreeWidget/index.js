@@ -1,6 +1,8 @@
-import React      from 'react';
+import React     from 'react';
 import PropTypes from 'prop-types';
-import style      from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
+
+import style from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
+
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 function sortById(a, b) {

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
 export default function render(props) {
@@ -14,11 +16,11 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  color: React.PropTypes.string,
-  index: React.PropTypes.number,
-  step: React.PropTypes.number,
-  margin: React.PropTypes.number,
-  fullHeight: React.PropTypes.bool,
+  color: PropTypes.string,
+  index: PropTypes.number,
+  step: PropTypes.number,
+  margin: PropTypes.number,
+  fullHeight: PropTypes.bool,
 };
 
 render.defaultProps = {

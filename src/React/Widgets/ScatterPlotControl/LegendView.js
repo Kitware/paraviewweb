@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/ScatterPlotControl.mcss';
 
 export default function LegendView(props) {
@@ -72,6 +74,6 @@ export default function LegendView(props) {
 }
 
 LegendView.propTypes = {
-  model: React.PropTypes.object,
-  toggleEditMode: React.PropTypes.func,
+  model: PropTypes.object,
+  toggleEditMode: PropTypes.func,
 };

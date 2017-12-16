@@ -1,21 +1,18 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
 import Plotly from 'plotly.js';
 
 import style from 'PVWStyle/ReactRenderers/PlotlyRenderer.mcss';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 
-export default React.createClass({
+export default class PlotlyRenderer extends React.Component {
+  constructor(props) {
+    super(props);
 
-  displayName: 'PlotlyRenderer',
-
-  propTypes: {
-    chartBuilder: React.PropTypes.object,
-  },
-
-  getDefaultProps() {
-    return {};
-  },
+    // Bind callback
+    this.updateDimensions = this.updateDimensions.bind(this);
+  }
 
   componentWillMount() {
     // Listen to window resize
@@ -57,15 +54,15 @@ export default React.createClass({
         Plotly.Fx.hover(container, data.hover.hoverList);
       }
     });
-  },
+  }
 
   componentDidMount() {
     this.updateDimensions();
-  },
+  }
 
   componentDidUpdate(nextProps, nextState) {
     this.updateDimensions();
-  },
+  }
 
   componentWillUnmount() {
     // Remove window listener
@@ -78,16 +75,23 @@ export default React.createClass({
       this.dataSubscription.unsubscribe();
       this.dataSubscription = null;
     }
-  },
+  }
 
   updateDimensions() {
     const elt = this.chartRenderer;
     if (elt.layout) {
       Plotly.relayout(elt, elt.layout);
     }
-  },
+  }
 
   render() {
     return (<div className={style.chartContainer} ref={(c) => { this.chartRenderer = c; }} />);
-  },
-});
+  }
+}
+
+PlotlyRenderer.propTypes = {
+  chartBuilder: PropTypes.object,
+};
+
+PlotlyRenderer.defaultProps = {
+};

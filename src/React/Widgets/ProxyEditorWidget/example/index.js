@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import React              from 'react';
+import PropTypes          from 'prop-types';
 import ReactDOM           from 'react-dom';
 import ProxyEditorWidget  from '..';
 
@@ -69,7 +70,7 @@ class ProxyEditorTestWidget extends React.Component {
 }
 
 ProxyEditorTestWidget.propTypes = {
-  sections: React.PropTypes.array,
+  sections: PropTypes.array,
 };
 
 

@@ -1,37 +1,29 @@
-/* global window document */
-
-import React    from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const noOp = () => { };
 
-export default React.createClass({
-
-  displayName: 'ContentEditableWidget',
-
-  propTypes: {
-    blurOnEnter: React.PropTypes.bool,
-    className: React.PropTypes.string,
-    html: React.PropTypes.string,
-    onBlur: React.PropTypes.func,
-    onChange: React.PropTypes.func,
-  },
-
-  getDefaultProps() {
-    return {
-      blurOnEnter: false,
-      className: '',
+export default class ContentEditableWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
     };
-  },
+
+    // Bind callback
+    this.setFocus = this.setFocus.bind(this);
+    this.blurEditable = this.blurEditable.bind(this);
+    this.emitChange = this.emitChange.bind(this);
+  }
 
   shouldComponentUpdate(nextProps) {
     return nextProps.html !== this.rootContainer.innerHTML;
-  },
+  }
 
   componentDidUpdate() {
     if (this.props.html !== this.rootContainer.innerHTML) {
       this.rootContainer.innerHTML = this.props.html;
     }
-  },
+  }
 
   setFocus() {
     const range = document.createRange();
@@ -39,7 +31,7 @@ export default React.createClass({
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
-  },
+  }
 
   blurEditable(event) {
     if (event.charCode === 13) {
@@ -49,7 +41,7 @@ export default React.createClass({
         this.props.onBlur();
       }
     }
-  },
+  }
 
   emitChange(evt) {
     var html = this.rootContainer.innerHTML;
@@ -61,7 +53,7 @@ export default React.createClass({
     if (evt.type === 'blur' && this.props.onBlur) {
       this.props.onBlur();
     }
-  },
+  }
 
   /* eslint-disable react/no-danger */
   render() {
@@ -75,6 +67,19 @@ export default React.createClass({
         contentEditable
         dangerouslySetInnerHTML={{ __html: this.props.html }}
       />);
-  },
+  }
   /* eslint-enable react/no-danger */
-});
+}
+
+ContentEditableWidget.propTypes = {
+  blurOnEnter: PropTypes.bool,
+  className: PropTypes.string,
+  html: PropTypes.string,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+};
+
+ContentEditableWidget.defaultProps = {
+  blurOnEnter: false,
+  className: '',
+};

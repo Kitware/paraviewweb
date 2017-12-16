@@ -1,21 +1,19 @@
-import React                from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import TextInputWidget      from '../../Widgets/TextInputWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import TextInputWidget   from '../../Widgets/TextInputWidget';
 
-export default React.createClass({
-
-  displayName: 'PixelOperatorControl',
-
-  propTypes: {
-    operator: React.PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    return {
-      operation: this.props.operator.getOperation(),
+export default class PixelOperatorControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      operation: props.operator.getOperation(),
     };
-  },
+
+    // Bind callback
+    this.updateOperation = this.updateOperation.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.state.operation !== nextProps.operator.getOperation()) {
@@ -23,19 +21,23 @@ export default React.createClass({
         operation: nextProps.operator.getOperation(),
       });
     }
-  },
+  }
 
   updateOperation(operation) {
     this.setState({
       operation,
     });
     this.props.operator.setOperation(operation);
-  },
+  }
 
   render() {
     return (
       <CollapsibleWidget title="Pixel Operation">
         <TextInputWidget value={this.state.operation} onChange={this.updateOperation} />
       </CollapsibleWidget>);
-  },
-});
+  }
+}
+
+PixelOperatorControl.propTypes = {
+  operator: PropTypes.object.isRequired,
+};

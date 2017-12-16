@@ -1,34 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default React.createClass({
-
-  displayName: 'NumberInputWidget',
-
-  propTypes: {
-    className: React.PropTypes.string,
-    max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    min: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    step: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    value: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  },
-
-  getDefaultProps() {
-    return {
-      className: '',
-      step: 1,
-      value: 0,
-      classes: [],
-    };
-  },
-
-  getInitialState() {
-    return {
+export default class NumberInputWidget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       editing: false,
-      valueRep: this.props.value,
+      valueRep: props.value,
     };
-  },
+
+    // Bind callback
+    this.valueChange = this.valueChange.bind(this);
+    this.endEditing = this.endEditing.bind(this);
+  }
 
   getValue() {
     const propVal = parseFloat(this.newVal);
@@ -36,7 +20,7 @@ export default React.createClass({
       return propVal;
     }
     return undefined;
-  },
+  }
 
   valueChange(e) {
     this.newVal = e.target.value;
@@ -50,11 +34,11 @@ export default React.createClass({
         this.props.onChange(propVal);
       }
     }
-  },
+  }
 
   endEditing() {
     this.setState({ editing: false });
-  },
+  }
 
   render() {
     return (
@@ -68,5 +52,22 @@ export default React.createClass({
         onChange={this.valueChange}
         onBlur={this.endEditing}
       />);
-  },
-});
+  }
+}
+
+NumberInputWidget.propTypes = {
+  className: PropTypes.string,
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
+NumberInputWidget.defaultProps = {
+  className: '',
+  step: 1,
+  value: 0,
+  classes: [],
+};
