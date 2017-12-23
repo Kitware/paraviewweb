@@ -31925,7 +31925,7 @@
 	              value: _this2.props.data.value[i],
 	              min: _this2.props.ui.domain.min,
 	              max: _this2.props.ui.domain.max,
-	              step: _step // int 1, double 0.1
+	              step: _this2.props.ui.domain.step || _step // int 1, double 0.1
 	              , idx: i,
 	              onChange: _this2.valueChange,
 	              key: _this2.props.data.id + '_' + i
@@ -32486,12 +32486,12 @@
 
 	    ui: {
 	      propType: typeMapping[ui.widget] || ui.widget,
-	      label: ui.name,
+	      label: ui.label || ui.name,
 	      help: ui.doc,
 	      noEmpty: true,
 	      layout: extractLayout(ui),
 	      type: extractType(ui),
-	      domain: extractDomain(ui),
+	      domain: ui.domain || extractDomain(ui),
 	      componentLabels: [],
 	      size: extractSize(ui)
 	    },
