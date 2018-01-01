@@ -1,5 +1,4 @@
 import Hammer from 'hammerjs';
-import merge from 'mout/src/object/merge';
 import Monologue from 'monologue.js';
 
 // Module dependencies and constants
@@ -40,12 +39,14 @@ function getRelative(el, event) {
   };
 }
 
-function broadcast(ctx, topic, event) {
+function broadcast(ctx, topic, event, preventDefault = true) {
   if (!ctx.mouseEnabled) {
     return;
   }
 
-  event.preventDefault();
+  if (preventDefault) {
+    event.preventDefault();
+  }
 
   event.button = 0;
   event.topic = topic;
@@ -59,6 +60,7 @@ export default class MouseHandler {
 
   constructor(domElement, options) {
     var defaultOptions = {
+      preventDefault: true,
       pan: {
         threshold: 0,
       },
@@ -66,7 +68,7 @@ export default class MouseHandler {
         threshold: 0,
       },
     };
-    var optionsWithDefault = merge(defaultOptions, options);
+    const optionsWithDefault = Object.assign(defaultOptions, options);
 
     this.Modifier = Modifier;
 
@@ -105,7 +107,9 @@ export default class MouseHandler {
         this.inRightClickHandling = true;
       }
 
-      e.preventDefault();
+      if (optionsWithDefault.preventDefault) {
+        e.preventDefault();
+      }
 
       const event = {
         srcEvent: e,
@@ -186,41 +190,41 @@ export default class MouseHandler {
 
     // Listen to hammer events
     this.hammer.on('tap', (e) => {
-      broadcast(this, 'click', e);
+      broadcast(this, 'click', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('doubletap', (e) => {
-      broadcast(this, 'dblclick', e);
+      broadcast(this, 'dblclick', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('pan', (e) => {
-      broadcast(this, 'drag', e);
+      broadcast(this, 'drag', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('panstart', (e) => {
       e.isFirst = true;
-      broadcast(this, 'drag', e);
+      broadcast(this, 'drag', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('panend', (e) => {
       e.isFinal = true;
-      broadcast(this, 'drag', e);
+      broadcast(this, 'drag', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('pinch', (e) => {
-      broadcast(this, 'zoom', e);
+      broadcast(this, 'zoom', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('pinchstart', (e) => {
       console.log('zoom start');
       e.isFirst = true;
-      broadcast(this, 'zoom', e);
+      broadcast(this, 'zoom', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.on('pinchend', (e) => {
       e.isFinal = true;
       console.log('zoom end');
-      broadcast(this, 'zoom', e);
+      broadcast(this, 'zoom', e, optionsWithDefault.preventDefault);
     });
 
     this.hammer.get('pinch').set({

@@ -589,6 +589,7 @@ export default class QueryDataModel {
         /* eslint-disable no-bitwise */
         if (item.modifier & event.modifier || item.modifier === event.modifier) {
           eventHandled = true;
+          event.preventDefault(); // Consume event
           const delta = event[deltaName] - item.lastCoord;
           self.lastTime[event.topic] = time;
 
