@@ -54,7 +54,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(46);
+	var _reactDom = __webpack_require__(41);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -3756,11 +3756,7 @@
 
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 
-	var _merge = __webpack_require__(36);
-
-	var _merge2 = _interopRequireDefault(_merge);
-
-	var _monologue = __webpack_require__(41);
+	var _monologue = __webpack_require__(36);
 
 	var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -3806,11 +3802,15 @@
 	}
 
 	function broadcast(ctx, topic, event) {
+	  var preventDefault = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
 	  if (!ctx.mouseEnabled) {
 	    return;
 	  }
 
-	  event.preventDefault();
+	  if (preventDefault) {
+	    event.preventDefault();
+	  }
 
 	  event.button = 0;
 	  event.topic = topic;
@@ -3827,6 +3827,7 @@
 	    _classCallCheck(this, MouseHandler);
 
 	    var defaultOptions = {
+	      preventDefault: true,
 	      pan: {
 	        threshold: 0
 	      },
@@ -3834,7 +3835,7 @@
 	        threshold: 0
 	      }
 	    };
-	    var optionsWithDefault = (0, _merge2.default)(defaultOptions, options);
+	    var optionsWithDefault = Object.assign(defaultOptions, options);
 
 	    this.Modifier = Modifier;
 
@@ -3873,7 +3874,9 @@
 	        _this.inRightClickHandling = true;
 	      }
 
-	      e.preventDefault();
+	      if (optionsWithDefault.preventDefault) {
+	        e.preventDefault();
+	      }
 
 	      var event = {
 	        srcEvent: e,
@@ -3954,41 +3957,41 @@
 
 	    // Listen to hammer events
 	    this.hammer.on('tap', function (e) {
-	      broadcast(_this, 'click', e);
+	      broadcast(_this, 'click', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('doubletap', function (e) {
-	      broadcast(_this, 'dblclick', e);
+	      broadcast(_this, 'dblclick', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('pan', function (e) {
-	      broadcast(_this, 'drag', e);
+	      broadcast(_this, 'drag', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('panstart', function (e) {
 	      e.isFirst = true;
-	      broadcast(_this, 'drag', e);
+	      broadcast(_this, 'drag', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('panend', function (e) {
 	      e.isFinal = true;
-	      broadcast(_this, 'drag', e);
+	      broadcast(_this, 'drag', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('pinch', function (e) {
-	      broadcast(_this, 'zoom', e);
+	      broadcast(_this, 'zoom', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('pinchstart', function (e) {
 	      console.log('zoom start');
 	      e.isFirst = true;
-	      broadcast(_this, 'zoom', e);
+	      broadcast(_this, 'zoom', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.on('pinchend', function (e) {
 	      e.isFinal = true;
 	      console.log('zoom end');
-	      broadcast(_this, 'zoom', e);
+	      broadcast(_this, 'zoom', e, optionsWithDefault.preventDefault);
 	    });
 
 	    this.hammer.get('pinch').set({
@@ -6734,207 +6737,6 @@
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(17), __webpack_require__(37), __webpack_require__(28)], __WEBPACK_AMD_DEFINE_RESULT__ = function (hasOwn, deepClone, isObject) {
-
-	    /**
-	     * Deep merge objects.
-	     */
-	    function merge() {
-	        var i = 1,
-	            key, val, obj, target;
-
-	        // make sure we don't modify source element and it's properties
-	        // objects are passed by reference
-	        target = deepClone( arguments[0] );
-
-	        while (obj = arguments[i++]) {
-	            for (key in obj) {
-	                if ( ! hasOwn(obj, key) ) {
-	                    continue;
-	                }
-
-	                val = obj[key];
-
-	                if ( isObject(val) && isObject(target[key]) ){
-	                    // inception, deep merge objects
-	                    target[key] = merge(target[key], val);
-	                } else {
-	                    // make sure arrays, regexp, date, objects are cloned
-	                    target[key] = deepClone(val);
-	                }
-
-	            }
-	        }
-
-	        return target;
-	    }
-
-	    return merge;
-
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38), __webpack_require__(19), __webpack_require__(27), __webpack_require__(39)], __WEBPACK_AMD_DEFINE_RESULT__ = function (clone, forOwn, kindOf, isPlainObject) {
-
-	    /**
-	     * Recursively clone native types.
-	     */
-	    function deepClone(val, instanceClone) {
-	        switch ( kindOf(val) ) {
-	            case 'Object':
-	                return cloneObject(val, instanceClone);
-	            case 'Array':
-	                return cloneArray(val, instanceClone);
-	            default:
-	                return clone(val);
-	        }
-	    }
-
-	    function cloneObject(source, instanceClone) {
-	        if (isPlainObject(source)) {
-	            var out = {};
-	            forOwn(source, function(val, key) {
-	                this[key] = deepClone(val, instanceClone);
-	            }, out);
-	            return out;
-	        } else if (instanceClone) {
-	            return instanceClone(source);
-	        } else {
-	            return source;
-	        }
-	    }
-
-	    function cloneArray(arr, instanceClone) {
-	        var out = [],
-	            i = -1,
-	            n = arr.length,
-	            val;
-	        while (++i < n) {
-	            out[i] = deepClone(arr[i], instanceClone);
-	        }
-	        return out;
-	    }
-
-	    return deepClone;
-
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27), __webpack_require__(39), __webpack_require__(40)], __WEBPACK_AMD_DEFINE_RESULT__ = function (kindOf, isPlainObject, mixIn) {
-
-	    /**
-	     * Clone native types.
-	     */
-	    function clone(val){
-	        switch (kindOf(val)) {
-	            case 'Object':
-	                return cloneObject(val);
-	            case 'Array':
-	                return cloneArray(val);
-	            case 'RegExp':
-	                return cloneRegExp(val);
-	            case 'Date':
-	                return cloneDate(val);
-	            default:
-	                return val;
-	        }
-	    }
-
-	    function cloneObject(source) {
-	        if (isPlainObject(source)) {
-	            return mixIn({}, source);
-	        } else {
-	            return source;
-	        }
-	    }
-
-	    function cloneRegExp(r) {
-	        var flags = '';
-	        flags += r.multiline ? 'm' : '';
-	        flags += r.global ? 'g' : '';
-	        flags += r.ignoreCase ? 'i' : '';
-	        return new RegExp(r.source, flags);
-	    }
-
-	    function cloneDate(date) {
-	        return new Date(+date);
-	    }
-
-	    function cloneArray(arr) {
-	        return arr.slice();
-	    }
-
-	    return clone;
-
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-
-	    /**
-	     * Checks if the value is created by the `Object` constructor.
-	     */
-	    function isPlainObject(value) {
-	        return (!!value && typeof value === 'object' &&
-	            value.constructor === Object);
-	    }
-
-	    return isPlainObject;
-
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(19)], __WEBPACK_AMD_DEFINE_RESULT__ = function(forOwn){
-
-	    /**
-	    * Combine properties from all the objects into first one.
-	    * - This method affects target object in place, if you want to create a new Object pass an empty object as first param.
-	    * @param {object} target    Target Object
-	    * @param {...object} objects    Objects to be combined (0...n objects).
-	    * @return {object} Target Object.
-	    */
-	    function mixIn(target, objects){
-	        var i = 0,
-	            n = arguments.length,
-	            obj;
-	        while(++i < n){
-	            obj = arguments[i];
-	            if (obj != null) {
-	                forOwn(obj, copyProp, target);
-	            }
-	        }
-	        return target;
-	    }
-
-	    function copyProp(val, key){
-	        this[key] = val;
-	    }
-
-	    return mixIn;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * monologue.js - EventEmitter replacement with AMQP-style bindings and other advanced features. Compatible with postal.js's API.
 	 * Author: Jim Cowart (http://ifandelse.com)
@@ -6947,7 +6749,7 @@
 		/* istanbul ignore if  */
 		if ( true ) {
 			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(42), __webpack_require__(44) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(37), __webpack_require__(39) ], __WEBPACK_AMD_DEFINE_RESULT__ = function( _, riveter ) {
 				return factory( _, riveter, root );
 			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		/* istanbul ignore else  */
@@ -7399,7 +7201,7 @@
 
 
 /***/ },
-/* 42 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -19754,10 +19556,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(43)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)(module), (function() { return this; }())))
 
 /***/ },
-/* 43 */
+/* 38 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -19773,7 +19575,7 @@
 
 
 /***/ },
-/* 44 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -19787,7 +19589,7 @@
 	(function (root, factory) {
 	    if (true) {
 	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(45)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(40)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_) {
 	            return factory(_, root);
 	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module === "object" && module.exports) {
@@ -19964,7 +19766,7 @@
 	}));
 
 /***/ },
-/* 45 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -27126,10 +26928,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(43)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)(module), (function() { return this; }())))
 
 /***/ },
-/* 46 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27166,15 +26968,15 @@
 	  // DCE check should happen before ReactDOM bundle executes so that
 	  // DevTools can report bad minification during injection.
 	  checkDCE();
-	  module.exports = __webpack_require__(47);
+	  module.exports = __webpack_require__(42);
 	} else {
-	  module.exports = __webpack_require__(56);
+	  module.exports = __webpack_require__(51);
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 47 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @license React v16.2.0
@@ -27189,7 +26991,7 @@
 	/*
 	 Modernizr 3.0.0pre (Custom Build) | MIT
 	*/
-	'use strict';var aa=__webpack_require__(2),l=__webpack_require__(48),B=__webpack_require__(5),C=__webpack_require__(7),ba=__webpack_require__(49),da=__webpack_require__(50),ea=__webpack_require__(51),fa=__webpack_require__(52),ia=__webpack_require__(55),D=__webpack_require__(6);
+	'use strict';var aa=__webpack_require__(2),l=__webpack_require__(43),B=__webpack_require__(5),C=__webpack_require__(7),ba=__webpack_require__(44),da=__webpack_require__(45),ea=__webpack_require__(46),fa=__webpack_require__(47),ia=__webpack_require__(50),D=__webpack_require__(6);
 	function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 	var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 	var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -27409,7 +27211,7 @@
 
 
 /***/ },
-/* 48 */
+/* 43 */
 /***/ function(module, exports) {
 
 	/**
@@ -27447,7 +27249,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 49 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27527,7 +27329,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 50 */
+/* 45 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27568,7 +27370,7 @@
 	module.exports = getActiveElement;
 
 /***/ },
-/* 51 */
+/* 46 */
 /***/ function(module, exports) {
 
 	/**
@@ -27638,7 +27440,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 52 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27652,7 +27454,7 @@
 	 * 
 	 */
 
-	var isTextNode = __webpack_require__(53);
+	var isTextNode = __webpack_require__(48);
 
 	/*eslint-disable no-bitwise */
 
@@ -27680,7 +27482,7 @@
 	module.exports = containsNode;
 
 /***/ },
-/* 53 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27694,7 +27496,7 @@
 	 * @typechecks
 	 */
 
-	var isNode = __webpack_require__(54);
+	var isNode = __webpack_require__(49);
 
 	/**
 	 * @param {*} object The object to check.
@@ -27707,7 +27509,7 @@
 	module.exports = isTextNode;
 
 /***/ },
-/* 54 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27734,7 +27536,7 @@
 	module.exports = isNode;
 
 /***/ },
-/* 55 */
+/* 50 */
 /***/ function(module, exports) {
 
 	/**
@@ -27763,7 +27565,7 @@
 	module.exports = focusNode;
 
 /***/ },
-/* 56 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @license React v16.2.0
@@ -27786,18 +27588,18 @@
 	var React = __webpack_require__(2);
 	var invariant = __webpack_require__(9);
 	var warning = __webpack_require__(10);
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(43);
 	var _assign = __webpack_require__(5);
 	var emptyFunction = __webpack_require__(7);
-	var EventListener = __webpack_require__(49);
-	var getActiveElement = __webpack_require__(50);
-	var shallowEqual = __webpack_require__(51);
-	var containsNode = __webpack_require__(52);
-	var focusNode = __webpack_require__(55);
+	var EventListener = __webpack_require__(44);
+	var getActiveElement = __webpack_require__(45);
+	var shallowEqual = __webpack_require__(46);
+	var containsNode = __webpack_require__(47);
+	var focusNode = __webpack_require__(50);
 	var emptyObject = __webpack_require__(6);
 	var checkPropTypes = __webpack_require__(11);
-	var hyphenateStyleName = __webpack_require__(57);
-	var camelizeStyleName = __webpack_require__(59);
+	var hyphenateStyleName = __webpack_require__(52);
+	var camelizeStyleName = __webpack_require__(54);
 
 	/**
 	 * WARNING: DO NOT manually require this module.
@@ -43164,7 +42966,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 57 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -43178,7 +42980,7 @@
 
 	'use strict';
 
-	var hyphenate = __webpack_require__(58);
+	var hyphenate = __webpack_require__(53);
 
 	var msPattern = /^ms-/;
 
@@ -43205,7 +43007,7 @@
 	module.exports = hyphenateStyleName;
 
 /***/ },
-/* 58 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -43240,7 +43042,7 @@
 	module.exports = hyphenate;
 
 /***/ },
-/* 59 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -43254,7 +43056,7 @@
 
 	'use strict';
 
-	var camelize = __webpack_require__(60);
+	var camelize = __webpack_require__(55);
 
 	var msPattern = /^-ms-/;
 
@@ -43282,7 +43084,7 @@
 	module.exports = camelizeStyleName;
 
 /***/ },
-/* 60 */
+/* 55 */
 /***/ function(module, exports) {
 
 	"use strict";
