@@ -792,6 +792,7 @@
 	          /* eslint-disable no-bitwise */
 	          if (item.modifier & event.modifier || item.modifier === event.modifier) {
 	            eventHandled = true;
+	            event.preventDefault(); // Consume event
 	            var delta = event[deltaName] - item.lastCoord;
 	            self.lastTime[event.topic] = time;
 
