@@ -83,6 +83,7 @@ export default class QueryDataModel {
     this.mouseListener = null;
     this.dataMetadata = {};
     this.lazyFetchRequest = null;
+    this.registeredURLs = [];
 
     this.playNext = () => {
       if (this.keepAnimating) {
@@ -224,6 +225,7 @@ export default class QueryDataModel {
 
       // Register data handler + listener
       dataManager.registerURL(dataId, (dataEntry.absolute ? '' : basepath) + dataEntry.pattern, dataEntry.type, dataEntry.mimeType);
+      this.registeredURLs.push(dataId);
       dataManager.on(dataId, dataHandler);
       this.dataCount[dataId] = 0;
     });
@@ -637,10 +639,15 @@ export default class QueryDataModel {
   }
 
   destroy() {
-    this.off();
-
     this.explorationSubscription.unsubscribe();
     this.explorationSubscription = null;
+
+    // Remove links to dataManager
+    while (this.registeredURLs.length) {
+      dataManager.unregisterURL(this.registeredURLs.pop());
+    }
+
+    this.off();
   }
 
   // Data exploration -----------------------------------------------------------
