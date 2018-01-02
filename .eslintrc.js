@@ -21,6 +21,7 @@ module.exports = {
     'react/no-unused-prop-types': 0,
 
     // Not for us ;-)
+    'no-plusplus': 0,
     'jsx-a11y/label-has-for': 0,
     'no-console': 0,
     'import/no-named-as-default-member': 0,

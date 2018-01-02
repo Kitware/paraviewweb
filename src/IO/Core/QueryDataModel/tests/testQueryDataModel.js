@@ -4,7 +4,7 @@ import QueryDataModel from '..';
 
 // ----------------------------------------------------------------------------
 
-test('Query Data Model - Fetch/Notification', t => {
+test('Query Data Model - Fetch/Notification', (t) => {
   const dataDescription = {
     type: ['tonic-query-data-model', 'slice-prober'],
     arguments: {
@@ -59,12 +59,15 @@ test('Query Data Model - Fetch/Notification', t => {
   let notificationCount = 0;
 
   queryDataModel.onDataChange((data, envelope) => {
-    notificationCount++;
+    notificationCount += 1;
     t.ok(data && !data.error, `callback ${notificationCount}`);
 
     // Finish test
     if (numberOfRequests === notificationCount) {
       // console.log('Fetch/Notification: done with success');
+      // Make sure we can destroy the queryDataModel
+      queryDataModel.destroy();
+      t.ok(true, 'QueryDataModel deleted');
       t.end();
     }
   });
@@ -73,7 +76,7 @@ test('Query Data Model - Fetch/Notification', t => {
 
   let count = numberOfRequests;
   while (count--) {
-    fetchCount++;
+    fetchCount += 1;
     t.comment(`fetch ${fetchCount}`);
     queryDataModel.fetchData();
   }
@@ -81,7 +84,7 @@ test('Query Data Model - Fetch/Notification', t => {
 
 // ----------------------------------------------------------------------------
 
-test('Query Data Model - API/Query/Validation', t => {
+test('Query Data Model - API/Query/Validation', (t) => {
   const dataDescription = {
     type: ['tonic-query-data-model'],
     arguments: {
