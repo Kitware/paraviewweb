@@ -201,6 +201,7 @@
 	    this.mouseListener = null;
 	    this.dataMetadata = {};
 	    this.lazyFetchRequest = null;
+	    this.registeredURLs = [];
 
 	    this.playNext = function () {
 	      if (_this.keepAnimating) {
@@ -340,6 +341,7 @@
 
 	      // Register data handler + listener
 	      dataManager.registerURL(dataId, (dataEntry.absolute ? '' : basepath) + dataEntry.pattern, dataEntry.type, dataEntry.mimeType);
+	      _this.registeredURLs.push(dataId);
 	      dataManager.on(dataId, dataHandler);
 	      _this.dataCount[dataId] = 0;
 	    });
@@ -848,10 +850,15 @@
 	  }, {
 	    key: 'destroy',
 	    value: function destroy() {
-	      this.off();
-
 	      this.explorationSubscription.unsubscribe();
 	      this.explorationSubscription = null;
+
+	      // Remove links to dataManager
+	      while (this.registeredURLs.length) {
+	        dataManager.unregisterURL(this.registeredURLs.pop());
+	      }
+
+	      this.off();
 	    }
 
 	    // Data exploration -----------------------------------------------------------
