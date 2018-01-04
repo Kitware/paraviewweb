@@ -27800,7 +27800,14 @@
 	    key: 'updateChangeSet',
 	    value: function updateChangeSet(change) {
 	      var changeSet = Object.assign({}, this.state.changeSet, change);
-	      this.setState({ changeSet: changeSet });
+	      if (this.props.autoApply) {
+	        if (this.props.onApply) {
+	          this.props.onApply(changeSet);
+	        }
+	        this.setState({ changeSet: {} });
+	      } else {
+	        this.setState({ changeSet: changeSet });
+	      }
 	    }
 	  }, {
 	    key: 'applyChanges',
@@ -27833,7 +27840,7 @@
 	            onChange: this.updateFilter,
 	            className: _ProxyEditorWidget2.default.filter
 	          }),
-	          _react2.default.createElement('i', {
+	          this.props.autoApply ? null : _react2.default.createElement('i', {
 	            className: changeCount ? _ProxyEditorWidget2.default.validateButtonOn : _ProxyEditorWidget2.default.validateButton,
 	            onClick: this.applyChanges
 	          })
@@ -27869,11 +27876,13 @@
 	  children: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.array]),
 	  onApply: _propTypes2.default.func,
 	  sections: _propTypes2.default.array.isRequired,
-	  onCollapseChange: _propTypes2.default.func
+	  onCollapseChange: _propTypes2.default.func,
+	  autoApply: _propTypes2.default.bool
 	};
 
 	ProxyEditorWidget.defaultProps = {
-	  advanced: false
+	  advanced: false,
+	  autoApply: false
 	};
 
 /***/ },
