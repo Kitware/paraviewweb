@@ -32,7 +32,14 @@ export default class ProxyEditorWidget extends React.Component {
 
   updateChangeSet(change) {
     const changeSet = Object.assign({}, this.state.changeSet, change);
-    this.setState({ changeSet });
+    if (this.props.autoApply) {
+      if (this.props.onApply) {
+        this.props.onApply(changeSet);
+      }
+      this.setState({ changeSet: {} });
+    } else {
+      this.setState({ changeSet });
+    }
   }
 
   applyChanges() {
@@ -58,10 +65,13 @@ export default class ProxyEditorWidget extends React.Component {
             onChange={this.updateFilter}
             className={style.filter}
           />
-          <i
-            className={changeCount ? style.validateButtonOn : style.validateButton}
-            onClick={this.applyChanges}
-          />
+          {this.props.autoApply ?
+            null :
+            <i
+              className={changeCount ? style.validateButtonOn : style.validateButton}
+              onClick={this.applyChanges}
+            />
+          }
         </div>
         <div className={style.contentContainer}>
           {this.props.children}
@@ -87,9 +97,11 @@ ProxyEditorWidget.propTypes = {
   onApply: PropTypes.func,
   sections: PropTypes.array.isRequired,
   onCollapseChange: PropTypes.func,
+  autoApply: PropTypes.bool,
 };
 
 ProxyEditorWidget.defaultProps = {
   advanced: false,
+  autoApply: false,
 };
 
