@@ -50910,6 +50910,7 @@
 	    this.dataMetadata = {};
 	    this.lazyFetchRequest = null;
 	    this.registeredURLs = [];
+	    this.disableImageSelection = false;
 
 	    this.playNext = function () {
 	      if (_this.keepAnimating) {
@@ -50994,6 +50995,10 @@
 	      if (data.url && data.type === 'blob' && data.data.type.indexOf('image') !== -1 && data.image === undefined) {
 	        data.image = new Image();
 	        data.image.src = data.url;
+	        if (_this.disableImageSelection) {
+	          data.image.style.userSelect = 'none';
+	          data.image.style.webkitUserSelect = 'none';
+	        }
 	      }
 
 	      if (data.error) {
