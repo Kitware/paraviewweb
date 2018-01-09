@@ -84,6 +84,7 @@ export default class QueryDataModel {
     this.dataMetadata = {};
     this.lazyFetchRequest = null;
     this.registeredURLs = [];
+    this.disableImageSelection = false;
 
     this.playNext = () => {
       if (this.keepAnimating) {
@@ -168,6 +169,10 @@ export default class QueryDataModel {
       if (data.url && data.type === 'blob' && data.data.type.indexOf('image') !== -1 && data.image === undefined) {
         data.image = new Image();
         data.image.src = data.url;
+        if (this.disableImageSelection) {
+          data.image.style.userSelect = 'none';
+          data.image.style.webkitUserSelect = 'none';
+        }
       }
 
       if (data.error) {
