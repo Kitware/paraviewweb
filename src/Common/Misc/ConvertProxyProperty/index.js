@@ -84,7 +84,7 @@ function extractDomain(ui) {
 }
 
 export function proxyPropToProp(property, ui) {
-  if (!typeMapping[ui.widget]) {
+  if (!typeMapping[ui.widget] && !ui.propType) {
     console.log('No propType for', ui);
   }
 
@@ -113,7 +113,7 @@ export function proxyPropToProp(property, ui) {
       return (!!ctx.advanced || !ui.advanced) && depTest;
     },
     ui: {
-      propType: typeMapping[ui.widget] || ui.widget,
+      propType: ui.propType || typeMapping[ui.widget] || ui.widget,
       label: ui.label || ui.name,
       help: ui.doc,
       noEmpty: true,
