@@ -30,10 +30,14 @@ function capitalize(str) {
   return str[0].toUpperCase() + str.substr(1).toLowerCase();
 }
 
-export default function (prop, vd, onChange) {
+export default function render(prop, vd, onChange) {
   var fn = factoryMapping[capitalize(prop.ui.propType)];
   if (fn) {
     return fn(prop, vd, onChange);
   }
   return null;
 }
+
+render.updateWidgetMapping = (name, fn) => {
+  factoryMapping[name] = fn;
+};
