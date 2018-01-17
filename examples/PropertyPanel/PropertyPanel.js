@@ -19469,14 +19469,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	exports.default = function (prop, vd, onChange) {
-	  var fn = factoryMapping[capitalize(prop.ui.propType)];
-	  if (fn) {
-	    return fn(prop, vd, onChange);
-	  }
-	  return null;
-	};
+	exports.default = render;
 
 	var _react = __webpack_require__(1);
 
@@ -19546,6 +19539,18 @@
 	function capitalize(str) {
 	  return str[0].toUpperCase() + str.substr(1).toLowerCase();
 	}
+
+	function render(prop, vd, onChange) {
+	  var fn = factoryMapping[capitalize(prop.ui.propType)];
+	  if (fn) {
+	    return fn(prop, vd, onChange);
+	  }
+	  return null;
+	}
+
+	render.updateWidgetMapping = function (name, fn) {
+	  factoryMapping[name] = fn;
+	};
 
 /***/ },
 /* 36 */
