@@ -19536,12 +19536,16 @@
 	/* eslint-enable react/no-multi-comp */
 	/* eslint-enable max-len */
 
-	function capitalize(str) {
+	function capitalizeOld(str) {
 	  return str[0].toUpperCase() + str.substr(1).toLowerCase();
 	}
 
+	function capitalize(str) {
+	  return str[0].toUpperCase() + str.substr(1);
+	}
+
 	function render(prop, vd, onChange) {
-	  var fn = factoryMapping[capitalize(prop.ui.propType)];
+	  var fn = factoryMapping[capitalize(prop.ui.propType)] || factoryMapping[capitalizeOld(prop.ui.propType)];
 	  if (fn) {
 	    return fn(prop, vd, onChange);
 	  }
