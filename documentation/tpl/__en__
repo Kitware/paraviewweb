@@ -35,6 +35,7 @@ sidebar:
     multi_user_setup: Multi-user setup
     apache_front_end: Using Apache
     ami: EC2 AMIs
+    performances: Performances
     launchers: Launchers
     launcher_api: API
     python_launcher: Python
