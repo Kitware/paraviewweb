@@ -34,9 +34,12 @@ This section only focus on the intial cost of starting a given process.
 | -------------------------- | -----------| ---- |
 | ParaView Qt client         |     ~ 2.4s |      |
 | pvserver                   |       < 1s | < 1s |
-| pvpython + pv lib          |       ~ 1s | ~ 1s |
-| visualizer (server)        |      ~3.4s |      |
+| pvpython + pv lib (1)      |       ~ 1s | ~ 1s |
+| visualizer (server) (2)    |     ~ 3.4s |      |
 | visualzier (server+client) |            | ~ 4s |
+
+1) Starting Python interpreted and loading the ParaView library.
+2) Starting Python interpreted, loading the ParaView library and starting web server.
 
 Then loading data will add-up to those numbers
 
