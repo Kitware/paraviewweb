@@ -13,6 +13,10 @@ module.exports = [
     ],
   },
   {
+    test: /\.c$/i,
+    loader: 'shader-loader',
+  },
+  {
     test: /\.mcss$/,
     use: [
       { loader: 'style-loader' },
@@ -32,7 +36,33 @@ module.exports = [
     ],
   },
   {
+    test: /\.html$/,
+    loader: 'html-loader',
+  },
+  {
+    test: /\.isvg$/,
+    loader: 'html-loader?attrs=false',
+  },
+  {
     test: /\.svg$/,
-    use: [{ loader: 'raw-loader' }],
+    loader: 'svg-sprite-loader?runtimeCompat=true',
+    exclude: /fonts/,
+  },
+  {
+    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    loader: 'url-loader?limit=60000&mimetype=application/font-woff',
+  },
+  {
+    test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    loader: 'url-loader?limit=60000',
+    include: /fonts/,
+  },
+  {
+    test: /\.(png|jpg)$/,
+    loader: 'url-loader?limit=8192',
+  },
+  {
+    test: /\.css$/,
+    loader: 'style-loader!css-loader!postcss-loader',
   },
 ];

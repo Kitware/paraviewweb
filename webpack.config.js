@@ -1,7 +1,9 @@
-var path = require('path');
+const path = require('path');
 
-const pvwRules = require('./config/rules-pvw.js');
 const linterRules = require('./config/rules-linter.js');
+const pvwRules = require('./config/rules-pvw.js');
+const vtkRules = require('./config/rules-vtk.js');
+const wslinkRules = require('./config/rules-wslink.js');
 
 const entry = path.join(__dirname, './src/index.js');
 const outputPath = path.join(__dirname, './dist');
@@ -21,7 +23,7 @@ module.exports = {
     noParse: [/plotly\.js/],
     rules: [
       { test: entry, loader: 'expose-loader?ParaViewWeb' },
-    ].concat(pvwRules, linterRules),
+    ].concat(pvwRules, linterRules, vtkRules, wslinkRules),
   },
   resolve: {
     alias: {
