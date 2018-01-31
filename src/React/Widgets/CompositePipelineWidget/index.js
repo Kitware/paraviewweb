@@ -1,4 +1,4 @@
-import React    from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
@@ -49,20 +49,19 @@ export default class CompositePipelineWidget extends React.Component {
 
     return (
       <div className={style.container}>
-        {pipelineDescription.map((item, idx) =>
+        {pipelineDescription.map((item, idx) => (
           <RootItem
             key={idx}
             item={item}
             layer={item.ids.join('')}
             model={pipelineModel}
           />
-        )}
-      </div>);
+        ))}
+      </div>
+    );
   }
 }
-
 
 CompositePipelineWidget.propTypes = {
   model: PropTypes.object.isRequired,
 };
-

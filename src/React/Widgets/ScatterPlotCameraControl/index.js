@@ -8,7 +8,6 @@ const SELECTED_COLOR = '#cdcdcd';
 const DEFAULT_COLOR = '#fff';
 
 export default class ScatterPlotCameraControl extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -41,12 +40,12 @@ export default class ScatterPlotCameraControl extends React.Component {
     }
     const activeProjection = this.props.manager.getProjection();
 
-  /* eslint-disable react/jsx-curly-spacing */
+    /* eslint-disable react/jsx-curly-spacing */
     return (
-      <div className={ style.container } title="ScatterPlot Camera">
+      <div className={style.container} title="ScatterPlot Camera">
         <InlineToggleButtonWidget
-          activeColor={ DEFAULT_COLOR }
-          defaultColor={ DEFAULT_COLOR }
+          activeColor={DEFAULT_COLOR}
+          defaultColor={DEFAULT_COLOR}
           height="21px"
           options={[
             { action: 'resetCamera', icon: style.resetCameraButton },
@@ -54,20 +53,21 @@ export default class ScatterPlotCameraControl extends React.Component {
             { action: 'changeProjection', label: 'Y' },
             { action: 'changeProjection', label: 'Z' },
           ]}
-          onChange={ this.onAction }
+          onChange={this.onAction}
         />
         <InlineToggleButtonWidget
-          active={ ['2D', '3D'].indexOf(activeProjection) }
-          activeColor={ SELECTED_COLOR }
-          defaultColor={ DEFAULT_COLOR }
+          active={['2D', '3D'].indexOf(activeProjection)}
+          activeColor={SELECTED_COLOR}
+          defaultColor={DEFAULT_COLOR}
           height="21px"
           options={[
             { label: '2D', action: 'changeProjection' },
             { label: '3D', action: 'changeProjection' },
           ]}
-          onChange={ this.onAction }
+          onChange={this.onAction}
         />
-      </div>);
+      </div>
+    );
   }
 }
 

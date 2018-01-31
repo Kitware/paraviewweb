@@ -1,10 +1,10 @@
-import Monologue   from 'monologue.js';
-import CSVReader   from '../../../IO/Core/CSVReader';
-import chartTypes  from './chartTypes.json';
-import Histogram   from './Histogram';
+import Monologue from 'monologue.js';
+import CSVReader from '../../../IO/Core/CSVReader';
+import chartTypes from './chartTypes.json';
+import Histogram from './Histogram';
 import Histogram2D from './Histogram2D';
-import Scatter3D   from './Scatter3D';
-import PieChart    from './PieChart';
+import Scatter3D from './Scatter3D';
+import PieChart from './PieChart';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/PlotlyChartControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';

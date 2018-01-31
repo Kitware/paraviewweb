@@ -4,7 +4,6 @@ import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/PixelOperatorControl';
 
 export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(operation = 'a-b', dependency = ['a', 'b']) {
@@ -15,7 +14,10 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
     this.dataSize = [200, 200];
     this.operation = operation;
     this.dependency = dependency;
-    this.bgCanvas = new CanvasOffscreenBuffer(this.dataSize[0], this.dataSize[1]);
+    this.bgCanvas = new CanvasOffscreenBuffer(
+      this.dataSize[0],
+      this.dataSize[1]
+    );
 
     this.registerObjectToFree(this.bgCanvas);
   }
@@ -175,7 +177,7 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
       if (size === -1) {
         size = array.length;
       } else {
-        sizeValid = sizeValid && (size === array.length);
+        sizeValid = sizeValid && size === array.length;
       }
     });
 
@@ -248,10 +250,12 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    return [{
-      name: 'PixelOperatorControl',
-      model: this,
-    }];
+    return [
+      {
+        name: 'PixelOperatorControl',
+        model: this,
+      },
+    ];
   }
 
   // ------------------------------------------------------------------------
@@ -261,5 +265,4 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
       dimensions: this.dataSize,
     };
   }
-
 }

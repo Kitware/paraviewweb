@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
-import NumberFormatter, { sciNotationRegExp } from '../../../../Common/Misc/NumberFormatter';
+import NumberFormatter, {
+  sciNotationRegExp,
+} from '../../../../Common/Misc/NumberFormatter';
 import SvgIconWidget from '../../SvgIconWidget';
 import Ineq from '../../../../../svg/Operations/Ineq.svg';
 import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
@@ -22,7 +24,10 @@ const CHOICE_LABELS = {
 
 export default function render(props) {
   const { divider } = props;
-  const formatter = new NumberFormatter(3, [Number(divider.value), Number(divider.uncertainty)]);
+  const formatter = new NumberFormatter(3, [
+    Number(divider.value),
+    Number(divider.uncertainty),
+  ]);
 
   function onChange(e, force = false) {
     if (!e.target.validity.valid) {
@@ -55,14 +60,27 @@ export default function render(props) {
     while (!target.dataset) {
       target = target.parentNode;
     }
-    const path = [].concat(props.path, target.dataset.path, !divider.closeToLeft);
+    const path = [].concat(
+      props.path,
+      target.dataset.path,
+      !divider.closeToLeft
+    );
     props.onChange(path);
   }
 
   return (
     <section className={style.fiveClauseContainer}>
-      <div className={style.activeInequality} data-path="closeToLeft" onClick={toggleIneq}>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[divider.closeToLeft ? '*' : 'o']} />
+      <div
+        className={style.activeInequality}
+        data-path="closeToLeft"
+        onClick={toggleIneq}
+      >
+        <SvgIconWidget
+          style={{ pointerEvents: 'none' }}
+          width="20px"
+          height="20px"
+          icon={CHOICE_LABELS[divider.closeToLeft ? '*' : 'o']}
+        />
       </div>
       <input
         className={style.numberInput}
@@ -73,11 +91,10 @@ export default function render(props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      {(divider.uncertainty !== undefined && props.showUncertainty) ? (
+      {divider.uncertainty !== undefined && props.showUncertainty ? (
         <span>
           {/* plus-minus unicode character: &#xb1; */}
-          <div className={style.inequality}>&#xb1;
-          </div>
+          <div className={style.inequality}>&#xb1;</div>
           <input
             className={style.numberInput}
             type="text"
@@ -88,8 +105,7 @@ export default function render(props) {
             onBlur={onBlur}
           />
         </span>
-        ) : null
-      }
+      ) : null}
       <i className={style.deleteButton} onClick={onDelete} />
     </section>
   );

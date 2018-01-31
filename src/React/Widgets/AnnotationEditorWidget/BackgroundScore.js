@@ -9,10 +9,13 @@ export default function render(props) {
       className={style.backgroundScore}
       style={{
         background: props.color,
-        top: `${(props.index * props.step) + props.margin}px`,
-        height: props.fullHeight ? `calc(100% - ${(2 * props.margin)}px)` : `${props.step - (2 * props.margin)}px`,
+        top: `${props.index * props.step + props.margin}px`,
+        height: props.fullHeight
+          ? `calc(100% - ${2 * props.margin}px)`
+          : `${props.step - 2 * props.margin}px`,
       }}
-    />);
+    />
+  );
 }
 
 render.propTypes = {

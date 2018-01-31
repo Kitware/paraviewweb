@@ -8,18 +8,21 @@ export default function render(props) {
     return <span>{props.name}</span>;
   }
   const style = { fill: props.getLegend(props.name).color };
-  const newStyle = Object.assign({ stroke: 'black', strokeWidth: 1 }, style, props.style);
+  const newStyle = Object.assign(
+    { stroke: 'black', strokeWidth: 1 },
+    style,
+    props.style
+  );
 
   return (
     <SvgIconWidget
       icon={props.getLegend(props.name).shape}
-
       width={props.width}
       height={props.height}
       style={newStyle}
-
       onClick={props.onClick}
-    />);
+    />
+  );
 }
 
 render.propTypes = {

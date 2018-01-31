@@ -2,7 +2,7 @@
 import 'normalize.css';
 import 'babel-polyfill';
 
-import sizeHelper   from '../../../../Common/Misc/SizeHelper';
+import sizeHelper from '../../../../Common/Misc/SizeHelper';
 
 import CompositeClosureHelper from '../../../../../src/Common/Core/CompositeClosureHelper';
 import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
@@ -35,15 +35,17 @@ fieldSelectorContainer.style.float = 'left';
 fieldSelectorContainer.style['font-size'] = '10pt';
 bodyElt.appendChild(fieldSelectorContainer);
 
-const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
-  Object.assign(model, initialValues);
-  FieldProvider.extend(publicAPI, model, initialValues);
-  Histogram1DProvider.extend(publicAPI, model, initialValues);
-  HistogramBinHoverProvider.extend(publicAPI, model);
-  LegendProvider.extend(publicAPI, model, initialValues);
-  ScoresProvider.extend(publicAPI, model, initialValues);
-  SelectionProvider.extend(publicAPI, model, initialValues);
-})(dataModel);
+const provider = CompositeClosureHelper.newInstance(
+  (publicAPI, model, initialValues = {}) => {
+    Object.assign(model, initialValues);
+    FieldProvider.extend(publicAPI, model, initialValues);
+    Histogram1DProvider.extend(publicAPI, model, initialValues);
+    HistogramBinHoverProvider.extend(publicAPI, model);
+    LegendProvider.extend(publicAPI, model, initialValues);
+    ScoresProvider.extend(publicAPI, model, initialValues);
+    SelectionProvider.extend(publicAPI, model, initialValues);
+  }
+)(dataModel);
 
 // set provider behaviors
 provider.setFieldsSorted(true);
@@ -79,7 +81,10 @@ histogramSelector.requestNumBoxesPerRow(4);
 // }, 5000);
 
 // Create field selector
-const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });
+const fieldSelector = FieldSelector.newInstance({
+  provider,
+  container: fieldSelectorContainer,
+});
 
 // Listen to window resize
 sizeHelper.onSizeChange(() => {

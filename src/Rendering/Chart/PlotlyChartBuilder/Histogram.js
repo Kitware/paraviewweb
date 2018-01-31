@@ -1,4 +1,3 @@
-
 export default function Histogram(chartState, csvReader, arraysInfo) {
   if (!chartState.x) {
     chartState.x = Object.keys(arraysInfo)[0];

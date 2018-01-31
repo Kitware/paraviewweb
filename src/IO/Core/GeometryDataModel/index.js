@@ -3,14 +3,12 @@
 import Monologue from 'monologue.js';
 import DataManager from '../DataManager';
 
-const
-  dataManager = new DataManager(),
+const dataManager = new DataManager(),
   OBJECT_READY_TOPIC = 'object-ready';
 
 var geometryDataModelCounter = 0;
 
 export default class GeometryDataModel {
-
   constructor(basepath) {
     geometryDataModelCounter += 1;
 
@@ -29,7 +27,9 @@ export default class GeometryDataModel {
         const obj = this.sceneData[dataDescription.name];
         let objectComplete = true;
 
-        this.sceneData[dataDescription.name][dataDescription.field] = new window[dataDescription.type](data.data);
+        this.sceneData[dataDescription.name][
+          dataDescription.field
+        ] = new window[dataDescription.type](data.data);
 
         Object.keys(obj).forEach((key) => {
           if (obj[key] === null) {
@@ -54,7 +54,7 @@ export default class GeometryDataModel {
   colorGeometryBy(objectName, fieldName) {
     var changeDetected = false;
     if (fieldName) {
-      changeDetected = (this.coloByMapping[objectName] !== fieldName);
+      changeDetected = this.coloByMapping[objectName] !== fieldName;
       this.coloByMapping[objectName] = fieldName;
     } else {
       delete this.coloByMapping[objectName];
@@ -94,7 +94,6 @@ export default class GeometryDataModel {
           type: obj.points.split('.').slice(-1)[0],
         };
         urls.push(url);
-
 
         url = this.basepath + obj.index;
         this.dataMapping[url] = {

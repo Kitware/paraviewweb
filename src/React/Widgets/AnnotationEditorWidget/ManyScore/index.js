@@ -32,17 +32,20 @@ export default function render(props) {
           onChange={props.onSelectionChange}
           showUncertainty={props.showUncertainty}
         >
-          {props.annotation.score.map((score, idx, array) =>
+          {props.annotation.score.map((score, idx, array) => (
             <BGSelector
               key={`bgscore-${idx}`}
               index={idx}
               fullHeight={array.length === 1}
               color={props.scores[score].color}
             />
-          )}
+          ))}
         </SelectionEditorWidget>
-        <div className={style.verticalContainer} style={{ position: 'relative', zIndex: 0 }}>
-          {props.annotation.score.map((score, idx) =>
+        <div
+          className={style.verticalContainer}
+          style={{ position: 'relative', zIndex: 0 }}
+        >
+          {props.annotation.score.map((score, idx) => (
             <ScoreSelector
               key={`score-${idx}`}
               className={style.flexItem}
@@ -52,7 +55,7 @@ export default function render(props) {
               onChange={props.onScoreChange}
               horizontal
             />
-          )}
+          ))}
         </div>
       </section>
 
@@ -85,7 +88,8 @@ export default function render(props) {
           />
         </CollapsibleWidget>
       </section>
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {

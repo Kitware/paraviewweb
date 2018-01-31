@@ -6,15 +6,13 @@ import request from './request';
 import htmlRequest from './htmlRequest';
 import PatternMap from './pattern';
 
-
-const
-  typeFnMap = {
-    json: request.fetchJSON,
-    text: request.fetchTxt,
-    blob: request.fetchBlob,
-    arraybuffer: request.fetchArray,
-    array: request.fetchArray,
-  };
+const typeFnMap = {
+  json: request.fetchJSON,
+  text: request.fetchTxt,
+  blob: request.fetchBlob,
+  arraybuffer: request.fetchArray,
+  array: request.fetchArray,
+};
 
 // Internal helper that return the current time
 function ts() {
@@ -46,7 +44,6 @@ function updateDataSize(data) {
 // }
 
 export default class DataManager {
-
   constructor(cacheSize = 1000000000) {
     this.pattern = new PatternMap();
     this.keyToTypeMap = {};
@@ -122,7 +119,10 @@ export default class DataManager {
             self.emit(key, {
               error,
               data: {
-                key, options, url, typeFnMime,
+                key,
+                options,
+                url,
+                typeFnMime,
               },
             });
             return;
@@ -258,25 +258,27 @@ export default class DataManager {
     return new Promise((accept, reject) => {
       const zip = new JSZip();
       let zipRoot = zip;
-      zip.loadAsync(zipContent, options)
-        .then(() => {
-          // Find root index.json
-          const metaFiles = [];
-          zip.forEach((relativePath, zipEntry) => {
-            if (relativePath.indexOf('index.json') !== -1) {
-              metaFiles.push(relativePath);
-            }
-          });
-          metaFiles.sort((a, b) => a.length > b.length);
-          const fullRootPath = metaFiles[0].split('/');
-          while (fullRootPath.length > 1) {
-            const dirName = fullRootPath.shift();
-            zipRoot = zipRoot.folder(dirName);
+      zip.loadAsync(zipContent, options).then(() => {
+        // Find root index.json
+        const metaFiles = [];
+        zip.forEach((relativePath, zipEntry) => {
+          if (relativePath.indexOf('index.json') !== -1) {
+            metaFiles.push(relativePath);
           }
+        });
+        metaFiles.sort((a, b) => a.length > b.length);
+        const fullRootPath = metaFiles[0].split('/');
+        while (fullRootPath.length > 1) {
+          const dirName = fullRootPath.shift();
+          zipRoot = zipRoot.folder(dirName);
+        }
 
-          // Replace access method
-          typeFnMap.json = (url, cb) => {
-            zipRoot.file(url).async('string').then(
+        // Replace access method
+        typeFnMap.json = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('string')
+            .then(
               (str) => {
                 cb(null, JSON.parse(str));
               },
@@ -284,10 +286,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.text = (url, cb) => {
-            zipRoot.file(url).async('string').then(
+        typeFnMap.text = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('string')
+            .then(
               (str) => {
                 cb(null, str);
               },
@@ -295,10 +300,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.blob = (url, mimeType, cb) => {
-            zipRoot.file(url).async('uint8array').then(
+        typeFnMap.blob = (url, mimeType, cb) => {
+          zipRoot
+            .file(url)
+            .async('uint8array')
+            .then(
               (uint8array) => {
                 const buffer = new ArrayBuffer(uint8array.length);
                 const view = new Uint8Array(buffer);
@@ -309,10 +317,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.arraybuffer = (url, cb) => {
-            zipRoot.file(url).async('uint8array').then(
+        typeFnMap.arraybuffer = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('uint8array')
+            .then(
               (uint8array) => {
                 const buffer = new ArrayBuffer(uint8array.length);
                 const view = new Uint8Array(buffer);
@@ -323,18 +334,18 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.array = typeFnMap.arraybuffer;
+        typeFnMap.array = typeFnMap.arraybuffer;
 
-          // Fix any previously registered pattern
-          Object.keys(this.keyToTypeMap).forEach((key) => {
-            const array = this.keyToTypeMap[key];
-            array[1] = typeFnMap[array[0]];
-          });
-
-          accept(this);
+        // Fix any previously registered pattern
+        Object.keys(this.keyToTypeMap).forEach((key) => {
+          const array = this.keyToTypeMap[key];
+          array[1] = typeFnMap[array[0]];
         });
+
+        accept(this);
+      });
     });
   }
 

@@ -12,16 +12,20 @@ const EVENT_TOPIC = 'girder.notification';
 class Observable {}
 Monologue.mixInto(Observable);
 
-const loginPromiseBuilder = () => new Promise((resolve, reject) => {
-  resolve();
-});
-const logoutPromiseBuilder = () => new Promise((resolve, reject) => {
-  reject();
-});
+const loginPromiseBuilder = () =>
+  new Promise((resolve, reject) => {
+    resolve();
+  });
+const logoutPromiseBuilder = () =>
+  new Promise((resolve, reject) => {
+    reject();
+  });
 // ----------------------------------------------------------------------------
 
 function encodeQueryAsString(query = {}) {
-  const params = Object.keys(query).map(name => [encodeURIComponent(name), encodeURIComponent(query[name])].join('='));
+  const params = Object.keys(query).map((name) =>
+    [encodeURIComponent(name), encodeURIComponent(query[name])].join('=')
+  );
   return params.length ? `?${params.join('&')}` : '';
 }
 
@@ -51,11 +55,14 @@ function mustContain(object = {}, ...keys) {
     missingKeys = undefined;
     promise = new Promise((resolve, reject) => resolve());
   } else {
-    promise = new Promise((resolve, reject) => reject(`Missing keys ${missingKeys.join(', ')}`));
+    promise = new Promise((resolve, reject) =>
+      reject(`Missing keys ${missingKeys.join(', ')}`)
+    );
   }
 
   return {
-    missingKeys, promise,
+    missingKeys,
+    promise,
   };
 }
 
@@ -69,8 +76,7 @@ export function build(config = window.location, ...extensions) {
     eventSource = null,
     busyCounter = 0;
 
-  const
-    client = {}, // Must be const otherwise the created closure will fail
+  const client = {}, // Must be const otherwise the created closure will fail
     notification = new Observable(),
     idle = () => {
       busyCounter -= 1;
@@ -82,9 +88,7 @@ export function build(config = window.location, ...extensions) {
       promise.then(idle, idle);
       return promise;
     },
-    {
-      protocol, hostname, port, basepath = '/api/v1',
-    } = config,
+    { protocol, hostname, port, basepath = '/api/v1' } = config,
     baseURL = `${protocol}//${hostname}:${port}${basepath}`,
     connectToNotificationStream = () => {
       if (EventSource) {
@@ -107,12 +111,13 @@ export function build(config = window.location, ...extensions) {
         };
       }
     },
-    {
-      extractLocalToken, updateGirderInstance, updateAuthenticationState,
-    } = {
+    { extractLocalToken, updateGirderInstance, updateAuthenticationState } = {
       extractLocalToken() {
         try {
-          return document.cookie.split('girderToken=')[1].split(';')[0].trim();
+          return document.cookie
+            .split('girderToken=')[1]
+            .split(';')[0]
+            .trim();
         } catch (e) {
           return undefined;
         }
@@ -126,7 +131,9 @@ export function build(config = window.location, ...extensions) {
         }
 
         client._ = axios.create({
-          baseURL, timeout, headers,
+          baseURL,
+          timeout,
+          headers,
         });
       },
       updateAuthenticationState(state) {
@@ -157,7 +164,9 @@ export function build(config = window.location, ...extensions) {
     },
     progress = (id, current, total = 1) => {
       notification.emit(PROGRESS_TOPIC, {
-        id, current, total,
+        id,
+        current,
+        total,
       });
     };
 
@@ -165,13 +174,13 @@ export function build(config = window.location, ...extensions) {
   const publicObject = {
     login(username, password) {
       const auth = {
-        username, password,
+        username,
+        password,
       };
-      return busy(client._
-        .get('/user/authentication', {
+      return busy(
+        client._.get('/user/authentication', {
           auth,
-        })
-        .then((resp) => {
+        }).then((resp) => {
           token = resp.data.authToken.token;
           userData = resp.data.user;
 
@@ -180,21 +189,24 @@ export function build(config = window.location, ...extensions) {
           client.token = token;
 
           updateAuthenticationState(true);
-        }));
+        })
+      );
     },
 
     logout() {
-      return busy(client._.delete('/user/authentication')
-        .then(
+      return busy(
+        client._.delete('/user/authentication').then(
           (ok) => {
             updateAuthenticationState(false);
             if (document && document.cookie) {
-              document.cookie = 'Girder-Token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+              document.cookie =
+                'Girder-Token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             }
           },
           (ko) => {
             console.log('loggout error', ko);
-          })
+          }
+        )
       );
     },
 
@@ -236,21 +248,21 @@ export function build(config = window.location, ...extensions) {
     token = config.token || extractLocalToken();
     updateGirderInstance();
     if (token) {
-      publicObject.me()
-        .then(
-          (resp) => {
-            userData = resp.data;
+      publicObject.me().then(
+        (resp) => {
+          userData = resp.data;
 
-            // Update userData for external modules
-            client.user = userData;
-            client.token = token;
-            updateAuthenticationState(true);
-            accept();
-          },
-          (errResp) => {
-            updateAuthenticationState(false);
-            reject();
-          });
+          // Update userData for external modules
+          client.user = userData;
+          client.token = token;
+          updateAuthenticationState(true);
+          accept();
+        },
+        (errResp) => {
+          updateAuthenticationState(false);
+          reject();
+        }
+      );
     } else {
       reject();
     }

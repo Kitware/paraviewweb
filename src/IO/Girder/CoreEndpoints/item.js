@@ -3,7 +3,13 @@ function jsonToString(data) {
   return JSON.stringify(data);
 }
 
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     downloadItem(id, offset, endByte, contentDisposition) {
       const params = { offset, endByte, contentDisposition };
@@ -12,18 +18,29 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
           delete params[key];
         }
       });
-      return busy(client._.get(`/item/${id}/download${encodeQueryAsString(params)}`));
+      return busy(
+        client._.get(`/item/${id}/download${encodeQueryAsString(params)}`)
+      );
     },
 
     updateItemMetadata(id, metadata = {}) {
-      return busy(client._.put(`/item/${id}/metadata`, metadata, {
-        transformRequest: jsonToString,
-      }));
+      return busy(
+        client._.put(`/item/${id}/metadata`, metadata, {
+          transformRequest: jsonToString,
+        })
+      );
     },
 
     // query = { folderId, text, limit, offset, sort, sortdir }
     listItems(query = {}) {
-      const allowed = ['folderId', 'text', 'limit', 'offset', 'sort', 'sortdir'],
+      const allowed = [
+          'folderId',
+          'text',
+          'limit',
+          'offset',
+          'sort',
+          'sortdir',
+        ],
         params = filterQuery(query, ...allowed);
 
       return busy(client._.get(`/item${encodeQueryAsString(params)}`));
@@ -31,7 +48,9 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
 
     createItem(folderId, name, description = '') {
       const params = {
-        folderId, name, description,
+        folderId,
+        name,
+        description,
       };
       return busy(client._.post(`/item${encodeQueryAsString(params)}`));
     },
@@ -42,10 +61,14 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         params = filterQuery(query, ...allowed);
 
       if (!id) {
-        return new Promise((resolve, reject) => reject('No argument id provided'));
+        return new Promise((resolve, reject) =>
+          reject('No argument id provided')
+        );
       }
 
-      return busy(client._.get(`/item/${id}/files${encodeQueryAsString(params)}`));
+      return busy(
+        client._.get(`/item/${id}/files${encodeQueryAsString(params)}`)
+      );
     },
 
     getItemRootPath(id) {
@@ -64,22 +87,22 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     editItem(item) {
       const expected = ['folderId', 'name', 'description'],
         params = filterQuery(item, ...expected),
-        {
-          missingKeys, promise,
-        } = mustContain(params, '_id');
+        { missingKeys, promise } = mustContain(params, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/item/${item._id}${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.put(`/item/${item._id}${encodeQueryAsString(params)}`));
     },
 
     // destinationItem = { folderId, name, description }
     copyItem(id, destinationItem) {
       const expected = ['folderId', 'name', 'description'],
         params = filterQuery(destinationItem, ...expected),
-        {
-          missingKeys, promise,
-        } = mustContain(params, 'folderId');
+        { missingKeys, promise } = mustContain(params, 'folderId');
 
-      return missingKeys ? promise : busy(client._.post(`/item/${id}/copy${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.post(`/item/${id}/copy${encodeQueryAsString(params)}`));
     },
   };
 }

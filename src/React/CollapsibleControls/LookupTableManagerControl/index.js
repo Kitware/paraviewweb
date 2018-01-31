@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import LookupTableWidget    from '../../Widgets/LookupTableWidget';
-import DropDownWidget       from '../../Widgets/DropDownWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import LookupTableWidget from '../../Widgets/LookupTableWidget';
+import DropDownWidget from '../../Widgets/DropDownWidget';
 
 export default class LookupTableManagerControl extends React.Component {
   constructor(props) {
@@ -23,12 +23,14 @@ export default class LookupTableManagerControl extends React.Component {
   }
 
   componentWillMount() {
-    this.changeSubscription = this.props.lookupTableManager.onFieldsChange((data, enevelope) => {
-      var fields = Object.keys(this.props.lookupTableManager.luts);
-      this.setState({
-        fields,
-      });
-    });
+    this.changeSubscription = this.props.lookupTableManager.onFieldsChange(
+      (data, enevelope) => {
+        var fields = Object.keys(this.props.lookupTableManager.luts);
+        this.setState({
+          fields,
+        });
+      }
+    );
   }
 
   componentWillUnmount() {

@@ -43,7 +43,7 @@ function busyMonitor(publicAPI, model) {
     return promise.then(success, error);
   };
 
-  publicAPI.busyWrapFunction = fn => (...args) => publicAPI.busy(fn(...args));
+  publicAPI.busyWrapFunction = (fn) => (...args) => publicAPI.busy(fn(...args));
 
   publicAPI.isBusy = () => model.busyCounter > 0;
 }

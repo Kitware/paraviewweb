@@ -1,5 +1,7 @@
-
-import { averageValues, uniqueValues } from '../../../IO/Core/CSVReader/Processing';
+import {
+  averageValues,
+  uniqueValues,
+} from '../../../IO/Core/CSVReader/Processing';
 
 const operations = {
   Count: uniqueValues,
@@ -13,7 +15,7 @@ export default function PieChart(chartState, csvReader, arraysInfo) {
   }
 
   if (!chartState.values) {
-    chartState.values = arrayNames[(arrayNames.length >= 2 ? 1 : 0)];
+    chartState.values = arrayNames[arrayNames.length >= 2 ? 1 : 0];
   }
 
   if (!chartState.operation) {
@@ -22,7 +24,10 @@ export default function PieChart(chartState, csvReader, arraysInfo) {
 
   const opMethod = operations[chartState.operation];
 
-  const [labels, values] = opMethod(csvReader.getColumn(chartState.labels), csvReader.getColumn(chartState.values));
+  const [labels, values] = opMethod(
+    csvReader.getColumn(chartState.labels),
+    csvReader.getColumn(chartState.values)
+  );
   return [
     {
       labels,

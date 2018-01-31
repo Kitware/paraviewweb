@@ -1,7 +1,7 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style  from 'PVWStyle/ReactWidgets/PresetListWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/PresetListWidget.mcss';
 
 export default class PresetListWidget extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export default class PresetListWidget extends React.Component {
     return (
       <div className={style.container}>
         <div className={style.bottomPadding} />
-        {names.map(name =>
+        {names.map((name) => (
           <img
             alt="Preset"
             src={`data:image/png;base64,${presets[name]}`}
@@ -43,11 +43,12 @@ export default class PresetListWidget extends React.Component {
             style={{ height }}
             data-name={name}
             onClick={this.updateActive}
-            className={(name === activeName) ? style.activeLine : style.line}
+            className={name === activeName ? style.activeLine : style.line}
           />
-        )}
+        ))}
         <div className={style.bottomPadding} />
-      </div>);
+      </div>
+    );
   }
 }
 

@@ -21,7 +21,9 @@ export default class ColorMapEditorWidget extends React.Component {
     };
 
     // Bind callback
-    this.onOpacityTransferFunctionChanged = this.onOpacityTransferFunctionChanged.bind(this);
+    this.onOpacityTransferFunctionChanged = this.onOpacityTransferFunctionChanged.bind(
+      this
+    );
     this.toggleShowOpacityControls = this.toggleShowOpacityControls.bind(this);
     this.toggleShowPresetSelection = this.toggleShowPresetSelection.bind(this);
     this.rangeMinChanged = this.rangeMinChanged.bind(this);
@@ -125,7 +127,13 @@ export default class ColorMapEditorWidget extends React.Component {
             onChange={this.rangeMaxChanged}
           />
         </div>
-        <div className={this.state.showOpacityControls ? style.pieceWiseEditor : style.hidden}>
+        <div
+          className={
+            this.state.showOpacityControls
+              ? style.pieceWiseEditor
+              : style.hidden
+          }
+        >
           <PieceWiseFunctionEditorWidget
             points={this.props.currentOpacityPoints}
             rangeMin={this.state.showOpacityControls ? this.props.rangeMin : 1}

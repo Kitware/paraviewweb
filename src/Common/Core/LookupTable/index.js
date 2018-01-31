@@ -1,13 +1,12 @@
 import Monologue from 'monologue.js';
-import Presets   from './Presets';
+import Presets from './Presets';
 
-const
-    CHANGE_TOPIC = 'LookupTable.change';
+const CHANGE_TOPIC = 'LookupTable.change';
 
 // Global helper methods ------------------------------------------------------
 
 function applyRatio(a, b, ratio) {
-  return ((b - a) * ratio) + a;
+  return (b - a) * ratio + a;
 }
 
 function interpolateColor(pointA, pointB, scalar) {
@@ -30,13 +29,12 @@ function extractPoint(controlPoints, idx) {
 }
 
 function xrgbCompare(a, b) {
-  return (a.x - b.x);
+  return a.x - b.x;
 }
 
 // ----------------------------------------------------------------------------
 
 export default class LookupTable {
-
   constructor(name, discrete = false) {
     this.name = name;
     this.scalarRange = [0, 1];
@@ -240,10 +238,10 @@ export default class LookupTable {
 
     for (let i = 0; i < length; i++) {
       const colorIdx = Math.floor(i / this.scale);
-      canvasData.data[(i * 4) + 0] = Math.floor(255 * colors[colorIdx][0]);
-      canvasData.data[(i * 4) + 1] = Math.floor(255 * colors[colorIdx][1]);
-      canvasData.data[(i * 4) + 2] = Math.floor(255 * colors[colorIdx][2]);
-      canvasData.data[(i * 4) + 3] = 255;
+      canvasData.data[i * 4 + 0] = Math.floor(255 * colors[colorIdx][0]);
+      canvasData.data[i * 4 + 1] = Math.floor(255 * colors[colorIdx][1]);
+      canvasData.data[i * 4 + 2] = Math.floor(255 * colors[colorIdx][2]);
+      canvasData.data[i * 4 + 3] = 255;
     }
     ctx.putImageData(canvasData, 0, 0);
   }
@@ -252,7 +250,9 @@ export default class LookupTable {
     if (isNaN(scalar)) {
       return this.colorNaN;
     }
-    const idxValue = Math.floor((this.colorTableSize * (scalar - this.scalarRange[0])) / this.delta);
+    const idxValue = Math.floor(
+      this.colorTableSize * (scalar - this.scalarRange[0]) / this.delta
+    );
     if (idxValue < 0) {
       return this.colorTable[0];
     }
@@ -273,4 +273,3 @@ export default class LookupTable {
 
 // Add Observer pattern using Monologue.js
 Monologue.mixInto(LookupTable);
-

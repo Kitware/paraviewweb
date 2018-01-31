@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
-import LayoutsWidget     from '../../Widgets/LayoutsWidget';
+import LayoutsWidget from '../../Widgets/LayoutsWidget';
 
 /**
  * This React component expect the following input properties:
@@ -27,8 +27,12 @@ export default class MultiViewControl extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.renderer && nextProps.renderer) {
       const renderer = nextProps.renderer;
-      this.layoutSubscription = renderer.onLayoutChange(this.onLayoutChangeCallback);
-      this.renderMethodSubscription = renderer.onActiveViewportChange(this.onActiveViewportCallback);
+      this.layoutSubscription = renderer.onLayoutChange(
+        this.onLayoutChangeCallback
+      );
+      this.renderMethodSubscription = renderer.onActiveViewportChange(
+        this.onActiveViewportCallback
+      );
       this.setState({
         renderMethod: renderer.getActiveRenderMethod(),
         layout: renderer.getActiveLayout(),
@@ -73,7 +77,11 @@ export default class MultiViewControl extends React.Component {
       renderMethods = [];
 
     if (renderer) {
-      renderMethods = renderer.getRenderMethods().map(v => <option key={v} value={v}>{v}</option>);
+      renderMethods = renderer.getRenderMethods().map((v) => (
+        <option key={v} value={v}>
+          {v}
+        </option>
+      ));
     }
 
     return (

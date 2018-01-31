@@ -1,10 +1,10 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 import enumStyle from 'PVWStyle/ReactProperties/EnumProperty.mcss';
 
-import convert          from '../../../Common/Misc/Convert';
+import convert from '../../../Common/Misc/Convert';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 function valueToString(obj) {
@@ -18,7 +18,7 @@ function stringToValue(str) {
   if (!str || str.length === 0) {
     return str;
   }
-  return (str[0] === 'S') ? str.substring(1) : JSON.parse(str.substring(1));
+  return str[0] === 'S' ? str.substring(1) : JSON.parse(str.substring(1));
 }
 
 /* eslint-disable react/no-danger */
@@ -73,14 +73,16 @@ export default class EnumProperty extends React.Component {
       for (let i = 0; i < e.target.options.length; i++) {
         const el = e.target.options.item(i);
         if (el.selected) {
-          [].concat(stringToValue(el.value)).forEach(v => newVals.push(v));
+          [].concat(stringToValue(el.value)).forEach((v) => newVals.push(v));
         }
       }
       newData.value = newVals.map(convert[this.props.ui.type]);
     } else if (e.target.value === null) {
       newData.value = null;
     } else {
-      newData.value = [convert[this.props.ui.type](stringToValue(e.target.value))];
+      newData.value = [
+        convert[this.props.ui.type](stringToValue(e.target.value)),
+      ];
     }
 
     this.setState({
@@ -93,7 +95,7 @@ export default class EnumProperty extends React.Component {
 
   render() {
     var selectedValue = null;
-    const multiple = (this.props.ui.size === -1),
+    const multiple = this.props.ui.size === -1,
       mapper = () => {
         var ret = [];
         if (!multiple && !this.props.ui.noEmpty) {
@@ -107,7 +109,8 @@ export default class EnumProperty extends React.Component {
               key={`${this.props.data.id}_${key}`}
             >
               {key}
-            </option>);
+            </option>
+          );
         });
 
         return ret;
@@ -116,8 +119,13 @@ export default class EnumProperty extends React.Component {
     if (multiple) {
       selectedValue = this.props.data.value.map(valueToString);
     } else if (this.props.ui.size === 1) {
-      if (this.props.ui.domain && this.props.ui.domain[this.props.data.value[0]] !== undefined) {
-        selectedValue = valueToString(this.props.ui.domain[this.props.data.value[0]]);
+      if (
+        this.props.ui.domain &&
+        this.props.ui.domain[this.props.data.value[0]] !== undefined
+      ) {
+        selectedValue = valueToString(
+          this.props.ui.domain[this.props.data.value[0]]
+        );
       } else {
         selectedValue = valueToString(this.props.data.value[0]);
       }
@@ -125,13 +133,20 @@ export default class EnumProperty extends React.Component {
       selectedValue = valueToString(this.props.data.value);
     }
 
-    const containerStyle = this.props.ui.label !== undefined ? style.container : enumStyle.soloContainer;
+    const containerStyle =
+      this.props.ui.label !== undefined
+        ? style.container
+        : enumStyle.soloContainer;
     return (
-      <div className={this.props.show(this.props.viewData) ? containerStyle : style.hidden}>
-        { this.props.ui.label !== undefined &&
+      <div
+        className={
+          this.props.show(this.props.viewData) ? containerStyle : style.hidden
+        }
+      >
+        {this.props.ui.label !== undefined && (
           <div className={enumStyle.header}>
             <strong>{this.props.ui.label}</strong>
-            { this.props.ui.help !== undefined &&
+            {this.props.ui.help !== undefined && (
               <span>
                 <ToggleIconButton
                   icon={style.helpIcon}
@@ -140,9 +155,9 @@ export default class EnumProperty extends React.Component {
                   onChange={this.helpToggled}
                 />
               </span>
-              }
+            )}
           </div>
-        }
+        )}
         <div className={style.inputBlock}>
           <select
             className={multiple ? enumStyle.inputMultiSelect : enumStyle.input}
@@ -153,13 +168,14 @@ export default class EnumProperty extends React.Component {
             {mapper()}
           </select>
         </div>
-        { this.props.ui.help !== undefined &&
+        {this.props.ui.help !== undefined && (
           <div
             className={this.state.helpOpen ? style.helpBox : style.hidden}
             dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
           />
-        }
-      </div>);
+        )}
+      </div>
+    );
   }
 }
 

@@ -90,7 +90,19 @@ export default class ImageExporter {
     }
 
     this.bgCanvas.size(outputSize[0], outputSize[1]);
-    this.bgCanvas.get2DContext().drawImage(canvas, region[0], region[1], region[2], region[3], 0, 0, outputSize[0], outputSize[1]);
+    this.bgCanvas
+      .get2DContext()
+      .drawImage(
+        canvas,
+        region[0],
+        region[1],
+        region[2],
+        region[3],
+        0,
+        0,
+        outputSize[0],
+        outputSize[1]
+      );
     return this.bgCanvas.toDataURL(format);
   }
 }

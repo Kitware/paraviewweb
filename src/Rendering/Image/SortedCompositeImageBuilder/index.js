@@ -7,15 +7,17 @@ import ToggleModel from '../../../Common/State/ToggleState';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/VolumeControlWidget';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const
-  LUT_NAME = 'VolumeScalar';
+const LUT_NAME = 'VolumeScalar';
 
 export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, lookupTableManager) {
-    super({ queryDataModel, lookupTableManager, dimensions: queryDataModel.originalData.SortedComposite.dimensions });
+    super({
+      queryDataModel,
+      lookupTableManager,
+      dimensions: queryDataModel.originalData.SortedComposite.dimensions,
+    });
 
     this.dataQuery = {
       name: 'data_fetch',
@@ -24,24 +26,42 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
     this.metadata = queryDataModel.originalData.SortedComposite;
 
     // Add Lut
-    this.originalRange = [this.metadata.scalars[0], this.metadata.scalars[this.metadata.scalars.length - 1]];
+    this.originalRange = [
+      this.metadata.scalars[0],
+      this.metadata.scalars[this.metadata.scalars.length - 1],
+    ];
     this.lutTextureData = new Uint8Array(this.metadata.layers * 4);
-    lookupTableManager.addFields({ VolumeScalar: [0, 1] }, this.queryDataModel.originalData.LookupTables);
+    lookupTableManager.addFields(
+      { VolumeScalar: [0, 1] },
+      this.queryDataModel.originalData.LookupTables
+    );
     this.lookupTable = lookupTableManager.getLookupTable(LUT_NAME);
-    this.registerSubscription(this.lookupTable.onChange((data, envelope) => {
-      for (let idx = 0; idx < this.metadata.layers; idx++) {
-        const color = this.lookupTable.getColor(this.metadata.scalars[idx]);
+    this.registerSubscription(
+      this.lookupTable.onChange((data, envelope) => {
+        for (let idx = 0; idx < this.metadata.layers; idx++) {
+          const color = this.lookupTable.getColor(this.metadata.scalars[idx]);
 
-        this.lutTextureData[idx * 4] = color[0] * 255;
-        this.lutTextureData[(idx * 4) + 1] = color[1] * 255;
-        this.lutTextureData[(idx * 4) + 2] = color[2] * 255;
-      }
-      this.render();
-    }));
+          this.lutTextureData[idx * 4] = color[0] * 255;
+          this.lutTextureData[idx * 4 + 1] = color[1] * 255;
+          this.lutTextureData[idx * 4 + 2] = color[2] * 255;
+        }
+        this.render();
+      })
+    );
 
     this.compositors = [
-      new CPUCompositor(queryDataModel, this, this.lutTextureData, this.metadata.reverseCompositePass),
-      new GPUCompositor(queryDataModel, this, this.lutTextureData, this.metadata.reverseCompositePass),
+      new CPUCompositor(
+        queryDataModel,
+        this,
+        this.lutTextureData,
+        this.metadata.reverseCompositePass
+      ),
+      new GPUCompositor(
+        queryDataModel,
+        this,
+        this.lutTextureData,
+        this.metadata.reverseCompositePass
+      ),
     ];
     this.compositor = this.compositors[1];
 
@@ -63,23 +83,30 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
     this.equalizerModel.onChange((data, envelope) => {
       var opacities = data.getOpacities();
       for (let idx = 0; idx < this.metadata.layers; idx++) {
-        this.lutTextureData[(idx * 4) + 3] = opacities[idx] * 255;
+        this.lutTextureData[idx * 4 + 3] = opacities[idx] * 255;
       }
       this.render();
     });
 
     // Force the filling of the color texture
-    this.lookupTable.setScalarRange(this.originalRange[0], this.originalRange[1]);
+    this.lookupTable.setScalarRange(
+      this.originalRange[0],
+      this.originalRange[1]
+    );
 
     // Relay normal data fetch to query based on
-    this.registerSubscription(this.queryDataModel.onDataChange(() => {
-      this.update();
-    }));
+    this.registerSubscription(
+      this.queryDataModel.onDataChange(() => {
+        this.update();
+      })
+    );
 
-    this.registerSubscription(queryDataModel.on('data_fetch', (data, envelope) => {
-      this.compositor.updateData(data);
-      this.render();
-    }));
+    this.registerSubscription(
+      queryDataModel.on('data_fetch', (data, envelope) => {
+        this.compositor.updateData(data);
+        this.render();
+      })
+    );
 
     // Handle destroy
     this.registerObjectToFree(this.compositors[0]);
@@ -127,7 +154,13 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var { lookupTable, equalizer, intensity, computation, queryDataModel } = this.getControlModels();
+    var {
+      lookupTable,
+      equalizer,
+      intensity,
+      computation,
+      queryDataModel,
+    } = this.getControlModels();
     return [
       {
         name: 'VolumeControlWidget',
@@ -135,7 +168,8 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
         equalizer,
         intensity,
         computation,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel,
       },
@@ -158,5 +192,4 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
       dimensions: this.metadata.dimensions,
     };
   }
-
 }

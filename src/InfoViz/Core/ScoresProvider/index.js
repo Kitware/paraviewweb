@@ -26,8 +26,8 @@ function scoresProvider(publicAPI, model) {
   };
   publicAPI.getDefaultScore = () => {
     if (model.scores) {
-      const index = model.scores.findIndex(score => !!score.isDefault);
-      return (index === -1 ? 0 : index);
+      const index = model.scores.findIndex((score) => !!score.isDefault);
+      return index === -1 ? 0 : index;
     }
     return 0;
   };

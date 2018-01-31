@@ -1,5 +1,5 @@
-import CompositeComponent   from '..';
-import BGColorComponent     from '../../BackgroundColor';
+import CompositeComponent from '..';
+import BGColorComponent from '../../BackgroundColor';
 
 // Load CSS
 require('normalize.css');

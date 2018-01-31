@@ -1,25 +1,28 @@
 /* global window */
 
-import contains              from 'mout/src/array/contains';
-import equals                from 'mout/src/object/equals';
+import contains from 'mout/src/array/contains';
+import equals from 'mout/src/object/equals';
 
-import AbstractImageBuilder  from '../AbstractImageBuilder';
+import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/FloatImageControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const
-  PROBE_CHANGE_TOPIC = 'probe-change',
+const PROBE_CHANGE_TOPIC = 'probe-change',
   TIME_DATA_READY = 'time-data-ready';
 
 export default class FloatDataImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, lookupTableManager) {
-    super({ queryDataModel, lookupTableManager, handleRecord: true, dimensions: queryDataModel.originalData.FloatImage.dimensions });
+    super({
+      queryDataModel,
+      lookupTableManager,
+      handleRecord: true,
+      dimensions: queryDataModel.originalData.FloatImage.dimensions,
+    });
 
     this.timeDataQueryDataModel = queryDataModel.clone();
     this.registerObjectToFree(this.timeDataQueryDataModel);
@@ -44,7 +47,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       forceUpdate: false,
       tIdx: this.queryDataModel.getIndex('time') || 0,
       updateValue: () => {
-        this.timeProbe.value = this.timeProbe.dataValues ? this.timeProbe.dataValues[this.timeProbe.tIdx] : (this.timeProbe.pending ? 'Fetching...' : '');
+        this.timeProbe.value = this.timeProbe.dataValues
+          ? this.timeProbe.dataValues[this.timeProbe.tIdx]
+          : this.timeProbe.pending ? 'Fetching...' : '';
       },
       triggerChange: () => {
         this.timeProbe.forceUpdate = false;
@@ -52,65 +57,86 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
         this.emit(PROBE_CHANGE_TOPIC, this.timeProbe);
       },
     };
-    this.bgCanvas = new CanvasOffscreenBuffer(this.dimensions[0], this.dimensions[1]);
+    this.bgCanvas = new CanvasOffscreenBuffer(
+      this.dimensions[0],
+      this.dimensions[1]
+    );
     this.registerObjectToFree(this.bgCanvas);
 
     // Update LookupTableManager with data range
-    this.lookupTableManager.addFields(this.metadata.ranges, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.metadata.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
 
     // Handle events
-    this.registerSubscription(queryDataModel.onStateChange(() => {
-      if (this.timeProbe.tIdx !== this.queryDataModel.getIndex('time')) {
-        this.timeProbe.tIdx = this.queryDataModel.getIndex('time');
-        this.timeProbe.triggerChange();
-      } else {
-        this.render();
-      }
-      this.update();
-    }));
-
-    this.registerSubscription(queryDataModel.on('pipeline_data', (data, envelope) => {
-      this.layers.forEach((item) => {
-        var dataId = `${item.name}_${item.array}`,
-          dataLight = `${item.name}__light`,
-          dataMesh = `${item.name}__mesh`;
-        if (item.active && data[dataId]) {
-          item.data = new window[item.type](data[dataId].data);
-          item.light = new Uint8Array(data[dataLight].data);
-          if (data[dataMesh]) {
-            item.mesh = new Uint8Array(data[dataMesh].data);
-          }
+    this.registerSubscription(
+      queryDataModel.onStateChange(() => {
+        if (this.timeProbe.tIdx !== this.queryDataModel.getIndex('time')) {
+          this.timeProbe.tIdx = this.queryDataModel.getIndex('time');
+          this.timeProbe.triggerChange();
+        } else {
+          this.render();
         }
-      });
-      this.render();
-    }));
+        this.update();
+      })
+    );
 
-    this.registerSubscription(this.lookupTableManager.onChange((data, envelope) => {
-      this.render();
-    }));
+    this.registerSubscription(
+      queryDataModel.on('pipeline_data', (data, envelope) => {
+        this.layers.forEach((item) => {
+          var dataId = `${item.name}_${item.array}`,
+            dataLight = `${item.name}__light`,
+            dataMesh = `${item.name}__mesh`;
+          if (item.active && data[dataId]) {
+            item.data = new window[item.type](data[dataId].data);
+            item.light = new Uint8Array(data[dataLight].data);
+            if (data[dataMesh]) {
+              item.mesh = new Uint8Array(data[dataMesh].data);
+            }
+          }
+        });
+        this.render();
+      })
+    );
+
+    this.registerSubscription(
+      this.lookupTableManager.onChange((data, envelope) => {
+        this.render();
+      })
+    );
 
     // Handle time data
-    this.registerSubscription(this.timeDataQueryDataModel.on('pipeline_data', (data, envelope) => {
-      this.timeData.data.push(data);
-      if (this.timeData.data.length < this.timeDataQueryDataModel.getSize('time')) {
-        this.timeDataQueryDataModel.next('time');
-        this.timeData.pending = true;
-        this.timeProbe.pending = true;
-        const categories = this.getCategories();
-        this.timeDataQueryDataModel.fetchData({
-          name: 'pipeline_data',
-          categories,
-        });
-      } else {
-        this.timeData.pending = false;
-        this.timeProbe.pending = false;
-        if (this.timeProbe.enabled) {
-          this.getTimeChart();
+    this.registerSubscription(
+      this.timeDataQueryDataModel.on('pipeline_data', (data, envelope) => {
+        this.timeData.data.push(data);
+        if (
+          this.timeData.data.length <
+          this.timeDataQueryDataModel.getSize('time')
+        ) {
+          this.timeDataQueryDataModel.next('time');
+          this.timeData.pending = true;
+          this.timeProbe.pending = true;
+          const categories = this.getCategories();
+          this.timeDataQueryDataModel.fetchData({
+            name: 'pipeline_data',
+            categories,
+          });
+        } else {
+          this.timeData.pending = false;
+          this.timeProbe.pending = false;
+          if (this.timeProbe.enabled) {
+            this.getTimeChart();
+          }
+          this.timeProbe.triggerChange();
+          this.emit(TIME_DATA_READY, {
+            fields: [],
+            xRange: [0, this.timeDataQueryDataModel.getSize('time')],
+            fullData: this.timeData,
+          });
         }
-        this.timeProbe.triggerChange();
-        this.emit(TIME_DATA_READY, { fields: [], xRange: [0, this.timeDataQueryDataModel.getSize('time')], fullData: this.timeData });
-      }
-    }));
+      })
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -148,7 +174,10 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       query = this.queryDataModel.getQuery();
 
     // Prevent concurrent data fetching for time
-    if (this.timeData.pending || !this.timeDataQueryDataModel.getValues('time')) {
+    if (
+      this.timeData.pending ||
+      !this.timeDataQueryDataModel.getValues('time')
+    ) {
       return;
     }
 
@@ -186,7 +215,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       x = this.timeProbe.x;
       y = this.timeProbe.y;
     } else {
-      probeHasChanged = probeHasChanged || this.timeProbe.x !== x || this.timeProbe.y !== y;
+      probeHasChanged =
+        probeHasChanged || this.timeProbe.x !== x || this.timeProbe.y !== y;
       this.timeProbe.x = x;
       this.timeProbe.y = y;
     }
@@ -204,7 +234,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     // Find the layer under (x,y)
     const width = this.dimensions[0],
       height = this.dimensions[1],
-      idx = ((height - y - 1) * width) + x;
+      idx = (height - y - 1) * width + x;
 
     let arrayType = '',
       field = null,
@@ -219,7 +249,12 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     });
 
     // Make sure the loaded data is the one we need to plot
-    if (layerName && this.timeProbe.layer !== layerName && field && this.timeProbe.field !== field) {
+    if (
+      layerName &&
+      this.timeProbe.layer !== layerName &&
+      field &&
+      this.timeProbe.field !== field
+    ) {
       this.timeProbe.layer = layerName;
       this.timeProbe.field = field;
 
@@ -233,16 +268,23 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     const timeValues = this.timeDataQueryDataModel.getValues('time'),
       dataValues = [],
       chartData = {
-        xRange: [Number(timeValues[0]), Number(timeValues[timeValues.length - 1])],
-        fields: [{
-          name: field,
-          data: dataValues,
-        }],
+        xRange: [
+          Number(timeValues[0]),
+          Number(timeValues[timeValues.length - 1]),
+        ],
+        fields: [
+          {
+            name: field,
+            data: dataValues,
+          },
+        ],
       },
       timeSize = this.timeData.data.length;
 
     if (field && this.lookupTableManager.getLookupTable(field)) {
-      chartData.fields[0].range = this.lookupTableManager.getLookupTable(field).getScalarRange();
+      chartData.fields[0].range = this.lookupTableManager
+        .getLookupTable(field)
+        .getScalarRange();
     }
 
     // Keep track of the chart values
@@ -252,7 +294,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     const layerNameField = `${layerName}_${field}`;
     if (layerName && field && this.timeData.data[0][layerNameField]) {
       for (let i = 0; i < timeSize; i++) {
-        const floatArray = new window[arrayType](this.timeData.data[i][layerNameField].data);
+        const floatArray = new window[arrayType](
+          this.timeData.data[i][layerNameField].data
+        );
         dataValues.push(floatArray[idx]);
       }
     } else if (layerName && field && !this.timeData.data[0][layerNameField]) {
@@ -281,7 +325,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       var x = idx % width,
         y = Math.floor(idx / width);
 
-      return ((height - y - 1) * width) + x;
+      return (height - y - 1) * width + x;
     }
 
     ctx.clearRect(0, 0, width, height);
@@ -291,18 +335,25 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
         for (let i = 0; i < size; i++) {
           const flipedY = flipY(i),
             color = lut.getColor(layer.data[flipedY]),
-            light = layer.light ? (layer.light[flipedY] ? layer.light[flipedY] - this.light : 0) : 0;
+            light = layer.light
+              ? layer.light[flipedY] ? layer.light[flipedY] - this.light : 0
+              : 0;
 
           if (color[3]) {
-            pixels[(i * 4) + 0] = (color[0] * 255) + light;
-            pixels[(i * 4) + 1] = (color[1] * 255) + light;
-            pixels[(i * 4) + 2] = (color[2] * 255) + light;
-            pixels[(i * 4) + 3] = (color[3] * 255);
+            pixels[i * 4 + 0] = color[0] * 255 + light;
+            pixels[i * 4 + 1] = color[1] * 255 + light;
+            pixels[i * 4 + 2] = color[2] * 255 + light;
+            pixels[i * 4 + 3] = color[3] * 255;
 
-            if (layer.hasMesh && layer.meshActive && layer.mesh && layer.mesh[flipedY]) {
-              pixels[(i * 4) + 0] = this.meshColor[0];
-              pixels[(i * 4) + 1] = this.meshColor[1];
-              pixels[(i * 4) + 2] = this.meshColor[2];
+            if (
+              layer.hasMesh &&
+              layer.meshActive &&
+              layer.mesh &&
+              layer.mesh[flipedY]
+            ) {
+              pixels[i * 4 + 0] = this.meshColor[0];
+              pixels[i * 4 + 1] = this.meshColor[1];
+              pixels[i * 4 + 2] = this.meshColor[2];
             }
           }
         }
@@ -389,10 +440,12 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       {
         name: 'LookupTableManagerWidget',
         lookupTableManager,
-      }, {
+      },
+      {
         name: 'FloatImageControl',
         model,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel,
       },
@@ -446,7 +499,11 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   setMeshColor(r, g, b) {
-    if (this.meshColor[0] !== r && this.meshColor[1] !== g && this.meshColor[2] !== b) {
+    if (
+      this.meshColor[0] !== r &&
+      this.meshColor[1] !== g &&
+      this.meshColor[2] !== b
+    ) {
       this.meshColor = [r, g, b];
       this.update();
     }

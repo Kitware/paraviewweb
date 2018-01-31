@@ -15,7 +15,9 @@ export default class CompositeControlContainer {
     this.toggleControl = () => {
       this.controlVisible = !this.controlVisible;
       if (this.container) {
-        this.container.querySelector(`.${style.jsControlContent}`).style.display = this.controlVisible ? 'flex' : 'none';
+        this.container.querySelector(
+          `.${style.jsControlContent}`
+        ).style.display = this.controlVisible ? 'flex' : 'none';
         setImmediate(() => this.resize());
       }
     };
@@ -47,13 +49,19 @@ export default class CompositeControlContainer {
 
       const controlContainer = document.createElement('div');
       controlContainer.classList.add(style.control);
-      controlContainer.innerHTML = `<div><i class="${style.toggleControlButton}"></i></div><div class="${style.controlContent}"></div>`;
+      controlContainer.innerHTML = `<div><i class="${
+        style.toggleControlButton
+      }"></i></div><div class="${style.controlContent}"></div>`;
       this.container.appendChild(controlContainer);
 
-      this.controlViewport.setContainer(controlContainer.querySelector(`.${style.jsControlContent}`));
+      this.controlViewport.setContainer(
+        controlContainer.querySelector(`.${style.jsControlContent}`)
+      );
 
       // Add button listener
-      const button = controlContainer.querySelector(`.${SELECTOR_BUTTON_CLASS}`);
+      const button = controlContainer.querySelector(
+        `.${SELECTOR_BUTTON_CLASS}`
+      );
       if (button) {
         button.addEventListener('click', this.toggleControl);
       }
@@ -67,12 +75,15 @@ export default class CompositeControlContainer {
       return;
     }
 
-    const controlDiv = this.container.querySelector(`.${style.jsControlContent}`);
+    const controlDiv = this.container.querySelector(
+      `.${style.jsControlContent}`
+    );
     const rect = this.container.getClientRects()[0];
 
     if (rect) {
       const { height, width } = rect;
-      const controlWidth = width < (this.targetWidth + 20) ? (width - 20) : this.targetWidth;
+      const controlWidth =
+        width < this.targetWidth + 20 ? width - 20 : this.targetWidth;
 
       controlDiv.style.width = `${controlWidth}px`;
       controlDiv.style.maxHeight = `${height - 45}px`;

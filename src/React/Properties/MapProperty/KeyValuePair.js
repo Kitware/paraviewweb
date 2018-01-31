@@ -56,7 +56,8 @@ export default class KeyValuePair extends React.Component {
         <td className={style.actionColumn}>
           <i className={style.deleteButton} onClick={this.removeItem} />
         </td>
-      </tr>);
+      </tr>
+    );
   }
 }
 

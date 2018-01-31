@@ -1,7 +1,7 @@
 /* global document */
-import React        from 'react';
-import ReactDOM     from 'react-dom';
-import EnumProperty  from '..';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import EnumProperty from '..';
 
 // Load CSS
 require('normalize.css');
@@ -57,7 +57,14 @@ function render() {
     ui: {
       label: 'Multi-select List',
       help: 'Choose multiple food items',
-      domain: { pasta: 'pasta', salad: 'salad', bread: 'bread', cheese: 'cheese', wine: 'wine', dessert: 'dessert' },
+      domain: {
+        pasta: 'pasta',
+        salad: 'salad',
+        bread: 'bread',
+        cheese: 'cheese',
+        wine: 'wine',
+        dessert: 'dessert',
+      },
       type: 'string',
       size: -1,
     },
@@ -69,7 +76,8 @@ function render() {
       <EnumProperty {...properties3} />
       <EnumProperty {...properties2} />
     </div>,
-    container);
+    container
+  );
 }
 
 document.body.style.margin = '10px';

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
-import CollapsibleWidget      from '../../CollapsibleWidget';
-import SelectionEditorWidget  from '../../SelectionEditorWidget';
-import ScoreSelector          from '../ScoreSelector';
+import CollapsibleWidget from '../../CollapsibleWidget';
+import SelectionEditorWidget from '../../SelectionEditorWidget';
+import ScoreSelector from '../ScoreSelector';
 
 export default function render(props) {
   return (
@@ -67,7 +67,8 @@ export default function render(props) {
           />
         </CollapsibleWidget>
       </section>
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {

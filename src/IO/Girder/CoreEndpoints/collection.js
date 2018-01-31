@@ -1,5 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     listCollections(query = {}) {
       const expected = ['text', 'limit', 'offset', 'sort', 'sortdir'],
@@ -13,7 +19,9 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         params = filterQuery(collection, ...expected),
         { missingKeys, promise } = mustContain(params, ...expected);
 
-      return missingKeys ? promise : busy(client._.post(`/collection${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.post(`/collection${encodeQueryAsString(params)}`));
     },
 
     deleteCollection(id) {
@@ -29,7 +37,13 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         params = filterQuery(collection, ...expected),
         { missingKeys, promise } = mustContain(collection, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.put(
+              `/collection/${collection._id}${encodeQueryAsString(params)}`
+            )
+          );
     },
 
     getCollectionAccess(id) {
@@ -41,7 +55,15 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
         params = filterQuery(collection, ...expected),
         { missingKeys, promise } = mustContain(collection, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}/access${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.put(
+              `/collection/${collection._id}/access${encodeQueryAsString(
+                params
+              )}`
+            )
+          );
     },
   };
 }

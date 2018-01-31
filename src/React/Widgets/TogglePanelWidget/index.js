@@ -42,7 +42,9 @@ export default class TogglePanelWidget extends React.Component {
         }}
       >
         <span
-          className={this.state.panelVisible ? style.panelVisible : style.panelHidden}
+          className={
+            this.state.panelVisible ? style.panelVisible : style.panelHidden
+          }
           style={{
             width: this.props.size.button[0],
             height: this.props.size.button[1],
@@ -61,7 +63,8 @@ export default class TogglePanelWidget extends React.Component {
             {this.props.children}
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

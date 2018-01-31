@@ -56,7 +56,13 @@ function createShaderProgram(gl, shaders) {
 }
 
 // Apply new mapping to a program
-function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResources) {
+function applyProgramDataMapping(
+  gl,
+  programName,
+  mappingName,
+  glConfig,
+  glResources
+) {
   var program = glResources.programs[programName];
   var mapping = glConfig.mappings[mappingName];
 
@@ -64,9 +70,15 @@ function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResou
     var glBuffer = glResources.buffers[bufferMapping.id];
 
     gl.bindBuffer(gl.ARRAY_BUFFER, glBuffer);
-    program[bufferMapping.name] = gl.getAttribLocation(program, bufferMapping.attribute);
+    program[bufferMapping.name] = gl.getAttribLocation(
+      program,
+      bufferMapping.attribute
+    );
     gl.enableVertexAttribArray(program[bufferMapping.name]);
-    gl.vertexAttribPointer(program[bufferMapping.name], ...bufferMapping.format);
+    gl.vertexAttribPointer(
+      program[bufferMapping.name],
+      ...bufferMapping.format
+    );
     // FIXME: Remove this check when Apple fixes this bug
     /* global navigator */
     // const buggyBrowserVersion = ['AppleWebKit/602.1.50', 'AppleWebKit/602.2.14'];
@@ -79,9 +91,20 @@ function applyProgramDataMapping(gl, programName, mappingName, glConfig, glResou
 // Create a shader program
 function buildShaderProgram(gl, name, config, resources) {
   var progConfig = config.programs[name];
-  var compiledVertexShader = compileShader(gl, progConfig.vertexShader, gl.VERTEX_SHADER);
-  var compiledFragmentShader = compileShader(gl, progConfig.fragmentShader, gl.FRAGMENT_SHADER);
-  var program = createShaderProgram(gl, [compiledVertexShader, compiledFragmentShader]);
+  var compiledVertexShader = compileShader(
+    gl,
+    progConfig.vertexShader,
+    gl.VERTEX_SHADER
+  );
+  var compiledFragmentShader = compileShader(
+    gl,
+    progConfig.fragmentShader,
+    gl.FRAGMENT_SHADER
+  );
+  var program = createShaderProgram(gl, [
+    compiledVertexShader,
+    compiledFragmentShader,
+  ]);
 
   // Store the created program in the resources
   resources.programs[name] = program;
@@ -100,12 +123,25 @@ function bindTextureToFramebuffer(gl, fbo, texture) {
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
-  gl.texImage2D(gl.TEXTURE_2D,
-                0, gl.RGBA, fbo.width, fbo.height,
-                0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    fbo.width,
+    fbo.height,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    null
+  );
 
-  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
-                          gl.TEXTURE_2D, texture, 0);
+  gl.framebufferTexture2D(
+    gl.FRAMEBUFFER,
+    gl.COLOR_ATTACHMENT0,
+    gl.TEXTURE_2D,
+    texture,
+    0
+  );
 
   // Check fbo status
   const fbs = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
@@ -157,7 +193,13 @@ function freeGLResources(glResources) {
 
 // Create GL resources
 function createGLResources(gl, glConfig) {
-  var resources = { gl, buffers: {}, textures: {}, framebuffers: {}, programs: {} };
+  var resources = {
+    gl,
+    buffers: {},
+    textures: {},
+    framebuffers: {},
+    programs: {},
+  };
   var buffers = glConfig.resources.buffers || [];
   var textures = glConfig.resources.textures || [];
   var framebuffers = glConfig.resources.framebuffers || [];
@@ -204,7 +246,9 @@ function createGLResources(gl, glConfig) {
   });
 
   // Add destroy function
-  resources.destroy = () => { freeGLResources(resources); };
+  resources.destroy = () => {
+    freeGLResources(resources);
+  };
 
   return resources;
 }

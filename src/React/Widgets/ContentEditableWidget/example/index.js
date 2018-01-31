@@ -1,13 +1,12 @@
 /* global document */
-import React                    from 'react';
-import ReactDOM                 from 'react-dom';
-import ContentEditableWidget    from '..';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ContentEditableWidget from '..';
 
 // Load CSS
 require('normalize.css');
 
-const
-  container = document.querySelector('.content'),
+const container = document.querySelector('.content'),
   html = 'initial value';
 
 function onChange(event) {
@@ -15,9 +14,8 @@ function onChange(event) {
 }
 
 ReactDOM.render(
-  React.createElement(
-    ContentEditableWidget,
-    { html, onChange }),
-  container);
+  React.createElement(ContentEditableWidget, { html, onChange }),
+  container
+);
 
 document.body.style.margin = '10px';

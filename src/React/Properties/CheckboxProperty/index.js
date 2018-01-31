@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import Checkbox         from './Checkbox';
+import Checkbox from './Checkbox';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
@@ -78,7 +78,8 @@ export default class CheckboxProperty extends React.Component {
               key={`${this.props.data.id}_${i}`}
               onChange={this.valueChange}
               idx={i}
-            />);
+            />
+          );
         }
         return ret;
       }
@@ -88,11 +89,16 @@ export default class CheckboxProperty extends React.Component {
           value={!!this.props.data.value}
           label={this.props.ui.componentLabels[0]}
           onChange={this.valueChange}
-        />);
+        />
+      );
     };
 
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+      <div
+        className={
+          this.props.show(this.props.viewData) ? style.container : style.hidden
+        }
+      >
         <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
@@ -104,17 +110,15 @@ export default class CheckboxProperty extends React.Component {
             />
           </span>
         </div>
-        <div className={style.inputBlock}>
-          {mapper()}
-        </div>
+        <div className={style.inputBlock}>{mapper()}</div>
         <div
           className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
-      </div>);
+      </div>
+    );
   }
 }
-
 
 CheckboxProperty.propTypes = {
   data: PropTypes.object.isRequired,

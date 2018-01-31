@@ -17,7 +17,10 @@ export default class ReactContainer {
     this.container = el;
     if (this.container) {
       const View = this.reactClass;
-      this.component = ReactDOM.render(<View {...this.props} />, this.container);
+      this.component = ReactDOM.render(
+        <View {...this.props} />,
+        this.container
+      );
     }
   }
 

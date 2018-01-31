@@ -1,37 +1,37 @@
 /* global window */
 
-import AbstractImageBuilder  from '../AbstractImageBuilder';
+import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/ProbeControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const
-  PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
+const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
   PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change',
-  CROSSHAIR_VISIBILITY_CHANGE_TOPIC = 'ProbeImageBuilder.crosshair.visibility.change',
+  CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
+    'ProbeImageBuilder.crosshair.visibility.change',
   RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change',
   dataMapping = {
     XY: {
       idx: [0, 1, 2],
-      hasChange: (probe, x, y, z) => (probe[2] !== z),
+      hasChange: (probe, x, y, z) => probe[2] !== z,
     },
     XZ: {
       idx: [0, 2, 1],
-      hasChange: (probe, x, y, z) => (probe[1] !== y),
+      hasChange: (probe, x, y, z) => probe[1] !== y,
     },
     ZY: {
       idx: [2, 1, 0],
-      hasChange: (probe, x, y, z) => (probe[0] !== x),
+      hasChange: (probe, x, y, z) => probe[0] !== x,
     },
   };
 
 export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
-
   constructor(queryDataModel, lookupTableManager) {
     super({
-      queryDataModel, lookupTableManager,
+      queryDataModel,
+      lookupTableManager,
     });
 
     this.metadata = queryDataModel.originalData.DataProber;
@@ -52,12 +52,15 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
 
     // Update LookupTableManager with data range
     this.lookupTableManager.updateActiveLookupTable(this.field);
-    this.lookupTableManager.addFields(this.metadata.ranges, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.metadata.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
 
     let maxSize = 0;
     for (let i = 0; i < 3; ++i) {
       const currentSize = this.metadata.dimensions[i];
-      maxSize = (maxSize < currentSize) ? currentSize : maxSize;
+      maxSize = maxSize < currentSize ? currentSize : maxSize;
     }
     this.bgCanvas = new CanvasOffscreenBuffer(maxSize, maxSize);
     this.registerObjectToFree(this.bgCanvas);
@@ -65,24 +68,32 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     this.fgCanvas = null;
 
     // Handle events
-    this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
-      this.dataFields = {};
-      Object.keys(data).forEach((field) => {
-        this.dataFields[field] = new window[this.metadata.types[field]](data[field].data);
-      });
-      this.render();
-    }));
-
-    this.registerSubscription(this.lookupTableManager.onActiveLookupTableChange((data, envelope) => {
-      if (this.field !== data) {
-        this.field = data;
+    this.registerSubscription(
+      queryDataModel.onDataChange((data, envelope) => {
+        this.dataFields = {};
+        Object.keys(data).forEach((field) => {
+          this.dataFields[field] = new window[this.metadata.types[field]](
+            data[field].data
+          );
+        });
         this.render();
-      }
-    }));
+      })
+    );
 
-    this.registerSubscription(this.lookupTableManager.onChange((data, envelope) => {
-      this.update();
-    }));
+    this.registerSubscription(
+      this.lookupTableManager.onActiveLookupTableChange((data, envelope) => {
+        if (this.field !== data) {
+          this.field = data;
+          this.render();
+        }
+      })
+    );
+
+    this.registerSubscription(
+      this.lookupTableManager.onChange((data, envelope) => {
+        this.update();
+      })
+    );
 
     // Event handler
     const self = this;
@@ -104,8 +115,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         }
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         if (self.renderMethod === 'XZ') {
           // We flipped Y
@@ -139,8 +150,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         }
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         if (self.renderMethod === 'XZ') {
           // We flipped Y
@@ -166,7 +177,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
           return false;
         }
 
-        probe[idx] += (event.deltaY < 0) ? -1 : 1;
+        probe[idx] += event.deltaY < 0 ? -1 : 1;
 
         if (probe[idx] < 0) {
           probe[idx] = 0;
@@ -214,7 +225,7 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       array = this.dataFields[this.field];
 
     if (array) {
-      this.probeValue = array[x + ((ySize - y - 1) * xSize) + (z * xSize * ySize)];
+      this.probeValue = array[x + (ySize - y - 1) * xSize + z * xSize * ySize];
     }
   }
 
@@ -248,15 +259,30 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       if (this.renderMethod === 'XZ') {
         // Need to flip Y axis
         this.pushToFront(
-          dimensions[idx[0]], dimensions[idx[1]],
-          spacing[idx[0]], spacing[idx[1]],
-          this.probeXYZ[idx[0]], dimensions[idx[1]] - this.probeXYZ[idx[1]] - 1);
+          dimensions[idx[0]],
+          dimensions[idx[1]],
+          spacing[idx[0]],
+          spacing[idx[1]],
+          this.probeXYZ[idx[0]],
+          dimensions[idx[1]] - this.probeXYZ[idx[1]] - 1
+        );
       } else {
-        this.pushToFront(dimensions[idx[0]], dimensions[idx[1]], spacing[idx[0]], spacing[idx[1]], this.probeXYZ[idx[0]], this.probeXYZ[idx[1]]);
+        this.pushToFront(
+          dimensions[idx[0]],
+          dimensions[idx[1]],
+          spacing[idx[0]],
+          spacing[idx[1]],
+          this.probeXYZ[idx[0]],
+          this.probeXYZ[idx[1]]
+        );
       }
     }
 
-    if (previousValue[0] === x && previousValue[1] === y && previousValue[2] === z) {
+    if (
+      previousValue[0] === x &&
+      previousValue[1] === y &&
+      previousValue[2] === z
+    ) {
       return; // No change detected
     }
 
@@ -293,23 +319,23 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       idxValues = [];
 
     if (axisIdx === 0) {
-      const offset = ((ySize - py - 1) * xSize) + (pz * xSize * ySize);
+      const offset = (ySize - py - 1) * xSize + pz * xSize * ySize;
       for (let x = 0; x < xSize; x++) {
         idxValues.push(offset + x);
       }
     }
     if (axisIdx === 1) {
-      const offset = px + (pz * xSize * ySize);
+      const offset = px + pz * xSize * ySize;
       for (let y = 0; y < ySize; y++) {
-        idxValues.push(offset + ((ySize - y - 1) * xSize));
+        idxValues.push(offset + (ySize - y - 1) * xSize);
       }
       idxValues.reverse();
     }
     if (axisIdx === 2) {
-      const offset = px + ((ySize - py - 1) * xSize),
+      const offset = px + (ySize - py - 1) * xSize,
         step = xSize * ySize;
       for (let z = 0; z < zSize; z++) {
-        idxValues.push(offset + (z * step));
+        idxValues.push(offset + z * step);
       }
     }
 
@@ -325,7 +351,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       }
 
       probeData.fields.push({
-        name, data, range,
+        name,
+        data,
+        range,
       });
     });
 
@@ -364,7 +392,6 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       destHeight = Math.floor(height * scaleY),
       ctx = null;
 
-
     // Make sure we have a foreground buffer
     if (this.fgCanvas) {
       this.fgCanvas.size(destWidth, destHeight);
@@ -374,7 +401,17 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     }
 
     ctx = this.fgCanvas.get2DContext();
-    ctx.drawImage(this.bgCanvas.el, 0, 0, width, height, 0, 0, destWidth, destHeight);
+    ctx.drawImage(
+      this.bgCanvas.el,
+      0,
+      0,
+      width,
+      height,
+      0,
+      0,
+      destWidth,
+      destHeight
+    );
 
     // Draw cross hair probe position
     ctx.beginPath();
@@ -404,7 +441,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
 
     var readyImage = {
       canvas: this.bgCanvas.el,
-      imageData: this.bgCanvas.el.getContext('2d').getImageData(0, 0, width, height),
+      imageData: this.bgCanvas.el
+        .getContext('2d')
+        .getImageData(0, 0, width, height),
       area: [0, 0, width, height],
       outputSize: [destWidth, destHeight],
       type: this.renderMethod,
@@ -439,17 +478,24 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let x = 0; x < xSize; x++) {
-        const color = lut.getColor(array[offset + x + (xSize * (ySize - y - 1))]);
+        const color = lut.getColor(array[offset + x + xSize * (ySize - y - 1)]);
         pixels[idx * 4] = 255 * color[0];
-        pixels[(idx * 4) + 1] = 255 * color[1];
-        pixels[(idx * 4) + 2] = 255 * color[2];
-        pixels[(idx * 4) + 3] = 255;
+        pixels[idx * 4 + 1] = 255 * color[1];
+        pixels[idx * 4 + 2] = 255 * color[2];
+        pixels[idx * 4 + 3] = 255;
         idx += 1;
       }
     }
 
     ctx.putImageData(imageBuffer, 0, 0);
-    this.pushToFront(dimensions[0], dimensions[1], spacing[0], spacing[1], xyz[0], xyz[1]);
+    this.pushToFront(
+      dimensions[0],
+      dimensions[1],
+      spacing[0],
+      spacing[1],
+      xyz[0],
+      xyz[1]
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -473,16 +519,25 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let z = 0; z < zSize; z++) {
-        const color = lut.getColor(array[offsetX + (stepY * (ySize - y - 1)) + (stepZ * z)]);
+        const color = lut.getColor(
+          array[offsetX + stepY * (ySize - y - 1) + stepZ * z]
+        );
         pixels[idx * 4] = 255 * color[0];
-        pixels[(idx * 4) + 1] = 255 * color[1];
-        pixels[(idx * 4) + 2] = 255 * color[2];
-        pixels[(idx * 4) + 3] = 255;
+        pixels[idx * 4 + 1] = 255 * color[1];
+        pixels[idx * 4 + 2] = 255 * color[2];
+        pixels[idx * 4 + 3] = 255;
         idx += 1;
       }
     }
     ctx.putImageData(imageBuffer, 0, 0);
-    this.pushToFront(dimensions[2], dimensions[1], spacing[2], spacing[1], xyz[2], xyz[1]);
+    this.pushToFront(
+      dimensions[2],
+      dimensions[1],
+      spacing[2],
+      spacing[1],
+      xyz[2],
+      xyz[1]
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -504,17 +559,24 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     var idx = 0;
     for (let z = 0; z < zSize; z++) {
       for (let x = 0; x < xSize; x++) {
-        const color = lut.getColor(array[offset + x + ((zSize - z - 1) * zStep)]);
+        const color = lut.getColor(array[offset + x + (zSize - z - 1) * zStep]);
         pixels[idx * 4] = 255 * color[0];
-        pixels[(idx * 4) + 1] = 255 * color[1];
-        pixels[(idx * 4) + 2] = 255 * color[2];
-        pixels[(idx * 4) + 3] = 255;
+        pixels[idx * 4 + 1] = 255 * color[1];
+        pixels[idx * 4 + 2] = 255 * color[2];
+        pixels[idx * 4 + 3] = 255;
         idx += 1;
       }
     }
 
     ctx.putImageData(imageBuffer, 0, 0);
-    this.pushToFront(dimensions[0], dimensions[2], spacing[0], spacing[2], xyz[0], zSize - xyz[2] - 1);
+    this.pushToFront(
+      dimensions[0],
+      dimensions[2],
+      spacing[0],
+      spacing[2],
+      xyz[0],
+      zSize - xyz[2] - 1
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -636,21 +698,20 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
 
   getControlWidgets() {
     var model = this,
-      {
-        lookupTableManager, queryDataModel,
-      } = this.getControlModels();
+      { lookupTableManager, queryDataModel } = this.getControlModels();
     return [
       {
         name: 'LookupTableManagerWidget',
         lookupTableManager,
-      }, {
+      },
+      {
         name: 'ProbeControl',
         model,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel,
       },
     ];
   }
-
 }

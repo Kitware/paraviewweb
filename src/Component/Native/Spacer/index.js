@@ -23,11 +23,9 @@ export default class NativeSpacerComponent {
     }
   }
 
-  resize() {
-  }
+  resize() {}
 
-  render() {
-  }
+  render() {}
 
   destroy() {
     this.setContainer(null);

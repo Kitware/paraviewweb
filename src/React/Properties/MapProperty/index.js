@@ -1,10 +1,10 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 import styleProp from 'PVWStyle/ReactProperties/MapProperty.mcss';
 
-import KeyValuePair     from './KeyValuePair';
+import KeyValuePair from './KeyValuePair';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
@@ -82,7 +82,8 @@ export default class MapProperty extends React.Component {
               value={this.state.data.value[i]}
               key={`${this.state.data.id}_${i}`}
               onChange={this.valueChange}
-            />);
+            />
+          );
         }
         return ret;
       }
@@ -91,7 +92,11 @@ export default class MapProperty extends React.Component {
     };
 
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+      <div
+        className={
+          this.props.show(this.props.viewData) ? style.container : style.hidden
+        }
+      >
         <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
@@ -109,7 +114,9 @@ export default class MapProperty extends React.Component {
               <tr>
                 <th className={styleProp.inputColumn}>Name</th>
                 <th className={styleProp.inputColumn}>Value</th>
-                <th className={styleProp.actionColumn}><i className={styleProp.addButton} onClick={this.addEntry} /></th>
+                <th className={styleProp.actionColumn}>
+                  <i className={styleProp.addButton} onClick={this.addEntry} />
+                </th>
               </tr>
               {mapper()}
             </tbody>
@@ -119,7 +126,8 @@ export default class MapProperty extends React.Component {
           className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
-      </div>);
+      </div>
+    );
   }
 }
 /* eslint-enable react/no-danger */

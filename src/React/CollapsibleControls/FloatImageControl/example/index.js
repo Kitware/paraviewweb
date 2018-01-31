@@ -1,7 +1,7 @@
 import FloatImageControl from '..';
-import React             from 'react';
-import ReactDOM          from 'react-dom';
-import jsonData          from './pipeline.js';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import jsonData from './pipeline.js';
 
 // Load CSS
 require('normalize.css');
@@ -9,57 +9,57 @@ require('normalize.css');
 document.body.style.padding = '10px';
 
 const layerMapByName = {},
-    state = {
-        light: 200,
-    },
-    model = {
+  state = {
+    light: 200,
+  },
+  model = {
     dimensions: jsonData.dimensions,
     onProbeChange() {
-        return null;
+      return null;
     },
     getTimeProbe() {
-        return {
-            enabled: false,
-            query: null,
-            draw: false,
-        };
+      return {
+        enabled: false,
+        query: null,
+        draw: false,
+      };
     },
     getLayers() {
-        return jsonData.layers;
+      return jsonData.layers;
     },
     getLight() {
-        return state.light;
+      return state.light;
     },
     setLight(v) {
-        state.light = v;
+      state.light = v;
     },
     isMultiView() {
-        return false;
+      return false;
     },
-    updateMaskLayerVisibility(name,value) {
-        layerMapByName[name].meshActive = value;
-        render();
+    updateMaskLayerVisibility(name, value) {
+      layerMapByName[name].meshActive = value;
+      render();
     },
-    updateLayerVisibility(name,value) {
-        layerMapByName[name].active = value;
-        render();
+    updateLayerVisibility(name, value) {
+      layerMapByName[name].active = value;
+      render();
     },
-    updateLayerColorBy(name,value) {
-        layerMapByName[name].array = value;
-        render();
+    updateLayerColorBy(name, value) {
+      layerMapByName[name].array = value;
+      render();
     },
-};
+  };
 
 // Fill map
-jsonData.layers.forEach( item => {
-    layerMapByName[item.name] = item;
-})
+jsonData.layers.forEach((item) => {
+  layerMapByName[item.name] = item;
+});
 
 // Keep element for rerendering it
-const element = <FloatImageControl model={ model } />;
+const element = <FloatImageControl model={model} />;
 
 function render() {
-    ReactDOM.render(element, document.querySelector('.content'));
+  ReactDOM.render(element, document.querySelector('.content'));
 }
 
 render();

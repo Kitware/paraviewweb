@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import WidgetTypes from './types';
 
 export default function render(props) {
-  const SelectionWidget = WidgetTypes[props.selection ? props.selection.type : 'empty'];
+  const SelectionWidget =
+    WidgetTypes[props.selection ? props.selection.type : 'empty'];
   return <SelectionWidget {...props} />;
 }
 

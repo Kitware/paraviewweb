@@ -1,13 +1,13 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Monologue from 'monologue.js';
 
 import style from 'PVWStyle/ReactRenderers/ImageRenderer.mcss';
 
 import ContentEditable from '../../Widgets/ContentEditableWidget';
-import ImageExporter   from '../../../Common/Misc/ImageExporter';
-import sizeHelper      from '../../../Common/Misc/SizeHelper';
-import MouseHandler    from '../../../Interaction/Core/MouseHandler';
+import ImageExporter from '../../../Common/Misc/ImageExporter';
+import sizeHelper from '../../../Common/Misc/SizeHelper';
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 const DRAW_DONE = 'ImageRenderer.draw.done';
 
@@ -44,16 +44,23 @@ function drawToCanvasAsImage() {
 
   const tw = Math.floor(iw * zoomLevel),
     th = Math.floor(ih * zoomLevel),
-    tx = (w * drawingCenter[0]) - (tw / 2),
-    ty = (h * drawingCenter[1]) - (th / 2);
+    tx = w * drawingCenter[0] - tw / 2,
+    ty = h * drawingCenter[1] - th / 2;
 
   image.activeArea = [tx, ty, tw, th];
 
   try {
     ctx.drawImage(
       image,
-      0, 0, iw, ih, // Source image   [Location,Size]
-      tx, ty, tw, th); // Target drawing [Location,Size]
+      0,
+      0,
+      iw,
+      ih, // Source image   [Location,Size]
+      tx,
+      ty,
+      tw,
+      th
+    ); // Target drawing [Location,Size]
 
     component.drawDone();
   } catch (err) {
@@ -88,14 +95,21 @@ function drawToCanvasAsBuffer() {
 
   const tw = Math.floor(iw * zoomLevel),
     th = Math.floor(ih * zoomLevel),
-    tx = (w * drawingCenter[0]) - (tw / 2),
-    ty = (h * drawingCenter[1]) - (th / 2);
+    tx = w * drawingCenter[0] - tw / 2,
+    ty = h * drawingCenter[1] - th / 2;
 
   try {
     ctx.drawImage(
       data.canvas,
-      data.area[0], data.area[1], data.area[2], data.area[3], // Source image   [Location,Size]
-      tx, ty, tw, th); // Target drawing [Location,Size]
+      data.area[0],
+      data.area[1],
+      data.area[2],
+      data.area[3], // Source image   [Location,Size]
+      tx,
+      ty,
+      tw,
+      th
+    ); // Target drawing [Location,Size]
 
     image.activeArea = [tx, ty, tw, th];
 
@@ -105,11 +119,11 @@ function drawToCanvasAsBuffer() {
     if (data.crosshair) {
       ctx.beginPath();
 
-      ctx.moveTo(translate[0] + (scale[0] * data.crosshair[0]), 0);
-      ctx.lineTo(translate[0] + (scale[0] * data.crosshair[0]), h);
+      ctx.moveTo(translate[0] + scale[0] * data.crosshair[0], 0);
+      ctx.lineTo(translate[0] + scale[0] * data.crosshair[0], h);
 
-      ctx.moveTo(0, translate[1] + (scale[1] * data.crosshair[1]));
-      ctx.lineTo(w, translate[1] + (scale[1] * data.crosshair[1]));
+      ctx.moveTo(0, translate[1] + scale[1] * data.crosshair[1]);
+      ctx.lineTo(w, translate[1] + scale[1] * data.crosshair[1]);
 
       ctx.strokeStyle = component.props.crosshairColor;
       ctx.lineWidth = 1;
@@ -139,7 +153,9 @@ export default class ImageRenderer extends React.Component {
   constructor(props) {
     super(props);
 
-    const metadata = props.imageBuilder ? props.imageBuilder.queryDataModel.originalData.metadata : {} || {};
+    const metadata = props.imageBuilder
+      ? props.imageBuilder.queryDataModel.originalData.metadata
+      : {} || {};
     const title = metadata.title || 'No title';
     const description = metadata.description || 'No description';
 
@@ -177,13 +193,15 @@ export default class ImageRenderer extends React.Component {
 
     // Monitor image builder
     if (this.props.imageBuilder) {
-      this.imageBuilderSubscription = this.props.imageBuilder.onImageReady((data, envelope) => {
-        if (data.url) {
-          this.renderImage(data);
-        } else {
-          this.renderCanvas(data);
+      this.imageBuilderSubscription = this.props.imageBuilder.onImageReady(
+        (data, envelope) => {
+          if (data.url) {
+            this.renderImage(data);
+          } else {
+            this.renderCanvas(data);
+          }
         }
-      });
+      );
     }
 
     // Shared properties
@@ -239,7 +257,14 @@ export default class ImageRenderer extends React.Component {
       ctx.fillStyle = '#ffffff';
       ctx.lineWidth = 5;
       ctx.strokeStyle = '#000000';
-      ctx.arc(change.event.relative.x, change.event.relative.y, this.props.pressRadius, 0, 2 * Math.PI, false);
+      ctx.arc(
+        change.event.relative.x,
+        change.event.relative.y,
+        this.props.pressRadius,
+        0,
+        2 * Math.PI,
+        false
+      );
       ctx.fill();
       ctx.stroke();
 
@@ -340,20 +365,30 @@ export default class ImageRenderer extends React.Component {
     if (event.keyCode === 82) {
       // r => reset camera
       this.resetCamera();
-    } else if (event.keyCode === 85 && !this.state.dialog && (event.altKey || event.ctrlKey || event.metaKey)) {
+    } else if (
+      event.keyCode === 85 &&
+      !this.state.dialog &&
+      (event.altKey || event.ctrlKey || event.metaKey)
+    ) {
       // u => Update dataset metadata
       const thumbnailImage = this.thumbnail;
 
       if (this.imageToDraw.data.canvas.nodeName === 'CANVAS') {
-        if (this.imageToDraw.data.canvas.width === this.imageToDraw.data.area[2] && this.imageToDraw.data.canvas.height === this.imageToDraw.data.area[3]) {
-          thumbnailImage.src = this.imageToDraw.data.canvas.toDataURL('image/png');
+        if (
+          this.imageToDraw.data.canvas.width ===
+            this.imageToDraw.data.area[2] &&
+          this.imageToDraw.data.canvas.height === this.imageToDraw.data.area[3]
+        ) {
+          thumbnailImage.src = this.imageToDraw.data.canvas.toDataURL(
+            'image/png'
+          );
         } else {
           // Need to extract region
-          thumbnailImage.src =
-            this.imageExporter.extractCanvasRegion(
-              this.imageToDraw.data.canvas,
-              this.imageToDraw.data.area,
-              this.imageToDraw.data.outputSize);
+          thumbnailImage.src = this.imageExporter.extractCanvasRegion(
+            this.imageToDraw.data.canvas,
+            this.imageToDraw.data.area,
+            this.imageToDraw.data.outputSize
+          );
         }
       } else {
         // Use image URL
@@ -404,8 +439,8 @@ export default class ImageRenderer extends React.Component {
           fixedY = event.relative.y / this.state.height;
 
         this.zoom = zoom;
-        this.center[0] = fixedX + (deltaZoom * (x - fixedX));
-        this.center[1] = fixedY + (deltaZoom * (y - fixedY));
+        this.center[0] = fixedX + deltaZoom * (x - fixedX);
+        this.center[1] = fixedY + deltaZoom * (y - fixedY);
 
         if (this.imageToDraw.drawToCanvas) {
           this.imageToDraw.drawToCanvas();
@@ -474,7 +509,11 @@ export default class ImageRenderer extends React.Component {
     const el = this.rootContainer.parentNode;
     const elSize = sizeHelper.getSize(el);
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+    if (
+      el &&
+      (this.state.width !== elSize.clientWidth ||
+        this.state.height !== elSize.clientHeight)
+    ) {
       this.setState({
         width: elSize.clientWidth,
         height: elSize.clientHeight,
@@ -530,32 +569,54 @@ export default class ImageRenderer extends React.Component {
 
   render() {
     return (
-      <div className={style.container} ref={(c) => { this.rootContainer = c; }}>
+      <div
+        className={style.container}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
+      >
         <canvas
           className={style.renderer}
-          ref={(c) => { this.canvasRenderer = c; }}
+          ref={(c) => {
+            this.canvasRenderer = c;
+          }}
           width={this.state.width}
           height={this.state.height}
         />
         <div className={this.state.dialog ? style.dialog : style.hidden}>
           <div className={style.inside}>
             <img
-              ref={(c) => { this.thumbnail = c; }}
+              ref={(c) => {
+                this.thumbnail = c;
+              }}
               className={style.thumbnail}
               height={Math.floor(this.state.height / 2)}
               alt="thumbnail"
             />
-            <div className={style.metadata} style={{ height: `${Math.floor(this.state.height / 2)}px` }}>
+            <div
+              className={style.metadata}
+              style={{ height: `${Math.floor(this.state.height / 2)}px` }}
+            >
               <strong className={style.title}>
-                <ContentEditable html={this.state.title} onChange={this.updateTitle} />
+                <ContentEditable
+                  html={this.state.title}
+                  onChange={this.updateTitle}
+                />
               </strong>
               <div className={style.description}>
-                <ContentEditable html={this.state.description} onChange={this.updateDescription} />
+                <ContentEditable
+                  html={this.state.description}
+                  onChange={this.updateDescription}
+                />
               </div>
             </div>
             <div className={style.buttons}>
-              <button className={style.button} onClick={this.toggleDialog}>Cancel</button>
-              <button className={style.button} onClick={this.updateMetadata}>Save</button>
+              <button className={style.button} onClick={this.toggleDialog}>
+                Cancel
+              </button>
+              <button className={style.button} onClick={this.updateMetadata}>
+                Save
+              </button>
             </div>
           </div>
         </div>

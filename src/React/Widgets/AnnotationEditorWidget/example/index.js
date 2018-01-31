@@ -1,7 +1,7 @@
 /* global document */
 import 'babel-polyfill';
-import React                from 'react';
-import ReactDOM             from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import AnnotationEditorWidget from '..';
 import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
 import AnnotationBuilder from '../../../../Common/Misc/AnnotationBuilder';
@@ -40,9 +40,14 @@ const ranges = {
 const annotations = [
   AnnotationBuilder.annotation(rangeSelection, [0]),
   AnnotationBuilder.annotation(partitionSelection, [1, 0, 1, 2]),
-  AnnotationBuilder.annotation(SelectionBuilder.convertToRuleSelection(rangeSelection), [1]),
+  AnnotationBuilder.annotation(
+    SelectionBuilder.convertToRuleSelection(rangeSelection),
+    [1]
+  ),
 ];
-const legendService = LegendProvider.newInstance({ legendEntries: ['pressure', 'temperature'] });
+const legendService = LegendProvider.newInstance({
+  legendEntries: ['pressure', 'temperature'],
+});
 
 // Get react component
 document.body.style.padding = '10px';
@@ -50,7 +55,7 @@ document.body.style.padding = '10px';
 function render() {
   ReactDOM.render(
     <div>
-      {annotations.map((annotation, idx) =>
+      {annotations.map((annotation, idx) => (
         <div key={idx}>
           <AnnotationEditorWidget
             scores={scores}
@@ -61,16 +66,21 @@ function render() {
             onChange={(newAnnotation, save) => {
               annotations[idx] = newAnnotation;
               if (save) {
-                console.log('Push annotation', newAnnotation.generation, newAnnotation);
+                console.log(
+                  'Push annotation',
+                  newAnnotation.generation,
+                  newAnnotation
+                );
               }
               render();
             }}
           />
           <hr />
         </div>
-      )}
+      ))}
     </div>,
-    document.querySelector('.content'));
+    document.querySelector('.content')
+  );
 }
 
 render();

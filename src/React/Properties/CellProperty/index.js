@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import layouts          from './layouts';
+import layouts from './layouts';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
@@ -101,12 +101,18 @@ export default class CellProperty extends React.Component {
 
   render() {
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+      <div
+        className={
+          this.props.show(this.props.viewData) ? style.container : style.hidden
+        }
+      >
         <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
             <i
-              className={this.props.ui.layout === '-1' ? style.plusIcon : style.hidden}
+              className={
+                this.props.ui.layout === '-1' ? style.plusIcon : style.hidden
+              }
               onClick={this.addValue}
             />
             <ToggleIconButton
@@ -126,7 +132,8 @@ export default class CellProperty extends React.Component {
           className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
-      </div>);
+      </div>
+    );
   }
 }
 /* eslint-enable react/no-danger */

@@ -33,10 +33,12 @@ let miCount = 0;
 function informationDiagram(publicAPI, model) {
   let lastAnnotationPushed = null;
 
-  if (!model.provider
-    || !model.provider.isA('MutualInformationProvider')
-    || !model.provider.isA('Histogram1DProvider')
-    || !model.provider.isA('FieldProvider')) {
+  if (
+    !model.provider ||
+    !model.provider.isA('MutualInformationProvider') ||
+    !model.provider.isA('Histogram1DProvider') ||
+    !model.provider.isA('FieldProvider')
+  ) {
     console.log('Invalid provider:', model.provider);
     return;
   }
@@ -57,8 +59,11 @@ function informationDiagram(publicAPI, model) {
   function updateStatusBarVisibility() {
     const cntnr = d3.select(model.container);
     if (model.statusBarVisible) {
-      cntnr.select('.status-bar-container')
-        .style('width', function updateWidth() { return this.dataset.width; });
+      cntnr
+        .select('.status-bar-container')
+        .style('width', function updateWidth() {
+          return this.dataset.width;
+        });
       cntnr.select('.show-button').classed(style.hidden, true);
       cntnr.select('.hide-button').classed(style.hidden, false);
       cntnr.select('.status-bar-text').classed(style.hidden, false);
@@ -70,7 +75,11 @@ function informationDiagram(publicAPI, model) {
     }
   }
 
-  publicAPI.propagateAnnotationInsteadOfSelection = (useAnnotation = true, defaultScore = 0, defaultWeight = 0) => {
+  publicAPI.propagateAnnotationInsteadOfSelection = (
+    useAnnotation = true,
+    defaultScore = 0,
+    defaultWeight = 0
+  ) => {
     model.useAnnotation = useAnnotation;
     model.defaultScore = defaultScore;
     model.defaultWeight = defaultWeight;
@@ -83,7 +92,8 @@ function informationDiagram(publicAPI, model) {
 
     model.clientRect = model.container.getBoundingClientRect();
 
-    d3.select(model.container)
+    d3
+      .select(model.container)
       .select('div.status-bar-container')
       .attr('data-width', `${model.clientRect.width - 20}px`);
 
@@ -113,17 +123,11 @@ function informationDiagram(publicAPI, model) {
         .select('.status-bar-container')
         .classed(style.statusBarContainer, true);
 
-      d3Container
-        .select('.status-bar-text')
-        .classed(style.statusBarText, true);
+      d3Container.select('.status-bar-text').classed(style.statusBarText, true);
 
-      d3Container
-        .select('.show-button')
-        .classed(style.showButton, true);
+      d3Container.select('.show-button').classed(style.showButton, true);
 
-      d3Container
-        .select('.hide-button')
-        .classed(style.hideButton, true);
+      d3Container.select('.hide-button').classed(style.hideButton, true);
 
       d3Container
         .select('.info-diagram-placeholder')
@@ -143,13 +147,21 @@ function informationDiagram(publicAPI, model) {
     }
   };
 
-  publicAPI.updateStatusBarText = msg => d3.select(model.container).select('input.status-bar-text').attr('value', msg);
+  publicAPI.updateStatusBarText = (msg) =>
+    d3
+      .select(model.container)
+      .select('input.status-bar-text')
+      .attr('value', msg);
 
   publicAPI.selectStatusBarText = () => {
     // select text so user can press ctrl-c if desired.
     if (model.statusBarVisible) {
       // https://www.sitepoint.com/javascript-copy-to-clipboard/
-      d3.select(model.container).select('input.status-bar-text').node().select();
+      d3
+        .select(model.container)
+        .select('input.status-bar-text')
+        .node()
+        .select();
       // Copy-to-clipboard works because status bar text is an 'input':
       try {
         document.execCommand('copy');
@@ -167,26 +179,36 @@ function informationDiagram(publicAPI, model) {
     miIndex: -1,
   };
 
-
   publicAPI.render = () => {
     // Extract provider data for local access
-    const getLegend = model.provider.isA('LegendProvider') ? model.provider.getLegend : null;
+    const getLegend = model.provider.isA('LegendProvider')
+      ? model.provider.getLegend
+      : null;
     const histogram1DnumberOfBins = model.numberOfBins;
     const variableList = model.provider.getActiveFieldNames();
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
-      d3.select(model.container).select('svg.information-diagram')
+      d3
+        .select(model.container)
+        .select('svg.information-diagram')
         .classed(style.informationDiagramSvgShow, false)
         .classed(style.informationDiagramSvgHide, true);
-      d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, false);
+      d3
+        .select(model.container)
+        .select('div.info-diagram-placeholder')
+        .classed(style.hidden, false);
       publicAPI.updateStatusBarText('');
       return;
     }
 
     // Guard against rendering if container is non-null but has no size (as
     // in the case when workbench layout doesn't include our container)
-    if (model.clientRect === null || model.clientRect.width === 0 || model.clientRect.height === 0) {
+    if (
+      model.clientRect === null ||
+      model.clientRect.width === 0 ||
+      model.clientRect.height === 0
+    ) {
       return;
     }
 
@@ -201,8 +223,13 @@ function informationDiagram(publicAPI, model) {
     // Update
     updateStatusBarVisibility();
 
-    d3.select(model.container).select('div.info-diagram-placeholder').classed(style.hidden, true);
-    d3.select(model.container).select('svg.information-diagram')
+    d3
+      .select(model.container)
+      .select('div.info-diagram-placeholder')
+      .classed(style.hidden, true);
+    d3
+      .select(model.container)
+      .select('svg.information-diagram')
       .classed(style.informationDiagramSvgHide, false)
       .classed(style.informationDiagramSvgShow, true);
 
@@ -217,18 +244,19 @@ function informationDiagram(publicAPI, model) {
     const formatMI = d3.format('.2f');
     const formatVal = d3.format('.2s');
 
-    const arc = d3.svg.arc()
+    const arc = d3.svg
+      .arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
 
     const histoArc = d3.svg.arc().innerRadius(outerRadius + 10);
 
-    const insideArc = d3.svg.arc()
+    const insideArc = d3.svg
+      .arc()
       .innerRadius(1)
       .outerRadius(innerRadius);
 
-    const layout = d3
-      .layout
+    const layout = d3.layout
       .chord()
       .padding(0.04)
       .sortSubgroups(d3.descending)
@@ -239,20 +267,20 @@ function informationDiagram(publicAPI, model) {
     let svgParent = d3.select(model.container).select('svg');
     let svg = svgParent.select('.main-circle');
     if (svgParent.empty()) {
-      svgParent = d3.select(model.container).append('svg')
-      .style('float', 'left')
-      .attr('class', style.informationDiagramSvgShow)
-      .classed('information-diagram', true);
-      svg = svgParent.append('g')
-      .classed('main-circle', true)
-      .classed(style.mainCircle, true);
+      svgParent = d3
+        .select(model.container)
+        .append('svg')
+        .style('float', 'left')
+        .attr('class', style.informationDiagramSvgShow)
+        .classed('information-diagram', true);
+      svg = svgParent
+        .append('g')
+        .classed('main-circle', true)
+        .classed(style.mainCircle, true);
     }
 
-    svgParent
-      .attr('width', width)
-      .attr('height', height);
-    svg
-      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+    svgParent.attr('width', width).attr('height', height);
+    svg.attr('transform', `translate(${width / 2}, ${height / 2})`);
 
     function findGroupAndBin(relCoords) {
       const result = {
@@ -261,14 +289,21 @@ function informationDiagram(publicAPI, model) {
         bin: -1,
         radius: 0,
       };
-      const [angle, radius] = calculateAngleAndRadius(relCoords, [width, height]);
+      const [angle, radius] = calculateAngleAndRadius(relCoords, [
+        width,
+        height,
+      ]);
       result.radius = radius;
       for (let groupIdx = 0; groupIdx < layout.groups().length; ++groupIdx) {
         const groupData = layout.groups()[groupIdx];
-        const groupName = model.mutualInformationData.vmap[groupData.index].name;
+        const groupName =
+          model.mutualInformationData.vmap[groupData.index].name;
         if (angle > groupData.startAngle && angle <= groupData.endAngle) {
-          const binSizeRadians = (groupData.endAngle - groupData.startAngle) / model.numberOfBins;
-          const binIndex = Math.floor((angle - groupData.startAngle) / binSizeRadians);
+          const binSizeRadians =
+            (groupData.endAngle - groupData.startAngle) / model.numberOfBins;
+          const binIndex = Math.floor(
+            (angle - groupData.startAngle) / binSizeRadians
+          );
           result.found = true;
           result.group = groupName;
           result.bin = binIndex;
@@ -299,7 +334,10 @@ function informationDiagram(publicAPI, model) {
     }
 
     function updateActiveSelection(binMap) {
-      if (!model.provider.isA('SelectionProvider') || !model.provider.isA('FieldProvider')) {
+      if (
+        !model.provider.isA('SelectionProvider') ||
+        !model.provider.isA('FieldProvider')
+      ) {
         return;
       }
 
@@ -313,7 +351,11 @@ function informationDiagram(publicAPI, model) {
         for (let i = 0; i < binList.length; ++i) {
           if (binList[i] !== -1) {
             rangeList.push({
-              interval: getBinRange(binList[i], histogram1DnumberOfBins, [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]),
+              interval: getBinRange(binList[i], histogram1DnumberOfBins, [
+                paramRange[0],
+                paramRange[1],
+                paramRange[1] - paramRange[0],
+              ]),
             });
           }
         }
@@ -327,23 +369,39 @@ function informationDiagram(publicAPI, model) {
         const selection = SelectionBuilder.range(vars);
         if (model.useAnnotation) {
           lastAnnotationPushed = model.provider.getAnnotation();
-          if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
-            lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
+          if (
+            !lastAnnotationPushed ||
+            model.provider.shouldCreateNewAnnotation() ||
+            lastAnnotationPushed.selection.type !== 'range'
+          ) {
+            lastAnnotationPushed = AnnotationBuilder.annotation(
+              selection,
+              [model.defaultScore],
+              model.defaultWeight
+            );
             if (lastAnnotationPushed.name === '') {
               // set default range annotation name
               AnnotationBuilder.setDefaultName(lastAnnotationPushed);
               if (model.provider.isA('AnnotationStoreProvider')) {
-                lastAnnotationPushed.name = model.provider.getNextStoredAnnotationName(lastAnnotationPushed.name);
+                lastAnnotationPushed.name = model.provider.getNextStoredAnnotationName(
+                  lastAnnotationPushed.name
+                );
               }
             }
           } else {
-            lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
-              selection,
-              score: [model.defaultScore],
-              weight: model.defaultWeight,
-            });
+            lastAnnotationPushed = AnnotationBuilder.update(
+              lastAnnotationPushed,
+              {
+                selection,
+                score: [model.defaultScore],
+                weight: model.defaultWeight,
+              }
+            );
           }
-          AnnotationBuilder.updateReadOnlyFlag(lastAnnotationPushed, model.readOnlyFields);
+          AnnotationBuilder.updateReadOnlyFlag(
+            lastAnnotationPushed,
+            model.readOnlyFields
+          );
           model.provider.setAnnotation(lastAnnotationPushed);
         } else {
           model.provider.setSelection(selection);
@@ -353,9 +411,15 @@ function informationDiagram(publicAPI, model) {
 
     // function findPmiChordsToHighlight(param, bin, highlight = true, oneBinAllVarsMode = false) {
     function findPmiChordsToHighlight() {
-      const { group: param, bin, highlight, mode: oneBinAllVarsMode } = model.renderState.pmiHighlight;
+      const {
+        group: param,
+        bin,
+        highlight,
+        mode: oneBinAllVarsMode,
+      } = model.renderState.pmiHighlight;
       if (highlight) {
-        svg.select('g.pmiChords')
+        svg
+          .select('g.pmiChords')
           .selectAll('path.pmiChord')
           .classed('highlight-pmi', false);
       }
@@ -372,46 +436,75 @@ function informationDiagram(publicAPI, model) {
       }
 
       if (oneBinAllVarsMode) {
-        svg.select('g.pmiChords').selectAll(`path[data-source-name="${param}"]:not(.fade)`)
+        svg
+          .select('g.pmiChords')
+          .selectAll(`path[data-source-name="${param}"]:not(.fade)`)
           .classed('highlight-pmi', highlight)
           .each(function highlightPMI(d, i) {
             const elt = d3.select(this);
             addBin(param, bin);
-            addBin(elt.attr('data-target-name'), Number.parseInt(elt.attr('data-target-bin'), 10));
+            addBin(
+              elt.attr('data-target-name'),
+              Number.parseInt(elt.attr('data-target-bin'), 10)
+            );
           });
 
-        svg.select('g.pmiChords')
+        svg
+          .select('g.pmiChords')
           .selectAll(`path[data-target-name="${param}"]:not(.fade)`)
           .each(function inner(d, i) {
             const elt = d3.select(this);
             addBin(param, Number.parseInt(elt.attr('data-target-bin'), 10));
-            addBin(elt.attr('data-source-name'), Number.parseInt(elt.attr('data-source-bin'), 10));
+            addBin(
+              elt.attr('data-source-name'),
+              Number.parseInt(elt.attr('data-source-bin'), 10)
+            );
           });
 
         if (binMap[param] && binMap[param].indexOf(bin) >= 0) {
           binMap[param] = [bin];
         }
 
-        svg.select('g.pmiChords').selectAll(`path[data-target-name="${param}"]:not(.fade)`)
+        svg
+          .select('g.pmiChords')
+          .selectAll(`path[data-target-name="${param}"]:not(.fade)`)
           .classed('highlight-pmi', function inner(d, i) {
             const elt = d3.select(this);
-            return binMap[param].indexOf(Number.parseInt(elt.attr('data-target-bin'), 10)) >= 0;
+            return (
+              binMap[param].indexOf(
+                Number.parseInt(elt.attr('data-target-bin'), 10)
+              ) >= 0
+            );
           });
       } else {
-        svg.select('g.pmiChords').selectAll(`path[data-source-name="${param}"][data-source-bin="${bin}"]:not(.fade)`)
-        .classed('highlight-pmi', highlight)
-        .each(function highlightPMI(d, i) {
-          const elt = d3.select(this);
-          addBin(param, bin);
-          addBin(elt.attr('data-target-name'), Number.parseInt(elt.attr('data-target-bin'), 10));
-        });
-
-        svg.select('g.pmiChords').selectAll(`path[data-target-name="${param}"][data-target-bin="${bin}"]:not(.fade)`)
+        svg
+          .select('g.pmiChords')
+          .selectAll(
+            `path[data-source-name="${param}"][data-source-bin="${bin}"]:not(.fade)`
+          )
           .classed('highlight-pmi', highlight)
           .each(function highlightPMI(d, i) {
             const elt = d3.select(this);
             addBin(param, bin);
-            addBin(elt.attr('data-source-name'), Number.parseInt(elt.attr('data-source-bin'), 10));
+            addBin(
+              elt.attr('data-target-name'),
+              Number.parseInt(elt.attr('data-target-bin'), 10)
+            );
+          });
+
+        svg
+          .select('g.pmiChords')
+          .selectAll(
+            `path[data-target-name="${param}"][data-target-bin="${bin}"]:not(.fade)`
+          )
+          .classed('highlight-pmi', highlight)
+          .each(function highlightPMI(d, i) {
+            const elt = d3.select(this);
+            addBin(param, bin);
+            addBin(
+              elt.attr('data-source-name'),
+              Number.parseInt(elt.attr('data-source-bin'), 10)
+            );
           });
       }
 
@@ -423,7 +516,12 @@ function informationDiagram(publicAPI, model) {
     function updateChordVisibility(options) {
       if (options.mi && options.mi.show === true) {
         if (options.mi.index !== undefined) {
-          chord.classed('fade', p => p.source.index !== options.mi.index && p.target.index !== options.mi.index);
+          chord.classed(
+            'fade',
+            (p) =>
+              p.source.index !== options.mi.index &&
+              p.target.index !== options.mi.index
+          );
         } else {
           chord.classed('fade', false);
         }
@@ -458,18 +556,27 @@ function informationDiagram(publicAPI, model) {
         swap = true;
       }
 
-      const cAB = downsample(model.mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
+      const cAB = downsample(
+        model.mutualInformationData.joint[va][vb],
+        histogram1DnumberOfBins,
+        swap
+      );
       const probDict = freqToProb(cAB);
       const linksToDraw = topPmi(probDict, 0.95);
 
       // Make mutual info chords invisible.
-      svg.selectAll('g.group path.chord')
-        .classed('fade', true);
+      svg.selectAll('g.group path.chord').classed('fade', true);
 
-      const linkData = svg.select('g.pmiChords')
+      const linkData = svg
+        .select('g.pmiChords')
         .selectAll('path.pmiChord')
-        .data(d3.zip(linksToDraw.idx, linksToDraw.pmi,
-          new Array(linksToDraw.idx.length).fill([va, vb])));
+        .data(
+          d3.zip(
+            linksToDraw.idx,
+            linksToDraw.pmi,
+            new Array(linksToDraw.idx.length).fill([va, vb])
+          )
+        );
 
       linkData
         .enter()
@@ -480,20 +587,28 @@ function informationDiagram(publicAPI, model) {
 
       const vaGroup = layout.groups()[d.source.index];
       const vbGroup = layout.groups()[d.target.index];
-      const vaRange = [vaGroup.startAngle, (vaGroup.endAngle - vaGroup.startAngle), (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins];
-      const vbRange = [vbGroup.startAngle, (vbGroup.endAngle - vbGroup.startAngle), (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins];
+      const vaRange = [
+        vaGroup.startAngle,
+        vaGroup.endAngle - vaGroup.startAngle,
+        (vaGroup.endAngle - vaGroup.startAngle) / histogram1DnumberOfBins,
+      ];
+      const vbRange = [
+        vbGroup.startAngle,
+        vbGroup.endAngle - vbGroup.startAngle,
+        (vbGroup.endAngle - vbGroup.startAngle) / histogram1DnumberOfBins,
+      ];
 
       linkData
         .classed('fade', false)
         .attr('d', (data, index) =>
           path({
             source: {
-              startAngle: (vaRange[0] + (data[0][0] * vaRange[2])),
-              endAngle: (vaRange[0] + ((data[0][0] + 1) * vaRange[2])),
+              startAngle: vaRange[0] + data[0][0] * vaRange[2],
+              endAngle: vaRange[0] + (data[0][0] + 1) * vaRange[2],
             },
             target: {
-              startAngle: (vbRange[0] + (data[0][1] * vbRange[2])),
-              endAngle: (vbRange[0] + ((data[0][1] + 1) * vbRange[2])),
+              startAngle: vbRange[0] + data[0][1] * vbRange[2],
+              endAngle: vbRange[0] + (data[0][1] + 1) * vbRange[2],
             },
           })
         )
@@ -507,11 +622,25 @@ function informationDiagram(publicAPI, model) {
         .attr('data-details', (data, index) => {
           var sIdx = swap ? 1 : 0;
           var tIdx = swap ? 0 : 1;
-          const sourceBinRange = getParamBinRange(data[0][sIdx], histogram1DnumberOfBins, data[2][0]);
-          const targetBinRange = getParamBinRange(data[0][tIdx], histogram1DnumberOfBins, data[2][1]);
-          return 'PMI: '
-            + `${data[2][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
-            + `${data[2][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
+          const sourceBinRange = getParamBinRange(
+            data[0][sIdx],
+            histogram1DnumberOfBins,
+            data[2][0]
+          );
+          const targetBinRange = getParamBinRange(
+            data[0][tIdx],
+            histogram1DnumberOfBins,
+            data[2][1]
+          );
+          return (
+            'PMI: ' +
+            `${data[2][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(
+              sourceBinRange[1]
+            )}] ↔︎ ` +
+            `${data[2][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(
+              targetBinRange[1]
+            )}] ${formatMI(data[1])}`
+          );
         })
         .on('mouseover', function mouseOver() {
           publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
@@ -519,7 +648,9 @@ function informationDiagram(publicAPI, model) {
         .on('mouseout', () => {
           publicAPI.updateStatusBarText('');
         })
-        .on('click', () => { publicAPI.selectStatusBarText(); });
+        .on('click', () => {
+          publicAPI.selectStatusBarText();
+        });
     }
 
     // Mouse move handling ----------------------------------------------------
@@ -544,22 +675,38 @@ function informationDiagram(publicAPI, model) {
           highlightAllGroups = true;
           clearStatusBar = true;
         } else if (info.found) {
-          if (info.radius > innerRadius && info.radius <= outerRadius) groupHoverName = info.group;
+          if (info.radius > innerRadius && info.radius <= outerRadius)
+            groupHoverName = info.group;
           else if (info.radius <= innerRadius) groupInsideName = info.group;
 
           let binMap = {};
-          if (!(info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_NONE)) {
-            const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-            model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
+          if (
+            !(
+              info.radius <= innerRadius &&
+              pmiChordMode.mode === PMI_CHORD_MODE_NONE
+            )
+          ) {
+            const oneBinAllVarsMode =
+              info.radius <= innerRadius &&
+              pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
+            model.renderState.pmiHighlight = {
+              group: info.group,
+              bin: info.bin,
+              highlight: true,
+              mode: oneBinAllVarsMode,
+            };
             const pmiBinMap = findPmiChordsToHighlight();
             if (info.radius <= innerRadius) {
               binMap = pmiBinMap;
             } else {
-              svg.select(`g.group[param-name='${info.group}'`)
+              svg
+                .select(`g.group[param-name='${info.group}'`)
                 .selectAll('path.htile')
                 .each(function hTileInner(data, index) {
                   if (index === info.bin) {
-                    publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
+                    publicAPI.updateStatusBarText(
+                      d3.select(this).attr('data-details')
+                    );
                   }
                 });
             }
@@ -575,11 +722,24 @@ function informationDiagram(publicAPI, model) {
         // highlight all groups if a click will reset to default view (veryOutermostRadius)
         svg
           .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
-          .classed(style.hoverOutline, (data, idx) => highlightAllGroups || model.mutualInformationData.vmap[idx].name === groupHoverName);
+          .classed(
+            style.hoverOutline,
+            (data, idx) =>
+              highlightAllGroups ||
+              model.mutualInformationData.vmap[idx].name === groupHoverName
+          );
 
         // show mouse-interaction guide inside the legend arcs.
-        svg.selectAll('g.group').select(`.${style.jsMouseArc}`)
-          .attr('class', (data, idx) => (model.mutualInformationData.vmap[idx].name === groupInsideName ? style.mouseArcViz : style.mouseArcHidden));
+        svg
+          .selectAll('g.group')
+          .select(`.${style.jsMouseArc}`)
+          .attr(
+            'class',
+            (data, idx) =>
+              model.mutualInformationData.vmap[idx].name === groupInsideName
+                ? style.mouseArcViz
+                : style.mouseArcHidden
+          );
 
         if (clearStatusBar === true) {
           publicAPI.updateStatusBarText('');
@@ -590,47 +750,64 @@ function informationDiagram(publicAPI, model) {
           unHoverBin(variableList[idx]);
         }
       })
-      .on('click', // multiClicker([
-        function singleClick(d, i) { // single click handler
+      .on(
+        'click', // multiClicker([
+        function singleClick(d, i) {
+          // single click handler
           const overCoords = d3.mouse(model.container);
           const info = findGroupAndBin(overCoords);
           if (info.radius > veryOutermostRadius) {
             showAllChords();
-          } else if (info.radius > outerRadius ||
-              (info.radius <= innerRadius &&
+          } else if (
+            info.radius > outerRadius ||
+            (info.radius <= innerRadius &&
               pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS &&
-              info.group === pmiChordMode.srcParam)) {
+              info.group === pmiChordMode.srcParam)
+          ) {
             if (info.found) {
               model.renderState.pmiAllBinsTwoVars = null;
-              model.renderState.pmiOneBinAllVars = { group: info.group, bin: info.bin, d, i };
+              model.renderState.pmiOneBinAllVars = {
+                group: info.group,
+                bin: info.bin,
+                d,
+                i,
+              };
               drawPMIOneBinAllVars()(d, i);
               publicAPI.selectStatusBarText();
             }
           }
-        // },
-        })
-      .on('dblclick',
-        function doubleClick(d, i) { // double click handler
-          const overCoords = d3.mouse(model.container);
-          const info = findGroupAndBin(overCoords);
+          // },
+        }
+      )
+      .on('dblclick', function doubleClick(d, i) {
+        // double click handler
+        const overCoords = d3.mouse(model.container);
+        const info = findGroupAndBin(overCoords);
 
-          if (info.found) {
-            let binMap = {};
-            const oneBinAllVarsMode = info.radius <= innerRadius && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
-            if (info.radius <= innerRadius) {
-              model.renderState.pmiHighlight = { group: info.group, bin: info.bin, highlight: true, mode: oneBinAllVarsMode };
-              binMap = findPmiChordsToHighlight();
-            }
-            if (!oneBinAllVarsMode) {
-              binMap[info.group] = [info.bin];
-            }
-            updateActiveSelection(binMap);
+        if (info.found) {
+          let binMap = {};
+          const oneBinAllVarsMode =
+            info.radius <= innerRadius &&
+            pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
+          if (info.radius <= innerRadius) {
+            model.renderState.pmiHighlight = {
+              group: info.group,
+              bin: info.bin,
+              highlight: true,
+              mode: oneBinAllVarsMode,
+            };
+            binMap = findPmiChordsToHighlight();
           }
+          if (!oneBinAllVarsMode) {
+            binMap[info.group] = [info.bin];
+          }
+          updateActiveSelection(binMap);
+        }
 
-          d3.event.stopPropagation();
-      //   },
-      // ])
-        });
+        d3.event.stopPropagation();
+        //   },
+        // ])
+      });
     let miChordsG = svg.select('g.mutualInfoChords');
     if (miChordsG.empty()) {
       svg.append('circle').attr('r', outerRadius);
@@ -639,7 +816,9 @@ function informationDiagram(publicAPI, model) {
 
       // add a straight path so IE/Edge can measure text lengths usefully.
       // Otherwise, along a curved path, they return the horizontal space covered.
-      svg.append('defs').append('path')
+      svg
+        .append('defs')
+        .append('path')
         .attr('id', 'straight-text-path')
         .attr('d', `M0,0L${width},0`);
     }
@@ -649,7 +828,9 @@ function informationDiagram(publicAPI, model) {
     // Get lookups for pmi chords
     model.mutualInformationData.lkup = {};
     Object.keys(model.mutualInformationData.vmap).forEach((i) => {
-      model.mutualInformationData.lkup[model.mutualInformationData.vmap[i].name] = i;
+      model.mutualInformationData.lkup[
+        model.mutualInformationData.vmap[i].name
+      ] = i;
     });
 
     // Only used when there is no legend service
@@ -659,7 +840,13 @@ function informationDiagram(publicAPI, model) {
     const group = svg
       .selectAll('.group')
       // set a key === field name, so groups are re-used. Need a fall-back for removed fields, though.
-      .data(layout.groups, d => (model.mutualInformationData.vmap[d.index] ? model.mutualInformationData.vmap[d.index].name : d.index));
+      .data(
+        layout.groups,
+        (d) =>
+          model.mutualInformationData.vmap[d.index]
+            ? model.mutualInformationData.vmap[d.index].name
+            : d.index
+      );
     const groupEnter = group
       .enter()
       .append('g')
@@ -671,9 +858,7 @@ function informationDiagram(publicAPI, model) {
       .append('path')
       .attr('id', (d, i) => `${model.instanceID}-group${i}`);
     // add mouse-interaction arc - show where mouse affects this group's chords.
-    groupEnter
-      .append('path')
-      .classed(style.mouseArcHidden, true);
+    groupEnter.append('path').classed(style.mouseArcHidden, true);
 
     // Add a text label.
     const groupText = groupEnter
@@ -688,20 +873,23 @@ function informationDiagram(publicAPI, model) {
       .text((d, i) => model.mutualInformationData.vmap[i].name);
 
     // enter + update items.
-    const groupPath = group.select('path')
-      .attr('d', arc);
-    group.select(`.${style.jsMouseArc}`)
-      .attr('d', insideArc);
+    const groupPath = group.select('path').attr('d', arc);
+    group.select(`.${style.jsMouseArc}`).attr('d', insideArc);
 
-    const textPath = group
-      .select('text').select('textPath');
+    const textPath = group.select('text').select('textPath');
 
     // pull a stunt to measure text length - use a straight path, then switch to the real curved one.
-    textPath.filter(d => (!model.textLengthMap[model.mutualInformationData.vmap[d.index].name]))
-      .text(d => model.mutualInformationData.vmap[d.index].name)
+    textPath
+      .filter(
+        (d) =>
+          !model.textLengthMap[model.mutualInformationData.vmap[d.index].name]
+      )
+      .text((d) => model.mutualInformationData.vmap[d.index].name)
       .attr('xlink:href', '#straight-text-path')
       .each(function textLen(d) {
-        model.textLengthMap[model.mutualInformationData.vmap[d.index].name] = this.getComputedTextLength();
+        model.textLengthMap[
+          model.mutualInformationData.vmap[d.index].name
+        ] = this.getComputedTextLength();
       });
 
     textPath
@@ -709,7 +897,10 @@ function informationDiagram(publicAPI, model) {
       // Remove the labels that don't fit, or shorten label, using ...
       .each(function truncate(d, i) {
         d.textShown = true;
-        const availLength = ((groupPath[0][d.index].getTotalLength() / 2) - deltaRadius - model.glyphSize);
+        const availLength =
+          groupPath[0][d.index].getTotalLength() / 2 -
+          deltaRadius -
+          model.glyphSize;
         // shorten text based on string length vs initial total length.
         const fullText = model.mutualInformationData.vmap[i].name;
         const textLength = model.textLengthMap[fullText];
@@ -728,15 +919,21 @@ function informationDiagram(publicAPI, model) {
         // drop the middle 50%.
         let testStrLen = Math.floor(strLength * 0.25);
         // estimate new length, +2 to account for adding '...'
-        d.textLength = (((testStrLen * 2) + 2) / strLength) * textLength;
+        d.textLength = (testStrLen * 2 + 2) / strLength * textLength;
         if (d.textLength < availLength) {
-          d3.select(this).text(`${fullText.slice(0, testStrLen)}...${fullText.slice(-testStrLen)}`);
+          d3
+            .select(this)
+            .text(
+              `${fullText.slice(0, testStrLen)}...${fullText.slice(
+                -testStrLen
+              )}`
+            );
           return;
         }
         // start at 1/3 of the string, go down to 3 chars plus ...
         testStrLen = Math.floor(strLength / 2.99);
         while (testStrLen >= 3) {
-          d.textLength = ((testStrLen + 2) / strLength) * textLength;
+          d.textLength = (testStrLen + 2) / strLength * textLength;
           if (d.textLength < availLength) {
             d3.select(this).text(`${fullText.slice(0, testStrLen)}...`);
             return;
@@ -747,36 +944,42 @@ function informationDiagram(publicAPI, model) {
         d.textShown = false;
       })
       .attr('display', (d, i) => (d.textShown ? null : 'none'));
-      // .remove(); ie11 throws errors if we use .remove() - hide instead.
-
+    // .remove(); ie11 throws errors if we use .remove() - hide instead.
 
     // Add group for glyph, or assign color as fallback.
     group.each(function addLegend(glyphData) {
       if (getLegend) {
         let glyph = d3.select(this).select('g.glyph');
         if (glyph.empty()) {
-          glyph = d3.select(this)
+          glyph = d3
+            .select(this)
             .append('g')
             .classed('glyph', true)
             .classed(style.glyph, true);
-          glyph
-            .append('svg')
-            .append('use');
+          glyph.append('svg').append('use');
         }
 
-        const legend = getLegend(model.mutualInformationData.vmap[glyphData.index].name);
+        const legend = getLegend(
+          model.mutualInformationData.vmap[glyphData.index].name
+        );
         // Add the glyph to the group
         const textLength = glyphData.textShown ? glyphData.textLength : 0;
         const pathLength = groupPath[0][glyphData.index].getTotalLength();
         const avgRadius = (innerRadius + outerRadius) / 2;
         // Start at edge of arc, move to text anchor, back up half of text length and glyph size
-        const glyphAngle = (glyphData.startAngle + (pathLength * 0.25 / outerRadius) - ((textLength + model.glyphSize) * 0.5 / avgRadius));
+        const glyphAngle =
+          glyphData.startAngle +
+          pathLength * 0.25 / outerRadius -
+          (textLength + model.glyphSize) * 0.5 / avgRadius;
         // console.log(model.mutualInformationData.vmap[glyphData.index].name, textLength, pathLength, glyphAngle);
 
         glyph
-          .attr('transform', `translate(
-            ${(avgRadius * Math.sin(glyphAngle)) - (model.glyphSize / 2)},
-            ${(-avgRadius * Math.cos(glyphAngle)) - (model.glyphSize / 2)})`)
+          .attr(
+            'transform',
+            `translate(
+            ${avgRadius * Math.sin(glyphAngle) - model.glyphSize / 2},
+            ${-avgRadius * Math.cos(glyphAngle) - model.glyphSize / 2})`
+          )
           .select('svg')
           .attr('width', model.glyphSize)
           .attr('height', model.glyphSize)
@@ -788,79 +991,101 @@ function informationDiagram(publicAPI, model) {
         model.mutualInformationData.vmap[glyphData.index].color = legend.color;
 
         // Remove the glyphs that don't fit
-        if ((groupPath[0][glyphData.index].getTotalLength() / 2) - deltaRadius < model.glyphSize) {
+        if (
+          groupPath[0][glyphData.index].getTotalLength() / 2 - deltaRadius <
+          model.glyphSize
+        ) {
           // glyph.remove(); ie11 objects, hide instead.
           glyph.attr('display', 'none');
         }
       } else {
-        model.mutualInformationData.vmap[glyphData.index].color = cmap(glyphData.index);
+        model.mutualInformationData.vmap[glyphData.index].color = cmap(
+          glyphData.index
+        );
       }
     });
 
     // Add the color to the group arc
     group
       .select('path')
-      .style('fill', d => model.mutualInformationData.vmap[d.index].color || 'red');
+      .style(
+        'fill',
+        (d) => model.mutualInformationData.vmap[d.index].color || 'red'
+      );
     group
       .select(`.${style.jsMouseArc}`)
-      .style('fill', d => model.mutualInformationData.vmap[d.index].color || 'red');
+      .style(
+        'fill',
+        (d) => model.mutualInformationData.vmap[d.index].color || 'red'
+      );
 
     function getParamBinRange(index, numberOfBins, paramName) {
       const paramRange = model.provider.getField(paramName).range;
-      return getBinRange(index, numberOfBins,
-        [paramRange[0], paramRange[1], paramRange[1] - paramRange[0]]);
+      return getBinRange(index, numberOfBins, [
+        paramRange[0],
+        paramRange[1],
+        paramRange[1] - paramRange[0],
+      ]);
     }
 
     function getBinRange(index, numberOfBins, paramRange) {
       return [
-        (index / numberOfBins * paramRange[2]) + paramRange[0],
-        ((index + 1) / numberOfBins * paramRange[2]) + paramRange[0],
+        index / numberOfBins * paramRange[2] + paramRange[0],
+        (index + 1) / numberOfBins * paramRange[2] + paramRange[0],
       ];
     }
 
     // Zip histogram info into layout.groups() (which we initially have no control over as it is
     // generated for us).
-    group
-      .each(function buildHistogram(groupData) {
-        const gname = model.mutualInformationData.vmap[groupData.index].name;
-        const gvar = model.histogramData[gname];
+    group.each(function buildHistogram(groupData) {
+      const gname = model.mutualInformationData.vmap[groupData.index].name;
+      const gvar = model.histogramData[gname];
 
-        if (!gvar) return;
+      if (!gvar) return;
 
-        groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
+      groupData.range = [gvar.min, gvar.max, gvar.max - gvar.min];
 
-        const delta = (groupData.endAngle - groupData.startAngle) / gvar.counts.length;
-        const total = Number(gvar.counts.reduce((a, b) => a + b));
-        const maxcnt = Number(gvar.counts.reduce((a, b) => (a > b ? a : b)));
+      const delta =
+        (groupData.endAngle - groupData.startAngle) / gvar.counts.length;
+      const total = Number(gvar.counts.reduce((a, b) => a + b));
+      const maxcnt = Number(gvar.counts.reduce((a, b) => (a > b ? a : b)));
 
-        /* eslint-disable arrow-body-style */
-        groupData.histo = gvar.counts.map((d, i) => {
-          return {
-            startAngle: ((i * delta) + groupData.startAngle),
-            endAngle: (((i + 1) * delta) + groupData.startAngle),
-            innerRadius: (outerRadius + 10),
-            outerRadius: (outerRadius + 10 + (d / maxcnt * (histoRadius - outerRadius))),
-            index: i,
-            value: (d / total),
-          };
-        });
-
-        const htile = d3.select(this)
-          .attr('param-name', gname)
-          .selectAll('path.htile')
-          .data(groupData.histo);
-        htile
-          .enter()
-          .append('path')
-          .classed('htile', true);
-        htile
-          .attr('d', (d, i) => histoArc.outerRadius(d.outerRadius)(d))
-          .attr('data-details', (d, i) => {
-            const binRange = getBinRange(i, histogram1DnumberOfBins, groupData.range);
-            return `p(${gname} ∈ [${formatVal(binRange[0])}, ${formatVal(binRange[1])}]) = ${formatPercent(d.value)}`;
-          })
-          .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
+      /* eslint-disable arrow-body-style */
+      groupData.histo = gvar.counts.map((d, i) => {
+        return {
+          startAngle: i * delta + groupData.startAngle,
+          endAngle: (i + 1) * delta + groupData.startAngle,
+          innerRadius: outerRadius + 10,
+          outerRadius:
+            outerRadius + 10 + d / maxcnt * (histoRadius - outerRadius),
+          index: i,
+          value: d / total,
+        };
       });
+
+      const htile = d3
+        .select(this)
+        .attr('param-name', gname)
+        .selectAll('path.htile')
+        .data(groupData.histo);
+      htile
+        .enter()
+        .append('path')
+        .classed('htile', true);
+      htile
+        .attr('d', (d, i) => histoArc.outerRadius(d.outerRadius)(d))
+        .attr('data-details', (d, i) => {
+          const binRange = getBinRange(
+            i,
+            histogram1DnumberOfBins,
+            groupData.range
+          );
+          return `p(${gname} ∈ [${formatVal(binRange[0])}, ${formatVal(
+            binRange[1]
+          )}]) = ${formatPercent(d.value)}`;
+        })
+        .attr('fill', (d, i) => (i % 2 ? '#bebebe' : '#a9a9a9'));
+    });
 
     function showAllChords() {
       pmiChordMode.mode = PMI_CHORD_MODE_NONE;
@@ -876,13 +1101,11 @@ function informationDiagram(publicAPI, model) {
     }
     // do we need to reset?
     const groupExit = group.exit();
-    const needReset = (!groupEnter.empty() || !groupExit.empty());
+    const needReset = !groupEnter.empty() || !groupExit.empty();
     groupExit.remove();
 
     // Add the chords. Color only chords that show self-mutual-information.
-    const chord = miChordsG
-      .selectAll('.chord')
-      .data(layout.chords);
+    const chord = miChordsG.selectAll('.chord').data(layout.chords);
     chord
       .enter()
       .append('path')
@@ -892,7 +1115,7 @@ function informationDiagram(publicAPI, model) {
     chord.exit().remove();
 
     chord
-      .classed('selfchord', d => (d.source.index === d.target.index))
+      .classed('selfchord', (d) => d.source.index === d.target.index)
       .attr('d', path)
       .style('fill', null)
       .on('click', (d, i) => {
@@ -910,12 +1133,21 @@ function informationDiagram(publicAPI, model) {
 
     miChordsG
       .selectAll('.selfchord')
-      .style('fill', d => model.mutualInformationData.vmap[d.source.index].color);
+      .style(
+        'fill',
+        (d) => model.mutualInformationData.vmap[d.source.index].color
+      );
 
-    chord
-      .attr('data-details', (d, i) =>
-        `Mutual information: ${model.mutualInformationData.vmap[d.source.index].name} ↔︎ ${model.mutualInformationData.vmap[d.target.index].name} `
-        + `${formatMI(model.mutualInformationData.matrix[d.source.index][d.target.index])}`);
+    chord.attr(
+      'data-details',
+      (d, i) =>
+        `Mutual information: ${
+          model.mutualInformationData.vmap[d.source.index].name
+        } ↔︎ ${model.mutualInformationData.vmap[d.target.index].name} ` +
+        `${formatMI(
+          model.mutualInformationData.matrix[d.source.index][d.target.index]
+        )}`
+    );
     // The lines below are for the case when the MI matrix has been row-normalized:
     // model.mutualInformationData.matrix[d.source.index][d.target.index] *
     // model.mutualInformationData.vmap[d.source.index].autoInfo/model.mutualInformationData.matrix[d.source.index][d.source.index]);
@@ -929,7 +1161,10 @@ function informationDiagram(publicAPI, model) {
     svg
       .selectAll(`g.group path[id^=\'${model.instanceID}-group\']`)
       .on('click', (d, i) => {
-        if (pmiChordMode.mode !== PMI_CHORD_MODE_NONE || pmiChordMode.miIndex !== i) {
+        if (
+          pmiChordMode.mode !== PMI_CHORD_MODE_NONE ||
+          pmiChordMode.miIndex !== i
+        ) {
           pmiChordMode.mode = PMI_CHORD_MODE_NONE;
           pmiChordMode.srcParam = null;
           pmiChordMode.srcBin = null;
@@ -940,9 +1175,15 @@ function informationDiagram(publicAPI, model) {
         }
       });
 
-    if (model.renderState.pmiAllBinsTwoVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ALL_BINS_TWO_VARS) {
+    if (
+      model.renderState.pmiAllBinsTwoVars !== null &&
+      pmiChordMode.mode === PMI_CHORD_MODE_ALL_BINS_TWO_VARS
+    ) {
       drawPMIAllBinsTwoVars();
-    } else if (model.renderState.pmiOneBinAllVars !== null && pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS) {
+    } else if (
+      model.renderState.pmiOneBinAllVars !== null &&
+      pmiChordMode.mode === PMI_CHORD_MODE_ONE_BIN_ALL_VARS
+    ) {
       const { group: g, bin: b, d, i } = model.renderState.pmiOneBinAllVars;
       drawPMIOneBinAllVars(g, b)(d, i);
     } else {
@@ -950,7 +1191,10 @@ function informationDiagram(publicAPI, model) {
       // showAllChords();
     }
 
-    if (model.renderState.pmiHighlight !== null && pmiChordMode.mode !== PMI_CHORD_MODE_NONE) {
+    if (
+      model.renderState.pmiHighlight !== null &&
+      pmiChordMode.mode !== PMI_CHORD_MODE_NONE
+    ) {
       findPmiChordsToHighlight();
     }
 
@@ -985,27 +1229,34 @@ function informationDiagram(publicAPI, model) {
             swap = true;
           }
 
-          const cAB = downsample(model.mutualInformationData.joint[va][vb], histogram1DnumberOfBins, swap);
+          const cAB = downsample(
+            model.mutualInformationData.joint[va][vb],
+            histogram1DnumberOfBins,
+            swap
+          );
           const probDict = freqToProb(cAB);
           const linksToDraw = topBinPmi(probDict, true, binIdx, 0.8);
           linkAccum = linkAccum.concat(
             d3.zip(
-              linksToDraw.idx, linksToDraw.pmi, linksToDraw.pAB,
+              linksToDraw.idx,
+              linksToDraw.pmi,
+              linksToDraw.pAB,
               new Array(linksToDraw.idx.length).fill([binVar, other.name])
             )
           );
         });
 
         // Make mutual info chords invisible.
-        svg.selectAll('g.group path.chord')
-          .classed('fade', true);
+        svg.selectAll('g.group path.chord').classed('fade', true);
 
         const linkData = svg
           .select('g.pmiChords')
           .selectAll('path.pmiChord')
           .data(linkAccum);
 
-        linkData.enter().append('path')
+        linkData
+          .enter()
+          .append('path')
           .classed('pmiChord', true)
           .classed(style.pmiChord, true);
         linkData.exit().remove();
@@ -1013,34 +1264,60 @@ function informationDiagram(publicAPI, model) {
         linkData
           .classed('fade', false)
           .attr('d', (data, index) => {
-            var vaGrp = layout.groups()[model.mutualInformationData.lkup[data[3][0]]];
-            var vbGrp = layout.groups()[model.mutualInformationData.lkup[data[3][1]]];
-            var vaRange = [vaGrp.startAngle, (vaGrp.endAngle - vaGrp.startAngle), (vaGrp.endAngle - vaGrp.startAngle) / histogram1DnumberOfBins];
-            var vbRange = [vbGrp.startAngle, (vbGrp.endAngle - vbGrp.startAngle), (vbGrp.endAngle - vbGrp.startAngle) / histogram1DnumberOfBins];
+            var vaGrp = layout.groups()[
+              model.mutualInformationData.lkup[data[3][0]]
+            ];
+            var vbGrp = layout.groups()[
+              model.mutualInformationData.lkup[data[3][1]]
+            ];
+            var vaRange = [
+              vaGrp.startAngle,
+              vaGrp.endAngle - vaGrp.startAngle,
+              (vaGrp.endAngle - vaGrp.startAngle) / histogram1DnumberOfBins,
+            ];
+            var vbRange = [
+              vbGrp.startAngle,
+              vbGrp.endAngle - vbGrp.startAngle,
+              (vbGrp.endAngle - vbGrp.startAngle) / histogram1DnumberOfBins,
+            ];
             return path({
               source: {
-                startAngle: (vaRange[0] + (data[0][0] * vaRange[2])),
-                endAngle: (vaRange[0] + ((data[0][0] + 1) * vaRange[2])),
+                startAngle: vaRange[0] + data[0][0] * vaRange[2],
+                endAngle: vaRange[0] + (data[0][0] + 1) * vaRange[2],
               },
               target: {
-                startAngle: (vbRange[0] + (data[0][1] * vbRange[2])),
-                endAngle: (vbRange[0] + ((data[0][1] + 1) * vbRange[2])),
+                startAngle: vbRange[0] + data[0][1] * vbRange[2],
+                endAngle: vbRange[0] + (data[0][1] + 1) * vbRange[2],
               },
             });
           })
-          .attr('data-source-name', data => data[3][0])
-          .attr('data-source-bin', data => data[0][0])
-          .attr('data-target-name', data => data[3][1])
-          .attr('data-target-bin', data => data[0][1])
+          .attr('data-source-name', (data) => data[3][0])
+          .attr('data-source-bin', (data) => data[0][0])
+          .attr('data-target-name', (data) => data[3][1])
+          .attr('data-target-bin', (data) => data[0][1])
           .classed('highlight-pmi', false)
-          .classed('positive', data => data[1] >= 0.0)
-          .classed('negative', data => data[1] < 0.0)
+          .classed('positive', (data) => data[1] >= 0.0)
+          .classed('negative', (data) => data[1] < 0.0)
           .attr('data-details', (data) => {
-            const sourceBinRange = getParamBinRange(data[0][0], histogram1DnumberOfBins, data[3][0]);
-            const targetBinRange = getParamBinRange(data[0][1], histogram1DnumberOfBins, data[3][1]);
-            return 'PMI: '
-              + `${data[3][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(sourceBinRange[1])}] ↔︎ `
-              + `${data[3][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(targetBinRange[1])}] ${formatMI(data[1])}`;
+            const sourceBinRange = getParamBinRange(
+              data[0][0],
+              histogram1DnumberOfBins,
+              data[3][0]
+            );
+            const targetBinRange = getParamBinRange(
+              data[0][1],
+              histogram1DnumberOfBins,
+              data[3][1]
+            );
+            return (
+              'PMI: ' +
+              `${data[3][0]} ∈ [ ${formatVal(sourceBinRange[0])}, ${formatVal(
+                sourceBinRange[1]
+              )}] ↔︎ ` +
+              `${data[3][1]} ∈ [ ${formatVal(targetBinRange[0])}, ${formatVal(
+                targetBinRange[1]
+              )}] ${formatMI(data[1])}`
+            );
           })
           .on('mouseover', function mouseOver() {
             publicAPI.updateStatusBarText(d3.select(this).attr('data-details'));
@@ -1048,7 +1325,9 @@ function informationDiagram(publicAPI, model) {
           .on('mouseout', () => {
             publicAPI.updateStatusBarText('');
           })
-          .on('click', () => { publicAPI.selectStatusBarText(); });
+          .on('click', () => {
+            publicAPI.selectStatusBarText();
+          });
       };
     }
   };
@@ -1057,9 +1336,11 @@ function informationDiagram(publicAPI, model) {
     const svg = d3.select(model.container);
     Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
-      svg.selectAll(`g.group[param-name='${pName}'] > path.htile`)
-        .classed('hilite', (d, i) =>
-          binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0
+      svg
+        .selectAll(`g.group[param-name='${pName}'] > path.htile`)
+        .classed(
+          'hilite',
+          (d, i) => binList.indexOf(-1) === -1 && binList.indexOf(i) >= 0
         );
     });
   }
@@ -1068,16 +1349,20 @@ function informationDiagram(publicAPI, model) {
   publicAPI.setContainer(model.container);
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
-  model.subscriptions.push(model.provider.onFieldChange(() => {
-    model.renderState = {
-      pmiAllBinsTwoVars: null,
-      pmiOneBinAllVars: null,
-      pmiHighlight: null,
-    };
-    if (model.provider.setMutualInformationParameterNames) {
-      model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
-    }
-  }));
+  model.subscriptions.push(
+    model.provider.onFieldChange(() => {
+      model.renderState = {
+        pmiAllBinsTwoVars: null,
+        pmiOneBinAllVars: null,
+        pmiHighlight: null,
+      };
+      if (model.provider.setMutualInformationParameterNames) {
+        model.provider.setMutualInformationParameterNames(
+          model.provider.getActiveFieldNames()
+        );
+      }
+    })
+  );
 
   if (model.provider.isA('Histogram1DProvider')) {
     model.histogram1DDataSubscription = model.provider.subscribeToHistogram1D(
@@ -1100,28 +1385,37 @@ function informationDiagram(publicAPI, model) {
       (data) => {
         model.mutualInformationData = data;
         publicAPI.render();
-      });
+      }
+    );
 
     model.subscriptions.push(model.mutualInformationDataSubscription);
-    model.provider.setMutualInformationParameterNames(model.provider.getActiveFieldNames());
+    model.provider.setMutualInformationParameterNames(
+      model.provider.getActiveFieldNames()
+    );
   }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
-    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+    model.subscriptions.push(
+      model.provider.onHoverBinChange(handleHoverUpdate)
+    );
   }
 
   if (model.provider.isA('SelectionProvider')) {
-    model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
-      if (lastAnnotationPushed
-        && annotation.selection.type === 'range'
-        && annotation.id === lastAnnotationPushed.id
-        && annotation.generation === lastAnnotationPushed.generation + 1) {
-        // Assume that it is still ours but edited by someone else
-        lastAnnotationPushed = annotation;
-        // Capture the score and update our default
-        model.defaultScore = lastAnnotationPushed.score[0];
-      }
-    }));
+    model.subscriptions.push(
+      model.provider.onAnnotationChange((annotation) => {
+        if (
+          lastAnnotationPushed &&
+          annotation.selection.type === 'range' &&
+          annotation.id === lastAnnotationPushed.id &&
+          annotation.generation === lastAnnotationPushed.generation + 1
+        ) {
+          // Assume that it is still ours but edited by someone else
+          lastAnnotationPushed = annotation;
+          // Capture the score and update our default
+          model.defaultScore = lastAnnotationPushed.score[0];
+        }
+      })
+    );
   }
 }
 
@@ -1153,7 +1447,11 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'numberOfBins']);
+  CompositeClosureHelper.get(publicAPI, model, [
+    'provider',
+    'container',
+    'numberOfBins',
+  ]);
   CompositeClosureHelper.set(publicAPI, model, ['numberOfBins']);
   CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 

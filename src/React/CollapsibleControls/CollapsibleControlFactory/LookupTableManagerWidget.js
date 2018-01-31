@@ -15,5 +15,7 @@ CollapsibleControlFactory.registerWidget(
         key="LookupTableManagerWidget"
         field={field}
         lookupTableManager={lookupTableManager}
-      />);
-  });
+      />
+    );
+  }
+);

@@ -88,8 +88,8 @@ export default class Coordinate2DWidget extends React.Component {
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
     var rect = this.canvas.getBoundingClientRect();
-    var x = e.pointers[0].clientX - rect.left - (this.props.width / 2),
-      y = -(e.pointers[0].clientY - rect.top - (this.props.height / 2));
+    var x = e.pointers[0].clientX - rect.left - this.props.width / 2,
+      y = -(e.pointers[0].clientY - rect.top - this.props.height / 2);
     this.setState({
       x: limitValue(x / (this.props.width / 2)),
       y: limitValue(y / (this.props.height / 2)),
@@ -164,18 +164,25 @@ export default class Coordinate2DWidget extends React.Component {
     return (
       <section className={style.container}>
         <canvas
-          ref={(c) => { this.canvas = c; }}
+          ref={(c) => {
+            this.canvas = c;
+          }}
           className={style.canvas}
           width={this.props.width}
           height={this.props.height}
         />
-        <section className={(this.props.hideXY ? style.hidden : style.inputContainer)} >
+        <section
+          className={this.props.hideXY ? style.hidden : style.inputContainer}
+        >
           <label className={style.inputLabel}> x: </label>
           <input
             className={style.input}
             type="number"
             onChange={this.updateX}
-            min="-1.0" max="1.0" step="0.01" value={this.state.x}
+            min="-1.0"
+            max="1.0"
+            step="0.01"
+            value={this.state.x}
           />
           <br />
           <label className={style.inputLabel}> y: </label>
@@ -183,9 +190,12 @@ export default class Coordinate2DWidget extends React.Component {
             className={style.input}
             type="number"
             onChange={this.updateY}
-            min="-1.0" max="1.0" step="0.01" value={this.state.y}
+            min="-1.0"
+            max="1.0"
+            step="0.01"
+            value={this.state.y}
           />
-        </section >
+        </section>
       </section>
     );
   }

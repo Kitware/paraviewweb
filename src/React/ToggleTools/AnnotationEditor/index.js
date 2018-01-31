@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
 import AnnotationEditorWidget from '../../Widgets/AnnotationEditorWidget';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/Annotation.svg';
 
 export default class AnnotationEditorTool extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -92,7 +91,14 @@ export default class AnnotationEditorTool extends React.Component {
           onActive={() => this.props.onActiveWindow(this)}
           front={this === this.props.activeWindow}
         >
-          <div style={{ overflow: 'auto', position: 'absolute', width: '100%', height: '100%' }}>
+          <div
+            style={{
+              overflow: 'auto',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
+          >
             <AnnotationEditorWidget
               annotation={this.state.annotation}
               scores={this.props.provider.getScores()}
@@ -103,7 +109,8 @@ export default class AnnotationEditorTool extends React.Component {
             />
           </div>
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 

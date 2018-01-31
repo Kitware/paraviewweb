@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import style from 'PVWStyle/ComponentReact/WorkbenchController.mcss';
 import LayoutsWidget from '../../../React/Widgets/LayoutsWidget';
 
-import TwoByTwo  from '../../../React/Widgets/LayoutsWidget/TwoByTwo';
-import OneByTwo  from '../../../React/Widgets/LayoutsWidget/OneByTwo';
-import TwoByOne  from '../../../React/Widgets/LayoutsWidget/TwoByOne';
-import OneByOne  from '../../../React/Widgets/LayoutsWidget/OneByOne';
-import TwoLeft   from '../../../React/Widgets/LayoutsWidget/TwoLeft';
-import TwoTop    from '../../../React/Widgets/LayoutsWidget/TwoTop';
-import TwoRight  from '../../../React/Widgets/LayoutsWidget/TwoRight';
+import TwoByTwo from '../../../React/Widgets/LayoutsWidget/TwoByTwo';
+import OneByTwo from '../../../React/Widgets/LayoutsWidget/OneByTwo';
+import TwoByOne from '../../../React/Widgets/LayoutsWidget/TwoByOne';
+import OneByOne from '../../../React/Widgets/LayoutsWidget/OneByOne';
+import TwoLeft from '../../../React/Widgets/LayoutsWidget/TwoLeft';
+import TwoTop from '../../../React/Widgets/LayoutsWidget/TwoTop';
+import TwoRight from '../../../React/Widgets/LayoutsWidget/TwoRight';
 import TwoBottom from '../../../React/Widgets/LayoutsWidget/TwoBottom';
 
 const LAYOUT_VIEW = {
@@ -25,7 +25,11 @@ const LAYOUT_VIEW = {
 };
 
 export default function render(props) {
-  const options = Object.keys(props.viewports).map((name, idx) => <option key={idx} value={name}>{name}</option>);
+  const options = Object.keys(props.viewports).map((name, idx) => (
+    <option key={idx} value={name}>
+      {name}
+    </option>
+  ));
   const mapping = [];
   while (mapping.length < props.count) {
     mapping.push('None');
@@ -48,17 +52,26 @@ export default function render(props) {
 
   return (
     <div className={style.container}>
-      <LayoutsWidget className={style.layout} onChange={props.onLayoutChange} active={props.activeLayout} />
+      <LayoutsWidget
+        className={style.layout}
+        onChange={props.onLayoutChange}
+        active={props.activeLayout}
+      />
       {mapping.map((name, idx) => (
         <section key={idx} className={style.line}>
           <LayoutItem activeRegion={idx} />
-          <select className={style.stretch} name={idx} value={name} onChange={changeViewport} >
+          <select
+            className={style.stretch}
+            name={idx}
+            value={name}
+            onChange={changeViewport}
+          >
             {options}
           </select>
-        </section>)
-      )}
+        </section>
+      ))}
     </div>
-    );
+  );
 }
 
 render.propTypes = {

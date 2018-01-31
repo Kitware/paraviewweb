@@ -15,7 +15,6 @@ export default class ScalarRangeWidget extends React.Component {
     this.apply = this.apply.bind(this);
   }
 
-
   componentWillReceiveProps(nextProps) {
     const { min, max } = nextProps;
     if (this.state.min !== min || this.state.max !== max) {
@@ -68,11 +67,24 @@ export default class ScalarRangeWidget extends React.Component {
           onChange={this.updateRange}
         />
         <div className={style.actionLine}>
-          <i onClick={this.apply} data-type="data" className={style.dataRangeIcon} />
-          <i onClick={this.apply} data-type="time" className={style.timeRangeIcon} />
-          <i onClick={this.apply} data-type="custom" className={style.customRangeIcon} />
+          <i
+            onClick={this.apply}
+            data-type="data"
+            className={style.dataRangeIcon}
+          />
+          <i
+            onClick={this.apply}
+            data-type="time"
+            className={style.timeRangeIcon}
+          />
+          <i
+            onClick={this.apply}
+            data-type="custom"
+            className={style.customRangeIcon}
+          />
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

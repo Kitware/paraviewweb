@@ -1,7 +1,7 @@
 import 'normalize.css';
 import 'babel-polyfill';
 
-import sizeHelper   from '../../../../Common/Misc/SizeHelper';
+import sizeHelper from '../../../../Common/Misc/SizeHelper';
 
 import MutualInformationDiagram from '../../../Native/MutualInformationDiagram';
 import FieldSelector from '../../../Native/FieldSelector';
@@ -32,15 +32,17 @@ fieldSelectorContainer.style.height = '250px';
 fieldSelectorContainer.style.float = 'left';
 bodyElt.appendChild(fieldSelectorContainer);
 
-const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
-  Object.assign(model, initialValues);
-  FieldProvider.extend(publicAPI, model, initialValues);
-  Histogram1DProvider.extend(publicAPI, model, initialValues);
-  Histogram2DProvider.extend(publicAPI, model, initialValues);
-  HistogramBinHoverProvider.extend(publicAPI, model);
-  LegendProvider.extend(publicAPI, model, initialValues);
-  MutualInformationProvider.extend(publicAPI, model, initialValues);
-})(dataModel);
+const provider = CompositeClosureHelper.newInstance(
+  (publicAPI, model, initialValues = {}) => {
+    Object.assign(model, initialValues);
+    FieldProvider.extend(publicAPI, model, initialValues);
+    Histogram1DProvider.extend(publicAPI, model, initialValues);
+    Histogram2DProvider.extend(publicAPI, model, initialValues);
+    HistogramBinHoverProvider.extend(publicAPI, model);
+    LegendProvider.extend(publicAPI, model, initialValues);
+    MutualInformationProvider.extend(publicAPI, model, initialValues);
+  }
+)(dataModel);
 
 // Init Mutual information
 // provider.setMutualInformationParameterNames([]);
@@ -51,7 +53,10 @@ provider.setHistogram2dProvider(provider);
 const diag = MutualInformationDiagram.newInstance({ provider, container });
 
 // Create field selector
-const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });
+const fieldSelector = FieldSelector.newInstance({
+  provider,
+  container: fieldSelectorContainer,
+});
 
 // Listen to window resize
 sizeHelper.onSizeChange(() => {

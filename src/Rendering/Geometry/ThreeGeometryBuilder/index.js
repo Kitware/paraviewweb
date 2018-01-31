@@ -27,7 +27,6 @@ function updateGreyColorBuffer(buf) {
 }
 
 export default class ThreeGeometryBuilder {
-
   constructor(lutMgr, geometryDataModel, pipelineModel, queryDataModel) {
     this.meshMap = {};
 
@@ -73,14 +72,21 @@ export default class ThreeGeometryBuilder {
     });
 
     // Handle LookupTable change
-    this.lookupTableManager.addFields(this.queryDataModel.originalData.Geometry.ranges,
-      this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.queryDataModel.originalData.Geometry.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
     this.lookupTableManager.onChange((data, envelope) => {
       this.updateColoring(data.change, data.lut);
     });
 
     // Scene management
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     this.camera.position.z = 50;
 
     this.scene = new THREE.Scene();
@@ -98,9 +104,11 @@ export default class ThreeGeometryBuilder {
     // this.camera.add( this.dirLight2 );
     // this.camera.add( this.dirLight2.target );
 
-    this.geometryBuilderSubscription = this.geometryDataModel.onGeometryReady((data, envelope) => {
-      this.updateGeometry(data);
-    });
+    this.geometryBuilderSubscription = this.geometryDataModel.onGeometryReady(
+      (data, envelope) => {
+        this.updateGeometry(data);
+      }
+    );
   }
 
   destroy() {
@@ -140,8 +148,15 @@ export default class ThreeGeometryBuilder {
     for (const name in this.meshMap) {
       const renderInfo = this.meshMap[name];
       if (renderInfo.colorArrayName === lookupTable.name) {
-        const colors = updateFieldColorBuffer(lookupTable, renderInfo.fieldData, renderInfo.colorBuffer);
-        renderInfo.mesh.geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const colors = updateFieldColorBuffer(
+          lookupTable,
+          renderInfo.fieldData,
+          renderInfo.colorBuffer
+        );
+        renderInfo.mesh.geometry.addAttribute(
+          'color',
+          new THREE.BufferAttribute(colors, 3)
+        );
       }
     }
   }
@@ -199,7 +214,12 @@ export default class ThreeGeometryBuilder {
       let colors = renderInfo.colorBuffer;
 
       if (geometry.vertices && geo.points.length !== geometry.vertices.length) {
-        console.log('********  We may have a problem here, new point count = ', geo.points.length, ', old point count = ', geometry.vertices.length);
+        console.log(
+          '********  We may have a problem here, new point count = ',
+          geo.points.length,
+          ', old point count = ',
+          geometry.vertices.length
+        );
         // FIXME: Allocate new color buffer here
       }
 
@@ -225,7 +245,11 @@ export default class ThreeGeometryBuilder {
       if (geo.hasOwnProperty('field')) {
         renderInfo.colorArrayName = geo.fieldName;
         renderInfo.fieldData = geo.field;
-        colors = updateFieldColorBuffer(this.lookupTableManager.getLookupTable(geo.fieldName), geo.field, colors);
+        colors = updateFieldColorBuffer(
+          this.lookupTableManager.getLookupTable(geo.fieldName),
+          geo.field,
+          colors
+        );
       } else {
         renderInfo.colorArrayName = null;
         renderInfo.fieldData = null;
@@ -253,11 +277,11 @@ export default class ThreeGeometryBuilder {
     for (const meshName in this.meshMap) {
       const mesh = this.meshMap[meshName].mesh;
       mesh.geometry.computeBoundingBox();
-      bbox.expandByPoint(mesh.geometry.boundingBox.min).expandByPoint(mesh.geometry.boundingBox.max);
+      bbox
+        .expandByPoint(mesh.geometry.boundingBox.min)
+        .expandByPoint(mesh.geometry.boundingBox.max);
     }
-    const {
-      center, radius,
-    } = bbox.getBoundingSphere();
+    const { center, radius } = bbox.getBoundingSphere();
     this.controls.resetCamera(center, radius);
   }
 
@@ -269,5 +293,4 @@ export default class ThreeGeometryBuilder {
 
     this.controls.handleResize();
   }
-
 }

@@ -11,8 +11,7 @@ function paintField(ctx, location, field, range) {
     min = Number.MAX_VALUE,
     max = Number.MIN_VALUE;
 
-  const
-    xOffset = location.x,
+  const xOffset = location.x,
     yOffset = location.y,
     width = location.width,
     height = location.height,
@@ -40,8 +39,8 @@ function paintField(ctx, location, field, range) {
 
   function getY(idx) {
     var value = values[idx];
-    value = (value > min) ? ((value < max) ? value : max) : min;
-    return (yOffset + height) - Math.floor((value - min) * scaleY);
+    value = value > min ? (value < max ? value : max) : min;
+    return yOffset + height - Math.floor((value - min) * scaleY);
   }
 
   // Draw line
@@ -103,8 +102,11 @@ function paintText(ctx, location, xOffset, yOffset, text, color = '#000000') {
 // ----------------------------------------------------------------------------
 
 export default class LineChartPainter {
-
-  constructor(title, markerColor = '#0000FF', colors = ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880']) {
+  constructor(
+    title,
+    markerColor = '#0000FF',
+    colors = ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880']
+  ) {
     this.data = null;
     this.colors = colors;
     this.markerColor = markerColor;
@@ -175,7 +177,7 @@ export default class LineChartPainter {
   // ----------------------------------------------------------------------------
 
   isReady() {
-    return (this.data !== null);
+    return this.data !== null;
   }
 
   // ----------------------------------------------------------------------------
@@ -188,7 +190,12 @@ export default class LineChartPainter {
     }
 
     // Empty content
-    ctx.clearRect(location.x - 1, location.y - 1, location.width + 2, location.height + 2);
+    ctx.clearRect(
+      location.x - 1,
+      location.y - 1,
+      location.width + 2,
+      location.height + 2
+    );
 
     if (this.fillBackground) {
       ctx.fillStyle = this.fillBackground;
@@ -209,8 +216,14 @@ export default class LineChartPainter {
 
     // Paint tile if any
     if (this.title) {
-      if (this.data.xRange && this.data.xRange.length === 2 && !isNaN(this.markerLocation)) {
-        xValue = (((this.data.xRange[1] - this.data.xRange[0]) * this.markerLocation) + this.data.xRange[0]);
+      if (
+        this.data.xRange &&
+        this.data.xRange.length === 2 &&
+        !isNaN(this.markerLocation)
+      ) {
+        xValue =
+          (this.data.xRange[1] - this.data.xRange[0]) * this.markerLocation +
+          this.data.xRange[0];
         if (xValue.toFixed) {
           xValue = xValue.toFixed(5);
         }
@@ -231,7 +244,6 @@ export default class LineChartPainter {
   getControlWidgets() {
     return this.controlWidgets;
   }
-
 }
 
 Monologue.mixInto(LineChartPainter);

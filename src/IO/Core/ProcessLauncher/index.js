@@ -2,14 +2,12 @@
 
 import Monologue from 'monologue.js';
 
-const
-  PROCESS_READY_TOPIC = 'launcher.process.ready',
+const PROCESS_READY_TOPIC = 'launcher.process.ready',
   PROCESS_STOPPED_TOPIC = 'launcher.process.stopped',
   CONNECTION_INFO_TOPIC = 'launcher.info.connection',
   ERROR_TOPIC = 'launcher.error';
 
-var
-  connections = [];
+var connections = [];
 
 // DEPRECATED: replaced by wslink/js/src/ProcessLauncher
 export default class ProcessLauncher {
@@ -53,7 +51,10 @@ export default class ProcessLauncher {
 
     xhr.onload = (e) => {
       if (this.status === 200) {
-        this.emit(CONNECTION_INFO_TOPIC, supportsJson ? xhr.response : JSON.parse(xhr.response));
+        this.emit(
+          CONNECTION_INFO_TOPIC,
+          supportsJson ? xhr.response : JSON.parse(xhr.response)
+        );
         return;
       }
       this.emit(ERROR_TOPIC, xhr.response);

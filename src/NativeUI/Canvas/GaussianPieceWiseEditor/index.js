@@ -12,7 +12,7 @@ function calculateOpacities(gaussians) {
     opacities[count] = 0.0;
   }
 
-  gaussians.forEach(gaussian => {
+  gaussians.forEach((gaussian) => {
     var x0;
     const { position, height, xbias, ybias } = gaussian;
     const width = gaussian.width === 0 ? 0.00001 : gaussian.width;
@@ -21,7 +21,7 @@ function calculateOpacities(gaussians) {
       const x = i / 255.0;
 
       // clamp non-zero values to pos +/- width
-      if (x > (position + width) || x < (position - width)) {
+      if (x > position + width || x < position - width) {
         if (opacities[i] < 0.0) {
           opacities[i] = 0.0;
         }
@@ -29,19 +29,20 @@ function calculateOpacities(gaussians) {
       }
 
       // translate the original x to a new x based on the xbias
-      if (xbias === 0 || x === (position + xbias)) {
+      if (xbias === 0 || x === position + xbias) {
         x0 = x;
-      } else if (x > (position + xbias)) {
+      } else if (x > position + xbias) {
         if (width === xbias) {
           x0 = position;
         } else {
-          x0 = position + ((x - position - xbias) * (width / (width - xbias)));
+          x0 = position + (x - position - xbias) * (width / (width - xbias));
         }
-      } else { // (x < pos+xbias)
+      } else {
+        // (x < pos+xbias)
         if (-width === xbias) {
           x0 = position;
         } else {
-          x0 = position - ((x - position - xbias) * (width / (width + xbias)));
+          x0 = position - (x - position - xbias) * (width / (width + xbias));
         }
       }
 
@@ -81,7 +82,6 @@ function calculateOpacities(gaussians) {
 const CHANGE_TOPIC = 'GaussianPieceWiseEditor.change';
 
 export default class GaussianPieceWiseEditor {
-
   constructor(canvas, style) {
     this.resetControlPoints();
     this.setStyle(style);
@@ -89,11 +89,16 @@ export default class GaussianPieceWiseEditor {
   }
 
   resetControlPoints() {
-    this.controlPoints = [ pointBuilder(0, 0), pointBuilder(1, 1) ];
+    this.controlPoints = [pointBuilder(0, 0), pointBuilder(1, 1)];
     sortPoints(this.controlPoints);
   }
 
-  setStyle({ radius = 6, stroke = 2, color = '#000000', fillColor = '#ccc' } = {}) {
+  setStyle({
+    radius = 6,
+    stroke = 2,
+    color = '#000000',
+    fillColor = '#ccc',
+  } = {}) {
     this.radius = radius;
     this.stroke = stroke;
     this.color = color;
@@ -131,7 +136,7 @@ export default class GaussianPieceWiseEditor {
     this.ctx.fillRect(margin, margin, width, height);
 
     const linearPath = [];
-    this.controlPoints.forEach(point => {
+    this.controlPoints.forEach((point) => {
       linearPath.push(getCanvasCoordinates(this.ctx, point, this.radius));
     });
 
@@ -148,7 +153,7 @@ export default class GaussianPieceWiseEditor {
     this.ctx.stroke();
 
     // Draw control points
-    linearPath.forEach(point => {
+    linearPath.forEach((point) => {
       drawControlPoint(this.ctx, point, this.radius, this.color);
     });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CollapsibleControlFactory from '.';
-import VolumeControl             from '../VolumeControl';
+import VolumeControl from '../VolumeControl';
 
 CollapsibleControlFactory.registerWidget(
   'VolumeControlWidget',

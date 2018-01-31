@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CollapsibleControlFactory from '.';
-import EqualizerWidget           from '../../Widgets/EqualizerWidget';
+import EqualizerWidget from '../../Widgets/EqualizerWidget';
 
 CollapsibleControlFactory.registerWidget(
   'EqualizerWidget',

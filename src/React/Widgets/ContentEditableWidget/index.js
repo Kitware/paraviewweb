@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const noOp = () => { };
+const noOp = () => {};
 
 export default class ContentEditableWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
 
     // Bind callback
     this.setFocus = this.setFocus.bind(this);
@@ -59,14 +58,15 @@ export default class ContentEditableWidget extends React.Component {
   render() {
     return (
       <div
-        ref={c => (this.rootContainer = c)}
+        ref={(c) => (this.rootContainer = c)}
         className={this.props.className}
         onInput={this.emitChange}
         onBlur={this.emitChange}
         onKeyPress={this.props.blurOnEnter ? this.blurEditable : noOp}
         contentEditable
         dangerouslySetInnerHTML={{ __html: this.props.html }}
-      />);
+      />
+    );
   }
   /* eslint-enable react/no-danger */
 }

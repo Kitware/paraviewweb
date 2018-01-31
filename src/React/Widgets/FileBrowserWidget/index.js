@@ -1,7 +1,7 @@
-import React      from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style      from 'PVWStyle/ReactWidgets/FileBrowserWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/FileBrowserWidget.mcss';
 
 import ActionList from '../ActionListWidget';
 
@@ -27,7 +27,11 @@ export default class FileBrowserWidget extends React.Component {
 
   onAction(name, action, data) {
     if (this.props.onAction) {
-      this.props.onAction(action, name, data.length ? JSON.parse(atob(data)) : null);
+      this.props.onAction(
+        action,
+        name,
+        data.length ? JSON.parse(atob(data)) : null
+      );
     }
   }
 
@@ -69,15 +73,22 @@ export default class FileBrowserWidget extends React.Component {
     return (
       <div className={style.container}>
         <ul className={style.breadcrumb}>
-          {this.props.path.map((name, idx) =>
-            <li className={style.breadcrumbItem} key={idx} data-idx={idx} title={name} onClick={this.onPathChange}>
+          {this.props.path.map((name, idx) => (
+            <li
+              className={style.breadcrumbItem}
+              key={idx}
+              data-idx={idx}
+              title={name}
+              onClick={this.onPathChange}
+            >
               <i className={style.breadcrumbFolderIcon} />
               <span className={style.breadcrumbLabel}>{name}</span>
             </li>
-          )}
+          ))}
         </ul>
         <ActionList list={this.state.list} onClick={this.onAction} />
-      </div>);
+      </div>
+    );
   }
 }
 

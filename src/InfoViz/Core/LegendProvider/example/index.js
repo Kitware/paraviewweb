@@ -1,6 +1,6 @@
 import 'babel-polyfill';
-import React              from 'react';
-import ReactDOM           from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import LegendProvider from '..';
 import SvgIconWidget from '../../../../React/Widgets/SvgIconWidget';
@@ -124,7 +124,7 @@ function next() {
   ReactDOM.render(
     <ul>
       <li>{priorityOptions[optionIdx].join(', ')}</li>
-      {legendEntries.map((name, idx) =>
+      {legendEntries.map((name, idx) => (
         <li key={idx}>
           <SvgIconWidget
             icon={legend.getLegend(name).shape}
@@ -133,9 +133,11 @@ function next() {
             style={{ fill: legend.getLegend(name).color }}
           />
           {name}
-        </li>)}
+        </li>
+      ))}
     </ul>,
-  container);
+    container
+  );
 }
 
 setInterval(next, 5000);

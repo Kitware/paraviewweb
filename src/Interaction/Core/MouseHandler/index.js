@@ -2,8 +2,7 @@ import Hammer from 'hammerjs';
 import Monologue from 'monologue.js';
 
 // Module dependencies and constants
-const
-  Modifier = {
+const Modifier = {
     NONE: 0,
     ALT: 1,
     META: 2,
@@ -34,8 +33,11 @@ function getModifier(e) {
 
 function getRelative(el, event) {
   return {
-    x: event.center.x - (el.getClientRects()[0].x || el.getClientRects()[0].left),
-    y: event.center.y - (el.getClientRects()[0].y || el.getClientRects()[0].top),
+    x:
+      event.center.x -
+      (el.getClientRects()[0].x || el.getClientRects()[0].left),
+    y:
+      event.center.y - (el.getClientRects()[0].y || el.getClientRects()[0].top),
   };
 }
 
@@ -57,7 +59,6 @@ function broadcast(ctx, topic, event, preventDefault = true) {
 }
 
 export default class MouseHandler {
-
   constructor(domElement, options) {
     var defaultOptions = {
       preventDefault: true,
@@ -82,7 +83,7 @@ export default class MouseHandler {
     this.toggleModifierEnable = false;
     this.hammer = new Hammer(domElement);
     this.scrollInternal = {
-      ts: +(new Date()),
+      ts: +new Date(),
       deltaX: 0,
       deltaY: 0,
     };
@@ -101,7 +102,10 @@ export default class MouseHandler {
         return true;
       }
 
-      if (!this.inRightClickHandling && ['mousemove', 'mouseup'].indexOf(e.type) !== -1) {
+      if (
+        !this.inRightClickHandling &&
+        ['mousemove', 'mouseup'].indexOf(e.type) !== -1
+      ) {
         return true;
       } else if (e.type === 'contextmenu') {
         this.inRightClickHandling = true;
@@ -113,7 +117,7 @@ export default class MouseHandler {
 
       const event = {
         srcEvent: e,
-        button: (this.inRightClickHandling) ? 2 : 0,
+        button: this.inRightClickHandling ? 2 : 0,
         topic: eventTypeMapping[e.type] || 'zoom',
 
         center: {
@@ -121,8 +125,12 @@ export default class MouseHandler {
           y: e.clientY,
         },
         relative: {
-          x: e.clientX - (this.el.getClientRects()[0].x || this.el.getClientRects()[0].left),
-          y: e.clientY - (this.el.getClientRects()[0].y || this.el.getClientRects()[0].top),
+          x:
+            e.clientX -
+            (this.el.getClientRects()[0].x || this.el.getClientRects()[0].left),
+          y:
+            e.clientY -
+            (this.el.getClientRects()[0].y || this.el.getClientRects()[0].top),
         },
 
         scale: 1,
@@ -145,9 +153,12 @@ export default class MouseHandler {
       if (event.topic === 'zoom') {
         // Register final zoom
         clearTimeout(this.finalZoomTimerId);
-        this.finalZoomTimerId = setTimeout(this.triggerFinalZoomEvent, TIMEOUT_BETWEEN_ZOOM);
+        this.finalZoomTimerId = setTimeout(
+          this.triggerFinalZoomEvent,
+          TIMEOUT_BETWEEN_ZOOM
+        );
 
-        const currentTime = +(new Date());
+        const currentTime = +new Date();
         if (currentTime - this.scrollInternal.ts > TIMEOUT_BETWEEN_ZOOM) {
           this.scrollInternal.deltaX = 0;
           this.scrollInternal.deltaY = 0;
@@ -168,8 +179,8 @@ export default class MouseHandler {
 
         event.deltaX = this.scrollInternal.deltaX;
         event.deltaY = this.scrollInternal.deltaY;
-        event.scale = 1.0 + (event.deltaY / this.el.getClientRects()[0].height);
-        event.scale = (event.scale < 0.1) ? 0.1 : event.scale;
+        event.scale = 1.0 + event.deltaY / this.el.getClientRects()[0].height;
+        event.scale = event.scale < 0.1 ? 0.1 : event.scale;
         this.scrollInternal.ts = currentTime;
 
         this.finalZoomEvent = event;
@@ -233,7 +244,8 @@ export default class MouseHandler {
 
     this.hammer.on('press', (e) => {
       if (this.toggleModifierEnable) {
-        this.toggleModifierIdx = (this.toggleModifierIdx + 1) % this.toggleModifiers.length;
+        this.toggleModifierIdx =
+          (this.toggleModifierIdx + 1) % this.toggleModifiers.length;
         this.modifier = this.toggleModifiers[this.toggleModifierIdx];
 
         e.relative = getRelative(this.el, e);

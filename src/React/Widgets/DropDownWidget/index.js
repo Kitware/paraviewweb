@@ -41,10 +41,22 @@ export default class DropDownWidget extends React.Component {
             }
 
             if (v === this.state.field) {
-              return <li className={style.selectedItem} key={v} onClick={this.setField}>{v}</li>;
+              return (
+                <li
+                  className={style.selectedItem}
+                  key={v}
+                  onClick={this.setField}
+                >
+                  {v}
+                </li>
+              );
             }
 
-            return <li className={style.item} key={v} onClick={this.setField}>{v}</li>;
+            return (
+              <li className={style.item} key={v} onClick={this.setField}>
+                {v}
+              </li>
+            );
           })}
         </ul>
       </div>

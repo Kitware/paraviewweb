@@ -7,7 +7,7 @@ function wslinkImageStream(publicAPI, model) {
   model.metadata = null;
   model.activeURL = null;
   model.fps = 0;
-  model.lastTime = +(new Date());
+  model.lastTime = +new Date();
 
   model.lastImageReadyEvent = null;
 
@@ -17,11 +17,17 @@ function wslinkImageStream(publicAPI, model) {
   };
 
   publicAPI.startInteractiveQuality = () => {
-    model.client.VtkImageDelivery.viewQuality(model.view_id, model.interactiveQuality);
+    model.client.VtkImageDelivery.viewQuality(
+      model.view_id,
+      model.interactiveQuality
+    );
   };
 
   publicAPI.stopInteractiveQuality = () => {
-    model.client.VtkImageDelivery.viewQuality(model.view_id, model.stillQuality);
+    model.client.VtkImageDelivery.viewQuality(
+      model.view_id,
+      model.stillQuality
+    );
   };
 
   publicAPI.invalidateCache = () => {
@@ -34,12 +40,16 @@ function wslinkImageStream(publicAPI, model) {
   };
 
   publicAPI.unsubscribeRenderTopic = () => {
-    model.client.VtkImageDelivery.offRenderChange(model.renderTopicSubscription)
-      .then((unsubSuccess) => {
+    model.client.VtkImageDelivery.offRenderChange(
+      model.renderTopicSubscription
+    ).then(
+      (unsubSuccess) => {
         console.log('Unsubscribe resolved ', unsubSuccess);
-      }, (unsubFailure) => {
+      },
+      (unsubFailure) => {
         console.log('Unsubscribe error ', unsubFailure);
-      });
+      }
+    );
   };
 
   // subscribeRenderTopic = () => {
@@ -52,13 +62,16 @@ function wslinkImageStream(publicAPI, model) {
   // }
 
   publicAPI.removeRenderObserver = (viewId) => {
-    model.client.VtkImageDelivery.removeRenderObserver(viewId).then((successResult) => {
-      console.log(`Removed observer from view ${viewId} succeeded`);
-      console.log(successResult);
-    }, (failureResult) => {
-      console.log(`Failed to remove observer from view ${viewId}`);
-      console.log(failureResult);
-    });
+    model.client.VtkImageDelivery.removeRenderObserver(viewId).then(
+      (successResult) => {
+        console.log(`Removed observer from view ${viewId} succeeded`);
+        console.log(successResult);
+      },
+      (failureResult) => {
+        console.log(`Failed to remove observer from view ${viewId}`);
+        console.log(failureResult);
+      }
+    );
   };
 
   // addRenderObserver(viewId) {
@@ -92,7 +105,7 @@ function wslinkImageStream(publicAPI, model) {
       model.activeURL = null;
     }
     model.activeURL = URL.createObjectURL(imgBlob);
-    const time = +(new Date());
+    const time = +new Date();
     model.fps = Math.floor(10000 / (time - model.lastTime)) / 10;
     model.lastTime = time;
 
@@ -106,34 +119,39 @@ function wslinkImageStream(publicAPI, model) {
   };
 
   /* eslint-disable camelcase */
-  publicAPI.connect = ({ view_id = -1, size = [500, 500] }) => (
+  publicAPI.connect = ({ view_id = -1, size = [500, 500] }) =>
     // Subscribe to pubsub topic and add view observer
     new Promise((resolve, reject) => {
       model.view_id = view_id;
       model.width = size[0];
       model.height = size[1];
 
-      model.client.VtkImageDelivery.onRenderChange(publicAPI.viewChanged).then((subscription) => {
-        model.renderTopicSubscription = subscription;
-        model.client.VtkImageDelivery.addRenderObserver(view_id).then((successResult) => {
-          if (successResult.viewId) {
-            model.view_id = successResult.viewId;
-          }
-          console.log(`Successfully added observer to view ${view_id}`);
-          console.log(successResult);
-          resolve(successResult);
-        }, (failureResult) => {
-          console.log(`Failed to add observer to view ${view_id}`);
-          console.log(failureResult);
-          reject(failureResult);
-        });
-      }, (subError) => {
-        console.log('Failed to subscribe to topic');
-        console.log(subError);
-        reject(subError);
-      });
-    })
-  );
+      model.client.VtkImageDelivery.onRenderChange(publicAPI.viewChanged).then(
+        (subscription) => {
+          model.renderTopicSubscription = subscription;
+          model.client.VtkImageDelivery.addRenderObserver(view_id).then(
+            (successResult) => {
+              if (successResult.viewId) {
+                model.view_id = successResult.viewId;
+              }
+              console.log(`Successfully added observer to view ${view_id}`);
+              console.log(successResult);
+              resolve(successResult);
+            },
+            (failureResult) => {
+              console.log(`Failed to add observer to view ${view_id}`);
+              console.log(failureResult);
+              reject(failureResult);
+            }
+          );
+        },
+        (subError) => {
+          console.log('Failed to subscribe to topic');
+          console.log(subError);
+          reject(subError);
+        }
+      );
+    });
   /* eslint-enable camelcase */
 
   function cleanUp() {
@@ -143,9 +161,7 @@ function wslinkImageStream(publicAPI, model) {
 
   publicAPI.destroy = CompositeClosureHelper.chain(cleanUp, publicAPI.destroy);
 
-  publicAPI.getLastImageReadyEvent = () => (
-    model.lastImageReadyEvent
-  );
+  publicAPI.getLastImageReadyEvent = () => model.lastImageReadyEvent;
 }
 
 const DEFAULT_VALUES = {

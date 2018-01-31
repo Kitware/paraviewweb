@@ -51,6 +51,9 @@
         "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz"
     },
     "scripts": {
+        "validate": "prettier --config ./prettier.config.js --list-different \"src/**/*.js\"",
+        "reformat": "prettier --config ./prettier.config.js --write \"src/**/*.js\"",
+        "reformat-only": "prettier --single-quote --trailing-comma es5 --print-width 80 --arrow-parens always --write",
         "install:global": "npm install -g commitizen@2.5.0",
         "doc": "kw-doc -c ./documentation/config.js",
         "doc:www": "kw-doc -c ./documentation/config.js -s",

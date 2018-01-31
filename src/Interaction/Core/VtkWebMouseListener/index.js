@@ -12,7 +12,6 @@ const modifier = {
 const NoOp = () => {};
 
 export default class VtkMouseListener {
-
   constructor(vtkWebClient, width = 100, height = 100, viewId = -1) {
     this.client = vtkWebClient;
     this.ready = true;
@@ -34,7 +33,7 @@ export default class VtkMouseListener {
           metaKey: event.modifier & modifier.META,
           /* eslint-enable no-bitwise */
           x: event.relative.x / this.width,
-          y: 1.0 - (event.relative.y / this.height),
+          y: 1.0 - event.relative.y / this.height,
         };
         if (event.isFirst) {
           // Down
@@ -50,16 +49,16 @@ export default class VtkMouseListener {
         if (this.client) {
           if (this.ready || vtkEvent.action !== 'move') {
             this.ready = false;
-            this.client.MouseHandler.interaction(vtkEvent)
-              .then(
-                (resp) => {
-                  this.ready = true;
-                  this.doneCallback(vtkEvent.action !== 'up');
-                },
-                (err) => {
-                  console.log('event err', err);
-                  this.doneCallback(vtkEvent.action !== 'up');
-                });
+            this.client.MouseHandler.interaction(vtkEvent).then(
+              (resp) => {
+                this.ready = true;
+                this.doneCallback(vtkEvent.action !== 'up');
+              },
+              (err) => {
+                console.log('event err', err);
+                this.doneCallback(vtkEvent.action !== 'up');
+              }
+            );
           }
         }
       },
@@ -74,7 +73,7 @@ export default class VtkMouseListener {
           altKey: false,
           metaKey: false,
           x: event.relative.x / this.width,
-          y: 1.0 - ((event.relative.y + event.deltaY) / this.height),
+          y: 1.0 - (event.relative.y + event.deltaY) / this.height,
         };
         if (event.isFirst) {
           // Down
@@ -88,14 +87,14 @@ export default class VtkMouseListener {
         }
         this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
         if (this.client) {
-          this.client.MouseHandler.interaction(vtkEvent)
-            .then(
-              (resp) => {
-                this.doneCallback(vtkEvent.action !== 'up');
-              },
-              (err) => {
-                this.doneCallback(vtkEvent.action !== 'up');
-              });
+          this.client.MouseHandler.interaction(vtkEvent).then(
+            (resp) => {
+              this.doneCallback(vtkEvent.action !== 'up');
+            },
+            (err) => {
+              this.doneCallback(vtkEvent.action !== 'up');
+            }
+          );
         }
       },
     };

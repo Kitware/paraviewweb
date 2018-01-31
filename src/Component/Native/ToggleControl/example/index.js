@@ -1,5 +1,5 @@
-import ToggleControlComponent   from '..';
-import BGColorComponent     from '../../BackgroundColor';
+import ToggleControlComponent from '..';
+import BGColorComponent from '../../BackgroundColor';
 import Spacer from '../../Spacer';
 
 // Load CSS

@@ -2,12 +2,16 @@
 
 import Monologue from 'monologue.js';
 
-const
-  IMAGE_READY = 'image.ready';
+const IMAGE_READY = 'image.ready';
 
 // DEPRECATED: replaced by WslinkImageStream
 export default class BinaryImageStream {
-  constructor(endpointURL, stillQuality = 100, interactiveQuality = 50, mimeType = 'image/jpeg') {
+  constructor(
+    endpointURL,
+    stillQuality = 100,
+    interactiveQuality = 50,
+    mimeType = 'image/jpeg'
+  ) {
     this.endpoint = endpointURL;
     this.ws = null;
     this.textMode = true;
@@ -15,7 +19,7 @@ export default class BinaryImageStream {
     this.activeURL = null;
     this.fps = 0;
     this.mimeType = mimeType;
-    this.lastTime = +(new Date());
+    this.lastTime = +new Date();
     this.view_id = -1;
     this.stillQuality = stillQuality;
     this.interactiveQuality = interactiveQuality;
@@ -24,31 +28,39 @@ export default class BinaryImageStream {
   }
 
   enableView(enabled) {
-    this.ws.send(JSON.stringify({
-      view_id: this.view_id,
-      enabled,
-    }));
+    this.ws.send(
+      JSON.stringify({
+        view_id: this.view_id,
+        enabled,
+      })
+    );
   }
 
   startInteractiveQuality() {
-    this.ws.send(JSON.stringify({
-      view_id: this.view_id,
-      quality: this.interactiveQuality,
-    }));
+    this.ws.send(
+      JSON.stringify({
+        view_id: this.view_id,
+        quality: this.interactiveQuality,
+      })
+    );
   }
 
   stopInteractiveQuality() {
-    this.ws.send(JSON.stringify({
-      view_id: this.view_id,
-      quality: this.stillQuality,
-    }));
+    this.ws.send(
+      JSON.stringify({
+        view_id: this.view_id,
+        quality: this.stillQuality,
+      })
+    );
   }
 
   invalidateCache() {
-    this.ws.send(JSON.stringify({
-      view_id: this.view_id,
-      invalidate_cache: true,
-    }));
+    this.ws.send(
+      JSON.stringify({
+        view_id: this.view_id,
+        invalidate_cache: true,
+      })
+    );
   }
 
   updateQuality(stillQuality = 100, interactiveQuality = 50) {
@@ -68,9 +80,11 @@ export default class BinaryImageStream {
         this.height = size[1];
 
         this.ws.onopen = () => {
-          this.ws.send(JSON.stringify({
-            view_id,
-          }));
+          this.ws.send(
+            JSON.stringify({
+              view_id,
+            })
+          );
           resolve();
         };
 
@@ -86,7 +100,7 @@ export default class BinaryImageStream {
               this.activeURL = null;
             }
             this.activeURL = URL.createObjectURL(imgBlob);
-            const time = +(new Date());
+            const time = +new Date();
             this.fps = Math.floor(10000 / (time - this.lastTime)) / 10;
             this.lastTime = time;
 

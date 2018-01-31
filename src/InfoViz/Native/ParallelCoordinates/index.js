@@ -15,7 +15,7 @@ import iconImage from './ParallelCoordsIconSmall.png';
 // ----------------------------------------------------------------------------
 
 export function affine(inMin, val, inMax, outMin, outMax) {
-  return (((val - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
+  return (val - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
 }
 
 export function perfRound(val) {
@@ -25,19 +25,23 @@ export function perfRound(val) {
 }
 
 export function dataToScreen(model, dataY, axis) {
-  return perfRound(!axis.isUpsideDown()
-    ? affine(
-        axis.range[0],
-        dataY,
-        axis.range[1],
-        model.canvasArea.height - model.borderOffsetBottom,
-        model.borderOffsetTop)
-    : affine(
-        axis.range[0],
-        dataY,
-        axis.range[1],
-        model.borderOffsetTop,
-        model.canvasArea.height - model.borderOffsetBottom));
+  return perfRound(
+    !axis.isUpsideDown()
+      ? affine(
+          axis.range[0],
+          dataY,
+          axis.range[1],
+          model.canvasArea.height - model.borderOffsetBottom,
+          model.borderOffsetTop
+        )
+      : affine(
+          axis.range[0],
+          dataY,
+          axis.range[1],
+          model.borderOffsetTop,
+          model.canvasArea.height - model.borderOffsetBottom
+        )
+  );
 }
 
 export function screenToData(model, screenY, axis) {
@@ -47,13 +51,15 @@ export function screenToData(model, screenY, axis) {
         screenY,
         model.borderOffsetTop,
         axis.range[0],
-        axis.range[1])
+        axis.range[1]
+      )
     : affine(
         model.borderOffsetTop,
         screenY,
         model.canvasArea.height - model.borderOffsetBottom,
         axis.range[0],
-        axis.range[1]);
+        axis.range[1]
+      );
 }
 
 export function toColorArray(colorString) {
@@ -82,8 +88,12 @@ function parallelCoordinate(publicAPI, model) {
       height: model.canvas.height,
     };
     model.drawableArea = {
-      width: model.canvasArea.width - (model.borderOffsetLeft + model.borderOffsetRight),
-      height: model.canvasArea.height - (model.borderOffsetTop + model.borderOffsetBottom),
+      width:
+        model.canvasArea.width -
+        (model.borderOffsetLeft + model.borderOffsetRight),
+      height:
+        model.canvasArea.height -
+        (model.borderOffsetTop + model.borderOffsetBottom),
     };
   }
 
@@ -143,14 +153,23 @@ function parallelCoordinate(publicAPI, model) {
         return barHeight;
       })
       .attr('transform', (d, i) => {
-        const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
-        return `translate(${d.screenX - (model.selectionBarWidth / 2)}, ${startPoint})`;
+        const startPoint =
+          d.screenRangeY[0] > d.screenRangeY[1]
+            ? d.screenRangeY[1]
+            : d.screenRangeY[0];
+        return `translate(${d.screenX -
+          model.selectionBarWidth / 2}, ${startPoint})`;
       })
       .on('mousemove', function inner(d, i) {
         const moveCoords = d3.mouse(svg.node());
-        const resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
-        if (Math.abs(d.screenRangeY[0] - moveCoords[1]) <= resizeHandle ||
-            Math.abs(d.screenRangeY[1] - moveCoords[1]) <= resizeHandle) {
+        const resizeHandle = Math.min(
+          resizeTargetSize,
+          Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3)
+        );
+        if (
+          Math.abs(d.screenRangeY[0] - moveCoords[1]) <= resizeHandle ||
+          Math.abs(d.screenRangeY[1] - moveCoords[1]) <= resizeHandle
+        ) {
           d3.select(this).style('cursor', 'ns-resize');
         } else {
           d3.select(this).style('cursor', null);
@@ -163,13 +182,18 @@ function parallelCoordinate(publicAPI, model) {
         d3.event.preventDefault();
         const downCoords = d3.mouse(svg.node());
         // resize within X pixels of the ends, or 1/3 of the bar size, whichever is less.
-        const resizeHandle = Math.min(resizeTargetSize, Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3));
+        const resizeHandle = Math.min(
+          resizeTargetSize,
+          Math.floor(Math.abs(d.screenRangeY[1] - d.screenRangeY[0]) / 3)
+        );
         let resizeIndex = -1;
         let resizeOffset = 0;
         if (Math.abs(d.screenRangeY[0] - downCoords[1]) <= resizeHandle) {
           resizeIndex = 0;
           resizeOffset = d.screenRangeY[0] - downCoords[1];
-        } else if (Math.abs(d.screenRangeY[1] - downCoords[1]) <= resizeHandle) {
+        } else if (
+          Math.abs(d.screenRangeY[1] - downCoords[1]) <= resizeHandle
+        ) {
           resizeIndex = 1;
           resizeOffset = d.screenRangeY[1] - downCoords[1];
         }
@@ -181,17 +205,30 @@ function parallelCoordinate(publicAPI, model) {
             d.screenRangeY[resizeIndex] = moveCoords[1] + resizeOffset;
             deltaYScreen = 0;
           }
-          const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
+          const startPoint =
+            d.screenRangeY[0] > d.screenRangeY[1]
+              ? d.screenRangeY[1]
+              : d.screenRangeY[0];
           let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
           if (barHeight < 0) barHeight = -barHeight;
-          d3.select(this).attr('transform', `translate(${d.screenX - (model.selectionBarWidth / 2)}, ${startPoint + deltaYScreen})`)
-          .attr('height', barHeight);
+          d3
+            .select(this)
+            .attr(
+              'transform',
+              `translate(${d.screenX -
+                model.selectionBarWidth / 2}, ${startPoint + deltaYScreen})`
+            )
+            .attr('height', barHeight);
         });
 
         svg.on('mouseup', (md, mi) => {
           const upCoords = d3.mouse(svg.node());
-          const deltaYScreen = (resizeIndex === -1 ? upCoords[1] - downCoords[1] : 0);
-          const startPoint = d.screenRangeY[0] > d.screenRangeY[1] ? d.screenRangeY[1] : d.screenRangeY[0];
+          const deltaYScreen =
+            resizeIndex === -1 ? upCoords[1] - downCoords[1] : 0;
+          const startPoint =
+            d.screenRangeY[0] > d.screenRangeY[1]
+              ? d.screenRangeY[1]
+              : d.screenRangeY[0];
           let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
           if (barHeight < 0) barHeight = -barHeight;
           const newStart = startPoint + deltaYScreen;
@@ -201,7 +238,12 @@ function parallelCoordinate(publicAPI, model) {
 
           const axis = model.axes.getAxis(d.index);
           // Note: if bar is moved entirely outside the current range, it will be deleted.
-          model.axes.updateSelection(d.index, d.selectionIndex, screenToData(model, newStart, axis), screenToData(model, newEnd, axis));
+          model.axes.updateSelection(
+            d.index,
+            d.selectionIndex,
+            screenToData(model, newStart, axis),
+            screenToData(model, newEnd, axis)
+          );
         });
       });
   }
@@ -217,7 +259,8 @@ function parallelCoordinate(publicAPI, model) {
       .selectAll('g.axis-control-element')
       .data(controlsDataModel);
 
-    const axisControls = axisControlNodes.enter()
+    const axisControls = axisControlNodes
+      .enter()
       .append('g')
       .classed('axis-control-element', true)
       .classed(style.axisControlElements, true)
@@ -225,53 +268,62 @@ function parallelCoordinate(publicAPI, model) {
       // fails in IE11. Replace by explicit DOM manipulation.
       // .html(axisControlSvg);
       .append('g')
-        .classed('axis-controls-group-container', true)
-        .attr('width', 108)
-        .attr('height', 50)
-        .attr('viewBox', '0 0 108 50')
+      .classed('axis-controls-group-container', true)
+      .attr('width', 108)
+      .attr('height', 50)
+      .attr('viewBox', '0 0 108 50')
       .append('g')
-        .classed('axis-controls-group', true);
+      .classed('axis-controls-group', true);
 
     axisControls
       .append('rect')
-        .classed('center-rect', true)
-        .attr('x', 28)
-        .attr('y', 1)
-        .attr('width', 52)
-        .attr('height', 48);
+      .classed('center-rect', true)
+      .attr('x', 28)
+      .attr('y', 1)
+      .attr('width', 52)
+      .attr('height', 48);
     axisControls
       .append('rect')
-        .classed('right-rect', true)
-        .attr('x', 82)
-        .attr('y', 1)
-        .attr('width', 25)
-        .attr('height', 48);
+      .classed('right-rect', true)
+      .attr('x', 82)
+      .attr('y', 1)
+      .attr('width', 25)
+      .attr('height', 48);
     axisControls
       .append('rect')
-        .classed('left-rect', true)
-        .attr('x', 1)
-        .attr('y', 1)
-        .attr('width', 25)
-        .attr('height', 48);
+      .classed('left-rect', true)
+      .attr('x', 1)
+      .attr('y', 1)
+      .attr('width', 25)
+      .attr('height', 48);
     axisControls
       .append('polygon')
-        .classed('top', true)
-        .attr('points', '54 1 78 23 30 23 ');
+      .classed('top', true)
+      .attr('points', '54 1 78 23 30 23 ');
     axisControls
       .append('polygon')
-        .classed('right', true)
-        .attr('points', '94 14 118 36 70 36 ')
-        .attr('transform', 'translate(94.0, 25.0) rotate(-270.0) translate(-94.0, -25.0) ');
+      .classed('right', true)
+      .attr('points', '94 14 118 36 70 36 ')
+      .attr(
+        'transform',
+        'translate(94.0, 25.0) rotate(-270.0) translate(-94.0, -25.0) '
+      );
     axisControls
       .append('polygon')
-        .classed('left', true)
-        .attr('points', '14 14 38 36 -10 36 ')
-        .attr('transform', 'translate(14.0, 25.0) scale(-1, 1) rotate(-270.0) translate(-14.0, -25.0) ');
+      .classed('left', true)
+      .attr('points', '14 14 38 36 -10 36 ')
+      .attr(
+        'transform',
+        'translate(14.0, 25.0) scale(-1, 1) rotate(-270.0) translate(-14.0, -25.0) '
+      );
     axisControls
       .append('polygon')
-        .classed('bottom', true)
-        .attr('points', '54 27 78 49 30 49 ')
-        .attr('transform', 'translate(54.0, 38.0) scale(1, -1) translate(-54.0, -38.0) ');
+      .classed('bottom', true)
+      .attr('points', '54 27 78 49 30 49 ')
+      .attr(
+        'transform',
+        'translate(54.0, 38.0) scale(1, -1) translate(-54.0, -38.0) '
+      );
 
     axisControlNodes.exit().remove();
 
@@ -281,8 +333,8 @@ function parallelCoordinate(publicAPI, model) {
       .classed(style.rightsideUp, (d, i) => d.orient)
       .attr('transform', function inner(d, i) {
         const elt = d3.select(this).select('g.axis-controls-group-container');
-        const tx = d.centerX - ((elt.attr('width') * scale) / 2);
-        const ty = d.centerY - ((elt.attr('height') * scale) / 2);
+        const tx = d.centerX - elt.attr('width') * scale / 2;
+        const ty = d.centerY - elt.attr('height') * scale / 2;
         return `translate(${tx}, ${ty}) scale(${scale})`;
       })
       .on('click', function inner(d, i) {
@@ -323,7 +375,7 @@ function parallelCoordinate(publicAPI, model) {
 
       const glyphGroup = svg
         .selectAll('g.glyphs')
-        .data(labelDataModel, d => (d ? d.name : 'none'));
+        .data(labelDataModel, (d) => (d ? d.name : 'none'));
 
       glyphGroup.exit().remove();
 
@@ -337,10 +389,13 @@ function parallelCoordinate(publicAPI, model) {
       svgGroup.append('use');
 
       // add a tooltip
-      glyphEnter.append('title').text(d => (d.name));
+      glyphEnter.append('title').text((d) => d.name);
 
       glyphGroup
-        .attr('transform', (d, i) => `translate(${d.centerX - (glyphSize * 0.5)}, ${glyphPadding})`)
+        .attr(
+          'transform',
+          (d, i) => `translate(${d.centerX - glyphSize * 0.5}, ${glyphPadding})`
+        )
         .on('click', (d, i) => {
           if (d.annotated) {
             model.axes.clearSelection(i);
@@ -348,7 +403,8 @@ function parallelCoordinate(publicAPI, model) {
         });
 
       glyphEnter.each(function applyLegendStyle(d, i) {
-        d3.select(this)
+        d3
+          .select(this)
           .select('svg')
           .attr('fill', d.legend.color)
           .attr('stroke', 'black')
@@ -380,7 +436,12 @@ function parallelCoordinate(publicAPI, model) {
         .selectAll('rect.axis-annotation-indicators')
         .attr('width', glyphSize + 3)
         .attr('height', glyphSize + 3)
-        .attr('transform', (d, i) => `translate(${d.centerX - ((glyphSize * 0.5) + 1)}, ${glyphPadding - 1.5})`)
+        .attr(
+          'transform',
+          (d, i) =>
+            `translate(${d.centerX - (glyphSize * 0.5 + 1)}, ${glyphPadding -
+              1.5})`
+        )
         .classed(style.axisAnnotated, (d, i) => d.annotated);
     } else {
       // Now manage the svg dom for the axis labels
@@ -394,9 +455,7 @@ function parallelCoordinate(publicAPI, model) {
         .classed('axis-labels', true)
         .classed(style.axisLabels, true);
 
-      axisLabelNodes
-        .exit()
-        .remove();
+      axisLabelNodes.exit().remove();
 
       svg
         .selectAll('text.axis-labels')
@@ -414,17 +473,21 @@ function parallelCoordinate(publicAPI, model) {
     // Manage the svg dom for the axis ticks
     const svg = d3.select(model.container).select('svg');
     const ticksGroup = svg.select('g.axis-ticks');
-    const axisTickNodes = ticksGroup.selectAll('text.axis-ticks')
+    const axisTickNodes = ticksGroup
+      .selectAll('text.axis-ticks')
       .data(tickDataModel);
 
-    axisTickNodes.enter().append('text')
+    axisTickNodes
+      .enter()
+      .append('text')
       .classed('axis-ticks', true)
       .classed(style.axisTicks, true);
 
     axisTickNodes.exit().remove();
 
     const formatter = d3.format('.3s');
-    ticksGroup.selectAll('text.axis-ticks')
+    ticksGroup
+      .selectAll('text.axis-ticks')
       .text((d, i) => formatter(d.value))
       .attr('text-anchor', (d, i) => d.align)
       .attr('transform', (d, i) => `translate(${d.xpos}, ${d.ypos})`);
@@ -440,7 +503,12 @@ function parallelCoordinate(publicAPI, model) {
         pendingSelection.attr('height', rectHeight);
       } else {
         pendingSelection
-          .attr('transform', `translate(${pendingSelection.attr('data-initial-x')}, ${coords[1]})`)
+          .attr(
+            'transform',
+            `translate(${pendingSelection.attr('data-initial-x')}, ${
+              coords[1]
+            })`
+          )
           .attr('height', -rectHeight);
       }
     }
@@ -456,7 +524,8 @@ function parallelCoordinate(publicAPI, model) {
     const axisLineGroup = svg.select('g.axis-lines');
 
     // Now manage the svg dom
-    const axisLineNodes = axisLineGroup.selectAll('rect.axis-lines')
+    const axisLineNodes = axisLineGroup
+      .selectAll('rect.axis-lines')
       .data(axesCenters);
 
     axisLineNodes
@@ -470,14 +539,23 @@ function parallelCoordinate(publicAPI, model) {
     axisLineGroup
       .selectAll('rect.axis-lines')
       .classed(style.controlItem, true)
-      .attr('height', (model.canvasArea.height - model.borderOffsetBottom) - model.borderOffsetTop)
+      .attr(
+        'height',
+        model.canvasArea.height -
+          model.borderOffsetBottom -
+          model.borderOffsetTop
+      )
       .attr('width', model.axisWidth)
-      .attr('transform', (d, i) => `translate(${d - (model.axisWidth / 2)}, ${model.borderOffsetTop})`)
+      .attr(
+        'transform',
+        (d, i) =>
+          `translate(${d - model.axisWidth / 2}, ${model.borderOffsetTop})`
+      )
       .on('mousedown', (d, i) => {
         d3.event.preventDefault();
         const coords = d3.mouse(model.container);
         const initialY = coords[1];
-        const initialX = d - (model.selectionBarWidth / 2);
+        const initialX = d - model.selectionBarWidth / 2;
         const prect = svg.append('rect');
         prect
           .classed('axis-selection-pending', true)
@@ -497,7 +575,11 @@ function parallelCoordinate(publicAPI, model) {
           svg.on('mouseup', null);
 
           const axis = model.axes.getAxis(i);
-          model.axes.addSelection(i, screenToData(model, initialY, axis), screenToData(model, finalY, axis));
+          model.axes.addSelection(
+            i,
+            screenToData(model, initialY, axis),
+            screenToData(model, finalY, axis)
+          );
         });
       });
   }
@@ -522,12 +604,22 @@ function parallelCoordinate(publicAPI, model) {
     let yRightMax = 0;
 
     // Ensure proper range for X
-    const deltaOne = (axisOne.range[1] - axisOne.range[0]) / (histogram.numberOfBins || model.numberOfBins);
-    const deltaTwo = (axisTwo.range[1] - axisTwo.range[0]) / (histogram.numberOfBins || model.numberOfBins);
+    const deltaOne =
+      (axisOne.range[1] - axisOne.range[0]) /
+      (histogram.numberOfBins || model.numberOfBins);
+    const deltaTwo =
+      (axisTwo.range[1] - axisTwo.range[0]) /
+      (histogram.numberOfBins || model.numberOfBins);
 
     for (let i = 0; i < histogram.bins.length; ++i) {
       bin = histogram.bins[i];
-      opacity = affine(0, bin.count, model.maxBinCountForOpacityCalculation, 0.0, 1.0);
+      opacity = affine(
+        0,
+        bin.count,
+        model.maxBinCountForOpacityCalculation,
+        0.0,
+        1.0
+      );
       yleft1 = dataToScreen(model, bin.x, axisOne);
       yleft2 = dataToScreen(model, bin.x + deltaOne, axisOne);
       yright1 = dataToScreen(model, bin.y, axisTwo);
@@ -559,22 +651,47 @@ function parallelCoordinate(publicAPI, model) {
       gCtx.lineTo(xright, yRightMax);
       gCtx.lineTo(xright, yRightMin);
       gCtx.closePath();
-      gCtx.fillStyle = `rgba(${colors[0]},${colors[1]},${colors[2]},${opacity})`;
+      gCtx.fillStyle = `rgba(${colors[0]},${colors[1]},${
+        colors[2]
+      },${opacity})`;
       gCtx.fill();
     }
   }
 
   publicAPI.render = () => {
-    if (!model.allBgHistogram2dData || !model.axes.canRender() || !model.container || model.containerHidden === true) {
-      d3.select(model.container).select('svg.parallel-coords-overlay').classed(style.hidden, true);
-      d3.select(model.container).select('canvas').classed(style.hidden, true);
-      d3.select(model.container).select('div.parallel-coords-placeholder').classed(style.hidden, false);
+    if (
+      !model.allBgHistogram2dData ||
+      !model.axes.canRender() ||
+      !model.container ||
+      model.containerHidden === true
+    ) {
+      d3
+        .select(model.container)
+        .select('svg.parallel-coords-overlay')
+        .classed(style.hidden, true);
+      d3
+        .select(model.container)
+        .select('canvas')
+        .classed(style.hidden, true);
+      d3
+        .select(model.container)
+        .select('div.parallel-coords-placeholder')
+        .classed(style.hidden, false);
       return;
     }
 
-    d3.select(model.container).select('svg.parallel-coords-overlay').classed(style.hidden, false);
-    d3.select(model.container).select('canvas').classed(style.hidden, false);
-    d3.select(model.container).select('div.parallel-coords-placeholder').classed(style.hidden, true);
+    d3
+      .select(model.container)
+      .select('svg.parallel-coords-overlay')
+      .classed(style.hidden, false);
+    d3
+      .select(model.container)
+      .select('canvas')
+      .classed(style.hidden, false);
+    d3
+      .select(model.container)
+      .select('div.parallel-coords-placeholder')
+      .classed(style.hidden, true);
 
     model.ctx.globalAlpha = 1.0;
 
@@ -595,7 +712,12 @@ function parallelCoordinate(publicAPI, model) {
       .classed('parallel-coords-overlay', true)
       .classed(style.parallelCoordsOverlay, true);
 
-    if (d3.select(model.container).selectAll('g').empty()) {
+    if (
+      d3
+        .select(model.container)
+        .selectAll('g')
+        .empty()
+    ) {
       // Have not added groups yet, do so now.  Order matters.
       svg.append('g').classed('axis-lines', true);
       svg.append('g').classed('selection-bars', true);
@@ -607,11 +729,22 @@ function parallelCoordinate(publicAPI, model) {
     }
 
     model.ctx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
-    model.fgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
-    model.bgCtx.clearRect(0, 0, model.canvasArea.width, model.canvasArea.height);
+    model.fgCtx.clearRect(
+      0,
+      0,
+      model.canvasArea.width,
+      model.canvasArea.height
+    );
+    model.bgCtx.clearRect(
+      0,
+      0,
+      model.canvasArea.width,
+      model.canvasArea.height
+    );
 
     // First lay down the "context" polygons
-    model.maxBinCountForOpacityCalculation = model.allBgHistogram2dData.maxCount;
+    model.maxBinCountForOpacityCalculation =
+      model.allBgHistogram2dData.maxCount;
 
     const nbPolyDraw = model.axes.getNumberOf2DHistogram();
     const axesCenters = model.axes.extractAxesCenters(model);
@@ -619,19 +752,31 @@ function parallelCoordinate(publicAPI, model) {
       for (let j = 0; j < nbPolyDraw; ++j) {
         const axisOne = model.axes.getAxis(j);
         const axisTwo = model.axes.getAxis(j + 1);
-        const histo2D = model.allBgHistogram2dData[axisOne.name] ? model.allBgHistogram2dData[axisOne.name][axisTwo.name] : null;
+        const histo2D = model.allBgHistogram2dData[axisOne.name]
+          ? model.allBgHistogram2dData[axisOne.name][axisTwo.name]
+          : null;
         drawPolygons(
           axesCenters,
           model.bgCtx,
-          j, j + 1,
+          j,
+          j + 1,
           histo2D,
-          model.polygonColors);
+          model.polygonColors
+        );
       }
 
       model.ctx.globalAlpha = model.polygonOpacityAdjustment;
-      model.ctx.drawImage(model.bgCanvas,
-        0, 0, model.canvasArea.width, model.canvasArea.height,
-        0, 0, model.canvasArea.width, model.canvasArea.height);
+      model.ctx.drawImage(
+        model.bgCanvas,
+        0,
+        0,
+        model.canvasArea.width,
+        model.canvasArea.height,
+        0,
+        0,
+        model.canvasArea.width,
+        model.canvasArea.height
+      );
     }
 
     // If there is a selection, draw that (the "focus") on top of the polygons
@@ -648,7 +793,8 @@ function parallelCoordinate(publicAPI, model) {
           polygonsQueue.push([
             axesCenters,
             model.fgCtx,
-            k, k + 1,
+            k,
+            k + 1,
             h,
             scoreToColor[h.role.score] || model.selectionColors,
           ]);
@@ -656,23 +802,34 @@ function parallelCoordinate(publicAPI, model) {
       };
 
       for (let k = 0; k < nbPolyDraw && !missingData; ++k) {
-        const histo = model.selectionData && model.selectionData[model.axes.getAxis(k).name]
-          ? model.selectionData[model.axes.getAxis(k).name][model.axes.getAxis(k + 1).name]
-          : null;
+        const histo =
+          model.selectionData && model.selectionData[model.axes.getAxis(k).name]
+            ? model.selectionData[model.axes.getAxis(k).name][
+                model.axes.getAxis(k + 1).name
+              ]
+            : null;
         missingData = !histo;
 
         if (histo) {
-          histo.forEach(h => processHistogram(h, k));
+          histo.forEach((h) => processHistogram(h, k));
         }
       }
 
       if (!missingData) {
         model.maxBinCountForOpacityCalculation = maxCount;
-        polygonsQueue.forEach(req => drawPolygons(...req));
+        polygonsQueue.forEach((req) => drawPolygons(...req));
         model.ctx.globalAlpha = model.selectionOpacityAdjustment;
-        model.ctx.drawImage(model.fgCanvas,
-          0, 0, model.canvasArea.width, model.canvasArea.height,
-          0, 0, model.canvasArea.width, model.canvasArea.height);
+        model.ctx.drawImage(
+          model.fgCanvas,
+          0,
+          0,
+          model.canvasArea.width,
+          model.canvasArea.height,
+          0,
+          0,
+          model.canvasArea.width,
+          model.canvasArea.height
+        );
       }
     }
 
@@ -710,7 +867,11 @@ function parallelCoordinate(publicAPI, model) {
   //   drawAxisControls(model.axes.extractAxesControl(model));
   // }
 
-  publicAPI.propagateAnnotationInsteadOfSelection = (useAnnotation = true, defaultScore = 0, defaultWeight = 0) => {
+  publicAPI.propagateAnnotationInsteadOfSelection = (
+    useAnnotation = true,
+    defaultScore = 0,
+    defaultWeight = 0
+  ) => {
     model.useAnnotation = useAnnotation;
     model.defaultScore = defaultScore;
     model.defaultWeight = defaultWeight;
@@ -718,8 +879,15 @@ function parallelCoordinate(publicAPI, model) {
 
   publicAPI.setVisibleScoresForSelection = (scoreList) => {
     model.visibleScores = scoreList;
-    if (model.selectionDataSubscription && model.visibleScores && model.propagatePartitionScores) {
-      model.selectionDataSubscription.update(model.axes.getAxesPairs(), model.visibleScores);
+    if (
+      model.selectionDataSubscription &&
+      model.visibleScores &&
+      model.propagatePartitionScores
+    ) {
+      model.selectionDataSubscription.update(
+        model.axes.getAxesPairs(),
+        model.visibleScores
+      );
     }
   };
 
@@ -735,7 +903,9 @@ function parallelCoordinate(publicAPI, model) {
 
   if (model.provider && model.provider.isA('ScoresProvider')) {
     publicAPI.setScores(model.provider.getScores());
-    model.subscriptions.push(model.provider.onScoresChange(publicAPI.setScores));
+    model.subscriptions.push(
+      model.provider.onScoresChange(publicAPI.setScores)
+    );
   }
 
   publicAPI.resize = () => {
@@ -745,7 +915,8 @@ function parallelCoordinate(publicAPI, model) {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
     model.canvas.setAttribute('width', clientRect.width);
     model.canvas.setAttribute('height', clientRect.height);
-    d3.select(model.container)
+    d3
+      .select(model.container)
       .select('svg')
       .selectAll('rect.hover-bin-indicator')
       .remove();
@@ -769,7 +940,8 @@ function parallelCoordinate(publicAPI, model) {
 
     if (model.container) {
       model.container.innerHTML = htmlContent;
-      d3.select(model.container)
+      d3
+        .select(model.container)
         .select('div.parallel-coords-placeholder')
         .select('img')
         .attr('src', iconImage);
@@ -780,11 +952,23 @@ function parallelCoordinate(publicAPI, model) {
   };
 
   function binNumberToScreenOffset(binNumber, rightSideUp) {
-    let screenY = affine(0, binNumber, model.numberOfBins, model.canvasArea.height - model.borderOffsetBottom, model.borderOffsetTop);
+    let screenY = affine(
+      0,
+      binNumber,
+      model.numberOfBins,
+      model.canvasArea.height - model.borderOffsetBottom,
+      model.borderOffsetTop
+    );
     screenY -= model.hoverIndicatorHeight;
 
     if (rightSideUp === false) {
-      screenY = affine(0, binNumber, model.numberOfBins, model.borderOffsetTop, model.canvasArea.height - model.borderOffsetBottom);
+      screenY = affine(
+        0,
+        binNumber,
+        model.numberOfBins,
+        model.borderOffsetTop,
+        model.canvasArea.height - model.borderOffsetBottom
+      );
     }
 
     return perfRound(screenY);
@@ -827,7 +1011,8 @@ function parallelCoordinate(publicAPI, model) {
     hoverBinNodes.exit().remove();
 
     const axesCenters = model.axes.extractAxesCenters(model);
-    d3.select(model.container)
+    d3
+      .select(model.container)
       .select('svg')
       .select('g.hover-bins')
       .selectAll('rect.hover-bin-indicator')
@@ -835,8 +1020,12 @@ function parallelCoordinate(publicAPI, model) {
       .attr('width', model.hoverIndicatorWidth)
       .attr('transform', (d, i) => {
         const axis = model.axes.getAxisByName(d.name);
-        const screenOffset = binNumberToScreenOffset(d.bin, !axis.isUpsideDown());
-        return `translate(${axesCenters[axis.idx] - (model.hoverIndicatorWidth / 2)}, ${screenOffset})`;
+        const screenOffset = binNumberToScreenOffset(
+          d.bin,
+          !axis.isUpsideDown()
+        );
+        return `translate(${axesCenters[axis.idx] -
+          model.hoverIndicatorWidth / 2}, ${screenOffset})`;
       });
   }
 
@@ -846,28 +1035,37 @@ function parallelCoordinate(publicAPI, model) {
   // Handle active field change, update axes
   if (model.provider.isA('FieldProvider')) {
     // Monitor any change
-    model.subscriptions.push(model.provider.onFieldChange(() => {
-      model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
-        ({ name, range: model.provider.getField(name).range })
-      ));
+    model.subscriptions.push(
+      model.provider.onFieldChange(() => {
+        model.axes.updateAxes(
+          model.provider.getActiveFieldNames().map((name) => ({
+            name,
+            range: model.provider.getField(name).range,
+          }))
+        );
 
-      if (model.provider.isA('Histogram2DProvider')) {
-        model.histogram2DDataSubscription.update(model.axes.getAxesPairs());
-      }
+        if (model.provider.isA('Histogram2DProvider')) {
+          model.histogram2DDataSubscription.update(model.axes.getAxesPairs());
+        }
 
-      if (model.provider.isA('SelectionProvider')) {
-        model.selectionDataSubscription.update(model.axes.getAxesPairs());
-      }
-    }));
+        if (model.provider.isA('SelectionProvider')) {
+          model.selectionDataSubscription.update(model.axes.getAxesPairs());
+        }
+      })
+    );
     // Use initial state
-    model.axes.updateAxes(model.provider.getActiveFieldNames().map(name =>
-      ({ name, range: model.provider.getField(name).range })
-    ));
+    model.axes.updateAxes(
+      model.provider
+        .getActiveFieldNames()
+        .map((name) => ({ name, range: model.provider.getField(name).range }))
+    );
   }
 
   // Handle bin hovering
   if (model.provider.onHoverBinChange) {
-    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverBinUpdate));
+    model.subscriptions.push(
+      model.provider.onHoverBinChange(handleHoverBinUpdate)
+    );
   }
 
   if (model.provider.isA('Histogram2DProvider')) {
@@ -899,9 +1097,11 @@ function parallelCoordinate(publicAPI, model) {
       }
     );
 
-    model.subscriptions.push(model.axes.onAxisListChange((axisPairs) => {
-      model.histogram2DDataSubscription.update(axisPairs);
-    }));
+    model.subscriptions.push(
+      model.axes.onAxisListChange((axisPairs) => {
+        model.histogram2DDataSubscription.update(axisPairs);
+      })
+    );
 
     model.subscriptions.push(model.histogram2DDataSubscription);
   }
@@ -912,9 +1112,17 @@ function parallelCoordinate(publicAPI, model) {
       (data) => {
         model.selectionData = data;
         if (model.provider.getAnnotation()) {
-          model.axes.resetSelections(model.provider.getAnnotation().selection, false, model.provider.getAnnotation().score, scoreToColor);
+          model.axes.resetSelections(
+            model.provider.getAnnotation().selection,
+            false,
+            model.provider.getAnnotation().score,
+            scoreToColor
+          );
           if (data['##annotationGeneration##'] !== undefined) {
-            if (model.provider.getAnnotation().generation === data['##annotationGeneration##']) {
+            if (
+              model.provider.getAnnotation().generation ===
+              data['##annotationGeneration##']
+            ) {
               // render from selection data change (same generation)
               publicAPI.render();
             }
@@ -931,81 +1139,120 @@ function parallelCoordinate(publicAPI, model) {
       {
         partitionScores: model.visibleScores,
         numberOfBins: model.numberOfBins,
-      });
+      }
+    );
 
     model.subscriptions.push(model.selectionDataSubscription);
 
-    model.subscriptions.push(model.provider.onSelectionChange((sel) => {
-      if (!model.useAnnotation) {
-        if (sel && sel.type === 'empty') {
+    model.subscriptions.push(
+      model.provider.onSelectionChange((sel) => {
+        if (!model.useAnnotation) {
+          if (sel && sel.type === 'empty') {
+            model.selectionData = null;
+          }
+          model.axes.resetSelections(sel, false);
+          publicAPI.render();
+        }
+      })
+    );
+    model.subscriptions.push(
+      model.provider.onAnnotationChange((annotation) => {
+        if (annotation && annotation.selection.type === 'empty') {
           model.selectionData = null;
         }
-        model.axes.resetSelections(sel, false);
-        publicAPI.render();
-      }
-    }));
-    model.subscriptions.push(model.provider.onAnnotationChange((annotation) => {
-      if (annotation && annotation.selection.type === 'empty') {
-        model.selectionData = null;
-      }
 
-      if (lastAnnotationPushed
-        && annotation.selection.type === 'range'
-        && annotation.id === lastAnnotationPushed.id
-        && annotation.generation === lastAnnotationPushed.generation + 1) {
-        // Assume that it is still ours but edited by someone else
-        lastAnnotationPushed = annotation;
+        if (
+          lastAnnotationPushed &&
+          annotation.selection.type === 'range' &&
+          annotation.id === lastAnnotationPushed.id &&
+          annotation.generation === lastAnnotationPushed.generation + 1
+        ) {
+          // Assume that it is still ours but edited by someone else
+          lastAnnotationPushed = annotation;
 
-        // Capture the score and update our default
-        model.defaultScore = lastAnnotationPushed.score[0];
-      }
-      model.axes.resetSelections(annotation.selection, false, annotation.score, scoreToColor);
-    }));
-    model.subscriptions.push(model.axes.onSelectionChange(() => {
-      if (model.useAnnotation) {
-        lastAnnotationPushed = model.provider.getAnnotation();
-
-        // If parttion annotation special handle
-        if (lastAnnotationPushed && lastAnnotationPushed.selection.type === 'partition') {
-          const axisIdxToClear = model.axes.getAxesNames().indexOf(lastAnnotationPushed.selection.partition.variable);
-          if (axisIdxToClear !== -1) {
-            model.axes.getAxis(axisIdxToClear).clearSelection();
-            model.axes.selection = null;
-          }
+          // Capture the score and update our default
+          model.defaultScore = lastAnnotationPushed.score[0];
         }
+        model.axes.resetSelections(
+          annotation.selection,
+          false,
+          annotation.score,
+          scoreToColor
+        );
+      })
+    );
+    model.subscriptions.push(
+      model.axes.onSelectionChange(() => {
+        if (model.useAnnotation) {
+          lastAnnotationPushed = model.provider.getAnnotation();
 
-        const selection = model.axes.getSelection();
-        if (selection.type === 'empty') {
-          lastAnnotationPushed = AnnotationBuilder.EMPTY_ANNOTATION;
-        } else if (!lastAnnotationPushed || model.provider.shouldCreateNewAnnotation() || lastAnnotationPushed.selection.type !== 'range') {
-          lastAnnotationPushed = AnnotationBuilder.annotation(selection, [model.defaultScore], model.defaultWeight);
-          if (lastAnnotationPushed.name === '') {
-            // set default range annotation name
-            AnnotationBuilder.setDefaultName(lastAnnotationPushed);
-            if (model.provider.isA('AnnotationStoreProvider')) {
-              lastAnnotationPushed.name = model.provider.getNextStoredAnnotationName(lastAnnotationPushed.name);
+          // If parttion annotation special handle
+          if (
+            lastAnnotationPushed &&
+            lastAnnotationPushed.selection.type === 'partition'
+          ) {
+            const axisIdxToClear = model.axes
+              .getAxesNames()
+              .indexOf(lastAnnotationPushed.selection.partition.variable);
+            if (axisIdxToClear !== -1) {
+              model.axes.getAxis(axisIdxToClear).clearSelection();
+              model.axes.selection = null;
             }
           }
+
+          const selection = model.axes.getSelection();
+          if (selection.type === 'empty') {
+            lastAnnotationPushed = AnnotationBuilder.EMPTY_ANNOTATION;
+          } else if (
+            !lastAnnotationPushed ||
+            model.provider.shouldCreateNewAnnotation() ||
+            lastAnnotationPushed.selection.type !== 'range'
+          ) {
+            lastAnnotationPushed = AnnotationBuilder.annotation(
+              selection,
+              [model.defaultScore],
+              model.defaultWeight
+            );
+            if (lastAnnotationPushed.name === '') {
+              // set default range annotation name
+              AnnotationBuilder.setDefaultName(lastAnnotationPushed);
+              if (model.provider.isA('AnnotationStoreProvider')) {
+                lastAnnotationPushed.name = model.provider.getNextStoredAnnotationName(
+                  lastAnnotationPushed.name
+                );
+              }
+            }
+          } else {
+            lastAnnotationPushed = AnnotationBuilder.update(
+              lastAnnotationPushed,
+              {
+                selection,
+                score: [model.defaultScore],
+                weight: model.defaultWeight,
+              }
+            );
+          }
+          AnnotationBuilder.updateReadOnlyFlag(
+            lastAnnotationPushed,
+            model.readOnlyFields
+          );
+          model.provider.setAnnotation(lastAnnotationPushed);
         } else {
-          lastAnnotationPushed = AnnotationBuilder.update(lastAnnotationPushed, {
-            selection,
-            score: [model.defaultScore],
-            weight: model.defaultWeight,
-          });
+          model.provider.setSelection(model.axes.getSelection());
         }
-        AnnotationBuilder.updateReadOnlyFlag(lastAnnotationPushed, model.readOnlyFields);
-        model.provider.setAnnotation(lastAnnotationPushed);
-      } else {
-        model.provider.setSelection(model.axes.getSelection());
-      }
-    }));
-    model.subscriptions.push(model.axes.onAxisListChange((axisPairs) => {
-      model.selectionDataSubscription.update(axisPairs);
-    }));
+      })
+    );
+    model.subscriptions.push(
+      model.axes.onAxisListChange((axisPairs) => {
+        model.selectionDataSubscription.update(axisPairs);
+      })
+    );
   } else {
-    model.subscriptions.push(model.axes.onSelectionChange(() => {
-      publicAPI.render();
-    }));
+    model.subscriptions.push(
+      model.axes.onSelectionChange(() => {
+        publicAPI.render();
+      })
+    );
   }
 
   publicAPI.setContainer(model.container);
@@ -1014,10 +1261,14 @@ function parallelCoordinate(publicAPI, model) {
   publicAPI.setNumberOfBins = (numberOfBins) => {
     model.numberOfBins = numberOfBins;
     if (model.selectionDataSubscription) {
-      model.selectionDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins });
+      model.selectionDataSubscription.update(model.axes.getAxesPairs(), {
+        numberOfBins,
+      });
     }
     if (model.histogram2DDataSubscription) {
-      model.histogram2DDataSubscription.update(model.axes.getAxesPairs(), { numberOfBins });
+      model.histogram2DDataSubscription.update(model.axes.getAxesPairs(), {
+        numberOfBins,
+      });
     }
   };
 }
@@ -1072,8 +1323,18 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'showOnlySelection', 'visibleScores', 'propagatePartitionScores', 'numberOfBins']);
-  CompositeClosureHelper.set(publicAPI, model, ['showOnlySelection', 'propagatePartitionScores']);
+  CompositeClosureHelper.get(publicAPI, model, [
+    'provider',
+    'container',
+    'showOnlySelection',
+    'visibleScores',
+    'propagatePartitionScores',
+    'numberOfBins',
+  ]);
+  CompositeClosureHelper.set(publicAPI, model, [
+    'showOnlySelection',
+    'propagatePartitionScores',
+  ]);
   CompositeClosureHelper.dynamicArray(publicAPI, model, 'readOnlyFields');
 
   parallelCoordinate(publicAPI, model);

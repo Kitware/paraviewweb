@@ -24,7 +24,8 @@ export default function DepthMatchingRender(props) {
             </tr>
           </tbody>
         </table>
-      </DepthMatchingRender>);
+      </DepthMatchingRender>
+    );
   }
 
   return props.children;

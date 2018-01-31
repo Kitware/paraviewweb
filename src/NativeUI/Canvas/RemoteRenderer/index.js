@@ -1,15 +1,14 @@
 /* global document Image */
 /* eslint-disable no-underscore-dangle */
 
-import Monologue            from 'monologue.js';
-import MouseHandler         from '../../../Interaction/Core/MouseHandler';
-import VtkWebMouseListener  from '../../../Interaction/Core/VtkWebMouseListener';
-import SizeHelper           from '../../../Common/Misc/SizeHelper';
+import Monologue from 'monologue.js';
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
+import VtkWebMouseListener from '../../../Interaction/Core/VtkWebMouseListener';
+import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 const IMAGE_READY_TOPIC = 'image-ready';
 
 export default class RemoteRenderer {
-
   constructor(pvwClient, container = null, id = -1, statRenderer = null) {
     this.client = pvwClient;
     this.setQuality();
@@ -27,7 +26,10 @@ export default class RemoteRenderer {
     this.staleRenderCount = 0;
 
     this.statContainer = document.createElement('div');
-    this.statContainer.setAttribute('style', 'position: absolute; top: 0; right: 0; bottom: 0; left: 0;');
+    this.statContainer.setAttribute(
+      'style',
+      'position: absolute; top: 0; right: 0; bottom: 0; left: 0;'
+    );
     this.statRenderer = statRenderer;
     this.showStats = false;
 
@@ -116,14 +118,18 @@ export default class RemoteRenderer {
   pushStats(serverResponse) {
     const localTime = +new Date();
     this.stats.workTime.push(serverResponse.workTime);
-    this.stats.roundTrip.push((localTime - serverResponse.localTime) - serverResponse.workTime);
+    this.stats.roundTrip.push(
+      localTime - serverResponse.localTime - serverResponse.workTime
+    );
     this.stats.deltaT.push(localTime - serverResponse.localTime);
 
-    [this.stats.workTime, this.stats.roundTrip, this.stats.deltaT].forEach((list) => {
-      while (list.length > 100) {
-        list.shift();
+    [this.stats.workTime, this.stats.roundTrip, this.stats.deltaT].forEach(
+      (list) => {
+        while (list.length > 100) {
+          list.shift();
+        }
       }
-    });
+    );
   }
 
   render(force = false) {
@@ -161,42 +167,42 @@ export default class RemoteRenderer {
       this.mouseListener.updateSize(this.options.size[0], this.options.size[1]);
 
       // Trigger remote call
-      this.client.ViewPortImageDelivery.stillRender(this.options)
-        .then(
-          (resp) => {
-            this.renderPending = false;
+      this.client.ViewPortImageDelivery.stillRender(this.options).then(
+        (resp) => {
+          this.renderPending = false;
 
-            // stats
-            this.pushStats(resp);
+          // stats
+          this.pushStats(resp);
 
-            // update local options
-            this.options.mtime = resp.mtime;
-            this.view = resp.global_id;
+          // update local options
+          this.options.mtime = resp.mtime;
+          this.view = resp.global_id;
 
-            // process image
-            if (resp.image) {
-              this.imageDecoder.src = `data:image/${resp.format},${resp.image}`;
-            }
+          // process image
+          if (resp.image) {
+            this.imageDecoder.src = `data:image/${resp.format},${resp.image}`;
+          }
 
-            // final image
-            if (resp.stale) {
-              // No force render when we are stale otherwise
-              // we will get in an infinite rendering loop
-              this.stats.staleRenderCount += 1;
-              this.renderOnIdle(false);
-            } else {
-              this.emit(IMAGE_READY_TOPIC, this);
-            }
+          // final image
+          if (resp.stale) {
+            // No force render when we are stale otherwise
+            // we will get in an infinite rendering loop
+            this.stats.staleRenderCount += 1;
+            this.renderOnIdle(false);
+          } else {
+            this.emit(IMAGE_READY_TOPIC, this);
+          }
 
-            if (this.statRenderer) {
-              this.statRenderer.updateData(this.stats, this.showStats);
-              this.statRenderer.render();
-            }
-          },
-          (err) => {
-            this.renderPending = false;
-            this.lastError = err;
-          });
+          if (this.statRenderer) {
+            this.statRenderer.updateData(this.stats, this.showStats);
+            this.statRenderer.render();
+          }
+        },
+        (err) => {
+          this.renderPending = false;
+          this.lastError = err;
+        }
+      );
       return true;
     }
     return false;

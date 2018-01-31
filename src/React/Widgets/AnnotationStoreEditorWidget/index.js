@@ -11,9 +11,7 @@ function button(label, action, iconClass) {
   return (
     <div key={label} className={style.button} onClick={action}>
       {label}
-      {iconClass &&
-        <i className={iconClass} />
-      }
+      {iconClass && <i className={iconClass} />}
     </div>
   );
 }
@@ -23,36 +21,48 @@ export default function render(props) {
     return null;
   }
 
-  const listAnnotation = Object.keys(props.annotations).map((id, index) =>
-    ({
-      name: props.annotations[id].name,
-      action: `${index}`,
-      data: `${id}`,
-      active: props.annotation ? (props.annotation.id === id) : false,
-    }));
+  const listAnnotation = Object.keys(props.annotations).map((id, index) => ({
+    name: props.annotations[id].name,
+    action: `${index}`,
+    data: `${id}`,
+    active: props.annotation ? props.annotation.id === id : false,
+  }));
 
   const onActivateAnnotation = (name, action, data) => {
     props.onChange('select', data, props.annotations[data]);
   };
 
-  const storeAction = action => (() => {
+  const storeAction = (action) => () => {
     props.onChange(action, props.annotation.id, props.annotation);
-  });
+  };
 
   const buttons = [];
 
   if (props.annotation && props.annotations[props.annotation.id]) {
     const storedSelectedAnnotation = props.annotations[props.annotation.id];
-    if ((storedSelectedAnnotation.generation === props.annotation.generation) ||
-        (props.ignoreGeneration &&
-         deepEquals(Object.assign({}, storedSelectedAnnotation, { generation: props.annotation.generation }), props.annotation))) {
+    if (
+      storedSelectedAnnotation.generation === props.annotation.generation ||
+      (props.ignoreGeneration &&
+        deepEquals(
+          Object.assign({}, storedSelectedAnnotation, {
+            generation: props.annotation.generation,
+          }),
+          props.annotation
+        ))
+    ) {
       buttons.push(button('Delete', storeAction('delete'), style.deleteIcon));
     } else {
-      buttons.push(button('Save as new', storeAction('new'), style.saveAsNewIcon));
+      buttons.push(
+        button('Save as new', storeAction('new'), style.saveAsNewIcon)
+      );
       buttons.push(button('Revert', storeAction('reset'), style.revertIcon));
       buttons.push(button('Update', storeAction('save'), style.updateIcon));
     }
-  } else if (props.annotation && props.annotation.selection.type !== 'empty' && !props.annotation.readOnly) {
+  } else if (
+    props.annotation &&
+    props.annotation.selection.type !== 'empty' &&
+    !props.annotation.readOnly
+  ) {
     buttons.push(button('Save', storeAction('new'), style.saveAsNewIcon));
   }
 
@@ -60,7 +70,10 @@ export default function render(props) {
     <div className={style.container}>
       <div className={style.topLine}>
         <section className={style.list}>
-          <ActionListWidget list={listAnnotation} onClick={onActivateAnnotation} />
+          <ActionListWidget
+            list={listAnnotation}
+            onClick={onActivateAnnotation}
+          />
         </section>
         <section className={style.editor}>
           <AnnotationEditorWidget
@@ -78,11 +91,10 @@ export default function render(props) {
         <section className={style.buttonsSection}>
           {button('Reset', () => props.onChange('pushEmpty'), style.resetIcon)}
         </section>
-        <section className={style.buttonsSection}>
-          {buttons}
-        </section>
+        <section className={style.buttonsSection}>{buttons}</section>
       </div>
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {

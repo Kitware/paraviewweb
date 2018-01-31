@@ -1,5 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     listAssetStores(query = {}) {
       const expected = ['limit', 'offset', 'sort', 'sortdir'],
@@ -12,18 +18,29 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
 
     createAssetStore(assetstore) {
       var required = ['name', 'type'],
-        possible = ['root', 'db', 'bucket', 'prefix', 'accessKeyId', 'secretKey', 'service'],
+        possible = [
+          'root',
+          'db',
+          'bucket',
+          'prefix',
+          'accessKeyId',
+          'secretKey',
+          'service',
+        ],
         params = filterQuery(assetstore, ...[].concat(required, possible)),
-        {
-          missingKeys, promise,
-        } = mustContain(assetstore, ...required);
+        { missingKeys, promise } = mustContain(assetstore, ...required);
 
-      return missingKeys ? promise : busy(client._.post(`/assetstore${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.post(`/assetstore${encodeQueryAsString(params)}`));
     },
 
     updateAssetStore(assetstore) {
       const expected = ['name', 'root', 'db', 'current', '_id'],
-        params = filterQuery(assetstore, expected.slice(0, expected.length - 1)); // Remove 'id'
+        params = filterQuery(
+          assetstore,
+          expected.slice(0, expected.length - 1)
+        ); // Remove 'id'
 
       return client._.put(`/assetstore/${assetstore._id}`, {
         params,

@@ -1,6 +1,6 @@
 /* global document */
-import React        from 'react';
-import ReactDOM     from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import PropertyPanel from '..';
 
 // Load CSS
@@ -45,7 +45,14 @@ function render() {
       propType: 'enum',
       label: 'Multi-select list',
       help: 'Choose multiple food items',
-      domain: { pasta: 'pasta', salad: 'salad', bread: 'bread', cheese: 'cheese', wine: 'wine', dessert: 'dessert' },
+      domain: {
+        pasta: 'pasta',
+        salad: 'salad',
+        bread: 'bread',
+        cheese: 'cheese',
+        wine: 'wine',
+        dessert: 'dessert',
+      },
       type: 'string',
       size: -1,
     },
@@ -107,10 +114,18 @@ function render() {
   };
 
   const properties = {
-    input: [{
-      title: 'Property Panel',
-      contents: [properties1, properties3, propertiesCheck, propSlider, propCell],
-    }],
+    input: [
+      {
+        title: 'Property Panel',
+        contents: [
+          properties1,
+          properties3,
+          propertiesCheck,
+          propSlider,
+          propCell,
+        ],
+      },
+    ],
     // setting this change handler overrides all individual component change handlers.
     // onChange: function onChange(data) {
     //   console.log(JSON.stringify(data));
@@ -123,7 +138,8 @@ function render() {
     <div>
       <PropertyPanel {...properties} />
     </div>,
-    container);
+    container
+  );
 }
 
 document.body.style.margin = '10px';

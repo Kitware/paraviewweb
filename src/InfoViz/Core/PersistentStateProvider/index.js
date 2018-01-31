@@ -43,7 +43,7 @@ function persistentStateProvider(publicAPI, model) {
     } else {
       model.persistentStateImpl = {
         state: {},
-        getState: key => model.persistentStateImpl.state[key],
+        getState: (key) => model.persistentStateImpl.state[key],
         setState: (key, value) => {
           model.persistentStateImpl.state[key] = value;
         },
@@ -56,7 +56,8 @@ function persistentStateProvider(publicAPI, model) {
     model.persistentStateImpl = impl;
   };
 
-  publicAPI.getPersistentState = key => model.persistentStateImpl.getState(key);
+  publicAPI.getPersistentState = (key) =>
+    model.persistentStateImpl.getState(key);
 
   publicAPI.setPersistentState = (key, value) => {
     model.persistentStateImpl.setState(key, value);

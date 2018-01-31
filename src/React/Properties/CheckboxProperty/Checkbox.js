@@ -1,4 +1,4 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactProperties/CheckboxProperty.mcss';
@@ -31,7 +31,8 @@ export default class Checkbox extends React.Component {
           checked={this.props.value}
           onChange={this.valueChange}
         />
-      </div>);
+      </div>
+    );
   }
 }
 

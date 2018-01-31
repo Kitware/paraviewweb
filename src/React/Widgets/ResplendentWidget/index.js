@@ -34,7 +34,6 @@ export default class ResplendentWidget extends React.Component {
   }
 }
 
-
 ResplendentWidget.propTypes = {
   args: PropTypes.array,
   component: PropTypes.func.isRequired,

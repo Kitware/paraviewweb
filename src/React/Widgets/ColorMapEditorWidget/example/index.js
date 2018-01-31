@@ -68,11 +68,6 @@ class ColorMapEditorTestWidget extends React.Component {
 container.style.height = '50%';
 container.style.width = '50%';
 
-ReactDOM.render(
-    React.createElement(
-      ColorMapEditorTestWidget,
-      {}),
-    container);
+ReactDOM.render(React.createElement(ColorMapEditorTestWidget, {}), container);
 
 document.body.style.margin = '10px';
-

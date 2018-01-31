@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
-import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
 import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
-import ToggleIconButtonWidget   from '../../Widgets/ToggleIconButtonWidget';
+import ToggleIconButtonWidget from '../../Widgets/ToggleIconButtonWidget';
 
 export default class TimeFloatImageControl extends React.Component {
   constructor(props) {
@@ -119,12 +119,35 @@ export default class TimeFloatImageControl extends React.Component {
     const timeIdx = queryDataModel.getIndex('time');
     const chartData = this.props.model.chartData;
     const activeView = this.props.model.getActiveView();
-    const buttons = [<ToggleIconButtonWidget key="0" toggle={false} className={style.addProbeIcon} icon="" onChange={this.addProbe} />];
+    const buttons = [
+      <ToggleIconButtonWidget
+        key="0"
+        toggle={false}
+        className={style.addProbeIcon}
+        icon=""
+        onChange={this.addProbe}
+      />,
+    ];
     const activeProbe = probeManager.getActiveProbe();
     if (activeProbe) {
-      buttons.push(<ToggleIconButtonWidget key="1" toggle={false} className={style.removeProbeIcon} icon="" onChange={this.removeProbe} />);
+      buttons.push(
+        <ToggleIconButtonWidget
+          key="1"
+          toggle={false}
+          className={style.removeProbeIcon}
+          icon=""
+          onChange={this.removeProbe}
+        />
+      );
     }
-    const sortProbes = <ToggleIconButtonWidget toggle={false} className={style.sortProbeIcon} icon="" onChange={this.sortProbes} />;
+    const sortProbes = (
+      <ToggleIconButtonWidget
+        toggle={false}
+        className={style.sortProbeIcon}
+        icon=""
+        onChange={this.sortProbes}
+      />
+    );
 
     // Put minus before
     buttons.reverse();
@@ -133,46 +156,110 @@ export default class TimeFloatImageControl extends React.Component {
       <div className={style.container}>
         <div style={{ padding: '10px 5px 5px' }}>
           <InlineToggleButtonWidget
-            options={[{ icon: style.imageViewIcon }, { icon: style.bothViewIcon }]}
+            options={[
+              { icon: style.imageViewIcon },
+              { icon: style.bothViewIcon },
+            ]}
             activeColor="#ccc"
             defaultColor="rgba(0,0,0,0)"
             active={activeView}
             onChange={this.onActiveView}
           />
         </div>
-        <CollapsibleWidget title="Time probes" activeSubTitle subtitle={buttons} visible>
+        <CollapsibleWidget
+          title="Time probes"
+          activeSubTitle
+          subtitle={buttons}
+          visible
+        >
           <section className={style.item}>
             <label className={style.smallLabel}>Name</label>
-            <input className={style.input} type="text" name="name" value={activeProbe ? activeProbe.name : '' || ''} onChange={this.updateProbe} />
-            <select className={style.dropDown} value={undefined} onChange={this.updateActive}>
-              {probeManager.getProbeNames().map((name, index) =>
-                <option key={index} value={name}>{name}</option>
-              )}
+            <input
+              className={style.input}
+              type="text"
+              name="name"
+              value={activeProbe ? activeProbe.name : '' || ''}
+              onChange={this.updateProbe}
+            />
+            <select
+              className={style.dropDown}
+              value={undefined}
+              onChange={this.updateActive}
+            >
+              {probeManager.getProbeNames().map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
+                </option>
+              ))}
             </select>
           </section>
           <section className={style.item}>
             <label className={style.smallLabel}>X</label>
-            <input className={style.input} type="number" name="0" value={activeProbe ? activeProbe.extent[0] : 0} onChange={this.updateProbe} />
-            <input className={style.input} type="number" name="1" value={activeProbe ? activeProbe.extent[1] : 5} onChange={this.updateProbe} />
+            <input
+              className={style.input}
+              type="number"
+              name="0"
+              value={activeProbe ? activeProbe.extent[0] : 0}
+              onChange={this.updateProbe}
+            />
+            <input
+              className={style.input}
+              type="number"
+              name="1"
+              value={activeProbe ? activeProbe.extent[1] : 5}
+              onChange={this.updateProbe}
+            />
           </section>
           <section className={style.item}>
             <label className={style.smallLabel}>Y</label>
-            <input className={style.input} type="number" name="2" value={activeProbe ? activeProbe.extent[2] : 0} onChange={this.updateProbe} />
-            <input className={style.input} type="number" name="3" value={activeProbe ? activeProbe.extent[3] : 5} onChange={this.updateProbe} />
+            <input
+              className={style.input}
+              type="number"
+              name="2"
+              value={activeProbe ? activeProbe.extent[2] : 0}
+              onChange={this.updateProbe}
+            />
+            <input
+              className={style.input}
+              type="number"
+              name="3"
+              value={activeProbe ? activeProbe.extent[3] : 5}
+              onChange={this.updateProbe}
+            />
           </section>
         </CollapsibleWidget>
-        <CollapsibleWidget title="Legend" visible={activeView > 0} activeSubTitle subtitle={sortProbes}>
-          {chartData.fields.map((field, index) =>
-            <section key={index} className={style.item} data-name={field.name} data-active={field.active ? '1' : '0'}>
+        <CollapsibleWidget
+          title="Legend"
+          visible={activeView > 0}
+          activeSubTitle
+          subtitle={sortProbes}
+        >
+          {chartData.fields.map((field, index) => (
+            <section
+              key={index}
+              className={style.item}
+              data-name={field.name}
+              data-active={field.active ? '1' : '0'}
+            >
               <label className={style.label}>
-                <i className={field.active ? style.enableLegendIcon : style.disableLegendIcon} style={{ color: field.color }} />
+                <i
+                  className={
+                    field.active
+                      ? style.enableLegendIcon
+                      : style.disableLegendIcon
+                  }
+                  style={{ color: field.color }}
+                />
                 {field.name}
               </label>
-              <span className={style.value} title={field.data[timeIdx]}>{field.data[timeIdx]}</span>
+              <span className={style.value} title={field.data[timeIdx]}>
+                {field.data[timeIdx]}
+              </span>
             </section>
-          )}
+          ))}
         </CollapsibleWidget>
-      </div>);
+      </div>
+    );
   }
 }
 

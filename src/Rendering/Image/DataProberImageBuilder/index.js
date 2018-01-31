@@ -1,24 +1,24 @@
 /* global Image */
 
-import AbstractImageBuilder  from '../AbstractImageBuilder';
+import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTableManagerWidget';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/ProbeControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const
-  PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
+const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
   PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change',
-  CROSSHAIR_VISIBILITY_CHANGE_TOPIC = 'ProbeImageBuilder.crosshair.visibility.change',
+  CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
+    'ProbeImageBuilder.crosshair.visibility.change',
   RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change',
   dataMapping = {
     XY: {
       idx: [0, 1, 2],
-      hasChange: (probe, x, y, z) => (probe[2] !== z),
+      hasChange: (probe, x, y, z) => probe[2] !== z,
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[0],
-          idx = x + (y * width),
+          idx = x + y * width,
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -28,10 +28,10 @@ const
     },
     XZ: {
       idx: [0, 2, 1],
-      hasChange: (probe, x, y, z) => (probe[1] !== y),
+      hasChange: (probe, x, y, z) => probe[1] !== y,
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[0],
-          idx = x + (z * width),
+          idx = x + z * width,
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -41,10 +41,10 @@ const
     },
     ZY: {
       idx: [2, 1, 0],
-      hasChange: (probe, x, y, z) => (probe[0] !== x),
+      hasChange: (probe, x, y, z) => probe[0] !== x,
       updateProbeValue: (self, x, y, z) => {
         var width = self.metadata.dimensions[2],
-          idx = z + (y * width),
+          idx = z + y * width,
           array = self.scalars[self.getField()];
 
         if (array) {
@@ -54,17 +54,18 @@ const
     },
   };
 
-
 export default class DataProberImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, lookupTableManager) {
     super({
-      queryDataModel, lookupTableManager,
+      queryDataModel,
+      lookupTableManager,
     });
 
-    this.metadata = queryDataModel.originalData.InSituDataProber || queryDataModel.originalData.DataProber;
+    this.metadata =
+      queryDataModel.originalData.InSituDataProber ||
+      queryDataModel.originalData.DataProber;
     this.fieldIndex = 0;
     this.renderMethodMutable = true;
     this.renderMethod = 'XY';
@@ -83,18 +84,23 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     this.pushMethod = 'pushToFrontAsBuffer';
 
     // Update LookupTableManager with data range
-    this.lookupTableManager.addFields(this.metadata.ranges, this.queryDataModel.originalData.LookupTables);
-    this.registerSubscription(this.lookupTableManager.onActiveLookupTableChange((data, envelope) => {
-      if (this.getField() !== data) {
-        this.setField(data);
-        this.update();
-      }
-    }));
+    this.lookupTableManager.addFields(
+      this.metadata.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
+    this.registerSubscription(
+      this.lookupTableManager.onActiveLookupTableChange((data, envelope) => {
+        if (this.getField() !== data) {
+          this.setField(data);
+          this.update();
+        }
+      })
+    );
 
     let maxSize = 0;
     for (let i = 0; i < 3; ++i) {
       const currentSize = this.metadata.dimensions[i];
-      maxSize = (maxSize < currentSize) ? currentSize : maxSize;
+      maxSize = maxSize < currentSize ? currentSize : maxSize;
     }
     this.bgCanvas = new CanvasOffscreenBuffer(maxSize, maxSize);
     this.registerObjectToFree(this.bgCanvas);
@@ -102,28 +108,32 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     this.fgCanvas = null;
 
     // Handle events
-    this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
-      this.lastImageStack = data;
+    this.registerSubscription(
+      queryDataModel.onDataChange((data, envelope) => {
+        this.lastImageStack = data;
 
-      const renderCallback = () => {
-        this.render();
-      };
-      let canRenderNow = true;
+        const renderCallback = () => {
+          this.render();
+        };
+        let canRenderNow = true;
 
-      Object.keys(data).forEach((key) => {
-        const img = data[key].image;
-        img.addEventListener('load', renderCallback);
-        canRenderNow = canRenderNow && img.complete;
-      });
+        Object.keys(data).forEach((key) => {
+          const img = data[key].image;
+          img.addEventListener('load', renderCallback);
+          canRenderNow = canRenderNow && img.complete;
+        });
 
-      if (canRenderNow) {
-        this.render();
-      }
-    }));
+        if (canRenderNow) {
+          this.render();
+        }
+      })
+    );
 
-    this.registerSubscription(this.lookupTableManager.onChange((data, envelope) => {
-      this.update();
-    }));
+    this.registerSubscription(
+      this.lookupTableManager.onChange((data, envelope) => {
+        this.update();
+      })
+    );
 
     // Event handler
     const self = this;
@@ -145,8 +155,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         }
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
           yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
@@ -175,8 +185,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         }
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
           yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
@@ -197,7 +207,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
           return false;
         }
 
-        probe[idx] += (event.deltaY < 0) ? -1 : 1;
+        probe[idx] += event.deltaY < 0 ? -1 : 1;
 
         if (probe[idx] < 0) {
           probe[idx] = 0;
@@ -229,7 +239,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     if (sliceIdx === undefined) {
       sliceIdx = this.probeXYZ[2];
     }
-    return this.metadata.sprite_size - (sliceIdx % this.metadata.sprite_size) - 1;
+    return this.metadata.sprite_size - sliceIdx % this.metadata.sprite_size - 1;
   }
 
   // ------------------------------------------------------------------------
@@ -244,7 +254,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     const max = this.metadata.slices.length - 1;
 
     let idx = Math.floor(sliceIdx / this.metadata.sprite_size);
-    idx = idx < 0 ? 0 : (idx > max) ? max : idx;
+    idx = idx < 0 ? 0 : idx > max ? max : idx;
 
     const data = this.lastImageStack[this.metadata.slices[idx]],
       img = data.image;
@@ -287,10 +297,21 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         spacing = this.metadata.spacing;
 
       dataMapping[this.renderMethod].updateProbeValue(this, x, y, z);
-      this.pushToFront(dimensions[idx[0]], dimensions[idx[1]], spacing[idx[0]], spacing[idx[1]], this.probeXYZ[idx[0]], this.probeXYZ[idx[1]]);
+      this.pushToFront(
+        dimensions[idx[0]],
+        dimensions[idx[1]],
+        spacing[idx[0]],
+        spacing[idx[1]],
+        this.probeXYZ[idx[0]],
+        this.probeXYZ[idx[1]]
+      );
     }
 
-    if (previousValue[0] === x && previousValue[1] === y && previousValue[2] === z) {
+    if (
+      previousValue[0] === x &&
+      previousValue[1] === y &&
+      previousValue[2] === z
+    ) {
       return; // No change detected
     }
 
@@ -335,18 +356,23 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         dimensions = this.metadata.dimensions,
         width = dimensions[axisMapping[0]],
         height = dimensions[axisMapping[1]],
-        deltaStep = (axisToProbe === 0) ? 1 : width,
-        offset = (axisToProbe === 0) ? this.probeXYZ[axisMapping[1]] * width : this.probeXYZ[axisMapping[0]],
-        size = (axisToProbe === 0) ? width : height;
+        deltaStep = axisToProbe === 0 ? 1 : width,
+        offset =
+          axisToProbe === 0
+            ? this.probeXYZ[axisMapping[1]] * width
+            : this.probeXYZ[axisMapping[0]],
+        size = axisToProbe === 0 ? width : height;
 
       if (this.metadata.origin && this.metadata.spacing) {
         probeData.xRange[0] = this.metadata.origin[axisIdx];
-        probeData.xRange[1] = this.metadata.origin[axisIdx] + (this.metadata.spacing[axisIdx] * dimensions[axisIdx]);
+        probeData.xRange[1] =
+          this.metadata.origin[axisIdx] +
+          this.metadata.spacing[axisIdx] * dimensions[axisIdx];
       }
 
       if (scalarPlan) {
         for (let j = 0; j < size; j++) {
-          fieldData.data.push(scalarPlan[offset + (j * deltaStep)]);
+          fieldData.data.push(scalarPlan[offset + j * deltaStep]);
         }
       }
     }
@@ -364,7 +390,12 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     this[`render${this.renderMethod}`]();
 
     // Update probe value
-    dataMapping[this.renderMethod].updateProbeValue(this, this.probeXYZ[0], this.probeXYZ[1], this.probeXYZ[2]);
+    dataMapping[this.renderMethod].updateProbeValue(
+      this,
+      this.probeXYZ[0],
+      this.probeXYZ[1],
+      this.probeXYZ[2]
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -388,7 +419,6 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       destHeight = Math.floor(height * scaleY),
       ctx = null;
 
-
     // Make sure we have a foreground buffer
     if (this.fgCanvas) {
       this.fgCanvas.size(destWidth, destHeight);
@@ -397,7 +427,17 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     }
 
     ctx = this.fgCanvas.get2DContext();
-    ctx.drawImage(this.bgCanvas.el, 0, 0, width, height, 0, 0, destWidth, destHeight);
+    ctx.drawImage(
+      this.bgCanvas.el,
+      0,
+      0,
+      width,
+      height,
+      0,
+      0,
+      destWidth,
+      destHeight
+    );
 
     // Draw cross hair probe position
     ctx.beginPath();
@@ -427,7 +467,9 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
     var readyImage = {
       canvas: this.bgCanvas.el,
-      imageData: this.bgCanvas.el.getContext('2d').getImageData(0, 0, width, height),
+      imageData: this.bgCanvas.el
+        .getContext('2d')
+        .getImageData(0, 0, width, height),
       area: [0, 0, width, height],
       outputSize: [destWidth, destHeight],
       type: this.renderMethod,
@@ -454,11 +496,28 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
     function drawThisImage() {
       var image = this;
-      ctx.drawImage(image, 0, dimensions[1] * offset, dimensions[0], dimensions[1], 0, 0, dimensions[0], dimensions[1]);
+      ctx.drawImage(
+        image,
+        0,
+        dimensions[1] * offset,
+        dimensions[0],
+        dimensions[1],
+        0,
+        0,
+        dimensions[0],
+        dimensions[1]
+      );
 
       self.extractNumericalValues(dimensions[0], dimensions[1]);
       self.applyLookupTable(dimensions[0], dimensions[1]);
-      self.pushToFront(dimensions[0], dimensions[1], spacing[0], spacing[1], xyz[0], xyz[1]);
+      self.pushToFront(
+        dimensions[0],
+        dimensions[1],
+        spacing[0],
+        spacing[1],
+        xyz[0],
+        xyz[1]
+      );
     }
 
     this.getImage(this.probeXYZ[2], drawThisImage);
@@ -478,10 +537,17 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       const offset = self.getYOffset(activeColumn),
         image = this;
 
-      ctx.drawImage(image,
-        xyz[0], dimensions[1] * offset,
-        1, dimensions[1],
-        activeColumn, 0, 1, dimensions[1]);
+      ctx.drawImage(
+        image,
+        xyz[0],
+        dimensions[1] * offset,
+        1,
+        dimensions[1],
+        activeColumn,
+        0,
+        1,
+        dimensions[1]
+      );
 
       if (activeColumn) {
         activeColumn -= 1;
@@ -490,7 +556,14 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         // Rendering is done
         self.extractNumericalValues(dimensions[2], dimensions[1]);
         self.applyLookupTable(dimensions[2], dimensions[1]);
-        self.pushToFront(dimensions[2], dimensions[1], spacing[2], spacing[1], xyz[2], xyz[1]);
+        self.pushToFront(
+          dimensions[2],
+          dimensions[1],
+          spacing[2],
+          spacing[1],
+          xyz[2],
+          xyz[1]
+        );
       }
     }
 
@@ -514,10 +587,17 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       const offset = self.getYOffset(activeLine),
         image = this;
 
-      ctx.drawImage(image,
-        0, (dimensions[1] * offset) + xyz[1],
-        dimensions[0], 1,
-        0, activeLine, dimensions[0], 1);
+      ctx.drawImage(
+        image,
+        0,
+        dimensions[1] * offset + xyz[1],
+        dimensions[0],
+        1,
+        0,
+        activeLine,
+        dimensions[0],
+        1
+      );
 
       if (activeLine) {
         activeLine -= 1;
@@ -526,7 +606,14 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         // Rendering is done
         self.extractNumericalValues(dimensions[0], dimensions[2]);
         self.applyLookupTable(dimensions[0], dimensions[2]);
-        self.pushToFront(dimensions[0], dimensions[2], spacing[0], spacing[2], xyz[0], xyz[2]);
+        self.pushToFront(
+          dimensions[0],
+          dimensions[2],
+          spacing[0],
+          spacing[2],
+          xyz[0],
+          xyz[2]
+        );
       }
     }
 
@@ -567,7 +654,13 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       array = new Float32Array(width * height);
 
     while (idx < size) {
-      const value = (((pixBuffer[idx] + (256 * pixBuffer[idx + 1]) + (65536 * pixBuffer[idx + 2])) / 16777216) * delta) + fieldRange[0];
+      const value =
+        (pixBuffer[idx] +
+          256 * pixBuffer[idx + 1] +
+          65536 * pixBuffer[idx + 2]) /
+          16777216 *
+          delta +
+        fieldRange[0];
       array[arrayIdx] = value;
       arrayIdx += 1;
 
@@ -710,8 +803,11 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
   getControlWidgets() {
     var {
-      lookupTable, originalRange, lookupTableManager, queryDataModel,
-    } = this.getControlModels(),
+        lookupTable,
+        originalRange,
+        lookupTableManager,
+        queryDataModel,
+      } = this.getControlModels(),
       model = this;
     return [
       {
@@ -719,10 +815,12 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         lookupTable,
         originalRange,
         lookupTableManager,
-      }, {
+      },
+      {
         name: 'ProbeControl',
         model,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel,
       },
@@ -739,5 +837,4 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       lookupTableManager: this.lookupTableManager,
     };
   }
-
 }

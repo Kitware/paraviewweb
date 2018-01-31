@@ -18,7 +18,9 @@ function listToPair(list = []) {
 }
 
 function unique(list) {
-  return list.sort().filter((item, index, array) => !index || item !== array[index - 1]);
+  return list
+    .sort()
+    .filter((item, index, array) => !index || item !== array[index - 1]);
 }
 
 // ----------------------------------------------------------------------------
@@ -57,9 +59,12 @@ function mutualInformationProvider(publicAPI, model) {
             deltaHandling.currentMTime[name] = histograms[name][name].x.mtime;
           }
 
-          if (deltaHandling.added.indexOf(name) === -1
-            && deltaHandling.currentMTime[name]
-            && (deltaHandling.previousMTime[name] || 0) < deltaHandling.currentMTime[name]) {
+          if (
+            deltaHandling.added.indexOf(name) === -1 &&
+            deltaHandling.currentMTime[name] &&
+            (deltaHandling.previousMTime[name] || 0) <
+              deltaHandling.currentMTime[name]
+          ) {
             deltaHandling.modified.push(name);
           }
         }
@@ -72,7 +77,8 @@ function mutualInformationProvider(publicAPI, model) {
         mutualInformationData,
         [].concat(deltaHandling.added, deltaHandling.modified),
         [].concat(deltaHandling.removed, invalidAxis),
-        histograms);
+        histograms
+      );
 
       // Push the new mutual info
       deltaHandling.processed = true;
@@ -106,12 +112,26 @@ function mutualInformationProvider(publicAPI, model) {
 
   publicAPI.setMutualInformationParameterNames = (names) => {
     if (deltaHandling.processed) {
-      deltaHandling.added = names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1);
-      deltaHandling.removed = model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1);
+      deltaHandling.added = names.filter(
+        (name) => model.mutualInformationParameterNames.indexOf(name) === -1
+      );
+      deltaHandling.removed = model.mutualInformationParameterNames.filter(
+        (name) => names.indexOf(name) === -1
+      );
     } else {
       // We need to add to it
-      deltaHandling.added = [].concat(deltaHandling.added, names.filter(name => model.mutualInformationParameterNames.indexOf(name) === -1));
-      deltaHandling.removed = [].concat(deltaHandling.removed, model.mutualInformationParameterNames.filter(name => names.indexOf(name) === -1));
+      deltaHandling.added = [].concat(
+        deltaHandling.added,
+        names.filter(
+          (name) => model.mutualInformationParameterNames.indexOf(name) === -1
+        )
+      );
+      deltaHandling.removed = [].concat(
+        deltaHandling.removed,
+        model.mutualInformationParameterNames.filter(
+          (name) => names.indexOf(name) === -1
+        )
+      );
     }
 
     // Ensure uniqueness
@@ -122,7 +142,9 @@ function mutualInformationProvider(publicAPI, model) {
     model.mutualInformationParameterNames = [].concat(names);
 
     if (model.histogram2dProviderSubscription) {
-      model.histogram2dProviderSubscription.update(listToPair(model.mutualInformationParameterNames));
+      model.histogram2dProviderSubscription.update(
+        listToPair(model.mutualInformationParameterNames)
+      );
     }
   };
 }

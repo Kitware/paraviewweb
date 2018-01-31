@@ -47,7 +47,6 @@ export default class ParameterSetNumber extends React.Component {
     }
   }
 
-
   componentWillReceiveProps(nextProps) {
     var previousDataModel = this.props.model,
       nextDataModel = nextProps.model;
@@ -142,7 +141,11 @@ export default class ParameterSetNumber extends React.Component {
   render() {
     return (
       <div
-        className={this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item}
+        className={
+          this.props.model.getAnimationFlag(this.props.arg)
+            ? style.itemActive
+            : style.item
+        }
         onKeyDown={this.updateMode}
         onKeyUp={this.resetState}
         onMouseLeave={this.disableButtons}
@@ -159,15 +162,29 @@ export default class ParameterSetNumber extends React.Component {
             onMouseEnter={this.enableButtons}
             onMouseLeave={this.disableButtons}
           >
-            <div className={this.state.button ? style.hidden : style.itemControlValue}>
+            <div
+              className={
+                this.state.button ? style.hidden : style.itemControlValue
+              }
+            >
               {this.props.model.getValue(this.props.arg)}
             </div>
             <i
-              className={this.state.button ? (this.state.advanced ? style.firstButton : style.previousButton) : style.hidden}
+              className={
+                this.state.button
+                  ? this.state.advanced
+                    ? style.firstButton
+                    : style.previousButton
+                  : style.hidden
+              }
               onClick={this.state.advanced ? this.first : this.previous}
             />
             <i
-              className={this.state.button ? (this.state.advanced ? style.lastButton : style.nextButton) : style.hidden}
+              className={
+                this.state.button
+                  ? this.state.advanced ? style.lastButton : style.nextButton
+                  : style.hidden
+              }
               onClick={this.state.advanced ? this.last : this.next}
             />
           </div>
@@ -175,29 +192,19 @@ export default class ParameterSetNumber extends React.Component {
         <div className={[style.row, style.mobileOnly].join(' ')}>
           <div className={style.itemControl}>
             <br />
-            <i
-              className={style.firstButton}
-              onClick={this.first}
-            />
-            <i
-              className={style.lastButton}
-              onClick={this.last}
-            />
-            <i
-              className={style.previousButton}
-              onClick={this.previous}
-            />
-            <i
-              className={style.nextButton}
-              onClick={this.next}
-            />
+            <i className={style.firstButton} onClick={this.first} />
+            <i className={style.lastButton} onClick={this.last} />
+            <i className={style.previousButton} onClick={this.previous} />
+            <i className={style.nextButton} onClick={this.next} />
           </div>
         </div>
         <div className={style.row}>
           <div className={style.slider} onMouseEnter={this.grabFocus}>
             <input
               className={style.input}
-              ref={(c) => { this.slider = c; }}
+              ref={(c) => {
+                this.slider = c;
+              }}
               type="range"
               min="0"
               max={this.props.model.getSize(this.props.arg) - 1}
@@ -210,7 +217,6 @@ export default class ParameterSetNumber extends React.Component {
     );
   }
 }
-
 
 ParameterSetNumber.propTypes = {
   listener: PropTypes.bool,

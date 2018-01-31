@@ -50,7 +50,6 @@ function findProbeColor(probe, chartFields) {
 }
 
 export default class FloatTimeDataImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(floatDataImageBuilder, timeProbeManager, painter) {
@@ -68,41 +67,57 @@ export default class FloatTimeDataImageBuilder {
     this.imageBuilder.isMultiView = () => false;
 
     // Image ready interceptor
-    this.subscriptions.push(this.imageBuilder.onImageReady((data, envelope) => {
-      const { canvas, outputSize } = data;
-      const ctx = canvas.getContext('2d');
+    this.subscriptions.push(
+      this.imageBuilder.onImageReady((data, envelope) => {
+        const { canvas, outputSize } = data;
+        const ctx = canvas.getContext('2d');
 
-      this.probeManager.setSize(outputSize[0], outputSize[1]);
-      this.probeManager.getProbes().forEach((probe) => {
-        const rgbStr = findProbeColor(probe, this.chartData.fields);
-        const ext = probe.getExtent();
-        ctx.fillStyle = 'rgba(128, 128, 128, 0.5)';
-        ctx.fillRect(ext[0] - 3, ext[2] - 3, ext[1] - ext[0] + 6, ext[3] - ext[2] + 6);
-        ctx.beginPath();
-        ctx.lineWidth = '2';
-        ctx.strokeStyle = rgbStr;
-        ctx.rect(ext[0], ext[2], ext[1] - ext[0], ext[3] - ext[2]);
-        ctx.stroke();
-      });
+        this.probeManager.setSize(outputSize[0], outputSize[1]);
+        this.probeManager.getProbes().forEach((probe) => {
+          const rgbStr = findProbeColor(probe, this.chartData.fields);
+          const ext = probe.getExtent();
+          ctx.fillStyle = 'rgba(128, 128, 128, 0.5)';
+          ctx.fillRect(
+            ext[0] - 3,
+            ext[2] - 3,
+            ext[1] - ext[0] + 6,
+            ext[3] - ext[2] + 6
+          );
+          ctx.beginPath();
+          ctx.lineWidth = '2';
+          ctx.strokeStyle = rgbStr;
+          ctx.rect(ext[0], ext[2], ext[1] - ext[0], ext[3] - ext[2]);
+          ctx.stroke();
+        });
 
-      this.emit(IMAGE_READY_TOPIC, data);
-    }));
+        this.emit(IMAGE_READY_TOPIC, data);
+      })
+    );
 
-    this.subscriptions.push(this.imageBuilder.onTimeDataReady((data) => {
-      this.updateChart(data);
-    }));
+    this.subscriptions.push(
+      this.imageBuilder.onTimeDataReady((data) => {
+        this.updateChart(data);
+      })
+    );
 
-    this.subscriptions.push(this.queryDataModel.onStateChange((data) => {
-      if (data.name === 'time') {
-        this.painter.setMarkerLocation(this.queryDataModel.getIndex('time') / (this.queryDataModel.getSize('time') - 1));
-        this.render();
-        this.emit(CHANGE_TOPIC, this);
-      }
-    }));
+    this.subscriptions.push(
+      this.queryDataModel.onStateChange((data) => {
+        if (data.name === 'time') {
+          this.painter.setMarkerLocation(
+            this.queryDataModel.getIndex('time') /
+              (this.queryDataModel.getSize('time') - 1)
+          );
+          this.render();
+          this.emit(CHANGE_TOPIC, this);
+        }
+      })
+    );
 
-    this.subscriptions.push(this.probeManager.onChange(() => {
-      this.imageBuilder.fetchTimeData();
-    }));
+    this.subscriptions.push(
+      this.probeManager.onChange(() => {
+        this.imageBuilder.fetchTimeData();
+      })
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -131,7 +146,9 @@ export default class FloatTimeDataImageBuilder {
     });
 
     const fieldName = `${layerName}_${field}`;
-    const timeTypedArray = data.fullData.data.map(t => new window[arrayType](t[fieldName].data));
+    const timeTypedArray = data.fullData.data.map(
+      (t) => new window[arrayType](t[fieldName].data)
+    );
 
     this.chartData = Object.assign({}, { xRange: data.xRange });
     this.chartData.fields = this.probeManager.processTimeData(timeTypedArray);
@@ -224,10 +241,12 @@ export default class FloatTimeDataImageBuilder {
       {
         name: 'TimeFloatImageControl',
         model,
-      }, {
+      },
+      {
         name: 'LookupTableManagerWidget',
         lookupTableManager,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel,
       },
@@ -251,28 +270,44 @@ export default class FloatTimeDataImageBuilder {
   setRenderer(renderer) {
     this.renderer = renderer;
 
-    this.subscriptions.push(renderer.onDrawDone((rComponent) => {
-      if (this.activeView > 0) {
-        if (rComponent && rComponent.getRenderingCanvas && this.painter.isReady()) {
-          const canvasRenderer = rComponent.getRenderingCanvas();
-          const { width, height } = canvasRenderer;
-          const ctxRenderer = canvasRenderer.getContext('2d');
-          const offset = 5;
-          const location = {
-            x: offset,
-            y: (Number(height) / 2) + offset,
-            width: (Number(width) / 2) - (2 * offset),
-            height: (Number(height) / 2) - (2 * offset),
-          };
-          ctxRenderer.fillStyle = '#ffffff';
-          ctxRenderer.fillRect(location.x - 1, location.y - 1, location.width + 2, location.height + 2);
-          this.painter.paint(ctxRenderer, location);
-          ctxRenderer.strokeStyle = '#ccc';
-          ctxRenderer.rect(location.x, location.y, location.width, location.height);
-          ctxRenderer.stroke();
+    this.subscriptions.push(
+      renderer.onDrawDone((rComponent) => {
+        if (this.activeView > 0) {
+          if (
+            rComponent &&
+            rComponent.getRenderingCanvas &&
+            this.painter.isReady()
+          ) {
+            const canvasRenderer = rComponent.getRenderingCanvas();
+            const { width, height } = canvasRenderer;
+            const ctxRenderer = canvasRenderer.getContext('2d');
+            const offset = 5;
+            const location = {
+              x: offset,
+              y: Number(height) / 2 + offset,
+              width: Number(width) / 2 - 2 * offset,
+              height: Number(height) / 2 - 2 * offset,
+            };
+            ctxRenderer.fillStyle = '#ffffff';
+            ctxRenderer.fillRect(
+              location.x - 1,
+              location.y - 1,
+              location.width + 2,
+              location.height + 2
+            );
+            this.painter.paint(ctxRenderer, location);
+            ctxRenderer.strokeStyle = '#ccc';
+            ctxRenderer.rect(
+              location.x,
+              location.y,
+              location.width,
+              location.height
+            );
+            ctxRenderer.stroke();
+          }
         }
-      }
-    }));
+      })
+    );
   }
 }
 

@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 import WorkbenchController from '../../../Component/React/WorkbenchController';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/Layout.svg';
 
 export default class WorkbenchLayoutTool extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -80,7 +79,8 @@ export default class WorkbenchLayoutTool extends React.Component {
             count={this.props.workbench.getLayoutCount()}
           />
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 

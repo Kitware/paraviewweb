@@ -48,16 +48,21 @@ export default class NumberSliderWidget extends React.Component {
           className={style.range}
           value={this.props.value}
           onChange={this.valInput}
-          max={max} min={min} step={this.props.step || 'any'}
+          max={max}
+          min={min}
+          step={this.props.step || 'any'}
         />
         <input
           type="number"
           className={style.text}
           value={this.props.value}
           onChange={this.valInput}
-          max={max} min={min} step="any"
+          max={max}
+          min={min}
+          step="any"
         />
-      </div>);
+      </div>
+    );
   }
 }
 

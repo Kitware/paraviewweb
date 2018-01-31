@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AbstractViewerMenu   from '../AbstractViewerMenu';
-import WidgetFactory        from '../../CollapsibleControls/CollapsibleControlFactory';
-import ImageRenderer        from '../../Renderers/ImageRenderer';
-
+import AbstractViewerMenu from '../AbstractViewerMenu';
+import WidgetFactory from '../../CollapsibleControls/CollapsibleControlFactory';
+import ImageRenderer from '../../Renderers/ImageRenderer';
 
 export default class ImageBuilderViewer extends React.Component {
   componentWillMount() {
@@ -45,8 +44,12 @@ export default class ImageBuilderViewer extends React.Component {
 
   render() {
     var queryDataModel = this.props.queryDataModel,
-      magicLensController = this.props.config.MagicLens ? this.props.imageBuilder : null,
-      imageBuilder = this.props.config.MagicLens ? this.props.imageBuilder.getActiveImageBuilder() : this.props.imageBuilder,
+      magicLensController = this.props.config.MagicLens
+        ? this.props.imageBuilder
+        : null,
+      imageBuilder = this.props.config.MagicLens
+        ? this.props.imageBuilder.getActiveImageBuilder()
+        : this.props.imageBuilder,
       controlWidgets = WidgetFactory.getWidgets(imageBuilder);
 
     // Add menuAddOn if any at the top
@@ -57,7 +60,6 @@ export default class ImageBuilderViewer extends React.Component {
     return (
       <AbstractViewerMenu
         {...this.props}
-
         queryDataModel={queryDataModel}
         magicLensController={magicLensController}
         imageBuilder={imageBuilder}

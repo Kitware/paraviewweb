@@ -1,8 +1,7 @@
 import autobahn from 'autobahn';
 import Monologue from 'monologue.js';
 
-const
-  CONNECTION_READY_TOPIC = 'connection.ready',
+const CONNECTION_READY_TOPIC = 'connection.ready',
   CONNECTION_CLOSE_TOPIC = 'connection.close';
 
 function getTransportObject(url) {
@@ -21,7 +20,9 @@ function getTransportObject(url) {
     };
   }
 
-  throw new Error(`Unknown protocol (${protocol}) for url (${url}).  Unable to create transport object.`);
+  throw new Error(
+    `Unknown protocol (${protocol}) for url (${url}).  Unable to create transport object.`
+  );
 }
 
 // DEPRECATED: replaced by wslink
@@ -56,7 +57,10 @@ export default class AutobahnConnection {
       authid: 'vtkweb',
       onchallenge: (session, method, extra) => {
         if (method === 'wampcra') {
-          const secretKey = autobahn.auth_cra.derive_key(this.secret, 'salt123');
+          const secretKey = autobahn.auth_cra.derive_key(
+            this.secret,
+            'salt123'
+          );
           return autobahn.auth_cra.sign(secretKey, extra.challenge);
         }
 

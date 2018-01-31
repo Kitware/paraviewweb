@@ -1,40 +1,43 @@
+var prettierConf = require('./prettier.config.js');
+
 module.exports = {
-  extends: 'airbnb',
+  extends: ['airbnb', 'prettier'],
   rules: {
-    'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
-    'max-len': ["warn", 160, 4, {"ignoreUrls": true}],
+    'prettier/prettier': ['error', prettierConf],
+
+    // But we want the following
     'no-multi-spaces': ["error", { exceptions: { "ImportDeclaration": true } }],
     'no-param-reassign': ["error", { props: false }],
     'no-unused-vars': ["error", { args: 'none' }],
-    'react/jsx-filename-extension': ["error", { "extensions": [".js"] }],
-    'no-mixed-operators': ["error", {"allowSamePrecedence": true}],
-    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
+    'prefer-destructuring': ["error", { VariableDeclarator: { array: false, object: true }, AssignmentExpression: { array: false, object: false } }, { enforceForRenamedProperties: false }],
+    'import/no-extraneous-dependencies': 0, // Needed for tests
+    // 'no-mixed-operators': 'error', // Wish we can put it back with prettier
 
-    // Should fix that at some point but too much work...
-    'react/no-is-mounted': "warn",
-    'no-var': 0,
-    'one-var': 0,
-    'react/prefer-es6-class': 0,
-    'no-nested-ternary': 0,
-    'react/forbid-prop-types': 0,
-    'jsx-a11y/no-static-element-interactions': 0,
-    'react/no-unused-prop-types': 0,
-
-    // Not for us ;-)
-    'no-plusplus': 0,
+    // Not for us
     'jsx-a11y/label-has-for': 0,
     'no-console': 0,
-    'import/no-named-as-default-member': 0,
+    'no-plusplus': 0,
     'import/no-named-as-default': 0,
-    'import/no-extraneous-dependencies': 0,
+    'import/no-named-as-default-member': 0,
+    'prefer-destructuring': 0, // Can have unwanted side effect
+
+    // Introduced with new eslint
+    // and no time to fix them...
+    // [...]
+    'linebreak-style': 0,
+  },
+  plugins: [
+    'prettier'
+  ],
+  globals: {
+    __BASE_PATH__: false,
+    VRFrameData: true,
   },
   'settings': {
     'import/resolver': 'webpack'
   },
-  globals: {
-    __BASE_PATH__: false,
-  },
   env: {
+    es6: true,
     browser: true,
   },
 };

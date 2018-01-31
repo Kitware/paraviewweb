@@ -10,7 +10,9 @@ const typeMapping = {
 };
 
 export function isGroupWidget(widgetType) {
-  return widgetType === 'PropertyGroup' || widgetType === 'ProxyEditorPropertyWidget';
+  return (
+    widgetType === 'PropertyGroup' || widgetType === 'ProxyEditorPropertyWidget'
+  );
 }
 
 function extractSize(ui) {
@@ -92,13 +94,20 @@ export function proxyPropToProp(property, ui) {
   const depStatus = depList ? Boolean(Number(depList.pop())) : true;
   const depValue = depList ? depList.pop() : null;
   const depId = depList ? depList.join(':') : null;
-  const searchString = [ui.name].concat(property.value, depList || []).join(' ').toLowerCase();
+  const searchString = [ui.name]
+    .concat(property.value, depList || [])
+    .join(' ')
+    .toLowerCase();
 
   const prop = {
     show(ctx) {
       let depTest = true;
       if (depId && ctx.properties[depId] !== undefined) {
-        depTest = (ctx.properties[depId][0] === depValue || ctx.properties[depId][0].toString() === depValue) ? depStatus : !depStatus;
+        depTest =
+          ctx.properties[depId][0] === depValue ||
+          ctx.properties[depId][0].toString() === depValue
+            ? depStatus
+            : !depStatus;
       }
       if (depTest && ctx.filter && ctx.filter.length) {
         const queries = ctx.filter.toLowerCase().split(' ');
@@ -131,7 +140,9 @@ export function proxyPropToProp(property, ui) {
   };
 
   if (isGroupWidget(ui.widget)) {
-    prop.children = property.children.map((p, idx) => proxyPropToProp(p, ui.children[idx]));
+    prop.children = property.children.map((p, idx) =>
+      proxyPropToProp(p, ui.children[idx])
+    );
     prop.show = (ctx) => {
       let visible = false;
       prop.children.forEach((propChild) => {
@@ -146,9 +157,10 @@ export function proxyPropToProp(property, ui) {
   return prop;
 }
 
-
 export function proxyToProps(proxy) {
-  return proxy.properties.map((property, index) => proxyPropToProp(property, proxy.ui[index]));
+  return proxy.properties.map((property, index) =>
+    proxyPropToProp(property, proxy.ui[index])
+  );
 }
 
 export default {

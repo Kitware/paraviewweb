@@ -32,7 +32,6 @@
 //     m.unregisterPattern('imageURL');
 
 export default class PatternMap {
-
   constructor() {
     this.keyPatternMap = {};
   }
@@ -53,7 +52,10 @@ export default class PatternMap {
       keyPattern = ['{', '}'];
 
     Object.keys(options).forEach((opt) => {
-      result = result.replace(new RegExp(keyPattern.join(opt), 'g'), options[opt]);
+      result = result.replace(
+        new RegExp(keyPattern.join(opt), 'g'),
+        options[opt]
+      );
     });
 
     return result;

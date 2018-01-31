@@ -5,8 +5,12 @@ import MouseHandler from '../../../Interaction/Core/MouseHandler';
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 export default class NativeImageRenderer {
-
-  constructor(domElement, imageProvider, mouseListeners = null, drawFPS = true) {
+  constructor(
+    domElement,
+    imageProvider,
+    mouseListeners = null,
+    drawFPS = true
+  ) {
     this.size = SizeHelper.getSize(domElement);
     this.container = domElement;
     this.canvas = document.createElement('canvas');
@@ -32,20 +36,24 @@ export default class NativeImageRenderer {
     }
 
     // Add image listener
-    this.subscriptions.push(imageProvider.onImageReady((data, envelope) => {
-      this.image.src = data.url;
-      this.fps = `${data.fps} fps`;
-    }));
+    this.subscriptions.push(
+      imageProvider.onImageReady((data, envelope) => {
+        this.image.src = data.url;
+        this.fps = `${data.fps} fps`;
+      })
+    );
 
     // Add size listener
-    this.subscriptions.push(SizeHelper.onSizeChange(() => {
-      this.size = SizeHelper.getSize(domElement);
-      this.canvas.setAttribute('width', this.size.clientWidth);
-      this.canvas.setAttribute('height', this.size.clientHeight);
-      if (this.image.src && this.image.complete) {
-        this.updateDrawnImage();
-      }
-    }));
+    this.subscriptions.push(
+      SizeHelper.onSizeChange(() => {
+        this.size = SizeHelper.getSize(domElement);
+        this.canvas.setAttribute('width', this.size.clientWidth);
+        this.canvas.setAttribute('height', this.size.clientHeight);
+        if (this.image.src && this.image.complete) {
+          this.updateDrawnImage();
+        }
+      })
+    );
     SizeHelper.startListening();
   }
 
@@ -64,7 +72,13 @@ export default class NativeImageRenderer {
   }
 
   updateDrawnImage() {
-    this.ctx.drawImage(this.image, 0, 0, this.size.clientWidth, this.size.clientHeight);
+    this.ctx.drawImage(
+      this.image,
+      0,
+      0,
+      this.size.clientWidth,
+      this.size.clientHeight
+    );
     if (this.drawFPS) {
       this.ctx.textBaseline = 'top';
       this.ctx.textAlign = 'left';

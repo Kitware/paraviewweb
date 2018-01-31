@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
-import DropDownWidget    from '../../Widgets/DropDownWidget';
+import DropDownWidget from '../../Widgets/DropDownWidget';
 
-import Histogram   from './Histogram';
+import Histogram from './Histogram';
 import Histogram2D from './Histogram2D';
-import Scatter3D   from './Scatter3D';
-import PieChart    from './PieChart';
+import Scatter3D from './Scatter3D';
+import PieChart from './PieChart';
 
 const types = {
   Histogram,
@@ -53,7 +53,11 @@ export default class PlotlyChartControl extends React.Component {
           />
         }
       >
-        {React.createElement(types[chartState.chartType], { chartState, arrays, onChange: this.updateChartData })}
+        {React.createElement(types[chartState.chartType], {
+          chartState,
+          arrays,
+          onChange: this.updateChartData,
+        })}
       </CollapsibleWidget>
     );
   }

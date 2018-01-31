@@ -11,7 +11,8 @@ import TwoRight from './TwoRight';
 import TwoBottom from './TwoBottom';
 
 export default function render(props) {
-  const onLayoutChange = event => props.onChange(event.currentTarget.getAttribute('name'));
+  const onLayoutChange = (event) =>
+    props.onChange(event.currentTarget.getAttribute('name'));
 
   return (
     <section className={props.className}>
@@ -23,7 +24,8 @@ export default function render(props) {
       <TwoTop active={props.active} onClick={onLayoutChange} />
       <TwoRight active={props.active} onClick={onLayoutChange} />
       <TwoBottom active={props.active} onClick={onLayoutChange} />
-    </section>);
+    </section>
+  );
 }
 
 render.propTypes = {

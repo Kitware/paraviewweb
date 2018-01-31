@@ -1,11 +1,11 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import BinaryImageStream    from '../../../IO/WebSocket/BinaryImageStream';
-import WslinkImageStream    from '../../../IO/WebSocket/WslinkImageStream';
-import NativeImageRenderer  from '../../../NativeUI/Renderers/NativeImageRenderer';
-import sizeHelper           from '../../../Common/Misc/SizeHelper';
-import VtkWebMouseListener  from '../../../Interaction/Core/VtkWebMouseListener';
+import BinaryImageStream from '../../../IO/WebSocket/BinaryImageStream';
+import WslinkImageStream from '../../../IO/WebSocket/WslinkImageStream';
+import NativeImageRenderer from '../../../NativeUI/Renderers/NativeImageRenderer';
+import sizeHelper from '../../../Common/Misc/SizeHelper';
+import VtkWebMouseListener from '../../../Interaction/Core/VtkWebMouseListener';
 
 export default class VtkRenderer extends React.Component {
   componentWillMount() {
@@ -20,7 +20,9 @@ export default class VtkRenderer extends React.Component {
       const wsbUrl = `${this.props.connection.urls}b`;
       this.binaryImageStream = new BinaryImageStream(wsbUrl);
     } else {
-      this.binaryImageStream = WslinkImageStream.newInstance({ client: this.props.client });
+      this.binaryImageStream = WslinkImageStream.newInstance({
+        client: this.props.client,
+      });
     }
     this.mouseListener = new VtkWebMouseListener(this.props.client);
 
@@ -30,7 +32,10 @@ export default class VtkRenderer extends React.Component {
         this.binaryImageStream.startInteractiveQuality();
       } else {
         this.binaryImageStream.stopInteractiveQuality();
-        setTimeout(() => this.binaryImageStream.invalidateCache(), this.props.interactionTimout);
+        setTimeout(
+          () => this.binaryImageStream.invalidateCache(),
+          this.props.interactionTimout
+        );
       }
     });
 
@@ -40,17 +45,27 @@ export default class VtkRenderer extends React.Component {
       const { clientWidth, clientHeight } = sizeHelper.getSize(container);
       /* eslint-enable no-shadow */
       this.mouseListener.updateSize(clientWidth, clientHeight);
-      this.props.client.session.call('viewport.size.update', [parseInt(this.props.viewId, 10), clientWidth, clientHeight]);
+      this.props.client.session.call('viewport.size.update', [
+        parseInt(this.props.viewId, 10),
+        clientWidth,
+        clientHeight,
+      ]);
     });
 
     // Create render
-    this.imageRenderer = new NativeImageRenderer(container, this.binaryImageStream, this.mouseListener.getListeners(), this.props.showFPS);
+    this.imageRenderer = new NativeImageRenderer(
+      container,
+      this.binaryImageStream,
+      this.mouseListener.getListeners(),
+      this.props.showFPS
+    );
 
     // Establish image stream connection
-    this.binaryImageStream.connect({
-      view_id: parseInt(this.props.viewId, 10),
-    }).then(
-      () => {
+    this.binaryImageStream
+      .connect({
+        view_id: parseInt(this.props.viewId, 10),
+      })
+      .then(() => {
         // Update size and do a force push
         this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
@@ -90,7 +105,13 @@ export default class VtkRenderer extends React.Component {
   }
 
   render() {
-    return <div className={this.props.className} style={this.props.style} ref={c => (this.rootContainer = c)} />;
+    return (
+      <div
+        className={this.props.className}
+        style={this.props.style}
+        ref={(c) => (this.rootContainer = c)}
+      />
+    );
   }
 }
 

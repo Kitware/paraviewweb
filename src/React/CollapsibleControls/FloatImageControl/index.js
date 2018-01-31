@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactCollapsibleControls/FloatImageControl.mcss';
 
-import CollapsibleWidget  from '../../Widgets/CollapsibleWidget';
-import LayerItem          from './LayerItem';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import LayerItem from './LayerItem';
 import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
 
 export default class FloatImageControl extends React.Component {
@@ -89,17 +89,19 @@ export default class FloatImageControl extends React.Component {
     return (
       <div className={style.container}>
         <CollapsibleWidget title="Scene">
-          {floatImageModel.getLayers().map((item, idx) =>
-            <LayerItem key={idx} item={item} model={floatImageModel} />
-          )}
+          {floatImageModel
+            .getLayers()
+            .map((item, idx) => (
+              <LayerItem key={idx} item={item} model={floatImageModel} />
+            ))}
           <div className={style.item}>
-            <div className={style.label}>
-              Light
-            </div>
+            <div className={style.label}>Light</div>
             <div className={style.actions}>
               <input
                 className={style.lightSlider}
-                type="range" min="0" max="128"
+                type="range"
+                min="0"
+                max="128"
                 value={255 - floatImageModel.getLight()}
                 onChange={this.updateLight}
               />
@@ -114,31 +116,36 @@ export default class FloatImageControl extends React.Component {
           onChange={this.toggleProbe}
         >
           <div className={style.item}>
-            <div className={style.label}>
-                X
-            </div>
+            <div className={style.label}>X</div>
             <div className={style.actions}>
               <NumberSliderWidget
-                step={1} min={0.0} max={width}
-                key="x" value={this.state.x} name="x"
+                step={1}
+                min={0.0}
+                max={width}
+                key="x"
+                value={this.state.x}
+                name="x"
                 onChange={this.onProbeChange}
               />
             </div>
           </div>
           <div className={style.item}>
-            <div className={style.label}>
-              Y
-            </div>
+            <div className={style.label}>Y</div>
             <div className={style.actions}>
               <NumberSliderWidget
-                step={1} min={0.0} max={height}
-                key="y" value={this.state.y} name="y" onChange={this.onProbeChange}
+                step={1}
+                min={0.0}
+                max={height}
+                key="y"
+                value={this.state.y}
+                name="y"
+                onChange={this.onProbeChange}
               />
             </div>
           </div>
         </CollapsibleWidget>
       </div>
-      );
+    );
   }
 }
 

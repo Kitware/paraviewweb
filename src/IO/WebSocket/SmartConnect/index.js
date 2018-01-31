@@ -5,16 +5,22 @@ import merge from 'mout/src/object/merge';
 import ProcessLauncher from '../../Core/ProcessLauncher';
 import AutobahnConnection from '../AutobahnConnection';
 
-const
-  CONNECTION_READY_TOPIC = 'connection.ready',
+const CONNECTION_READY_TOPIC = 'connection.ready',
   CONNECTION_CLOSE_TOPIC = 'connection.close',
   CONNECTION_ERROR_TOPIC = 'connection.error',
-  DEFAULT_SESSION_MANAGER_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/paraview/`,
-  DEFAULT_SESSION_URL = `${(window.location.protocol === 'https') ? 'wss' : 'ws'}://${window.location.hostname}:${window.location.port}/ws`;
-
+  DEFAULT_SESSION_MANAGER_URL = `${window.location.protocol}//${
+    window.location.hostname
+  }:${window.location.port}/paraview/`,
+  DEFAULT_SESSION_URL = `${
+    window.location.protocol === 'https' ? 'wss' : 'ws'
+  }://${window.location.hostname}:${window.location.port}/ws`;
 
 function autobahnConnect(self) {
-  var wsConnection = new AutobahnConnection(self.config.sessionURL, self.config.secret, self.config.retry);
+  var wsConnection = new AutobahnConnection(
+    self.config.sessionURL,
+    self.config.secret,
+    self.config.retry
+  );
   self.subscriptions.push(wsConnection.onConnectionReady(self.readyForwarder));
   self.subscriptions.push(wsConnection.onConnectionClose(self.closeForwarder));
   wsConnection.connect();
@@ -50,17 +56,23 @@ export default class SmartConnect {
       autobahnConnect(this);
     } else {
       // We need to use the Launcher
-      const launcher = new ProcessLauncher(this.config.sessionManagerURL || DEFAULT_SESSION_MANAGER_URL);
+      const launcher = new ProcessLauncher(
+        this.config.sessionManagerURL || DEFAULT_SESSION_MANAGER_URL
+      );
 
-      this.subscriptions.push(launcher.onProcessReady((data, envelope) => {
-        this.config = merge(this.config, data);
-        autobahnConnect(this);
-      }));
-      this.subscriptions.push(launcher.onError((data, envelope) => {
-        // Try to use standard connection URL
-        this.config.sessionURL = DEFAULT_SESSION_URL;
-        autobahnConnect(this);
-      }));
+      this.subscriptions.push(
+        launcher.onProcessReady((data, envelope) => {
+          this.config = merge(this.config, data);
+          autobahnConnect(this);
+        })
+      );
+      this.subscriptions.push(
+        launcher.onError((data, envelope) => {
+          // Try to use standard connection URL
+          this.config.sessionURL = DEFAULT_SESSION_URL;
+          autobahnConnect(this);
+        })
+      );
 
       launcher.start(this.config);
 

@@ -36,7 +36,9 @@ function annotationStoreProvider(publicAPI, model) {
   };
 
   publicAPI.getStoredAnnotationNames = () => {
-    const val = Object.keys(model.annotationStore).map(id => model.annotationStore[id].name);
+    const val = Object.keys(model.annotationStore).map(
+      (id) => model.annotationStore[id].name
+    );
     val.sort();
     return val;
   };
@@ -52,7 +54,11 @@ function annotationStoreProvider(publicAPI, model) {
       return newName;
     }
 
-    const [, base, countStr] = dupNameRegex.exec(newName) || [newName, newName, '0'];
+    const [, base, countStr] = dupNameRegex.exec(newName) || [
+      newName,
+      newName,
+      '0',
+    ];
     let count = Number(countStr) || 0;
 
     while (allNames.indexOf(newName) !== -1) {
@@ -63,7 +69,7 @@ function annotationStoreProvider(publicAPI, model) {
     return newName;
   };
 
-  publicAPI.getStoredAnnotation = id => model.annotationStore[id];
+  publicAPI.getStoredAnnotation = (id) => model.annotationStore[id];
 
   publicAPI.getStoredAnnotations = () => model.annotationStore;
 

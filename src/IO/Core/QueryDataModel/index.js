@@ -11,17 +11,15 @@ import size from 'mout/object/size';
 import DataManager from '../DataManager';
 
 // ============================================================================
-const
-  dataManager = new DataManager(),
+const dataManager = new DataManager(),
   DEFAULT_KEY_NAME = '_';
 // ============================================================================
-var
-  queryDataModelCounter = 0;
+var queryDataModelCounter = 0;
 // ============================================================================
 
 // Helper function used to handle next/previous when the loop function is 'reverse'
 function deltaReverse(arg, increment) {
-  var newIdx = arg.idx + (arg.direction * increment);
+  var newIdx = arg.idx + arg.direction * increment;
   if (newIdx >= arg.values.length) {
     arg.direction *= -1; // Reverse direction
     newIdx = arg.values.length - 2;
@@ -67,7 +65,6 @@ function deltaNone(arg, increment) {
 
 // QueryDataModel class definition
 export default class QueryDataModel {
-
   constructor(jsonData, basepath) {
     this.originalData = jsonData;
     this.basepath = basepath; // Needed for cloning
@@ -89,7 +86,7 @@ export default class QueryDataModel {
     this.playNext = () => {
       if (this.keepAnimating) {
         let changeDetected = false;
-        this.lastPlay = +(new Date());
+        this.lastPlay = +new Date();
 
         // Move all flagged arg to next()
         Object.keys(this.args).forEach((argName) => {
@@ -157,8 +154,11 @@ export default class QueryDataModel {
 
       // Handle animation if any
       if (this.keepAnimating) {
-        const ts = +(new Date());
-        this.animationTimerId = setTimeout(this.playNext, (ts - this.lastPlay > this.deltaT) ? 0 : this.deltaT);
+        const ts = +new Date();
+        this.animationTimerId = setTimeout(
+          this.playNext,
+          ts - this.lastPlay > this.deltaT ? 0 : this.deltaT
+        );
       }
     };
 
@@ -166,7 +166,12 @@ export default class QueryDataModel {
       this.dataCount[envelope.topic] += 1;
 
       // Pre-decode image urls
-      if (data.url && data.type === 'blob' && data.data.type.indexOf('image') !== -1 && data.image === undefined) {
+      if (
+        data.url &&
+        data.type === 'blob' &&
+        data.data.type.indexOf('image') !== -1 &&
+        data.image === undefined
+      ) {
         data.image = new Image();
         data.image.src = data.url;
         if (this.disableImageSelection) {
@@ -186,7 +191,7 @@ export default class QueryDataModel {
         maxValue = max(this.dataCount),
         dataSize = size(this.dataCount);
 
-      if (minValue === maxValue && ((dataSize === 1) ? (minValue === 0) : true)) {
+      if (minValue === maxValue && (dataSize === 1 ? minValue === 0 : true)) {
         // Handling requests after any re-queue
         setImmediate(() => {
           while (this.requests.length) {
@@ -206,9 +211,11 @@ export default class QueryDataModel {
         anime: false,
         values: arg.values,
         ui: arg.ui ? arg.ui : 'list',
-        delta: arg.loop ?
-          (arg.loop === 'reverse' ?
-            deltaReverse : (arg.loop === 'modulo' ? deltaModulo : deltaNone)) : deltaNone,
+        delta: arg.loop
+          ? arg.loop === 'reverse'
+            ? deltaReverse
+            : arg.loop === 'modulo' ? deltaModulo : deltaNone
+          : deltaNone,
       };
     });
 
@@ -229,7 +236,12 @@ export default class QueryDataModel {
       });
 
       // Register data handler + listener
-      dataManager.registerURL(dataId, (dataEntry.absolute ? '' : basepath) + dataEntry.pattern, dataEntry.type, dataEntry.mimeType);
+      dataManager.registerURL(
+        dataId,
+        (dataEntry.absolute ? '' : basepath) + dataEntry.pattern,
+        dataEntry.type,
+        dataEntry.mimeType
+      );
       this.registeredURLs.push(dataId);
       dataManager.on(dataId, dataHandler);
       this.dataCount[dataId] = 0;
@@ -237,16 +249,16 @@ export default class QueryDataModel {
 
     // Data Exploration handling
     this.exploreState = {
-      order: jsonData.arguments_order.map(f => f).reverse(), // Clone
-      idxs: jsonData.arguments_order.map(i => 0), // Reset index
-      sizes: jsonData.arguments_order.map(f => this.getSize(f)).reverse(), // Get Size
+      order: jsonData.arguments_order.map((f) => f).reverse(), // Clone
+      idxs: jsonData.arguments_order.map((i) => 0), // Reset index
+      sizes: jsonData.arguments_order.map((f) => this.getSize(f)).reverse(), // Get Size
       onDataReady: true,
       animate: false,
     };
 
     this.explorationSubscription = this.onDataChange(() => {
       if (this.exploreState.animate && this.exploreState.onDataReady) {
-        setImmediate(_ => this.nextExploration());
+        setImmediate((_) => this.nextExploration());
       }
     });
   }
@@ -314,7 +326,6 @@ export default class QueryDataModel {
       this.fetchData(category);
     }
   }
-
 
   // Got to the first value of a given attribute and return true if data has changed
   first(attributeName) {
@@ -578,7 +589,7 @@ export default class QueryDataModel {
     function processEvent(event, envelope) {
       var array = actions[event.topic],
         time = now(),
-        newEvent = (self.lastTime[event.topic] + self.newMouseTimeout < time),
+        newEvent = self.lastTime[event.topic] + self.newMouseTimeout < time,
         count = array.length,
         changeDetected = false,
         eventHandled = false;
@@ -587,14 +598,17 @@ export default class QueryDataModel {
       while (count) {
         count -= 1;
         const item = array[count],
-          deltaName = (item.coordinate === 0) ? 'deltaX' : 'deltaY';
+          deltaName = item.coordinate === 0 ? 'deltaX' : 'deltaY';
 
         if (newEvent) {
           item.lastCoord = 0;
         }
 
         /* eslint-disable no-bitwise */
-        if (item.modifier & event.modifier || item.modifier === event.modifier) {
+        if (
+          item.modifier & event.modifier ||
+          item.modifier === event.modifier
+        ) {
           eventHandled = true;
           event.preventDefault(); // Consume event
           const delta = event[deltaName] - item.lastCoord;
@@ -659,9 +673,11 @@ export default class QueryDataModel {
 
   exploreQuery(start = true, fromBeguining = true, onDataReady = true) {
     if (fromBeguining) {
-      this.exploreState.idxs = this.exploreState.order.map(i => 0);
+      this.exploreState.idxs = this.exploreState.order.map((i) => 0);
     } else {
-      this.exploreState.idxs = this.exploreState.order.map(field => this.getIndex(field));
+      this.exploreState.idxs = this.exploreState.order.map((field) =>
+        this.getIndex(field)
+      );
     }
     this.exploreState.onDataReady = onDataReady;
     this.exploreState.animate = start;

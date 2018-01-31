@@ -1,7 +1,7 @@
 /* global document */
 import 'babel-polyfill';
-import React                from 'react';
-import ReactDOM             from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import SelectionEditorWidget from '..';
 import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
 
@@ -30,9 +30,14 @@ const ranges = {
   temperature: [-270, 1000],
 };
 
-
-const selectionTypes = [rangeSelection, partitionSelection, SelectionBuilder.convertToRuleSelection(rangeSelection)];
-const legendService = LegendProvider.newInstance({ legendEntries: ['pressure', 'temperature'] });
+const selectionTypes = [
+  rangeSelection,
+  partitionSelection,
+  SelectionBuilder.convertToRuleSelection(rangeSelection),
+];
+const legendService = LegendProvider.newInstance({
+  legendEntries: ['pressure', 'temperature'],
+});
 
 // Get react component
 document.body.style.padding = '10px';
@@ -40,7 +45,7 @@ document.body.style.padding = '10px';
 function render() {
   ReactDOM.render(
     <div>
-      {selectionTypes.map((selection, idx) =>
+      {selectionTypes.map((selection, idx) => (
         <SelectionEditorWidget
           key={idx}
           selection={selection}
@@ -49,14 +54,19 @@ function render() {
           onChange={(newSelection, save) => {
             selectionTypes[idx] = newSelection;
             if (save) {
-              console.log('Push selection', newSelection.generation, newSelection);
+              console.log(
+                'Push selection',
+                newSelection.generation,
+                newSelection
+              );
             }
             render();
           }}
         />
-      )}
+      ))}
     </div>,
-    document.querySelector('.content'));
+    document.querySelector('.content')
+  );
 }
 
 render();

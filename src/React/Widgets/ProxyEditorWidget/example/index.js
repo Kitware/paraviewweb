@@ -1,12 +1,12 @@
 import 'babel-polyfill';
-import React              from 'react';
-import PropTypes          from 'prop-types';
-import ReactDOM           from 'react-dom';
-import ProxyEditorWidget  from '..';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import ProxyEditorWidget from '..';
 
-import source                  from './source-proxy.json';
-import representation          from './representation-proxy.json';
-import view                    from './view-proxy.json';
+import source from './source-proxy.json';
+import representation from './representation-proxy.json';
+import view from './view-proxy.json';
 
 // Load CSS
 require('normalize.css');
@@ -65,7 +65,12 @@ class ProxyEditorTestWidget extends React.Component {
   }
 
   render() {
-    return <ProxyEditorWidget sections={this.state.sections} onCollapseChange={this.onCollapseChange} />;
+    return (
+      <ProxyEditorWidget
+        sections={this.state.sections}
+        onCollapseChange={this.onCollapseChange}
+      />
+    );
   }
 }
 
@@ -73,7 +78,9 @@ ProxyEditorTestWidget.propTypes = {
   sections: PropTypes.array,
 };
 
-
-ReactDOM.render(React.createElement(ProxyEditorTestWidget, { sections }), container);
+ReactDOM.render(
+  React.createElement(ProxyEditorTestWidget, { sections }),
+  container
+);
 
 document.body.style.margin = '10px';

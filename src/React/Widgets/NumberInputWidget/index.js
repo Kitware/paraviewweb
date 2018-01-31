@@ -51,7 +51,8 @@ export default class NumberInputWidget extends React.Component {
         value={this.state.editing ? this.state.valueRep : this.props.value}
         onChange={this.valueChange}
         onBlur={this.endEditing}
-      />);
+      />
+    );
   }
 }
 

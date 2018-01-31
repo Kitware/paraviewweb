@@ -1,7 +1,7 @@
-import LookupTableManager           from '../../../../Common/Core/LookupTableManager';
-import LookupTableManagerControl    from '..';
-import React                        from 'react';
-import ReactDOM                     from 'react-dom';
+import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+import LookupTableManagerControl from '..';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Load CSS
 require('normalize.css');
@@ -18,8 +18,9 @@ lookupTableManager.addLookupTable('Velocity', [5, 150], 'rainbow');
 
 // Render
 ReactDOM.render(
-    <LookupTableManagerControl
-        field='Temperature'
-        lookupTableManager={ lookupTableManager }/>,
-    document.querySelector('.content')
+  <LookupTableManagerControl
+    field="Temperature"
+    lookupTableManager={lookupTableManager}
+  />,
+  document.querySelector('.content')
 );

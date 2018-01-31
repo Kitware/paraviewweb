@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/QueryDataModelWidget.mcss';
 
-import ListWidget   from './String';
+import ListWidget from './String';
 import NumberWidget from './Number';
 
 /**
@@ -64,7 +64,9 @@ export default class QueryDataModelWidget extends React.Component {
   render() {
     var model = this.props.model,
       args = model.originalData.arguments,
-      orderList = model.originalData.arguments_order.filter(name => args[name].values.length > 1);
+      orderList = model.originalData.arguments_order.filter(
+        (name) => args[name].values.length > 1
+      );
 
     return (
       <div className={style.container}>
@@ -76,7 +78,8 @@ export default class QueryDataModelWidget extends React.Component {
                 model={model}
                 arg={name}
                 listener={false}
-              />);
+              />
+            );
           } else if (model.getUiType(name) === 'slider') {
             return (
               <NumberWidget
@@ -84,11 +87,13 @@ export default class QueryDataModelWidget extends React.Component {
                 model={model}
                 arg={name}
                 listener={false}
-              />);
+              />
+            );
           }
           return null;
         })}
-      </div>);
+      </div>
+    );
   }
 }
 

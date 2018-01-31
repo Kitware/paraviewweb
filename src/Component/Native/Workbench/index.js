@@ -38,11 +38,14 @@ function applyLayout(viewport, layout) {
 }
 
 export default class ComponentWorkbench {
-  constructor(el, {
-    useMouse: useMouse = true,
-    spacing: spacing = 10,
-    center: center = [0.5, 0.5],
-  } = {}) {
+  constructor(
+    el,
+    {
+      useMouse: useMouse = true,
+      spacing: spacing = 10,
+      center: center = [0.5, 0.5],
+    } = {}
+  ) {
     this.el = null;
     this.useMouse = useMouse;
     this.dragging = false;
@@ -58,12 +61,21 @@ export default class ComponentWorkbench {
     this.layoutFn = Layouts[this.activeLayout];
     this.mouseHandlers = {
       mousedown: (event) => {
-        if (this.getClickedViewport(event.clientX - this.boundingRect.left,
-            event.clientY - this.boundingRect.top) === -1 && event.target === this.el) {
+        if (
+          this.getClickedViewport(
+            event.clientX - this.boundingRect.left,
+            event.clientY - this.boundingRect.top
+          ) === -1 &&
+          event.target === this.el
+        ) {
           this.dragging = true;
           // offset from current center to drag start.
-          this.dragOffset.x = (this.boundingRect.width * this.wbArrange.center[0]) - (event.clientX - this.boundingRect.left);
-          this.dragOffset.y = (this.boundingRect.height * this.wbArrange.center[1]) - (event.clientY - this.boundingRect.top);
+          this.dragOffset.x =
+            this.boundingRect.width * this.wbArrange.center[0] -
+            (event.clientX - this.boundingRect.left);
+          this.dragOffset.y =
+            this.boundingRect.height * this.wbArrange.center[1] -
+            (event.clientY - this.boundingRect.top);
           event.stopPropagation();
           event.preventDefault();
         }
@@ -79,15 +91,19 @@ export default class ComponentWorkbench {
           if (Math.abs(this.dragOffset.x) > centerSize) {
             // only drag boundary vertically
             this.wbArrange.center[1] =
-              (event.clientY - this.boundingRect.top + this.dragOffset.y) / this.boundingRect.height;
+              (event.clientY - this.boundingRect.top + this.dragOffset.y) /
+              this.boundingRect.height;
           } else if (Math.abs(this.dragOffset.y) > centerSize) {
             // only drag boundary horizontally
             this.wbArrange.center[0] =
-              (event.clientX - this.boundingRect.left + this.dragOffset.x) / this.boundingRect.width;
+              (event.clientX - this.boundingRect.left + this.dragOffset.x) /
+              this.boundingRect.width;
           } else {
             this.wbArrange.center = [
-              (event.clientX - this.boundingRect.left + this.dragOffset.x) / this.boundingRect.width,
-              (event.clientY - this.boundingRect.top + this.dragOffset.y) / this.boundingRect.height,
+              (event.clientX - this.boundingRect.left + this.dragOffset.x) /
+                this.boundingRect.width,
+              (event.clientY - this.boundingRect.top + this.dragOffset.y) /
+                this.boundingRect.height,
             ];
           }
           this.render();
@@ -118,7 +134,11 @@ export default class ComponentWorkbench {
     Object.keys(componentDict).forEach((k) => {
       if (componentDict[k].viewport !== -1) {
         // set the viewport as well
-        this.setViewport(componentDict[k].viewport, componentDict[k].component, false);
+        this.setViewport(
+          componentDict[k].viewport,
+          componentDict[k].component,
+          false
+        );
       }
     });
 
@@ -134,8 +154,12 @@ export default class ComponentWorkbench {
     let index = -1;
     for (let i = 0; i < this.layoutList.length; ++i) {
       const layout = this.layoutList[i];
-      if (x >= layout[0] && x <= (layout[0] + layout[2]) &&
-        y >= layout[1] && y <= (layout[1] + layout[3])) {
+      if (
+        x >= layout[0] &&
+        x <= layout[0] + layout[2] &&
+        y >= layout[1] &&
+        y <= layout[1] + layout[3]
+      ) {
         index = i;
       }
     }
@@ -164,7 +188,8 @@ export default class ComponentWorkbench {
       pixelCenter,
       this.wbArrange.spacing,
       this.wbArrange.width,
-      this.wbArrange.height);
+      this.wbArrange.height
+    );
 
     // Now apply new styles, rendering the new workbench layout and each component
     for (let i = 0; i < NUMBER_OF_VIEWPORTS; ++i) {
@@ -208,7 +233,11 @@ export default class ComponentWorkbench {
 
     // Find out if this viewport already has something else in it
     if (this.viewportList[index].renderer !== null) {
-      this.triggerVisibilityChange(this.viewportList[index].renderer, -1, this.activeLayout);
+      this.triggerVisibilityChange(
+        this.viewportList[index].renderer,
+        -1,
+        this.activeLayout
+      );
       this.viewportList[index].renderer.setContainer(null);
       this.viewportList[index].renderer = null;
     }
@@ -220,8 +249,14 @@ export default class ComponentWorkbench {
       instance.setContainer(this.viewportList[index].el);
       instance.resize();
       Object.keys(this.componentMap).forEach((name) => {
-        if (this.componentMap[name].component === instance && this.componentMap[name].scroll) {
-          this.viewportList[index].el.setAttribute('class', style.scrollableViewport);
+        if (
+          this.componentMap[name].component === instance &&
+          this.componentMap[name].scroll
+        ) {
+          this.viewportList[index].el.setAttribute(
+            'class',
+            style.scrollableViewport
+          );
         }
       });
     }
@@ -270,9 +305,16 @@ export default class ComponentWorkbench {
     if (Layouts[layout]) {
       if (this.activeLayout !== layout) {
         if (LAYOUT_TO_COUNT[this.activeLayout] !== LAYOUT_TO_COUNT[layout]) {
-          const counts = [LAYOUT_TO_COUNT[this.activeLayout], LAYOUT_TO_COUNT[layout]].sort();
+          const counts = [
+            LAYOUT_TO_COUNT[this.activeLayout],
+            LAYOUT_TO_COUNT[layout],
+          ].sort();
           for (let i = counts[0]; i < counts[1]; ++i) {
-            this.triggerVisibilityChange(this.viewportList[i].renderer, i, layout);
+            this.triggerVisibilityChange(
+              this.viewportList[i].renderer,
+              i,
+              layout
+            );
           }
         }
       }
@@ -285,9 +327,13 @@ export default class ComponentWorkbench {
   }
 
   getViewportMapping() {
-    const viewportMapping = this.viewportList.map(viewport => viewport.renderer);
+    const viewportMapping = this.viewportList.map(
+      (viewport) => viewport.renderer
+    );
     Object.keys(this.componentMap).forEach((name) => {
-      this.componentMap[name].viewport = viewportMapping.indexOf(this.componentMap[name].component);
+      this.componentMap[name].viewport = viewportMapping.indexOf(
+        this.componentMap[name].component
+      );
     });
     return this.componentMap;
   }

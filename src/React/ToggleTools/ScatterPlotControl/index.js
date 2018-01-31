@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
 import ScatterPlotControl from '../../Widgets/ScatterPlotControl';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/ScatterPlotControl.svg';
 
 export default class ScatterPlotControlTool extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +67,8 @@ export default class ScatterPlotControlTool extends React.Component {
             onActiveScoresChange={this.props.onActiveScoresChange}
           />
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 

@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
-import ComponentToReact   from '../../../Component/React/ComponentToReact';
-import FieldSelector  from '../../../InfoViz/Native/FieldSelector';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import ComponentToReact from '../../../Component/React/ComponentToReact';
+import FieldSelector from '../../../InfoViz/Native/FieldSelector';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/FieldSelector.svg';
 
 export default class FieldSelectorTool extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +25,9 @@ export default class FieldSelectorTool extends React.Component {
   }
 
   componentWillMount() {
-    this.component = FieldSelector.newInstance({ provider: this.props.provider });
+    this.component = FieldSelector.newInstance({
+      provider: this.props.provider,
+    });
   }
 
   componentWillUnmount() {
@@ -71,11 +72,22 @@ export default class FieldSelectorTool extends React.Component {
           onActive={() => this.props.onActiveWindow(this)}
           front={this === this.props.activeWindow}
         >
-          <div style={{ overflow: 'auto', position: 'absolute', width: '100%', height: '100%' }}>
-            <ComponentToReact className={style.fullSize} component={this.component} />
+          <div
+            style={{
+              overflow: 'auto',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <ComponentToReact
+              className={style.fullSize}
+              component={this.component}
+            />
           </div>
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 

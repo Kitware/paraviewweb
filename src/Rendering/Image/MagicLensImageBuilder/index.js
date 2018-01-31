@@ -3,15 +3,20 @@ import now from 'mout/src/time/now';
 
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
-const
-  IMAGE_READY_TOPIC = 'image-ready',
+const IMAGE_READY_TOPIC = 'image-ready',
   MODEL_CHANGE_TOPIC = 'model-change';
 
 // MagicLensImageBuilder Object ----------------------------------------------
 
 export default class MagicLensImageBuilder {
-
-  constructor(frontImageBuilder, backImageBuilder, lensColor = '#ff0000', minZoom = 20, maxZoom = 0.5, lineWidth = 2) {
+  constructor(
+    frontImageBuilder,
+    backImageBuilder,
+    lensColor = '#ff0000',
+    minZoom = 20,
+    maxZoom = 0.5,
+    lineWidth = 2
+  ) {
     // Keep track of internal image builders
     this.frontImageBuilder = frontImageBuilder;
     this.backImageBuilder = backImageBuilder;
@@ -20,15 +25,19 @@ export default class MagicLensImageBuilder {
     this.queryDataModel = this.frontImageBuilder.queryDataModel;
 
     // Internal render
-    this.frontSubscription = this.frontImageBuilder.onImageReady((data, envelope) => {
-      this.frontEvent = data;
-      this.draw();
-    });
+    this.frontSubscription = this.frontImageBuilder.onImageReady(
+      (data, envelope) => {
+        this.frontEvent = data;
+        this.draw();
+      }
+    );
 
-    this.backSubscription = this.backImageBuilder.onImageReady((data, envelope) => {
-      this.backEvent = data;
-      this.draw();
-    });
+    this.backSubscription = this.backImageBuilder.onImageReady(
+      (data, envelope) => {
+        this.backEvent = data;
+        this.draw();
+      }
+    );
 
     // Lens informations
     const { dimensions } = frontImageBuilder.getControlModels();
@@ -67,19 +76,21 @@ export default class MagicLensImageBuilder {
     this.listener = {
       drag: (event, envelope) => {
         var time = now(),
-          newDrag = (this.lastDragTime + this.newMouseTimeout < time),
+          newDrag = this.lastDragTime + this.newMouseTimeout < time,
           eventManaged = false,
           activeArea = event.activeArea,
           xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
           yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         const xPos = Math.floor(xRatio * this.width),
           yPos = Math.floor(yRatio * this.height),
-          distFromLensCenter = Math.pow(xPos - this.lensCenterX, 2) + Math.pow(yPos - this.lensCenterY, 2);
+          distFromLensCenter =
+            Math.pow(xPos - this.lensCenterX, 2) +
+            Math.pow(yPos - this.lensCenterY, 2);
 
         if (newDrag) {
           this.lensZoom = false;
@@ -94,7 +105,12 @@ export default class MagicLensImageBuilder {
           this.lensDragDY = yPos - this.lensCenterY;
         }
 
-        if ((this.lensDrag || distFromLensCenter < Math.pow(this.lensRadius, 2)) && event.modifier === 0 && !this.listenerDrag) {
+        if (
+          (this.lensDrag ||
+            distFromLensCenter < Math.pow(this.lensRadius, 2)) &&
+          event.modifier === 0 &&
+          !this.listenerDrag
+        ) {
           eventManaged = true;
           this.lensDrag = true;
 
@@ -104,8 +120,14 @@ export default class MagicLensImageBuilder {
           // Make sure the lens can't go out of image
           this.lensCenterX = Math.max(this.lensCenterX, this.lensRadius);
           this.lensCenterY = Math.max(this.lensCenterY, this.lensRadius);
-          this.lensCenterX = Math.min(this.lensCenterX, this.width - this.lensRadius);
-          this.lensCenterY = Math.min(this.lensCenterY, this.height - this.lensRadius);
+          this.lensCenterX = Math.min(
+            this.lensCenterX,
+            this.width - this.lensRadius
+          );
+          this.lensCenterY = Math.min(
+            this.lensCenterY,
+            this.height - this.lensRadius
+          );
 
           this.draw();
         }
@@ -125,7 +147,7 @@ export default class MagicLensImageBuilder {
       /* eslint-disable complexity */
       zoom: (event, envelope) => {
         var time = now(),
-          newZoom = (this.lastZoomTime + this.newMouseTimeout < time),
+          newZoom = this.lastZoomTime + this.newMouseTimeout < time,
           eventManaged = false,
           activeArea = event.activeArea,
           xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
@@ -140,14 +162,21 @@ export default class MagicLensImageBuilder {
         }
 
         // Clamp bounds
-        xRatio = (xRatio < 0) ? 0 : (xRatio > 1) ? 1 : xRatio;
-        yRatio = (yRatio < 0) ? 0 : (yRatio > 1) ? 1 : yRatio;
+        xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
+        yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
         const xPos = Math.floor(xRatio * this.width),
           yPos = Math.floor(yRatio * this.height),
-          distFromLensCenter = Math.pow(xPos - this.lensCenterX, 2) + Math.pow(yPos - this.lensCenterY, 2);
+          distFromLensCenter =
+            Math.pow(xPos - this.lensCenterX, 2) +
+            Math.pow(yPos - this.lensCenterY, 2);
 
-        if ((this.lensZoom || distFromLensCenter < Math.pow(this.lensRadius, 2)) && event.modifier === 0 && !this.listenerZoom) {
+        if (
+          (this.lensZoom ||
+            distFromLensCenter < Math.pow(this.lensRadius, 2)) &&
+          event.modifier === 0 &&
+          !this.listenerZoom
+        ) {
           eventManaged = true;
           this.lensZoom = true;
 
@@ -210,27 +239,47 @@ export default class MagicLensImageBuilder {
     ctx.clearRect(0, 0, this.width, this.height);
 
     // Draw the outside
-    ctx.drawImage(this.backEvent.canvas,
-      this.backEvent.area[0], this.backEvent.area[1],
-      this.backEvent.area[2], this.backEvent.area[3],
-      0, 0, this.width, this.height);
+    ctx.drawImage(
+      this.backEvent.canvas,
+      this.backEvent.area[0],
+      this.backEvent.area[1],
+      this.backEvent.area[2],
+      this.backEvent.area[3],
+      0,
+      0,
+      this.width,
+      this.height
+    );
 
     // Record state for undo clip
     ctx.save();
 
     // Create lens mask
     ctx.beginPath();
-    ctx.arc(this.lensCenterX, this.lensCenterY, this.lensRadius, 0, 2 * Math.PI);
+    ctx.arc(
+      this.lensCenterX,
+      this.lensCenterY,
+      this.lensRadius,
+      0,
+      2 * Math.PI
+    );
     ctx.clip();
 
     // Empty lens content
     ctx.clearRect(0, 0, this.width, this.height);
 
     // Draw only in the lens
-    ctx.drawImage(this.frontEvent.canvas,
-      this.frontEvent.area[0], this.frontEvent.area[1],
-      this.frontEvent.area[2], this.frontEvent.area[3],
-      0, 0, this.width, this.height);
+    ctx.drawImage(
+      this.frontEvent.canvas,
+      this.frontEvent.area[0],
+      this.frontEvent.area[1],
+      this.frontEvent.area[2],
+      this.frontEvent.area[3],
+      0,
+      0,
+      this.width,
+      this.height
+    );
 
     // Restore clip
     ctx.restore();
@@ -239,7 +288,13 @@ export default class MagicLensImageBuilder {
     ctx.beginPath();
     ctx.lineWidth = this.lineWidth;
     ctx.strokeStyle = this.lensColor;
-    ctx.arc(this.lensCenterX, this.lensCenterY, this.lensRadius, 0, 2 * Math.PI);
+    ctx.arc(
+      this.lensCenterX,
+      this.lensCenterY,
+      this.lensRadius,
+      0,
+      2 * Math.PI
+    );
     ctx.closePath();
     ctx.stroke();
 
@@ -322,7 +377,6 @@ export default class MagicLensImageBuilder {
     this.frontActive = !this.frontActive;
     this.emit(MODEL_CHANGE_TOPIC);
   }
-
 }
 
 // Add Observer pattern using Monologue.js

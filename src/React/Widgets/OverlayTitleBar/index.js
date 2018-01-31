@@ -7,8 +7,13 @@ export default function overlayTitleBar(props) {
   return (
     <div>
       <span className={style.overlayTitle}>{props.title}</span>
-      <button className={style.closeControlBtn} name={props.name} onClick={props.onClose} />
-    </div>);
+      <button
+        className={style.closeControlBtn}
+        name={props.name}
+        onClick={props.onClose}
+      />
+    </div>
+  );
 }
 
 overlayTitleBar.propTypes = {

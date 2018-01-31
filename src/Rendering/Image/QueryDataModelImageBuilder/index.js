@@ -1,11 +1,13 @@
 import AbstractImageBuilder from '../AbstractImageBuilder';
 
 export default class QueryDataModelImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel) {
-    super({ queryDataModel, dimensions: queryDataModel.originalData.data[0].dimensions || [500, 500] });
+    super({
+      queryDataModel,
+      dimensions: queryDataModel.originalData.data[0].dimensions || [500, 500],
+    });
 
     this.lastQueryImage = null;
     this.onLoadCallback = () => {
@@ -13,16 +15,18 @@ export default class QueryDataModelImageBuilder extends AbstractImageBuilder {
       this.render();
     };
 
-    this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
-      if (this.lastQueryImage) {
-        this.lastQueryImage.removeEventListener('load', this.onLoadCallback);
-      }
+    this.registerSubscription(
+      queryDataModel.onDataChange((data, envelope) => {
+        if (this.lastQueryImage) {
+          this.lastQueryImage.removeEventListener('load', this.onLoadCallback);
+        }
 
-      if (data.image) {
-        this.lastQueryImage = data.image.image;
-        this.render();
-      }
-    }));
+        if (data.image) {
+          this.lastQueryImage = data.image.image;
+          this.render();
+        }
+      })
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -48,5 +52,4 @@ export default class QueryDataModelImageBuilder extends AbstractImageBuilder {
       this.lastQueryImage.addEventListener('load', this.onLoadCallback);
     }
   }
-
 }

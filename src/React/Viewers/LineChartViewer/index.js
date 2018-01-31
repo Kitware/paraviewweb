@@ -1,11 +1,10 @@
-import equals    from 'mout/src/object/equals';
-import React     from 'react';
+import equals from 'mout/src/object/equals';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
-
 
 function interpolate(values, xRatio) {
   var size = values.length,
@@ -13,7 +12,7 @@ function interpolate(values, xRatio) {
     a = values[Math.floor(idx)],
     b = values[Math.ceil(idx)],
     ratio = idx - Math.floor(idx);
-  return (((b - a) * ratio) + a).toFixed(5);
+  return ((b - a) * ratio + a).toFixed(5);
 }
 
 /**
@@ -66,7 +65,10 @@ export default class LineChartViewer extends React.Component {
   }
 
   onMove(event) {
-    this.xPosition = event.clientX - (event.target.getClientRects()[0].x || event.target.getClientRects()[0].left);
+    this.xPosition =
+      event.clientX -
+      (event.target.getClientRects()[0].x ||
+        event.target.getClientRects()[0].left);
 
     // Update fields values
 
@@ -81,7 +83,11 @@ export default class LineChartViewer extends React.Component {
     const el = this.rootContainer.parentNode,
       elSize = sizeHelper.getSize(el);
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+    if (
+      el &&
+      (this.state.width !== elSize.clientWidth ||
+        this.state.height !== elSize.clientHeight)
+    ) {
       this.setState({
         width: elSize.clientWidth,
         height: elSize.clientHeight,
@@ -125,8 +131,9 @@ export default class LineChartViewer extends React.Component {
     // Draw cursor
     if (this.state.legend) {
       this.xValueLabel.innerHTML = (
-        ((this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio)
-        + this.props.data.xRange[0]).toFixed(5);
+        (this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio +
+        this.props.data.xRange[0]
+      ).toFixed(5);
 
       ctx.beginPath();
       ctx.lineWidth = 1;
@@ -174,7 +181,7 @@ export default class LineChartViewer extends React.Component {
 
     function getY(idx) {
       var value = values[idx];
-      value = (value > min) ? ((value < max) ? value : max) : min;
+      value = value > min ? (value < max ? value : max) : min;
       return height - Math.floor((value - min) * scaleY);
     }
 
@@ -206,29 +213,46 @@ export default class LineChartViewer extends React.Component {
         <li className={style.legendItem} key={name}>
           <i className={style.legendItemColor} style={{ color }} />
           <b>{name}</b>
-          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }} />
-        </li>);
+          <span
+            className={style.legendItemValue}
+            ref={(c) => {
+              this[name] = c;
+            }}
+          />
+        </li>
+      );
     });
 
     return (
-      <div className={style.container} ref={c => (this.rootContainer = c)}>
+      <div className={style.container} ref={(c) => (this.rootContainer = c)}>
         <canvas
           className={style.canvas}
-          ref={(c) => { this.canvas = c; }}
+          ref={(c) => {
+            this.canvas = c;
+          }}
           onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
         />
         <div className={this.state.legend ? style.legend : style.hidden}>
           <div className={style.legendBar}>
-            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }} />
-            <i className={style.toggleLegendButton} onClick={this.toggleLegend} />
+            <span
+              className={style.legendText}
+              ref={(c) => {
+                this.xValueLabel = c;
+              }}
+            />
+            <i
+              className={style.toggleLegendButton}
+              onClick={this.toggleLegend}
+            />
           </div>
-          <ul className={style.legendContent}>
-            {legend}
-          </ul>
+          <ul className={style.legendContent}>{legend}</ul>
         </div>
-        <div className={this.state.legend ? style.hidden : style.legend} onClick={this.toggleLegend}>
+        <div
+          className={this.state.legend ? style.hidden : style.legend}
+          onClick={this.toggleLegend}
+        >
           <div className={style.legendButtons}>
             <i className={style.toggleLegendButton} />
           </div>
@@ -249,13 +273,7 @@ LineChartViewer.propTypes = {
 };
 
 LineChartViewer.defaultProps = {
-  colors: [
-    '#e1002a',
-    '#417dc0',
-    '#1d9a57',
-    '#e9bc2f',
-    '#9b3880',
-  ],
+  colors: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
   height: 200,
   legend: false,
   width: 200,

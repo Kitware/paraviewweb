@@ -42,13 +42,17 @@ function fieldProvider(publicAPI, model) {
   };
 
   publicAPI.getActiveFieldNames = () => {
-    const val = Object.keys(model.fields).filter(name => model.fields[name].active);
+    const val = Object.keys(model.fields).filter(
+      (name) => model.fields[name].active
+    );
     if (model.fieldsSorted) val.sort();
     return val;
   };
 
   publicAPI.addField = (name, initialState = {}) => {
-    const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, { name });
+    const field = Object.assign({}, DEFAULT_FIELD_STATE, initialState, {
+      name,
+    });
     field.range = [].concat(field.range); // Make sure we copy the array
     model.fields[name] = field;
     triggerFieldChange(field);
@@ -59,14 +63,16 @@ function fieldProvider(publicAPI, model) {
     triggerFieldChange();
   };
 
-  publicAPI.getField = name => model.fields[name];
+  publicAPI.getField = (name) => model.fields[name];
 
   publicAPI.updateField = (name, changeSet = {}) => {
     const field = model.fields[name] || {};
     let hasChange = false;
 
     Object.keys(changeSet).forEach((key) => {
-      hasChange = hasChange || JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
+      hasChange =
+        hasChange ||
+        JSON.stringify(field[key]) !== JSON.stringify(changeSet[key]);
       // Set changes
       field[key] = changeSet[key];
     });

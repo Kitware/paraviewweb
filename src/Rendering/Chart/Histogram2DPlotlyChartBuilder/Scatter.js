@@ -18,7 +18,7 @@ export default function Scatter(chartState, histogram, chartType) {
       {
         x,
         y,
-        text: color.map(count => (`Count: ${count}`)),
+        text: color.map((count) => `Count: ${count}`),
         type: chartType,
         mode: 'markers',
         marker: {

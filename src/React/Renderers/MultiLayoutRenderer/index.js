@@ -1,10 +1,10 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Monologue from 'monologue.js';
 
-import layoutFunctions  from './Layouts';
-import sizeHelper       from '../../../Common/Misc/SizeHelper';
-import MouseHandler     from '../../../Interaction/Core/MouseHandler';
+import layoutFunctions from './Layouts';
+import sizeHelper from '../../../Common/Misc/SizeHelper';
+import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 const layoutNames = Object.keys(layoutFunctions);
 const ACTIVE_VIEWPORT_CHANGE = 'multiview-viewport-active-change';
@@ -170,8 +170,14 @@ export default class MultiViewRenderer extends React.Component {
 
     while (count) {
       count -= 1;
-      const area = this.viewports[count].activeArea || this.viewports[count].region;
-      if (x >= area[0] && y >= area[1] && x <= (area[0] + area[2]) && y <= (area[1] + area[3])) {
+      const area =
+        this.viewports[count].activeArea || this.viewports[count].region;
+      if (
+        x >= area[0] &&
+        y >= area[1] &&
+        x <= area[0] + area[2] &&
+        y <= area[1] + area[3]
+      ) {
         return this.viewports[count];
       }
     }
@@ -183,7 +189,11 @@ export default class MultiViewRenderer extends React.Component {
     var el = this.canvasRenderer.parentNode,
       elSize = sizeHelper.getSize(el);
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+    if (
+      el &&
+      (this.state.width !== elSize.clientWidth ||
+        this.state.height !== elSize.clientHeight)
+    ) {
       this.setState({
         width: elSize.clientWidth,
         height: elSize.clientHeight,
@@ -284,7 +294,12 @@ export default class MultiViewRenderer extends React.Component {
       region = viewport.region,
       ctx = this.canvasRenderer ? this.canvasRenderer.getContext('2d') : null;
 
-    if (!ctx || !renderer || (renderer.builder && !renderer.dataToDraw) || (renderer.painter && !renderer.painter.isReady())) {
+    if (
+      !ctx ||
+      !renderer ||
+      (renderer.builder && !renderer.dataToDraw) ||
+      (renderer.painter && !renderer.painter.isReady())
+    ) {
       return;
     }
 
@@ -310,14 +325,21 @@ export default class MultiViewRenderer extends React.Component {
 
       const tw = Math.floor(iw * zoomLevel) - 2,
         th = Math.floor(ih * zoomLevel) - 2,
-        tx = 1 + region[0] + ((w * 0.5) - (tw / 2)),
-        ty = 1 + region[1] + ((h * 0.5) - (th / 2));
+        tx = 1 + region[0] + (w * 0.5 - tw / 2),
+        ty = 1 + region[1] + (h * 0.5 - th / 2);
 
       try {
         ctx.drawImage(
           dataToDraw.canvas,
-          dataToDraw.area[0], dataToDraw.area[1], dataToDraw.area[2], dataToDraw.area[3], // Source image   [Location,Size]
-          tx, ty, tw, th); // Target drawing [Location,Size]
+          dataToDraw.area[0],
+          dataToDraw.area[1],
+          dataToDraw.area[2],
+          dataToDraw.area[3], // Source image   [Location,Size]
+          tx,
+          ty,
+          tw,
+          th
+        ); // Target drawing [Location,Size]
 
         // Draw cross hair if any
         if (dataToDraw.crosshair) {
@@ -326,11 +348,17 @@ export default class MultiViewRenderer extends React.Component {
 
           ctx.beginPath();
 
-          ctx.moveTo(translate[0] + (scale[0] * dataToDraw.crosshair[0]), ty);
-          ctx.lineTo(translate[0] + (scale[0] * dataToDraw.crosshair[0]), ty + th);
+          ctx.moveTo(translate[0] + scale[0] * dataToDraw.crosshair[0], ty);
+          ctx.lineTo(
+            translate[0] + scale[0] * dataToDraw.crosshair[0],
+            ty + th
+          );
 
-          ctx.moveTo(tx, translate[1] + (scale[1] * dataToDraw.crosshair[1]));
-          ctx.lineTo(tx + tw, translate[1] + (scale[1] * dataToDraw.crosshair[1]));
+          ctx.moveTo(tx, translate[1] + scale[1] * dataToDraw.crosshair[1]);
+          ctx.lineTo(
+            tx + tw,
+            translate[1] + scale[1] * dataToDraw.crosshair[1]
+          );
 
           ctx.strokeStyle = this.props.crosshairColor;
           ctx.lineWidth = 1;
@@ -372,7 +400,6 @@ export default class MultiViewRenderer extends React.Component {
 
     ctx.clearRect(0, 0, width, height);
 
-
     for (let i = 0; i < numberOfRegions; ++i) {
       const region = regions.shift();
       if (i < viewports.length) {
@@ -385,7 +412,9 @@ export default class MultiViewRenderer extends React.Component {
         });
       }
       ctx.beginPath();
-      ctx.strokeStyle = viewports[i].active ? this.props.activeColor : this.props.borderColor;
+      ctx.strokeStyle = viewports[i].active
+        ? this.props.activeColor
+        : this.props.borderColor;
       ctx.rect(...region);
       ctx.stroke();
     }
@@ -402,7 +431,9 @@ export default class MultiViewRenderer extends React.Component {
     return (
       <canvas
         className="CanvasMultiImageRenderer"
-        ref={(c) => { this.canvasRenderer = c; }}
+        ref={(c) => {
+          this.canvasRenderer = c;
+        }}
         width={this.state.width}
         height={this.state.height}
       />

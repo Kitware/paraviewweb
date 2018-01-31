@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
-import CollapsibleWidget  from '../../Widgets/CollapsibleWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
 
 function getImageBuilder(props) {
   let imageBuilder = props.imageBuilder;
@@ -33,8 +33,12 @@ export default class ProbeControl extends React.Component {
     this.getImageBuilder = getImageBuilder;
     this.onProbeVisibilityChange = this.onProbeVisibilityChange.bind(this);
     this.getImageBuilder = this.getImageBuilder.bind(this);
-    this.attachImageBuilderListeners = this.attachImageBuilderListeners.bind(this);
-    this.detachImageBuilderListeners = this.detachImageBuilderListeners.bind(this);
+    this.attachImageBuilderListeners = this.attachImageBuilderListeners.bind(
+      this
+    );
+    this.detachImageBuilderListeners = this.detachImageBuilderListeners.bind(
+      this
+    );
     this.updateRenderMethod = this.updateRenderMethod.bind(this);
     this.probeChange = this.probeChange.bind(this);
   }
@@ -88,23 +92,28 @@ export default class ProbeControl extends React.Component {
 
   attachImageBuilderListeners(imageBuilder) {
     this.detachImageBuilderListeners();
-    this.probeListenerSubscription = imageBuilder.onProbeChange((probe, envelope) => {
-      var field = imageBuilder.getFieldValueAtProbeLocation();
-      if (this.isReady) {
-        this.setState({
-          probe, field,
-        });
+    this.probeListenerSubscription = imageBuilder.onProbeChange(
+      (probe, envelope) => {
+        var field = imageBuilder.getFieldValueAtProbeLocation();
+        if (this.isReady) {
+          this.setState({
+            probe,
+            field,
+          });
+        }
       }
-    });
+    );
 
-    this.probeDataListenerSubscription = imageBuilder.onProbeLineReady((data, envelope) => {
-      var field = imageBuilder.getFieldValueAtProbeLocation();
-      if (this.isReady && field !== this.state.field) {
-        this.setState({
-          field,
-        });
+    this.probeDataListenerSubscription = imageBuilder.onProbeLineReady(
+      (data, envelope) => {
+        var field = imageBuilder.getFieldValueAtProbeLocation();
+        if (this.isReady && field !== this.state.field) {
+          this.setState({
+            field,
+          });
+        }
       }
-    });
+    );
   }
 
   detachImageBuilderListeners() {
@@ -154,39 +163,51 @@ export default class ProbeControl extends React.Component {
 
     return (
       <div>
-        <CollapsibleWidget title="Render method" visible={imageBuilder.isRenderMethodMutable()} >
+        <CollapsibleWidget
+          title="Render method"
+          visible={imageBuilder.isRenderMethodMutable()}
+        >
           <select
             style={{ width: '100%' }}
             value={imageBuilder.getRenderMethod()}
             onChange={this.updateRenderMethod}
           >
-            {imageBuilder.getRenderMethods().map(v => <option key={v} value={v}>{v}</option>)}
+            {imageBuilder.getRenderMethods().map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </CollapsibleWidget>
         <CollapsibleWidget
           title="Probe"
           subtitle={this.state.showFieldValue ? valueStr : ''}
-          ref={(c) => { this.probeInput = c; }}
+          ref={(c) => {
+            this.probeInput = c;
+          }}
           onChange={this.onProbeVisibilityChange}
           open={imageBuilder.isCrossHairEnabled()}
         >
           <NumberSliderWidget
             name="0"
-            min="0" max={imageBuilder.metadata.dimensions[0] - 1}
+            min="0"
+            max={imageBuilder.metadata.dimensions[0] - 1}
             key="slider-x"
             value={this.state.probe[0]}
             onChange={this.probeChange}
           />
           <NumberSliderWidget
             name="1"
-            min="0" max={imageBuilder.metadata.dimensions[1] - 1}
+            min="0"
+            max={imageBuilder.metadata.dimensions[1] - 1}
             key="slider-Y"
             value={this.state.probe[1]}
             onChange={this.probeChange}
           />
           <NumberSliderWidget
             name="2"
-            min="0" max={imageBuilder.metadata.dimensions[2] - 1}
+            min="0"
+            max={imageBuilder.metadata.dimensions[2] - 1}
             key="slider-Z"
             value={this.state.probe[2]}
             onChange={this.probeChange}

@@ -18,7 +18,11 @@ export default class ActionListWidget extends React.Component {
     }
 
     if (this.props.onClick) {
-      this.props.onClick(target.dataset.name, target.dataset.action, target.dataset.user);
+      this.props.onClick(
+        target.dataset.name,
+        target.dataset.action,
+        target.dataset.user
+      );
     }
   }
 
@@ -36,14 +40,15 @@ export default class ActionListWidget extends React.Component {
           data-user={item.data || ''}
           onClick={this.processClick}
         >
-          <i className={item.icon} />{item.name}
-        </li>);
+          <i className={item.icon} />
+          {item.name}
+        </li>
+      );
     });
 
     return <ul className={style.list}>{list}</ul>;
   }
 }
-
 
 ActionListWidget.propTypes = {
   list: PropTypes.array.isRequired,

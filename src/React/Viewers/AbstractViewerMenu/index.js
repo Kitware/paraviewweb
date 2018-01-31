@@ -55,9 +55,11 @@ export default class AbstractViewerMenu extends React.Component {
 
   attachListener(dataModel) {
     this.detachListener();
-    this.queryDataModelChangeSubscription = dataModel.onStateChange((data, envelope) => {
-      this.forceUpdate();
-    });
+    this.queryDataModelChangeSubscription = dataModel.onStateChange(
+      (data, envelope) => {
+        this.forceUpdate();
+      }
+    );
   }
 
   detachListener() {
@@ -87,13 +89,20 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   resetCamera() {
-    if (this.isReady && (this.props.renderer === 'ImageRenderer' || this.props.renderer === 'GeometryRenderer')) {
+    if (
+      this.isReady &&
+      (this.props.renderer === 'ImageRenderer' ||
+        this.props.renderer === 'GeometryRenderer')
+    ) {
       this.renderer.resetCamera();
     }
   }
 
   play() {
-    this.props.queryDataModel.animate(true, this.state.speeds[this.state.speedIdx]);
+    this.props.queryDataModel.animate(
+      true,
+      this.state.speeds[this.state.speedIdx]
+    );
   }
 
   stop() {
@@ -122,73 +131,112 @@ export default class AbstractViewerMenu extends React.Component {
     return (
       <div className={style.container}>
         <div
-          className={this.state.collapsed ? style.collapsedControl : style.control}
+          className={
+            this.state.collapsed ? style.collapsedControl : style.control
+          }
         >
           <div className={style.controlBar}>
             <i
-              className={magicLensController ?
-                (magicLensController.isFront() ? style.magicLensButtonIn : style.magicLensButtonOut)
-                : style.hidden}
+              className={
+                magicLensController
+                  ? magicLensController.isFront()
+                    ? style.magicLensButtonIn
+                    : style.magicLensButtonOut
+                  : style.hidden
+              }
               onClick={this.toggleLens}
             />
             <i
-              className={(serverRecording && (this.props.renderer === 'ImageRenderer') && this.props.imageBuilder.handleRecord)
-                ? (this.state.record ? style.recordButtonOn : style.recordButtonOff) : style.hidden}
+              className={
+                serverRecording &&
+                this.props.renderer === 'ImageRenderer' &&
+                this.props.imageBuilder.handleRecord
+                  ? this.state.record
+                    ? style.recordButtonOn
+                    : style.recordButtonOff
+                  : style.hidden
+              }
               onClick={this.toggleRecord}
             />
             <i
-              className={(['ImageRenderer', 'GeometryRenderer'].indexOf(this.props.renderer) !== -1) ? style.resetCameraButton : style.hidden}
+              className={
+                ['ImageRenderer', 'GeometryRenderer'].indexOf(
+                  this.props.renderer
+                ) !== -1
+                  ? style.resetCameraButton
+                  : style.hidden
+              }
               onClick={this.resetCamera}
             />
             <i
-              className={(queryDataModel.hasAnimationFlag() && !queryDataModel.isAnimating() ? style.playButton : style.hidden)}
+              className={
+                queryDataModel.hasAnimationFlag() &&
+                !queryDataModel.isAnimating()
+                  ? style.playButton
+                  : style.hidden
+              }
               onClick={this.play}
             />
             <i
-              className={(queryDataModel.isAnimating() ? style.stopButton : style.hidden)}
+              className={
+                queryDataModel.isAnimating() ? style.stopButton : style.hidden
+              }
               onClick={this.stop}
             />
             <i
-              className={(queryDataModel.hasAnimationFlag() ? style.speedButton : style.hidden)}
+              className={
+                queryDataModel.hasAnimationFlag()
+                  ? style.speedButton
+                  : style.hidden
+              }
               onClick={this.updateSpeed}
             />
             <i
-              className={(queryDataModel.hasAnimationFlag() ? style.animationSpeed : style.hidden)}
+              className={
+                queryDataModel.hasAnimationFlag()
+                  ? style.animationSpeed
+                  : style.hidden
+              }
               onClick={this.updateSpeed}
             >
               {`${this.state.speeds[this.state.speedIdx]}ms`}
             </i>
             <i
-              className={this.state.collapsed ? style.collapsedMenuButton : style.menuButton}
+              className={
+                this.state.collapsed
+                  ? style.collapsedMenuButton
+                  : style.menuButton
+              }
               onClick={this.togglePanel}
             />
           </div>
-          <div className={style.controlContent}>
-            {this.props.children}
-          </div>
+          <div className={style.controlContent}>{this.props.children}</div>
         </div>
         <Renderer
           // Common
           className={style.renderer}
-          ref={(c) => { this.renderer = c; }}
+          ref={(c) => {
+            this.renderer = c;
+          }}
           userData={this.props.userData}
-
           // ImageRenderer
           imageBuilder={rootImageBuilder}
-          listener={this.props.mouseListener || (rootImageBuilder && rootImageBuilder.getListeners ? rootImageBuilder.getListeners() : null)}
-
+          listener={
+            this.props.mouseListener ||
+            (rootImageBuilder && rootImageBuilder.getListeners
+              ? rootImageBuilder.getListeners()
+              : null)
+          }
           // MultiViewRenderer
           renderers={this.props.renderers}
           layout={this.props.layout}
-
           // GeometryRenderer
           geometryBuilder={this.props.geometryBuilder}
-
           // PlotlyRenderer
           chartBuilder={this.props.chartBuilder}
         />
       </div>
-      );
+    );
   }
   /* eslint-enable complexity */
 }

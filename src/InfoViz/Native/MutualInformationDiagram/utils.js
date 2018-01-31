@@ -30,7 +30,9 @@ export function downsample(src, nn, swap) {
 
   // assert(hsz === src[0].length);
   let tn = 1;
-  while (tn < nn && tn < hsz) { tn *= 2; }
+  while (tn < nn && tn < hsz) {
+    tn *= 2;
+  }
 
   const stride = hsz / tn;
 
@@ -113,9 +115,11 @@ export function matrixFind(xx, condition) {
 
   const nn = xx[0].length;
 
-  const xf = flattenMatrix(xx)
-    .reduce((a, b, i) => (condition(b, i) ? a.concat([[Math.floor(i / nn), i % nn]]) : a),
-    []);
+  const xf = flattenMatrix(xx).reduce(
+    (a, b, i) =>
+      condition(b, i) ? a.concat([[Math.floor(i / nn), i % nn]]) : a,
+    []
+  );
   return xf;
 }
 
@@ -123,7 +127,7 @@ export function matrixSubset(mat, isRow, idx) {
   if (isRow) {
     return [mat[idx]]; // return a "new" matrix that has only one row.
   }
-  return mat.map(row => [row[idx]]);
+  return mat.map((row) => [row[idx]]);
 }
 
 export function matrixChoose(xx, idxs) {
@@ -132,7 +136,7 @@ export function matrixChoose(xx, idxs) {
 
 export function topProb(dd, qq) {
   var qval = quantile(dd.pAB, qq);
-  var idxs = matrixFind(dd.pAB, d => d > qval);
+  var idxs = matrixFind(dd.pAB, (d) => d > qval);
   return {
     pAB: matrixChoose(dd.pAB, idxs),
     pmi: matrixChoose(dd.pmi, idxs),
@@ -141,9 +145,9 @@ export function topProb(dd, qq) {
 }
 
 export function topPmi(dd, qq) {
-  var apmi = dd.pmi.map(row => row.map(v => Math.abs(v)));
+  var apmi = dd.pmi.map((row) => row.map((v) => Math.abs(v)));
   var qval = quantile(apmi, qq);
-  var idxs = matrixFind(apmi, d => d > qval);
+  var idxs = matrixFind(apmi, (d) => d > qval);
   return {
     pAB: matrixChoose(dd.pAB, idxs),
     pmi: matrixChoose(dd.pmi, idxs),
@@ -155,47 +159,52 @@ export function topPmi(dd, qq) {
 export function topBinProb(dd, isA, bin, qq) {
   var subset = matrixSubset(dd.pAB, !isA, bin);
   var qval = quantile(subset, qq);
-  var idxs = matrixFind(subset, d => d > qval);
+  var idxs = matrixFind(subset, (d) => d > qval);
 
   console.log(
-    'binprob, isA:', isA,
-    ' bin:', bin,
-    ' idxs:', idxs,
-    ' midx: ', idxs.map(d => (!isA ? [bin, d[1]] : [bin, d[0]])),
-    ' subset: ', subset
+    'binprob, isA:',
+    isA,
+    ' bin:',
+    bin,
+    ' idxs:',
+    idxs,
+    ' midx: ',
+    idxs.map((d) => (!isA ? [bin, d[1]] : [bin, d[0]])),
+    ' subset: ',
+    subset
   );
 
   return {
     pAB: matrixChoose(subset, idxs),
     pmi: matrixChoose(matrixSubset(dd.pmi, !isA, bin), idxs),
-    idx: idxs.map(d => (!isA ? [bin, d[1]] : [bin, d[0]])),
+    idx: idxs.map((d) => (!isA ? [bin, d[1]] : [bin, d[0]])),
   };
 }
 
 export function topBinPmi(dd, isA, bin, qq) {
   var subset = matrixSubset(dd.pmi, !isA, bin);
-  var apmi = subset.map(row => row.map(v => Math.abs(v)));
+  var apmi = subset.map((row) => row.map((v) => Math.abs(v)));
   var qval = quantile(apmi, qq);
-  var idxs = matrixFind(apmi, d => d > qval);
+  var idxs = matrixFind(apmi, (d) => d > qval);
 
   return {
     pAB: matrixChoose(matrixSubset(dd.pAB, !isA, bin), idxs),
     pmi: matrixChoose(subset, idxs),
-    idx: idxs.map(d => (!isA ? [bin, d[1]] : [bin, d[0]])),
+    idx: idxs.map((d) => (!isA ? [bin, d[1]] : [bin, d[0]])),
   };
 }
 
 export function calculateAngleAndRadius(coords, containerDims) {
   const width = containerDims[0];
   const height = containerDims[1];
-  const x = coords[0] - (width / 2);
-  const y = (height - coords[1]) - (height / 2);
+  const x = coords[0] - width / 2;
+  const y = height - coords[1] - height / 2;
   // Need straight up in screen space to have angle 0, adjust atan2 args accordingly
   let arctangent = -Math.atan2(-x, y);
   if (arctangent < 0) {
     arctangent = Math.PI + (Math.PI + arctangent);
   }
-  return [arctangent, Math.sqrt((x * x) + (y * y))];
+  return [arctangent, Math.sqrt(x * x + y * y)];
 }
 
 export default {

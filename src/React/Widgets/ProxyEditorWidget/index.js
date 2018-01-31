@@ -1,7 +1,7 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style         from 'PVWStyle/ReactWidgets/ProxyEditorWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/ProxyEditorWidget.mcss';
 import PropertyGroup from '../ProxyPropertyGroupWidget';
 
 export default class ProxyEditorWidget extends React.Component {
@@ -56,7 +56,11 @@ export default class ProxyEditorWidget extends React.Component {
       <div className={style.container}>
         <div className={style.toolbar}>
           <i
-            className={this.state.advanced ? style.activeAdvancedButton : style.advancedButton}
+            className={
+              this.state.advanced
+                ? style.activeAdvancedButton
+                : style.advancedButton
+            }
             onClick={this.toggleAdvanced}
           />
           <input
@@ -65,17 +69,18 @@ export default class ProxyEditorWidget extends React.Component {
             onChange={this.updateFilter}
             className={style.filter}
           />
-          {this.props.autoApply ?
-            null :
+          {this.props.autoApply ? null : (
             <i
-              className={changeCount ? style.validateButtonOn : style.validateButton}
+              className={
+                changeCount ? style.validateButtonOn : style.validateButton
+              }
               onClick={this.applyChanges}
             />
-          }
+          )}
         </div>
         <div className={style.contentContainer}>
           {this.props.children}
-          {this.props.sections.map(section =>
+          {this.props.sections.map((section) => (
             <PropertyGroup
               key={section.name}
               proxy={section}
@@ -85,9 +90,10 @@ export default class ProxyEditorWidget extends React.Component {
               onChange={this.updateChangeSet}
               onCollapseChange={this.props.onCollapseChange}
             />
-          )}
+          ))}
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 
@@ -104,4 +110,3 @@ ProxyEditorWidget.defaultProps = {
   advanced: false,
   autoApply: false,
 };
-

@@ -1,11 +1,14 @@
 import Monologue from 'monologue.js';
 
-const
-    CHANGE_TOPIC = 'model.change';
+const CHANGE_TOPIC = 'model.change';
 
 export default class EqualizerState {
-
-  constructor({ size = 1, colors = ['#cccccc'], lookupTable = null, scalars = [] }) {
+  constructor({
+    size = 1,
+    colors = ['#cccccc'],
+    lookupTable = null,
+    scalars = [],
+  }) {
     this.size = size;
     this.scalars = scalars;
     this.lookupTable = lookupTable;
@@ -44,7 +47,7 @@ export default class EqualizerState {
     this.updateOpacities = (values) => {
       var changeDetected = false;
       for (let i = 0; i < this.size; i++) {
-        changeDetected = changeDetected || (this.opacities[i] !== values[i]);
+        changeDetected = changeDetected || this.opacities[i] !== values[i];
         this.opacities[i] = values[i];
       }
       if (changeDetected) {
@@ -61,7 +64,7 @@ export default class EqualizerState {
 
       for (let i = 0; i < this.size; i++) {
         opacity += opacityStep;
-        changeDetected = changeDetected || (this.opacities[i] !== opacity);
+        changeDetected = changeDetected || this.opacities[i] !== opacity;
         this.opacities[i] = opacity;
       }
       if (changeDetected) {

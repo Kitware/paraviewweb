@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import Slider           from './Slider';
+import Slider from './Slider';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
@@ -69,7 +69,10 @@ export default class SliderProperty extends React.Component {
       if (Array.isArray(this.props.data.value)) {
         const ret = [];
         for (let i = 0; i < this.props.data.value.length; i++) {
-          const step = (this.props.ui.type && this.props.ui.type.toLowerCase() === 'double' ? 0.1 : 1);
+          const step =
+            this.props.ui.type && this.props.ui.type.toLowerCase() === 'double'
+              ? 0.1
+              : 1;
           ret.push(
             <Slider
               value={this.props.data.value[i]}
@@ -79,12 +82,16 @@ export default class SliderProperty extends React.Component {
               idx={i}
               onChange={this.valueChange}
               key={`${this.props.data.id}_${i}`}
-            />);
+            />
+          );
         }
         return ret;
       }
 
-      const step = (this.props.ui.type && this.props.ui.type.toLowerCase() === 'double' ? 0.1 : 1);
+      const step =
+        this.props.ui.type && this.props.ui.type.toLowerCase() === 'double'
+          ? 0.1
+          : 1;
       return (
         <Slider
           value={this.props.data.value}
@@ -92,11 +99,16 @@ export default class SliderProperty extends React.Component {
           max={this.props.ui.domain.max}
           step={step}
           onChange={this.valueChange}
-        />);
+        />
+      );
     };
 
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+      <div
+        className={
+          this.props.show(this.props.viewData) ? style.container : style.hidden
+        }
+      >
         <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
@@ -108,14 +120,13 @@ export default class SliderProperty extends React.Component {
             />
           </span>
         </div>
-        <div className={style.inputBlock}>
-          {mapper()}
-        </div>
+        <div className={style.inputBlock}>{mapper()}</div>
         <div
           className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
-      </div>);
+      </div>
+    );
   }
 }
 

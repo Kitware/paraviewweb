@@ -84,7 +84,8 @@ export function extend(publicAPI, model, initialValues = {}) {
       const cleanedData = Object.assign({}, data, { annotationInfo: [] });
       const previousData = binStorage[data.x.name][data.y.name];
 
-      const sameAsBefore = (JSON.stringify(cleanedData) === JSON.stringify(previousData));
+      const sameAsBefore =
+        JSON.stringify(cleanedData) === JSON.stringify(previousData);
 
       binStorage[data.x.name][data.y.name] = cleanedData;
       binStorage[data.y.name][data.x.name] = flipHistogram(cleanedData);
@@ -102,7 +103,11 @@ export function extend(publicAPI, model, initialValues = {}) {
         if (!returnedData[axisPair[0]]) {
           returnedData[axisPair[0]] = {};
         }
-        if (binStorage && binStorage[axisPair[0]] && binStorage[axisPair[0]][axisPair[1]]) {
+        if (
+          binStorage &&
+          binStorage[axisPair[0]] &&
+          binStorage[axisPair[0]][axisPair[1]]
+        ) {
           const hist2d = binStorage[axisPair[0]][axisPair[1]];
 
           // Look for range consistency within data
@@ -110,11 +115,15 @@ export function extend(publicAPI, model, initialValues = {}) {
             if (!rangeConsistency[hist2d.x.name]) {
               rangeConsistency[hist2d.x.name] = [];
             }
-            rangeConsistency[hist2d.x.name].push(JSON.stringify(hist2d.x.extent));
+            rangeConsistency[hist2d.x.name].push(
+              JSON.stringify(hist2d.x.extent)
+            );
             if (!rangeConsistency[hist2d.y.name]) {
               rangeConsistency[hist2d.y.name] = [];
             }
-            rangeConsistency[hist2d.y.name].push(JSON.stringify(hist2d.y.extent));
+            rangeConsistency[hist2d.y.name].push(
+              JSON.stringify(hist2d.y.extent)
+            );
           }
           count += 1;
           maxCount = maxCount < hist2d.maxCount ? hist2d.maxCount : maxCount;
@@ -123,7 +132,8 @@ export function extend(publicAPI, model, initialValues = {}) {
             if (!returnedData[axisPair[1]]) {
               returnedData[axisPair[1]] = {};
             }
-            returnedData[axisPair[1]][axisPair[0]] = binStorage[axisPair[1]][axisPair[0]];
+            returnedData[axisPair[1]][axisPair[0]] =
+              binStorage[axisPair[1]][axisPair[0]];
           }
         }
       });
@@ -131,7 +141,10 @@ export function extend(publicAPI, model, initialValues = {}) {
       // Attach global maxCount
       returnedData.maxCount = maxCount;
 
-      if (count === request.variables.length || (request.metadata.partial && count > 0)) {
+      if (
+        count === request.variables.length ||
+        (request.metadata.partial && count > 0)
+      ) {
         // Chech consistency
         let skip = false;
         Object.keys(rangeConsistency).forEach((name) => {

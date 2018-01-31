@@ -35,7 +35,9 @@ export default class ComponentToReact extends React.Component {
   }
 
   render() {
-    return <div className={this.props.className} ref={c => (this.container = c)} />;
+    return (
+      <div className={this.props.className} ref={(c) => (this.container = c)} />
+    );
   }
 }
 

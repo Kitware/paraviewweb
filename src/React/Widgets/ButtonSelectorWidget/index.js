@@ -30,7 +30,16 @@ export default class ButtonSelectorWidget extends React.Component {
     var list = [];
 
     this.props.list.forEach((item) => {
-      list.push(<button className={style.button} key={item.name} name={item.name} onClick={this.processItem}>{item.name}</button>);
+      list.push(
+        <button
+          className={style.button}
+          key={item.name}
+          name={item.name}
+          onClick={this.processItem}
+        >
+          {item.name}
+        </button>
+      );
     });
 
     return <section className={style.container}>{list}</section>;

@@ -66,7 +66,7 @@ export default class EqualizerWidget extends React.Component {
     var el = this.rootContainer.parentNode,
       innerWidth = SizeHelper.getSize(el, true).clientWidth;
 
-    if (el && innerWidth && (this.state.width !== innerWidth)) {
+    if (el && innerWidth && this.state.width !== innerWidth) {
       this.setState({ width: innerWidth });
       return true;
     }
@@ -83,24 +83,36 @@ export default class EqualizerWidget extends React.Component {
       height = this.state.height,
       size = array.length,
       spacing = this.props.spacing,
-      layerWidth = Math.floor(((width - (5 * spacing)) / size) - spacing),
-      maxLayerHeight = height - (4 * spacing),
-      layerStep = layerWidth + ((width - (layerWidth * array.length) - (2 * spacing)) / (array.length + 1));
+      layerWidth = Math.floor((width - 5 * spacing) / size - spacing),
+      maxLayerHeight = height - 4 * spacing,
+      layerStep =
+        layerWidth +
+        (width - layerWidth * array.length - 2 * spacing) / (array.length + 1);
 
     ctx.clearRect(0, 0, this.state.width, this.state.height);
 
     ctx.beginPath();
-    ctx.rect(spacing, spacing, width - (2 * spacing), height - (2 * spacing));
+    ctx.rect(spacing, spacing, width - 2 * spacing, height - 2 * spacing);
     ctx.stroke();
 
     for (let i = 0; i < size; i++) {
       const layerHeight = array[i] * maxLayerHeight;
 
       ctx.fillStyle = this.props.colors[i % this.props.colors.length];
-      ctx.fillRect((layerStep * i) + (2 * spacing), height - layerHeight - (2 * spacing), layerWidth, layerHeight);
+      ctx.fillRect(
+        layerStep * i + 2 * spacing,
+        height - layerHeight - 2 * spacing,
+        layerWidth,
+        layerHeight
+      );
 
       ctx.beginPath();
-      ctx.rect((layerStep * i) + (2 * spacing), height - layerHeight - (2 * spacing), layerWidth, layerHeight);
+      ctx.rect(
+        layerStep * i + 2 * spacing,
+        height - layerHeight - 2 * spacing,
+        layerWidth,
+        layerHeight
+      );
       ctx.stroke();
     }
 
@@ -116,15 +128,20 @@ export default class EqualizerWidget extends React.Component {
 
   clicked(e) {
     var rect = this.canvas.getClientRects()[0],
-      x = e.pointers[0].clientX - rect.left - (2 * this.props.spacing),
-      y = e.pointers[0].clientY - rect.top - (2 * this.props.spacing),
-      effectiveHeight = rect.height - (4 * this.props.spacing),
-      idx = Math.min(this.state.layers.length - 1, Math.floor((x / (rect.width - (4 * this.props.spacing))) * this.state.layers.length)),
-      opacity = 1.0 - (y / effectiveHeight),
+      x = e.pointers[0].clientX - rect.left - 2 * this.props.spacing,
+      y = e.pointers[0].clientY - rect.top - 2 * this.props.spacing,
+      effectiveHeight = rect.height - 4 * this.props.spacing,
+      idx = Math.min(
+        this.state.layers.length - 1,
+        Math.floor(
+          x / (rect.width - 4 * this.props.spacing) * this.state.layers.length
+        )
+      ),
+      opacity = 1.0 - y / effectiveHeight,
       layers = [].concat(this.state.layers);
 
-    opacity = (opacity > 1.0) ? 1.0 : opacity;
-    opacity = (opacity < 0.0) ? 0.0 : opacity;
+    opacity = opacity > 1.0 ? 1.0 : opacity;
+    opacity = opacity < 0.0 ? 0.0 : opacity;
     layers[idx] = opacity;
 
     this.setState({ layers });
@@ -136,10 +153,12 @@ export default class EqualizerWidget extends React.Component {
 
   render() {
     return (
-      <div className={style.container} ref={c => (this.rootContainer = c)}>
+      <div className={style.container} ref={(c) => (this.rootContainer = c)}>
         <canvas
           className={style.canvas}
-          ref={(c) => { this.canvas = c; }}
+          ref={(c) => {
+            this.canvas = c;
+          }}
           width={this.state.width}
           height={this.state.height}
         />

@@ -46,10 +46,20 @@ export default class CollapsibleWidget extends React.Component {
             <i className={style[this.state.open ? 'caret' : 'caretClosed']} />
             <strong className={style.title}>{this.props.title}</strong>
           </div>
-          <span className={this.props.activeSubTitle ? style.subtitleActive : style.subtitle}>{this.props.subtitle}</span>
+          <span
+            className={
+              this.props.activeSubTitle ? style.subtitleActive : style.subtitle
+            }
+          >
+            {this.props.subtitle}
+          </span>
         </div>
 
-        <div className={style[this.state.open ? 'visibleContent' : 'hiddenContent']}>
+        <div
+          className={
+            style[this.state.open ? 'visibleContent' : 'hiddenContent']
+          }
+        >
           {this.props.children}
         </div>
       </section>
@@ -61,7 +71,11 @@ CollapsibleWidget.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   onChange: PropTypes.func,
   open: PropTypes.bool,
-  subtitle: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.array]),
+  subtitle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.array,
+  ]),
   title: PropTypes.string,
   visible: PropTypes.bool,
   activeSubTitle: PropTypes.bool,

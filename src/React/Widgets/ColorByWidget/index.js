@@ -50,11 +50,13 @@ export default class ColorByWidget extends React.Component {
     if (this.props.onChange) {
       this.props.onChange({
         type: 'propertyChange',
-        changeSet: [{
-          id: this.props.representation.id,
-          name: 'Representation',
-          value: representationValue,
-        }],
+        changeSet: [
+          {
+            id: this.props.representation.id,
+            name: 'Representation',
+            value: representationValue,
+          },
+        ],
       });
     }
   }
@@ -71,7 +73,6 @@ export default class ColorByWidget extends React.Component {
     if (colorMode === 'SOLID') {
       scalarBarVisible = false;
     }
-
 
     this.setState({ colorValue, scalarBarVisible, colorMode });
     if (this.props.onChange) {
@@ -93,14 +94,24 @@ export default class ColorByWidget extends React.Component {
       return;
     }
 
-    const extractRepProp = p => (p.name === 'Representation');
-    const removeFieldArray = a => (a.location !== 'FIELDS');
-    const representationValues = props.representation.ui.filter(extractRepProp)[0].values;
-    const representationValue = props.representation.properties.filter(extractRepProp)[0].value;
-    const colorValues = [{ name: 'Solid color' }].concat(props.source.data.arrays.filter(removeFieldArray));
-    const colorValue = props.representation.colorBy.array.filter((v, i) => i < 2).join(SEP);
+    const extractRepProp = (p) => p.name === 'Representation';
+    const removeFieldArray = (a) => a.location !== 'FIELDS';
+    const representationValues = props.representation.ui.filter(
+      extractRepProp
+    )[0].values;
+    const representationValue = props.representation.properties.filter(
+      extractRepProp
+    )[0].value;
+    const colorValues = [{ name: 'Solid color' }].concat(
+      props.source.data.arrays.filter(removeFieldArray)
+    );
+    const colorValue = props.representation.colorBy.array
+      .filter((v, i) => i < 2)
+      .join(SEP);
     const scalarBarVisible = !!props.representation.colorBy.scalarBar;
-    const solidColor = `#${props.representation.colorBy.color.map(doubleToHex).join('')}`;
+    const solidColor = `#${props.representation.colorBy.color
+      .map(doubleToHex)
+      .join('')}`;
 
     const colorMode = colorValue.split(SEP)[1] ? 'array' : 'SOLID';
 
@@ -152,9 +163,11 @@ export default class ColorByWidget extends React.Component {
             value={this.state.representationValue}
             onChange={this.onRepresentationChange}
           >
-            {this.state.representationValues.map((v, idx) =>
-              <option key={idx} value={v}>{v}</option>
-            )}
+            {this.state.representationValues.map((v, idx) => (
+              <option key={idx} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </div>
         <div className={style.line}>
@@ -164,37 +177,58 @@ export default class ColorByWidget extends React.Component {
             value={this.state.colorValue}
             onChange={this.onColorChange}
           >
-            {this.state.colorValues.map((c, idx) =>
-              <option key={idx} value={c.location ? [c.location, c.name].join(SEP) : ''}>
-                {c.location ? `(${c.location === 'POINTS' ? 'p' : 'c'}${c.size}) ${c.name}` : c.name}
+            {this.state.colorValues.map((c, idx) => (
+              <option
+                key={idx}
+                value={c.location ? [c.location, c.name].join(SEP) : ''}
+              >
+                {c.location
+                  ? `(${c.location === 'POINTS' ? 'p' : 'c'}${c.size}) ${
+                      c.name
+                    }`
+                  : c.name}
               </option>
-            )}
+            ))}
           </select>
         </div>
         <div className={style.line}>
           <i
             onClick={this.toggleAdvancedView}
-            className={this.state.advancedView ? style.advanceIconOn : style.advanceIconOff}
+            className={
+              this.state.advancedView
+                ? style.advanceIconOn
+                : style.advanceIconOff
+            }
           />
-          {this.props.scalarBar && this.state.colorValue && this.state.colorValue.split(SEP)[1].length ?
+          {this.props.scalarBar &&
+          this.state.colorValue &&
+          this.state.colorValue.split(SEP)[1].length ? (
             <img
               onClick={this.toggleScalarBar}
               className={style.scalarBar}
               src={`data:image/png;base64,${this.props.scalarBar}`}
               alt="ScalarBar"
             />
-            : <div className={style.scalarBar} style={{ backgroundColor: this.state.solidColor }} />
-         }
+          ) : (
+            <div
+              className={style.scalarBar}
+              style={{ backgroundColor: this.state.solidColor }}
+            />
+          )}
           <i
             onClick={this.toggleScalarBar}
-            className={this.state.scalarBarVisible ? style.scalarBarIconOn : style.scalarBarIconOff}
+            className={
+              this.state.scalarBarVisible
+                ? style.scalarBarIconOn
+                : style.scalarBarIconOff
+            }
           />
         </div>
         <AdvancedView visible={this.state.advancedView} {...this.props} />
-      </div>);
+      </div>
+    );
   }
 }
-
 
 ColorByWidget.propTypes = {
   className: PropTypes.string,

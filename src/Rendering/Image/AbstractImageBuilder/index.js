@@ -1,13 +1,17 @@
 import Monologue from 'monologue.js';
 
-const
-  IMAGE_READY_TOPIC = 'image-ready';
+const IMAGE_READY_TOPIC = 'image-ready';
 
 export default class AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
-  constructor({ queryDataModel, pipelineModel, lookupTableManager, handleRecord = false, dimensions = [500, 500] }) {
+  constructor({
+    queryDataModel,
+    pipelineModel,
+    lookupTableManager,
+    handleRecord = false,
+    dimensions = [500, 500],
+  }) {
     this.queryDataModel = queryDataModel;
     this.pipelineModel = pipelineModel;
     this.lookupTableManager = lookupTableManager;

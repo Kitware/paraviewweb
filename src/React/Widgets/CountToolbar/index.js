@@ -5,8 +5,8 @@ import style from 'PVWStyle/ReactWidgets/CountToolbar.mcss';
 
 import { capitalize } from '../../../Common/Core/CompositeClosureHelper';
 
-const arrayZeros = n => Array(...Array(n)).map(Number.prototype.valueOf, 0);
-const arraySequence = n => Array(...Array(n)).map((d, i) => i);
+const arrayZeros = (n) => Array(...Array(n)).map(Number.prototype.valueOf, 0);
+const arraySequence = (n) => Array(...Array(n)).map((d, i) => i);
 
 export default class CountToolbar extends React.Component {
   constructor(props) {
@@ -20,8 +20,9 @@ export default class CountToolbar extends React.Component {
       annotationType: 'empty',
       annotationName: '',
       scoreCounts: arrayZeros(numScores + 1),
-      activeScores: this.props.activeScores ? [].concat(this.props.activeScores) :
-        arraySequence(numScores + 1),
+      activeScores: this.props.activeScores
+        ? [].concat(this.props.activeScores)
+        : arraySequence(numScores + 1),
       scores: inScores,
       numScores,
     };
@@ -34,23 +35,30 @@ export default class CountToolbar extends React.Component {
 
   componentWillMount() {
     this.subscriptions = [];
-    this.subscriptions.push(this.props.provider.subscribeToDataSelection('counts', (countData) => {
-      let count = 0;
-      let unselected = 0;
-      let total = 0;
-      const scoreCounts = arrayZeros(this.state.numScores + 1);
-      countData.forEach((item) => {
-        unselected += item.count;
-        scoreCounts[item.role.score] = item.count;
-        if (this.state.activeScores.indexOf(item.role.score) !== -1) {
-          count += item.count;
-        }
-        total = item.total;
-      });
-      unselected = total - unselected;
-      scoreCounts[scoreCounts.length - 1] = unselected;
-      this.setState({ count, scoreCounts, total });
-    }, [], { partitionScores: arraySequence(this.state.numScores) }));
+    this.subscriptions.push(
+      this.props.provider.subscribeToDataSelection(
+        'counts',
+        (countData) => {
+          let count = 0;
+          let unselected = 0;
+          let total = 0;
+          const scoreCounts = arrayZeros(this.state.numScores + 1);
+          countData.forEach((item) => {
+            unselected += item.count;
+            scoreCounts[item.role.score] = item.count;
+            if (this.state.activeScores.indexOf(item.role.score) !== -1) {
+              count += item.count;
+            }
+            total = item.total;
+          });
+          unselected = total - unselected;
+          scoreCounts[scoreCounts.length - 1] = unselected;
+          this.setState({ count, scoreCounts, total });
+        },
+        [],
+        { partitionScores: arraySequence(this.state.numScores) }
+      )
+    );
 
     const processAnnotation = (annotation) => {
       if (!annotation) {
@@ -62,7 +70,10 @@ export default class CountToolbar extends React.Component {
       changeSet.annotationType = annotationType;
       changeSet.annotationName = annotation.name ? annotation.name : '';
 
-      if (this.state.annotationType === 'partition' && annotationType !== 'partition') {
+      if (
+        this.state.annotationType === 'partition' &&
+        annotationType !== 'partition'
+      ) {
         // Changing from partition to anything else, we re-activate everything
         changeSet.activeScores = arraySequence(this.state.numScores + 1);
       }
@@ -73,7 +84,9 @@ export default class CountToolbar extends React.Component {
       }
     };
 
-    this.subscriptions.push(this.props.provider.onAnnotationChange(processAnnotation));
+    this.subscriptions.push(
+      this.props.provider.onAnnotationChange(processAnnotation)
+    );
     processAnnotation(this.props.provider.getAnnotation());
   }
 
@@ -102,7 +115,7 @@ export default class CountToolbar extends React.Component {
     if (this.state.activeScores.indexOf(idx) === -1) {
       changeSet.activeScores = this.state.activeScores.concat(idx);
     } else {
-      changeSet.activeScores = this.state.activeScores.filter(i => i !== idx);
+      changeSet.activeScores = this.state.activeScores.filter((i) => i !== idx);
     }
 
     let count = 0;
@@ -121,10 +134,16 @@ export default class CountToolbar extends React.Component {
         <div
           className={style.activeAnnotationName}
           title={`Active annotation: ${this.state.annotationName}`}
-        >{this.state.annotationName}</div>
-        <section className={style.scoreContainer} >
+        >
+          {this.state.annotationName}
+        </div>
+        <section className={style.scoreContainer}>
           <div
-            className={this.state.activeScores.indexOf(this.state.numScores) !== -1 ? style.selectedScoreBlock : style.scoreBlock}
+            className={
+              this.state.activeScores.indexOf(this.state.numScores) !== -1
+                ? style.selectedScoreBlock
+                : style.scoreBlock
+            }
             style={{
               background: '#CCCCCC',
               display: 'inline-block',
@@ -132,24 +151,33 @@ export default class CountToolbar extends React.Component {
             title={`Total (${this.state.count} active)`}
             data-score={`${this.state.numScores}`}
             onClick={this.boxClick}
-          >{this.state.total}</div>
+          >
+            {this.state.total}
+          </div>
           <div className={style.expressionOperator}>=</div>
-          {this.state.scores.map((score, idx) =>
+          {this.state.scores.map((score, idx) => (
             <div key={`root-${idx}`} className={style.subBlock}>
               <div
-                className={this.state.activeScores.indexOf(idx) !== -1 ? style.selectedScoreBlock : style.scoreBlock}
+                className={
+                  this.state.activeScores.indexOf(idx) !== -1
+                    ? style.selectedScoreBlock
+                    : style.scoreBlock
+                }
                 style={{
                   background: score.color,
                   display: 'inline-block',
                 }}
-                title={`"${capitalize(score.name)}" (${this.state.annotationType} annotation)`}
+                title={`"${capitalize(score.name)}" (${
+                  this.state.annotationType
+                } annotation)`}
                 data-score={idx}
                 onClick={this.boxClick}
-              >{this.state.scoreCounts[idx]}
+              >
+                {this.state.scoreCounts[idx]}
               </div>
               <div className={style.expressionOperator}>+</div>
             </div>
-          )}
+          ))}
           <div
             className={style.selectedScoreBlock}
             style={{
@@ -159,9 +187,12 @@ export default class CountToolbar extends React.Component {
               cursor: 'default',
             }}
             title={`Unselected (${this.state.annotationType} annotation)`}
-          >{this.state.scoreCounts[this.state.scoreCounts.length - 1]}</div>
+          >
+            {this.state.scoreCounts[this.state.scoreCounts.length - 1]}
+          </div>
         </section>
-      </div>);
+      </div>
+    );
   }
 }
 

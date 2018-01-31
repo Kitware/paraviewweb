@@ -20,7 +20,7 @@ function isA(publicAPI, model = {}, name = null) {
   }
 
   if (!publicAPI.isA) {
-    publicAPI.isA = className => (model.isA.indexOf(className) !== -1);
+    publicAPI.isA = (className) => model.isA.indexOf(className) !== -1;
   }
 }
 
@@ -209,7 +209,7 @@ function dynamicArray(publicAPI, model, name) {
 // ----------------------------------------------------------------------------
 
 function chain(...fn) {
-  return (...args) => fn.filter(i => !!i).forEach(i => i(...args));
+  return (...args) => fn.filter((i) => !!i).forEach((i) => i(...args));
 }
 
 // ----------------------------------------------------------------------------
@@ -266,9 +266,16 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
   function flushDataToListener(dataListener, dataChanged) {
     try {
       if (dataListener) {
-        const dataToForward = dataHandler.get(model[dataContainerName], dataListener.request, dataChanged);
-        if (dataToForward
-          && (JSON.stringify(dataToForward) !== dataListener.request.lastPush || dataListener.request.metadata.forceFlush)) {
+        const dataToForward = dataHandler.get(
+          model[dataContainerName],
+          dataListener.request,
+          dataChanged
+        );
+        if (
+          dataToForward &&
+          (JSON.stringify(dataToForward) !== dataListener.request.lastPush ||
+            dataListener.request.metadata.forceFlush)
+        ) {
           dataListener.request.lastPush = JSON.stringify(dataToForward);
           dataListener.onDataReady(dataToForward);
         }
@@ -285,7 +292,11 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
   // since the last push.  However, by providing "forceFlush: true" in the metadata,
   // subscribers can indicate that they want data pushed to them even if there has been
   // no change since the last push.
-  publicAPI[`subscribeTo${capitalize(dataName)}`] = (onDataReady, variables = [], metadata = {}) => {
+  publicAPI[`subscribeTo${capitalize(dataName)}`] = (
+    onDataReady,
+    variables = [],
+    metadata = {}
+  ) => {
     const id = dataSubscriptions.length;
     const request = {
       id,
@@ -311,7 +322,7 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
       update(vars, meta) {
         request.variables = [].concat(vars);
         if (meta && meta.forceFlush !== request.metadata.forceFlush) {
-          forceFlushRequests += (meta.forceFlush ? 1 : -1);
+          forceFlushRequests += meta.forceFlush ? 1 : -1;
         }
         request.metadata = Object.assign({}, request.metadata, meta);
         publicAPI[fireMethodName](request);
@@ -323,8 +334,13 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
   // Method use to store data
   publicAPI[`set${capitalize(dataName)}`] = (data) => {
     // Process all subscription to see if we can trigger a notification
-    if (!dataHandler.set(model[dataContainerName], data) || forceFlushRequests > 0) {
-      dataSubscriptions.forEach(dataListener => flushDataToListener(dataListener, data));
+    if (
+      !dataHandler.set(model[dataContainerName], data) ||
+      forceFlushRequests > 0
+    ) {
+      dataSubscriptions.forEach((dataListener) =>
+        flushDataToListener(dataListener, data)
+      );
     }
   };
 
@@ -335,7 +351,11 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
     try {
       if (inRequest) {
         const request = Object.assign({}, inRequest, { variables: [variable] });
-        const dataToForward = dataHandler.get(model[dataContainerName], request, null);
+        const dataToForward = dataHandler.get(
+          model[dataContainerName],
+          request,
+          null
+        );
         if (dataToForward) {
           return true;
         }

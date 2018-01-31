@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ColorByWidget.mcss';
 
-import PresetListWidget   from '../PresetListWidget';
-import ScalarRangeWidget  from '../ScalarRangeWidget';
+import PresetListWidget from '../PresetListWidget';
+import ScalarRangeWidget from '../ScalarRangeWidget';
 import PieceWiseFunctionEditorWidget from '../PieceWiseFunctionEditorWidget';
 import PieceWiseGaussianFunctionEditorWidget from '../PieceWiseGaussianFunctionEditorWidget';
 
@@ -46,22 +46,34 @@ export default class ColorByWidget extends React.Component {
 
   render() {
     return (
-      <div className={this.props.visible ? style.advancedView : style.hidden} >
+      <div className={this.props.visible ? style.advancedView : style.hidden}>
         <div className={style.advancedViewControl}>
           <i
             data-idx="0"
             onClick={this.updateActiveView}
-            className={this.state.activeAdvanceView === '0' ? style.activePresetIcon : style.presetIcon}
+            className={
+              this.state.activeAdvanceView === '0'
+                ? style.activePresetIcon
+                : style.presetIcon
+            }
           />
           <i
             data-idx="1"
             onClick={this.updateActiveView}
-            className={this.state.activeAdvanceView === '1' ? style.activeRangeIcon : style.rangeIcon}
+            className={
+              this.state.activeAdvanceView === '1'
+                ? style.activeRangeIcon
+                : style.rangeIcon
+            }
           />
           <i
             data-idx="2"
             onClick={this.updateActiveView}
-            className={this.state.activeAdvanceView === '2' ? style.activeOpacityIcon : style.opacityIcon}
+            className={
+              this.state.activeAdvanceView === '2'
+                ? style.activeOpacityIcon
+                : style.opacityIcon
+            }
           />
         </div>
         <div className={style.advancedViewContent}>
@@ -76,7 +88,7 @@ export default class ColorByWidget extends React.Component {
             max={this.props.max}
             onApply={this.updateRange}
           />
-          {this.state.activeAdvanceView === '2' && !this.props.useGaussian ?
+          {this.state.activeAdvanceView === '2' && !this.props.useGaussian ? (
             <PieceWiseFunctionEditorWidget
               points={this.props.opacityPoints}
               rangeMin={this.props.min}
@@ -86,9 +98,9 @@ export default class ColorByWidget extends React.Component {
               height={this.props.opacityEditorSize[1]}
               width={this.props.opacityEditorSize[0]}
               hidePointControl={this.props.hidePointControl}
-            /> : null
-          }
-          {this.state.activeAdvanceView === '2' && this.props.useGaussian ?
+            />
+          ) : null}
+          {this.state.activeAdvanceView === '2' && this.props.useGaussian ? (
             <PieceWiseGaussianFunctionEditorWidget
               points={this.props.opacityPoints}
               gaussians={this.props.gaussians}
@@ -99,10 +111,11 @@ export default class ColorByWidget extends React.Component {
               onEditModeChange={this.props.onOpacityEditModeChange}
               height={this.props.opacityEditorSize[1]}
               width={this.props.opacityEditorSize[0]}
-            /> : null
-          }
+            />
+          ) : null}
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

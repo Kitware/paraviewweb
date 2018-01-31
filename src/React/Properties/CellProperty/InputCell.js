@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import convert  from '../../../Common/Misc/Convert';
+import convert from '../../../Common/Misc/Convert';
 import validate from '../../../Common/Misc/Validate';
 
 export default class InputCell extends React.Component {
@@ -30,12 +30,15 @@ export default class InputCell extends React.Component {
     }
 
     // Handle range
-    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
+    if (
+      {}.hasOwnProperty.call(this.props.domain, 'range') &&
+      this.props.domain.range.length
+    ) {
       const size = this.props.domain.range.length;
       const { min, max } = this.props.domain.range[idx % size] || {};
 
-      tooltip += (min !== undefined) ? `min(${min}) ` : '';
-      tooltip += (max !== undefined) ? `max(${max}) ` : '';
+      tooltip += min !== undefined ? `min(${min}) ` : '';
+      tooltip += max !== undefined ? `max(${max}) ` : '';
     }
 
     return tooltip;
@@ -48,12 +51,15 @@ export default class InputCell extends React.Component {
 
     // Handle range
     let newValue = val;
-    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
+    if (
+      {}.hasOwnProperty.call(this.props.domain, 'range') &&
+      this.props.domain.range.length
+    ) {
       const size = this.props.domain.range.length;
       const { min, max, force } = this.props.domain.range[idx % size];
       if (force) {
-        newValue = (min !== undefined) ? Math.max(min, newValue) : newValue;
-        newValue = (max !== undefined) ? Math.min(max, newValue) : newValue;
+        newValue = min !== undefined ? Math.max(min, newValue) : newValue;
+        newValue = max !== undefined ? Math.min(max, newValue) : newValue;
       }
     }
     return newValue;
@@ -93,7 +99,8 @@ export default class InputCell extends React.Component {
           title={this.getTooltip()}
           onBlur={this.endEditing}
         />
-      </td>);
+      </td>
+    );
   }
 }
 
