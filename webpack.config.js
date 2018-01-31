@@ -1,46 +1,32 @@
 var path = require('path');
-var webpack = require('webpack');
-var loaders = require('./config/webpack.loaders.js');
-var pluginList = [];
 
-if (process.env.NODE_ENV === 'production') {
-  console.log('==> Production build');
-  pluginList.push(new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production'),
-    },
-  }));
-}
+const pvwRules = require('./config/rules-pvw.js');
+const linterRules = require('./config/rules-linter.js');
+
+const entry = path.join(__dirname, './src/index.js');
+const outputPath = path.join(__dirname, './dist');
+const styles = path.join(__dirname, './style');
+
+const plugins = [];
 
 module.exports = {
-  plugins: pluginList,
-  entry: './src/index.js',
+  plugins,
+  entry,
   output: {
-    path: './dist',
+    path: outputPath,
     filename: 'ParaViewWeb.js',
+    libraryTarget: 'umd',
   },
   module: {
-    noParse: [
-      /plotly\.js/
-    ],
-    preLoaders: [{
-      test: /\.js$/,
-      loader: 'eslint-loader',
-      exclude: /node_modules/,
-    }],
-    loaders: [
-      { test: require.resolve('./src/index.js'), loader: 'expose?ParaViewWeb' },
-    ].concat(loaders),
+    noParse: [/plotly\.js/],
+    rules: [
+      { test: entry, loader: 'expose-loader?ParaViewWeb' },
+    ].concat(pvwRules, linterRules),
   },
   resolve: {
     alias: {
-      PVWStyle: path.resolve('./style'),
+      paraviewweb: __dirname,
+      PVWStyle: styles,
     },
-  },
-  postcss: [
-    require('autoprefixer')({ browsers: ['last 2 versions'] }),
-  ],
-  eslint: {
-    configFile: '.eslintrc.js',
   },
 };

@@ -34,21 +34,21 @@ module.exports = [
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)paraviewweb(\/|\\)/,
-    loader: 'babel-loader?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=env,presets[]=react',
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)vtk.js(\/|\\)/,
-    loader: 'babel-loader?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=env,presets[]=react',
   }, {
     test: /\.js$/,
     include: /node_modules(\/|\\)wslink(\/|\\)/,
-    loader: 'babel-loader?presets[]=es2015',
+    loader: 'babel-loader?presets[]=env',
   }, {
     test: /\.glsl$/,
     loader: 'shader-loader',
   }, {
     test: /\.js$/,
     exclude: /node_modules/,
-    loader: 'babel-loader?presets[]=es2015,presets[]=react',
+    loader: 'babel-loader?presets[]=env,presets[]=react',
   },
 ];
