@@ -1,5 +1,9 @@
-const vtkLoaders = require('../config/webpack.loaders.js');
 const path = require('path');
+
+const linterRules = require('../config/rules-linter.js');
+const pvwRules = require('../config/rules-pvw.js');
+const vtkRules = require('../config/rules-vtk.js');
+const wslinkRules = require('../config/rules-wslink.js');
 
 module.exports = {
   baseUrl: '/paraviewweb',
@@ -8,8 +12,10 @@ module.exports = {
   examples: ['../src'],
   config: {
     title: 'ParaViewWeb',
-    description: '"ParaViewWeb is a Web framework which allow to bring the power of ParaView and VTK into the Web."',
-    subtitle: '"Small framework for bringing scientific visualization to the Web"',
+    description:
+      '"ParaViewWeb is a Web framework which allow to bring the power of ParaView and VTK into the Web."',
+    subtitle:
+      '"Small framework for bringing scientific visualization to the Web"',
     author: 'Kitware Inc.',
     timezone: 'UTC',
     url: 'https://kitware.github.io/paraviewweb',
@@ -19,19 +25,19 @@ module.exports = {
   },
   webpack: {
     module: {
-      noParse: [
-      /plotly\.js/
-      ],
-      loaders: vtkLoaders,
+      noParse: [/plotly\.js/],
+      rules: [].concat(
+        linterRules,
+        pvwRules,
+        vtkRules,
+        wslinkRules
+      ),
     },
     resolve: {
       alias: {
         PVWStyle: path.resolve('./style'),
       },
     },
-    postcss: [
-      require('autoprefixer')({ browsers: ['last 2 versions'] }),
-    ],
   },
   copy: [],
 };

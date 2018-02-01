@@ -12,31 +12,29 @@ export default function render(props) {
       <OperatorRender
         className={props.className}
         getLegend={props.getLegend}
-
         onChange={props.onChange}
         onDelete={props.onDelete}
-
         rule={props.rule}
         depth={props.depth}
         maxDepth={props.maxDepth}
         path={props.path}
-      />);
+      />
+    );
   }
   if (ruleSelector === '5C') {
     return (
-      <DepthMatchingRender depth={props.depth} maxDepth={props.maxDepth} >
+      <DepthMatchingRender depth={props.depth} maxDepth={props.maxDepth}>
         <FiveClauseRender
           getLegend={props.getLegend}
-
           onChange={props.onChange}
           onDelete={props.onDelete}
-
           rule={props.rule}
           depth={props.depth}
           maxDepth={props.maxDepth}
           path={props.path}
         />
-      </DepthMatchingRender>);
+      </DepthMatchingRender>
+    );
   }
   return null;
 }
@@ -50,4 +48,15 @@ render.propTypes = {
   onChange: PropTypes.func,
   onDelete: PropTypes.func,
   getLegend: PropTypes.func,
+};
+
+render.defaultProps = {
+  className: undefined,
+  rule: undefined,
+  depth: undefined,
+  maxDepth: undefined,
+  path: undefined,
+  onChange: undefined,
+  onDelete: undefined,
+  getLegend: undefined,
 };

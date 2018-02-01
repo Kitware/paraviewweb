@@ -1,4 +1,4 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/GitTreeWidget.mcss';
@@ -30,7 +30,7 @@ function generateModel(list, rootId) {
   list.forEach((el) => {
     // Make sure we don't share the same reference
     // with the outside world.
-    var node = Object.assign({}, el);
+    const node = Object.assign({}, el);
 
     // Register node as a child of its parent
     if (!{}.hasOwnProperty.call(model.tree, node.parent)) {
@@ -52,7 +52,7 @@ function generateModel(list, rootId) {
 
 function assignNodePosition(model, node, x) {
   // Get children if any
-  var children = model.tree[node.id];
+  const children = model.tree[node.id];
 
   // Expand node with position information
   node.x = x;
@@ -72,19 +72,22 @@ function assignNodePosition(model, node, x) {
 
     // Move down the tree with the most right side of the tree
     children.forEach((child, index) => {
-      assignNodePosition(model, child, (x + children.length) - (index + 1));
+      assignNodePosition(model, child, x + children.length - (index + 1));
     });
   }
 }
 
 function extractBranchesAndForks(model, leaf) {
-  var { x, y } = leaf,
-    { rootId, map, branches, forks } = model,
-    branch = { x, y },
-    currentNode = leaf;
+  const { x, y } = leaf;
+  const { rootId, map, branches, forks } = model;
+  const branch = { x, y };
+  let currentNode = leaf;
 
   // Move currentNode to the top before fork while stretching the branch
-  while (currentNode.parent !== rootId && map[currentNode.parent].x === branch.x) {
+  while (
+    currentNode.parent !== rootId &&
+    map[currentNode.parent].x === branch.x
+  ) {
     currentNode = map[currentNode.parent];
     branch.to = currentNode.y;
   }
@@ -146,18 +149,18 @@ export default class GitTreeWidget extends React.Component {
   }
 
   processData(list, activeIds = []) {
-    var model = generateModel(list, this.props.rootId),
-      { tree, leaves, rootId } = model,
-      { nodes, branches, forks, actives } = model;
+    const model = generateModel(list, this.props.rootId);
+    const { tree, leaves, rootId } = model;
+    const { nodes, branches, forks, actives } = model;
 
     // Assign each node position starting from the root
-    tree[rootId].forEach(rootNode => assignNodePosition(model, rootNode, 0));
+    tree[rootId].forEach((rootNode) => assignNodePosition(model, rootNode, 0));
 
     // Update active list
     fillActives(model, activeIds);
 
     // Create branches and forks starting from the leaves
-    leaves.forEach(leaf => extractBranchesAndForks(model, leaf));
+    leaves.forEach((leaf) => extractBranchesAndForks(model, leaf));
 
     // Sort forks for better rendering
     forks.sort((a, b) => a.toX > b.toX);
@@ -167,15 +170,18 @@ export default class GitTreeWidget extends React.Component {
   }
 
   toggleActive(event) {
-    var { actives, nodes } = this.state;
+    const { actives, nodes } = this.state;
 
-    if (event.target.nodeName !== 'circle' && !event.target.classList.contains(style.iconText)) {
-      const size = SizeHelper.getSize(this.rootContainer),
-        { deltaY } = this.props,
-        // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
-        originTop = size.clientRect.y || size.clientRect.top,
-        yVal = Math.floor((event.clientY - originTop) / deltaY),
-        index = actives.indexOf(yVal);
+    if (
+      event.target.nodeName !== 'circle' &&
+      !event.target.classList.contains(style.iconText)
+    ) {
+      const size = SizeHelper.getSize(this.rootContainer);
+      const { deltaY } = this.props;
+      // Firefox vs Chrome/Safari// Firefox vs Chrome/Safari
+      const originTop = size.clientRect.y || size.clientRect.top;
+      const yVal = Math.floor((event.clientY - originTop) / deltaY);
+      const index = actives.indexOf(yVal);
 
       // command key for osx, control key for windows
       if (this.props.multiselect && (event.metaKey || event.ctrlKey)) {
@@ -184,19 +190,23 @@ export default class GitTreeWidget extends React.Component {
         } else {
           actives.splice(index, 1);
         }
+        this.setState({ actives });
       } else {
-        actives = [yVal];
+        this.setState({ actives: [yVal] });
       }
-      this.setState({ actives });
 
       if (this.props.onChange) {
-        const changeSet = [],
-          active = true;
+        const changeSet = [];
+        const active = true;
 
         actives.forEach((idx) => {
           const { id, parent, name, visible } = nodes[idx];
-          const userData = nodes[idx].userData ? { userData: nodes[idx].userData } : null;
-          changeSet.push(Object.assign({ id, parent, name, visible, active }, userData));
+          const userData = nodes[idx].userData
+            ? { userData: nodes[idx].userData }
+            : null;
+          changeSet.push(
+            Object.assign({ id, parent, name, visible, active }, userData)
+          );
         });
 
         this.props.onChange({ type: 'active', changeSet });
@@ -205,18 +215,20 @@ export default class GitTreeWidget extends React.Component {
   }
 
   toggleVisibility(event) {
-    var yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-      { actives, nodes } = this.state,
-      node = nodes[yVal];
+    const yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10);
+    const { actives, nodes } = this.state;
+    const node = nodes[yVal];
 
     node.visible = !node.visible;
     this.setState({ nodes });
 
     if (this.props.onChange) {
-      const { id, parent, name, visible } = node,
-        active = (actives.indexOf(yVal) !== -1),
-        userData = node.userData ? { userData: node.userData } : null,
-        changeSet = [Object.assign({ id, parent, name, visible, active }, userData)];
+      const { id, parent, name, visible } = node;
+      const active = actives.indexOf(yVal) !== -1;
+      const userData = node.userData ? { userData: node.userData } : null;
+      const changeSet = [
+        Object.assign({ id, parent, name, visible, active }, userData),
+      ];
 
       this.props.onChange({ type: 'visibility', changeSet });
     }
@@ -224,10 +236,17 @@ export default class GitTreeWidget extends React.Component {
 
   deleteNode(event) {
     if (this.props.onChange) {
-      const yVal = parseInt(event.currentTarget.attributes['data-id'].value, 10),
-        { id, parent, name, visible } = this.state.nodes[yVal],
-        userData = this.state.nodes[yVal].userData ? { userData: this.state.nodes[yVal].userData } : null,
-        changeSet = [Object.assign({ id, parent, name, visible }, userData)];
+      const yVal = parseInt(
+        event.currentTarget.attributes['data-id'].value,
+        10
+      );
+      const { id, parent, name, visible } = this.state.nodes[yVal];
+      const userData = this.state.nodes[yVal].userData
+        ? { userData: this.state.nodes[yVal].userData }
+        : null;
+      const changeSet = [
+        Object.assign({ id, parent, name, visible }, userData),
+      ];
 
       this.props.onChange({ type: 'delete', changeSet });
     }
@@ -236,33 +255,37 @@ export default class GitTreeWidget extends React.Component {
   renderNodes() {
     return this.state.nodes.map((el, index) => {
       const {
-          activeCircleStrokeColor,
-          deltaX,
-          deltaY,
-          fontSize,
-          notVisibleCircleFillColor,
-          offset,
-          palette,
-          radius,
-          stroke,
-          textColor,
-          textWeight,
-        } = this.props,
-        isActive = this.state.actives.includes(index),
-        isVisible = !!el.visible,
-        branchColor = palette[el.x % palette.length];
+        activeCircleStrokeColor,
+        deltaX,
+        deltaY,
+        fontSize,
+        notVisibleCircleFillColor,
+        offset,
+        palette,
+        radius,
+        stroke,
+        textColor,
+        textWeight,
+      } = this.props;
+      const isActive = this.state.actives.includes(index);
+      const isVisible = !!el.visible;
+      const branchColor = palette[el.x % palette.length];
 
       // Styles
       const currentTextColor = textColor[isActive ? 1 : 0];
       const weight = textWeight[isActive ? 1 : 0];
-      const strokeColor = isActive ? activeCircleStrokeColor : branchColor || branchColor;
-      const fillColor = isVisible ? branchColor : notVisibleCircleFillColor || branchColor;
+      const strokeColor = isActive
+        ? activeCircleStrokeColor
+        : branchColor || branchColor;
+      const fillColor = isVisible
+        ? branchColor
+        : notVisibleCircleFillColor || branchColor;
 
       // Positions
-      const cx = (deltaX * el.x) + offset,
-        cy = (deltaY * el.y) + (deltaY / 2),
-        tx = cx + (radius * 2),
-        ty = cy + (radius - 1);
+      const cx = deltaX * el.x + offset;
+      const cy = deltaY * el.y + deltaY / 2;
+      const tx = cx + radius * 2;
+      const ty = cy + (radius - 1);
 
       return (
         <g key={`node-${index}`} className={style.cursor}>
@@ -287,7 +310,8 @@ export default class GitTreeWidget extends React.Component {
           >
             {el.name}
           </text>
-        </g>);
+        </g>
+      );
     });
   }
 
@@ -295,10 +319,10 @@ export default class GitTreeWidget extends React.Component {
     const { deltaX, deltaY, offset, palette, stroke } = this.props;
 
     return this.state.branches.map((el, index) => {
-      const x1 = (deltaX * el.x) + offset,
-        y1 = (deltaY * el.y) + (deltaY / 2),
-        y2 = (deltaY * el.to) + (deltaY / 2),
-        strokeColor = palette[el.x % palette.length];
+      const x1 = deltaX * el.x + offset;
+      const y1 = deltaY * el.y + deltaY / 2;
+      const y2 = deltaY * el.to + deltaY / 2;
+      const strokeColor = palette[el.x % palette.length];
 
       return (
         <path
@@ -306,7 +330,8 @@ export default class GitTreeWidget extends React.Component {
           d={`M${x1},${y1} L${x1},${y2}`}
           stroke={strokeColor}
           strokeWidth={stroke}
-        />);
+        />
+      );
     });
   }
 
@@ -314,14 +339,15 @@ export default class GitTreeWidget extends React.Component {
     const { deltaX, deltaY, offset, palette, radius, stroke } = this.props;
 
     return this.state.forks.map((el, index) => {
-      const x1 = (deltaX * el.x) + offset,
-        y1 = (deltaY * el.y) + (deltaY / 2) + radius,
-        x2 = (deltaX * el.toX) + offset,
-        y2 = (deltaY * el.toY) + (deltaY / 2) + radius,
-        strokeColor = palette[(el.toX) % palette.length],
-        dPath = `M${x1},${y1} `
-              + `Q${x1},${y1 + (deltaY / 3)},${(x1 + x2) / 2},${y1 + (deltaY / 3)} `
-              + `T${x2},${y1 + deltaY} L${x2},${y2}`;
+      const x1 = deltaX * el.x + offset;
+      const y1 = deltaY * el.y + deltaY / 2 + radius;
+      const x2 = deltaX * el.toX + offset;
+      const y2 = deltaY * el.toY + deltaY / 2 + radius;
+      const strokeColor = palette[el.toX % palette.length];
+      const dPath =
+        `M${x1},${y1} ` +
+        `Q${x1},${y1 + deltaY / 3},${(x1 + x2) / 2},${y1 + deltaY / 3} ` +
+        `T${x2},${y1 + deltaY} L${x2},${y2}`;
 
       return (
         <path
@@ -330,24 +356,25 @@ export default class GitTreeWidget extends React.Component {
           stroke={strokeColor}
           strokeWidth={stroke}
           fill="transparent"
-        />);
+        />
+      );
     });
   }
 
   renderActives() {
     const { margin, deltaY } = this.props;
 
-    return this.state.actives.map((el, index) =>
+    return this.state.actives.map((el, index) => (
       <rect
         key={`active-${index}`}
         data-id={this.state.nodes[el].y}
         x="-50"
         width="1000"
         fill="#999"
-        y={(el * deltaY) + (margin / 2)}
+        y={el * deltaY + margin / 2}
         height={deltaY - margin}
       />
-    );
+    ));
   }
 
   renderDeleteActions() {
@@ -358,8 +385,8 @@ export default class GitTreeWidget extends React.Component {
     const { deltaY, width, offset, textColor, radius } = this.props;
 
     return this.state.leaves.map((node, idx) => {
-      const isActive = this.state.actives.includes(node.y),
-        currentTextColor = textColor[isActive ? 1 : 0];
+      const isActive = this.state.actives.includes(node.y);
+      const currentTextColor = textColor[isActive ? 1 : 0];
 
       return (
         <text
@@ -368,17 +395,21 @@ export default class GitTreeWidget extends React.Component {
           onClick={this.deleteNode}
           data-id={node.y}
           x={Number(width) - offset - 10}
-          y={(deltaY * node.y) + (deltaY / 2) + (radius - 1)}
+          y={deltaY * node.y + deltaY / 2 + (radius - 1)}
           fill={currentTextColor}
-        >&#xf014;
-        </text>);
+        >
+          &#xf014;
+        </text>
+      );
     });
   }
 
   render() {
     return (
       <svg
-        ref={c => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
         style={this.props.style}
         width={this.props.width}
         height={`${this.props.deltaY * this.state.nodes.length}px`}
@@ -389,10 +420,10 @@ export default class GitTreeWidget extends React.Component {
         {this.renderForks()}
         {this.renderNodes()}
         {this.renderDeleteActions()}
-      </svg>);
+      </svg>
+    );
   }
 }
-
 
 GitTreeWidget.propTypes = {
   activeCircleStrokeColor: PropTypes.string,
@@ -406,7 +437,7 @@ GitTreeWidget.propTypes = {
   nodes: PropTypes.array,
   notVisibleCircleFillColor: PropTypes.string,
   offset: PropTypes.number,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   palette: PropTypes.array,
   radius: PropTypes.number,
   rootId: PropTypes.oneOfType([
@@ -418,10 +449,7 @@ GitTreeWidget.propTypes = {
   style: PropTypes.object,
   textColor: PropTypes.array,
   textWeight: PropTypes.array,
-  width: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 GitTreeWidget.defaultProps = {
@@ -446,4 +474,3 @@ GitTreeWidget.defaultProps = {
   textColor: ['black', 'white'], // Normal, Active
   textWeight: ['normal', 'bold'], // Normal, Active
 };
-

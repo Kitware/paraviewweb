@@ -1,7 +1,7 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import NumberSliderControl  from '../../Widgets/NumberSliderWidget';
+import NumberSliderControl from '../../Widgets/NumberSliderWidget';
 
 export default class Slider extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class Slider extends React.Component {
   }
 
   render() {
-    var propsCopy = Object.assign({}, this.props);
+    const propsCopy = Object.assign({}, this.props);
     delete propsCopy.onChange;
     delete propsCopy.idx;
 
@@ -32,6 +32,9 @@ export default class Slider extends React.Component {
 
 Slider.propTypes = {
   idx: PropTypes.number,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
 };
 
+Slider.defaultProps = {
+  idx: -1,
+};

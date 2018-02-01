@@ -1,19 +1,27 @@
 /* eslint-disable no-underscore-dangle */
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     listCollections(query = {}) {
-      const expected = ['text', 'limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, ...expected);
+      const expected = ['text', 'limit', 'offset', 'sort', 'sortdir'];
+      const params = filterQuery(query, ...expected);
 
       return client._.get('/collection', { params });
     },
 
     createCollection(collection) {
-      const expected = ['name', 'description', 'public'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(params, ...expected);
+      const expected = ['name', 'description', 'public'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(params, ...expected);
 
-      return missingKeys ? promise : busy(client._.post(`/collection${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.post(`/collection${encodeQueryAsString(params)}`));
     },
 
     deleteCollection(id) {
@@ -25,11 +33,17 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     editCollection(collection = {}) {
-      const expected = ['name', 'description'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(collection, '_id');
+      const expected = ['name', 'description'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(collection, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.put(
+              `/collection/${collection._id}${encodeQueryAsString(params)}`
+            )
+          );
     },
 
     getCollectionAccess(id) {
@@ -37,11 +51,19 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     editCollectionAccess(collection) {
-      const expected = ['access', 'public'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(collection, '_id');
+      const expected = ['access', 'public'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(collection, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/collection/${collection._id}/access${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.put(
+              `/collection/${collection._id}/access${encodeQueryAsString(
+                params
+              )}`
+            )
+          );
     },
   };
 }

@@ -1,4 +1,4 @@
-import React    from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/CompositePipelineWidget.mcss';
@@ -16,8 +16,8 @@ export default class CompositePipelineWidget extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props.model,
-      next = nextProps.model;
+    const previous = this.props.model;
+    const next = nextProps.model;
 
     if (previous !== next) {
       this.detachListener();
@@ -44,25 +44,24 @@ export default class CompositePipelineWidget extends React.Component {
   }
 
   render() {
-    var pipelineModel = this.props.model,
-      pipelineDescription = pipelineModel.getPipelineDescription();
+    const pipelineModel = this.props.model;
+    const pipelineDescription = pipelineModel.getPipelineDescription();
 
     return (
       <div className={style.container}>
-        {pipelineDescription.map((item, idx) =>
+        {pipelineDescription.map((item, idx) => (
           <RootItem
             key={idx}
             item={item}
             layer={item.ids.join('')}
             model={pipelineModel}
           />
-        )}
-      </div>);
+        ))}
+      </div>
+    );
   }
 }
-
 
 CompositePipelineWidget.propTypes = {
   model: PropTypes.object.isRequired,
 };
-

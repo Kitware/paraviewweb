@@ -44,7 +44,7 @@
 // ----------------------------------------------------------------------------
 
 function keep(id) {
-  return item => (item.annotationInfo.annotationGeneration === id);
+  return (item) => item.annotationInfo.annotationGeneration === id;
 }
 
 function sortByScore(a, b) {
@@ -53,9 +53,13 @@ function sortByScore(a, b) {
 
 export function set(model, payload) {
   const { annotationGeneration } = payload.data.annotationInfo;
-  model.count = (model.count || []).filter(keep(annotationGeneration)).concat(payload.data);
+  model.count = (model.count || [])
+    .filter(keep(annotationGeneration))
+    .concat(payload.data);
   model.count.sort(sortByScore);
-  model.count = model.count.filter((item, idx, array) => !idx || array[idx - 1].role.score !== item.role.score);
+  model.count = model.count.filter(
+    (item, idx, array) => !idx || array[idx - 1].role.score !== item.role.score
+  );
 }
 
 // ----------------------------------------------------------------------------

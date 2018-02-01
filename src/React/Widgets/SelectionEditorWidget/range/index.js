@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DepthMatchingRender  from '../DepthMatchingRender';
-import FiveClauseRender     from './FiveClauseRender';
-import OperatorRender       from './OperatorRender';
-import SelectionBuilder     from '../../../../Common/Misc/SelectionBuilder';
+import DepthMatchingRender from '../DepthMatchingRender';
+import FiveClauseRender from './FiveClauseRender';
+import OperatorRender from './OperatorRender';
+import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
 
 export default function render(props) {
   const vars = props.selection.range.variables;
@@ -17,7 +17,8 @@ export default function render(props) {
   const onChange = (changedPath, editing = false) => {
     // clone, so we don't step on whatever is current.
     const selection = JSON.parse(JSON.stringify(props.selection));
-    const currentInterval = selection.range.variables[changedPath[0]][changedPath[1]];
+    const currentInterval =
+      selection.range.variables[changedPath[0]][changedPath[1]];
     const changeItemIndex = changedPath[2];
     const newValue = changedPath[3];
 
@@ -25,13 +26,17 @@ export default function render(props) {
       // change an input
       currentInterval.interval[changeItemIndex === 0 ? 0 : 1] = newValue;
     } else if (changeItemIndex === 1 || changeItemIndex === 3) {
-      currentInterval.endpoints = (changeItemIndex === 1 ?
-                                 `${newValue}${currentInterval.endpoints.slice(1, 2)}` :
-                                 `${currentInterval.endpoints.slice(0, 1)}${newValue}`);
+      currentInterval.endpoints =
+        changeItemIndex === 1
+          ? `${newValue}${currentInterval.endpoints.slice(1, 2)}`
+          : `${currentInterval.endpoints.slice(0, 1)}${newValue}`;
     }
 
     // Notify happens in parent
-    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
+    props.onChange(
+      editing ? selection : SelectionBuilder.markModified(selection),
+      !editing
+    );
   };
 
   const onDelete = (pathToDelete) => {
@@ -57,28 +62,12 @@ export default function render(props) {
   };
 
   return (
-    <OperatorRender operator={'and'} depth={0} className={props.className}>
-      {Object.keys(vars).map(
-        (fieldName, idx) => {
-          if (vars[fieldName].length > 1) {
-            return (
-              <OperatorRender operator={'or'} depth={1} key={idx}>
-                {vars[fieldName].map((clause, j) =>
-                  <FiveClauseRender
-                    getLegend={props.getLegend}
-                    onChange={onChange}
-                    onDelete={onDelete}
-                    intervalSpec={clause}
-                    fieldName={fieldName}
-                    path={[fieldName, j]}
-                    key={j}
-                  />
-                )}
-              </OperatorRender>);
-          }
-          return vars[fieldName].map(
-            (clause, j) =>
-              <DepthMatchingRender depth={1} maxDepth={maxDepth}>
+    <OperatorRender operator="and" depth={0} className={props.className}>
+      {Object.keys(vars).map((fieldName, idx) => {
+        if (vars[fieldName].length > 1) {
+          return (
+            <OperatorRender operator="or" depth={1} key={idx}>
+              {vars[fieldName].map((clause, j) => (
                 <FiveClauseRender
                   getLegend={props.getLegend}
                   onChange={onChange}
@@ -88,17 +77,38 @@ export default function render(props) {
                   path={[fieldName, j]}
                   key={j}
                 />
-              </DepthMatchingRender>
+              ))}
+            </OperatorRender>
           );
         }
-      )}
-    </OperatorRender>);
+        return vars[fieldName].map((clause, j) => (
+          <DepthMatchingRender depth={1} maxDepth={maxDepth}>
+            <FiveClauseRender
+              getLegend={props.getLegend}
+              onChange={onChange}
+              onDelete={onDelete}
+              intervalSpec={clause}
+              fieldName={fieldName}
+              path={[fieldName, j]}
+              key={j}
+            />
+          </DepthMatchingRender>
+        ));
+      })}
+    </OperatorRender>
+  );
 }
 
 render.propTypes = {
   selection: PropTypes.object,
-  ranges: PropTypes.object,
+  // ranges: PropTypes.object,
   onChange: PropTypes.func,
-  getLegend: PropTypes.func,
+  // getLegend: PropTypes.func,
   className: PropTypes.string,
+};
+
+render.defaultProps = {
+  selection: undefined,
+  className: undefined,
+  onChange: undefined,
 };

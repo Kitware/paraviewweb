@@ -1,4 +1,3 @@
-
 import { generateUUID } from '../UUID';
 import SelectionBuilder from '../SelectionBuilder';
 
@@ -56,7 +55,10 @@ function updateReadOnlyFlag(annotationToEdit, readOnlyFields) {
     return;
   }
 
-  annotationToEdit.readOnly = SelectionBuilder.hasField(annotationToEdit.selection, readOnlyFields);
+  annotationToEdit.readOnly = SelectionBuilder.hasField(
+    annotationToEdit.selection,
+    readOnlyFields
+  );
 }
 
 // ----------------------------------------------------------------------------
@@ -83,7 +85,9 @@ function setDefaultName(annotationObject) {
     }
     annotationObject.name += ' (range)';
   } else if (annotationObject.selection.type === 'partition') {
-    annotationObject.name = `${annotationObject.selection.partition.variable} (partition)`;
+    annotationObject.name = `${
+      annotationObject.selection.partition.variable
+    } (partition)`;
   } else {
     annotationObject.name = 'unknown';
   }
@@ -95,7 +99,6 @@ function markModified(annotationObject) {
   generation += 1;
   return Object.assign({}, annotationObject, { generation });
 }
-
 
 // ----------------------------------------------------------------------------
 // Exposed object

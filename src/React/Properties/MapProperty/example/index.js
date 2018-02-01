@@ -1,9 +1,9 @@
-import React        from 'react';
-import ReactDOM     from 'react-dom';
-import MapProperty  from '..';
+import 'normalize.css';
 
-// Load CSS
-require('normalize.css');
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import MapProperty from '..';
 
 const container = document.querySelector('.content');
 
@@ -11,7 +11,9 @@ const properties = {
   data: { value: [], id: 'map.property.id' },
   help: 'Dynamic property list',
   name: 'Map',
-  onChange: function onChange(data) { console.log(data); },
+  onChange: function onChange(data) {
+    console.log(data);
+  },
   show: () => true,
   ui: { label: 'Custom constants', help: 'Dynamic property list' },
   viewData: {},

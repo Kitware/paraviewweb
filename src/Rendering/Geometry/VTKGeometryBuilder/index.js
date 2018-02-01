@@ -1,18 +1,17 @@
 /* eslint-disable import/no-named-as-default */
-import vtkActor                   from 'vtk.js/Sources/Rendering/Core/Actor';
-import vtkColorTransferFunction   from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
-import vtkDataArray               from 'vtk.js/Sources/Common/Core/DataArray';
-import vtkMapper                  from 'vtk.js/Sources/Rendering/Core/Mapper';
-import vtkOpenGLRenderWindow      from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
-import vtkPolyData                from 'vtk.js/Sources/Common/DataModel/PolyData';
-import vtkRenderer                from 'vtk.js/Sources/Rendering/Core/Renderer';
-import vtkRenderWindow            from 'vtk.js/Sources/Rendering/Core/RenderWindow';
-import vtkRenderWindowInteractor  from 'vtk.js/Sources/Rendering/Core/RenderWindowInteractor';
+import vtkActor from 'vtk.js/Sources/Rendering/Core/Actor';
+import vtkColorTransferFunction from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';
+import vtkDataArray from 'vtk.js/Sources/Common/Core/DataArray';
+import vtkMapper from 'vtk.js/Sources/Rendering/Core/Mapper';
+import vtkOpenGLRenderWindow from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
+import vtkPolyData from 'vtk.js/Sources/Common/DataModel/PolyData';
+import vtkRenderer from 'vtk.js/Sources/Rendering/Core/Renderer';
+import vtkRenderWindow from 'vtk.js/Sources/Rendering/Core/RenderWindow';
+import vtkRenderWindowInteractor from 'vtk.js/Sources/Rendering/Core/RenderWindowInteractor';
 
 const EMPTY_CELL_ARRAY = new Uint32Array(0);
 
 export default class VTKGeometryBuilder {
-
   constructor(lutMgr, geometryDataModel, pipelineModel, queryDataModel) {
     this.meshMap = {};
     this.initActions = [];
@@ -58,8 +57,10 @@ export default class VTKGeometryBuilder {
     });
 
     // Handle LookupTable change
-    this.lookupTableManager.addFields(this.queryDataModel.originalData.Geometry.ranges,
-      this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.queryDataModel.originalData.Geometry.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
     this.lookupTableManager.onChange((data, envelope) => {
       this.updateColoring(data.change, data.lut);
     });
@@ -70,9 +71,11 @@ export default class VTKGeometryBuilder {
     this.renderer = vtkRenderer.newInstance();
     this.renderWindow.addRenderer(this.renderer);
 
-    this.geometryBuilderSubscription = this.geometryDataModel.onGeometryReady((data, envelope) => {
-      this.updateGeometry(data);
-    });
+    this.geometryBuilderSubscription = this.geometryDataModel.onGeometryReady(
+      (data, envelope) => {
+        this.updateGeometry(data);
+      }
+    );
   }
 
   destroy() {
@@ -129,7 +132,9 @@ export default class VTKGeometryBuilder {
       firstTime = true;
       const sha = geo.sha;
       const source = vtkPolyData.newInstance();
-      const mapper = vtkMapper.newInstance({ interpolateScalarsBeforeMapping: true });
+      const mapper = vtkMapper.newInstance({
+        interpolateScalarsBeforeMapping: true,
+      });
       const actor = vtkActor.newInstance();
       const lookupTable = vtkColorTransferFunction.newInstance();
       mapper.setLookupTable(lookupTable);
@@ -170,7 +175,7 @@ export default class VTKGeometryBuilder {
       this.renderer.addActor(actor);
       this.renderer.resetCamera();
 
-      this.initActions.forEach(cb => cb());
+      this.initActions.forEach((cb) => cb());
     } else {
       let changeDetected = false;
       const { source, sha } = this.meshMap[geo.name];
@@ -200,12 +205,16 @@ export default class VTKGeometryBuilder {
     // Handle data field
     this.meshMap[geo.name].colorArrayName = geo.fieldName;
     const { actor, source, sha } = this.meshMap[geo.name];
-    if (sha.field !== geo.sha.field || firstTime || Number.isFinite(geo.field)) {
+    if (
+      sha.field !== geo.sha.field ||
+      firstTime ||
+      Number.isFinite(geo.field)
+    ) {
       const fields = {
         POINT_DATA: source.getPointData(),
         CELL_DATA: source.getCellData(),
       };
-      Object.keys(fields).forEach(key => fields[key].removeAllArrays());
+      Object.keys(fields).forEach((key) => fields[key].removeAllArrays());
 
       if (geo.field !== undefined) {
         const { fieldLocation, fieldName, field } = geo;
@@ -224,7 +233,10 @@ export default class VTKGeometryBuilder {
           // const array = vtkDataArray.newInstance({ name: fieldName, values });
           // fields[fieldLocation].setScalars(array);
         } else {
-          const array = vtkDataArray.newInstance({ name: fieldName, values: field });
+          const array = vtkDataArray.newInstance({
+            name: fieldName,
+            values: field,
+          });
           fields[fieldLocation].setScalars(array);
         }
       }
@@ -274,5 +286,4 @@ export default class VTKGeometryBuilder {
     this.openGlRenderWindow.setSize(width, height);
     this.renderWindow.render();
   }
-
 }

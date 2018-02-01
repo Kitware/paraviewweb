@@ -1,19 +1,18 @@
-/* global document */
-import React            from 'react';
-import ReactDOM         from 'react-dom';
-import TextInputWidget  from '..';
+import 'normalize.css';
+import 'font-awesome/css/font-awesome.css';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import TextInputWidget from '..';
 
 const container = document.querySelector('.content');
 const textValue = 'Some text example...';
 
-// Load CSS
-require('normalize.css');
-require('font-awesome/css/font-awesome.css');
-
 document.body.style.padding = '10px';
 
 function onChange(value, name) {
-  render(name, value);
+  render(name, value); // eslint-disable-line
   console.log(name, ' => ', value);
 }
 
@@ -21,9 +20,14 @@ function render(name, value) {
   ReactDOM.render(
     <div>
       <TextInputWidget name={name} value={value} onChange={onChange} />
-      <TextInputWidget name={`${name}-search`} value={'search'} icon={'fa-search'} />
+      <TextInputWidget
+        name={`${name}-search`}
+        value="search"
+        icon="fa-search"
+      />
     </div>,
-    container);
+    container
+  );
 }
 
 render('example', textValue);

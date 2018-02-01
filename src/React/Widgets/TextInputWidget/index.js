@@ -29,7 +29,7 @@ export default class TextInputWidget extends React.Component {
   }
 
   valueChange(e) {
-    var newVal = e.target.value;
+    const newVal = e.target.value;
     this.setState({ editing: true, valueRep: newVal });
   }
 
@@ -63,7 +63,9 @@ export default class TextInputWidget extends React.Component {
   }
 
   render() {
-    const inlineStyle = this.props.maxWidth ? { maxWidth: this.props.maxWidth } : {};
+    const inlineStyle = this.props.maxWidth
+      ? { maxWidth: this.props.maxWidth }
+      : {};
     return (
       <div className={[style.container, this.props.className].join(' ')}>
         <input
@@ -75,15 +77,24 @@ export default class TextInputWidget extends React.Component {
           onChange={this.valueChange}
           onBlur={this.props.blurEndsEdit ? this.endEditing : null}
           onKeyUp={this.handleKeyUp}
-          ref={(c) => { this.textInput = c; }}
+          ref={(c) => {
+            this.textInput = c;
+          }}
         />
-        { // Use the check icon by default, but allow customization, for example: fa-search
+        {
+          // Use the check icon by default, but allow customization, for example: fa-search
         }
-        <i className={[this.state.editing ? style.editingButton : style.button, this.props.icon].join(' ')} onClick={this.endEditing} />
-      </div>);
+        <i
+          className={[
+            this.state.editing ? style.editingButton : style.button,
+            this.props.icon,
+          ].join(' ')}
+          onClick={this.endEditing}
+        />
+      </div>
+    );
   }
 }
-
 
 TextInputWidget.propTypes = {
   className: PropTypes.string,
@@ -107,4 +118,8 @@ TextInputWidget.defaultProps = {
   escEndsEdit: false,
   blurEndsEdit: true,
   grabFocus: false,
+  name: '',
+  onChange: undefined,
+  placeholder: '',
+  maxWidth: '',
 };

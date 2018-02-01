@@ -1,9 +1,8 @@
-var offscreenCanvasCount = 0;
+let offscreenCanvasCount = 0;
 
 // Create <canvas/> within the DOM
 /* global document */
 export default class CanvasOffscreenBuffer {
-
   constructor(width, height) {
     offscreenCanvasCount += 1;
     this.id = `CanvasOffscreenBuffer_${offscreenCanvasCount}`;
@@ -20,23 +19,25 @@ export default class CanvasOffscreenBuffer {
 
   size(width, height) {
     if (width) {
-      this.el.setAttribute('width', this.width = width);
+      this.el.setAttribute('width', (this.width = width));
     }
     if (height) {
-      this.el.setAttribute('height', this.height = height);
+      this.el.setAttribute('height', (this.height = height));
     }
-    return [
-      Number(this.width),
-      Number(this.height),
-    ];
+    return [Number(this.width), Number(this.height)];
   }
 
   get2DContext() {
     return this.el.getContext('2d');
   }
 
-  get3DContext(options = { preserveDrawingBuffer: true, premultipliedAlpha: false }) {
-    return this.el.getContext('webgl', options) || this.el.getContext('experimental-webgl', options);
+  get3DContext(
+    options = { preserveDrawingBuffer: true, premultipliedAlpha: false }
+  ) {
+    return (
+      this.el.getContext('webgl', options) ||
+      this.el.getContext('experimental-webgl', options)
+    );
   }
 
   // Remove canvas from DOM

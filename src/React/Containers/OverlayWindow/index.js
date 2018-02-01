@@ -1,7 +1,7 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
+import style from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
 /* eslint-disable react/no-unused-prop-types */
 
@@ -38,9 +38,20 @@ function createDragHandlers(thisObj) {
   }
   return {
     topLeft: (event) => {
-      const { delX, delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
-      const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
+      const { delX, delY } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const maxX =
+        thisObj.state.x +
+        thisObj.state.width -
+        2 * thisObj.props.marginSize -
+        thisObj.props.minContentWidth;
+      const maxY =
+        thisObj.state.y +
+        thisObj.state.height -
+        (2 * thisObj.props.marginSize + thisObj.props.titleBarHeight) -
+        thisObj.props.minContentHeight;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
       const dy = diffClamp(thisObj.state.y + delY, 0, maxY);
       thisObj.setState({
@@ -53,10 +64,18 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     topRight: (event) => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
+      const { delX, delY, eltBounds } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const minWidth =
+        2 * thisObj.props.marginSize + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
-      const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
+      const maxY =
+        thisObj.state.y +
+        thisObj.state.height -
+        (2 * thisObj.props.marginSize + thisObj.props.titleBarHeight) -
+        thisObj.props.minContentHeight;
       const dw = diffClamp(thisObj.state.width + delX, minWidth, maxWidth);
       const dy = diffClamp(thisObj.state.y + delY, 0, maxY);
       thisObj.setState({
@@ -68,9 +87,19 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottomLeft: (event) => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
-      const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
+      const { delX, delY, eltBounds } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const maxX =
+        thisObj.state.x +
+        thisObj.state.width -
+        2 * thisObj.props.marginSize -
+        thisObj.props.minContentWidth;
+      const minHeight =
+        2 * thisObj.props.marginSize +
+        thisObj.props.titleBarHeight +
+        thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
       const dh = diffClamp(thisObj.state.height + delY, minHeight, maxHeight);
@@ -83,10 +112,17 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottomRight: (event) => {
-      const { delX, delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
+      const { delX, delY, eltBounds } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const minWidth =
+        2 * thisObj.props.marginSize + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
-      const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
+      const minHeight =
+        2 * thisObj.props.marginSize +
+        thisObj.props.titleBarHeight +
+        thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
       const dw = diffClamp(thisObj.state.width + delX, minWidth, maxWidth);
       const dh = diffClamp(thisObj.state.height + delY, minHeight, maxHeight);
@@ -99,7 +135,11 @@ function createDragHandlers(thisObj) {
     },
     top: (event) => {
       const { delY } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const maxY = (thisObj.state.y + thisObj.state.height) - ((2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight) - thisObj.props.minContentHeight;
+      const maxY =
+        thisObj.state.y +
+        thisObj.state.height -
+        (2 * thisObj.props.marginSize + thisObj.props.titleBarHeight) -
+        thisObj.props.minContentHeight;
       const dy = diffClamp(thisObj.state.y + delY, 0, maxY);
       thisObj.setState({
         y: dy.value,
@@ -109,8 +149,12 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     right: (event) => {
-      const { delX, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const minWidth = (2 * thisObj.props.marginSize) + thisObj.props.minContentWidth;
+      const { delX, eltBounds } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const minWidth =
+        2 * thisObj.props.marginSize + thisObj.props.minContentWidth;
       const maxWidth = eltBounds.width - thisObj.state.x;
       const dw = diffClamp(thisObj.state.width + delX, minWidth, maxWidth);
       thisObj.setState({
@@ -120,8 +164,14 @@ function createDragHandlers(thisObj) {
       thisObj.setLastScreenY(event.screenY);
     },
     bottom: (event) => {
-      const { delY, eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const minHeight = (2 * thisObj.props.marginSize) + thisObj.props.titleBarHeight + thisObj.props.minContentHeight;
+      const { delY, eltBounds } = computeMouseDelta(
+        event,
+        thisObj.eventContainerDiv
+      );
+      const minHeight =
+        2 * thisObj.props.marginSize +
+        thisObj.props.titleBarHeight +
+        thisObj.props.minContentHeight;
       const maxHeight = eltBounds.height - thisObj.state.y;
       const dh = diffClamp(thisObj.state.height + delY, minHeight, maxHeight);
       thisObj.setState({
@@ -132,7 +182,11 @@ function createDragHandlers(thisObj) {
     },
     left: (event) => {
       const { delX } = computeMouseDelta(event, thisObj.eventContainerDiv);
-      const maxX = (thisObj.state.x + thisObj.state.width) - (2 * thisObj.props.marginSize) - thisObj.props.minContentWidth;
+      const maxX =
+        thisObj.state.x +
+        thisObj.state.width -
+        2 * thisObj.props.marginSize -
+        thisObj.props.minContentWidth;
       const dx = diffClamp(thisObj.state.x + delX, 0, maxX);
       thisObj.setState({
         x: dx.value,
@@ -145,8 +199,16 @@ function createDragHandlers(thisObj) {
       const { eltBounds } = computeMouseDelta(event, thisObj.eventContainerDiv);
       const maxX = eltBounds.width - thisObj.state.width;
       const maxY = eltBounds.height - thisObj.state.height;
-      const dx = diffClamp(thisObj.state.x + (event.screenX - thisObj.getLastScreenX()), 0, maxX);
-      const dy = diffClamp(thisObj.state.y + (event.screenY - thisObj.getLastScreenY()), 0, maxY);
+      const dx = diffClamp(
+        thisObj.state.x + (event.screenX - thisObj.getLastScreenX()),
+        0,
+        maxX
+      );
+      const dy = diffClamp(
+        thisObj.state.y + (event.screenY - thisObj.getLastScreenY()),
+        0,
+        maxY
+      );
       thisObj.setState({
         x: dx.value,
         y: dy.value,
@@ -182,8 +244,12 @@ export default class OverlayWindow extends React.Component {
     this.lastScreenX = 0;
     this.getLastScreenX = () => this.lastScreenX;
     this.getLastScreenY = () => this.lastScreenY;
-    this.setLastScreenX = (x) => { this.lastScreenX = x; };
-    this.setLastScreenY = (y) => { this.lastScreenY = y; };
+    this.setLastScreenX = (x) => {
+      this.lastScreenX = x;
+    };
+    this.setLastScreenY = (y) => {
+      this.lastScreenY = y;
+    };
     this.handlerMap = createDragHandlers(this);
     this.dragHandler = this.mouseMove;
   }
@@ -195,7 +261,10 @@ export default class OverlayWindow extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.width !== prevState.width || this.state.height !== prevState.height) {
+    if (
+      this.state.width !== prevState.width ||
+      this.state.height !== prevState.height
+    ) {
       if (this.props.onResize) {
         this.props.onResize(this.state.width, this.state.height, this);
       }
@@ -216,8 +285,10 @@ export default class OverlayWindow extends React.Component {
     this.setLastScreenX(evt.screenX);
     this.setLastScreenY(evt.screenY);
 
-    const contentWidth = this.state.width - (2 * this.props.marginSize);
-    const contentHeight = this.state.height - ((2 * this.props.marginSize) + this.props.titleBarHeight);
+    const contentWidth = this.state.width - 2 * this.props.marginSize;
+    const contentHeight =
+      this.state.height -
+      (2 * this.props.marginSize + this.props.titleBarHeight);
 
     if (evt.target.nodeName === 'OPTION') {
       return actionStruct;
@@ -226,7 +297,7 @@ export default class OverlayWindow extends React.Component {
     if (x < this.props.marginSize) {
       actionStruct.cursor = 'ew-resize';
       actionStruct.dragAction = this.handlerMap.left;
-    } else if (x > (this.props.marginSize + contentWidth)) {
+    } else if (x > this.props.marginSize + contentWidth) {
       actionStruct.cursor = 'ew-resize';
       actionStruct.dragAction = this.handlerMap.right;
     }
@@ -234,11 +305,13 @@ export default class OverlayWindow extends React.Component {
     if (y < this.props.marginSize) {
       actionStruct.cursor = 'ns-resize';
       actionStruct.dragAction = this.handlerMap.top;
-    } else if (y < (this.props.marginSize + this.props.titleBarHeight)) {
+    } else if (y < this.props.marginSize + this.props.titleBarHeight) {
       actionStruct.cursor = 'move';
       actionStruct.dragAction = this.handlerMap.move;
-    } else if (y >= (this.props.marginSize + this.props.titleBarHeight + contentHeight)
-      && y <= ((2 * this.props.marginSize) + this.props.titleBarHeight + contentHeight)) {
+    } else if (
+      y >= this.props.marginSize + this.props.titleBarHeight + contentHeight &&
+      y <= 2 * this.props.marginSize + this.props.titleBarHeight + contentHeight
+    ) {
       actionStruct.cursor = 'ns-resize';
       actionStruct.dragAction = this.handlerMap.bottom;
     }
@@ -300,15 +373,21 @@ export default class OverlayWindow extends React.Component {
 
     // Configure the initial event container props and style overrides
     const eventDivProps = {
-      className: this.props.front ? style.frontEventContainer : style.backEventContainer,
-      ref: c => (this.eventContainerDiv = c),
+      className: this.props.front
+        ? style.frontEventContainer
+        : style.backEventContainer,
+      ref: (c) => {
+        this.eventContainerDiv = c;
+      },
       style: {},
     };
 
     // Configure the initial main container props and style overrides
     const mainDivProps = {
       className: style.mainContainer,
-      ref: c => (this.mainContainerDiv = c),
+      ref: (c) => {
+        this.mainContainerDiv = c;
+      },
       style: {
         width: this.state.width,
         height: this.state.height,
@@ -367,41 +446,80 @@ export default class OverlayWindow extends React.Component {
 
     // Configure the hot corner divs
     const offset = this.props.hotCornerExtra;
-    const w = (2 * offset) + this.props.marginSize;
+    const w = 2 * offset + this.props.marginSize;
 
     // Clone children in order to add a prop which could force redraw of children
     const overlayContentSize = `${this.state.width}x${this.state.height}`;
-    const children = this.props.cloneChildren ? React.Children.map(this.props.children, (child, idx) =>
-      React.cloneElement(child, { overlayContentSize })
-    ) : this.props.children;
+    const children = this.props.cloneChildren
+      ? React.Children.map(this.props.children, (child, idx) =>
+          React.cloneElement(child, { overlayContentSize })
+        )
+      : this.props.children;
 
     return (
       <div {...eventDivProps}>
         <div {...mainDivProps}>
           <div
-            className="ulCorner" key={0} onMouseDown={this.hotCornerDown}
-            style={{ position: 'absolute', width: w, height: w, top: -offset, left: -offset, cursor: 'nwse-resize', pointerEvents: 'auto' }}
+            className="ulCorner"
+            key={0}
+            onMouseDown={this.hotCornerDown}
+            style={{
+              position: 'absolute',
+              width: w,
+              height: w,
+              top: -offset,
+              left: -offset,
+              cursor: 'nwse-resize',
+              pointerEvents: 'auto',
+            }}
           />
           <div
-            className="urCorner" key={1} onMouseDown={this.hotCornerDown}
-            style={{ position: 'absolute', width: w, height: w, top: -offset, right: -offset, cursor: 'nesw-resize', pointerEvents: 'auto' }}
+            className="urCorner"
+            key={1}
+            onMouseDown={this.hotCornerDown}
+            style={{
+              position: 'absolute',
+              width: w,
+              height: w,
+              top: -offset,
+              right: -offset,
+              cursor: 'nesw-resize',
+              pointerEvents: 'auto',
+            }}
           />
           <div
-            className="llCorner" key={2} onMouseDown={this.hotCornerDown}
-            style={{ position: 'absolute', width: w, height: w, bottom: -offset, left: -offset, cursor: 'nesw-resize', pointerEvents: 'auto' }}
+            className="llCorner"
+            key={2}
+            onMouseDown={this.hotCornerDown}
+            style={{
+              position: 'absolute',
+              width: w,
+              height: w,
+              bottom: -offset,
+              left: -offset,
+              cursor: 'nesw-resize',
+              pointerEvents: 'auto',
+            }}
           />
           <div
-            className="lrCorner" key={3} onMouseDown={this.hotCornerDown}
-            style={{ position: 'absolute', width: w, height: w, bottom: -offset, right: -offset, cursor: 'nwse-resize', pointerEvents: 'auto' }}
+            className="lrCorner"
+            key={3}
+            onMouseDown={this.hotCornerDown}
+            style={{
+              position: 'absolute',
+              width: w,
+              height: w,
+              bottom: -offset,
+              right: -offset,
+              cursor: 'nwse-resize',
+              pointerEvents: 'auto',
+            }}
           />
-          <div {...titleBarProps}>
-            {this.props.title}
-          </div>
-          <div {...contentDivProps}>
-            {children}
-          </div>
+          <div {...titleBarProps}>{this.props.title}</div>
+          <div {...contentDivProps}>{children}</div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 
@@ -409,13 +527,18 @@ OverlayWindow.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   cloneChildren: PropTypes.bool,
   height: PropTypes.number,
-  hotCornerExtra: PropTypes.number,  // FIXME: Constrain to (positive) integer?
+  hotCornerExtra: PropTypes.number, // FIXME: Constrain to (positive) integer?
   marginSize: PropTypes.number,
   minContentHeight: PropTypes.number,
   minContentWidth: PropTypes.number,
   onResize: PropTypes.func,
   onActive: PropTypes.func,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.array, PropTypes.object]),
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.array,
+    PropTypes.object,
+  ]),
   titleBarHeight: PropTypes.number,
   front: PropTypes.bool,
   visible: PropTypes.bool,
@@ -425,13 +548,14 @@ OverlayWindow.propTypes = {
 };
 
 OverlayWindow.defaultProps = {
+  children: null,
+  onResize: null,
   cloneChildren: false,
   height: 100,
   hotCornerExtra: 2,
   marginSize: 5,
   minContentHeight: 2,
   minContentWidth: 2,
-  resizable: true,
   title: null,
   titleBarHeight: 25,
   visible: true,

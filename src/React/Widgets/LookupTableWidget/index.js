@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/LookupTableWidget.mcss';
 
-import ColorPicker       from '../ColorPickerWidget';
+import ColorPicker from '../ColorPickerWidget';
 import NumberInputWidget from '../NumberInputWidget';
 
 const STYLE = {
@@ -96,7 +96,7 @@ export default class LookupTableWidget extends React.Component {
   }
 
   componentDidMount() {
-    var canvas = this.canvas;
+    const canvas = this.canvas;
     this.props.lookupTable.drawToCanvas(canvas);
   }
 
@@ -105,7 +105,10 @@ export default class LookupTableWidget extends React.Component {
       this.removeListener();
       this.attachListener(nextProps.lookupTable);
     }
-    if (this.props.originalRange[0] !== nextProps.originalRange[0] || this.props.originalRange[1] !== nextProps.originalRange[1]) {
+    if (
+      this.props.originalRange[0] !== nextProps.originalRange[0] ||
+      this.props.originalRange[1] !== nextProps.originalRange[1]
+    ) {
       this.setState({ originalRange: nextProps.originalRange });
     }
   }
@@ -117,14 +120,35 @@ export default class LookupTableWidget extends React.Component {
 
       if (this.state.mode === 'edit') {
         // Draw control point
-        const ctx = canvas.getContext('2d'),
-          x = Math.floor(this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex).x * this.props.lookupTable.colorTableSize),
-          imageData = ctx.getImageData(0, 0, this.props.lookupTable.colorTableSize, 1);
+        const ctx = canvas.getContext('2d');
+        const x = Math.floor(
+          this.props.lookupTable.getControlPoint(
+            this.state.currentControlPointIndex
+          ).x * this.props.lookupTable.colorTableSize
+        );
+        const imageData = ctx.getImageData(
+          0,
+          0,
+          this.props.lookupTable.colorTableSize,
+          1
+        );
 
-        const color = (imageData.data[x * 4] + imageData.data[(x * 4) + 1] + imageData.data[(x * 4) + 2] > (3 * 255) / 2) ? 0 : 255;
-        imageData.data[(x * 4) + 0] = this.props.inverse ? (imageData.data[(x * 4) + 0] + 128) % 256 : color;
-        imageData.data[(x * 4) + 1] = this.props.inverse ? (imageData.data[(x * 4) + 1] + 128) % 256 : color;
-        imageData.data[(x * 4) + 2] = this.props.inverse ? (imageData.data[(x * 4) + 2] + 128) % 256 : color;
+        const color =
+          imageData.data[x * 4] +
+            imageData.data[x * 4 + 1] +
+            imageData.data[x * 4 + 2] >
+          3 * 255 / 2
+            ? 0
+            : 255;
+        imageData.data[x * 4 + 0] = this.props.inverse
+          ? (imageData.data[x * 4 + 0] + 128) % 256
+          : color;
+        imageData.data[x * 4 + 1] = this.props.inverse
+          ? (imageData.data[x * 4 + 1] + 128) % 256
+          : color;
+        imageData.data[x * 4 + 2] = this.props.inverse
+          ? (imageData.data[x * 4 + 2] + 128) % 256
+          : color;
 
         ctx.putImageData(imageData, 0, 0);
       }
@@ -145,12 +169,15 @@ export default class LookupTableWidget extends React.Component {
     const minValue = this.min.getValue() || originalRange[0];
     const maxValue = this.max.getValue() || originalRange[1];
 
-    this.props.lookupTable.setScalarRange(minValue, (minValue === maxValue) ? maxValue + 1 : maxValue);
+    this.props.lookupTable.setScalarRange(
+      minValue,
+      minValue === maxValue ? maxValue + 1 : maxValue
+    );
     this.forceUpdate();
   }
 
   addControlPoint() {
-    var newIdx = this.props.lookupTable.addControlPoint({
+    const newIdx = this.props.lookupTable.addControlPoint({
       x: 0.5,
       r: 0,
       g: 0,
@@ -160,13 +187,17 @@ export default class LookupTableWidget extends React.Component {
   }
 
   deleteControlPoint() {
-    if (this.props.lookupTable.removeControlPoint(this.state.currentControlPointIndex)) {
+    if (
+      this.props.lookupTable.removeControlPoint(
+        this.state.currentControlPointIndex
+      )
+    ) {
       this.forceUpdate();
     }
   }
 
   nextControlPoint() {
-    var newIdx = this.state.currentControlPointIndex + 1;
+    const newIdx = this.state.currentControlPointIndex + 1;
 
     if (newIdx < this.props.lookupTable.getNumberOfControlPoints()) {
       this.setState({ currentControlPointIndex: newIdx });
@@ -174,7 +205,7 @@ export default class LookupTableWidget extends React.Component {
   }
 
   previousControlPoint() {
-    var newIdx = this.state.currentControlPointIndex - 1;
+    const newIdx = this.state.currentControlPointIndex - 1;
 
     if (newIdx > -1) {
       this.setState({ currentControlPointIndex: newIdx });
@@ -182,30 +213,40 @@ export default class LookupTableWidget extends React.Component {
   }
 
   updateScalar(newVal) {
-    var scalarRange = this.props.lookupTable.getScalarRange(),
-      xValue = (newVal - scalarRange[0]) /
-        (scalarRange[1] - scalarRange[0]),
-      controlPoint = this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex);
+    const scalarRange = this.props.lookupTable.getScalarRange();
+    const xValue =
+      (newVal - scalarRange[0]) / (scalarRange[1] - scalarRange[0]);
+    const controlPoint = this.props.lookupTable.getControlPoint(
+      this.state.currentControlPointIndex
+    );
 
-    var newIdx = this.props.lookupTable.updateControlPoint(this.state.currentControlPointIndex, {
-      x: xValue,
-      r: controlPoint.r,
-      g: controlPoint.g,
-      b: controlPoint.b,
-    });
+    const newIdx = this.props.lookupTable.updateControlPoint(
+      this.state.currentControlPointIndex,
+      {
+        x: xValue,
+        r: controlPoint.r,
+        g: controlPoint.g,
+        b: controlPoint.b,
+      }
+    );
     this.setState({ currentControlPointIndex: newIdx });
     this.forceUpdate();
   }
 
   updateRGB(rgb) {
-    var controlPoint = this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex);
+    const controlPoint = this.props.lookupTable.getControlPoint(
+      this.state.currentControlPointIndex
+    );
 
-    var newIdx = this.props.lookupTable.updateControlPoint(this.state.currentControlPointIndex, {
-      x: controlPoint.x,
-      r: rgb[0] / 255,
-      g: rgb[1] / 255,
-      b: rgb[2] / 255,
-    });
+    const newIdx = this.props.lookupTable.updateControlPoint(
+      this.state.currentControlPointIndex,
+      {
+        x: controlPoint.x,
+        r: rgb[0] / 255,
+        g: rgb[1] / 255,
+        b: rgb[2] / 255,
+      }
+    );
     this.setState({ currentControlPointIndex: newIdx });
   }
 
@@ -240,19 +281,25 @@ export default class LookupTableWidget extends React.Component {
   }
 
   updateOriginalRange(min, max) {
-    console.log(`Someone asked LookupTableWidget to update original range to [${min}, ${max}]`);
+    console.log(
+      `Someone asked LookupTableWidget to update original range to [${min}, ${max}]`
+    );
     this.setState({ originalRange: [min, max] });
   }
 
   resetRange() {
     const range = this.state.originalRange;
     const currentRange = this.props.lookupTable.getScalarRange();
-    console.log(`LookupTableWidget current range: [${currentRange[0]}, ${currentRange[1]}], new range: [${range[0]}, ${range[1]}]`);
+    console.log(
+      `LookupTableWidget current range: [${currentRange[0]}, ${
+        currentRange[1]
+      }], new range: [${range[0]}, ${range[1]}]`
+    );
     this.props.lookupTable.setScalarRange(range[0], range[1]);
   }
 
   changePreset(event) {
-    var delta = event.detail || event.deltaY || event.deltaX;
+    const delta = event.detail || event.deltaY || event.deltaX;
     event.preventDefault();
     this.deltaPreset(delta);
   }
@@ -266,12 +313,11 @@ export default class LookupTableWidget extends React.Component {
   }
 
   deltaPreset(delta) {
-    var presets = this.props.lookupTable.getPresets(),
-      currentIdx = presets.indexOf(this.state.activePreset),
-      newPreset = null;
+    const presets = this.props.lookupTable.getPresets();
+    let currentIdx = presets.indexOf(this.state.activePreset);
+    let newPreset = null;
 
-
-    currentIdx += (delta === 0) ? 0 : (delta < 0) ? -1 : 1;
+    currentIdx += delta === 0 ? 0 : delta < 0 ? -1 : 1;
     if (currentIdx < 0 || currentIdx === presets.length) {
       return;
     }
@@ -280,7 +326,11 @@ export default class LookupTableWidget extends React.Component {
     if (this.props.lookupTableManager) {
       let lut = this.props.lookupTableManager.getLookupTable('__internal');
       if (!lut) {
-        lut = this.props.lookupTableManager.addLookupTable('__internal', [0, 1], newPreset);
+        lut = this.props.lookupTableManager.addLookupTable(
+          '__internal',
+          [0, 1],
+          newPreset
+        );
       } else {
         lut.setPreset(newPreset);
       }
@@ -290,66 +340,69 @@ export default class LookupTableWidget extends React.Component {
   }
 
   render() {
-    var scalarRange = this.props.lookupTable.getScalarRange(),
-      controlPoint = this.props.lookupTable.getControlPoint(this.state.currentControlPointIndex),
-      controlPointValue = ((controlPoint.x * (scalarRange[1] - scalarRange[0])) + scalarRange[0]),
-      color = [
-        Math.floor(255 * controlPoint.r),
-        Math.floor(255 * controlPoint.g),
-        Math.floor(255 * controlPoint.b),
-      ];
+    const scalarRange = this.props.lookupTable.getScalarRange();
+    const controlPoint = this.props.lookupTable.getControlPoint(
+      this.state.currentControlPointIndex
+    );
+    const controlPointValue =
+      controlPoint.x * (scalarRange[1] - scalarRange[0]) + scalarRange[0];
+    const color = [
+      Math.floor(255 * controlPoint.r),
+      Math.floor(255 * controlPoint.g),
+      Math.floor(255 * controlPoint.b),
+    ];
 
     return (
       <div className={style.container}>
         <div className={style.line}>
-          <i
-            className={style.editButton}
-            onClick={this.toggleEditMode}
-          />
+          <i className={style.editButton} onClick={this.toggleEditMode} />
           <canvas
-            ref={(c) => { this.canvas = c; }}
+            ref={(c) => {
+              this.canvas = c;
+            }}
             className={style.canvas}
-            width={this.props.lookupTable.colorTableSize * this.props.lookupTable.scale}
+            width={
+              this.props.lookupTable.colorTableSize *
+              this.props.lookupTable.scale
+            }
             height="1"
           />
-          <i
-            className={style.presetButton}
-            onClick={this.togglePresetMode}
-          />
+          <i className={style.presetButton} onClick={this.togglePresetMode} />
         </div>
         <div className={style.range} style={STYLE.range[this.state.mode]}>
           <NumberInputWidget
-            ref={(c) => { this.min = c; }}
+            ref={(c) => {
+              this.min = c;
+            }}
             className={style.input}
             value={this.props.lookupTable.getScalarRange()[0]}
             onChange={this.updateScalarRange}
           />
-          <i
-            onClick={this.resetRange}
-            className={style.resetRangeButton}
-          />
+          <i onClick={this.resetRange} className={style.resetRangeButton} />
           <NumberInputWidget
-            ref={(c) => { this.max = c; }}
+            ref={(c) => {
+              this.max = c;
+            }}
             className={style.inputRight}
             value={this.props.lookupTable.getScalarRange()[1]}
             onChange={this.updateScalarRange}
           />
         </div>
-        <div className={style.editContent} style={STYLE.editContent[this.state.mode]}>
+        <div
+          className={style.editContent}
+          style={STYLE.editContent[this.state.mode]}
+        >
           <div className={style.line}>
             <i
               onClick={this.previousControlPoint}
               className={style.previousButton}
             />
-            <div className={style.label}>{this.state.currentControlPointIndex + 1} / {this.props.lookupTable.getNumberOfControlPoints()}</div>
-            <i
-              onClick={this.nextControlPoint}
-              className={style.nextButton}
-            />
-            <i
-              onClick={this.addControlPoint}
-              className={style.addButton}
-            />
+            <div className={style.label}>
+              {this.state.currentControlPointIndex + 1} /{' '}
+              {this.props.lookupTable.getNumberOfControlPoints()}
+            </div>
+            <i onClick={this.nextControlPoint} className={style.nextButton} />
+            <i onClick={this.addControlPoint} className={style.addButton} />
             <NumberInputWidget
               className={style.inputRight}
               value={controlPointValue}
@@ -367,25 +420,40 @@ export default class LookupTableWidget extends React.Component {
             onClick={this.previousPreset}
             className={
               this.state.activePreset === this.props.lookupTable.getPresets()[0]
-              ? style.disablePreviousButton : style.previousButton}
+                ? style.disablePreviousButton
+                : style.previousButton
+            }
           />
-          {this.props.lookupTable.getPresets().map(preset =>
+          {this.props.lookupTable.getPresets().map((preset) => (
             <div
               onClick={this.setPreset}
               onScroll={this.changePreset}
               onWheel={this.changePreset}
-              className={(this.state.activePreset === preset ? style.preset : style.hiddenPreset)}
+              className={
+                this.state.activePreset === preset
+                  ? style.preset
+                  : style.hiddenPreset
+              }
               data-name={preset}
               key={preset}
-            >{preset}</div>
-          )}
+            >
+              {preset}
+            </div>
+          ))}
           <i
             onClick={this.nextPreset}
-            className={(this.state.activePreset === this.props.lookupTable.getPresets()[this.props.lookupTable.getPresets().length - 1]
-              ? style.disableNextButton : style.nextButton)}
+            className={
+              this.state.activePreset ===
+              this.props.lookupTable.getPresets()[
+                this.props.lookupTable.getPresets().length - 1
+              ]
+                ? style.disableNextButton
+                : style.nextButton
+            }
           />
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 
@@ -394,4 +462,10 @@ LookupTableWidget.propTypes = {
   lookupTable: PropTypes.object.isRequired,
   lookupTableManager: PropTypes.object,
   originalRange: PropTypes.array,
+};
+
+LookupTableWidget.defaultProps = {
+  inverse: false,
+  lookupTableManager: undefined,
+  originalRange: undefined,
 };

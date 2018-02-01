@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CollapsibleWidget    from '../../Widgets/CollapsibleWidget';
-import LookupTableWidget    from '../../Widgets/LookupTableWidget';
-import DropDownWidget       from '../../Widgets/DropDownWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import LookupTableWidget from '../../Widgets/LookupTableWidget';
+import DropDownWidget from '../../Widgets/DropDownWidget';
 
 export default class LookupTableManagerControl extends React.Component {
   constructor(props) {
@@ -23,12 +23,14 @@ export default class LookupTableManagerControl extends React.Component {
   }
 
   componentWillMount() {
-    this.changeSubscription = this.props.lookupTableManager.onFieldsChange((data, enevelope) => {
-      var fields = Object.keys(this.props.lookupTableManager.luts);
-      this.setState({
-        fields,
-      });
-    });
+    this.changeSubscription = this.props.lookupTableManager.onFieldsChange(
+      (data, enevelope) => {
+        const fields = Object.keys(this.props.lookupTableManager.luts);
+        this.setState({
+          fields,
+        });
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -46,9 +48,9 @@ export default class LookupTableManagerControl extends React.Component {
   }
 
   render() {
-    var lutManager = this.props.lookupTableManager,
-      lut = lutManager.getLookupTable(this.state.field),
-      originalRange = lut.getScalarRange();
+    const lutManager = this.props.lookupTableManager;
+    const lut = lutManager.getLookupTable(this.state.field);
+    const originalRange = lut.getScalarRange();
 
     return (
       <CollapsibleWidget
@@ -73,6 +75,6 @@ export default class LookupTableManagerControl extends React.Component {
 }
 
 LookupTableManagerControl.propTypes = {
-  field: PropTypes.string,
+  field: PropTypes.string.isRequired,
   lookupTableManager: PropTypes.object.isRequired,
 };

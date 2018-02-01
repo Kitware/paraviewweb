@@ -19,22 +19,20 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/CompositeCo
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
 const texParameter = [
-    ['TEXTURE_MAG_FILTER', 'NEAREST'],
-    ['TEXTURE_MIN_FILTER', 'NEAREST'],
-    ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
-    ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
-  ],
-  pixelStore = [
-    ['UNPACK_FLIP_Y_WEBGL', true],
-  ];
+  ['TEXTURE_MAG_FILTER', 'NEAREST'],
+  ['TEXTURE_MIN_FILTER', 'NEAREST'],
+  ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
+  ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
+];
+const pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
 
 // --------------------------------------------------------------------------
 
 function spherical2Cartesian(phi, theta) {
-  var nPhi = parseFloat(phi),
-    nTheta = parseFloat(theta),
-    phiRad = (180.0 - nPhi) * (Math.PI / 180.0),
-    thetaRad = (180.0 - nTheta) * (Math.PI / 180.0);
+  const nPhi = parseFloat(phi);
+  const nTheta = parseFloat(theta);
+  const phiRad = (180.0 - nPhi) * (Math.PI / 180.0);
+  const thetaRad = (180.0 - nTheta) * (Math.PI / 180.0);
   return [
     Math.sin(thetaRad) * Math.cos(phiRad),
     Math.sin(thetaRad) * Math.sin(phiRad),
@@ -46,11 +44,14 @@ function spherical2Cartesian(phi, theta) {
 
 function recomputeDirections(queryModel, relativeLightPosition) {
   // construct a coordinate system relative to eye point
-  var v = spherical2Cartesian(queryModel.getValue('phi'), queryModel.getValue('theta')),
-    viewDir = vec3.fromValues(v[0], v[1], v[2]),
-    at = vec3.fromValues(0, 0, 0), // assumption always looking at 0
-    north = vec3.fromValues(0, 0, 1), // assumption, north is always up
-    approxUp = vec3.create();
+  const v = spherical2Cartesian(
+    queryModel.getValue('phi'),
+    queryModel.getValue('theta')
+  );
+  const viewDir = vec3.fromValues(v[0], v[1], v[2]);
+  const at = vec3.fromValues(0, 0, 0); // assumption always looking at 0
+  const north = vec3.fromValues(0, 0, 1); // assumption, north is always up
+  const approxUp = vec3.create();
   vec3.add(approxUp, north, viewDir);
   vec3.normalize(approxUp, approxUp);
 
@@ -86,7 +87,6 @@ function recomputeDirections(queryModel, relativeLightPosition) {
 // --------------------------------------------------------------------------
 
 export default class SXYZLightCompositor {
-
   // ------------------------------------------------------------------------
 
   constructor({ queryDataModel, imageBuilder, lookupTableManager }) {
@@ -113,7 +113,10 @@ export default class SXYZLightCompositor {
         this.sxyzSprite.addEventListener('load', this.closureRenderMethod);
       }
     });
-    this.lookupTableManager.addFields(this.compositePipeline.ranges, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.compositePipeline.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
     this.numLutSamples = 1024;
     this.lutMap = {};
 
@@ -191,20 +194,23 @@ export default class SXYZLightCompositor {
           {
             id: 'texCoord',
             data: new Float32Array([
-              0.0, 0.0,
-              1.0, 0.0,
-              0.0, 1.0,
-              0.0, 1.0,
-              1.0, 0.0,
-              1.0, 1.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              1.0,
+              1.0,
+              0.0,
+              1.0,
+              1.0,
             ]),
-          }, {
+          },
+          {
             id: 'posCoord',
-            data: new Float32Array([-1, -1,
-              1, -1, -1, 1, -1, 1,
-              1, -1,
-              1, 1,
-            ]),
+            data: new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
           },
         ],
         textures: [
@@ -212,27 +218,33 @@ export default class SXYZLightCompositor {
             id: 'scalars',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'nx',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'ny',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'nz',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'lutTexture',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'ping',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'pong',
             pixelStore,
             texParameter,
@@ -243,7 +255,8 @@ export default class SXYZLightCompositor {
             id: 'ping',
             width: this.width,
             height: this.height,
-          }, {
+          },
+          {
             id: 'pong',
             width: this.width,
             height: this.height,
@@ -251,37 +264,42 @@ export default class SXYZLightCompositor {
         ],
       },
       mappings: {
-        default: [{
-          id: 'posCoord',
-          name: 'positionLocation',
-          attribute: 'a_position',
-          format: [2, this.gl.FLOAT, false, 0, 0],
-        }, {
-          id: 'texCoord',
-          name: 'texCoordLocation',
-          attribute: 'a_texCoord',
-          format: [2, this.gl.FLOAT, false, 0, 0],
-        }],
+        default: [
+          {
+            id: 'posCoord',
+            name: 'positionLocation',
+            attribute: 'a_position',
+            format: [2, this.gl.FLOAT, false, 0, 0],
+          },
+          {
+            id: 'texCoord',
+            name: 'texCoordLocation',
+            attribute: 'a_texCoord',
+            format: [2, this.gl.FLOAT, false, 0, 0],
+          },
+        ],
       },
     };
     this.glResources = WebGlUtil.createGLResources(this.gl, this.glConfig);
-    this.pingPong = new PingPong(this.gl,
+    this.pingPong = new PingPong(
+      this.gl,
       [this.glResources.framebuffers.ping, this.glResources.framebuffers.pong],
-      [this.glResources.textures.ping, this.glResources.textures.pong]);
+      [this.glResources.textures.ping, this.glResources.textures.pong]
+    );
   }
 
   // ------------------------------------------------------------------------
 
   resampleLookupTable(fieldName) {
-    var lookupTable = this.lookupTableManager.getLookupTable(fieldName),
-      fieldRange = this.compositePipeline.ranges[fieldName],
-      delta = (fieldRange[1] - fieldRange[0]) / this.numLutSamples,
-      // lutRange = lookupTable.getScalarRange(),
-      samples = this.lutMap[fieldName];
+    const lookupTable = this.lookupTableManager.getLookupTable(fieldName);
+    const fieldRange = this.compositePipeline.ranges[fieldName];
+    const delta = (fieldRange[1] - fieldRange[0]) / this.numLutSamples;
+    // lutRange = lookupTable.getScalarRange(),
+    const samples = this.lutMap[fieldName];
     for (let i = 0; i < this.numLutSamples; ++i) {
-      const scalarValue = fieldRange[0] + (i * delta),
-        colorArrayIdx = i * 4,
-        scalarColor = lookupTable.getColor(scalarValue);
+      const scalarValue = fieldRange[0] + i * delta;
+      const colorArrayIdx = i * 4;
+      const scalarColor = lookupTable.getColor(scalarValue);
       samples[colorArrayIdx] = Math.round(scalarColor[0] * 255);
       samples[colorArrayIdx + 1] = Math.round(scalarColor[1] * 255);
       samples[colorArrayIdx + 2] = Math.round(scalarColor[2] * 255);
@@ -293,20 +311,20 @@ export default class SXYZLightCompositor {
   // ------------------------------------------------------------------------
 
   updateQuery(query) {
-    var layers = this.compositePipeline.layers,
-      count = layers.length,
-      offsets = this.compositePipeline.offset,
-      fieldDependencies = this.compositePipeline.color_by_dependencies;
+    const layers = this.compositePipeline.layers;
+    const count = layers.length;
+    const offsets = this.compositePipeline.offset;
+    const fieldDependencies = this.compositePipeline.color_by_dependencies;
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[(idx * 2) + 1];
+      const fieldCode = query[idx * 2 + 1];
       if (fieldCode !== '_') {
         if (fieldDependencies[fieldCode]) {
           const depends = fieldDependencies[fieldCode];
           if (depends.normal) {
-            const nx = depends.normal[0],
-              ny = depends.normal[1],
-              nz = depends.normal[2];
+            const nx = depends.normal[0];
+            const ny = depends.normal[1];
+            const nz = depends.normal[2];
             this.offsetList.push({
               fieldName: this.compositePipeline.fields[fieldCode],
               scalar: this.spriteSize - offsets[layers[idx] + fieldCode],
@@ -334,46 +352,112 @@ export default class SXYZLightCompositor {
       this.removeLoadCallback = false;
     }
     this.pingPong.clearFbo();
-    const {
-      lightDir, viewDir,
-    } = recomputeDirections(this.queryDataModel, this.lightProperties.lightPosition),
-      imgw = this.width,
-      imgh = this.height,
-      srcX = 0;
+    const { lightDir, viewDir } = recomputeDirections(
+      this.queryDataModel,
+      this.lightProperties.lightPosition
+    );
+    const imgw = this.width;
+    const imgh = this.height;
+    const srcX = 0;
 
     let srcY = 0;
 
     // Draw a background pass
     this.compositeCtx.clearRect(0, 0, imgw, imgh);
-    this.compositeCtx.drawImage(this.sxyzSprite, 0, (this.spriteSize * imgh), imgw, imgh, 0, 0, imgw, imgh);
+    this.compositeCtx.drawImage(
+      this.sxyzSprite,
+      0,
+      this.spriteSize * imgh,
+      imgw,
+      imgh,
+      0,
+      0,
+      imgw,
+      imgh
+    );
     this.drawBackgroundPass(this.bgColor);
     for (let i = 0, size = this.offsetList.length; i < size; i += 1) {
-      const lOffMap = this.offsetList[i],
-        field = lOffMap.fieldName;
+      const lOffMap = this.offsetList[i];
+      const field = lOffMap.fieldName;
       srcY = 0;
       if (this.doLighting) {
         // Copy the nx buffer
         srcY = lOffMap.nx * imgh;
         this.nxCtx.clearRect(0, 0, imgw, imgh);
-        this.nxCtx.drawImage(this.sxyzSprite, srcX, srcY, imgw, imgh, 0, 0, imgw, imgh);
+        this.nxCtx.drawImage(
+          this.sxyzSprite,
+          srcX,
+          srcY,
+          imgw,
+          imgh,
+          0,
+          0,
+          imgw,
+          imgh
+        );
         // Copy the ny buffer
         srcY = lOffMap.ny * imgh;
         this.nyCtx.clearRect(0, 0, imgw, imgh);
-        this.nyCtx.drawImage(this.sxyzSprite, srcX, srcY, imgw, imgh, 0, 0, imgw, imgh);
+        this.nyCtx.drawImage(
+          this.sxyzSprite,
+          srcX,
+          srcY,
+          imgw,
+          imgh,
+          0,
+          0,
+          imgw,
+          imgh
+        );
         // Copy the nz buffer
         srcY = lOffMap.nz * imgh;
         this.nzCtx.clearRect(0, 0, imgw, imgh);
-        this.nzCtx.drawImage(this.sxyzSprite, srcX, srcY, imgw, imgh, 0, 0, imgw, imgh);
+        this.nzCtx.drawImage(
+          this.sxyzSprite,
+          srcX,
+          srcY,
+          imgw,
+          imgh,
+          0,
+          0,
+          imgw,
+          imgh
+        );
         // Copy the scalar buffer
         srcY = lOffMap.scalar * imgh;
         this.scalarCtx.clearRect(0, 0, imgw, imgh);
-        this.scalarCtx.drawImage(this.sxyzSprite, srcX, srcY, imgw, imgh, 0, 0, imgw, imgh);
-        this.drawLitCompositePass(viewDir, lightDir, this.lightProperties, this.lutMap[field]);
+        this.scalarCtx.drawImage(
+          this.sxyzSprite,
+          srcX,
+          srcY,
+          imgw,
+          imgh,
+          0,
+          0,
+          imgw,
+          imgh
+        );
+        this.drawLitCompositePass(
+          viewDir,
+          lightDir,
+          this.lightProperties,
+          this.lutMap[field]
+        );
       } else {
         // Copy the scalar buffer
         srcY = lOffMap.scalar * imgh;
         this.scalarCtx.clearRect(0, 0, imgw, imgh);
-        this.scalarCtx.drawImage(this.sxyzSprite, srcX, srcY, imgw, imgh, 0, 0, imgw, imgh);
+        this.scalarCtx.drawImage(
+          this.sxyzSprite,
+          srcX,
+          srcY,
+          imgw,
+          imgh,
+          0,
+          0,
+          imgw,
+          imgh
+        );
         this.drawLutCompositePass(this.lutMap[field]);
       }
     }
@@ -401,10 +485,16 @@ export default class SXYZLightCompositor {
     this.gl.viewport(0, 0, this.width, this.height);
 
     // Set up the sampler uniform and bind the rendered texture
-    const uImage = this.gl.getUniformLocation(this.glResources.programs.displayProgram, 'u_image');
+    const uImage = this.gl.getUniformLocation(
+      this.glResources.programs.displayProgram,
+      'u_image'
+    );
     this.gl.uniform1i(uImage, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -417,23 +507,47 @@ export default class SXYZLightCompositor {
 
   drawBackgroundPass(backgroundColor) {
     // Draw to the fbo on this pass
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pingPong.getFramebuffer());
+    this.gl.bindFramebuffer(
+      this.gl.FRAMEBUFFER,
+      this.pingPong.getFramebuffer()
+    );
 
     // Using the background shader program
     this.gl.useProgram(this.glResources.programs.backgroundProgram);
 
     // this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     this.gl.viewport(0, 0, this.width, this.height);
-    const bgColor = vec4.fromValues(backgroundColor[0], backgroundColor[1], backgroundColor[2], 1.0);
-    const bgc = this.gl.getUniformLocation(this.glResources.programs.backgroundProgram, 'backgroundColor');
+    const bgColor = vec4.fromValues(
+      backgroundColor[0],
+      backgroundColor[1],
+      backgroundColor[2],
+      1.0
+    );
+    const bgc = this.gl.getUniformLocation(
+      this.glResources.programs.backgroundProgram,
+      'backgroundColor'
+    );
     this.gl.uniform4fv(bgc, bgColor);
 
     // Set up the layer texture
-    const layer = this.gl.getUniformLocation(this.glResources.programs.backgroundProgram, 'backgroundSampler');
+    const layer = this.gl.getUniformLocation(
+      this.glResources.programs.backgroundProgram,
+      'backgroundSampler'
+    );
     this.gl.uniform1i(layer, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.compositeCanvas.el);
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.compositeCanvas.el
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -450,69 +564,164 @@ export default class SXYZLightCompositor {
   // ------------------------------------------------------------------------
 
   drawLitCompositePass(viewDir, lightDir, lightProperties, lutData) {
-    var {
-      lightTerms, lightColor,
-    } = lightProperties;
+    const { lightTerms, lightColor } = lightProperties;
 
     // Draw to the fbo on this pass
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pingPong.getFramebuffer());
+    this.gl.bindFramebuffer(
+      this.gl.FRAMEBUFFER,
+      this.pingPong.getFramebuffer()
+    );
 
     // Using the lighting compositing shader program
     this.gl.useProgram(this.glResources.programs.compositeLightProgram);
     this.gl.viewport(0, 0, this.width, this.height);
-    const viewDirection = vec4.fromValues(viewDir[0], viewDir[1], viewDir[2], 0.0);
-    const vdir = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'viewDir');
+    const viewDirection = vec4.fromValues(
+      viewDir[0],
+      viewDir[1],
+      viewDir[2],
+      0.0
+    );
+    const vdir = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'viewDir'
+    );
     this.gl.uniform4fv(vdir, viewDirection);
-    const lightDirection = vec4.fromValues(lightDir[0], lightDir[1], lightDir[2], 0.0);
-    const ldir = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'lightDir');
+    const lightDirection = vec4.fromValues(
+      lightDir[0],
+      lightDir[1],
+      lightDir[2],
+      0.0
+    );
+    const ldir = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'lightDir'
+    );
     this.gl.uniform4fv(ldir, lightDirection);
-    const lightingConstants = vec4.fromValues(lightTerms.ka, lightTerms.kd, lightTerms.ks, lightTerms.alpha);
-    const lterms = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'lightTerms');
+    const lightingConstants = vec4.fromValues(
+      lightTerms.ka,
+      lightTerms.kd,
+      lightTerms.ks,
+      lightTerms.alpha
+    );
+    const lterms = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'lightTerms'
+    );
     this.gl.uniform4fv(lterms, lightingConstants);
-    const lightCol = vec4.fromValues(lightColor[0], lightColor[1], lightColor[2], 1.0);
-    const lcolor = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'lightColor');
+    const lightCol = vec4.fromValues(
+      lightColor[0],
+      lightColor[1],
+      lightColor[2],
+      1.0
+    );
+    const lcolor = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'lightColor'
+    );
     this.gl.uniform4fv(lcolor, lightCol);
 
     // Set up the scalar texture
-    const scalar = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'scalarSampler');
+    const scalar = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'scalarSampler'
+    );
     this.gl.uniform1i(scalar, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.scalars);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.scalarCanvas.el);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.scalarCanvas.el
+    );
 
     // Set up the normals (x component) texture
-    const nx = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'nxSampler');
+    const nx = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'nxSampler'
+    );
     this.gl.uniform1i(nx, 1);
     this.gl.activeTexture(this.gl.TEXTURE0 + 1);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.nx);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.nxCanvas.el);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.nxCanvas.el
+    );
 
     // Set up the normals (y component) texture
-    const ny = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'nySampler');
+    const ny = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'nySampler'
+    );
     this.gl.uniform1i(ny, 2);
     this.gl.activeTexture(this.gl.TEXTURE0 + 2);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.ny);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.nyCanvas.el);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.nyCanvas.el
+    );
 
     // Set up the normals (z component) texture
-    const nz = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'nzSampler');
+    const nz = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'nzSampler'
+    );
     this.gl.uniform1i(nz, 3);
     this.gl.activeTexture(this.gl.TEXTURE0 + 3);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.nz);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.nzCanvas.el);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.nzCanvas.el
+    );
 
     // Set up the sampler uniform and bind the rendered texture
-    const composite = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'compositeSampler');
+    const composite = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'compositeSampler'
+    );
     this.gl.uniform1i(composite, 4);
     this.gl.activeTexture(this.gl.TEXTURE0 + 4);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
 
     // Set up the lookup table texture
-    const lut = this.gl.getUniformLocation(this.glResources.programs.compositeLightProgram, 'lutSampler');
+    const lut = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLightProgram,
+      'lutSampler'
+    );
     this.gl.uniform1i(lut, 5);
     this.gl.activeTexture(this.gl.TEXTURE0 + 5);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.lutTexture);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.numLutSamples, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, lutData);
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.glResources.textures.lutTexture
+    );
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.numLutSamples,
+      1,
+      0,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      lutData
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -532,31 +741,66 @@ export default class SXYZLightCompositor {
 
   drawLutCompositePass(lutData) {
     // Draw to the fbo on this pass
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pingPong.getFramebuffer());
+    this.gl.bindFramebuffer(
+      this.gl.FRAMEBUFFER,
+      this.pingPong.getFramebuffer()
+    );
 
     // Using the lighting compositing shader program
     this.gl.useProgram(this.glResources.programs.compositeLutProgram);
     this.gl.viewport(0, 0, this.width, this.height);
 
     // Set up the scalar texture
-    const scalar = this.gl.getUniformLocation(this.glResources.programs.compositeLutProgram, 'scalarSampler');
+    const scalar = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLutProgram,
+      'scalarSampler'
+    );
     this.gl.uniform1i(scalar, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.scalars);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.scalarCanvas.el);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      this.scalarCanvas.el
+    );
 
     // Set up the sampler uniform and bind the rendered texture
-    const composite = this.gl.getUniformLocation(this.glResources.programs.compositeLutProgram, 'compositeSampler');
+    const composite = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLutProgram,
+      'compositeSampler'
+    );
     this.gl.uniform1i(composite, 1);
     this.gl.activeTexture(this.gl.TEXTURE0 + 1);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
 
     // Set up the lookup table texture
-    const lut = this.gl.getUniformLocation(this.glResources.programs.compositeLutProgram, 'lutSampler');
+    const lut = this.gl.getUniformLocation(
+      this.glResources.programs.compositeLutProgram,
+      'lutSampler'
+    );
     this.gl.uniform1i(lut, 2);
     this.gl.activeTexture(this.gl.TEXTURE0 + 2);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.lutTexture);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.numLutSamples, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, lutData);
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.glResources.textures.lutTexture
+    );
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA,
+      this.numLutSamples,
+      1,
+      0,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      lutData
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -579,13 +823,16 @@ export default class SXYZLightCompositor {
       {
         name: 'LookupTableManagerWidget',
         lookupTableManager: this.lookupTableManager,
-      }, {
+      },
+      {
         name: 'LightPropertiesWidget',
         light: this,
-      }, {
+      },
+      {
         name: 'CompositeControl',
         pipelineModel: this.imageBuilder.pipelineModel,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel: this.queryDataModel,
       },

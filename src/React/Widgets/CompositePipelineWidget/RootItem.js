@@ -42,7 +42,10 @@ export default class CompositePipelineWidgetRootItem extends React.Component {
   }
 
   updateColorBy(event) {
-    this.props.model.setActiveColor(this.props.layer, event.target.dataset.color);
+    this.props.model.setActiveColor(
+      this.props.layer,
+      event.target.dataset.color
+    );
     this.toggleDropDown();
   }
 
@@ -56,48 +59,62 @@ export default class CompositePipelineWidgetRootItem extends React.Component {
   }
 
   render() {
-    var model = this.props.model,
-      layer = this.props.layer,
-      visible = model.isLayerVisible(this.props.layer),
-      children = (this.props.item.children || []),
-      inEditMode = this.props.model.isLayerInEditMode(this.props.layer),
-      hasChildren = (children.length > 0),
-      hasOpacity = model.hasOpacity(),
-      hasDropDown = this.props.model.getColor(this.props.layer).length > 1,
-      editButton = hasChildren ? <i className={inEditMode ? style.editButtonOn : style.editButtonOff} onClick={this.toggleEditMode} /> : '';
+    const model = this.props.model;
+    const layer = this.props.layer;
+    const visible = model.isLayerVisible(this.props.layer);
+    const children = this.props.item.children || [];
+    const inEditMode = this.props.model.isLayerInEditMode(this.props.layer);
+    const hasChildren = children.length > 0;
+    const hasOpacity = model.hasOpacity();
+    const hasDropDown = this.props.model.getColor(this.props.layer).length > 1;
+    const editButton = hasChildren ? (
+      <i
+        className={inEditMode ? style.editButtonOn : style.editButtonOff}
+        onClick={this.toggleEditMode}
+      />
+    ) : (
+      ''
+    );
 
     return (
       <div className={style.section}>
         <div className={style.item}>
-          <div className={style.label}>
-            {this.props.item.name}
-          </div>
+          <div className={style.label}>{this.props.item.name}</div>
           <div className={style.actions}>
             {editButton}
             <i
-              className={visible ? style.visibleButtonOn : style.visibleButtonOff}
+              className={
+                visible ? style.visibleButtonOn : style.visibleButtonOff
+              }
               onClick={this.toggleVisibility}
             />
             <i
-              className={hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff}
+              className={
+                hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff
+              }
               onClick={this.toggleDropDown}
             />
             <div
               onClick={this.updateColorBy}
               className={this.state.dropDown ? style.menu : style.hidden}
             >
-              {model.getColor(layer).map(color =>
+              {model.getColor(layer).map((color) => (
                 <div
-                  key={color} data-color={color}
-                  className={model.isActiveColor(layer, color) ? style.selectedMenuItem : style.menuItem}
+                  key={color}
+                  data-color={color}
+                  className={
+                    model.isActiveColor(layer, color)
+                      ? style.selectedMenuItem
+                      : style.menuItem
+                  }
                 >
                   {model.getColorToLabel(color)}
                 </div>
-              )}
+              ))}
             </div>
           </div>
         </div>
-        <div className={(hasOpacity && !hasChildren) ? style.item : style.hidden}>
+        <div className={hasOpacity && !hasChildren ? style.item : style.hidden}>
           <input
             className={style.opacity}
             type="range"
@@ -108,17 +125,28 @@ export default class CompositePipelineWidgetRootItem extends React.Component {
           />
         </div>
         <div className={style.children}>
-          {children.map((item, idx) =>
-            <ChildItem key={idx} item={item} layer={item.ids.join('')} model={model} />
-          )}
+          {children.map((item, idx) => (
+            <ChildItem
+              key={idx}
+              item={item}
+              layer={item.ids.join('')}
+              model={model}
+            />
+          ))}
         </div>
-      </div>);
+      </div>
+    );
   }
 }
-
 
 CompositePipelineWidgetRootItem.propTypes = {
   item: PropTypes.object,
   layer: PropTypes.string,
   model: PropTypes.object,
+};
+
+CompositePipelineWidgetRootItem.defaultProps = {
+  item: undefined,
+  layer: undefined,
+  model: undefined,
 };

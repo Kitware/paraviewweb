@@ -1,16 +1,12 @@
-/* global window */
-
 import Monologue from 'monologue.js';
 import DataManager from '../DataManager';
 
-const
-  dataManager = new DataManager(),
-  OBJECT_READY_TOPIC = 'object-ready';
+const dataManager = new DataManager();
+const OBJECT_READY_TOPIC = 'object-ready';
 
-var geometryDataModelCounter = 0;
+let geometryDataModelCounter = 0;
 
 export default class GeometryDataModel {
-
   constructor(basepath) {
     geometryDataModelCounter += 1;
 
@@ -22,14 +18,16 @@ export default class GeometryDataModel {
     this.dataMapping = {};
 
     dataManager.on(this.id, (data, envelope) => {
-      const url = data.requestedURL,
-        dataDescription = this.dataMapping[url];
+      const url = data.requestedURL;
+      const dataDescription = this.dataMapping[url];
 
       if (dataDescription) {
         const obj = this.sceneData[dataDescription.name];
         let objectComplete = true;
 
-        this.sceneData[dataDescription.name][dataDescription.field] = new window[dataDescription.type](data.data);
+        this.sceneData[dataDescription.name][
+          dataDescription.field
+        ] = new window[dataDescription.type](data.data);
 
         Object.keys(obj).forEach((key) => {
           if (obj[key] === null) {
@@ -52,9 +50,9 @@ export default class GeometryDataModel {
   }
 
   colorGeometryBy(objectName, fieldName) {
-    var changeDetected = false;
+    let changeDetected = false;
     if (fieldName) {
-      changeDetected = (this.coloByMapping[objectName] !== fieldName);
+      changeDetected = this.coloByMapping[objectName] !== fieldName;
       this.coloByMapping[objectName] = fieldName;
     } else {
       delete this.coloByMapping[objectName];
@@ -75,8 +73,8 @@ export default class GeometryDataModel {
 
       // Fill data with expected
       scene.forEach((obj) => {
-        const name = obj.name,
-          urls = [];
+        const name = obj.name;
+        const urls = [];
         let url = null;
 
         // Init structure
@@ -94,7 +92,6 @@ export default class GeometryDataModel {
           type: obj.points.split('.').slice(-1)[0],
         };
         urls.push(url);
-
 
         url = this.basepath + obj.index;
         this.dataMapping[url] = {

@@ -3,12 +3,11 @@ import rgbd from './rgbd-compositor';
 import light from './sxyz-light-compositor';
 import raw from './raw-rgbd-compositor';
 
-const
-  CompositorMap = {
-    rgbd,
-    'sxyz-light': light,
-    'raw-rgbd': raw,
-  };
+const CompositorMap = {
+  rgbd,
+  'sxyz-light': light,
+  'raw-rgbd': raw,
+};
 
 function createCompositor(dataType, options) {
   let instance = null;

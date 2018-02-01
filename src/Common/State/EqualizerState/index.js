@@ -1,11 +1,14 @@
 import Monologue from 'monologue.js';
 
-const
-    CHANGE_TOPIC = 'model.change';
+const CHANGE_TOPIC = 'model.change';
 
 export default class EqualizerState {
-
-  constructor({ size = 1, colors = ['#cccccc'], lookupTable = null, scalars = [] }) {
+  constructor({
+    size = 1,
+    colors = ['#cccccc'],
+    lookupTable = null,
+    scalars = [],
+  }) {
     this.size = size;
     this.scalars = scalars;
     this.lookupTable = lookupTable;
@@ -14,9 +17,9 @@ export default class EqualizerState {
     // Handle colors
     if (lookupTable) {
       const convertColor = (color) => {
-        var R = Math.floor(color[0] * 255);
-        var G = Math.floor(color[1] * 255);
-        var B = Math.floor(color[2] * 255);
+        const R = Math.floor(color[0] * 255);
+        const G = Math.floor(color[1] * 255);
+        const B = Math.floor(color[2] * 255);
         return `rgb(${R},${G},${B})`;
       };
       const callback = (data, envelope) => {
@@ -42,9 +45,9 @@ export default class EqualizerState {
     // Make the updateOpacities a closure to prevent any this issue
     // when using it as a callback
     this.updateOpacities = (values) => {
-      var changeDetected = false;
+      let changeDetected = false;
       for (let i = 0; i < this.size; i++) {
-        changeDetected = changeDetected || (this.opacities[i] !== values[i]);
+        changeDetected = changeDetected || this.opacities[i] !== values[i];
         this.opacities[i] = values[i];
       }
       if (changeDetected) {
@@ -55,13 +58,13 @@ export default class EqualizerState {
     // Make the resetOpacities a closure to prevent any this issue
     // when using it as a callback
     this.resetOpacities = () => {
-      var opacityStep = 1.0 / this.size;
-      var opacity = 0.0;
-      var changeDetected = false;
+      const opacityStep = 1.0 / this.size;
+      let opacity = 0.0;
+      let changeDetected = false;
 
       for (let i = 0; i < this.size; i++) {
         opacity += opacityStep;
-        changeDetected = changeDetected || (this.opacities[i] !== opacity);
+        changeDetected = changeDetected || this.opacities[i] !== opacity;
         this.opacities[i] = opacity;
       }
       if (changeDetected) {

@@ -1,13 +1,13 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import AbstractViewerMenu from '../AbstractViewerMenu';
-import WidgetFactory      from '../../CollapsibleControls/CollapsibleControlFactory';
+import WidgetFactory from '../../CollapsibleControls/CollapsibleControlFactory';
 
 // import GeometryRenderer  from '../../Renderers/GeometryRenderer';
 // import ImageRenderer     from '../../Renderers/ImageRenderer';
 // import MultiViewRenderer from '../../Renderers/MultiLayoutRenderer';
-import PlotlyRenderer       from '../../Renderers/PlotlyRenderer';
+import PlotlyRenderer from '../../Renderers/PlotlyRenderer';
 
 export default function ChartViewer(props) {
   let controlWidgets = WidgetFactory.getWidgets(props.chartBuilder);
@@ -35,9 +35,9 @@ ChartViewer.propTypes = {
   chartBuilder: PropTypes.object.isRequired,
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
-  userData: PropTypes.object,
 };
 
 ChartViewer.defaultProps = {
   config: {},
+  menuAddOn: undefined,
 };

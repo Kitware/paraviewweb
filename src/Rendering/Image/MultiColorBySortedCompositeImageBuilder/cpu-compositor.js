@@ -2,7 +2,6 @@ import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import { loop } from '../../../Common/Misc/Loop';
 
 export default class CPUCompositor {
-
   constructor(queryDataModel, imageBuilder, colorHelper, reverseCompositePass) {
     this.queryDataModel = queryDataModel;
     this.imageBuilder = imageBuilder;
@@ -16,7 +15,9 @@ export default class CPUCompositor {
     this.width = this.metadata.dimensions[0];
     this.height = this.metadata.dimensions[1];
     this.bgCanvas = new CanvasOffscreenBuffer(this.width, this.height);
-    this.imageBuffer = this.bgCanvas.get2DContext().createImageData(this.width, this.height);
+    this.imageBuffer = this.bgCanvas
+      .get2DContext()
+      .createImageData(this.width, this.height);
   }
 
   // --------------------------------------------------------------------------
@@ -37,11 +38,11 @@ export default class CPUCompositor {
       return;
     }
 
-    const imageSize = this.width * this.height,
-      pixels = this.imageBuffer.data,
-      height = this.height,
-      width = this.width,
-      ctx = this.bgCanvas.get2DContext();
+    const imageSize = this.width * this.height;
+    const pixels = this.imageBuffer.data;
+    const height = this.height;
+    const width = this.width;
+    const ctx = this.bgCanvas.get2DContext();
 
     // Reset pixels
     if (pixels.fill) {
@@ -58,9 +59,9 @@ export default class CPUCompositor {
     loop(!!this.reverseCompositePass, this.numLayers, (drawIdx) => {
       for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
-          const idx = (this.width * y) + x,
-            flipIdx = (((height - y - 1) * width) + x),
-            layerIdx = this.orderData[(drawIdx * imageSize) + idx];
+          const idx = this.width * y + x;
+          const flipIdx = (height - y - 1) * width + x;
+          const layerIdx = this.orderData[drawIdx * imageSize + idx];
 
           let intensity = 1.0;
 
@@ -72,27 +73,31 @@ export default class CPUCompositor {
           }
 
           if (this.intensityData) {
-            intensity = this.intensityData[(drawIdx * imageSize) + idx] / 255.0;
+            intensity = this.intensityData[drawIdx * imageSize + idx] / 255.0;
           }
 
           // Blend
-          const alphA = pixels[(flipIdx * 4) + 3] / 255.0,
-            alphANeg = 1.0 - alphA,
-            rgbA = [pixels[flipIdx * 4], pixels[(flipIdx * 4) + 1], pixels[(flipIdx * 4) + 2]],
-            pixelRGBA = this.colorHelper.getColor(layerIdx, idx),
-            alphaB = pixelRGBA[3] / 255.0,
-            rgbB = [
-              pixelRGBA[0] * intensity * alphaB * alphANeg,
-              pixelRGBA[1] * intensity * alphaB * alphANeg,
-              pixelRGBA[2] * intensity * alphaB * alphANeg,
-            ],
-            alphOut = alphA + (alphaB * (1.0 - alphA));
+          const alphA = pixels[flipIdx * 4 + 3] / 255.0;
+          const alphANeg = 1.0 - alphA;
+          const rgbA = [
+            pixels[flipIdx * 4],
+            pixels[flipIdx * 4 + 1],
+            pixels[flipIdx * 4 + 2],
+          ];
+          const pixelRGBA = this.colorHelper.getColor(layerIdx, idx);
+          const alphaB = pixelRGBA[3] / 255.0;
+          const rgbB = [
+            pixelRGBA[0] * intensity * alphaB * alphANeg,
+            pixelRGBA[1] * intensity * alphaB * alphANeg,
+            pixelRGBA[2] * intensity * alphaB * alphANeg,
+          ];
+          const alphOut = alphA + alphaB * (1.0 - alphA);
 
           if (alphaB > 0) {
-            pixels[flipIdx * 4] = ((rgbA[0] * alphA) + rgbB[0]) / alphOut;
-            pixels[(flipIdx * 4) + 1] = ((rgbA[1] * alphA) + rgbB[1]) / alphOut;
-            pixels[(flipIdx * 4) + 2] = ((rgbA[2] * alphA) + rgbB[2]) / alphOut;
-            pixels[(flipIdx * 4) + 3] = alphOut * 255.0;
+            pixels[flipIdx * 4] = (rgbA[0] * alphA + rgbB[0]) / alphOut;
+            pixels[flipIdx * 4 + 1] = (rgbA[1] * alphA + rgbB[1]) / alphOut;
+            pixels[flipIdx * 4 + 2] = (rgbA[2] * alphA + rgbB[2]) / alphOut;
+            pixels[flipIdx * 4 + 3] = alphOut * 255.0;
           } else {
             console.log('no alpha while skip should have worked', pixelRGBA[3]);
           }

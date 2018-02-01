@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/SelectionEditorWidget.mcss';
 
-import Ineq             from '../../../../../svg/Operations/Ineq.svg';
-import Ineqq            from '../../../../../svg/Operations/Ineqq.svg';
-import LegendIcon       from '../LegendIcon';
-import NumberFormatter, { sciNotationRegExp } from '../../../../Common/Misc/NumberFormatter';
-import SvgIconWidget    from '../../SvgIconWidget';
+import Ineq from '../../../../../svg/Operations/Ineq.svg';
+import Ineqq from '../../../../../svg/Operations/Ineqq.svg';
+import LegendIcon from '../LegendIcon';
+import NumberFormatter, {
+  sciNotationRegExp,
+} from '../../../../Common/Misc/NumberFormatter';
+import SvgIconWidget from '../../SvgIconWidget';
 
 const CHOICE_LABELS = {
   '<': Ineq,
@@ -24,7 +26,10 @@ const NEXT_VALUE = {
 export default function render(props) {
   const { rule } = props;
   const terms = rule.terms;
-  const formatter = new NumberFormatter(3, [Number(terms[0]), Number(terms[4])]);
+  const formatter = new NumberFormatter(3, [
+    Number(terms[0]),
+    Number(terms[4]),
+  ]);
 
   function onChange(e, force = false) {
     if (!e.target.validity.valid) {
@@ -73,14 +78,37 @@ export default function render(props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      <div className={style.activeInequality} data-path="1" onClick={toggleIneq}>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[terms[1]]} />
+      <div
+        className={style.activeInequality}
+        data-path="1"
+        onClick={toggleIneq}
+      >
+        <SvgIconWidget
+          style={{ pointerEvents: 'none' }}
+          width="20px"
+          height="20px"
+          icon={CHOICE_LABELS[terms[1]]}
+        />
       </div>
       <div className={style.inequality} title={terms[2]}>
-        <LegendIcon width="20px" height="20px" getLegend={props.getLegend} name={terms[2]} />
+        <LegendIcon
+          width="20px"
+          height="20px"
+          getLegend={props.getLegend}
+          name={terms[2]}
+        />
       </div>
-      <div className={style.activeInequality} data-path="3" onClick={toggleIneq}>
-        <SvgIconWidget style={{ pointerEvents: 'none' }} width="20px" height="20px" icon={CHOICE_LABELS[terms[3]]} />
+      <div
+        className={style.activeInequality}
+        data-path="3"
+        onClick={toggleIneq}
+      >
+        <SvgIconWidget
+          style={{ pointerEvents: 'none' }}
+          width="20px"
+          height="20px"
+          icon={CHOICE_LABELS[terms[3]]}
+        />
       </div>
       <input
         className={style.numberInput}
@@ -92,7 +120,8 @@ export default function render(props) {
         onBlur={onBlur}
       />
       <i className={style.deleteButton} onClick={onDelete} />
-    </section>);
+    </section>
+  );
 }
 
 render.propTypes = {
@@ -102,4 +131,13 @@ render.propTypes = {
   path: PropTypes.array,
   onChange: PropTypes.func,
   onDelete: PropTypes.func,
+};
+
+render.defaultProps = {
+  getLegend: undefined,
+  rule: undefined,
+  depth: undefined,
+  path: undefined,
+  onChange: undefined,
+  onDelete: undefined,
 };

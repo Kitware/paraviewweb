@@ -5,7 +5,7 @@ function registerWidget(name, fn) {
 }
 
 function createWidget(name, options) {
-  var fn = WidgetFactoryMapping[name];
+  const fn = WidgetFactoryMapping[name];
 
   if (fn) {
     return fn(options);
@@ -18,11 +18,11 @@ function getWidgets(obj) {
     return [];
   }
 
-  const widgetDesc = obj.getControlWidgets(),
-    widgetList = [];
+  const widgetDesc = obj.getControlWidgets();
+  const widgetList = [];
 
   widgetDesc.forEach((desc) => {
-    var widget = createWidget(desc.name, desc);
+    const widget = createWidget(desc.name, desc);
     if (widget) {
       widgetList.push(widget);
     } else {

@@ -1,11 +1,11 @@
 const encoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 function createColorLookupConst(lut, value) {
-  return idx => lut.getColor(value);
+  return (idx) => lut.getColor(value);
 }
 
 function createColorLookup(lut, floatMap, layer, color) {
-  return idx => lut.getColor(floatMap[layer][color][idx]);
+  return (idx) => lut.getColor(floatMap[layer][color][idx]);
 }
 
 export default class ColorByHelper {
@@ -37,9 +37,17 @@ export default class ColorByHelper {
         const lut = this.lookupTableManager.getLookupTable(colorBy.name);
 
         if (colorBy.type === 'const') {
-          this.layerGetColor[layerCode][colorName] = createColorLookupConst(lut, colorBy.value);
+          this.layerGetColor[layerCode][colorName] = createColorLookupConst(
+            lut,
+            colorBy.value
+          );
         } else if (colorBy.type === 'field') {
-          this.layerGetColor[layerCode][colorName] = createColorLookup(lut, this.layerFloatData, layerCode, colorName);
+          this.layerGetColor[layerCode][colorName] = createColorLookup(
+            lut,
+            this.layerFloatData,
+            layerCode,
+            colorName
+          );
         }
       }
     }
@@ -52,7 +60,9 @@ export default class ColorByHelper {
         const layerName = encoding[Number(splitName.shift())];
         const colorBy = splitName.join('_');
 
-        this.layerFloatData[layerName][colorBy] = new Float32Array(data[name].data);
+        this.layerFloatData[layerName][colorBy] = new Float32Array(
+          data[name].data
+        );
       }
     });
   }
@@ -60,8 +70,8 @@ export default class ColorByHelper {
   updatePipeline(query) {
     this.categories = [];
     for (let layerIdx = 0; layerIdx < this.nbLayers; layerIdx++) {
-      const layerCode = encoding[layerIdx],
-        colorCode = query[(layerIdx * 2) + 1];
+      const layerCode = encoding[layerIdx];
+      const colorCode = query[layerIdx * 2 + 1];
 
       if (colorCode === '_') {
         this.layerVisible[layerCode] = 0.0;
@@ -80,15 +90,17 @@ export default class ColorByHelper {
   }
 
   hasNoContent(layerIdx) {
-    var layerCode = encoding[layerIdx],
-      alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
-    return (alpha === 0);
+    const layerCode = encoding[layerIdx];
+    const alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
+    return alpha === 0;
   }
 
   getColor(layerIdx, pixelIdx) {
-    var layerCode = encoding[layerIdx],
-      color = this.layerGetColor[layerCode][this.layerColorBy[layerCode]](pixelIdx),
-      alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
+    const layerCode = encoding[layerIdx];
+    const color = this.layerGetColor[layerCode][this.layerColorBy[layerCode]](
+      pixelIdx
+    );
+    const alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
 
     return [color[0] * 255, color[1] * 255, color[2] * 255, color[3] * alpha];
   }
@@ -106,11 +118,13 @@ export default class ColorByHelper {
   }
 
   getLayerLut(layerIdx) {
-    return this.lookupTableManager.getLookupTable(this.layerColorBy[encoding[layerIdx]]);
+    return this.lookupTableManager.getLookupTable(
+      this.layerColorBy[encoding[layerIdx]]
+    );
   }
 
   getLayerFloatData(layerIdx) {
-    var layerName = encoding[layerIdx];
+    const layerName = encoding[layerIdx];
     return this.layerFloatData[layerName][this.layerColorBy[layerName]];
   }
 

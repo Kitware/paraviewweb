@@ -1,6 +1,4 @@
-/* global window */
-
-import Observable   from '../Observable';
+import Observable from '../Observable';
 import { debounce } from '../Debounce';
 
 /* eslint-disable no-use-before-define */
@@ -8,7 +6,12 @@ import { debounce } from '../Debounce';
 const observableInstance = new Observable();
 const TOPIC = 'window.size.change';
 const domSizes = new WeakMap();
-const sizeProperties = ['scrollWidth', 'scrollHeight', 'clientWidth', 'clientHeight'];
+const sizeProperties = [
+  'scrollWidth',
+  'scrollHeight',
+  'clientWidth',
+  'clientHeight',
+];
 const windowListener = debounce(invalidateSize, 250);
 
 let timestamp = 0;
@@ -28,7 +31,7 @@ function updateSize(domElement, cacheObj) {
 // ------ New API ------
 
 function getSize(domElement, clearCache = false) {
-  var cachedSize = domSizes.get(domElement);
+  let cachedSize = domSizes.get(domElement);
   if (!cachedSize || clearCache) {
     cachedSize = { timestamp: -1 };
     domSizes.set(domElement, cachedSize);

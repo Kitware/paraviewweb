@@ -24,7 +24,9 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
     // Bind callback
     this.updateDimensions = this.updateDimensions.bind(this);
     this.updatePoints = this.updatePoints.bind(this);
-    this.updateActivePointDataValue = this.updateActivePointDataValue.bind(this);
+    this.updateActivePointDataValue = this.updateActivePointDataValue.bind(
+      this
+    );
     this.updateActivePointOpacity = this.updateActivePointOpacity.bind(this);
     this.addPoint = this.addPoint.bind(this);
     this.removePoint = this.removePoint.bind(this);
@@ -67,8 +69,10 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.width !== prevState.width ||
-        this.state.height !== prevState.height) {
+    if (
+      this.state.width !== prevState.width ||
+      this.state.height !== prevState.height
+    ) {
       this.editor.render();
     }
   }
@@ -83,8 +87,10 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
   }
 
   updateDimensions() {
-    const { clientWidth, clientHeight } =
-      sizeHelper.getSize(this.rootContainer, true);
+    const { clientWidth, clientHeight } = sizeHelper.getSize(
+      this.rootContainer,
+      true
+    );
     if (this.props.width === -1) {
       this.setState({ width: clientWidth });
     }
@@ -96,13 +102,13 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
   updatePoints(newPoints, envelope) {
     const activePoint = this.editor.activeIndex;
     this.setState({ activePoint });
-    const dataPoints = this.props.points.map(pt => ({
+    const dataPoints = this.props.points.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
       y2: pt.y2 || 0.5,
     }));
-    const newDataPoints = newPoints.map(pt => ({
+    const newDataPoints = newPoints.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
@@ -119,14 +125,15 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.props.points.map(pt => ({
+    const points = this.props.points.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
       y2: pt.y2 || 0.5,
     }));
     points[this.state.activePoint].x =
-      (value - this.props.rangeMin) / (this.props.rangeMax - this.props.rangeMin);
+      (value - this.props.rangeMin) /
+      (this.props.rangeMax - this.props.rangeMin);
     this.editor.setControlPoints(points, this.state.activePoint);
   }
 
@@ -135,7 +142,7 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
       return;
     }
     const value = parseFloat(e.target.value);
-    const points = this.props.points.map(pt => ({
+    const points = this.props.points.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
@@ -146,7 +153,7 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
   }
 
   addPoint(e) {
-    const points = this.props.points.map(pt => ({
+    const points = this.props.points.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
@@ -165,7 +172,7 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
     if (this.state.activePoint === -1) {
       return;
     }
-    const points = this.props.points.map(pt => ({
+    const points = this.props.points.map((pt) => ({
       x: pt.x,
       y: pt.y,
       x2: pt.x2 || 0.5,
@@ -177,20 +184,32 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
   }
 
   render() {
-    const activePointDataValue = ((this.state.activePoint !== -1 ?
-          this.props.points[this.state.activePoint].x : 0.5) *
-          (this.props.rangeMax - this.props.rangeMin)) + this.props.rangeMin;
-    const activePointOpacity = this.state.activePoint !== -1 ?
-      this.props.points[this.state.activePoint].y : 0.5;
+    const activePointDataValue =
+      (this.state.activePoint !== -1
+        ? this.props.points[this.state.activePoint].x
+        : 0.5) *
+        (this.props.rangeMax - this.props.rangeMin) +
+      this.props.rangeMin;
+    const activePointOpacity =
+      this.state.activePoint !== -1
+        ? this.props.points[this.state.activePoint].y
+        : 0.5;
     return (
-      <div className={style.pieceWiseFunctionEditorWidget} ref={c => (this.rootContainer = c)}>
+      <div
+        className={style.pieceWiseFunctionEditorWidget}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
+      >
         <canvas
           className={style.canvas}
           width={this.state.width}
           height={this.state.height}
-          ref={(c) => { this.canvas = c; }}
+          ref={(c) => {
+            this.canvas = c;
+          }}
         />
-        {this.props.hidePointControl ? null :
+        {this.props.hidePointControl ? null : (
           <div className={style.pointControls}>
             <div className={style.pointInfo}>
               <div className={style.line}>
@@ -218,10 +237,18 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
                 />
               </div>
             </div>
-            <SvgIconWidget className={style.svgIcon} icon={plusIcon} onClick={this.addPoint} />
-            <SvgIconWidget className={style.svgIcon} icon={trashIcon} onClick={this.removePoint} />
+            <SvgIconWidget
+              className={style.svgIcon}
+              icon={plusIcon}
+              onClick={this.addPoint}
+            />
+            <SvgIconWidget
+              className={style.svgIcon}
+              icon={trashIcon}
+              onClick={this.removePoint}
+            />
           </div>
-        }
+        )}
       </div>
     );
   }
@@ -242,4 +269,9 @@ PieceWiseFunctionEditorWidget.defaultProps = {
   height: 200,
   width: -1,
   points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+  rangeMin: 0,
+  rangeMax: 1,
+  onChange: undefined,
+  onEditModeChange: undefined,
+  hidePointControl: false,
 };

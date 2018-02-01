@@ -1,5 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     updateGroupModerator(groupId, userId, onOff) {
       const url = `/group/${groupId}/moderator?userId=${userId}`;
@@ -12,13 +18,13 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     createGroup(group) {
-      const expected = ['name', 'description', 'public'],
-        params = filterQuery(group, ...expected),
-        {
-          missingKeys, promise,
-        } = mustContain(params, 'name');
+      const expected = ['name', 'description', 'public'];
+      const params = filterQuery(group, ...expected);
+      const { missingKeys, promise } = mustContain(params, 'name');
 
-      return missingKeys ? promise : busy(client._.post(`/group${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(client._.post(`/group${encodeQueryAsString(params)}`));
     },
 
     deleteGroup(id) {
@@ -30,50 +36,60 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     editGroup(group = {}) {
-      const expected = ['name', 'description', 'public'],
-        params = filterQuery(group, ...expected),
-        {
-          missingKeys, promise,
-        } = mustContain(group, '_id');
+      const expected = ['name', 'description', 'public'];
+      const params = filterQuery(group, ...expected);
+      const { missingKeys, promise } = mustContain(group, '_id');
 
-      return missingKeys ? promise : busy(client._.put(`/group/${group._id}${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.put(`/group/${group._id}${encodeQueryAsString(params)}`)
+          );
     },
 
     listGroupInvitations(id, query = {}) {
-      const allowed = ['limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, ...allowed);
+      const allowed = ['limit', 'offset', 'sort', 'sortdir'];
+      const params = filterQuery(query, ...allowed);
 
-      return busy(client._.get(`/group/${id}/invitation`, {
-        params,
-      }));
+      return busy(
+        client._.get(`/group/${id}/invitation`, {
+          params,
+        })
+      );
     },
 
     addGroupInvitation(id, options = {}) {
-      const allowed = ['userId', 'level', 'quiet'],
-        params = filterQuery(options, ...allowed),
-        {
-          missingKeys, promise,
-        } = mustContain(params, 'userId');
+      const allowed = ['userId', 'level', 'quiet'];
+      const params = filterQuery(options, ...allowed);
+      const { missingKeys, promise } = mustContain(params, 'userId');
 
-      return missingKeys ? promise : busy(client._.post(`/group/${id}/invitation${encodeQueryAsString(params)}`));
+      return missingKeys
+        ? promise
+        : busy(
+            client._.post(
+              `/group/${id}/invitation${encodeQueryAsString(params)}`
+            )
+          );
     },
 
     listGroupMembers(id, query = {}) {
-      const allowed = ['limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, ...allowed);
+      const allowed = ['limit', 'offset', 'sort', 'sortdir'];
+      const params = filterQuery(query, ...allowed);
 
-      return busy(client._.get(`/group/${id}/member`, {
-        params,
-      }));
+      return busy(
+        client._.get(`/group/${id}/member`, {
+          params,
+        })
+      );
     },
 
     removeUserFromGroup(id, userId) {
-      const params = {
-        userId,
-      };
-      return busy(client._.delete(`/group/${id}/member`, {
-        params,
-      }));
+      const params = { userId };
+      return busy(
+        client._.delete(`/group/${id}/member`, {
+          params,
+        })
+      );
     },
 
     joinGroup(id) {

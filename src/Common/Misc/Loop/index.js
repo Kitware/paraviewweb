@@ -1,8 +1,7 @@
 export function loop(reverseOrder, count_, fn) {
-  var count = count_;
+  let count = count_;
   if (reverseOrder) {
-    while (count) {
-      count -= 1;
+    while (count--) {
       fn(count);
     }
   } else {

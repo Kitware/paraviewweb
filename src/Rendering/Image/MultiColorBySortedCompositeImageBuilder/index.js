@@ -9,17 +9,21 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/LightProper
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/CompositeControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const
-  FETCH_DATA_TOPIC = 'data_to_fetch';
-const
-  LIGHT_PROP_CHANGE = 'MultiColorBySortedCompositeImageBuilder.light.change';
+const FETCH_DATA_TOPIC = 'data_to_fetch';
+const LIGHT_PROP_CHANGE =
+  'MultiColorBySortedCompositeImageBuilder.light.change';
 
 export default class MultiColorBySortedCompositeImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, lookupTableManager, pipelineModel) {
-    super({ queryDataModel, lookupTableManager, pipelineModel, handleRecord: true, dimensions: queryDataModel.originalData.SortedComposite.dimensions });
+    super({
+      queryDataModel,
+      lookupTableManager,
+      pipelineModel,
+      handleRecord: true,
+      dimensions: queryDataModel.originalData.SortedComposite.dimensions,
+    });
 
     this.metadata = queryDataModel.originalData.SortedComposite;
     this.intensityModel = new ToggleModel(true);
@@ -40,20 +44,40 @@ export default class MultiColorBySortedCompositeImageBuilder extends AbstractIma
     });
 
     // Update LookupTableManager with data range
-    this.lookupTableManager.addFields(this.metadata.ranges, this.queryDataModel.originalData.LookupTables);
+    this.lookupTableManager.addFields(
+      this.metadata.ranges,
+      this.queryDataModel.originalData.LookupTables
+    );
 
     // Need to have the LookupTable created
-    this.colorHelper = new ColorByHelper(this.metadata.pipeline, queryDataModel.originalData.CompositePipeline.fields, lookupTableManager);
+    this.colorHelper = new ColorByHelper(
+      this.metadata.pipeline,
+      queryDataModel.originalData.CompositePipeline.fields,
+      lookupTableManager
+    );
 
-    this.lookupTableManager.updateActiveLookupTable(this.metadata.activeLookupTable || this.metadata.pipeline[0].colorBy[0].name);
+    this.lookupTableManager.updateActiveLookupTable(
+      this.metadata.activeLookupTable ||
+        this.metadata.pipeline[0].colorBy[0].name
+    );
     this.dataQuery = {
       name: FETCH_DATA_TOPIC,
       categories: [],
     };
 
     this.compositors = [
-      new CPUCompositor(queryDataModel, this, this.colorHelper, this.metadata.reverseCompositePass),
-      new GPUCompositor(queryDataModel, this, this.colorHelper, this.metadata.reverseCompositePass),
+      new CPUCompositor(
+        queryDataModel,
+        this,
+        this.colorHelper,
+        this.metadata.reverseCompositePass
+      ),
+      new GPUCompositor(
+        queryDataModel,
+        this,
+        this.colorHelper,
+        this.metadata.reverseCompositePass
+      ),
     ];
     this.compositor = this.compositors[1];
 
@@ -61,13 +85,16 @@ export default class MultiColorBySortedCompositeImageBuilder extends AbstractIma
       {
         name: 'LookupTableManagerWidget',
         lookupTableManager: this.lookupTableManager,
-      }, {
+      },
+      {
         name: 'LightPropertiesWidget',
         light: this,
-      }, {
+      },
+      {
         name: 'CompositeControl',
         pipelineModel: this.pipelineModel,
-      }, {
+      },
+      {
         name: 'QueryDataModelWidget',
         queryDataModel: this.queryDataModel,
       },
@@ -82,30 +109,40 @@ export default class MultiColorBySortedCompositeImageBuilder extends AbstractIma
     }
 
     // Relay normal data fetch to query based on
-    this.registerSubscription(this.queryDataModel.onDataChange(() => {
-      this.update();
-    }));
+    this.registerSubscription(
+      this.queryDataModel.onDataChange(() => {
+        this.update();
+      })
+    );
 
-    this.registerSubscription(queryDataModel.on(FETCH_DATA_TOPIC, (data, envelope) => {
-      this.colorHelper.updateData(data);
-      this.compositor.updateData(data);
-      this.render();
-    }));
+    this.registerSubscription(
+      queryDataModel.on(FETCH_DATA_TOPIC, (data, envelope) => {
+        this.colorHelper.updateData(data);
+        this.compositor.updateData(data);
+        this.render();
+      })
+    );
 
-    this.registerSubscription(this.pipelineModel.onChange((data, envelope) => {
-      this.colorHelper.updatePipeline(data);
-      this.update();
-    }));
+    this.registerSubscription(
+      this.pipelineModel.onChange((data, envelope) => {
+        this.colorHelper.updatePipeline(data);
+        this.update();
+      })
+    );
     this.colorHelper.updatePipeline(this.pipelineModel.getPipelineQuery());
 
-    this.registerSubscription(this.lookupTableManager.onChange((data, envelope) => {
-      this.render();
-    }));
+    this.registerSubscription(
+      this.lookupTableManager.onChange((data, envelope) => {
+        this.render();
+      })
+    );
 
-    this.registerSubscription(this.pipelineModel.onOpacityChange((data, envelope) => {
-      this.colorHelper.updateAlphas(data);
-      this.render();
-    }));
+    this.registerSubscription(
+      this.pipelineModel.onOpacityChange((data, envelope) => {
+        this.colorHelper.updateAlphas(data);
+        this.render();
+      })
+    );
 
     // Set initial opacity
     this.pipelineModel.resetOpacity(100);
@@ -119,11 +156,17 @@ export default class MultiColorBySortedCompositeImageBuilder extends AbstractIma
 
   update() {
     if (this.normalsModel.getState()) {
-      this.dataQuery.categories = ['_', 'normal'].concat(this.colorHelper.getCategories());
+      this.dataQuery.categories = ['_', 'normal'].concat(
+        this.colorHelper.getCategories()
+      );
     } else if (this.intensityModel.getState()) {
-      this.dataQuery.categories = ['_', 'intensity'].concat(this.colorHelper.getCategories());
+      this.dataQuery.categories = ['_', 'intensity'].concat(
+        this.colorHelper.getCategories()
+      );
     } else {
-      this.dataQuery.categories = ['_'].concat(this.colorHelper.getCategories());
+      this.dataQuery.categories = ['_'].concat(
+        this.colorHelper.getCategories()
+      );
     }
 
     this.queryDataModel.fetchData(this.dataQuery);

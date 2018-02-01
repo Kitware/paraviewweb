@@ -1,4 +1,4 @@
-import Monologue   from 'monologue.js';
+import Monologue from 'monologue.js';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
@@ -12,7 +12,8 @@ export default class CDFChartBuilder {
 
     // Handle data fetching
     if (this.queryDataModel) {
-      this.totalCount = this.queryDataModel.originalData.metadata.totalCount || 100;
+      this.totalCount =
+        this.queryDataModel.originalData.metadata.totalCount || 100;
       this.queryDataModel.onDataChange((data, envelope) => {
         if (data.cdf) {
           this.cdf = new Float32Array(data.cdf.data);
@@ -58,7 +59,7 @@ export default class CDFChartBuilder {
     }
     // normalize
     const norm = Math.max(...trace2.y);
-    trace2.y = trace2.y.map(v => v / norm);
+    trace2.y = trace2.y.map((v) => v / norm);
     traces.push(trace2);
     // Publish data
     this.dataReady({

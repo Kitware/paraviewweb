@@ -35,7 +35,7 @@ function clone(obj, fieldList, defaults) {
       clonedObj[name] = obj[name];
     }
     if (Array.isArray(clonedObj[name])) {
-      clonedObj[name] = clonedObj[name].map(i => i);
+      clonedObj[name] = clonedObj[name].map((i) => i);
     }
   });
   return clonedObj;
@@ -47,9 +47,24 @@ const endpointToRuleOperator = {
 };
 
 export const ruleTypes = {
-  '3L': { terms: 3, operators: { values: [['<', '<=']], index: [1] }, variable: 0, values: [2] },
-  '3R': { terms: 3, operators: { values: [['>', '>=']], index: [1] }, variable: 2, values: [0] },
-  '5C': { terms: 5, operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] }, variable: 2, values: [0, 4] },
+  '3L': {
+    terms: 3,
+    operators: { values: [['<', '<=']], index: [1] },
+    variable: 0,
+    values: [2],
+  },
+  '3R': {
+    terms: 3,
+    operators: { values: [['>', '>=']], index: [1] },
+    variable: 2,
+    values: [0],
+  },
+  '5C': {
+    terms: 5,
+    operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] },
+    variable: 2,
+    values: [0, 4],
+  },
   multi: { terms: -1, operators: null },
   logical: { operators: { values: ['not', 'and', 'or', 'xor'], index: [0] } },
   row: {},
@@ -76,10 +91,11 @@ function partition(variable, dividers) {
     generation,
     partition: {
       variable,
-      dividers: dividers.map(divider =>
-        clone(divider,
-          ['value', 'uncertainty', 'closeToLeft'],
-          { closeToLeft: false })),
+      dividers: dividers.map((divider) =>
+        clone(divider, ['value', 'uncertainty', 'closeToLeft'], {
+          closeToLeft: false,
+        })
+      ),
     },
   };
 }
@@ -99,11 +115,10 @@ function range(vars) {
 
   // Fill variables
   Object.keys(vars).forEach((name) => {
-    variables[name] = vars[name].map(interval =>
-      clone(interval,
-        ['interval', 'endpoints', 'uncertainty'],
-        { endpoints: '**' }
-      )
+    variables[name] = vars[name].map((interval) =>
+      clone(interval, ['interval', 'endpoints', 'uncertainty'], {
+        endpoints: '**',
+      })
     );
     variables[name].sort((a, b) => a.interval[0] - b.interval[0]);
   });
@@ -173,11 +188,7 @@ function partitionToRule(selection) {
     if (idx === 0) {
       return {
         type: '3L',
-        terms: [
-          variable,
-          divider.closeToLeft ? '<' : '<=',
-          divider.value,
-        ],
+        terms: [variable, divider.closeToLeft ? '<' : '<=', divider.value],
       };
     }
     return {
@@ -194,11 +205,7 @@ function partitionToRule(selection) {
   const lastDivider = dividers.slice(-1);
   terms.push({
     type: '3R',
-    terms: [
-      lastDivider.value,
-      lastDivider.closeToLeft ? '<' : '<=',
-      variable,
-    ],
+    terms: [lastDivider.value, lastDivider.closeToLeft ? '<' : '<=', variable],
   });
 
   // Fill roles with partition number
@@ -222,7 +229,9 @@ function convertToRuleSelection(selection) {
     return selection;
   }
 
-  throw new Error(`Convertion to rule not supported with selection of type ${selection.type}`);
+  throw new Error(
+    `Convertion to rule not supported with selection of type ${selection.type}`
+  );
 }
 
 // ----------------------------------------------------------------------------
@@ -243,13 +252,16 @@ function hasField(selection, fieldNames) {
   if (selection.type === 'range') {
     const fields = Object.keys(selection.range.variables);
     const match = intersect(fieldsToLookup, fields);
-    return (match.length > 0);
+    return match.length > 0;
   }
   if (selection.type === 'partition') {
-    return (fieldsToLookup.indexOf(selection.partition.variable) !== -1);
+    return fieldsToLookup.indexOf(selection.partition.variable) !== -1;
   }
 
-  console.log('SelectionBuilder::hasField does not handle selection of type', selection.type);
+  console.log(
+    'SelectionBuilder::hasField does not handle selection of type',
+    selection.type
+  );
 
   return false;
 }

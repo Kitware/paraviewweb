@@ -1,7 +1,7 @@
-import Monologue   from  'monologue.js';
-import HistXYZ     from './HistXYZ';
-import Scatter     from './Scatter';
-import ScatterXY   from './ScatterXY';
+import Monologue from 'monologue.js';
+import HistXYZ from './HistXYZ';
+import Scatter from './Scatter';
+import ScatterXY from './ScatterXY';
 
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
@@ -17,7 +17,11 @@ const chartFactory = {
   Heatmap: { builder: HistXYZ, type: 'heatmap', data: 'histogram' },
   Scatter: { builder: Scatter, type: 'scatter', data: 'histogram' },
   ScatterXY: { builder: ScatterXY, type: 'scatter', data: 'scatter' },
-  ScatterXYContour: { builder: ScatterXY, type: 'histogram2dcontour', data: 'scatter' },
+  ScatterXYContour: {
+    builder: ScatterXY,
+    type: 'histogram2dcontour',
+    data: 'scatter',
+  },
   Surface3D: { builder: HistXYZ, type: 'surface', data: 'histogram' },
   Trend: {
     builder: (chartState, data) => {
@@ -107,11 +111,13 @@ export default class Histogram2DPlotlyChartBuilder {
 
   setHistogram(histogram) {
     // we need a new plot if the axes change, as opposed to just the data.
-    if (!this.histogram ||
+    if (
+      !this.histogram ||
       this.histogram.x.name !== histogram.x.name ||
       this.histogram.x.extent !== histogram.x.extent ||
       this.histogram.y.name !== histogram.y.name ||
-      this.histogram.y.extent !== histogram.y.extent) {
+      this.histogram.y.extent !== histogram.y.extent
+    ) {
       this.chartState.forceNewPlot = true;
     }
     this.histogram = histogram;
@@ -119,11 +125,13 @@ export default class Histogram2DPlotlyChartBuilder {
   }
   setScatter(scatter) {
     // we need a new plot if the axes change, as opposed to just the data.
-    if (!this.scatter ||
+    if (
+      !this.scatter ||
       this.scatter[0].name !== scatter[0].name ||
       this.scatter[0].extent !== scatter[0].extent ||
       this.scatter[1].name !== scatter[1].name ||
-      this.scatter[1].extent !== scatter[1].extent) {
+      this.scatter[1].extent !== scatter[1].extent
+    ) {
       this.chartState.forceNewPlot = true;
     }
     this.scatter = scatter;

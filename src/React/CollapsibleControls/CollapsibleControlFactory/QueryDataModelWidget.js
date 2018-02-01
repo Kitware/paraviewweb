@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CollapsibleControlFactory from '.';
-import QueryDataModelControl     from '../QueryDataModelControl';
+import QueryDataModelControl from '../QueryDataModelControl';
 
 CollapsibleControlFactory.registerWidget(
   'QueryDataModelWidget',

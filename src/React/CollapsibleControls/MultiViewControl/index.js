@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
-import LayoutsWidget     from '../../Widgets/LayoutsWidget';
+import LayoutsWidget from '../../Widgets/LayoutsWidget';
+
+/* eslint-disable react/no-unused-state */
 
 /**
  * This React component expect the following input properties:
@@ -27,8 +29,12 @@ export default class MultiViewControl extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.renderer && nextProps.renderer) {
       const renderer = nextProps.renderer;
-      this.layoutSubscription = renderer.onLayoutChange(this.onLayoutChangeCallback);
-      this.renderMethodSubscription = renderer.onActiveViewportChange(this.onActiveViewportCallback);
+      this.layoutSubscription = renderer.onLayoutChange(
+        this.onLayoutChangeCallback
+      );
+      this.renderMethodSubscription = renderer.onActiveViewportChange(
+        this.onActiveViewportCallback
+      );
       this.setState({
         renderMethod: renderer.getActiveRenderMethod(),
         layout: renderer.getActiveLayout(),
@@ -52,7 +58,7 @@ export default class MultiViewControl extends React.Component {
   }
 
   onRenderMethodChange(event) {
-    var renderMethod = event.target.value;
+    const renderMethod = event.target.value;
     this.props.renderer.setRenderMethod(renderMethod);
   }
 
@@ -69,11 +75,15 @@ export default class MultiViewControl extends React.Component {
   }
 
   render() {
-    var renderer = this.props.renderer,
-      renderMethods = [];
+    const renderer = this.props.renderer;
+    let renderMethods = [];
 
     if (renderer) {
-      renderMethods = renderer.getRenderMethods().map(v => <option key={v} value={v}>{v}</option>);
+      renderMethods = renderer.getRenderMethods().map((v) => (
+        <option key={v} value={v}>
+          {v}
+        </option>
+      ));
     }
 
     return (
@@ -97,4 +107,8 @@ export default class MultiViewControl extends React.Component {
 
 MultiViewControl.propTypes = {
   renderer: PropTypes.object,
+};
+
+MultiViewControl.defaultProps = {
+  renderer: undefined,
 };

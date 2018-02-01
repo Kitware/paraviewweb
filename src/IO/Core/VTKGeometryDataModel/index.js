@@ -4,14 +4,13 @@ import DataManager from '../DataManager';
 let dataManager = new DataManager();
 const OBJECT_READY_TOPIC = 'object-ready';
 
-var geometryDataModelCounter = 0;
+let geometryDataModelCounter = 0;
 
 function getType(url) {
   return url.split('.').slice(-1)[0];
 }
 
 export default class VTKGeometryDataModel {
-
   constructor(basepath) {
     geometryDataModelCounter += 1;
 
@@ -30,7 +29,9 @@ export default class VTKGeometryDataModel {
         const obj = this.sceneData[dataDescription.name];
         let objectComplete = true;
 
-        this.sceneData[dataDescription.name][dataDescription.field] = new window[dataDescription.type](data.data);
+        this.sceneData[dataDescription.name][
+          dataDescription.field
+        ] = new window[dataDescription.type](data.data);
 
         Object.keys(obj).forEach((key) => {
           if (obj[key] === undefined) {
@@ -42,13 +43,19 @@ export default class VTKGeometryDataModel {
         }
       }
     };
-    this.dataManagerSubscription = dataManager.on(this.id, this.dataManagerListener);
+    this.dataManagerSubscription = dataManager.on(
+      this.id,
+      this.dataManagerListener
+    );
   }
 
   setDataManager(dm) {
     this.dataManagerSubscription.unsubscribe();
     dataManager = dm;
-    this.dataManagerSubscription = dataManager.on(this.id, this.dataManagerListener);
+    this.dataManagerSubscription = dataManager.on(
+      this.id,
+      this.dataManagerListener
+    );
   }
 
   onGeometryReady(callback) {
@@ -60,9 +67,9 @@ export default class VTKGeometryDataModel {
   }
 
   loadField(objectName, fieldName) {
-    var changeDetected = false;
+    let changeDetected = false;
     if (fieldName) {
-      changeDetected = (this.colorByMapping[objectName] !== fieldName);
+      changeDetected = this.colorByMapping[objectName] !== fieldName;
       this.colorByMapping[objectName] = fieldName;
     } else {
       delete this.colorByMapping[objectName];
@@ -121,12 +128,15 @@ export default class VTKGeometryDataModel {
 
         // Get fields
         if (this.colorByMapping[name]) {
-          sceneData[name].field = polydata.fields[this.colorByMapping[name]].constant;
+          sceneData[name].field =
+            polydata.fields[this.colorByMapping[name]].constant;
           sceneData[name].fieldName = this.colorByMapping[name];
-          sceneData[name].fieldLocation = polydata.fields[this.colorByMapping[name]].location;
+          sceneData[name].fieldLocation =
+            polydata.fields[this.colorByMapping[name]].location;
 
           if (sceneData[name].field === undefined) {
-            url = this.basepath + polydata.fields[this.colorByMapping[name]].array;
+            url =
+              this.basepath + polydata.fields[this.colorByMapping[name]].array;
             this.dataMapping[url] = {
               name,
               field: 'field',

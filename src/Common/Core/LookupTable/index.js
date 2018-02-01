@@ -1,17 +1,16 @@
 import Monologue from 'monologue.js';
-import Presets   from './Presets';
+import Presets from './Presets';
 
-const
-    CHANGE_TOPIC = 'LookupTable.change';
+const CHANGE_TOPIC = 'LookupTable.change';
 
 // Global helper methods ------------------------------------------------------
 
 function applyRatio(a, b, ratio) {
-  return ((b - a) * ratio) + a;
+  return (b - a) * ratio + a;
 }
 
 function interpolateColor(pointA, pointB, scalar) {
-  var ratio = (scalar - pointA[0]) / (pointB[0] - pointA[0]);
+  const ratio = (scalar - pointA[0]) / (pointB[0] - pointA[0]);
   return [
     applyRatio(pointA[1], pointB[1], ratio),
     applyRatio(pointA[2], pointB[2], ratio),
@@ -30,13 +29,12 @@ function extractPoint(controlPoints, idx) {
 }
 
 function xrgbCompare(a, b) {
-  return (a.x - b.x);
+  return a.x - b.x;
 }
 
 // ----------------------------------------------------------------------------
 
 export default class LookupTable {
-
   constructor(name, discrete = false) {
     this.name = name;
     this.scalarRange = [0, 1];
@@ -125,7 +123,7 @@ export default class LookupTable {
   }
 
   build(trigger) {
-    var currentControlIdx = 0;
+    let currentControlIdx = 0;
 
     if (this.colorTable) {
       return;
@@ -233,26 +231,28 @@ export default class LookupTable {
   }
 
   drawToCanvas(canvas) {
-    var colors = this.colorTable;
-    var length = this.scale * colors.length;
-    var ctx = canvas.getContext('2d');
-    var canvasData = ctx.getImageData(0, 0, length, 1);
+    const colors = this.colorTable;
+    const length = this.scale * colors.length;
+    const ctx = canvas.getContext('2d');
+    const canvasData = ctx.getImageData(0, 0, length, 1);
 
     for (let i = 0; i < length; i++) {
       const colorIdx = Math.floor(i / this.scale);
-      canvasData.data[(i * 4) + 0] = Math.floor(255 * colors[colorIdx][0]);
-      canvasData.data[(i * 4) + 1] = Math.floor(255 * colors[colorIdx][1]);
-      canvasData.data[(i * 4) + 2] = Math.floor(255 * colors[colorIdx][2]);
-      canvasData.data[(i * 4) + 3] = 255;
+      canvasData.data[i * 4 + 0] = Math.floor(255 * colors[colorIdx][0]);
+      canvasData.data[i * 4 + 1] = Math.floor(255 * colors[colorIdx][1]);
+      canvasData.data[i * 4 + 2] = Math.floor(255 * colors[colorIdx][2]);
+      canvasData.data[i * 4 + 3] = 255;
     }
     ctx.putImageData(canvasData, 0, 0);
   }
 
   getColor(scalar) {
-    if (isNaN(scalar)) {
+    if (Number.isNaN(scalar)) {
       return this.colorNaN;
     }
-    const idxValue = Math.floor((this.colorTableSize * (scalar - this.scalarRange[0])) / this.delta);
+    const idxValue = Math.floor(
+      this.colorTableSize * (scalar - this.scalarRange[0]) / this.delta
+    );
     if (idxValue < 0) {
       return this.colorTable[0];
     }
@@ -273,4 +273,3 @@ export default class LookupTable {
 
 // Add Observer pattern using Monologue.js
 Monologue.mixInto(LookupTable);
-

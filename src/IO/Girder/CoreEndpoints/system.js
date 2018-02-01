@@ -1,28 +1,41 @@
 /* eslint-disable no-underscore-dangle */
-export default function ({ client, filterQuery, mustContain, busy, encodeQueryAsString }) {
+export default function({
+  client,
+  filterQuery,
+  mustContain,
+  busy,
+  encodeQueryAsString,
+}) {
   return {
     deleteSetting(key) {
-      return busy(client._.delete(`/system/setting${encodeQueryAsString({ key })}`));
+      return busy(
+        client._.delete(`/system/setting${encodeQueryAsString({ key })}`)
+      );
     },
 
     getSettings(settings) {
-      const expected = ['key', 'list', 'default'],
-        params = filterQuery(settings, ...expected);
+      const expected = ['key', 'list', 'default'];
+      const params = filterQuery(settings, ...expected);
 
-      return busy(client._.get('/system/setting', {
-        params,
-      }));
+      return busy(
+        client._.get('/system/setting', {
+          params,
+        })
+      );
     },
 
     setSettings(keyValueMap) {
       const list = Object.keys(keyValueMap).map((key) => {
         const value = keyValueMap[key];
         return {
-          key, value,
+          key,
+          value,
         };
       });
 
-      return busy(client._.put(`/system/setting${encodeQueryAsString({ list })}`));
+      return busy(
+        client._.put(`/system/setting${encodeQueryAsString({ list })}`)
+      );
     },
 
     getServerVersion() {
@@ -30,19 +43,41 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     listUnfinishedUpload(query = {}) {
-      const allowed = ['uploadId', 'userId', 'parentId', 'assetstoreId', 'minimumAge', 'includeUntracked', 'limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, ...allowed);
+      const allowed = [
+        'uploadId',
+        'userId',
+        'parentId',
+        'assetstoreId',
+        'minimumAge',
+        'includeUntracked',
+        'limit',
+        'offset',
+        'sort',
+        'sortdir',
+      ];
+      const params = filterQuery(query, ...allowed);
 
-      return busy(client._.get('/system/uploads', {
-        params,
-      }));
+      return busy(
+        client._.get('/system/uploads', {
+          params,
+        })
+      );
     },
 
     removeUnfinishedUpload(query = {}) {
-      const allowed = ['uploadId', 'userId', 'parentId', 'assetstoreId', 'minimumAge', 'includeUntracked'],
-        params = filterQuery(query, ...allowed);
+      const allowed = [
+        'uploadId',
+        'userId',
+        'parentId',
+        'assetstoreId',
+        'minimumAge',
+        'includeUntracked',
+      ];
+      const params = filterQuery(query, ...allowed);
 
-      return busy(client._.delete(`/system/uploads${encodeQueryAsString(params)}`));
+      return busy(
+        client._.delete(`/system/uploads${encodeQueryAsString(params)}`)
+      );
     },
 
     listPlugins() {
@@ -50,7 +85,9 @@ export default function ({ client, filterQuery, mustContain, busy, encodeQueryAs
     },
 
     setActivePlugins(plugins) {
-      return busy(client._.put(`/system/plugins${encodeQueryAsString({ plugins })}`));
+      return busy(
+        client._.put(`/system/plugins${encodeQueryAsString({ plugins })}`)
+      );
     },
   };
 }

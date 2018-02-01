@@ -4,11 +4,15 @@ import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 export default class CompositeImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, pipelineModel) {
-    super({ queryDataModel, pipelineModel, handleRecord: true, dimensions: queryDataModel.originalData.CompositePipeline.dimensions });
+    super({
+      queryDataModel,
+      pipelineModel,
+      handleRecord: true,
+      dimensions: queryDataModel.originalData.CompositePipeline.dimensions,
+    });
 
     this.metadata = queryDataModel.originalData.CompositePipeline;
     this.compositeMap = {};
@@ -17,21 +21,28 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
     this.query = null;
     this.composite = null;
 
-    this.bgCanvas = new CanvasOffscreenBuffer(this.metadata.dimensions[0], this.metadata.dimensions[1]);
+    this.bgCanvas = new CanvasOffscreenBuffer(
+      this.metadata.dimensions[0],
+      this.metadata.dimensions[1]
+    );
     this.registerObjectToFree(this.bgCanvas);
 
     this.fgCanvas = null;
 
-    this.registerSubscription(queryDataModel.onDataChange((data, envelope) => {
-      this.sprite = data.sprite;
-      this.composite = data.composite.data['pixel-order'].split('+');
-      this.updateCompositeMap(this.query, this.composite);
-      this.render();
-    }));
+    this.registerSubscription(
+      queryDataModel.onDataChange((data, envelope) => {
+        this.sprite = data.sprite;
+        this.composite = data.composite.data['pixel-order'].split('+');
+        this.updateCompositeMap(this.query, this.composite);
+        this.render();
+      })
+    );
 
-    this.registerSubscription(this.pipelineModel.onChange((data, envelope) => {
-      this.setPipelineQuery(data);
-    }));
+    this.registerSubscription(
+      this.pipelineModel.onChange((data, envelope) => {
+        this.setPipelineQuery(data);
+      })
+    );
 
     this.setPipelineQuery(this.pipelineModel.getPipelineQuery());
   }
@@ -39,18 +50,19 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateOffsetMap(query) {
-    var layers = this.metadata.layers,
-      count = layers.length,
-      offsets = this.metadata.offset;
+    const layers = this.metadata.layers;
+    const count = layers.length;
+    const offsets = this.metadata.offset;
 
     this.offsetMap = {};
     this.compositeMap = {};
     for (let idx = 0; idx < count; idx++) {
-      const fieldCode = query[(idx * 2) + 1];
+      const fieldCode = query[idx * 2 + 1];
       if (fieldCode === '_') {
         this.offsetMap[layers[idx]] = -1;
       } else {
-        this.offsetMap[layers[idx]] = this.spriteSize - offsets[layers[idx] + fieldCode];
+        this.offsetMap[layers[idx]] =
+          this.spriteSize - offsets[layers[idx] + fieldCode];
       }
     }
   }
@@ -61,8 +73,8 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
     if (query === null || composite === null) {
       return;
     }
-    const compositeArray = composite,
-      map = this.compositeMap;
+    const compositeArray = composite;
+    const map = this.compositeMap;
 
     let count = compositeArray.length;
     while (count) {
@@ -88,7 +100,7 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsImage(width, height) {
-    var ctx = null;
+    let ctx = null;
 
     // Make sure we have a foreground buffer
     if (this.fgCanvas) {
@@ -113,9 +125,11 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsBuffer(width, height) {
-    var readyImage = {
+    const readyImage = {
       canvas: this.bgCanvas.el,
-      imageData: this.bgCanvas.el.getContext('2d').getImageData(0, 0, width, height),
+      imageData: this.bgCanvas.el
+        .getContext('2d')
+        .getImageData(0, 0, width, height),
       area: [0, 0, width, height],
       outputSize: [width, height],
       builder: this,
@@ -154,15 +168,15 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
       return;
     }
 
-    const ctx = this.bgCanvas.get2DContext(),
-      dimensions = this.metadata.dimensions,
-      compositeArray = this.composite,
-      count = compositeArray.length,
-      modulo = dimensions[0];
+    const ctx = this.bgCanvas.get2DContext();
+    const dimensions = this.metadata.dimensions;
+    const compositeArray = this.composite;
+    const count = compositeArray.length;
+    const modulo = dimensions[0];
 
-    let offset = 1,
-      x = 0,
-      y = 0;
+    let offset = 1;
+    let x = 0;
+    let y = 0;
 
     function addToX(delta) {
       x += delta;
@@ -185,7 +199,17 @@ export default class CompositeImageBuilder extends AbstractImageBuilder {
         } else {
           offset = this.compositeMap[key];
           if (offset !== -1) {
-            ctx.drawImage(this.sprite.image, x, y + (dimensions[1] * offset), 1, 1, x, y, 1, 1);
+            ctx.drawImage(
+              this.sprite.image,
+              x,
+              y + dimensions[1] * offset,
+              1,
+              1,
+              x,
+              y,
+              1,
+              1
+            );
           }
           addToX(1);
         }

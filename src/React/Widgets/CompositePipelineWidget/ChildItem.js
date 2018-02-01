@@ -29,20 +29,22 @@ export default class CompositePipelineWidgetChildItem extends React.Component {
   }
 
   render() {
-    var inEditMode = this.props.model.isLayerInEditMode(this.props.layer),
-      isActive = this.props.model.isLayerActive(this.props.layer),
-      hidden = !isActive && !inEditMode,
-      hasOpacity = this.props.model.hasOpacity();
+    const inEditMode = this.props.model.isLayerInEditMode(this.props.layer);
+    const isActive = this.props.model.isLayerActive(this.props.layer);
+    const hidden = !isActive && !inEditMode;
+    const hasOpacity = this.props.model.hasOpacity();
 
     return (
       <div className={hidden ? style.hidden : style.childItem}>
         <i
-          className={!inEditMode ? style.deleteButtonOff : isActive ? style.activeButton : style.deleteButtonOn}
+          className={
+            !inEditMode
+              ? style.deleteButtonOff
+              : isActive ? style.activeButton : style.deleteButtonOn
+          }
           onClick={this.toggleActiveLayer}
         />
-        <div className={style.label}>
-          {this.props.item.name}
-        </div>
+        <div className={style.label}>{this.props.item.name}</div>
         <input
           className={hasOpacity ? style.opacity : style.hidden}
           type="range"
@@ -51,13 +53,19 @@ export default class CompositePipelineWidgetChildItem extends React.Component {
           value={this.props.model.getOpacity(this.props.layer)}
           onChange={this.updateOpacity}
         />
-      </div>);
+      </div>
+    );
   }
 }
-
 
 CompositePipelineWidgetChildItem.propTypes = {
   item: PropTypes.object,
   layer: PropTypes.string,
   model: PropTypes.object,
+};
+
+CompositePipelineWidgetChildItem.defaultProps = {
+  item: undefined,
+  layer: undefined,
+  model: undefined,
 };

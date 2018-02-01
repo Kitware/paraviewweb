@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 // allows us to size the icon with the height/width props provided to this component.
 // Additionally, not providing any attributes controlling final appearance allows
 // external control of those features using CSS.
-const defaultIcon = '<svg viewBox="0 0 30 30"><path d="m 5 5 l 5 25 l 25 25 l 25 5 z"/></svg>';
+const defaultIcon =
+  '<svg viewBox="0 0 30 30"><path d="m 5 5 l 5 25 l 25 25 l 25 5 z"/></svg>';
 
 function validateSvgString(svgString) {
   // We could do more validation here, but at least make sure we didn't
@@ -17,7 +18,9 @@ function validateSvgString(svgString) {
 /* eslint-disable  react/no-danger */
 export default function render(props) {
   if (!validateSvgString(props.icon)) {
-    console.log(`InlineSvgIconWidget won't render, invalid icon property: ${props.icon}`);
+    console.log(
+      `InlineSvgIconWidget won't render, invalid icon property: ${props.icon}`
+    );
     return null;
   }
 
@@ -32,7 +35,8 @@ export default function render(props) {
       className={props.className}
       onClick={props.onClick}
       dangerouslySetInnerHTML={{ __html: props.icon }}
-    />);
+    />
+  );
 }
 /* eslint-enable  react/no-danger */
 
@@ -49,4 +53,7 @@ render.defaultProps = {
   className: '',
   icon: defaultIcon,
   style: {},
+  width: undefined,
+  height: undefined,
+  onClick: undefined,
 };

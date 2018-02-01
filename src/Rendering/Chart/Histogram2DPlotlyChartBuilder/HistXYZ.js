@@ -1,5 +1,5 @@
 function affine(inMin, val, inMax, outMin, outMax) {
-  return (((val - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
+  return (val - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
 }
 
 export default function HistXYZ(chartState, histogram, chartType) {
@@ -16,13 +16,21 @@ export default function HistXYZ(chartState, histogram, chartType) {
     }
     z.push(row);
     // x and y make sure the axes reflect the real extent of the binned data.
-    x.push(affine(0, i, nBins - 1, histogram.x.extent[0], histogram.x.extent[1]));
-    y.push(affine(0, i, nBins - 1, histogram.y.extent[0], histogram.y.extent[1]));
+    x.push(
+      affine(0, i, nBins - 1, histogram.x.extent[0], histogram.x.extent[1])
+    );
+    y.push(
+      affine(0, i, nBins - 1, histogram.y.extent[0], histogram.y.extent[1])
+    );
   }
 
   histogram.bins.forEach((bin) => {
-    const xIndex = Math.floor(affine(histogram.x.extent[0], bin.x, histogram.x.extent[1], 0, nBins - 1));
-    const yIndex = Math.floor(affine(histogram.y.extent[0], bin.y, histogram.y.extent[1], 0, nBins - 1));
+    const xIndex = Math.floor(
+      affine(histogram.x.extent[0], bin.x, histogram.x.extent[1], 0, nBins - 1)
+    );
+    const yIndex = Math.floor(
+      affine(histogram.y.extent[0], bin.y, histogram.y.extent[1], 0, nBins - 1)
+    );
 
     z[yIndex][xIndex] = bin.count;
   });

@@ -1,7 +1,6 @@
 import WebGl from '../WebGl';
 
 export default class PingPong {
-
   constructor(gl, fbos, textures) {
     this.gl = gl;
     this.idx = 0;

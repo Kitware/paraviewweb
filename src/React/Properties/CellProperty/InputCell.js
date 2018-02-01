@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style    from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import convert  from '../../../Common/Misc/Convert';
+import convert from '../../../Common/Misc/Convert';
 import validate from '../../../Common/Misc/Validate';
 
 export default class InputCell extends React.Component {
@@ -22,7 +22,7 @@ export default class InputCell extends React.Component {
   }
 
   getTooltip() {
-    var tooltip = '';
+    let tooltip = '';
     const idx = this.props.idx;
 
     if (!this.props.domain) {
@@ -30,12 +30,15 @@ export default class InputCell extends React.Component {
     }
 
     // Handle range
-    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
+    if (
+      {}.hasOwnProperty.call(this.props.domain, 'range') &&
+      this.props.domain.range.length
+    ) {
       const size = this.props.domain.range.length;
       const { min, max } = this.props.domain.range[idx % size] || {};
 
-      tooltip += (min !== undefined) ? `min(${min}) ` : '';
-      tooltip += (max !== undefined) ? `max(${max}) ` : '';
+      tooltip += min !== undefined ? `min(${min}) ` : '';
+      tooltip += max !== undefined ? `max(${max}) ` : '';
     }
 
     return tooltip;
@@ -48,19 +51,22 @@ export default class InputCell extends React.Component {
 
     // Handle range
     let newValue = val;
-    if ({}.hasOwnProperty.call(this.props.domain, 'range') && this.props.domain.range.length) {
+    if (
+      {}.hasOwnProperty.call(this.props.domain, 'range') &&
+      this.props.domain.range.length
+    ) {
       const size = this.props.domain.range.length;
       const { min, max, force } = this.props.domain.range[idx % size];
       if (force) {
-        newValue = (min !== undefined) ? Math.max(min, newValue) : newValue;
-        newValue = (max !== undefined) ? Math.min(max, newValue) : newValue;
+        newValue = min !== undefined ? Math.max(min, newValue) : newValue;
+        newValue = max !== undefined ? Math.min(max, newValue) : newValue;
       }
     }
     return newValue;
   }
 
   valueChange(e) {
-    var newVal = e.target.value;
+    const newVal = e.target.value;
     const isValid = validate[this.props.type](newVal);
     this.setState({
       editing: true,
@@ -93,16 +99,17 @@ export default class InputCell extends React.Component {
           title={this.getTooltip()}
           onBlur={this.endEditing}
         />
-      </td>);
+      </td>
+    );
   }
 }
 
 InputCell.propTypes = {
-  domain: PropTypes.object,
-  idx: PropTypes.number.isRequired,
+  domain: PropTypes.object.isRequired,
+  idx: PropTypes.number,
   label: PropTypes.string,
   noEmpty: PropTypes.bool,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   value: PropTypes.any,
 };
@@ -112,4 +119,5 @@ InputCell.defaultProps = {
   idx: 0,
   value: '',
   type: 'string',
+  noEmpty: false,
 };

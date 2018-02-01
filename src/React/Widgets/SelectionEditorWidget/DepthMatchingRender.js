@@ -24,7 +24,8 @@ export default function DepthMatchingRender(props) {
             </tr>
           </tbody>
         </table>
-      </DepthMatchingRender>);
+      </DepthMatchingRender>
+    );
   }
 
   return props.children;
@@ -34,4 +35,10 @@ DepthMatchingRender.propTypes = {
   children: PropTypes.object,
   depth: PropTypes.number,
   maxDepth: PropTypes.number,
+};
+
+DepthMatchingRender.defaultProps = {
+  children: undefined,
+  depth: undefined,
+  maxDepth: undefined,
 };

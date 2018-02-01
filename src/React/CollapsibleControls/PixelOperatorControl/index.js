@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
-import TextInputWidget   from '../../Widgets/TextInputWidget';
+import TextInputWidget from '../../Widgets/TextInputWidget';
 
 export default class PixelOperatorControl extends React.Component {
   constructor(props) {
@@ -33,8 +33,12 @@ export default class PixelOperatorControl extends React.Component {
   render() {
     return (
       <CollapsibleWidget title="Pixel Operation">
-        <TextInputWidget value={this.state.operation} onChange={this.updateOperation} />
-      </CollapsibleWidget>);
+        <TextInputWidget
+          value={this.state.operation}
+          onChange={this.updateOperation}
+        />
+      </CollapsibleWidget>
+    );
   }
 }
 

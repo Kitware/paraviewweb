@@ -10,10 +10,9 @@ import DataManager from '../DataManager';
 let dataManager = new DataManager();
 const OBJECT_READY_TOPIC = 'object-ready';
 
-var imageDataModelCounter = 0;
+let imageDataModelCounter = 0;
 
 export default class VTKImageDataModel {
-
   constructor(basepath) {
     imageDataModelCounter += 1;
 
@@ -33,29 +32,45 @@ export default class VTKImageDataModel {
         let values = null;
 
         if (this.fetchGzip) {
-          values = new window[dataDescription.dataType](pako.inflate(new Uint8Array(data.data)).buffer);
+          values = new window[dataDescription.dataType](
+            pako.inflate(new Uint8Array(data.data)).buffer
+          );
         } else {
           values = new window[dataDescription.dataType](data.data);
         }
 
-        const dataArray = vtkDataArray.newInstance(Object.assign({}, dataDescription, { values }));
-        this.currentImageData.get(dataDescription.location)[dataDescription.location].setScalars(dataArray);
+        const dataArray = vtkDataArray.newInstance(
+          Object.assign({}, dataDescription, { values })
+        );
+        this.currentImageData
+          .get(dataDescription.location)
+          [dataDescription.location].setScalars(dataArray);
         this.currentImageData.modified();
 
-        if (!Object.keys(this.dataMapping).map(key => this.dataMapping[key].ref).find(i => !!i)) {
+        if (
+          !Object.keys(this.dataMapping)
+            .map((key) => this.dataMapping[key].ref)
+            .find((i) => !!i)
+        ) {
           this.geometryReady(this.currentImageData);
         }
       } else {
         console.log('skip no vtkImageData');
       }
     };
-    this.dataManagerSubscription = dataManager.on(this.id, this.dataManagerListener);
+    this.dataManagerSubscription = dataManager.on(
+      this.id,
+      this.dataManagerListener
+    );
   }
 
   setDataManager(dm) {
     this.dataManagerSubscription.unsubscribe();
     dataManager = dm;
-    this.dataManagerSubscription = dataManager.on(this.id, this.dataManagerListener);
+    this.dataManagerSubscription = dataManager.on(
+      this.id,
+      this.dataManagerListener
+    );
   }
 
   onGeometryReady(callback) {
@@ -86,14 +101,23 @@ export default class VTKImageDataModel {
       this.dataMapping = {};
       if (imageDataJSON) {
         ['pointData', 'cellData'].forEach((location) => {
-          if (imageDataJSON[location] && imageDataJSON[location].arrays && imageDataJSON[location].arrays.length) {
+          if (
+            imageDataJSON[location] &&
+            imageDataJSON[location].arrays &&
+            imageDataJSON[location].arrays.length
+          ) {
             imageDataJSON[location].arrays.forEach((dataArray) => {
-              let url = `${this.basepath}${dataArray.data.ref.basepath}/${dataArray.data.ref.id}`;
+              let url = `${this.basepath}${dataArray.data.ref.basepath}/${
+                dataArray.data.ref.id
+              }`;
               if (this.fetchGzip) {
                 url += '.gz';
               }
               urls.push(url);
-              this.dataMapping[url] = Object.assign({ location, url }, dataArray.data);
+              this.dataMapping[url] = Object.assign(
+                { location, url },
+                dataArray.data
+              );
             });
 
             // Clear array container

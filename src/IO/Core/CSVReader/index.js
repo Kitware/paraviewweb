@@ -1,4 +1,3 @@
-
 function parseCsv(csvText) {
   const lines = csvText.split('\n');
   const columnNames = lines[0].split(',');

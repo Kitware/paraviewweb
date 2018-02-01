@@ -1,5 +1,11 @@
-import React            from 'react';
-import ReactDOM         from 'react-dom';
-import LayoutsWidget    from '..';
+import 'normalize.css';
 
-ReactDOM.render(<LayoutsWidget onChange={console.log}/>, document.querySelector('.content'));
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import LayoutsWidget from '..';
+
+ReactDOM.render(
+  <LayoutsWidget onChange={console.log} />,
+  document.querySelector('.content')
+);

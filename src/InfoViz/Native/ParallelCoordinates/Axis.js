@@ -15,11 +15,15 @@ export default class Axis {
   }
 
   hasSelection() {
-    return (this.selections.length > 0);
+    return this.selections.length > 0;
   }
 
   updateRange(newRange) {
-    if (this.range[0] !== newRange[0] || this.range[1] !== newRange[1] || this.range[1] === this.range[0]) {
+    if (
+      this.range[0] !== newRange[0] ||
+      this.range[1] !== newRange[1] ||
+      this.range[1] === this.range[0]
+    ) {
       this.range[0] = newRange[0];
       this.range[1] = newRange[1];
       if (this.range[0] === this.range[1]) {
@@ -29,10 +33,13 @@ export default class Axis {
   }
 
   updateSelection(selectionIndex, start, end) {
-    const entry = this.selections[selectionIndex].interval = [start, end];
+    const entry = [start, end];
+    this.selections[selectionIndex].interval = entry;
     // if entire selection is outside range, delete it.
-    if ((start < this.range[0] && end < this.range[0]) ||
-        (end > this.range[1] && start > this.range[1])) {
+    if (
+      (start < this.range[0] && end < this.range[0]) ||
+      (end > this.range[1] && start > this.range[1])
+    ) {
       this.selections.splice(selectionIndex, 1);
       return;
     }

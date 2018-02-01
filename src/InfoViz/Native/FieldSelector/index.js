@@ -43,15 +43,31 @@ function fieldSelector(publicAPI, model) {
 
     if (el) {
       d3.select(model.container).html(template);
-      d3.select(model.container).select('.fieldSelector').classed(style.fieldSelector, true);
+      d3
+        .select(model.container)
+        .select('.fieldSelector')
+        .classed(style.fieldSelector, true);
 
-      model.fieldShowHistogram = model.fieldShowHistogram && (model.provider.isA('Histogram1DProvider'));
+      model.fieldShowHistogram =
+        model.fieldShowHistogram && model.provider.isA('Histogram1DProvider');
       // append headers for histogram columns
       if (model.fieldShowHistogram) {
-        const header = d3.select(model.container).select('thead').select('tr');
-        header.append('th').text('Min').classed(style.jsHistMin, true);
-        header.append('th').text('Histogram').classed(style.jsSparkline, true);
-        header.append('th').text('Max').classed(style.jsHistMax, true);
+        const header = d3
+          .select(model.container)
+          .select('thead')
+          .select('tr');
+        header
+          .append('th')
+          .text('Min')
+          .classed(style.jsHistMin, true);
+        header
+          .append('th')
+          .text('Histogram')
+          .classed(style.jsSparkline, true);
+        header
+          .append('th')
+          .text('Max')
+          .classed(style.jsHistMax, true);
       }
       publicAPI.render();
     }
@@ -65,9 +81,16 @@ function fieldSelector(publicAPI, model) {
     const legendSize = 15;
 
     // Apply style
-    d3.select(model.container).select('thead').classed(style.thead, true);
-    d3.select(model.container).select('tbody').classed(style.tbody, true);
-    d3.select(model.container)
+    d3
+      .select(model.container)
+      .select('thead')
+      .classed(style.thead, true);
+    d3
+      .select(model.container)
+      .select('tbody')
+      .classed(style.tbody, true);
+    d3
+      .select(model.container)
       .select('th.field-selector-mode')
       .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
@@ -75,18 +98,36 @@ function fieldSelector(publicAPI, model) {
       })
       .select('i')
       // apply class - 'false' should come first to not remove common base class.
-      .classed(!model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, false)
-      .classed(model.displayUnselected ? style.allFieldsIcon : style.selectedFieldsIcon, true);
+      .classed(
+        !model.displayUnselected
+          ? style.allFieldsIcon
+          : style.selectedFieldsIcon,
+        false
+      )
+      .classed(
+        model.displayUnselected
+          ? style.allFieldsIcon
+          : style.selectedFieldsIcon,
+        true
+      );
 
-
-    const data = model.displayUnselected ? model.provider.getFieldNames() : model.provider.getActiveFieldNames();
-    const totalNum = model.displayUnselected ? data.length : model.provider.getFieldNames().length;
+    const data = model.displayUnselected
+      ? model.provider.getFieldNames()
+      : model.provider.getActiveFieldNames();
+    const totalNum = model.displayUnselected
+      ? data.length
+      : model.provider.getFieldNames().length;
 
     // Update header label
-    d3.select(model.container)
+    d3
+      .select(model.container)
       .select('th.field-selector-label')
       .style('text-align', 'left')
-      .text(model.displayUnselected ? `Only Selected (${data.length} total)` : `Only Selected (${data.length} / ${totalNum} total)`)
+      .text(
+        model.displayUnselected
+          ? `Only Selected (${data.length} total)`
+          : `Only Selected (${data.length} / ${totalNum} total)`
+      )
       .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
         publicAPI.render();
@@ -120,12 +161,18 @@ function fieldSelector(publicAPI, model) {
         }
       }
     }
-    const header = d3.select(model.container).select('thead').select('tr');
-    header.selectAll(`.${style.jsHistMin}`)
+    const header = d3
+      .select(model.container)
+      .select('thead')
+      .select('tr');
+    header
+      .selectAll(`.${style.jsHistMin}`)
       .style('display', hideField.minMax ? 'none' : null);
-    header.selectAll(`.${style.jsSparkline}`)
+    header
+      .selectAll(`.${style.jsSparkline}`)
       .style('display', hideField.hist ? 'none' : null);
-    header.selectAll(`.${style.jsHistMax}`)
+    header
+      .selectAll(`.${style.jsHistMax}`)
       .style('display', hideField.minMax ? 'none' : null);
 
     // Handle variables
@@ -155,27 +202,30 @@ function fieldSelector(publicAPI, model) {
 
       // Create missing DOM element if any
       if (legendCell.empty()) {
-        legendCell = fieldContainer
-          .append('td')
-          .classed(style.legend, true);
+        legendCell = fieldContainer.append('td').classed(style.legend, true);
 
-        fieldCell = fieldContainer
-          .append('td')
-          .classed(style.fieldName, true);
+        fieldCell = fieldContainer.append('td').classed(style.fieldName, true);
       }
 
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(fieldName);
-        legendCell
-          .html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}'
+        legendCell.html(`<svg class='${
+          style.legendSvg
+        }' width='${legendSize}' height='${legendSize}'
                   fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
       } else {
         legendCell
           .html('<i></i>')
           .select('i')
-          .classed(!field.active ? style.selectedRow : style.unselectedRow, false)
-          .classed(field.active ? style.selectedRow : style.unselectedRow, true);
+          .classed(
+            !field.active ? style.selectedRow : style.unselectedRow,
+            false
+          )
+          .classed(
+            field.active ? style.selectedRow : style.unselectedRow,
+            true
+          );
       }
 
       // Apply field name
@@ -190,7 +240,8 @@ function fieldSelector(publicAPI, model) {
           minCell = fieldContainer.append('td').classed(style.jsHistMin, true);
           histCell = fieldContainer.append('td').classed(style.sparkline, true);
           maxCell = fieldContainer.append('td').classed(style.jsHistMax, true);
-          histCell.append('svg')
+          histCell
+            .append('svg')
             .classed(style.sparklineSvg, true)
             .attr('width', model.fieldHistWidth)
             .attr('height', model.fieldHistHeight);
@@ -199,33 +250,40 @@ function fieldSelector(publicAPI, model) {
         // make sure our data is ready. If not, render will be called when loaded.
         const hobj = model.histograms ? model.histograms[fieldName] : null;
         if (hobj) {
-          histCell
-            .style('display', hideField.hist ? 'none' : null);
+          histCell.style('display', hideField.hist ? 'none' : null);
 
           // only do work if histogram is displayed.
           if (!hideField.hist) {
             const cmax = 1.0 * d3.max(hobj.counts);
             const hsize = hobj.counts.length;
-            const hdata = histCell.select('svg')
-              .selectAll(`.${style.jsHistRect}`).data(hobj.counts);
+            const hdata = histCell
+              .select('svg')
+              .selectAll(`.${style.jsHistRect}`)
+              .data(hobj.counts);
 
             hdata.enter().append('rect');
             // changes apply to both enter and update data join:
             hdata
-              .attr('class', (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd))
+              .attr(
+                'class',
+                (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd)
+              )
               .attr('pname', fieldName)
-              .attr('y', d => model.fieldHistHeight * (1.0 - (d / cmax)))
-              .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
-              .attr('height', d => model.fieldHistHeight * (d / cmax))
+              .attr('y', (d) => model.fieldHistHeight * (1.0 - d / cmax))
+              .attr('x', (d, i) => model.fieldHistWidth / hsize * i)
+              .attr('height', (d) => model.fieldHistHeight * (d / cmax))
               .attr('width', model.fieldHistWidth / hsize);
 
             hdata.exit().remove();
 
             if (model.provider.isA('HistogramBinHoverProvider')) {
-              histCell.select('svg')
+              histCell
+                .select('svg')
                 .on('mousemove', function inner(d, i) {
                   const mCoords = d3.mouse(this);
-                  const binNum = Math.floor((mCoords[0] / model.fieldHistWidth) * hsize);
+                  const binNum = Math.floor(
+                    mCoords[0] / model.fieldHistWidth * hsize
+                  );
                   const state = {};
                   state[fieldName] = [binNum];
                   model.provider.setHoverState({ state });
@@ -239,24 +297,26 @@ function fieldSelector(publicAPI, model) {
           }
 
           const formatter = d3.format('.3s');
-          minCell.text(formatter(hobj.min))
+          minCell
+            .text(formatter(hobj.min))
             .style('display', hideField.minMax ? 'none' : null);
-          maxCell.text(formatter(hobj.max))
+          maxCell
+            .text(formatter(hobj.max))
             .style('display', hideField.minMax ? 'none' : null);
         }
       }
     }
 
     // Render all fields
-    variablesContainer
-      .each(renderField);
+    variablesContainer.each(renderField);
   };
 
   function handleHoverUpdate(data) {
     const svg = d3.select(model.container);
     Object.keys(data.state).forEach((pName) => {
       const binList = data.state[pName];
-      svg.selectAll(`rect[pname='${pName}']`)
+      svg
+        .selectAll(`rect[pname='${pName}']`)
         .classed(style.histoHilite, (d, i) => binList.indexOf(-1) === -1)
         .classed(style.binHilite, (d, i) => binList.indexOf(i) >= 0);
     });
@@ -267,15 +327,15 @@ function fieldSelector(publicAPI, model) {
 
   model.subscriptions.push({ unsubscribe: publicAPI.setContainer });
 
-  model.subscriptions.push(model.provider.onFieldChange(() => {
-    publicAPI.render();
-    model.histogram1DDataSubscription.update(
-      model.provider.getFieldNames(),
-      {
+  model.subscriptions.push(
+    model.provider.onFieldChange(() => {
+      publicAPI.render();
+      model.histogram1DDataSubscription.update(model.provider.getFieldNames(), {
         numberOfBins: model.numberOfBins,
         partial: true,
       });
-  }));
+    })
+  );
 
   if (model.fieldShowHistogram) {
     if (model.provider.isA('Histogram1DProvider')) {
@@ -300,7 +360,9 @@ function fieldSelector(publicAPI, model) {
   }
 
   if (model.provider.isA('HistogramBinHoverProvider')) {
-    model.subscriptions.push(model.provider.onHoverBinChange(handleHoverUpdate));
+    model.subscriptions.push(
+      model.provider.onHoverBinChange(handleHoverUpdate)
+    );
   }
 }
 
@@ -325,8 +387,16 @@ export function extend(publicAPI, model, initialValues = {}) {
 
   CompositeClosureHelper.destroy(publicAPI, model);
   CompositeClosureHelper.isA(publicAPI, model, 'VizComponent');
-  CompositeClosureHelper.get(publicAPI, model, ['provider', 'container', 'fieldShowHistogram', 'numberOfBins']);
-  CompositeClosureHelper.set(publicAPI, model, ['fieldShowHistogram', 'numberOfBins']);
+  CompositeClosureHelper.get(publicAPI, model, [
+    'provider',
+    'container',
+    'fieldShowHistogram',
+    'numberOfBins',
+  ]);
+  CompositeClosureHelper.set(publicAPI, model, [
+    'fieldShowHistogram',
+    'numberOfBins',
+  ]);
 
   fieldSelector(publicAPI, model);
 }

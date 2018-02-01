@@ -15,8 +15,8 @@ function extractMaxDepth(rule, currentDepth) {
   }
   if (ruleSelector === 'logical') {
     return rule.terms
-      .filter((r, idx) => (idx > 0))                // Get the sub rules
-      .map(sr => extractMaxDepth(sr, currentDepth + 1))   // Get depth of subRules
+      .filter((r, idx) => idx > 0) // Get the sub rules
+      .map((sr) => extractMaxDepth(sr, currentDepth + 1)) // Get depth of subRules
       .reduce((prev, curr) => (prev > curr ? prev : curr)); // Extract max
   }
 
@@ -34,7 +34,7 @@ function ensureRuleNumbers(rule) {
     ensureRuleNumbers(rule.rule);
   }
   if (ruleSelector === 'logical') {
-    rule.terms.filter((r, idx) => (idx > 0)).forEach(r => ensureRuleNumbers(r));
+    rule.terms.filter((r, idx) => idx > 0).forEach((r) => ensureRuleNumbers(r));
   }
 
   if (ruleSelector === '5C') {
@@ -68,7 +68,10 @@ export default function render(props) {
     }
 
     // Notify of changes
-    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
+    props.onChange(
+      editing ? selection : SelectionBuilder.markModified(selection),
+      !editing
+    );
   };
 
   const onDelete = (pathToDelete) => {
@@ -81,7 +84,9 @@ export default function render(props) {
     if (pathToDelete.length > 1) {
       while (pathToDelete.length > 2) {
         lastIdx = pathToDelete.shift();
-        currentSelection[lastIdx].terms = [].concat(currentSelection[lastIdx].terms);
+        currentSelection[lastIdx].terms = [].concat(
+          currentSelection[lastIdx].terms
+        );
         previousSelection = currentSelection;
         currentSelection = currentSelection[lastIdx].terms;
       }
@@ -92,7 +97,8 @@ export default function render(props) {
       } else {
         // Down to 1 clause - we need to bubble up the rule
         const idxToKeep = pathToDelete[1] === 1 ? 2 : 1;
-        previousSelection[lastIdx] = currentSelection[pathToDelete[0]].terms[idxToKeep];
+        previousSelection[lastIdx] =
+          currentSelection[pathToDelete[0]].terms[idxToKeep];
       }
     } else {
       // Filtering the root
@@ -112,22 +118,27 @@ export default function render(props) {
     <RuleRender
       className={props.className}
       getLegend={props.getLegend}
-
       onChange={onChange}
       onDelete={onDelete}
-
       rule={rule}
       depth={0}
       maxDepth={extractMaxDepth(rule, 0)}
       path={[]}
-    />);
+    />
+  );
 }
 
 render.propTypes = {
   selection: PropTypes.object,
-  ranges: PropTypes.object,
+  // ranges: PropTypes.object,
   onChange: PropTypes.func,
   getLegend: PropTypes.func,
   className: PropTypes.string,
 };
 
+render.defaultProps = {
+  selection: undefined,
+  onChange: undefined,
+  getLegend: undefined,
+  className: undefined,
+};

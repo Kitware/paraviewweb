@@ -1,4 +1,3 @@
-
 export default function Histogram2D(chartState, csvReader, arraysInfo) {
   const arrayNames = Object.keys(arraysInfo);
   if (!chartState.x) {
@@ -6,7 +5,7 @@ export default function Histogram2D(chartState, csvReader, arraysInfo) {
   }
 
   if (!chartState.y) {
-    chartState.y = arrayNames[(arrayNames.length >= 2 ? 1 : 0)];
+    chartState.y = arrayNames[arrayNames.length >= 2 ? 1 : 0];
   }
 
   return [
@@ -14,7 +13,7 @@ export default function Histogram2D(chartState, csvReader, arraysInfo) {
       x: csvReader.getColumn(chartState.x),
       y: csvReader.getColumn(chartState.y),
       type: 'histogram2d',
-      forceNewPlot: true,      // Due to a bug in plotly redraw w/ 2D histogram
+      forceNewPlot: true, // Due to a bug in plotly redraw w/ 2D histogram
     },
   ];
 }

@@ -3,7 +3,6 @@ import Monologue from 'monologue.js';
 const CHANGE_TOPIC = 'toggle.change';
 
 export default class ToggleState {
-
   // ------------------------------------------------------------------------
 
   constructor(initialState = true) {
@@ -19,7 +18,7 @@ export default class ToggleState {
   // ------------------------------------------------------------------------
 
   setState(value) {
-    if ((!!value) !== this.state) {
+    if (!!value !== this.state) {
       this.state = !!value;
       this.emit(CHANGE_TOPIC, this.state);
     }

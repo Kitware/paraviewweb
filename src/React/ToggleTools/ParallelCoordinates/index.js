@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
-import ComponentToReact   from '../../../Component/React/ComponentToReact';
+import ComponentToReact from '../../../Component/React/ComponentToReact';
 import ParallelCoordinates from '../../../InfoViz/Native/ParallelCoordinates';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/ParallelCoordinates.svg';
 
-const isSame = (array1, array2) => (array1.length === array2.length) && array1.every((element, index) => element === array2[index]);
+const isSame = (array1, array2) =>
+  array1.length === array2.length &&
+  array1.every((element, index) => element === array2[index]);
 
 export default class ParallelCoordinatesTool extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,21 +29,27 @@ export default class ParallelCoordinatesTool extends React.Component {
   }
 
   componentWillMount() {
-    this.component = ParallelCoordinates.newInstance({ provider: this.props.provider });
+    this.component = ParallelCoordinates.newInstance({
+      provider: this.props.provider,
+    });
     this.component.propagateAnnotationInsteadOfSelection(true, 0, 1);
-    this.component.setVisibleScoresForSelection(this.props.partitionScores || [0, 1, 2]);
+    this.component.setVisibleScoresForSelection(this.props.partitionScores);
     this.component.setShowOnlySelection(!!this.props.showOnlySelection);
   }
 
   componentDidUpdate() {
     let changeDetected = false;
 
-    if (!isSame(this.component.getVisibleScores(), this.props.partitionScores || [0, 1, 2])) {
-      this.component.setVisibleScoresForSelection(this.props.partitionScores || [0, 1, 2]);
+    if (
+      !isSame(this.component.getVisibleScores(), this.props.partitionScores)
+    ) {
+      this.component.setVisibleScoresForSelection(this.props.partitionScores);
       changeDetected = true;
     }
 
-    if (this.component.getShowOnlySelection() !== !!this.props.showOnlySelection) {
+    if (
+      this.component.getShowOnlySelection() !== !!this.props.showOnlySelection
+    ) {
       this.component.setShowOnlySelection(!!this.props.showOnlySelection);
       changeDetected = true;
     }
@@ -94,20 +101,31 @@ export default class ParallelCoordinatesTool extends React.Component {
           onActive={() => this.props.onActiveWindow(this)}
           front={this === this.props.activeWindow}
         >
-          <div style={{ overflow: 'auto', position: 'absolute', width: '100%', height: '100%' }}>
-            <ComponentToReact className={style.fullSize} component={this.component} />
+          <div
+            style={{
+              overflow: 'auto',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <ComponentToReact
+              className={style.fullSize}
+              component={this.component}
+            />
           </div>
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 
 ParallelCoordinatesTool.propTypes = {
-  provider: PropTypes.object,
+  provider: PropTypes.object.isRequired,
   size: PropTypes.string,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
 
   showOnlySelection: PropTypes.bool,
   partitionScores: PropTypes.array,
@@ -116,4 +134,5 @@ ParallelCoordinatesTool.propTypes = {
 ParallelCoordinatesTool.defaultProps = {
   size: '35px',
   showOnlySelection: false,
+  partitionScores: [0, 1, 2],
 };

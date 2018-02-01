@@ -1,5 +1,3 @@
-
-
 /*
  * Given a categorical array, return two new arrays, the first containing the
  * unique values, the second containing the counts.
@@ -48,7 +46,4 @@ function averageValues(categorical, numeric) {
   return [u, a];
 }
 
-export {
-  uniqueValues,
-  averageValues,
-};
+export { uniqueValues, averageValues };

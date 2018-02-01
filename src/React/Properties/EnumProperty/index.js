@@ -1,10 +1,10 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 import enumStyle from 'PVWStyle/ReactProperties/EnumProperty.mcss';
 
-import convert          from '../../../Common/Misc/Convert';
+import convert from '../../../Common/Misc/Convert';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 function valueToString(obj) {
@@ -18,7 +18,7 @@ function stringToValue(str) {
   if (!str || str.length === 0) {
     return str;
   }
-  return (str[0] === 'S') ? str.substring(1) : JSON.parse(str.substring(1));
+  return str[0] === 'S' ? str.substring(1) : JSON.parse(str.substring(1));
 }
 
 /* eslint-disable react/no-danger */
@@ -30,7 +30,6 @@ export default class EnumProperty extends React.Component {
     this.state = {
       data: props.data,
       helpOpen: false,
-      ui: props.ui,
     };
 
     // Bind callback
@@ -39,7 +38,7 @@ export default class EnumProperty extends React.Component {
   }
 
   componentWillMount() {
-    var newState = {};
+    const newState = {};
     if (this.props.ui.default && !this.props.data.value) {
       newState.data = this.state.data;
       newState.data.value = this.props.ui.default;
@@ -67,20 +66,22 @@ export default class EnumProperty extends React.Component {
   }
 
   valueChange(e) {
-    var newData = this.state.data;
+    const newData = this.state.data;
     if (Array.isArray(this.state.data.value)) {
       const newVals = [];
       for (let i = 0; i < e.target.options.length; i++) {
         const el = e.target.options.item(i);
         if (el.selected) {
-          [].concat(stringToValue(el.value)).forEach(v => newVals.push(v));
+          [].concat(stringToValue(el.value)).forEach((v) => newVals.push(v));
         }
       }
       newData.value = newVals.map(convert[this.props.ui.type]);
     } else if (e.target.value === null) {
       newData.value = null;
     } else {
-      newData.value = [convert[this.props.ui.type](stringToValue(e.target.value))];
+      newData.value = [
+        convert[this.props.ui.type](stringToValue(e.target.value)),
+      ];
     }
 
     this.setState({
@@ -92,32 +93,38 @@ export default class EnumProperty extends React.Component {
   }
 
   render() {
-    var selectedValue = null;
-    const multiple = (this.props.ui.size === -1),
-      mapper = () => {
-        var ret = [];
-        if (!multiple && !this.props.ui.noEmpty) {
-          ret.push(<option key="empty-value" value={null} />);
-        }
+    let selectedValue = null;
+    const multiple = this.props.ui.size === -1;
+    const mapper = () => {
+      const ret = [];
+      if (!multiple && !this.props.ui.noEmpty) {
+        ret.push(<option key="empty-value" value={null} />);
+      }
 
-        Object.keys(this.props.ui.domain).forEach((key) => {
-          ret.push(
-            <option
-              value={valueToString(this.props.ui.domain[key])}
-              key={`${this.props.data.id}_${key}`}
-            >
-              {key}
-            </option>);
-        });
+      Object.keys(this.props.ui.domain).forEach((key) => {
+        ret.push(
+          <option
+            value={valueToString(this.props.ui.domain[key])}
+            key={`${this.props.data.id}_${key}`}
+          >
+            {key}
+          </option>
+        );
+      });
 
-        return ret;
-      };
+      return ret;
+    };
 
     if (multiple) {
       selectedValue = this.props.data.value.map(valueToString);
     } else if (this.props.ui.size === 1) {
-      if (this.props.ui.domain && this.props.ui.domain[this.props.data.value[0]] !== undefined) {
-        selectedValue = valueToString(this.props.ui.domain[this.props.data.value[0]]);
+      if (
+        this.props.ui.domain &&
+        this.props.ui.domain[this.props.data.value[0]] !== undefined
+      ) {
+        selectedValue = valueToString(
+          this.props.ui.domain[this.props.data.value[0]]
+        );
       } else {
         selectedValue = valueToString(this.props.data.value[0]);
       }
@@ -125,13 +132,20 @@ export default class EnumProperty extends React.Component {
       selectedValue = valueToString(this.props.data.value);
     }
 
-    const containerStyle = this.props.ui.label !== undefined ? style.container : enumStyle.soloContainer;
+    const containerStyle =
+      this.props.ui.label !== undefined
+        ? style.container
+        : enumStyle.soloContainer;
     return (
-      <div className={this.props.show(this.props.viewData) ? containerStyle : style.hidden}>
-        { this.props.ui.label !== undefined &&
+      <div
+        className={
+          this.props.show(this.props.viewData) ? containerStyle : style.hidden
+        }
+      >
+        {this.props.ui.label !== undefined && (
           <div className={enumStyle.header}>
             <strong>{this.props.ui.label}</strong>
-            { this.props.ui.help !== undefined &&
+            {this.props.ui.help !== undefined && (
               <span>
                 <ToggleIconButton
                   icon={style.helpIcon}
@@ -140,9 +154,9 @@ export default class EnumProperty extends React.Component {
                   onChange={this.helpToggled}
                 />
               </span>
-              }
+            )}
           </div>
-        }
+        )}
         <div className={style.inputBlock}>
           <select
             className={multiple ? enumStyle.inputMultiSelect : enumStyle.input}
@@ -153,13 +167,14 @@ export default class EnumProperty extends React.Component {
             {mapper()}
           </select>
         </div>
-        { this.props.ui.help !== undefined &&
+        {this.props.ui.help !== undefined && (
           <div
             className={this.state.helpOpen ? style.helpBox : style.hidden}
             dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
           />
-        }
-      </div>);
+        )}
+      </div>
+    );
   }
 }
 
@@ -167,10 +182,10 @@ EnumProperty.propTypes = {
   data: PropTypes.object.isRequired,
   help: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func,
-  show: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
-  viewData: PropTypes.object,
+  viewData: PropTypes.object.isRequired,
 };
 
 EnumProperty.defaultProps = {

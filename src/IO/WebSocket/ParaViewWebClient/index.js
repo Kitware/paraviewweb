@@ -11,28 +11,28 @@ import ViewPortImageDelivery from './ViewPortImageDelivery';
 import VtkGeometryDelivery from './VtkGeometryDelivery';
 import VtkImageDelivery from './VtkImageDelivery';
 
-const
-  protocolsMap = {
-    ColorManager,
-    FileListing,
-    KeyValuePairStore,
-    MouseHandler,
-    ProxyManager,
-    SaveData,
-    TimeHandler,
-    ViewPort,
-    ViewPortGeometryDelivery,
-    ViewPortImageDelivery,
-    VtkGeometryDelivery,
-    VtkImageDelivery,
-  };
+const protocolsMap = {
+  ColorManager,
+  FileListing,
+  KeyValuePairStore,
+  MouseHandler,
+  ProxyManager,
+  SaveData,
+  TimeHandler,
+  ViewPort,
+  ViewPortGeometryDelivery,
+  ViewPortImageDelivery,
+  VtkGeometryDelivery,
+  VtkImageDelivery,
+};
 
 export function createClient(connection, protocols = [], customProtocols = {}) {
-  var session = connection.getSession(),
-    result = {
-      connection, session,
-    },
-    count = protocols.length;
+  const session = connection.getSession();
+  const result = {
+    connection,
+    session,
+  };
+  let count = protocols.length;
 
   while (count) {
     count -= 1;

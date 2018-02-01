@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ColorPickerWidget.mcss';
 
-import swatchURL  from './defaultSwatches.png';
+import swatchURL from './defaultSwatches.png';
 
 /**
  * This React component expect the following input properties:
@@ -28,11 +28,7 @@ export default class ColorPickerWidget extends React.Component {
       swatch: props.swatch,
       color: props.color,
       preview: false,
-      originalColor: [
-        props.color[0],
-        props.color[1],
-        props.color[2],
-      ],
+      originalColor: [props.color[0], props.color[1], props.color[2]],
     };
 
     // Bind callback
@@ -43,7 +39,7 @@ export default class ColorPickerWidget extends React.Component {
   }
 
   componentDidMount() {
-    var ctx = this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
   }
@@ -51,9 +47,11 @@ export default class ColorPickerWidget extends React.Component {
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-update-set-state */
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.color[0] !== this.props.color[0] ||
-       prevProps.color[1] !== this.props.color[1] ||
-       prevProps.color[2] !== this.props.color[2]) {
+    if (
+      prevProps.color[0] !== this.props.color[0] ||
+      prevProps.color[1] !== this.props.color[1] ||
+      prevProps.color[2] !== this.props.color[2]
+    ) {
       this.setState({ originalColor: this.props.color });
     }
     if (!this.state.preview) {
@@ -65,8 +63,8 @@ export default class ColorPickerWidget extends React.Component {
   /* eslint-enable react/no-did-update-set-state */
 
   showColor(event) {
-    var color = this.state.originalColor,
-      ctx = this.canvas.getContext('2d');
+    let color = this.state.originalColor;
+    const ctx = this.canvas.getContext('2d');
     event.preventDefault();
 
     if (event.type === 'mouseleave') {
@@ -78,12 +76,12 @@ export default class ColorPickerWidget extends React.Component {
       return;
     }
 
-    const img = this.swatch,
-      rect = img.getBoundingClientRect();
+    const img = this.swatch;
+    const rect = img.getBoundingClientRect();
 
-    const scale = this.image.width / rect.width,
-      x = scale * (event.pageX - rect.left),
-      y = scale * (event.pageY - rect.top);
+    const scale = this.image.width / rect.width;
+    const x = scale * (event.pageX - rect.left);
+    const y = scale * (event.pageY - rect.top);
 
     ctx.drawImage(img, x, y, 1, 1, 0, 0, 1, 1);
 
@@ -101,9 +99,9 @@ export default class ColorPickerWidget extends React.Component {
   }
 
   rgbColorChange(event) {
-    var color = this.state.color,
-      value = event.target.value,
-      idx = Number(event.target.dataset.colorIdx);
+    const color = this.state.color;
+    const value = event.target.value;
+    const idx = Number(event.target.dataset.colorIdx);
 
     color[idx] = value;
 
@@ -133,7 +131,9 @@ export default class ColorPickerWidget extends React.Component {
         <div className={style.activeColor}>
           <canvas
             className={style.colorCanvas}
-            ref={(c) => { this.canvas = c; }}
+            ref={(c) => {
+              this.canvas = c;
+            }}
             width="1"
             height="1"
           />
@@ -168,7 +168,9 @@ export default class ColorPickerWidget extends React.Component {
         <div className={style.swatch}>
           <img
             alt="swatch"
-            ref={(c) => { this.swatch = c; }}
+            ref={(c) => {
+              this.swatch = c;
+            }}
             className={style.swatchImage}
             width="100%"
             src={this.state.swatch}
@@ -191,5 +193,5 @@ ColorPickerWidget.propTypes = {
 ColorPickerWidget.defaultProps = {
   color: [0, 0, 0],
   swatch: swatchURL,
+  onChange: undefined,
 };
-

@@ -1,9 +1,8 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import AbstractViewerMenu from '../AbstractViewerMenu';
-import GeometryRenderer   from '../../Renderers/GeometryRenderer';
-
+import GeometryRenderer from '../../Renderers/GeometryRenderer';
 
 export default function GeometryViewer(props) {
   let controlWidgets = [];
@@ -31,9 +30,9 @@ GeometryViewer.propTypes = {
   geometryBuilder: PropTypes.object.isRequired,
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
-  userData: PropTypes.object,
 };
 
 GeometryViewer.defaultProps = {
   config: {},
+  menuAddOn: undefined,
 };

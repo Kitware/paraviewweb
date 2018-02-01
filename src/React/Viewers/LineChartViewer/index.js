@@ -1,19 +1,18 @@
-import equals    from 'mout/src/object/equals';
-import React     from 'react';
+import equals from 'mout/src/object/equals';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 
-
 function interpolate(values, xRatio) {
-  var size = values.length,
-    idx = size * xRatio,
-    a = values[Math.floor(idx)],
-    b = values[Math.ceil(idx)],
-    ratio = idx - Math.floor(idx);
-  return (((b - a) * ratio) + a).toFixed(5);
+  const size = values.length;
+  const idx = size * xRatio;
+  const a = values[Math.floor(idx)];
+  const b = values[Math.ceil(idx)];
+  const ratio = idx - Math.floor(idx);
+  return ((b - a) * ratio + a).toFixed(5);
 }
 
 /**
@@ -66,7 +65,10 @@ export default class LineChartViewer extends React.Component {
   }
 
   onMove(event) {
-    this.xPosition = event.clientX - (event.target.getClientRects()[0].x || event.target.getClientRects()[0].left);
+    this.xPosition =
+      event.clientX -
+      (event.target.getClientRects()[0].x ||
+        event.target.getClientRects()[0].left);
 
     // Update fields values
 
@@ -78,10 +80,14 @@ export default class LineChartViewer extends React.Component {
   updateDimensions() {
     this.xPosition = 0;
 
-    const el = this.rootContainer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    const el = this.rootContainer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+    if (
+      el &&
+      (this.state.width !== elSize.clientWidth ||
+        this.state.height !== elSize.clientHeight)
+    ) {
       this.setState({
         width: elSize.clientWidth,
         height: elSize.clientHeight,
@@ -100,11 +106,11 @@ export default class LineChartViewer extends React.Component {
       return;
     }
 
-    const ctx = this.canvas.getContext('2d'),
-      fields = this.props.data.fields,
-      size = fields.length,
-      fieldsColors = {},
-      ratio = this.xPosition / ctx.canvas.width;
+    const ctx = this.canvas.getContext('2d');
+    const fields = this.props.data.fields;
+    const size = fields.length;
+    const fieldsColors = {};
+    const ratio = this.xPosition / ctx.canvas.width;
 
     ctx.canvas.width = this.state.width;
     ctx.canvas.height = this.state.height;
@@ -125,8 +131,9 @@ export default class LineChartViewer extends React.Component {
     // Draw cursor
     if (this.state.legend) {
       this.xValueLabel.innerHTML = (
-        ((this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio)
-        + this.props.data.xRange[0]).toFixed(5);
+        (this.props.data.xRange[1] - this.props.data.xRange[0]) * ratio +
+        this.props.data.xRange[0]
+      ).toFixed(5);
 
       ctx.beginPath();
       ctx.lineWidth = 1;
@@ -147,13 +154,13 @@ export default class LineChartViewer extends React.Component {
   }
 
   drawField(ctx, fieldIndex, values, range) {
-    var min = Number.MAX_VALUE,
-      max = Number.MIN_VALUE,
-      width = ctx.canvas.width,
-      height = ctx.canvas.height,
-      size = values.length,
-      count = values.length,
-      xValues = new Uint16Array(count);
+    let min = Number.MAX_VALUE;
+    let max = -Number.MAX_VALUE;
+    const width = ctx.canvas.width;
+    const height = ctx.canvas.height;
+    const size = values.length;
+    let count = values.length;
+    const xValues = new Uint16Array(count);
 
     // Compute xValues and min/max
     while (count) {
@@ -173,8 +180,8 @@ export default class LineChartViewer extends React.Component {
     const scaleY = height / (max - min);
 
     function getY(idx) {
-      var value = values[idx];
-      value = (value > min) ? ((value < max) ? value : max) : min;
+      let value = values[idx];
+      value = value > min ? (value < max ? value : max) : min;
       return height - Math.floor((value - min) * scaleY);
     }
 
@@ -184,8 +191,8 @@ export default class LineChartViewer extends React.Component {
     ctx.strokeStyle = this.props.colors[fieldIndex];
     ctx.moveTo(xValues[0], getY(0));
     for (let idx = 1; idx < size; idx++) {
-      if (isNaN(values[idx])) {
-        if (idx + 1 < size && !isNaN(values[idx + 1])) {
+      if (Number.isNaN(values[idx])) {
+        if (idx + 1 < size && !Number.isNaN(values[idx + 1])) {
           ctx.moveTo(xValues[idx + 1], getY(idx + 1));
         }
       } else {
@@ -198,7 +205,7 @@ export default class LineChartViewer extends React.Component {
   }
 
   render() {
-    var legend = [];
+    const legend = [];
 
     Object.keys(this.state.fieldsColors).forEach((name) => {
       const color = this.state.fieldsColors[name];
@@ -206,29 +213,51 @@ export default class LineChartViewer extends React.Component {
         <li className={style.legendItem} key={name}>
           <i className={style.legendItemColor} style={{ color }} />
           <b>{name}</b>
-          <span className={style.legendItemValue} ref={(c) => { this[name] = c; }} />
-        </li>);
+          <span
+            className={style.legendItemValue}
+            ref={(c) => {
+              this[name] = c;
+            }}
+          />
+        </li>
+      );
     });
 
     return (
-      <div className={style.container} ref={c => (this.rootContainer = c)}>
+      <div
+        className={style.container}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
+      >
         <canvas
           className={style.canvas}
-          ref={(c) => { this.canvas = c; }}
+          ref={(c) => {
+            this.canvas = c;
+          }}
           onMouseMove={this.onMove}
           width={this.state.width}
           height={this.state.height}
         />
         <div className={this.state.legend ? style.legend : style.hidden}>
           <div className={style.legendBar}>
-            <span className={style.legendText} ref={(c) => { this.xValueLabel = c; }} />
-            <i className={style.toggleLegendButton} onClick={this.toggleLegend} />
+            <span
+              className={style.legendText}
+              ref={(c) => {
+                this.xValueLabel = c;
+              }}
+            />
+            <i
+              className={style.toggleLegendButton}
+              onClick={this.toggleLegend}
+            />
           </div>
-          <ul className={style.legendContent}>
-            {legend}
-          </ul>
+          <ul className={style.legendContent}>{legend}</ul>
         </div>
-        <div className={this.state.legend ? style.hidden : style.legend} onClick={this.toggleLegend}>
+        <div
+          className={this.state.legend ? style.hidden : style.legend}
+          onClick={this.toggleLegend}
+        >
           <div className={style.legendButtons}>
             <i className={style.toggleLegendButton} />
           </div>
@@ -245,18 +274,12 @@ LineChartViewer.propTypes = {
   height: PropTypes.number,
   legend: PropTypes.bool,
   width: PropTypes.number,
-  userData: PropTypes.object,
 };
 
 LineChartViewer.defaultProps = {
-  colors: [
-    '#e1002a',
-    '#417dc0',
-    '#1d9a57',
-    '#e9bc2f',
-    '#9b3880',
-  ],
+  colors: ['#e1002a', '#417dc0', '#1d9a57', '#e9bc2f', '#9b3880'],
   height: 200,
   legend: false,
   width: 200,
+  cursor: undefined,
 };

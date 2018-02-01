@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Plotly from 'plotly.js';
 
@@ -26,17 +26,20 @@ export default class PlotlyRenderer extends React.Component {
       if (!container) {
         return;
       }
-      if (!data.forceNewPlot
-        && container.data
-        && container.data.length > 0
-        && container.data[0].type === data.traces[0].type) {
+      if (
+        !data.forceNewPlot &&
+        container.data &&
+        container.data.length > 0 &&
+        container.data[0].type === data.traces[0].type
+      ) {
         container.data = data.traces;
         Plotly.redraw(container);
       } else {
         const layout = {
           title: data.title,
           showlegend: true,
-          legend: {   // Somehow positions legend in lower right of div
+          legend: {
+            // Somehow positions legend in lower right of div
             x: 100,
             y: 0,
           },
@@ -47,7 +50,12 @@ export default class PlotlyRenderer extends React.Component {
           displayModeBar: false,
         };
 
-        Plotly.newPlot(container, data.traces, data.layout || layout, data.config || config);
+        Plotly.newPlot(
+          container,
+          data.traces,
+          data.layout || layout,
+          data.config || config
+        );
       }
 
       if (data.hover && data.hover.enable === true) {
@@ -85,13 +93,19 @@ export default class PlotlyRenderer extends React.Component {
   }
 
   render() {
-    return (<div className={style.chartContainer} ref={(c) => { this.chartRenderer = c; }} />);
+    return (
+      <div
+        className={style.chartContainer}
+        ref={(c) => {
+          this.chartRenderer = c;
+        }}
+      />
+    );
   }
 }
 
 PlotlyRenderer.propTypes = {
-  chartBuilder: PropTypes.object,
+  chartBuilder: PropTypes.object.isRequired,
 };
 
-PlotlyRenderer.defaultProps = {
-};
+PlotlyRenderer.defaultProps = {};

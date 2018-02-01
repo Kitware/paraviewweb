@@ -12,11 +12,17 @@ function convert(item, model) {
   return result;
 }
 
-export function createSortedIterator(priorityOrder, propertyChoices, defaultValues) {
+export function createSortedIterator(
+  priorityOrder,
+  propertyChoices,
+  defaultValues
+) {
   const propertyKeys = Object.keys(propertyChoices);
 
-  const prioritySizes = priorityOrder.map(name => propertyChoices[name].length);
-  const priorityIndex = prioritySizes.map(i => 0);
+  const prioritySizes = priorityOrder.map(
+    (name) => propertyChoices[name].length
+  );
+  const priorityIndex = prioritySizes.map((i) => 0);
 
   const get = () => {
     const item = {};
@@ -96,7 +102,8 @@ function legendProvider(publicAPI, model) {
         const iterator = createSortedIterator(
           model.legendPriorities,
           { colors: model.legendColors, shapes: shapesArray },
-          { colors: defaultColor, shapes: defaultShape });
+          { colors: defaultColor, shapes: defaultShape }
+        );
 
         model.legendEntries.forEach((name) => {
           model.legendMapping[name] = convert(iterator.get(), model);
@@ -122,7 +129,12 @@ function legendProvider(publicAPI, model) {
   };
 
   publicAPI.updateLegendSettings = (settings) => {
-    ['legendShapes', 'legendColors', 'legendEntries', 'legendPriorities'].forEach((key) => {
+    [
+      'legendShapes',
+      'legendColors',
+      'legendEntries',
+      'legendPriorities',
+    ].forEach((key) => {
       if (settings[key]) {
         model[key] = [].concat(settings.key);
         model.legendDirty = true;

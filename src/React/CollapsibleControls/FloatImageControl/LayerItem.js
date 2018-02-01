@@ -20,13 +20,19 @@ export default class FloatImageControlLayerItem extends React.Component {
 
   toggleMesh() {
     if (this.props.item.hasMesh) {
-      this.props.model.updateMaskLayerVisibility(this.props.item.name, !this.props.item.meshActive);
+      this.props.model.updateMaskLayerVisibility(
+        this.props.item.name,
+        !this.props.item.meshActive
+      );
       this.setState({ change: !this.state.change });
     }
   }
 
   toggleVisibility() {
-    this.props.model.updateLayerVisibility(this.props.item.name, !this.props.item.active);
+    this.props.model.updateLayerVisibility(
+      this.props.item.name,
+      !this.props.item.active
+    );
     this.setState({ change: !this.state.change });
   }
 
@@ -37,25 +43,30 @@ export default class FloatImageControlLayerItem extends React.Component {
   }
 
   updateColorBy(event) {
-    this.props.model.updateLayerColorBy(this.props.item.name, event.target.dataset.color);
+    this.props.model.updateLayerColorBy(
+      this.props.item.name,
+      event.target.dataset.color
+    );
     this.toggleDropDown();
   }
 
   render() {
-    var layer = this.props.item,
-      visible = layer.active,
-      meshVisible = layer.meshActive,
-      meshAvailable = layer.hasMesh,
-      hasDropDown = layer.arrays.length > 1;
+    const layer = this.props.item;
+    const visible = layer.active;
+    const meshVisible = layer.meshActive;
+    const meshAvailable = layer.hasMesh;
+    const hasDropDown = layer.arrays.length > 1;
 
     return (
       <div className={style.item}>
-        <div className={style.sceneLabel}>
-          {layer.name}
-        </div>
+        <div className={style.sceneLabel}>{layer.name}</div>
         <div className={style.sceneActions}>
           <i
-            className={(meshAvailable ? (meshVisible ? style.meshButtonOn : style.meshButtonOff) : style.hidden)}
+            className={
+              meshAvailable
+                ? meshVisible ? style.meshButtonOn : style.meshButtonOff
+                : style.hidden
+            }
             onClick={this.toggleMesh}
           />
           <i
@@ -63,25 +74,32 @@ export default class FloatImageControlLayerItem extends React.Component {
             onClick={this.toggleVisibility}
           />
           <i
-            className={hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff}
+            className={
+              hasDropDown ? style.dropDownButtonOn : style.dropDownButtonOff
+            }
             onClick={this.toggleDropDown}
           />
           <div
             onClick={this.updateColorBy}
             className={this.state.dropDown ? style.menu : style.hidden}
           >
-            {layer.arrays.map(color => (
+            {layer.arrays.map((color) => (
               <div
                 key={color}
                 data-color={color}
-                className={(color === layer.array) ? style.selectedMenuItem : style.menuItem}
+                className={
+                  color === layer.array
+                    ? style.selectedMenuItem
+                    : style.menuItem
+                }
               >
                 {color}
-              </div>)
-            )}
+              </div>
+            ))}
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

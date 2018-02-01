@@ -1,4 +1,3 @@
-
 export default function Scatter3D(chartState, csvReader, arraysInfo) {
   const arrayNames = Object.keys(arraysInfo);
   if (!chartState.x) {
@@ -6,11 +5,12 @@ export default function Scatter3D(chartState, csvReader, arraysInfo) {
   }
 
   if (!chartState.y) {
-    chartState.y = arrayNames[(arrayNames.length >= 2 ? 1 : 0)];
+    chartState.y = arrayNames[arrayNames.length >= 2 ? 1 : 0];
   }
 
   if (!chartState.z) {
-    chartState.z = arrayNames[(arrayNames.length >= 3 ? 2 : (arrayNames.length >= 2 ? 1 : 0))];
+    chartState.z =
+      arrayNames[arrayNames.length >= 3 ? 2 : arrayNames.length >= 2 ? 1 : 0];
   }
 
   return [

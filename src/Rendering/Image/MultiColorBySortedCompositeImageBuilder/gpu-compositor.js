@@ -12,24 +12,20 @@ import fragmentShaderLayerColor from './shaders/fragment/addLayerColor.c';
 import fragmentShaderLitLayerColor from './shaders/fragment/addLitLayerColor.c';
 import fragmentShaderAlphaBlend from '../SortedCompositeImageBuilder/shaders/fragment/alphaBlend.c';
 
-const
-  texParameter = [
-    ['TEXTURE_MAG_FILTER', 'NEAREST'],
-    ['TEXTURE_MIN_FILTER', 'NEAREST'],
-    ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
-    ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
-  ],
-  pixelStore = [
-    ['UNPACK_FLIP_Y_WEBGL', true],
-  ],
-  align1PixelStore = [
-    ['UNPACK_FLIP_Y_WEBGL', true],
-    ['UNPACK_ALIGNMENT', 1],
-  ],
-  EMPTY_LAYER_BUFFER = new Float32Array([0.0]);
+const texParameter = [
+  ['TEXTURE_MAG_FILTER', 'NEAREST'],
+  ['TEXTURE_MIN_FILTER', 'NEAREST'],
+  ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
+  ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
+];
+const pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
+const align1PixelStore = [
+  ['UNPACK_FLIP_Y_WEBGL', true],
+  ['UNPACK_ALIGNMENT', 1],
+];
+const EMPTY_LAYER_BUFFER = new Float32Array([0.0]);
 
 export default class GPUCompositor {
-
   constructor(queryDataModel, imageBuilder, colorHelper, reverseCompositePass) {
     this.queryDataModel = queryDataModel;
     this.imageBuilder = imageBuilder;
@@ -78,10 +74,13 @@ export default class GPUCompositor {
     // Set clear color to white, fully transparent
     this.gl.clearColor(1.0, 1.0, 1.0, 0.0);
 
-    const maxTextureUnits = this.gl.getParameter(this.gl.MAX_TEXTURE_IMAGE_UNITS),
-      simultaneousLayers = (maxTextureUnits - 2) / 2;
+    const maxTextureUnits = this.gl.getParameter(
+      this.gl.MAX_TEXTURE_IMAGE_UNITS
+    );
+    const simultaneousLayers = (maxTextureUnits - 2) / 2;
 
-    this.shaderLayers = simultaneousLayers < this.numLayers ? simultaneousLayers : this.numLayers;
+    this.shaderLayers =
+      simultaneousLayers < this.numLayers ? simultaneousLayers : this.numLayers;
 
     this.lutData = [];
     for (let i = 0; i < this.shaderLayers; ++i) {
@@ -101,7 +100,8 @@ export default class GPUCompositor {
           fragmentShader: WebGlUtil.transformShader(
             fragmentShaderLayerColor,
             { SIMULTANEOUS_LAYERS: this.shaderLayers },
-            { inlineLoops: true }),
+            { inlineLoops: true }
+          ),
           mapping: 'default',
         },
         lightColorProgram: {
@@ -109,7 +109,8 @@ export default class GPUCompositor {
           fragmentShader: WebGlUtil.transformShader(
             fragmentShaderLitLayerColor,
             { SIMULTANEOUS_LAYERS: this.shaderLayers },
-            { inlineLoops: true }),
+            { inlineLoops: true }
+          ),
           mapping: 'default',
         },
         blendProgram: {
@@ -123,20 +124,23 @@ export default class GPUCompositor {
           {
             id: 'texCoord',
             data: new Float32Array([
-              0.0, 0.0,
-              1.0, 0.0,
-              0.0, 1.0,
-              0.0, 1.0,
-              1.0, 0.0,
-              1.0, 1.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              1.0,
+              1.0,
+              0.0,
+              1.0,
+              1.0,
             ]),
-          }, {
+          },
+          {
             id: 'posCoord',
-            data: new Float32Array([-1, -1,
-              1, -1, -1, 1, -1, 1,
-              1, -1,
-              1, 1,
-            ]),
+            data: new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
           },
         ],
         textures: [
@@ -144,19 +148,23 @@ export default class GPUCompositor {
             id: 'orderTexture',
             pixelStore: align1PixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'intensityTexture',
             pixelStore: align1PixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'ping',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'pong',
             pixelStore,
             texParameter,
-          }, {
+          },
+          {
             id: 'colorRenderTexture',
             pixelStore,
             texParameter,
@@ -167,11 +175,13 @@ export default class GPUCompositor {
             id: 'ping',
             width: this.width,
             height: this.height,
-          }, {
+          },
+          {
             id: 'pong',
             width: this.width,
             height: this.height,
-          }, {
+          },
+          {
             id: 'colorFbo',
             width: this.width,
             height: this.height,
@@ -185,7 +195,8 @@ export default class GPUCompositor {
             name: 'positionLocation',
             attribute: 'a_position',
             format: [2, this.gl.FLOAT, false, 0, 0],
-          }, {
+          },
+          {
             id: 'texCoord',
             name: 'texCoordLocation',
             attribute: 'a_texCoord',
@@ -203,9 +214,7 @@ export default class GPUCompositor {
       });
       this.glConfig.resources.textures.push({
         id: `lutSampler_${i}`,
-        pixelStore: [
-          ['UNPACK_ALIGNMENT', 1],
-        ],
+        pixelStore: [['UNPACK_ALIGNMENT', 1]],
         texParameter,
       });
     }
@@ -217,14 +226,22 @@ export default class GPUCompositor {
 
     const singleFloat = this.gl.getExtension('OES_texture_float');
     if (singleFloat === null) {
-      console.err('Your browser does not support the WebGL Extension "OES_texture_float", this compositor will not work!');
+      console.err(
+        'Your browser does not support the WebGL Extension "OES_texture_float", this compositor will not work!'
+      );
     }
 
-    WebGlUtil.bindTextureToFramebuffer(this.gl, this.glResources.framebuffers.colorFbo, this.glResources.textures.colorRenderTexture);
+    WebGlUtil.bindTextureToFramebuffer(
+      this.gl,
+      this.glResources.framebuffers.colorFbo,
+      this.glResources.textures.colorRenderTexture
+    );
 
-    this.pingPong = new PingPong(this.gl,
+    this.pingPong = new PingPong(
+      this.gl,
       [this.glResources.framebuffers.ping, this.glResources.framebuffers.pong],
-      [this.glResources.textures.ping, this.glResources.textures.pong]);
+      [this.glResources.textures.ping, this.glResources.textures.pong]
+    );
   }
 
   // --------------------------------------------------------------------------
@@ -254,8 +271,8 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   extractLayerData(buffer, layerIndex, pixelSize) {
-    var offset = layerIndex * this.width * this.height * pixelSize,
-      length = this.width * this.height * pixelSize;
+    const offset = layerIndex * this.width * this.height * pixelSize;
+    const length = this.width * this.height * pixelSize;
 
     return new Uint8Array(buffer, offset, length);
   }
@@ -263,7 +280,7 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   getAndUseCurrentColorProgram() {
-    var currentProgram = this.glResources.programs.colorProgram;
+    let currentProgram = this.glResources.programs.colorProgram;
 
     // Using the coloring shader program
     if (this.hasNormal) {
@@ -278,27 +295,35 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   uploadLayerTextures(minIdx, maxIdx) {
-    var layerColorUnits = [],
-      lutUnits = [],
-      texCount = 2,
-      bufferViewSizeList = [],
-      bufferViewList = [],
-      ranges = [],
-      alphas = [],
-      currentLutIndex = 0;
+    const layerColorUnits = [];
+    const lutUnits = [];
+    let texCount = 2;
+    const bufferViewSizeList = [];
+    const bufferViewList = [];
+    const ranges = [];
+    const alphas = [];
+    let currentLutIndex = 0;
 
-    for (let activeLayerIdx = minIdx; activeLayerIdx <= maxIdx; ++activeLayerIdx) {
-      const lut = this.colorHelper.getLayerLut(activeLayerIdx),
-        colorByName = this.colorHelper.getLayerColorByName(activeLayerIdx),
-        range = this.metadata.ranges[colorByName];
+    for (
+      let activeLayerIdx = minIdx;
+      activeLayerIdx <= maxIdx;
+      ++activeLayerIdx
+    ) {
+      const lut = this.colorHelper.getLayerLut(activeLayerIdx);
+      const colorByName = this.colorHelper.getLayerColorByName(activeLayerIdx);
+      const range = this.metadata.ranges[colorByName];
 
       if (this.colorHelper.getLayerVisible(activeLayerIdx)) {
-        const layerBufferView = this.colorHelper.getLayerFloatData(activeLayerIdx);
+        const layerBufferView = this.colorHelper.getLayerFloatData(
+          activeLayerIdx
+        );
         if (layerBufferView) {
           bufferViewList.push(layerBufferView);
           bufferViewSizeList.push([this.width, this.height]);
         } else {
-          bufferViewList.push(new Float32Array([this.findLayerConstantValue(activeLayerIdx)]));
+          bufferViewList.push(
+            new Float32Array([this.findLayerConstantValue(activeLayerIdx)])
+          );
           bufferViewSizeList.push([1, 1]);
         }
 
@@ -327,15 +352,31 @@ export default class GPUCompositor {
     const currentProgram = this.getAndUseCurrentColorProgram();
 
     // Set up the color by textures
-    const colorByLoc = this.gl.getUniformLocation(currentProgram, 'layerColorSampler');
+    const colorByLoc = this.gl.getUniformLocation(
+      currentProgram,
+      'layerColorSampler'
+    );
     this.gl.uniform1iv(colorByLoc, layerColorUnits);
 
     for (let i = 0; i < layerColorUnits.length; ++i) {
       this.gl.activeTexture(this.gl.TEXTURE0 + layerColorUnits[i]);
-      this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures[`layerColorSampler_${i}`]);
+      this.gl.bindTexture(
+        this.gl.TEXTURE_2D,
+        this.glResources.textures[`layerColorSampler_${i}`]
+      );
       const lbvw = bufferViewSizeList[i][0];
       const lbvh = bufferViewSizeList[i][1];
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.LUMINANCE, lbvw, lbvh, 0, this.gl.LUMINANCE, this.gl.FLOAT, bufferViewList[i]);
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.LUMINANCE,
+        lbvw,
+        lbvh,
+        0,
+        this.gl.LUMINANCE,
+        this.gl.FLOAT,
+        bufferViewList[i]
+      );
     }
 
     // Set up the lut samplers
@@ -344,8 +385,21 @@ export default class GPUCompositor {
 
     for (let i = 0; i < lutUnits.length; ++i) {
       this.gl.activeTexture(this.gl.TEXTURE0 + lutUnits[i]);
-      this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures[`lutSampler_${i}`]);
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 256, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.lutData[i]);
+      this.gl.bindTexture(
+        this.gl.TEXTURE_2D,
+        this.glResources.textures[`lutSampler_${i}`]
+      );
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGBA,
+        256,
+        1,
+        0,
+        this.gl.RGBA,
+        this.gl.UNSIGNED_BYTE,
+        this.lutData[i]
+      );
     }
 
     // Set up the ranges
@@ -376,20 +430,39 @@ export default class GPUCompositor {
 
     // Just iterate through all the layers in the data for now
     loop(!this.reverseCompositePass, this.numLayers, (layerIdx) => {
-      var orderLayerArray = this.extractLayerData(this.orderData, layerIdx, 1),
-        lightingLayerArray = this.extractLayerData(this.intensityData, layerIdx, 1);
+      const orderLayerArray = this.extractLayerData(
+        this.orderData,
+        layerIdx,
+        1
+      );
+      let lightingLayerArray = this.extractLayerData(
+        this.intensityData,
+        layerIdx,
+        1
+      );
 
       if (this.hasNormal) {
-        lightingLayerArray = this.extractLayerData(this.normalData, layerIdx, 3);
+        lightingLayerArray = this.extractLayerData(
+          this.normalData,
+          layerIdx,
+          3
+        );
       }
 
-      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.glResources.framebuffers.colorFbo);
+      this.gl.bindFramebuffer(
+        this.gl.FRAMEBUFFER,
+        this.glResources.framebuffers.colorFbo
+      );
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
       if (this.shaderLayers >= this.numLayers) {
         this.drawColorPass(orderLayerArray, lightingLayerArray);
       } else {
-        for (let batchIndex = 0; batchIndex < this.numLayers; batchIndex += this.shaderLayers) {
+        for (
+          let batchIndex = 0;
+          batchIndex < this.numLayers;
+          batchIndex += this.shaderLayers
+        ) {
           let endIndex = batchIndex + (this.shaderLayers - 1);
           if (endIndex >= this.numLayers) {
             endIndex = this.numLayers - 1;
@@ -398,7 +471,10 @@ export default class GPUCompositor {
           this.uploadLayerTextures(batchIndex, endIndex);
 
           const colorProgram = this.getAndUseCurrentColorProgram();
-          const offsetLoc = this.gl.getUniformLocation(colorProgram, 'orderOffset');
+          const offsetLoc = this.gl.getUniformLocation(
+            colorProgram,
+            'orderOffset'
+          );
           this.gl.uniform1i(offsetLoc, batchIndex);
 
           this.drawColorPass(orderLayerArray, lightingLayerArray);
@@ -425,8 +501,8 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   findLayerConstantValue(layerIdx) {
-    var colorByName = this.colorHelper.getLayerColorByName(layerIdx),
-      colorBys = this.metadata.pipeline[layerIdx].colorBy;
+    const colorByName = this.colorHelper.getLayerColorByName(layerIdx);
+    const colorBys = this.metadata.pipeline[layerIdx].colorBy;
     for (let i = 0; i < colorBys.length; ++i) {
       if (colorBys[i].name === colorByName) {
         return colorBys[i].value;
@@ -439,16 +515,16 @@ export default class GPUCompositor {
 
   sampleLookupTable(lut, colorBy, range, index) {
     function affine(value, inMin, inMax, outMin, outMax) {
-      return (((value - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
+      return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
     }
 
     for (let i = 0; i < 256; ++i) {
       const scalarValue = affine(i, 0, 255, range[0], range[1]);
       const color = lut.getColor(scalarValue);
-      this.lutData[index][(i * 4)] = color[0] * 255;
-      this.lutData[index][(i * 4) + 1] = color[1] * 255;
-      this.lutData[index][(i * 4) + 2] = color[2] * 255;
-      this.lutData[index][(i * 4) + 3] = color[3] * 255;
+      this.lutData[index][i * 4] = color[0] * 255;
+      this.lutData[index][i * 4 + 1] = color[1] * 255;
+      this.lutData[index][i * 4 + 2] = color[2] * 255;
+      this.lutData[index][i * 4 + 3] = color[3] * 255;
     }
   }
 
@@ -456,7 +532,10 @@ export default class GPUCompositor {
 
   drawBlendPass() {
     // Draw to the ping pong fbo on this pass
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.pingPong.getFramebuffer());
+    this.gl.bindFramebuffer(
+      this.gl.FRAMEBUFFER,
+      this.pingPong.getFramebuffer()
+    );
 
     // Use the alpha blending program for this pass
     this.gl.useProgram(this.glResources.programs.blendProgram);
@@ -464,16 +543,28 @@ export default class GPUCompositor {
     this.gl.viewport(0, 0, this.width, this.height);
 
     // Set up the ping pong render texture as the 'under' layer
-    const under = this.gl.getUniformLocation(this.glResources.programs.blendProgram, 'underLayerSampler');
+    const under = this.gl.getUniformLocation(
+      this.glResources.programs.blendProgram,
+      'underLayerSampler'
+    );
     this.gl.uniform1i(under, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
 
     // Set up the color fbo render texture as the 'over' layer
-    const over = this.gl.getUniformLocation(this.glResources.programs.blendProgram, 'overLayerSampler');
+    const over = this.gl.getUniformLocation(
+      this.glResources.programs.blendProgram,
+      'overLayerSampler'
+    );
     this.gl.uniform1i(over, 1);
     this.gl.activeTexture(this.gl.TEXTURE0 + 1);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.colorRenderTexture);
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.glResources.textures.colorRenderTexture
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -503,10 +594,16 @@ export default class GPUCompositor {
     this.gl.viewport(0, 0, this.width, this.height);
 
     // Set up the sampler uniform and bind the rendered texture
-    const uImage = this.gl.getUniformLocation(this.glResources.programs.displayProgram, 'u_image');
+    const uImage = this.gl.getUniformLocation(
+      this.glResources.programs.displayProgram,
+      'u_image'
+    );
     this.gl.uniform1i(uImage, 0);
     this.gl.activeTexture(this.gl.TEXTURE0 + 0);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pingPong.getRenderingTexture());
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.pingPong.getRenderingTexture()
+    );
 
     // Draw the rectangle.
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -522,7 +619,10 @@ export default class GPUCompositor {
 
   drawColorPass(layerOrderData, layerLightingData) {
     // Draw to the color fbo on this pass
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.glResources.framebuffers.colorFbo);
+    this.gl.bindFramebuffer(
+      this.gl.FRAMEBUFFER,
+      this.glResources.framebuffers.colorFbo
+    );
 
     let currentProgram = this.glResources.programs.colorProgram;
 
@@ -539,44 +639,106 @@ export default class GPUCompositor {
     let texCount = 0;
 
     // Set up the order layer texture
-    const orderLayer = this.gl.getUniformLocation(currentProgram, 'orderSampler');
+    const orderLayer = this.gl.getUniformLocation(
+      currentProgram,
+      'orderSampler'
+    );
     this.gl.uniform1i(orderLayer, texCount);
     this.gl.activeTexture(this.gl.TEXTURE0 + texCount);
     texCount += 1;
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.orderTexture);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.LUMINANCE, this.width, this.height, 0, this.gl.LUMINANCE, this.gl.UNSIGNED_BYTE, layerOrderData);
+    this.gl.bindTexture(
+      this.gl.TEXTURE_2D,
+      this.glResources.textures.orderTexture
+    );
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.LUMINANCE,
+      this.width,
+      this.height,
+      0,
+      this.gl.LUMINANCE,
+      this.gl.UNSIGNED_BYTE,
+      layerOrderData
+    );
 
     if (this.hasNormal) {
       // Set up the intensity texture
-      const intensitySpriteLoc = this.gl.getUniformLocation(currentProgram, 'normalSampler');
+      const intensitySpriteLoc = this.gl.getUniformLocation(
+        currentProgram,
+        'normalSampler'
+      );
       this.gl.uniform1i(intensitySpriteLoc, texCount);
       this.gl.activeTexture(this.gl.TEXTURE0 + texCount);
       texCount += 1;
-      this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.intensityTexture);
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGB, this.width, this.height, 0, this.gl.RGB, this.gl.UNSIGNED_BYTE, layerLightingData);
+      this.gl.bindTexture(
+        this.gl.TEXTURE_2D,
+        this.glResources.textures.intensityTexture
+      );
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGB,
+        this.width,
+        this.height,
+        0,
+        this.gl.RGB,
+        this.gl.UNSIGNED_BYTE,
+        layerLightingData
+      );
 
       const { lightTerms, lightPosition, lightColor } = this.lightProperties;
 
-      const lightDirection = vec4.fromValues(lightPosition.x, lightPosition.y, 1.0, 0.0);
+      const lightDirection = vec4.fromValues(
+        lightPosition.x,
+        lightPosition.y,
+        1.0,
+        0.0
+      );
       const ldir = this.gl.getUniformLocation(currentProgram, 'lightDir');
       this.gl.uniform4fv(ldir, lightDirection);
 
-      const lightingConstants = vec4.fromValues(lightTerms.ka, lightTerms.kd, lightTerms.ks, lightTerms.alpha);
+      const lightingConstants = vec4.fromValues(
+        lightTerms.ka,
+        lightTerms.kd,
+        lightTerms.ks,
+        lightTerms.alpha
+      );
       const lterms = this.gl.getUniformLocation(currentProgram, 'lightTerms');
       this.gl.uniform4fv(lterms, lightingConstants);
 
-      const lightCol = vec4.fromValues(lightColor[0], lightColor[1], lightColor[2], 1.0);
+      const lightCol = vec4.fromValues(
+        lightColor[0],
+        lightColor[1],
+        lightColor[2],
+        1.0
+      );
       const lcolor = this.gl.getUniformLocation(currentProgram, 'lightColor');
       this.gl.uniform4fv(lcolor, lightCol);
     } else {
       // Set up the normal texture
-      const intensitySpriteLoc = this.gl.getUniformLocation(currentProgram, 'intensitySampler');
+      const intensitySpriteLoc = this.gl.getUniformLocation(
+        currentProgram,
+        'intensitySampler'
+      );
       this.gl.uniform1i(intensitySpriteLoc, texCount);
       this.gl.activeTexture(this.gl.TEXTURE0 + texCount);
       texCount += 1;
-      this.gl.bindTexture(this.gl.TEXTURE_2D, this.glResources.textures.intensityTexture);
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.LUMINANCE,
-        this.intensitySize[0], this.intensitySize[1], 0, this.gl.LUMINANCE, this.gl.UNSIGNED_BYTE, layerLightingData);
+      this.gl.bindTexture(
+        this.gl.TEXTURE_2D,
+        this.glResources.textures.intensityTexture
+      );
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.LUMINANCE,
+        this.intensitySize[0],
+        this.intensitySize[1],
+        0,
+        this.gl.LUMINANCE,
+        this.gl.UNSIGNED_BYTE,
+        layerLightingData
+      );
     }
 
     // Draw the rectangle.

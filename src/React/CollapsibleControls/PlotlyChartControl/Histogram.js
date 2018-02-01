@@ -6,7 +6,8 @@ import style from 'PVWStyle/ReactWidgets/PlotlySelectionWidgets.mcss';
 export default function render(props) {
   function handleChange(event) {
     const newXArray = event.target.value;
-    const forceNewPlot = props.arrays[props.chartState.x] !== props.arrays[newXArray];
+    const forceNewPlot =
+      props.arrays[props.chartState.x] !== props.arrays[newXArray];
     props.onChange({
       chartType: 'Histogram',
       x: newXArray,
@@ -21,8 +22,16 @@ export default function render(props) {
           <tr>
             <td className={style.label}>x</td>
             <td className={style.fullWidth}>
-              <select className={style.fullWidth} onChange={handleChange} value={props.chartState.x}>
-                {Object.keys(props.arrays).map(arrayName => <option value={arrayName} key={arrayName}>{arrayName}</option>)}
+              <select
+                className={style.fullWidth}
+                onChange={handleChange}
+                value={props.chartState.x}
+              >
+                {Object.keys(props.arrays).map((arrayName) => (
+                  <option value={arrayName} key={arrayName}>
+                    {arrayName}
+                  </option>
+                ))}
               </select>
             </td>
           </tr>

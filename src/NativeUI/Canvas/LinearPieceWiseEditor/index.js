@@ -9,14 +9,14 @@ function pointBuilder(x, y) {
 }
 
 function clamp(value, min = 0, max = 1) {
-  return value < min ? min : (value > max) ? max : value;
+  return value < min ? min : value > max ? max : value;
 }
 
 function sortPoints(pointsArray) {
   pointsArray.sort((a, b) => a.x - b.x);
   pointsArray.forEach((point, index) => {
     point.index = index;
-    point.fixedX = (index === 0) || (index + 1 === pointsArray.length);
+    point.fixedX = index === 0 || index + 1 === pointsArray.length;
   });
   return pointsArray;
 }
@@ -32,8 +32,8 @@ export function getCanvasSize(ctx, margin = 0) {
 function getCanvasCoordinates(ctx, point, margin) {
   const { width, height } = getCanvasSize(ctx, margin);
   let { x, y } = point;
-  x = Math.floor((x * width) + margin + 0.5);
-  y = Math.floor(((1 - y) * height) + margin + 0.5);
+  x = Math.floor(x * width + margin + 0.5);
+  y = Math.floor((1 - y) * height + margin + 0.5);
   return { x, y };
 }
 
@@ -51,20 +51,21 @@ function getNormalizePosition(event, ctx, margin) {
 
   return {
     x: (event.clientX - rect.left - margin) / width,
-    y: 1 - ((event.clientY - rect.top - margin) / height),
+    y: 1 - (event.clientY - rect.top - margin) / height,
     epsilon: {
-      x: (2 * margin) / width,
-      y: (2 * margin) / height,
+      x: 2 * margin / width,
+      y: 2 * margin / height,
     },
   };
 }
 
 function findPoint(position, pointList) {
-  const pointsFound = pointList.filter(point =>
-         point.x + position.epsilon.x > position.x
-      && point.x - position.epsilon.x < position.x
-      && point.y + position.epsilon.y > position.y
-      && point.y - position.epsilon.y < position.y
+  const pointsFound = pointList.filter(
+    (point) =>
+      point.x + position.epsilon.x > position.x &&
+      point.x - position.epsilon.x < position.x &&
+      point.y + position.epsilon.y > position.y &&
+      point.y - position.epsilon.y < position.y
   );
   return pointsFound[0];
 }
@@ -77,7 +78,6 @@ const CHANGE_TOPIC = 'LinearPieceWiseEditor.change';
 const EDIT_MODE_TOPIC = 'LinearPieceWiseEditor.edit.mode';
 
 export default class LinearPieceWiseEditor {
-
   constructor(canvas, style) {
     this.onMouseDown = (event) => {
       const click = getNormalizePosition(event, this.ctx, this.radius);
@@ -161,7 +161,7 @@ export default class LinearPieceWiseEditor {
   // The second parameter specifies (in the list passed in) which point should be
   // active after setting the control points.  Pass -1 for no point should be active
   setControlPoints(points, activeIndex = -1) {
-    this.controlPoints = points.map(pt => pointBuilder(pt.x, pt.y));
+    this.controlPoints = points.map((pt) => pointBuilder(pt.x, pt.y));
     let activePoint = null;
     if (activeIndex !== -1) {
       activePoint = this.controlPoints[activeIndex];
@@ -178,7 +178,11 @@ export default class LinearPieceWiseEditor {
     }
     if (this.activeControlPoint) {
       this.controlPoints.forEach((pt, index) => {
-        if (pt.x === this.activeControlPoint.x && pt.y === this.activeControlPoint.y && index === this.activeIndex) {
+        if (
+          pt.x === this.activeControlPoint.x &&
+          pt.y === this.activeControlPoint.y &&
+          index === this.activeIndex
+        ) {
           this.activeControlPoint = pt;
         }
       });
@@ -186,7 +190,13 @@ export default class LinearPieceWiseEditor {
     this.render();
   }
 
-  setStyle({ radius = 6, stroke = 2, color = '#000000', activePointColor = '#EE3333', fillColor = '#ccc' } = {}) {
+  setStyle({
+    radius = 6,
+    stroke = 2,
+    color = '#000000',
+    activePointColor = '#EE3333',
+    fillColor = '#ccc',
+  } = {}) {
     this.radius = radius;
     this.stroke = stroke;
     this.color = color;
@@ -252,7 +262,12 @@ export default class LinearPieceWiseEditor {
 
     // Draw control points
     linearPath.forEach((point, index) => {
-      drawControlPoint(this.ctx, point, this.radius, this.activeIndex === index ? this.activePointColor : this.color);
+      drawControlPoint(
+        this.ctx,
+        point,
+        this.radius,
+        this.activeIndex === index ? this.activePointColor : this.color
+      );
     });
 
     // Notify control points

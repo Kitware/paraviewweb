@@ -1,14 +1,8 @@
 import React from 'react';
 
 import CollapsibleControlFactory from '.';
-import FloatImageControl         from '../FloatImageControl';
+import FloatImageControl from '../FloatImageControl';
 
-CollapsibleControlFactory.registerWidget(
-  'FloatImageControl',
-  ({ model }) => (
-    <FloatImageControl
-      key="FloatImageControl"
-      model={model}
-    />
-  )
-);
+CollapsibleControlFactory.registerWidget('FloatImageControl', ({ model }) => (
+  <FloatImageControl key="FloatImageControl" model={model} />
+));

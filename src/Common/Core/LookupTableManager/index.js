@@ -1,5 +1,5 @@
-import Monologue    from 'monologue.js';
-import LookupTable  from '../LookupTable';
+import Monologue from 'monologue.js';
+import LookupTable from '../LookupTable';
 
 const TOPIC = {
   CHANGE: 'LookupTable.change',
@@ -8,7 +8,6 @@ const TOPIC = {
 };
 
 export default class LookupTableManager {
-
   constructor() {
     this.luts = {};
     this.lutSubscriptions = {};
@@ -79,7 +78,10 @@ export default class LookupTableManager {
           lut.updateControlPoints(lutConfigs[field].controlpoints);
         }
         if (lutConfigs[field].range) {
-          lut.setScalarRange(lutConfigs[field].range[0], lutConfigs[field].range[1]);
+          lut.setScalarRange(
+            lutConfigs[field].range[0],
+            lutConfigs[field].range[1]
+          );
         }
       }
     });
@@ -104,4 +106,3 @@ export default class LookupTableManager {
 
 // Add Observer pattern using Monologue.js
 Monologue.mixInto(LookupTableManager);
-

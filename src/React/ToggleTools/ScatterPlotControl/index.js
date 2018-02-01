@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import style from 'PVWStyle/ReactWidgets/ToggleTools.mcss';
 
 import ScatterPlotControl from '../../Widgets/ScatterPlotControl';
-import OverlayWindow  from '../../Containers/OverlayWindow';
-import SvgIconWidget  from '../../Widgets/SvgIconWidget';
+import OverlayWindow from '../../Containers/OverlayWindow';
+import SvgIconWidget from '../../Widgets/SvgIconWidget';
 
 import OverlayTitleBar from '../../Widgets/OverlayTitleBar';
 import icon from '../../../../svg/Buttons/ScatterPlotControl.svg';
 
 export default class ScatterPlotControlTool extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -68,26 +67,27 @@ export default class ScatterPlotControlTool extends React.Component {
             onActiveScoresChange={this.props.onActiveScoresChange}
           />
         </OverlayWindow>
-      </div>);
+      </div>
+    );
   }
 }
 
 ScatterPlotControlTool.propTypes = {
-  provider: PropTypes.object,
   size: PropTypes.string,
 
-  scatterPlotManager: PropTypes.object,
-  scatterPlotId: PropTypes.string,
+  scatterPlotManager: PropTypes.object.isRequired,
+  scatterPlotId: PropTypes.string.isRequired,
 
-  activeScores: PropTypes.array,
+  activeScores: PropTypes.array.isRequired,
   onActiveScoresChange: PropTypes.func,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
   overlayVisible: PropTypes.bool,
 };
 
 ScatterPlotControlTool.defaultProps = {
   overlayVisible: false,
   size: '35px',
+  onActiveScoresChange: null,
 };

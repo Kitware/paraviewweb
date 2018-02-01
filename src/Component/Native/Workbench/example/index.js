@@ -1,4 +1,3 @@
-/* global window, document */
 import 'normalize.css';
 
 import Workbench from '..';
@@ -10,7 +9,6 @@ import ReactAdapter from '../../../React/ReactAdapter';
 import WorkbenchController from '../../../React/WorkbenchController';
 
 import { debounce } from '../../../../Common/Misc/Debounce';
-
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';
@@ -83,8 +81,12 @@ workbench.onChange((model) => {
 
 workbench.onVisibilityChange((event) => {
   const { component, index, count } = event;
-  console.log(component ? component.color : 'none', index, count,
-              index === -1 || index >= count ? 'hidden' : 'visible');
+  console.log(
+    component ? component.color : 'none',
+    index,
+    count,
+    index === -1 || index >= count ? 'hidden' : 'visible'
+  );
 });
 
 // Create a debounced window resize handler
@@ -94,4 +96,3 @@ const resizeHandler = debounce(() => {
 
 // Register window resize handler so workbench redraws when browser is resized
 window.onresize = resizeHandler;
-

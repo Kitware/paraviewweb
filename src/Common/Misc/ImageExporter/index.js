@@ -12,9 +12,9 @@ export default class ImageExporter {
   }
 
   exportImage(data) {
-    var xhr = new XMLHttpRequest();
-    var dataToSend = {};
-    var ts = Number(this.counter).toString();
+    const xhr = new XMLHttpRequest();
+    const dataToSend = {};
+    let ts = Number(this.counter).toString();
     this.counter += 1;
 
     if (!data.canvas || !data.arguments) {
@@ -35,7 +35,7 @@ export default class ImageExporter {
 
     xhr.onload = (e) => {
       if (xhr.status === 200) {
-        return;
+        console.log('exportImage success');
       }
     };
 
@@ -73,7 +73,7 @@ export default class ImageExporter {
 
     xhr.onload = (e) => {
       if (xhr.status === 200) {
-        return;
+        console.log('updateMetadata success');
       }
     };
 
@@ -90,7 +90,19 @@ export default class ImageExporter {
     }
 
     this.bgCanvas.size(outputSize[0], outputSize[1]);
-    this.bgCanvas.get2DContext().drawImage(canvas, region[0], region[1], region[2], region[3], 0, 0, outputSize[0], outputSize[1]);
+    this.bgCanvas
+      .get2DContext()
+      .drawImage(
+        canvas,
+        region[0],
+        region[1],
+        region[2],
+        region[3],
+        0,
+        0,
+        outputSize[0],
+        outputSize[1]
+      );
     return this.bgCanvas.toDataURL(format);
   }
 }

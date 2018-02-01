@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/AnnotationEditorWidget.mcss';
 
-import CollapsibleWidget      from '../../CollapsibleWidget';
-import SelectionEditorWidget  from '../../SelectionEditorWidget';
-import ScoreSelector          from '../ScoreSelector';
+import CollapsibleWidget from '../../CollapsibleWidget';
+import SelectionEditorWidget from '../../SelectionEditorWidget';
+import ScoreSelector from '../ScoreSelector';
 
 export default function render(props) {
   return (
@@ -67,7 +67,8 @@ export default function render(props) {
           />
         </CollapsibleWidget>
       </section>
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {
@@ -76,7 +77,7 @@ render.propTypes = {
   ranges: PropTypes.object,
   getLegend: PropTypes.func,
   rationaleOpen: PropTypes.bool,
-  showUncertainty: PropTypes.bool,
+  // showUncertainty: PropTypes.bool,
 
   onSelectionChange: PropTypes.func,
   onAnnotationChange: PropTypes.func,
@@ -85,5 +86,13 @@ render.propTypes = {
 
 render.defaultProps = {
   rationaleOpen: false,
-  showUncertainty: true,
+  // showUncertainty: true,
+
+  annotation: undefined,
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
+  onSelectionChange: undefined,
+  onAnnotationChange: undefined,
+  onScoreChange: undefined,
 };

@@ -204,8 +204,12 @@ export function set(model, payload) {
 
   model.histogram2d[x.name][y.name] = [].concat(
     payload.data,
-    model.histogram2d[x.name][y.name]
-      .filter(hist => hist.annotationInfo.annotationGeneration === annotationInfo.annotationGeneration && hist.role.score !== role.score));
+    model.histogram2d[x.name][y.name].filter(
+      (hist) =>
+        hist.annotationInfo.annotationGeneration ===
+          annotationInfo.annotationGeneration && hist.role.score !== role.score
+    )
+  );
 
   // Attach max count
   let count = 0;
@@ -221,9 +225,15 @@ export function set(model, payload) {
 // ----------------------------------------------------------------------------
 
 function get(model, query) {
-  if (model.histogram2d && model.histogram2d[query.axes[0]] && model.histogram2d[query.axes[0]][query.axes[1]]) {
+  if (
+    model.histogram2d &&
+    model.histogram2d[query.axes[0]] &&
+    model.histogram2d[query.axes[0]][query.axes[1]]
+  ) {
     if (query.score) {
-      return model.histogram2d[query.axes[0]][query.axes[1]].filter(hist => query.score.indexOf(hist.role.score) !== -1);
+      return model.histogram2d[query.axes[0]][query.axes[1]].filter(
+        (hist) => query.score.indexOf(hist.role.score) !== -1
+      );
     }
     return model.histogram2d[query.axes[0]][query.axes[1]];
   }
@@ -244,7 +254,9 @@ function getNotificationData(model, request) {
         result[axes[0]] = {};
       }
       result[axes[0]][axes[1]] = histograms;
-      histograms.forEach(hist => generationNumbers.push(hist.annotationInfo.annotationGeneration));
+      histograms.forEach((hist) =>
+        generationNumbers.push(hist.annotationInfo.annotationGeneration)
+      );
     } else {
       missingData = true;
     }

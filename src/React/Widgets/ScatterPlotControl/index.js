@@ -7,7 +7,6 @@ import LegendView from './LegendView';
 import EditView from './EditView';
 
 export default class ScatterPlotControl extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -39,16 +38,23 @@ export default class ScatterPlotControl extends React.Component {
           <EditView
             model={model}
             colorMaps={this.props.manager.getColorMaps()}
-            getScalarRange={arrayName => this.props.manager.getScalarRange(arrayName)}
+            getScalarRange={(arrayName) =>
+              this.props.manager.getScalarRange(arrayName)
+            }
             scores={this.props.manager.getProvider().getScores()}
             activeScores={this.props.activeScores}
             onActiveScoresChange={this.props.onActiveScoresChange}
             toggleEditMode={this.toggleEditMode}
             onChange={this.onChange}
           />
-        </div>);
+        </div>
+      );
     }
-    return <div className={style.viewport}><LegendView model={model} toggleEditMode={this.toggleEditMode} /></div>;
+    return (
+      <div className={style.viewport}>
+        <LegendView model={model} toggleEditMode={this.toggleEditMode} />
+      </div>
+    );
   }
 }
 
@@ -56,4 +62,10 @@ ScatterPlotControl.propTypes = {
   manager: PropTypes.object,
   activeScores: PropTypes.array,
   onActiveScoresChange: PropTypes.func,
+};
+
+ScatterPlotControl.defaultProps = {
+  manager: undefined,
+  activeScores: undefined,
+  onActiveScoresChange: undefined,
 };

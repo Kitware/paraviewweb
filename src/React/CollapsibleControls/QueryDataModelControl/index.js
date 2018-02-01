@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactCollapsibleControls/QueryDataModelControl.mcss';
 
-import CollapsibleWidget        from '../../Widgets/CollapsibleWidget';
-import ExploreButton            from '../../Widgets/ToggleIconButtonWidget';
-import QueryDataModelWidget     from '../../Widgets/QueryDataModelWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import ExploreButton from '../../Widgets/ToggleIconButtonWidget';
+import QueryDataModelWidget from '../../Widgets/QueryDataModelWidget';
 
 export default class QueryDataModelControl extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
 
     // Bind callback
     this.toggleExploration = this.toggleExploration.bind(this);
@@ -28,8 +27,8 @@ export default class QueryDataModelControl extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.model,
-      nextDataModel = nextProps.model;
+    const previousDataModel = this.props.model;
+    const nextDataModel = nextProps.model;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -61,13 +60,14 @@ export default class QueryDataModelControl extends React.Component {
   }
 
   render() {
-    var exploreButton = (
+    const exploreButton = (
       <ExploreButton
         key="explore-button"
         icon={style.exploreIcon}
         onChange={this.toggleExploration}
         value={this.props.model.exploreState.animate}
-      />);
+      />
+    );
 
     return (
       <CollapsibleWidget
@@ -81,7 +81,8 @@ export default class QueryDataModelControl extends React.Component {
           key="QueryDataModelWidget"
           model={this.props.model}
         />
-      </CollapsibleWidget>);
+      </CollapsibleWidget>
+    );
   }
 }
 
@@ -94,4 +95,5 @@ QueryDataModelControl.propTypes = {
 QueryDataModelControl.defaultProps = {
   handleExploration: false,
   listener: true,
+  model: null,
 };

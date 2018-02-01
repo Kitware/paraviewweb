@@ -11,68 +11,60 @@
         "url": "https://github.com/kitware/paraviewweb/issues"
     },
     "homepage": "https://github.com/kitware/paraviewweb#readme",
-    "engines": {
-        "npm": ">=3.0.0",
-        "node": ">=4.0.0"
-    },
     "main": "./dist/ParaViewWeb.js",
     "dependencies": {
-        "autobahn": "0.9.6",
-        "base64-js": "1.2.0",
-        "commander": "2.9.0",
-        "gh-pages": "0.11.0",
-        "jszip": "3.1.3",
-        "pako": "1.0.1",
-        "plotly.js": "1.14.0",
-        "shelljs": "0.7.4",
-        "vtk.js": "5.3.0",
-        "when": "3.7.7",
-        "ws": "0.8.1",
-        "wslink": "0.1.3"
+        "base64-js": "1.2.1",
+        "commander": "2.13.0",
+        "jszip": "3.1.5",
+        "pako": "1.0.6",
+        "plotly.js": "1.33.1",
+        "shelljs": "0.7.8",
+        "vtk.js": "5.15.14",
+        "wslink": "0.1.4"
     },
     "devDependencies": {
         "monologue.js": "0.3.5",
-        "mout": "1.0.0",
+        "mout": "1.1.0",
         "react": "16.2.0",
         "react-dom": "16.2.0",
         "d3": "3.5.17",
-        "axios": "0.14.0",
+        "axios": "0.17.1",
         "gl-matrix": "2.3.1",
         "hammerjs": "2.0.8",
-        "font-awesome": "4.5.0",
-        "normalize.css": "4.1.1",
-        "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz",
-        "kw-web-suite": "2.2.1",
-        "kw-doc": "1.0.15",
-        "babel-plugin-istanbul": "2.0.0",
-        "babel-polyfill": "6.16.0",
-        "karma": "1.2.0",
-        "karma-chrome-launcher": "2.0.0",
+        "font-awesome": "4.7.0",
+        "kw-web-suite": "5.0.1",
+        "kw-doc": "1.1.1",
+        "babel-plugin-istanbul": "4.1.5",
+        "karma": "2.0.0",
+        "karma-chrome-launcher": "2.2.0",
         "karma-coverage": "1.1.1",
-        "karma-electron": "4.1.0",
-        "karma-tap": "2.1.4",
-        "karma-tap-pretty-reporter": "1.1.0",
-        "karma-webpack": "1.8.0",
-        "electron": "1.3.4",
-        "resemblejs": "2.2.1",
+        "karma-electron": "5.2.2",
+        "karma-tap": "4.1.0",
+        "karma-tap-pretty-reporter": "3.0.5",
+        "karma-webpack": "2.0.9",
+        "electron": "1.7.11",
+        "resemblejs": "2.7.0",
         "tap-spec": "4.1.1",
         "tap-markdown": "1.2.1",
-        "tape": "4.6.0",
-        "tape-catch": "1.0.6"
+        "tape": "4.8.0",
+        "tape-catch": "1.0.6",
+        "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz"
     },
     "scripts": {
+        "validate": "prettier --config ./prettier.config.js --list-different \"src/**/*.js\"",
+        "reformat": "prettier --config ./prettier.config.js --write \"src/**/*.js\"",
+        "reformat-only": "prettier --single-quote --trailing-comma es5 --print-width 80 --arrow-parens always --write",
         "install:global": "npm install -g commitizen@2.5.0",
-        "bin:fix-autobahn": "node ./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
         "doc": "kw-doc -c ./documentation/config.js",
         "doc:www": "kw-doc -c ./documentation/config.js -s",
         "predoc:publish": "./tools/install-data/install-sample-data-cli.js",
         "doc:publish": "kw-doc -c ./documentation/config.js -p",
-        "build": "npm run bin:fix-autobahn && webpack --progress --colors",
-        "build:release": "npm run bin:fix-autobahn && (export NODE_ENV=production|| set NODE_ENV=production) && npm run build -- -p",
+        "build": "webpack --progress --colors",
+        "build:release": "webpack --progress --colors -p",
         "test": "karma start karma.conf.js",
         "test:travis": "karma start karma.conf.js --browsers Electron --single-run",
         "commit": "git cz",
-        "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+        "semantic-release": "semantic-release"
     },
     "config": {
         "commitizen": {
@@ -80,7 +72,6 @@
         }
     },
     "bin": {
-        "fix-autobahn": "./tools/fix-autobahn/patch-autobahn-0.9.6-cli.js",
         "pvw-html-data-bundle": "./tools/html-web-resource/bundle-html-cli.js"
     }
 }

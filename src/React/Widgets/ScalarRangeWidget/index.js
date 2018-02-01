@@ -15,7 +15,6 @@ export default class ScalarRangeWidget extends React.Component {
     this.apply = this.apply.bind(this);
   }
 
-
   componentWillReceiveProps(nextProps) {
     const { min, max } = nextProps;
     if (this.state.min !== min || this.state.max !== max) {
@@ -24,16 +23,16 @@ export default class ScalarRangeWidget extends React.Component {
   }
 
   updateRange(event) {
-    const name = event.target.name,
-      value = event.target.value;
+    const name = event.target.name;
+    const value = event.target.value;
 
-    if (!isNaN(parseFloat(value)) && isFinite(value)) {
+    if (!Number.isNaN(parseFloat(value)) && Number.isFinite(Number(value))) {
       this.setState({ [name]: value });
     }
   }
 
   apply(event) {
-    var { min, max } = this.state;
+    let { min, max } = this.state;
     const type = event.target.dataset.type;
 
     min = Number(min);
@@ -68,11 +67,24 @@ export default class ScalarRangeWidget extends React.Component {
           onChange={this.updateRange}
         />
         <div className={style.actionLine}>
-          <i onClick={this.apply} data-type="data" className={style.dataRangeIcon} />
-          <i onClick={this.apply} data-type="time" className={style.timeRangeIcon} />
-          <i onClick={this.apply} data-type="custom" className={style.customRangeIcon} />
+          <i
+            onClick={this.apply}
+            data-type="data"
+            className={style.dataRangeIcon}
+          />
+          <i
+            onClick={this.apply}
+            data-type="time"
+            className={style.timeRangeIcon}
+          />
+          <i
+            onClick={this.apply}
+            data-type="custom"
+            className={style.customRangeIcon}
+          />
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 
@@ -81,4 +93,11 @@ ScalarRangeWidget.propTypes = {
   min: PropTypes.number,
   onApply: PropTypes.func,
   visible: PropTypes.bool,
+};
+
+ScalarRangeWidget.defaultProps = {
+  max: undefined,
+  min: undefined,
+  onApply: undefined,
+  visible: false,
 };

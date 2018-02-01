@@ -6,15 +6,13 @@ import request from './request';
 import htmlRequest from './htmlRequest';
 import PatternMap from './pattern';
 
-
-const
-  typeFnMap = {
-    json: request.fetchJSON,
-    text: request.fetchTxt,
-    blob: request.fetchBlob,
-    arraybuffer: request.fetchArray,
-    array: request.fetchArray,
-  };
+const typeFnMap = {
+  json: request.fetchJSON,
+  text: request.fetchTxt,
+  blob: request.fetchBlob,
+  arraybuffer: request.fetchArray,
+  array: request.fetchArray,
+};
 
 // Internal helper that return the current time
 function ts() {
@@ -46,7 +44,6 @@ function updateDataSize(data) {
 // }
 
 export default class DataManager {
-
   constructor(cacheSize = 1000000000) {
     this.pattern = new PatternMap();
     this.keyToTypeMap = {};
@@ -67,17 +64,18 @@ export default class DataManager {
   // Fetch data in an asynchronous manner
   // This will trigger an event using the key as the type
   fetch(key, options, notificationTopic = null) {
-    var url = options ? this.pattern.getValue(key, options) : key,
-      dataCached = this.cacheData.cache[url];
+    const url = options ? this.pattern.getValue(key, options) : key;
+    let dataCached = this.cacheData.cache[url];
 
     if (dataCached) {
       if (!dataCached.pending) {
-        this.cacheData.ts = dataCached.ts = ts();
+        dataCached.ts = ts();
+        this.cacheData.ts = dataCached.ts;
 
         // Trigger the event after the return
         setTimeout(() => {
-          var array = dataCached.keysToNotify || [key],
-            count = array.length;
+          const array = dataCached.keysToNotify || [key];
+          let count = array.length;
 
           delete dataCached.keysToNotify;
 
@@ -111,53 +109,58 @@ export default class DataManager {
       }
 
       // Need to fetch the data on the web
-      const self = this,
-        typeFnMime = this.keyToTypeMap[key],
-        type = typeFnMime[0],
-        fn = typeFnMime[1],
-        mimeType = typeFnMime[2],
-        callback = (error, data) => {
-          if (error) {
-            delete self.cacheData.cache[url];
-            self.emit(key, {
-              error,
-              data: {
-                key, options, url, typeFnMime,
-              },
-            });
-            return;
-          }
+      const self = this;
+      const typeFnMime = this.keyToTypeMap[key];
+      const type = typeFnMime[0];
+      const fn = typeFnMime[1];
+      const mimeType = typeFnMime[2];
+      const callback = (error, data) => {
+        if (error) {
+          delete self.cacheData.cache[url];
+          self.emit(key, {
+            error,
+            data: {
+              key,
+              options,
+              url,
+              typeFnMime,
+            },
+          });
+          return;
+        }
 
-          dataCached = {
-            data,
-            type,
-            requestedURL: url,
-            pending: false,
-          };
-
-          // Handle internal url for image blob
-          if (mimeType && mimeType.indexOf('image') !== -1) {
-            dataCached.url = window.URL.createObjectURL(data);
-          }
-
-          // Update memory usage
-          self.cacheData.size += updateDataSize(dataCached);
-
-          // Update ts
-          self.cacheData.modified = self.cacheData.ts = dataCached.ts = ts();
-
-          // Trigger the event
-          const array = self.cacheData.cache[url].keysToNotify;
-          let count = array.length;
-
-          // Store it in the cache
-          self.cacheData.cache[url] = dataCached;
-
-          while (count) {
-            count -= 1;
-            self.emit(array[count], dataCached);
-          }
+        dataCached = {
+          data,
+          type,
+          requestedURL: url,
+          pending: false,
         };
+
+        // Handle internal url for image blob
+        if (mimeType && mimeType.indexOf('image') !== -1) {
+          dataCached.url = window.URL.createObjectURL(data);
+        }
+
+        // Update memory usage
+        self.cacheData.size += updateDataSize(dataCached);
+
+        // Update ts
+        dataCached.ts = ts();
+        self.cacheData.ts = dataCached.ts;
+        self.cacheData.modified = self.cacheData.ts;
+
+        // Trigger the event
+        const array = self.cacheData.cache[url].keysToNotify;
+        let count = array.length;
+
+        // Store it in the cache
+        self.cacheData.cache[url] = dataCached;
+
+        while (count) {
+          count -= 1;
+          self.emit(array[count], dataCached);
+        }
+      };
 
       if (mimeType) {
         fn(url, mimeType, callback);
@@ -177,7 +180,7 @@ export default class DataManager {
 
   // Get data in cache
   get(url, freeCache) {
-    var dataObj = this.cacheData.cache[url];
+    const dataObj = this.cacheData.cache[url];
     if (freeCache) {
       this.free(url);
     }
@@ -186,7 +189,7 @@ export default class DataManager {
 
   // Free a fetched data
   free(url) {
-    var dataCached = this.cacheData.cache[url];
+    const dataCached = this.cacheData.cache[url];
     if (dataCached && dataCached.url) {
       window.URL.revokeObjectURL(dataCached.url);
       delete dataCached.url;
@@ -213,7 +216,7 @@ export default class DataManager {
 
   // Empty cache
   clear() {
-    var urlToDelete = [];
+    const urlToDelete = [];
     Object.keys(this.cacheData.cache).forEach((url) => {
       urlToDelete.push(url);
     });
@@ -258,25 +261,27 @@ export default class DataManager {
     return new Promise((accept, reject) => {
       const zip = new JSZip();
       let zipRoot = zip;
-      zip.loadAsync(zipContent, options)
-        .then(() => {
-          // Find root index.json
-          const metaFiles = [];
-          zip.forEach((relativePath, zipEntry) => {
-            if (relativePath.indexOf('index.json') !== -1) {
-              metaFiles.push(relativePath);
-            }
-          });
-          metaFiles.sort((a, b) => a.length > b.length);
-          const fullRootPath = metaFiles[0].split('/');
-          while (fullRootPath.length > 1) {
-            const dirName = fullRootPath.shift();
-            zipRoot = zipRoot.folder(dirName);
+      zip.loadAsync(zipContent, options).then(() => {
+        // Find root index.json
+        const metaFiles = [];
+        zip.forEach((relativePath, zipEntry) => {
+          if (relativePath.indexOf('index.json') !== -1) {
+            metaFiles.push(relativePath);
           }
+        });
+        metaFiles.sort((a, b) => a.length > b.length);
+        const fullRootPath = metaFiles[0].split('/');
+        while (fullRootPath.length > 1) {
+          const dirName = fullRootPath.shift();
+          zipRoot = zipRoot.folder(dirName);
+        }
 
-          // Replace access method
-          typeFnMap.json = (url, cb) => {
-            zipRoot.file(url).async('string').then(
+        // Replace access method
+        typeFnMap.json = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('string')
+            .then(
               (str) => {
                 cb(null, JSON.parse(str));
               },
@@ -284,10 +289,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.text = (url, cb) => {
-            zipRoot.file(url).async('string').then(
+        typeFnMap.text = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('string')
+            .then(
               (str) => {
                 cb(null, str);
               },
@@ -295,10 +303,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.blob = (url, mimeType, cb) => {
-            zipRoot.file(url).async('uint8array').then(
+        typeFnMap.blob = (url, mimeType, cb) => {
+          zipRoot
+            .file(url)
+            .async('uint8array')
+            .then(
               (uint8array) => {
                 const buffer = new ArrayBuffer(uint8array.length);
                 const view = new Uint8Array(buffer);
@@ -309,10 +320,13 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.arraybuffer = (url, cb) => {
-            zipRoot.file(url).async('uint8array').then(
+        typeFnMap.arraybuffer = (url, cb) => {
+          zipRoot
+            .file(url)
+            .async('uint8array')
+            .then(
               (uint8array) => {
                 const buffer = new ArrayBuffer(uint8array.length);
                 const view = new Uint8Array(buffer);
@@ -323,18 +337,18 @@ export default class DataManager {
                 cb(err);
               }
             );
-          };
+        };
 
-          typeFnMap.array = typeFnMap.arraybuffer;
+        typeFnMap.array = typeFnMap.arraybuffer;
 
-          // Fix any previously registered pattern
-          Object.keys(this.keyToTypeMap).forEach((key) => {
-            const array = this.keyToTypeMap[key];
-            array[1] = typeFnMap[array[0]];
-          });
-
-          accept(this);
+        // Fix any previously registered pattern
+        Object.keys(this.keyToTypeMap).forEach((key) => {
+          const array = this.keyToTypeMap[key];
+          array[1] = typeFnMap[array[0]];
         });
+
+        accept(this);
+      });
     });
   }
 

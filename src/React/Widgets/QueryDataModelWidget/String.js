@@ -35,8 +35,8 @@ export default class ParameterSetString extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.model,
-      nextDataModel = nextProps.model;
+    const previousDataModel = this.props.model;
+    const nextDataModel = nextProps.model;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -80,20 +80,33 @@ export default class ParameterSetString extends React.Component {
 
   render() {
     return (
-      <div className={this.props.model.getAnimationFlag(this.props.arg) ? style.itemActive : style.item}>
-        <div className={[style.row, style.label].join(' ')} onClick={this.toggleAnimation}>
+      <div
+        className={
+          this.props.model.getAnimationFlag(this.props.arg)
+            ? style.itemActive
+            : style.item
+        }
+      >
+        <div
+          className={[style.row, style.label].join(' ')}
+          onClick={this.toggleAnimation}
+        >
           {this.props.model.label(this.props.arg)}
         </div>
         <div className={style.row} onMouseEnter={this.grabFocus}>
           <select
             className={style.input}
-            ref={(c) => { this.select = c; }}
+            ref={(c) => {
+              this.select = c;
+            }}
             value={this.props.model.getValue(this.props.arg)}
             onChange={this.handleChange}
           >
-            {this.props.model.getValues(this.props.arg).map(v =>
-              <option key={v} value={v}>{v}</option>
-            )}
+            {this.props.model.getValues(this.props.arg).map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -109,4 +122,5 @@ ParameterSetString.propTypes = {
 
 ParameterSetString.defaultProps = {
   listener: true,
+  arg: '',
 };

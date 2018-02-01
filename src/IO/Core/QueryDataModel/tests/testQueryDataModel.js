@@ -21,12 +21,14 @@ test('Query Data Model - Fetch/Notification', (t) => {
         type: 'blob',
         mimeType: 'image/png',
         pattern: '{time}/{field}_0.png',
-      }, {
+      },
+      {
         name: 'slice_1',
         type: 'blob',
         mimeType: 'image/png',
         pattern: '{time}/{field}_1.png',
-      }, {
+      },
+      {
         name: 'slice_2',
         type: 'blob',
         mimeType: 'image/png',
@@ -101,7 +103,8 @@ test('Query Data Model - API/Query/Validation', (t) => {
         name: 'text',
         type: 'text',
         pattern: '{x}_{y}.txt',
-      }, {
+      },
+      {
         name: 'json',
         type: 'json',
         pattern: '{x}_{y}.json',
@@ -109,9 +112,11 @@ test('Query Data Model - API/Query/Validation', (t) => {
     ],
   };
 
-  const queryDataModel = new QueryDataModel(dataDescription, '/base/data/dummy/');
+  const queryDataModel = new QueryDataModel(
+    dataDescription,
+    '/base/data/dummy/'
+  );
   const expectedValues = ['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O'];
-
 
   queryDataModel.onDataChange((data, envelope) => {
     t.ok(data && !data.error, 'Valid data without error');
@@ -131,4 +136,3 @@ test('Query Data Model - API/Query/Validation', (t) => {
 
   queryDataModel.fetchData();
 });
-

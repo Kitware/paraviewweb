@@ -8,13 +8,10 @@ export default function SvgIconWidget(props) {
     height: props.height,
   });
   return (
-    <svg
-      style={style}
-      className={props.className}
-      onClick={props.onClick}
-    >
+    <svg style={style} className={props.className} onClick={props.onClick}>
       <use xlinkHref={props.icon} />
-    </svg>);
+    </svg>
+  );
 }
 
 SvgIconWidget.propTypes = {
@@ -30,4 +27,7 @@ SvgIconWidget.defaultProps = {
   className: '',
   icon: defaultIcon,
   style: {},
+  height: undefined,
+  width: undefined,
+  onClick: undefined,
 };

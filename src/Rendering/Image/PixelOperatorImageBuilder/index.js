@@ -4,7 +4,6 @@ import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/PixelOperatorControl';
 
 export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(operation = 'a-b', dependency = ['a', 'b']) {
@@ -15,7 +14,10 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
     this.dataSize = [200, 200];
     this.operation = operation;
     this.dependency = dependency;
-    this.bgCanvas = new CanvasOffscreenBuffer(this.dataSize[0], this.dataSize[1]);
+    this.bgCanvas = new CanvasOffscreenBuffer(
+      this.dataSize[0],
+      this.dataSize[1]
+    );
 
     this.registerObjectToFree(this.bgCanvas);
   }
@@ -43,7 +45,7 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
 
   /* eslint-disable no-new-func */
   updateOperationFunction() {
-    var isValid = true;
+    let isValid = true;
     const functionBody = [];
 
     Object.keys(this.data).forEach((key) => {
@@ -64,15 +66,15 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
 
   updateData(name, imageReadyEvent) {
     // Extract image data
-    var area = imageReadyEvent.area,
-      srcCanvas = imageReadyEvent.canvas,
-      x = area[0],
-      y = area[1],
-      width = area[2],
-      height = area[3],
-      ctx = this.bgCanvas.get2DContext(),
-      extractedData = new Uint8ClampedArray(width * height * 4),
-      pixelBuffer = null;
+    const area = imageReadyEvent.area;
+    const srcCanvas = imageReadyEvent.canvas;
+    const x = area[0];
+    const y = area[1];
+    const width = area[2];
+    const height = area[3];
+    const ctx = this.bgCanvas.get2DContext();
+    const extractedData = new Uint8ClampedArray(width * height * 4);
+    let pixelBuffer = null;
 
     this.bgCanvas.size(width, height);
     ctx.drawImage(srcCanvas, x, y, width, height, 0, 0, width, height);
@@ -99,15 +101,15 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateDataFromImage(name, image) {
-    var registerImage = () => {
+    const registerImage = () => {
       // Remove callback if any
       image.removeEventListener('load', registerImage);
 
       // Extract image data
-      const width = image.width,
-        height = image.height,
-        ctx = this.bgCanvas.get2DContext(),
-        extractedData = new Uint8ClampedArray(width * height * 4);
+      const width = image.width;
+      const height = image.height;
+      const ctx = this.bgCanvas.get2DContext();
+      const extractedData = new Uint8ClampedArray(width * height * 4);
 
       this.bgCanvas.size(width, height);
       ctx.drawImage(image, 0, 0);
@@ -175,7 +177,7 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
       if (size === -1) {
         size = array.length;
       } else {
-        sizeValid = sizeValid && (size === array.length);
+        sizeValid = sizeValid && size === array.length;
       }
     });
 
@@ -203,8 +205,13 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
 
     // Push data in canvas
     this.bgCanvas.size(this.dataSize[0], this.dataSize[1]);
-    const ctx = this.bgCanvas.get2DContext(),
-      pixelBuffer = ctx.getImageData(0, 0, this.dataSize[0], this.dataSize[1]);
+    const ctx = this.bgCanvas.get2DContext();
+    const pixelBuffer = ctx.getImageData(
+      0,
+      0,
+      this.dataSize[0],
+      this.dataSize[1]
+    );
 
     pixelBuffer.data.set(resultArray);
     ctx.putImageData(pixelBuffer, 0, 0);
@@ -248,10 +255,12 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    return [{
-      name: 'PixelOperatorControl',
-      model: this,
-    }];
+    return [
+      {
+        name: 'PixelOperatorControl',
+        model: this,
+      },
+    ];
   }
 
   // ------------------------------------------------------------------------
@@ -261,5 +270,4 @@ export default class PixelOperatorImageBuilder extends AbstractImageBuilder {
       dimensions: this.dataSize,
     };
   }
-
 }

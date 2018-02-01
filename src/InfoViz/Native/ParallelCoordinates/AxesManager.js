@@ -49,7 +49,9 @@ export default class AxesManager {
 
       // Remove unwanted axis while keeping the previous order
       const previousSize = this.axes.length;
-      this.axes = this.axes.filter(axis => targetList.indexOf(axis.name) !== -1).concat(toAdd);
+      this.axes = this.axes
+        .filter((axis) => targetList.indexOf(axis.name) !== -1)
+        .concat(toAdd);
       if (toAdd.length || this.axes.length !== previousSize) {
         this.triggerAxisListChange();
       }
@@ -71,7 +73,7 @@ export default class AxesManager {
   }
 
   getAxisByName(name) {
-    return this.axes.filter(axis => axis.name === name)[0];
+    return this.axes.filter((axis) => axis.name === name)[0];
   }
 
   canRender() {
@@ -87,7 +89,7 @@ export default class AxesManager {
   }
 
   getAxesNames() {
-    return this.axes.map(axis => axis.name);
+    return this.axes.map((axis) => axis.name);
   }
 
   getAxesPairs() {
@@ -98,7 +100,12 @@ export default class AxesManager {
     return axesPairs;
   }
 
-  resetSelections(selection = {}, triggerEvent = true, scoreMapping = [], scoreColorMap = []) {
+  resetSelections(
+    selection = {},
+    triggerEvent = true,
+    scoreMapping = [],
+    scoreColorMap = []
+  ) {
     this.clearAllSelections(true);
 
     // index axes
@@ -113,12 +120,15 @@ export default class AxesManager {
         this.selection = selection;
         Object.keys(selection.range.variables).forEach((axisName) => {
           if (nameToAxisMap[axisName]) {
-            nameToAxisMap[axisName].selections = selection.range.variables[axisName].map(i => Object.assign({}, i));
+            nameToAxisMap[axisName].selections = selection.range.variables[
+              axisName
+            ].map((i) => Object.assign({}, i));
             if (scoreMapping && scoreMapping.length === 1) {
               nameToAxisMap[axisName].selections.forEach((axisSelection) => {
                 axisSelection.score = scoreMapping[0];
                 axisSelection.color = scoreColorMap[scoreMapping[0]]
-                  ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})` : 'rgb(105, 195, 255)';
+                  ? `rgb(${scoreColorMap[scoreMapping[0]].join(',')})`
+                  : 'rgb(105, 195, 255)';
               });
             }
           }
@@ -134,15 +144,22 @@ export default class AxesManager {
                 interval: [axis.range[0], divider.value],
                 endpoints: toEndpoint(true, !divider.closeToLeft),
                 uncertainty: divider.uncertainty, // FIXME that is wrong...
-                color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
+                color: scoreColorMap[scoreMapping[idx]]
+                  ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})`
+                  : 'rgb(105, 195, 255)',
                 score: scoreMapping[idx],
               });
             } else {
               axis.selections.push({
                 interval: [array[idx - 1].value, divider.value],
-                endpoints: toEndpoint(array[idx - 1].closeToLeft, !divider.closeToLeft),
+                endpoints: toEndpoint(
+                  array[idx - 1].closeToLeft,
+                  !divider.closeToLeft
+                ),
                 uncertainty: divider.uncertainty, // FIXME that is wrong...
-                color: scoreColorMap[scoreMapping[idx]] ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})` : 'rgb(105, 195, 255)',
+                color: scoreColorMap[scoreMapping[idx]]
+                  ? `rgb(${scoreColorMap[scoreMapping[idx]].join(',')})`
+                  : 'rgb(105, 195, 255)',
                 score: scoreMapping[idx],
               });
             }
@@ -151,7 +168,9 @@ export default class AxesManager {
                 interval: [divider.value, axis.range[1]],
                 endpoints: toEndpoint(divider.closeToLeft, true),
                 uncertainty: divider.uncertainty, // FIXME that is wrong...
-                color: scoreColorMap[scoreMapping[idx + 1]] ? `rgb(${scoreColorMap[scoreMapping[idx + 1]].join(',')})` : 'rgb(105, 195, 255)',
+                color: scoreColorMap[scoreMapping[idx + 1]]
+                  ? `rgb(${scoreColorMap[scoreMapping[idx + 1]].join(',')})`
+                  : 'rgb(105, 195, 255)',
                 score: scoreMapping[idx + 1],
               });
             }
@@ -160,7 +179,10 @@ export default class AxesManager {
       } else if (selection.type === 'empty') {
         // nothing to do we already cleared the selection
       } else {
-        console.error(selection, 'Parallel coordinate does not understand a selection that is not range based');
+        console.error(
+          selection,
+          'Parallel coordinate does not understand a selection that is not range based'
+        );
       }
     }
 
@@ -173,14 +195,18 @@ export default class AxesManager {
     this.axes[axisIdx].addSelection(
       start < end ? start : end,
       end < start ? start : end,
-      endpoints, uncertainty);
+      endpoints,
+      uncertainty
+    );
     this.triggerSelectionChange();
   }
 
   updateSelection(axisIdx, selectionIdx, start, end) {
-    this.axes[axisIdx].updateSelection(selectionIdx,
+    this.axes[axisIdx].updateSelection(
+      selectionIdx,
       start < end ? start : end,
-      end < start ? start : end);
+      end < start ? start : end
+    );
     this.triggerSelectionChange();
   }
 
@@ -190,7 +216,7 @@ export default class AxesManager {
   }
 
   getAxisCenter(index, width) {
-    return (index * width) / (this.axes.length - 1);
+    return index * width / (this.axes.length - 1);
   }
 
   toggleOrientation(index) {
@@ -211,11 +237,11 @@ export default class AxesManager {
   }
 
   hasSelection() {
-    return this.axes.filter(axis => axis.hasSelection()).length > 0;
+    return this.axes.filter((axis) => axis.hasSelection()).length > 0;
   }
 
   clearAllSelections(silence) {
-    this.axes.forEach(axis => axis.clearSelection());
+    this.axes.forEach((axis) => axis.clearSelection());
     if (!silence) {
       this.triggerSelectionChange();
     }
@@ -275,7 +301,9 @@ export default class AxesManager {
           selectionCount += 1;
         }
       });
-      this.selection = selectionCount ? SelectionBuilder.range(vars) : SelectionBuilder.EMPTY_SELECTION;
+      this.selection = selectionCount
+        ? SelectionBuilder.range(vars)
+        : SelectionBuilder.EMPTY_SELECTION;
     }
 
     return this.selection;
@@ -285,7 +313,9 @@ export default class AxesManager {
     const selections = [];
     if (this.hasSelection()) {
       this.axes.forEach((axis, index) => {
-        const screenX = this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft;
+        const screenX =
+          this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft;
         axis.selections.forEach((selection, selectionIndex) => {
           if (drawScore && selection.score !== undefined) {
             if (!drawScore(selection.score)) {
@@ -313,8 +343,10 @@ export default class AxesManager {
     this.axes.forEach((axis, index) => {
       controlsDataModel.push({
         orient: !axis.isUpsideDown(),
-        centerX: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
-        centerY: (model.canvasArea.height - model.borderOffsetBottom) + 30, // FIXME what is 30?
+        centerX:
+          this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft,
+        centerY: model.canvasArea.height - model.borderOffsetBottom + 30, // FIXME what is 30?
       });
     });
 
@@ -331,7 +363,9 @@ export default class AxesManager {
     this.axes.forEach((axis, index) => {
       labelModel.push({
         name: axis.name,
-        centerX: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+        centerX:
+          this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft,
         annotated: axis.hasSelection(),
         align: 'middle',
       });
@@ -350,13 +384,17 @@ export default class AxesManager {
     this.axes.forEach((axis, index) => {
       tickModel.push({
         value: !axis.upsideDown ? axis.range[1] : axis.range[0],
-        xpos: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+        xpos:
+          this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft,
         ypos: model.borderOffsetTop - 4,
         align: 'middle',
       });
       tickModel.push({
         value: !axis.upsideDown ? axis.range[0] : axis.range[1],
-        xpos: this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft,
+        xpos:
+          this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft,
         ypos: model.borderOffsetTop + model.drawableArea.height + 13,
         align: 'middle',
       });
@@ -365,13 +403,13 @@ export default class AxesManager {
     // Make adjustments to ticks for first and last axes
     tickModel[0].align = 'start';
     tickModel[1].align = 'start';
-    tickModel[0].xpos -= (model.axisWidth / 2);
-    tickModel[1].xpos -= (model.axisWidth / 2);
+    tickModel[0].xpos -= model.axisWidth / 2;
+    tickModel[1].xpos -= model.axisWidth / 2;
 
-    tickModel[(this.axes.length * 2) - 1].align = 'end';
-    tickModel[(this.axes.length * 2) - 2].align = 'end';
-    tickModel[(this.axes.length * 2) - 1].xpos += (model.axisWidth / 2);
-    tickModel[(this.axes.length * 2) - 2].xpos += (model.axisWidth / 2);
+    tickModel[this.axes.length * 2 - 1].align = 'end';
+    tickModel[this.axes.length * 2 - 2].align = 'end';
+    tickModel[this.axes.length * 2 - 1].xpos += model.axisWidth / 2;
+    tickModel[this.axes.length * 2 - 2].xpos += model.axisWidth / 2;
 
     return tickModel;
   }
@@ -379,7 +417,10 @@ export default class AxesManager {
   extractAxesCenters(model) {
     const axesCenters = [];
     this.axes.forEach((axis, index) => {
-      axesCenters.push(this.getAxisCenter(index, model.drawableArea.width) + model.borderOffsetLeft);
+      axesCenters.push(
+        this.getAxisCenter(index, model.drawableArea.width) +
+          model.borderOffsetLeft
+      );
     });
     return axesCenters;
   }

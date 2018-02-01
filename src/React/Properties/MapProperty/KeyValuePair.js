@@ -56,17 +56,15 @@ export default class KeyValuePair extends React.Component {
         <td className={style.actionColumn}>
           <i className={style.deleteButton} onClick={this.removeItem} />
         </td>
-      </tr>);
+      </tr>
+    );
   }
 }
 
 KeyValuePair.propTypes = {
-  idx: PropTypes.number,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  value: PropTypes.object,
+  idx: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.object.isRequired,
 };
 
-KeyValuePair.defaultProps = {
-  label: '',
-};
+KeyValuePair.defaultProps = {};

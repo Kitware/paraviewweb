@@ -5,19 +5,24 @@ import vtkPiecewiseGaussianWidget from 'vtk.js/Sources/Interaction/Widgets/Piece
 
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 
-const defaultGaussians = '[{ "position": 0.5, "height": 1, "width": 0.5, "xBias": 0.55, "yBias": 0.55 }]';
+const defaultGaussians =
+  '[{ "position": 0.5, "height": 1, "width": 0.5, "xBias": 0.55, "yBias": 0.55 }]';
 
 export default class PieceWiseGaussianFunctionEditorWidget extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       height: props.height,
       width: props.width,
-      gaussians: props.gaussians ? props.gaussians : JSON.parse(defaultGaussians),
+      gaussians: props.gaussians
+        ? props.gaussians
+        : JSON.parse(defaultGaussians),
     };
 
-    this.widget = vtkPiecewiseGaussianWidget.newInstance({ numberOfBins: 256, size: [props.width, props.height] });
+    this.widget = vtkPiecewiseGaussianWidget.newInstance({
+      numberOfBins: 256,
+      size: [props.width, props.height],
+    });
     this.widget.updateStyle({
       backgroundColor: 'rgba(100, 100, 100, 0.5)',
       strokeColor: 'rgb(0, 0, 0)',
@@ -61,7 +66,9 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
   }
 
   componentWillReceiveProps(newProps) {
-    const gaussians = !newProps.gaussians ? JSON.parse(defaultGaussians) : newProps.gaussians;
+    const gaussians = !newProps.gaussians
+      ? JSON.parse(defaultGaussians)
+      : newProps.gaussians;
     this.setState({ gaussians });
     if (this.props.width === -1 || this.props.height === -1) {
       this.updateDimensions();
@@ -83,8 +90,10 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
   }
 
   updateDimensions() {
-    const { clientWidth, clientHeight } =
-      sizeHelper.getSize(this.rootContainer, true);
+    const { clientWidth, clientHeight } = sizeHelper.getSize(
+      this.rootContainer,
+      true
+    );
     if (this.props.width === -1) {
       this.setState({ width: clientWidth });
     }
@@ -108,7 +117,12 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
   render() {
     this.widget.setSize(this.state.width, this.state.height);
     return (
-      <div style={{ overflow: 'hidden', minHeigh: '10px', minWidth: '10px' }} ref={c => (this.rootContainer = c)} />
+      <div
+        style={{ overflow: 'hidden', minHeigh: '10px', minWidth: '10px' }}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
+      />
     );
   }
 }
@@ -116,15 +130,16 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
 PieceWiseGaussianFunctionEditorWidget.defaultProps = {
   height: 200,
   width: -1,
-  points: [],
   bgImage: null,
+
+  gaussians: undefined,
+  onChange: undefined,
+  onEditModeChange: undefined,
 };
 
 PieceWiseGaussianFunctionEditorWidget.propTypes = {
-  points: PropTypes.array,
+  // points: PropTypes.array,
   gaussians: PropTypes.array,
-  rangeMin: PropTypes.number,
-  rangeMax: PropTypes.number,
   onChange: PropTypes.func,
   onEditModeChange: PropTypes.func,
   height: PropTypes.number,

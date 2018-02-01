@@ -2,23 +2,33 @@ import AbstractImageBuilder from '../AbstractImageBuilder';
 import Factory from './CompositorFactory';
 
 export default class DepthCompositeImageBuilder extends AbstractImageBuilder {
-
   // ------------------------------------------------------------------------
 
   constructor(queryDataModel, pipelineModel, lookupTableManager) {
-    super({ queryDataModel, pipelineModel, dimensions: queryDataModel.originalData.CompositePipeline.dimensions });
-
-    this.compositor = Factory.createCompositor(queryDataModel.originalData.type, {
-      queryDataModel, lookupTableManager, imageBuilder: this,
+    super({
+      queryDataModel,
+      pipelineModel,
+      dimensions: queryDataModel.originalData.CompositePipeline.dimensions,
     });
+
+    this.compositor = Factory.createCompositor(
+      queryDataModel.originalData.type,
+      {
+        queryDataModel,
+        lookupTableManager,
+        imageBuilder: this,
+      }
+    );
     this.registerObjectToFree(this.compositor);
 
     this.query = null;
     this.setPipelineQuery(this.pipelineModel.getPipelineQuery());
 
-    this.registerSubscription(this.pipelineModel.onChange((data, envelope) => {
-      this.setPipelineQuery(data);
-    }));
+    this.registerSubscription(
+      this.pipelineModel.onChange((data, envelope) => {
+        this.setPipelineQuery(data);
+      })
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -61,5 +71,4 @@ export default class DepthCompositeImageBuilder extends AbstractImageBuilder {
 
     return super.getControlModels();
   }
-
 }

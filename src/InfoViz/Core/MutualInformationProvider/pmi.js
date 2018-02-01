@@ -4,9 +4,9 @@
 
 // Generate a matrix of numbers (an array of arrays) with the given size and initial value.
 function filledMatrix(nrow, ncol, val) {
-  const mm = Array.apply(null, Array(nrow)).map(
-    o => Array.apply(null, Array(ncol)).map(
-      Number.prototype.valueOf, val));
+  const mm = Array.apply(null, Array(nrow)).map((o) =>
+    Array.apply(null, Array(ncol)).map(Number.prototype.valueOf, val)
+  );
   return mm;
 }
 
@@ -27,7 +27,7 @@ function removeRow(mtx, irow) {
 // }
 
 function removeCol(mtx, icol) {
-  mtx.forEach(o => o.splice(icol, 1));
+  mtx.forEach((o) => o.splice(icol, 1));
 }
 
 // Eliminate a row and column from a matrix.
@@ -39,10 +39,12 @@ function removeRowAndCol(mtx, irow, icol) {
 // Insert a new row and column into a matrix, filling new entries with \a val.
 function insertRowAndCol(mtx, irow, icol, val) {
   const nv = mtx.length + 1;
-  mtx.forEach(row => row.splice(icol, 0, val));
-  mtx.splice(irow, 0,
-    Array.apply(null, Array(nv)).map(
-      Number.prototype.valueOf, val));
+  mtx.forEach((row) => row.splice(icol, 0, val));
+  mtx.splice(
+    irow,
+    0,
+    Array.apply(null, Array(nv)).map(Number.prototype.valueOf, val)
+  );
 }
 
 function initializeMutualInformationData() {
@@ -147,10 +149,15 @@ function mutualInformationPair(miData, indices, histdata) {
   };
 }
 
-function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemoved, histogramData) {
+function updateMutualInformation(
+  miData,
+  variablesAddedOrUpdated,
+  variablesRemoved,
+  histogramData
+) {
   // console.log('Upd MI ', variablesAddedOrUpdated, 'remove', variablesRemoved);
-  variablesAddedOrUpdated.forEach(vname => insertVariable(miData, vname));
-  variablesRemoved.forEach(vname => removeVariable(miData, vname));
+  variablesAddedOrUpdated.forEach((vname) => insertVariable(miData, vname));
+  variablesRemoved.forEach((vname) => removeVariable(miData, vname));
   // Now that all the miData maps have been updated, we can recompute only the
   // entries for pairs whose variables have been updated.
   const alreadyDone = {}; // keep track of which entries have already been processed
@@ -185,7 +192,11 @@ function updateMutualInformation(miData, variablesAddedOrUpdated, variablesRemov
         continue;
       }
 
-      const minfo = mutualInformationPair(miData, tup, histogramData[t0nam][t1nam]);
+      const minfo = mutualInformationPair(
+        miData,
+        tup,
+        histogramData[t0nam][t1nam]
+      );
       miData.matrix[tup[0]][tup[1]] = minfo.mutual_information;
       miData.matrix[tup[1]][tup[0]] = minfo.mutual_information;
       if (!(t0nam in miData.joint)) {

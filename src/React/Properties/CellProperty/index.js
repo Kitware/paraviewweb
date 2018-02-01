@@ -1,9 +1,9 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import style     from 'PVWStyle/ReactProperties/CellProperty.mcss';
+import style from 'PVWStyle/ReactProperties/CellProperty.mcss';
 
-import layouts          from './layouts';
+import layouts from './layouts';
 import ToggleIconButton from '../../Widgets/ToggleIconButtonWidget';
 
 /* eslint-disable react/no-danger */
@@ -13,7 +13,6 @@ export default class CellProperty extends React.Component {
     this.state = {
       data: props.data,
       helpOpen: false,
-      ui: props.ui,
     };
 
     // Callback binding
@@ -23,7 +22,7 @@ export default class CellProperty extends React.Component {
   }
 
   componentWillMount() {
-    var newState = {};
+    const newState = {};
     if (this.props.ui.default && !this.props.data.value) {
       newState.data = this.state.data;
       newState.data.value = this.props.ui.default;
@@ -45,7 +44,7 @@ export default class CellProperty extends React.Component {
   }
 
   valueChange(idx, newVal) {
-    var newData = this.state.data;
+    const newData = this.state.data;
     if (newVal === null) {
       newData.value.splice(idx, 1);
     } else {
@@ -61,8 +60,8 @@ export default class CellProperty extends React.Component {
   }
 
   addValue() {
-    var newData = this.state.data,
-      values = newData.value;
+    const newData = this.state.data;
+    const values = newData.value;
 
     switch (values.length) {
       case 0: {
@@ -101,12 +100,18 @@ export default class CellProperty extends React.Component {
 
   render() {
     return (
-      <div className={this.props.show(this.props.viewData) ? style.container : style.hidden}>
+      <div
+        className={
+          this.props.show(this.props.viewData) ? style.container : style.hidden
+        }
+      >
         <div className={style.header}>
           <strong>{this.props.ui.label}</strong>
           <span>
             <i
-              className={this.props.ui.layout === '-1' ? style.plusIcon : style.hidden}
+              className={
+                this.props.ui.layout === '-1' ? style.plusIcon : style.hidden
+              }
               onClick={this.addValue}
             />
             <ToggleIconButton
@@ -126,7 +131,8 @@ export default class CellProperty extends React.Component {
           className={this.state.helpOpen ? style.helpBox : style.hidden}
           dangerouslySetInnerHTML={{ __html: this.props.ui.help }}
         />
-      </div>);
+      </div>
+    );
   }
 }
 /* eslint-enable react/no-danger */
@@ -134,13 +140,12 @@ export default class CellProperty extends React.Component {
 CellProperty.propTypes = {
   data: PropTypes.object.isRequired,
   help: PropTypes.string,
-  onChange: PropTypes.func,
-  show: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
-  viewData: PropTypes.object,
+  viewData: PropTypes.object.isRequired,
 };
 
 CellProperty.defaultProps = {
-  name: '',
   help: '',
 };

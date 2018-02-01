@@ -10,16 +10,19 @@ import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
 
 const placeholderContainer = (
   <div className={style.placeholderContainer}>
-    <div className={style.placeholderTitle}>
-      Annotation Editor
-    </div>
+    <div className={style.placeholderTitle}>Annotation Editor</div>
     <div className={style.placeholderImageContainer}>
-      <img src={placeHolder} alt="Placeholder" className={style.placeholderImage} />
+      <img
+        src={placeHolder}
+        alt="Placeholder"
+        className={style.placeholderImage}
+      />
     </div>
     <div className={style.placeholderSubtitle}>
       No annotation currently available
     </div>
-  </div>);
+  </div>
+);
 
 export default function render(props) {
   if (!props.annotation) {
@@ -27,17 +30,24 @@ export default function render(props) {
   }
 
   const onSelectionChange = (selection, isEditDone) => {
-    const annotation = AnnotationBuilder.update(props.annotation, { selection });
+    const annotation = AnnotationBuilder.update(props.annotation, {
+      selection,
+    });
 
     // Remove score if a divider is removed
-    if (selection.type === 'partition' && selection.partition.dividers.length + 1 !== annotation.score.length) {
+    if (
+      selection.type === 'partition' &&
+      selection.partition.dividers.length + 1 !== annotation.score.length
+    ) {
       let removedIdx = 0;
       props.annotation.selection.partition.dividers.forEach((divider, idx) => {
         if (selection.partition.dividers.indexOf(divider) === -1) {
           removedIdx = idx;
         }
       });
-      annotation.score = annotation.score.filter((i, idx) => idx !== removedIdx);
+      annotation.score = annotation.score.filter(
+        (i, idx) => idx !== removedIdx
+      );
     }
 
     if (selection.type === 'empty') {
@@ -48,12 +58,15 @@ export default function render(props) {
   };
 
   const onAnnotationChange = (event) => {
-    const value = (event.target.type === 'number') ? +event.target.value : event.target.value;
+    const value =
+      event.target.type === 'number' ? +event.target.value : event.target.value;
     const name = event.target.name;
     const type = event.type;
 
     if (type === 'blur') {
-      const annotation = AnnotationBuilder.update(props.annotation, { [name]: value });
+      const annotation = AnnotationBuilder.update(props.annotation, {
+        [name]: value,
+      });
       props.onChange(AnnotationBuilder.markModified(annotation), true);
     } else {
       const annotation = Object.assign({}, props.annotation, { [name]: value });
@@ -69,21 +82,29 @@ export default function render(props) {
     props.onChange(AnnotationBuilder.markModified(annotation), true);
   };
 
-  const Render = props.annotation.selection.type === 'partition' ? ManyScore : OneScore;
+  const Render =
+    props.annotation.selection.type === 'partition' ? ManyScore : OneScore;
 
   if (props.annotation.selection.type === 'empty') {
     return placeholderContainer;
   }
 
   return (
-    <div className={props.annotation && props.annotation.readOnly ? style.disabledTopContainer : style.topContainer}>
+    <div
+      className={
+        props.annotation && props.annotation.readOnly
+          ? style.disabledTopContainer
+          : style.topContainer
+      }
+    >
       <Render
         {...props}
         onSelectionChange={onSelectionChange}
         onAnnotationChange={onAnnotationChange}
         onScoreChange={onScoreChange}
       />
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {
@@ -100,4 +121,9 @@ render.defaultProps = {
   onChange(annotation, isEditDone) {},
   rationaleOpen: false,
   showUncertainty: true,
+
+  annotation: undefined,
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
 };

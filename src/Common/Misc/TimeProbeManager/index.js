@@ -40,10 +40,13 @@ export class TimeProbe {
   }
 
   drag(event, x, y, scale) {
-    if (!this.originalExtent && (x < this.extent[0] - EDGE_WIDTH_FOR_GRAB
-        || x > this.extent[1] + EDGE_WIDTH_FOR_GRAB
-        || y < this.extent[2] - EDGE_WIDTH_FOR_GRAB
-        || y > this.extent[3] + EDGE_WIDTH_FOR_GRAB)) {
+    if (
+      !this.originalExtent &&
+      (x < this.extent[0] - EDGE_WIDTH_FOR_GRAB ||
+        x > this.extent[1] + EDGE_WIDTH_FOR_GRAB ||
+        y < this.extent[2] - EDGE_WIDTH_FOR_GRAB ||
+        y > this.extent[3] + EDGE_WIDTH_FOR_GRAB)
+    ) {
       return false;
     }
 
@@ -73,31 +76,62 @@ export class TimeProbe {
 
       // Sort extent if needed
       if (this.extent[0] > this.extent[1] && this.extent[2] > this.extent[3]) {
-        this.extent = [this.extent[1], this.extent[0], this.extent[3], this.extent[2]];
+        this.extent = [
+          this.extent[1],
+          this.extent[0],
+          this.extent[3],
+          this.extent[2],
+        ];
       } else if (this.extent[0] > this.extent[1]) {
-        this.extent = [this.extent[1], this.extent[0], this.extent[2], this.extent[3]];
+        this.extent = [
+          this.extent[1],
+          this.extent[0],
+          this.extent[2],
+          this.extent[3],
+        ];
       } else if (this.extent[2] > this.extent[3]) {
-        this.extent = [this.extent[0], this.extent[1], this.extent[3], this.extent[2]];
+        this.extent = [
+          this.extent[0],
+          this.extent[1],
+          this.extent[3],
+          this.extent[2],
+        ];
       }
 
       this.emit(TIME_PROBE_CHANGE, this);
       return true;
     }
 
-    this.dragActions.forEach(action => {
+    this.dragActions.forEach((action) => {
       if (action === 'drag') {
-        this.extent[0] = Math.round(this.originalExtent[0] + event.deltaX * scale);
-        this.extent[1] = Math.round(this.originalExtent[1] + event.deltaX * scale);
-        this.extent[2] = Math.round(this.originalExtent[2] + event.deltaY * scale);
-        this.extent[3] = Math.round(this.originalExtent[3] + event.deltaY * scale);
+        this.extent[0] = Math.round(
+          this.originalExtent[0] + event.deltaX * scale
+        );
+        this.extent[1] = Math.round(
+          this.originalExtent[1] + event.deltaX * scale
+        );
+        this.extent[2] = Math.round(
+          this.originalExtent[2] + event.deltaY * scale
+        );
+        this.extent[3] = Math.round(
+          this.originalExtent[3] + event.deltaY * scale
+        );
       } else if (action === 'left') {
-        this.extent[0] = Math.round(this.originalExtent[0] + event.deltaX * scale);
+        this.extent[0] = Math.round(
+          this.originalExtent[0] + event.deltaX * scale
+        );
       } else if (action === 'right') {
-        this.extent[1] = Math.round(this.originalExtent[1] + event.deltaX * scale);
+        this.extent[1] = Math.round(
+          this.originalExtent[1] + event.deltaX * scale
+        );
       } else if (action === 'top') {
-        this.extent[2] = Math.round(this.originalExtent[2] + event.deltaY * scale);
+        this.extent[2] = Math.round(
+          this.originalExtent[2] + event.deltaY * scale
+        );
       } else if (action === 'bottom') {
-        this.extent[3] = Math.round(this.originalExtent[3] + event.deltaY * scale);
+        this.extent[3] = Math.round(
+          this.originalExtent[3] + event.deltaY * scale
+        );
       }
     });
 
@@ -119,7 +153,7 @@ export class TimeProbe {
     const data = [];
     const active = this.active;
 
-    arrays.forEach(array => {
+    arrays.forEach((array) => {
       op.begin();
       for (let x = this.extent[0]; x < this.extent[1]; x++) {
         for (let y = this.extent[2]; y < this.extent[3]; y++) {
@@ -164,7 +198,7 @@ export class TimeProbeManager {
     this.activeProbe = -1;
     this.lastSize = null;
 
-    this._probeChange = probe => {
+    this._probeChange = (probe) => {
       this.emit(TIME_PROBE_CHANGE, { probeManager: this, probe });
     };
   }
@@ -199,7 +233,9 @@ export class TimeProbeManager {
       const width = this.lastSize ? this.lastSize[0] : 200;
       const height = this.lastSize ? this.lastSize[1] : 200;
       const extent = [width / 4, 3 * width / 4, height / 4, 3 * height / 4];
-      this.addProbe(new TimeProbe(`Probe ${this.probes.length + 1}`, 'mean', extent));
+      this.addProbe(
+        new TimeProbe(`Probe ${this.probes.length + 1}`, 'mean', extent)
+      );
     }
   }
 
@@ -222,12 +258,12 @@ export class TimeProbeManager {
       return true;
     });
 
-    idxToRemove.forEach(idx => this.probeSubscriptions.splice(idx, 1));
+    idxToRemove.forEach((idx) => this.probeSubscriptions.splice(idx, 1));
     this._probeChange(null);
   }
 
   getProbe(name) {
-    return this.probes.filter(i => i.name === name)[0];
+    return this.probes.filter((i) => i.name === name)[0];
   }
 
   getProbes() {
@@ -239,13 +275,17 @@ export class TimeProbeManager {
   }
 
   getProbeNames() {
-    return this.probes.map(i => i.name);
+    return this.probes.map((i) => i.name);
   }
 
   drag(event) {
     const { activeArea, relative } = event;
-    const x = Math.round((relative.x - activeArea[0]) / activeArea[2] * this.lastSize[0]);
-    const y = Math.round((relative.y - activeArea[1]) / activeArea[3] * this.lastSize[1]);
+    const x = Math.round(
+      (relative.x - activeArea[0]) / activeArea[2] * this.lastSize[0]
+    );
+    const y = Math.round(
+      (relative.y - activeArea[1]) / activeArea[3] * this.lastSize[1]
+    );
     const scale = this.lastSize[0] / activeArea[2];
 
     if (event.isFirst) {
@@ -274,7 +314,7 @@ export class TimeProbeManager {
 
   processTimeData(arrays) {
     const fields = [];
-    this.probes.forEach(probe => {
+    this.probes.forEach((probe) => {
       fields.push(probe.processData(arrays, this.lastSize));
     });
     return fields;

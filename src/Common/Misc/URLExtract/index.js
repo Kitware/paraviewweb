@@ -13,13 +13,16 @@ function toNativeType(str) {
     return false;
   } else if (str === undefined || str === 'undefined') {
     return undefined;
-  } else if (str === '' || isNaN(str)) {
+  } else if (str === '' || Number.isNaN(Number(str))) {
     return str;
   }
   return parseFloat(str);
 }
 
-function extractURLParameters(castToNativeType = true, query = window.location.search) {
+function extractURLParameters(
+  castToNativeType = true,
+  query = window.location.search
+) {
   const summary = {};
   const convert = castToNativeType ? toNativeType : identity;
   const queryTokens = (query || '')
@@ -28,7 +31,7 @@ function extractURLParameters(castToNativeType = true, query = window.location.s
     .split('&'); // extract token pair
 
   queryTokens.forEach((token) => {
-    const [key, value] = token.split('=').map(s => decodeURIComponent(s));
+    const [key, value] = token.split('=').map((s) => decodeURIComponent(s));
     if (key) {
       summary[key] = value ? convert(value) : true;
     }

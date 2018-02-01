@@ -32,7 +32,6 @@
 //     m.unregisterPattern('imageURL');
 
 export default class PatternMap {
-
   constructor() {
     this.keyPatternMap = {};
   }
@@ -49,11 +48,14 @@ export default class PatternMap {
 
   // Evaluate the pattern base on its registered key and set of key to be replaced
   getValue(key, options) {
-    var result = this.keyPatternMap[key],
-      keyPattern = ['{', '}'];
+    let result = this.keyPatternMap[key];
+    const keyPattern = ['{', '}'];
 
     Object.keys(options).forEach((opt) => {
-      result = result.replace(new RegExp(keyPattern.join(opt), 'g'), options[opt]);
+      result = result.replace(
+        new RegExp(keyPattern.join(opt), 'g'),
+        options[opt]
+      );
     });
 
     return result;

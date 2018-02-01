@@ -45,17 +45,24 @@ export default class GeometryRenderer extends React.Component {
   }
 
   updateDimensions() {
-    var el = this.canvasRenderer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    const el = this.canvasRenderer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
-    if (el && (this.state.width !== elSize.clientWidth || this.state.height !== elSize.clientHeight)) {
+    if (
+      el &&
+      (this.state.width !== elSize.clientWidth ||
+        this.state.height !== elSize.clientHeight)
+    ) {
       this.setState({
         width: elSize.clientWidth,
         height: elSize.clientHeight,
       });
 
       if (this.props.geometryBuilder && this.props.geometryBuilder.updateSize) {
-        this.props.geometryBuilder.updateSize(elSize.clientWidth, elSize.clientHeight);
+        this.props.geometryBuilder.updateSize(
+          elSize.clientWidth,
+          elSize.clientHeight
+        );
       }
       return true;
     }
@@ -72,16 +79,18 @@ export default class GeometryRenderer extends React.Component {
     return (
       <canvas
         className="CanvasImageRenderer"
-        ref={(c) => { this.canvasRenderer = c; }}
+        ref={(c) => {
+          this.canvasRenderer = c;
+        }}
         width={this.state.width}
         height={this.state.height}
-      />);
+      />
+    );
   }
 }
 
 GeometryRenderer.propTypes = {
-  geometryBuilder: PropTypes.object,
+  geometryBuilder: PropTypes.object.isRequired,
 };
 
-GeometryRenderer.defaultProps = {
-};
+GeometryRenderer.defaultProps = {};

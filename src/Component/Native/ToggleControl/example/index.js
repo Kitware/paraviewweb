@@ -1,9 +1,8 @@
-import ToggleControlComponent   from '..';
-import BGColorComponent     from '../../BackgroundColor';
-import Spacer from '../../Spacer';
-
-// Load CSS
 import 'normalize.css';
+
+import ToggleControlComponent from '..';
+import BGColorComponent from '../../BackgroundColor';
+import Spacer from '../../Spacer';
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';

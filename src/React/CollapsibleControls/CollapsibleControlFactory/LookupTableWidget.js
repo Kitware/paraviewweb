@@ -1,8 +1,8 @@
 import React from 'react';
 
 import CollapsibleControlFactory from '.';
-import CollapsibleWidget         from '../../Widgets/CollapsibleWidget';
-import LookupTableWidget         from '../../Widgets/LookupTableWidget';
+import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
+import LookupTableWidget from '../../Widgets/LookupTableWidget';
 
 CollapsibleControlFactory.registerWidget(
   'LookupTableWidget',
@@ -14,5 +14,6 @@ CollapsibleControlFactory.registerWidget(
         lookupTable={lookupTable}
         lookupTableManager={lookupTableManager}
       />
-    </CollapsibleWidget>)
-  );
+    </CollapsibleWidget>
+  )
+);

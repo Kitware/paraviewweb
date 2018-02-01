@@ -1,9 +1,9 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import equals from 'mout/src/object/equals';
 
-import style  from 'PVWStyle/ReactWidgets/InlineToggleButtonWidget.mcss';
+import style from 'PVWStyle/ReactWidgets/InlineToggleButtonWidget.mcss';
 
 export default class InlineToggleButtonWidget extends React.Component {
   constructor(props) {
@@ -17,8 +17,8 @@ export default class InlineToggleButtonWidget extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props,
-      next = nextProps;
+    const previous = this.props;
+    const next = nextProps;
 
     if (!equals(previous, next)) {
       this.setState({
@@ -36,21 +36,24 @@ export default class InlineToggleButtonWidget extends React.Component {
   }
 
   render() {
-    const currentActive = this.state.activeIdx,
-      fontSize = this.props.height,
-      lineHeight = this.props.height,
-      height = this.props.height;
+    const currentActive = this.state.activeIdx;
+    const fontSize = this.props.height;
+    const lineHeight = this.props.height;
+    const height = this.props.height;
 
     return (
       <div className={style.container}>
         {this.props.options.map((obj, idx) => {
-          const isActive = (currentActive === idx),
-            background = isActive ? this.props.activeColor : this.props.defaultColor,
-            className = (idx === 0) ?
-              isActive ? 'activeFirst' : 'first' :
-              (idx === this.props.options.length - 1) ?
-                (isActive ? 'activeLast' : 'last') :
-                (isActive ? 'activeMiddle' : 'middle');
+          const isActive = currentActive === idx;
+          const background = isActive
+            ? this.props.activeColor
+            : this.props.defaultColor;
+          const className =
+            idx === 0
+              ? isActive ? 'activeFirst' : 'first'
+              : idx === this.props.options.length - 1
+                ? isActive ? 'activeLast' : 'last'
+                : isActive ? 'activeMiddle' : 'middle';
           if (obj.label) {
             return (
               <button
@@ -59,8 +62,10 @@ export default class InlineToggleButtonWidget extends React.Component {
                 onClick={this.activateButton}
                 data-idx={idx}
                 className={style[className]}
-              >{obj.label}
-              </button>);
+              >
+                {obj.label}
+              </button>
+            );
           }
           if (obj.img) {
             return (
@@ -78,7 +83,8 @@ export default class InlineToggleButtonWidget extends React.Component {
                   src={obj.img}
                   alt="ToggleButton"
                 />
-              </div>);
+              </div>
+            );
           }
           if (obj.icon) {
             return (
@@ -88,14 +94,15 @@ export default class InlineToggleButtonWidget extends React.Component {
                 onClick={this.activateButton}
                 data-idx={idx}
                 className={[style[className], obj.icon].join(' ')}
-              />);
+              />
+            );
           }
           return null;
         })}
-      </div>);
+      </div>
+    );
   }
 }
-
 
 InlineToggleButtonWidget.propTypes = {
   active: PropTypes.number,
@@ -110,4 +117,6 @@ InlineToggleButtonWidget.defaultProps = {
   activeColor: '#fff',
   defaultColor: '#ccc',
   height: '1em',
+  onChange: undefined,
+  active: 0,
 };

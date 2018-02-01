@@ -38,7 +38,8 @@ export function extend(publicAPI, model, initialValues = {}) {
         data.counts = data.counts.map((v, i) => (i ? 0 : totalCount));
       }
 
-      const sameAsBefore = (JSON.stringify(data) === JSON.stringify(binStorage[data.name]));
+      const sameAsBefore =
+        JSON.stringify(data) === JSON.stringify(binStorage[data.name]);
       binStorage[data.name] = data;
 
       return sameAsBefore;
@@ -54,7 +55,10 @@ export function extend(publicAPI, model, initialValues = {}) {
           returnedData[name] = binStorage[name];
         }
       });
-      if (count === request.variables.length || (request.metadata.partial && count > 0)) {
+      if (
+        count === request.variables.length ||
+        (request.metadata.partial && count > 0)
+      ) {
         return returnedData;
       }
       return null;

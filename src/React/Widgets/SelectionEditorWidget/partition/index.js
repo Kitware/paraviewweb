@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FieldRender      from './FieldRender';
-import DividerRender    from './DividerRender';
+import FieldRender from './FieldRender';
+import DividerRender from './DividerRender';
 import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
 
 function clampDividerUncertainty(dividers, index, inMaxUncertainty) {
@@ -13,11 +13,13 @@ function clampDividerUncertainty(dividers, index, inMaxUncertainty) {
   // Note comparison with low/high divider is signed. If val indicates divider has been
   // moved _past_ the neighboring divider, low/high will be negative.
   if (index > 0) {
-    const low = dividers[index - 1].value + (dividers[index - 1].uncertainty * uncertScale);
+    const low =
+      dividers[index - 1].value + dividers[index - 1].uncertainty * uncertScale;
     maxUncertainty = Math.min(maxUncertainty, (val - low) / uncertScale);
   }
   if (index < dividers.length - 1) {
-    const high = dividers[index + 1].value - (dividers[index + 1].uncertainty * uncertScale);
+    const high =
+      dividers[index + 1].value - dividers[index + 1].uncertainty * uncertScale;
     maxUncertainty = Math.min((high - val) / uncertScale, maxUncertainty);
   }
   // make sure uncertainty is zero when val has passed a neighbor.
@@ -38,7 +40,7 @@ function clampDivider(selection, index, ranges) {
   }
   clampDividerUncertainty(selection.partition.dividers, index, maxUncertainty);
   // Re-sort dividers so uncertainty clamping works next time.
-  selection.partition.dividers.sort((a, b) => (a.value - b.value));
+  selection.partition.dividers.sort((a, b) => a.value - b.value);
   // make sure uncertainties don't overlap.
   selection.partition.dividers.forEach((divdr, i) => {
     clampDividerUncertainty(selection.partition.dividers, i, maxUncertainty);
@@ -61,7 +63,10 @@ export default function render(props) {
     }
 
     // Notify happens in parent
-    props.onChange(editing ? selection : SelectionBuilder.markModified(selection), !editing);
+    props.onChange(
+      editing ? selection : SelectionBuilder.markModified(selection),
+      !editing
+    );
   };
 
   const onDelete = (pathToDelete) => {
@@ -81,11 +86,23 @@ export default function render(props) {
 
   return (
     <div style={{ position: 'relative' }}>
-      <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}>
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+        }}
+      >
         {props.children}
       </div>
-      <FieldRender className={props.className} fieldName={fieldName} getLegend={props.getLegend} depth={0} >
-        {dividers.map((divider, idx) =>
+      <FieldRender
+        className={props.className}
+        fieldName={fieldName}
+        getLegend={props.getLegend}
+        depth={0}
+      >
+        {dividers.map((divider, idx) => (
           <DividerRender
             onChange={onChange}
             onDelete={onDelete}
@@ -95,9 +112,10 @@ export default function render(props) {
             getLegend={props.getLegend}
             showUncertainty={props.showUncertainty}
           />
-        )}
+        ))}
       </FieldRender>
-    </div>);
+    </div>
+  );
 }
 
 render.propTypes = {
@@ -112,4 +130,11 @@ render.propTypes = {
 
 render.defaultProps = {
   showUncertainty: true,
+
+  children: undefined,
+  selection: undefined,
+  ranges: undefined,
+  onChange: undefined,
+  getLegend: undefined,
+  className: undefined,
 };

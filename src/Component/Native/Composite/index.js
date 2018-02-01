@@ -1,5 +1,3 @@
-/* global document */
-
 import style from 'PVWStyle/ComponentNative/Composite.mcss';
 
 export default class NativeCompositeComponent {
@@ -34,7 +32,7 @@ export default class NativeCompositeComponent {
     if (this.container && this.container !== el) {
       // Remove us from previous container
       this.container.classList.remove(style.container);
-      this.viewports.forEach(viewport => viewport.setContainer(null));
+      this.viewports.forEach((viewport) => viewport.setContainer(null));
       while (this.container.firstChild) {
         this.container.removeChild(this.container.firstChild);
       }
@@ -53,11 +51,11 @@ export default class NativeCompositeComponent {
   }
 
   resize() {
-    this.viewports.forEach(viewport => viewport.resize());
+    this.viewports.forEach((viewport) => viewport.resize());
   }
 
   render() {
-    this.viewports.forEach(viewport => viewport.render());
+    this.viewports.forEach((viewport) => viewport.render());
   }
 
   destroy() {

@@ -10,17 +10,23 @@ export default function render(props) {
 
   return (
     <section className={[style.scoreContainer, props.className].join(' ')}>
-      {props.scores.map((score, idx) =>
+      {props.scores.map((score, idx) => (
         <div
           key={idx}
-          className={props.score === idx ? style.selectedScoreBlock : style.scoreBlock}
-          style={{ background: score.color, display: props.horizontal ? 'inline-block' : 'block' }}
+          className={
+            props.score === idx ? style.selectedScoreBlock : style.scoreBlock
+          }
+          style={{
+            background: score.color,
+            display: props.horizontal ? 'inline-block' : 'block',
+          }}
           title={score.name}
           data-score={idx}
           onClick={click}
         />
-      )}
-    </section>);
+      ))}
+    </section>
+  );
 }
 
 render.propTypes = {
@@ -36,4 +42,8 @@ render.defaultProps = {
   name: 'default',
   horizontal: false,
   onChange(name, score) {},
+  className: '',
+
+  score: undefined,
+  scores: undefined,
 };

@@ -1,7 +1,6 @@
 import 'normalize.css';
-import 'babel-polyfill';
 
-import sizeHelper   from '../../../../Common/Misc/SizeHelper';
+import sizeHelper from '../../../../Common/Misc/SizeHelper';
 
 import ParallelCoordinates from '../../../Native/ParallelCoordinates';
 import FieldSelector from '../../../Native/FieldSelector';
@@ -32,28 +31,36 @@ fieldSelectorContainer.style.height = '250px';
 fieldSelectorContainer.style.float = 'left';
 bodyElt.appendChild(fieldSelectorContainer);
 
-const provider = CompositeClosureHelper.newInstance((publicAPI, model, initialValues = {}) => {
-  Object.assign(model, initialValues);
-  FieldProvider.extend(publicAPI, model, initialValues);
-  Histogram1DProvider.extend(publicAPI, model, initialValues);
-  Histogram2DProvider.extend(publicAPI, model, initialValues);
-  HistogramBinHoverProvider.extend(publicAPI, model);
-  LegendProvider.extend(publicAPI, model, initialValues);
-  // MutualInformationProvider.extend(publicAPI, model, initialValues);
-})(dataModel);
+const provider = CompositeClosureHelper.newInstance(
+  (publicAPI, model, initialValues = {}) => {
+    Object.assign(model, initialValues);
+    FieldProvider.extend(publicAPI, model, initialValues);
+    Histogram1DProvider.extend(publicAPI, model, initialValues);
+    Histogram2DProvider.extend(publicAPI, model, initialValues);
+    HistogramBinHoverProvider.extend(publicAPI, model);
+    LegendProvider.extend(publicAPI, model, initialValues);
+    // MutualInformationProvider.extend(publicAPI, model, initialValues);
+  }
+)(dataModel);
 
 // set provider behaviors
 provider.setFieldsSorted(true);
-provider.getFieldNames().forEach(name => {
+provider.getFieldNames().forEach((name) => {
   provider.addLegendEntry(name);
 });
 provider.assignLegend(['colors', 'shapes']);
 
 // Create parallel coordinates
-const parallelCoordinates = ParallelCoordinates.newInstance({ provider, container: parallelCoordinatesContainer });
+const parallelCoordinates = ParallelCoordinates.newInstance({
+  provider,
+  container: parallelCoordinatesContainer,
+});
 
 // Create field selector
-const fieldSelector = FieldSelector.newInstance({ provider, container: fieldSelectorContainer });
+const fieldSelector = FieldSelector.newInstance({
+  provider,
+  container: fieldSelectorContainer,
+});
 
 // Listen to window resize
 sizeHelper.onSizeChange(() => {

@@ -5,7 +5,6 @@ const OPACITY_CHANGE_TOPIC = 'opacity.change';
 const LAYER_CODE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export default class PipelineState {
-
   constructor(jsonData, hasOpacity = false) {
     this.originalData = jsonData;
     this.visibilityState = {};
@@ -27,7 +26,7 @@ export default class PipelineState {
 
       const layerIdx = LAYER_CODE.indexOf(layers[0]);
 
-      return (pipelineQuery[(layerIdx * 2) + 1] !== '_');
+      return pipelineQuery[layerIdx * 2 + 1] !== '_';
     }
     function getColorCode(layers) {
       if (!pipelineQuery || layers.length > 1) {
@@ -35,16 +34,19 @@ export default class PipelineState {
       }
 
       const layerIdx = LAYER_CODE.indexOf(layers[0]);
-      const colorCode = pipelineQuery[(layerIdx * 2) + 1];
+      const colorCode = pipelineQuery[layerIdx * 2 + 1];
 
-      return (colorCode === '_') ? layerFields[layers][0] : colorCode;
+      return colorCode === '_' ? layerFields[layers][0] : colorCode;
     }
 
     // Fill visibility and activate all layers
     const isRoot = {};
     jsonData.CompositePipeline.pipeline.forEach((item) => {
       isRoot[item.ids.join('')] = true;
-      this.setLayerVisible(item.ids.join(''), isLayerVisible(item.ids.join('')));
+      this.setLayerVisible(
+        item.ids.join(''),
+        isLayerVisible(item.ids.join(''))
+      );
     });
     jsonData.CompositePipeline.layers.forEach((item) => {
       this.activeState[item] = isRoot[item] ? true : isLayerVisible(item);
@@ -191,7 +193,10 @@ export default class PipelineState {
   getPipelineQuery() {
     let query = '';
     this.originalData.CompositePipeline.layers.forEach((item) => {
-      const color = this.isLayerActive(item) && this.isLayerVisible(item) ? this.activeColors[item] : '_';
+      const color =
+        this.isLayerActive(item) && this.isLayerVisible(item)
+          ? this.activeColors[item]
+          : '_';
       query += item;
       query += color;
     });
@@ -203,7 +208,7 @@ export default class PipelineState {
     if (query !== localQuery) {
       const maxIdx = localQuery.length / 2;
       for (let idx = 0; idx < maxIdx; idx++) {
-        const colorIdx = (2 * idx) + 1;
+        const colorIdx = 2 * idx + 1;
         if (localQuery[colorIdx] !== query[colorIdx]) {
           if (query[colorIdx] === '_') {
             this.setLayerVisible(LAYER_CODE[idx], false);
@@ -287,7 +292,7 @@ export default class PipelineState {
       changeInProgress = true;
       listOfStateToBind.forEach((other) => {
         other.opacityArray = [].concat(opacityArray);
-        other.emit(OPACITY_CHANGE_TOPIC, opacityArray)
+        other.emit(OPACITY_CHANGE_TOPIC, opacityArray);
       });
       changeInProgress = false;
     };
@@ -298,7 +303,6 @@ export default class PipelineState {
     });
   }
   /* eslint-enable */
-
 }
 
 // Add Observer pattern using Monologue.js
