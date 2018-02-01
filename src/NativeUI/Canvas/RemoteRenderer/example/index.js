@@ -1,4 +1,7 @@
+import 'normalize.css';
+
 import SmartConnect from 'wslink/src/SmartConnect';
+
 import RemoteRenderer from '..';
 import SizeHelper from '../../../../Common/Misc/SizeHelper';
 import ParaViewWebClient from '../../../../IO/WebSocket/ParaViewWebClient';

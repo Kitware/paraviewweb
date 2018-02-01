@@ -1,10 +1,9 @@
-/* global document */
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropertyPanel from '..';
 
-// Load CSS
-require('normalize.css');
+import PropertyPanel from '..';
 
 const container = document.querySelector('.content');
 let currVal = 1;

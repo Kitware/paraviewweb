@@ -1,7 +1,9 @@
-import 'babel-polyfill';
-import DoubleSliderWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import DoubleSliderWidget from '..';
 
 function onChange(name, value) {
   console.log(name, value);

@@ -1,14 +1,14 @@
-import MultiViewControl from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Load CSS
-require('normalize.css');
+import MultiViewControl from '..';
 
 document.body.style.padding = '10px';
 
-let layout = '2x2',
-  renderMethod = 'XY';
+let layout = '2x2';
+let renderMethod = 'XY';
 
 const renderer = {
   onLayoutChange() {

@@ -1,15 +1,15 @@
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import QueryDataModelWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jsonData from './info.js';
 
-// Load CSS
-require('normalize.css');
+import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import QueryDataModelWidget from '..';
+
+import jsonData from './info';
 
 // Get react component
 const dataModel = new QueryDataModel(jsonData, '/');
-
 document.body.style.padding = '10px';
 
 ReactDOM.render(

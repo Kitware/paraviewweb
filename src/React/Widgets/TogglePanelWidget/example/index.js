@@ -1,12 +1,13 @@
-import TogglePanelWidget from '..';
+// Load CSS
+import 'normalize.css';
+import 'font-awesome/css/font-awesome.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const container = document.querySelector('.content');
+import TogglePanelWidget from '..';
 
-// Load CSS
-require('normalize.css');
-require('font-awesome/css/font-awesome.css');
+const container = document.querySelector('.content');
 
 document.body.style.padding = '10px';
 document.body.style.background = '#ccc';

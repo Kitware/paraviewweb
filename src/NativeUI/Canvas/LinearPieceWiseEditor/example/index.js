@@ -1,3 +1,5 @@
+import 'normalize.css';
+
 import LinearPieceWiseEditor from '..';
 
 const container = document.createElement('canvas');

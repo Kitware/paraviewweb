@@ -1,14 +1,11 @@
-/* global document */
-import 'babel-polyfill';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import SelectionEditorWidget from '..';
 import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
-
 import LegendProvider from '../../../../InfoViz/Core/LegendProvider';
-
-// Load CSS
-require('normalize.css');
 
 const rangeSelection = SelectionBuilder.range({
   pressure: [
@@ -25,6 +22,7 @@ const partitionSelection = SelectionBuilder.partition('pressure', [
   { value: 101.3, uncertainty: 10 },
   { value: 200, uncertainty: 40, closeToLeft: true },
 ]);
+
 const ranges = {
   pressure: [0, 600],
   temperature: [-270, 1000],
@@ -35,6 +33,7 @@ const selectionTypes = [
   partitionSelection,
   SelectionBuilder.convertToRuleSelection(rangeSelection),
 ];
+
 const legendService = LegendProvider.newInstance({
   legendEntries: ['pressure', 'temperature'],
 });

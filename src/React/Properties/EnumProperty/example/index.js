@@ -1,10 +1,9 @@
-/* global document */
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import EnumProperty from '..';
 
-// Load CSS
-require('normalize.css');
+import EnumProperty from '..';
 
 const container = document.querySelector('.content');
 let currVal = 1;

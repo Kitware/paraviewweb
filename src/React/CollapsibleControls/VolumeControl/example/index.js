@@ -1,27 +1,24 @@
-import EqualizerState from '../../../../Common/State/EqualizerState';
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import EqualizerState from '../../../../Common/State/EqualizerState';
+import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+
 import ToggleState from '../../../../Common/State/ToggleState';
 import VolumeControl from '..';
 
-// Load CSS
-require('normalize.css');
-
-const computation = new ToggleState(),
-  intensity = new ToggleState(),
-  equalizer = new EqualizerState({ size: 26 }),
-  lookupTableManager = new LookupTableManager(),
-  lookupTable = {
-    originalRange: [-5, 15],
-    lookupTableManager,
-    lookupTable: lookupTableManager.addLookupTable(
-      'demo',
-      [-5, 15],
-      'spectral'
-    ),
-  },
-  container = document.querySelector('.content');
+const computation = new ToggleState();
+const intensity = new ToggleState();
+const equalizer = new EqualizerState({ size: 26 });
+const lookupTableManager = new LookupTableManager();
+const lookupTable = {
+  originalRange: [-5, 15],
+  lookupTableManager,
+  lookupTable: lookupTableManager.addLookupTable('demo', [-5, 15], 'spectral'),
+};
+const container = document.querySelector('.content');
 
 ReactDOM.render(
   React.createElement(VolumeControl, {

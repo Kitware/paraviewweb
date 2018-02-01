@@ -1,12 +1,11 @@
-import 'babel-polyfill';
-import jsonData from '../../../Widgets/QueryDataModelWidget/example/info.js';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import QueryDataModelControl from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Load CSS
-require('normalize.css');
+import jsonData from '../../../Widgets/QueryDataModelWidget/example/info';
+import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import QueryDataModelControl from '..';
 
 // Get react component
 const dataModel = new QueryDataModel(jsonData, '/');

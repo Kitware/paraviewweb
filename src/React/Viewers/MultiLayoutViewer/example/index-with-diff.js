@@ -1,42 +1,41 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
 import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
 import PixelOperatorImageBuilder from '../../../../Rendering/Image/PixelOperatorImageBuilder';
 import LookupTableManager from '../../../../Common/Core/LookupTableManager';
 import MultiLayoutViewer from '..';
 import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
-// Load CSS
-require('normalize.css');
-
-/* global __BASE_PATH__ */
-const bodyElement = document.querySelector('.content'),
-  dataModelA = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/probe/'),
-  dataModelB = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/probe/'),
-  dataModelC = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/probe/'),
-  lutManager = new LookupTableManager(),
-  imageBuilderA = new ImageBuilder(dataModelA, lutManager),
-  imageBuilderB = new ImageBuilder(dataModelB, lutManager),
-  imageBuilderC = new ImageBuilder(dataModelC, lutManager),
-  diffImageBuilder = new PixelOperatorImageBuilder();
+const bodyElement = document.querySelector('.content');
+const dataModelA = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);
+const dataModelB = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);
+const dataModelC = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);
+const lutManager = new LookupTableManager();
+const imageBuilderA = new ImageBuilder(dataModelA, lutManager);
+const imageBuilderB = new ImageBuilder(dataModelB, lutManager);
+const imageBuilderC = new ImageBuilder(dataModelC, lutManager);
+const diffImageBuilder = new PixelOperatorImageBuilder();
 
 // Handling Diff computation
-imageBuilderA.onImageReady(function(data, envelope) {
+imageBuilderA.onImageReady((data, envelope) => {
   diffImageBuilder.updateData('a', data);
 });
-imageBuilderB.onImageReady(function(data, envelope) {
+imageBuilderB.onImageReady((data, envelope) => {
   diffImageBuilder.updateData('b', data);
 });
-imageBuilderC.onImageReady(function(data, envelope) {
+imageBuilderC.onImageReady((data, envelope) => {
   diffImageBuilder.updateData('c', data);
 });
 
 function updateCrosshairVisibility(data, envelope) {
-  var builders = [imageBuilderA, imageBuilderB, imageBuilderC];
+  const builders = [imageBuilderA, imageBuilderB, imageBuilderC];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     builder.setCrossHairEnable(data);
   });
 }

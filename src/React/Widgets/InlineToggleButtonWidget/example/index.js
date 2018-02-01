@@ -1,11 +1,11 @@
-import InlineToggleButtonWidget from '..';
+import 'normalize.css';
+import 'font-awesome/css/font-awesome.css';
+
 import React from 'react';
 import { render } from 'react-dom';
 
-// Load CSS
-require('font-awesome/css/font-awesome.css');
-require('normalize.css');
-const logo = require('../../../../../documentation/images/ui.png');
+import InlineToggleButtonWidget from '..';
+import logo from '../../../../../documentation/images/ui.png';
 
 function onChange(obj, idx) {
   console.log('Active', obj, idx);

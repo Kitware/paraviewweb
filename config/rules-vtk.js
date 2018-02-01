@@ -1,5 +1,9 @@
 module.exports = [
-  { test: /\.glsl$/i, loader: 'shader-loader' },
+  {
+    test: /\.glsl$/i,
+    include: /node_modules(\/|\\)vtk.js(\/|\\)/,
+    loader: 'shader-loader',
+  },
   {
     test: /\.js$/,
     include: /node_modules(\/|\\)vtk.js(\/|\\)/,

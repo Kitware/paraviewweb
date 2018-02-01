@@ -108,7 +108,7 @@ InputCell.propTypes = {
   domain: PropTypes.object.isRequired,
   idx: PropTypes.number,
   label: PropTypes.string,
-  noEmpty: PropTypes.bool.isRequired,
+  noEmpty: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   value: PropTypes.any,
@@ -119,4 +119,5 @@ InputCell.defaultProps = {
   idx: 0,
   value: '',
   type: 'string',
+  noEmpty: false,
 };

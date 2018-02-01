@@ -1,17 +1,19 @@
-import AbstractViewerMenu from '..';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import ImageBuilder from '../../../../Rendering/Image/QueryDataModelImageBuilder';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import jsonData from 'tonic-arctic-sample-data/data/earth/index.json';
 
-// Load CSS
-require('normalize.css');
+import AbstractViewerMenu from '..';
+import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import ImageBuilder from '../../../../Rendering/Image/QueryDataModelImageBuilder';
 
-/* global __BASE_PATH__ */
-const bodyElement = document.querySelector('.content'),
-  queryDataModel = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/earth/'),
-  imageBuilder = new ImageBuilder(queryDataModel);
+const bodyElement = document.querySelector('.content');
+const queryDataModel = new QueryDataModel(
+  jsonData,
+  `${__BASE_PATH__}/data/earth/`
+);
+const imageBuilder = new ImageBuilder(queryDataModel);
 
 class FakeRenderer extends React.Component {
   constructor(props) {
@@ -20,7 +22,7 @@ class FakeRenderer extends React.Component {
   }
 
   resetCamera() {
-    console.log('reset camera');
+    console.log('reset camera', this);
   }
 
   render() {
@@ -28,11 +30,16 @@ class FakeRenderer extends React.Component {
   }
 }
 
+/* eslint-disable no-alert */
 ReactDOM.render(
-  React.createElement(AbstractViewerMenu, {
-    queryDataModel,
-    imageBuilder,
-    children: [
+  React.createElement(
+    AbstractViewerMenu,
+    {
+      queryDataModel,
+      imageBuilder,
+      rendererClass: FakeRenderer,
+    },
+    [
       <p key="a">
         This is the <em>AbstractViewerMenu</em>, takes a QueryDataModel and this
         content.
@@ -44,9 +51,8 @@ ReactDOM.render(
       <button key="c" onClick={() => alert('button pressed')}>
         Press me
       </button>,
-    ],
-    rendererClass: FakeRenderer,
-  }),
+    ]
+  ),
   bodyElement
 );
 

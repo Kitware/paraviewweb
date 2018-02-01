@@ -106,5 +106,9 @@ export default class MultiViewControl extends React.Component {
 }
 
 MultiViewControl.propTypes = {
-  renderer: PropTypes.object.isRequired,
+  renderer: PropTypes.object,
+};
+
+MultiViewControl.defaultProps = {
+  renderer: undefined,
 };

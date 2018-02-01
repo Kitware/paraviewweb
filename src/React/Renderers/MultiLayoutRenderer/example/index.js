@@ -1,24 +1,22 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import equals from 'mout/src/array/equals';
+
+import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
 import MultiLayoutRenderer from '..';
 import LookupTableManager from '../../../../Common/Core/LookupTableManager';
 import QueryDataModel from '../../../../IO/Core/QueryDataModel';
 import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
 
-import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
-
-// Load CSS
-require('normalize.css');
-
-/* global __BASE_PATH__ */
-const container = document.querySelector('.content'),
-  dataModel = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/probe/'),
-  lutManager = new LookupTableManager(),
-  imageBuilderA = new ImageBuilder(dataModel, lutManager),
-  imageBuilderB = new ImageBuilder(dataModel, lutManager),
-  imageBuilderC = new ImageBuilder(dataModel, lutManager);
+const container = document.querySelector('.content');
+const dataModel = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);
+const lutManager = new LookupTableManager();
+const imageBuilderA = new ImageBuilder(dataModel, lutManager);
+const imageBuilderB = new ImageBuilder(dataModel, lutManager);
+const imageBuilderC = new ImageBuilder(dataModel, lutManager);
 
 // Configure Image builders
 const field = imageBuilderA.getFields()[0];
@@ -39,27 +37,27 @@ imageBuilderB.update();
 imageBuilderC.update();
 
 function updateProbeLocationFromA(data, envelope) {
-  var builders = [imageBuilderB, imageBuilderC];
+  const builders = [imageBuilderB, imageBuilderC];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     if (!equals(data, builder.getProbe())) {
       builder.setProbe(data[0], data[1], data[2]);
     }
   });
 }
 function updateProbeLocationFromB(data, envelope) {
-  var builders = [imageBuilderA, imageBuilderC];
+  const builders = [imageBuilderA, imageBuilderC];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     if (!equals(data, builder.getProbe())) {
       builder.setProbe(data[0], data[1], data[2]);
     }
   });
 }
 function updateProbeLocationFromC(data, envelope) {
-  var builders = [imageBuilderA, imageBuilderB];
+  const builders = [imageBuilderA, imageBuilderB];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     if (!equals(data, builder.getProbe())) {
       builder.setProbe(data[0], data[1], data[2]);
     }

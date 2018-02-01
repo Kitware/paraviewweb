@@ -3,6 +3,7 @@ const autoprefixer = require('autoprefixer');
 module.exports = [
   {
     test: /\.js$/,
+    exclude: /node_modules/,
     use: [
       {
         loader: 'babel-loader',
@@ -14,6 +15,7 @@ module.exports = [
   },
   {
     test: /\.c$/i,
+    exclude: /node_modules/,
     loader: 'shader-loader',
   },
   {
@@ -63,6 +65,15 @@ module.exports = [
   },
   {
     test: /\.css$/,
-    loader: 'style-loader!css-loader!postcss-loader',
+    use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: () => [autoprefixer('last 2 version', 'ie >= 10')],
+        },
+      },
+    ],
   },
 ];

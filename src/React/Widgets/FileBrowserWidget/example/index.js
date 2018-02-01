@@ -1,6 +1,9 @@
-import FileBrowserWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import { render } from 'react-dom';
+
+import FileBrowserWidget from '..';
 
 document.body.style.margin = 0;
 document.body.style.padding = 0;

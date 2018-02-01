@@ -1,9 +1,9 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MapProperty from '..';
 
-// Load CSS
-require('normalize.css');
+import MapProperty from '..';
 
 const container = document.querySelector('.content');
 

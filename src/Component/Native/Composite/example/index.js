@@ -1,8 +1,7 @@
+import 'normalize.css';
+
 import CompositeComponent from '..';
 import BGColorComponent from '../../BackgroundColor';
-
-// Load CSS
-require('normalize.css');
 
 const container = document.querySelector('.content');
 container.style.position = 'relative';

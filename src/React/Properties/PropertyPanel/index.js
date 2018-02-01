@@ -56,5 +56,5 @@ PropertyPanel.defaultProps = {
   className: '',
   input: [],
   viewData: {},
-  onChange: () => {},
+  onChange: undefined,
 };

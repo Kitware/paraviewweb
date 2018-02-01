@@ -1,4 +1,3 @@
-/* global window, document */
 import 'normalize.css';
 
 import Workbench from '..';

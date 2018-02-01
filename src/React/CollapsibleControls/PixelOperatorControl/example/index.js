@@ -1,20 +1,20 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PixelOperatorControl from '..';
 
-// Load CSS
-require('normalize.css');
+import PixelOperatorControl from '..';
 
 let operationValue = 'a+2/5';
 const operator = {
-    getOperation() {
-      return operationValue;
-    },
-    setOperation(v) {
-      operationValue = v;
-    },
+  getOperation() {
+    return operationValue;
   },
-  container = document.querySelector('.content');
+  setOperation(v) {
+    operationValue = v;
+  },
+};
+const container = document.querySelector('.content');
 
 ReactDOM.render(
   React.createElement(PixelOperatorControl, { operator }),

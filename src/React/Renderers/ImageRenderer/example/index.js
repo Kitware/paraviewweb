@@ -1,27 +1,30 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import ImageRenderer from '..';
 
-const container = document.createElement('div'),
-  btn = document.createElement('button'),
-  nextBtn = document.createElement('button'),
-  urlInput = document.createElement('input'),
-  urls = [
-    'http://www.paraview.org/wp-content/uploads/2015/03/LANL_ClimateExample.jpg',
-    'http://www.paraview.org/wp-content/uploads/2014/04/0_full_Asteroid.png',
-    'http://www.paraview.org/wp-content/uploads/2014/05/NCOM.png',
-    'http://www.paraview.org/wp-content/uploads/2014/05/RASM.png',
-    'http://www.paraview.org/wp-content/uploads/2014/04/seismic.jpg',
-  ];
+const container = document.createElement('div');
+const btn = document.createElement('button');
+const nextBtn = document.createElement('button');
+const urlInput = document.createElement('input');
+const urls = [
+  'http://www.paraview.org/wp-content/uploads/2015/03/LANL_ClimateExample.jpg',
+  'http://www.paraview.org/wp-content/uploads/2014/04/0_full_Asteroid.png',
+  'http://www.paraview.org/wp-content/uploads/2014/05/NCOM.png',
+  'http://www.paraview.org/wp-content/uploads/2014/05/RASM.png',
+  'http://www.paraview.org/wp-content/uploads/2014/04/seismic.jpg',
+];
 
-var component = null,
-  imageIndex = 0,
-  images = [],
-  count = urls.length;
+let component = null;
+let imageIndex = 0;
+const images = [];
+let count = urls.length;
 
 // Preload images
 while (count--) {
-  var img = new Image();
+  const img = new Image();
   img.src = urls[count];
   images.push(img);
 }

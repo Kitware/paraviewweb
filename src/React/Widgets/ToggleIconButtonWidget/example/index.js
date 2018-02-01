@@ -1,14 +1,13 @@
-/* global document */
+// Load CSS
+import 'normalize.css';
+import 'font-awesome/css/font-awesome.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import ToggleIconButtonWidget from '..';
 
 const container = document.querySelector('.content');
-
-// Load CSS
-require('normalize.css');
-require('font-awesome/css/font-awesome.css');
-
 document.body.style.padding = '10px';
 
 function onChange(value, name) {

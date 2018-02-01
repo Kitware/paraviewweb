@@ -5,7 +5,6 @@ module.exports = [
     exclude: /test[^]*\.(png|jpg)$/,
   },
   { test: /\.html$/, loader: 'html-loader' },
-  { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
   { test: /\.cjson$/, loader: 'hson-loader' },
   { test: /\.hson$/, loader: 'hson-loader' },
 ];

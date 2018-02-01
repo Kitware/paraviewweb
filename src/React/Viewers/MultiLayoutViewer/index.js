@@ -125,11 +125,12 @@ MultiLayoutViewer.propTypes = {
   layout: PropTypes.string,
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
-  renderers: PropTypes.object.isRequired,
+  renderers: PropTypes.object,
   // userData: PropTypes.object,
 };
 
 MultiLayoutViewer.defaultProps = {
   layout: undefined,
   menuAddOn: undefined,
+  renderers: undefined,
 };

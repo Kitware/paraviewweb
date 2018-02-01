@@ -31,6 +31,10 @@ export default class Slider extends React.Component {
 }
 
 Slider.propTypes = {
-  idx: PropTypes.number.isRequired,
+  idx: PropTypes.number,
   onChange: PropTypes.func.isRequired,
+};
+
+Slider.defaultProps = {
+  idx: -1,
 };

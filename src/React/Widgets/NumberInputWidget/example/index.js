@@ -1,6 +1,9 @@
-import NumberInputWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import NumberInputWidget from '..';
 
 function onChange(value, name) {
   console.log(name, value);

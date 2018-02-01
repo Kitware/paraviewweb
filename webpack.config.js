@@ -21,9 +21,12 @@ module.exports = {
   },
   module: {
     noParse: [/plotly\.js/],
-    rules: [
-      { test: entry, loader: 'expose-loader?ParaViewWeb' },
-    ].concat(pvwRules, linterRules, vtkRules, wslinkRules),
+    rules: [{ test: entry, loader: 'expose-loader?ParaViewWeb' }].concat(
+      pvwRules,
+      linterRules,
+      vtkRules,
+      wslinkRules
+    ),
   },
   resolve: {
     alias: {

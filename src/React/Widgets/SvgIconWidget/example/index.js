@@ -1,6 +1,8 @@
-import 'babel-polyfill';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import SvgIconWidget from '..';
 import style from './style.mcss';
 

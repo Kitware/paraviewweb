@@ -1,5 +1,8 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import LayoutsWidget from '..';
 
 ReactDOM.render(

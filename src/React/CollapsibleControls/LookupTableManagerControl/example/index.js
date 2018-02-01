@@ -1,10 +1,10 @@
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import LookupTableManagerControl from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Load CSS
-require('normalize.css');
+import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+import LookupTableManagerControl from '..';
 
 document.body.style.padding = '10px';
 

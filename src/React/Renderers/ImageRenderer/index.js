@@ -629,7 +629,7 @@ export default class ImageRenderer extends React.Component {
 
 ImageRenderer.propTypes = {
   crosshairColor: PropTypes.string,
-  imageBuilder: PropTypes.object.isRequired,
+  imageBuilder: PropTypes.object,
   listener: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
@@ -646,6 +646,7 @@ ImageRenderer.defaultProps = {
   pressRadius: 50,
   userData: {},
   listener: null,
+  imageBuilder: undefined,
 };
 
 Monologue.mixInto(ImageRenderer);

@@ -1,8 +1,11 @@
-import ColorPickerWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-var component = null;
+import ColorPickerWidget from '..';
+
+let component = null;
 
 function colorChange(color) {
   component.updateColor([color[0], color[1], color[2]]);

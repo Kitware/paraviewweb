@@ -1,5 +1,3 @@
-/* global document */
-
 import style from 'PVWStyle/ComponentNative/Composite.mcss';
 
 export default class NativeCompositeComponent {

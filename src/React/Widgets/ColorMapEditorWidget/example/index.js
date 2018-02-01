@@ -1,11 +1,12 @@
-import 'babel-polyfill';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import ColorMapEditorWidget from '..';
+import presets from './presets.json';
 
 const container = document.querySelector('.content');
-
-import presets from './presets.json';
 
 class ColorMapEditorTestWidget extends React.Component {
   constructor(props) {

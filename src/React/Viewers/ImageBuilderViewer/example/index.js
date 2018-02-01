@@ -1,9 +1,9 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jsonData from 'tonic-arctic-sample-data/data/earth/index.json';
 
-// Load CSS
-import 'normalize.css';
+import jsonData from 'tonic-arctic-sample-data/data/earth/index.json';
 
 import ImageBuilderViewer from '..';
 import QueryDataModel from '../../../../IO/Core/QueryDataModel';

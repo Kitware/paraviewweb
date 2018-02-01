@@ -1,18 +1,22 @@
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import LookupTableWidget from '..';
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Load CSS
-require('normalize.css');
+import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+import LookupTableWidget from '..';
 
 // Get react component
-const lookupTableManager = new LookupTableManager(),
-  lookupTable = lookupTableManager.addLookupTable('demo', [-5, 15], 'spectral');
+const lookupTableManager = new LookupTableManager();
+const lookupTable = lookupTableManager.addLookupTable(
+  'demo',
+  [-5, 15],
+  'spectral'
+);
 
 document.body.style.padding = '10px';
 
-const component = ReactDOM.render(
+const component = ReactDOM.render( // eslint-disable-line
   React.createElement(LookupTableWidget, {
     lookupTable,
     originalRange: [-5, 15],
@@ -22,6 +26,6 @@ const component = ReactDOM.render(
   document.querySelector('.content')
 );
 
-setTimeout(function() {
+setTimeout(() => {
   component.resetRange();
 }, 500);

@@ -1,28 +1,27 @@
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import equals from 'mout/src/array/equals';
+
+import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
 import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
 import LineChartPainter from '../../../../Rendering/Painter/LineChartPainter';
 import LookupTableManager from '../../../../Common/Core/LookupTableManager';
 import MultiLayoutViewer from '..';
 import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
-// Load CSS
-require('normalize.css');
-
-/* global __BASE_PATH__ */
-const bodyElement = document.querySelector('.content'),
-  dataModel = new QueryDataModel(jsonData, __BASE_PATH__ + '/data/probe/'),
-  lutManager = new LookupTableManager(),
-  imageBuilderA = new ImageBuilder(dataModel, lutManager),
-  imageBuilderB = new ImageBuilder(dataModel, lutManager),
-  imageBuilderC = new ImageBuilder(dataModel, lutManager),
-  xChartPainter = new LineChartPainter('X: {x}'),
-  yChartPainter = new LineChartPainter('Y: {x}'),
-  zChartPainter = new LineChartPainter('Z: {x}'),
-  dimensions = dataModel.originalData.InSituDataProber.dimensions;
+const bodyElement = document.querySelector('.content');
+const dataModel = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);
+const lutManager = new LookupTableManager();
+const imageBuilderA = new ImageBuilder(dataModel, lutManager);
+const imageBuilderB = new ImageBuilder(dataModel, lutManager);
+const imageBuilderC = new ImageBuilder(dataModel, lutManager);
+const xChartPainter = new LineChartPainter('X: {x}');
+const yChartPainter = new LineChartPainter('Y: {x}');
+const zChartPainter = new LineChartPainter('Z: {x}');
+const dimensions = dataModel.originalData.InSituDataProber.dimensions;
 
 // Configure Image builders
 imageBuilderA.setRenderMethod(imageBuilderA.getRenderMethods()[0]);
@@ -38,9 +37,9 @@ imageBuilderB.setProbeLineNotification(true);
 imageBuilderC.setProbeLineNotification(true);
 
 function updateProbeLocation(data, envelope) {
-  var builders = [imageBuilderA, imageBuilderB, imageBuilderC];
+  const builders = [imageBuilderA, imageBuilderB, imageBuilderC];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     if (!equals(data, builder.getProbe())) {
       builder.setProbe(data[0], data[1], data[2]);
     }
@@ -57,9 +56,9 @@ imageBuilderB.onProbeChange(updateProbeLocation);
 imageBuilderC.onProbeChange(updateProbeLocation);
 
 function updateCrosshairVisibility(data, envelope) {
-  var builders = [imageBuilderA, imageBuilderB, imageBuilderC];
+  const builders = [imageBuilderA, imageBuilderB, imageBuilderC];
 
-  builders.forEach(function(builder) {
+  builders.forEach((builder) => {
     builder.setCrossHairEnable(data);
   });
 
@@ -74,9 +73,9 @@ imageBuilderB.onCrosshairVisibilityChange(updateCrosshairVisibility);
 imageBuilderC.onCrosshairVisibilityChange(updateCrosshairVisibility);
 
 // Line Chart handling
-imageBuilderA.onProbeLineReady(updateChartPainters);
-imageBuilderB.onProbeLineReady(updateChartPainters);
-imageBuilderC.onProbeLineReady(updateChartPainters);
+imageBuilderA.onProbeLineReady(updateChartPainters); // eslint-disable-line
+imageBuilderB.onProbeLineReady(updateChartPainters); // eslint-disable-line
+imageBuilderC.onProbeLineReady(updateChartPainters); // eslint-disable-line
 
 function updateChartPainters(data, envelope) {
   if (data.x.fields[0].data.length) {
