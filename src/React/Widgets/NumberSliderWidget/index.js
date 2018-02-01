@@ -9,7 +9,6 @@ export default class NumberSliderWidget extends React.Component {
     this.state = {
       max: props.max,
       min: props.min,
-      step: props.step,
       value: props.value,
     };
 
@@ -39,7 +38,7 @@ export default class NumberSliderWidget extends React.Component {
   }
 
   render() {
-    var [min, max] = [this.props.min, this.props.max];
+    const [min, max] = [this.props.min, this.props.max];
 
     return (
       <div className={style.container}>
@@ -80,4 +79,6 @@ NumberSliderWidget.defaultProps = {
   min: 0,
   step: 1,
   value: 50,
+  name: '',
+  onChange: undefined,
 };

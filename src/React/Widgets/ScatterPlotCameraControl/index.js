@@ -75,3 +75,8 @@ ScatterPlotCameraControl.propTypes = {
   manager: PropTypes.object,
   name: PropTypes.string,
 };
+
+ScatterPlotCameraControl.defaultProps = {
+  manager: undefined,
+  name: undefined,
+};

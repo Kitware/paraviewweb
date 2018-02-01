@@ -59,8 +59,8 @@ export default class Coordinate2DWidget extends React.Component {
   }
 
   updateCoordinates(coords) {
-    var newCoords = {},
-      newVals = false;
+    const newCoords = {};
+    let newVals = false;
 
     ['x', 'y'].forEach((el) => {
       if ({}.hasOwnProperty.call(coords, el)) {
@@ -76,20 +76,20 @@ export default class Coordinate2DWidget extends React.Component {
 
   // no need to limit the values, for updateX/Y, the input already does that.
   updateX(e) {
-    var newVal = parseFloat(e.target.value);
+    const newVal = parseFloat(e.target.value);
     this.setState({ x: newVal });
   }
 
   updateY(e) {
-    var newVal = parseFloat(e.target.value);
+    const newVal = parseFloat(e.target.value);
     this.setState({ y: newVal });
   }
 
   // covers clicks, mouseup/down, and drag.
   pointerAction(e) {
-    var rect = this.canvas.getBoundingClientRect();
-    var x = e.pointers[0].clientX - rect.left - this.props.width / 2,
-      y = -(e.pointers[0].clientY - rect.top - this.props.height / 2);
+    const rect = this.canvas.getBoundingClientRect();
+    const x = e.pointers[0].clientX - rect.left - this.props.width / 2;
+    const y = -(e.pointers[0].clientY - rect.top - this.props.height / 2);
     this.setState({
       x: limitValue(x / (this.props.width / 2)),
       y: limitValue(y / (this.props.height / 2)),
@@ -97,9 +97,9 @@ export default class Coordinate2DWidget extends React.Component {
   }
 
   drawControl() {
-    var ctx = this.canvas.getContext('2d'),
-      height = ctx.canvas.height,
-      width = ctx.canvas.width;
+    const ctx = this.canvas.getContext('2d');
+    const height = ctx.canvas.height;
+    const width = ctx.canvas.width;
 
     // clear
     ctx.clearRect(0, 0, width, height);
@@ -211,6 +211,8 @@ Coordinate2DWidget.propTypes = {
 };
 
 Coordinate2DWidget.defaultProps = {
+  hideXY: false,
+  onChange: undefined,
   width: 50,
   height: 50,
   x: 0,

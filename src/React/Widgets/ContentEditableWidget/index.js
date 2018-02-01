@@ -43,7 +43,7 @@ export default class ContentEditableWidget extends React.Component {
   }
 
   emitChange(evt) {
-    var html = this.rootContainer.innerHTML;
+    const html = this.rootContainer.innerHTML;
     if (this.props.onChange && html !== this.lastHtml) {
       evt.target.value = html;
       this.props.onChange(evt);
@@ -58,7 +58,9 @@ export default class ContentEditableWidget extends React.Component {
   render() {
     return (
       <div
-        ref={(c) => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
         className={this.props.className}
         onInput={this.emitChange}
         onBlur={this.emitChange}
@@ -82,4 +84,7 @@ ContentEditableWidget.propTypes = {
 ContentEditableWidget.defaultProps = {
   blurOnEnter: false,
   className: '',
+  html: '',
+  onBlur: undefined,
+  onChange: undefined,
 };

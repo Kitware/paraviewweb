@@ -14,3 +14,7 @@ export default function render(props) {
 render.propTypes = {
   className: PropTypes.string,
 };
+
+render.defaultProps = {
+  className: '',
+};

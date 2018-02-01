@@ -24,18 +24,14 @@ function busyMonitor(publicAPI, model) {
     }
   };
 
-  const success = (...args) => {
+  const success = (args) => {
     checkNotifyStatus(-1);
-    return new Promise((ok, ko) => {
-      ok(...args);
-    });
+    return Promise.resolve(args);
   };
 
-  const error = (...args) => {
+  const error = (args) => {
     checkNotifyStatus(-1);
-    return new Promise((ok, ko) => {
-      ko(...args);
-    });
+    return Promise.reject(args);
   };
 
   publicAPI.busy = (promise) => {

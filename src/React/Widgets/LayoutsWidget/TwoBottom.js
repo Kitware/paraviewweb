@@ -39,4 +39,5 @@ render.propTypes = {
 render.defaultProps = {
   onClick: () => {},
   activeRegion: -1,
+  active: undefined,
 };

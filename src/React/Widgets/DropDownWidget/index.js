@@ -69,3 +69,9 @@ DropDownWidget.propTypes = {
   fields: PropTypes.array,
   onChange: PropTypes.func,
 };
+
+DropDownWidget.defaultProps = {
+  field: undefined,
+  fields: undefined,
+  onChange: undefined,
+};

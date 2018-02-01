@@ -31,4 +31,5 @@ render.defaultProps = {
   step: 28,
   margin: 1,
   fullHeight: false,
+  color: undefined,
 };

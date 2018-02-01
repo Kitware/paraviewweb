@@ -16,7 +16,7 @@ export default class NumberInputWidget extends React.Component {
 
   getValue() {
     const propVal = parseFloat(this.newVal);
-    if (!isNaN(propVal)) {
+    if (!Number.isNaN(propVal)) {
       return propVal;
     }
     return undefined;
@@ -27,7 +27,7 @@ export default class NumberInputWidget extends React.Component {
     this.setState({ editing: true, valueRep: this.newVal });
 
     const propVal = parseFloat(this.newVal);
-    if (!isNaN(propVal) && this.props.onChange) {
+    if (!Number.isNaN(propVal) && this.props.onChange) {
       if (this.props.name) {
         this.props.onChange(propVal, this.props.name);
       } else {
@@ -70,5 +70,9 @@ NumberInputWidget.defaultProps = {
   className: '',
   step: 1,
   value: 0,
-  classes: [],
+
+  max: undefined,
+  min: undefined,
+  name: undefined,
+  onChange: undefined,
 };

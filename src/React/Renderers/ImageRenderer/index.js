@@ -12,7 +12,7 @@ import MouseHandler from '../../../Interaction/Core/MouseHandler';
 const DRAW_DONE = 'ImageRenderer.draw.done';
 
 function onImageLoaded() {
-  var image = this;
+  const image = this;
 
   if (image.drawToCanvas) {
     if (image.firstRender) {
@@ -25,16 +25,16 @@ function onImageLoaded() {
 }
 
 function drawToCanvasAsImage() {
-  var image = this,
-    component = this.component,
-    canvas = component.canvasRenderer,
-    ctx = canvas.getContext('2d'),
-    w = component.state.width,
-    h = component.state.height,
-    iw = image ? image.width : 500,
-    ih = image ? image.height : 500,
-    zoomLevel = component.zoom,
-    drawingCenter = component.center;
+  const image = this;
+  const component = this.component;
+  const canvas = component.canvasRenderer;
+  const ctx = canvas.getContext('2d');
+  const w = component.state.width;
+  const h = component.state.height;
+  const iw = image ? image.width : 500;
+  const ih = image ? image.height : 500;
+  const zoomLevel = component.zoom;
+  const drawingCenter = component.center;
 
   if (!component.enableRendering) {
     return;
@@ -42,10 +42,10 @@ function drawToCanvasAsImage() {
 
   ctx.clearRect(0, 0, w, h);
 
-  const tw = Math.floor(iw * zoomLevel),
-    th = Math.floor(ih * zoomLevel),
-    tx = w * drawingCenter[0] - tw / 2,
-    ty = h * drawingCenter[1] - th / 2;
+  const tw = Math.floor(iw * zoomLevel);
+  const th = Math.floor(ih * zoomLevel);
+  const tx = w * drawingCenter[0] - tw / 2;
+  const ty = h * drawingCenter[1] - th / 2;
 
   image.activeArea = [tx, ty, tw, th];
 
@@ -75,17 +75,17 @@ function drawToCanvasAsBuffer() {
   // crosshair: [lineX * scaleX, lineY * scaleY],
   // type: this.renderMethod
 
-  var image = this,
-    data = this.data,
-    component = this.component,
-    destCanvas = component.canvasRenderer,
-    ctx = destCanvas.getContext('2d'),
-    w = component.state.width,
-    h = component.state.height,
-    iw = data.outputSize[0],
-    ih = data.outputSize[1],
-    zoomLevel = component.zoom,
-    drawingCenter = component.center;
+  const image = this;
+  const data = this.data;
+  const component = this.component;
+  const destCanvas = component.canvasRenderer;
+  const ctx = destCanvas.getContext('2d');
+  const w = component.state.width;
+  const h = component.state.height;
+  const iw = data.outputSize[0];
+  const ih = data.outputSize[1];
+  const zoomLevel = component.zoom;
+  const drawingCenter = component.center;
 
   if (!component.enableRendering) {
     return;
@@ -93,10 +93,10 @@ function drawToCanvasAsBuffer() {
 
   ctx.clearRect(0, 0, w, h);
 
-  const tw = Math.floor(iw * zoomLevel),
-    th = Math.floor(ih * zoomLevel),
-    tx = w * drawingCenter[0] - tw / 2,
-    ty = h * drawingCenter[1] - th / 2;
+  const tw = Math.floor(iw * zoomLevel);
+  const th = Math.floor(ih * zoomLevel);
+  const tx = w * drawingCenter[0] - tw / 2;
+  const ty = h * drawingCenter[1] - th / 2;
 
   try {
     ctx.drawImage(
@@ -113,8 +113,8 @@ function drawToCanvasAsBuffer() {
 
     image.activeArea = [tx, ty, tw, th];
 
-    const scale = [tw / data.area[2], th / data.area[3]],
-      translate = [tx, ty];
+    const scale = [tw / data.area[2], th / data.area[3]];
+    const translate = [tx, ty];
 
     if (data.crosshair) {
       ctx.beginPath();
@@ -250,8 +250,8 @@ export default class ImageRenderer extends React.Component {
     });
 
     this.mouseHandler.on('modifier.change', (change, envelope) => {
-      const image = this.imageToDraw,
-        ctx = this.canvasRenderer.getContext('2d');
+      const image = this.imageToDraw;
+      const ctx = this.canvasRenderer.getContext('2d');
 
       ctx.beginPath();
       ctx.fillStyle = '#ffffff';
@@ -346,12 +346,12 @@ export default class ImageRenderer extends React.Component {
   }
 
   updateTitle(event) {
-    var title = event.target.value;
+    const title = event.target.value;
     this.setState({ title });
   }
 
   updateDescription(event) {
-    var description = event.target.value;
+    const description = event.target.value;
     this.setState({ description });
   }
 
@@ -406,7 +406,7 @@ export default class ImageRenderer extends React.Component {
   }
 
   zoomCallback(event, envelope) {
-    var eventManaged = false;
+    let eventManaged = false;
 
     // Extend event with active area
     event.activeArea = this.imageToDraw.activeArea;
@@ -432,11 +432,11 @@ export default class ImageRenderer extends React.Component {
 
       if (this.zoom !== zoom) {
         // Update center to keep the location of the pointer the same
-        const x = this.center[0],
-          y = this.center[1],
-          deltaZoom = zoom / this.zoom,
-          fixedX = event.relative.x / this.state.width,
-          fixedY = event.relative.y / this.state.height;
+        const x = this.center[0];
+        const y = this.center[1];
+        const deltaZoom = zoom / this.zoom;
+        const fixedX = event.relative.x / this.state.width;
+        const fixedY = event.relative.y / this.state.height;
 
         this.zoom = zoom;
         this.center[0] = fixedX + deltaZoom * (x - fixedX);
@@ -457,7 +457,7 @@ export default class ImageRenderer extends React.Component {
   }
 
   dragCallback(event, envelope) {
-    var eventManaged = false;
+    let eventManaged = false;
 
     // Extend event with active area
     event.activeArea = this.imageToDraw.activeArea;
@@ -476,8 +476,8 @@ export default class ImageRenderer extends React.Component {
         this.baseCenter = [this.center[0], this.center[1]];
       }
 
-      const deltaX = event.deltaX / this.state.width,
-        deltaY = event.deltaY / this.state.height;
+      const deltaX = event.deltaX / this.state.width;
+      const deltaY = event.deltaY / this.state.height;
 
       if (event.isFinal) {
         this.baseCenter = [this.center[0], this.center[1]];
@@ -524,11 +524,11 @@ export default class ImageRenderer extends React.Component {
   }
 
   resetCamera() {
-    var w = this.state.width,
-      h = this.state.height,
-      image = this.imageToDraw,
-      iw = image ? image.width : 500,
-      ih = image ? image.height : 500;
+    const w = this.state.width;
+    const h = this.state.height;
+    const image = this.imageToDraw;
+    const iw = image ? image.width : 500;
+    const ih = image ? image.height : 500;
 
     this.zoom = Math.min(w / iw, h / ih);
     this.baseZoom = Math.min(w / iw, h / ih);
@@ -625,9 +625,11 @@ export default class ImageRenderer extends React.Component {
   }
 }
 
+/* eslint-disable react/no-unused-prop-types */
+
 ImageRenderer.propTypes = {
   crosshairColor: PropTypes.string,
-  imageBuilder: PropTypes.object,
+  imageBuilder: PropTypes.object.isRequired,
   listener: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
@@ -643,6 +645,7 @@ ImageRenderer.defaultProps = {
   modifiers: [0, 2],
   pressRadius: 50,
   userData: {},
+  listener: null,
 };
 
 Monologue.mixInto(ImageRenderer);

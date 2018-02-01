@@ -3,7 +3,7 @@ export function integer(val) {
 }
 
 export function double(val) {
-  return !isNaN(parseFloat(val));
+  return !Number.isNaN(Number(val));
 }
 
 export function string(val) {

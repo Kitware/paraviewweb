@@ -23,8 +23,8 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  show: PropTypes.func,
-  prop: PropTypes.object,
-  viewData: PropTypes.object,
-  onChange: PropTypes.func,
+  show: PropTypes.func.isRequired,
+  prop: PropTypes.object.isRequired,
+  viewData: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

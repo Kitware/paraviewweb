@@ -47,7 +47,7 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   componentWillMount() {
-    var drawViewportByName = this.drawViewportByName;
+    const drawViewportByName = this.drawViewportByName;
 
     this.dragCenter = false;
     this.dragInViewport = null;
@@ -62,9 +62,9 @@ export default class MultiViewRenderer extends React.Component {
 
     // Init viewports from props
     Object.keys(this.props.renderers).forEach((name) => {
-      const item = this.props.renderers[name],
-        imageBuilder = item.builder,
-        painter = item.painter;
+      const item = this.props.renderers[name];
+      const imageBuilder = item.builder;
+      const painter = item.painter;
 
       // Renderer is an ImageBuilder
       if (imageBuilder) {
@@ -154,7 +154,7 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   getActiveRenderMethod() {
-    var name = 'No render method';
+    let name = 'No render method';
     this.viewports.forEach((viewport) => {
       if (viewport.active) {
         name = viewport.name;
@@ -164,9 +164,9 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   getViewPort(event) {
-    var count = this.viewports.length,
-      x = event.relative.x,
-      y = event.relative.y;
+    let count = this.viewports.length;
+    const x = event.relative.x;
+    const y = event.relative.y;
 
     while (count) {
       count -= 1;
@@ -186,8 +186,8 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   updateDimensions() {
-    var el = this.canvasRenderer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    const el = this.canvasRenderer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
     if (
       el &&
@@ -204,15 +204,15 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   dragCallback(event, envelope) {
-    var viewport = this.getViewPort(event);
+    const viewport = this.getViewPort(event);
 
     if ((viewport || this.dragInViewport) && !this.dragCenter) {
       this.dragInViewport = this.dragInViewport || viewport;
 
       // Forward event to viewport event handler
-      const renderer = this.props.renderers[this.dragInViewport.name],
-        imageBuilder = renderer.builder,
-        listeners = imageBuilder ? imageBuilder.getListeners() : null; // FIXME ?
+      const renderer = this.props.renderers[this.dragInViewport.name];
+      const imageBuilder = renderer.builder;
+      const listeners = imageBuilder ? imageBuilder.getListeners() : null; // FIXME ?
 
       if (listeners && listeners.drag) {
         // Update relative information
@@ -250,9 +250,9 @@ export default class MultiViewRenderer extends React.Component {
       viewport.active = true;
 
       // Forward event to viewport event handler
-      const renderer = this.props.renderers[viewport.name],
-        imageBuilder = renderer.builder,
-        listeners = imageBuilder ? imageBuilder.getListeners() : null; // FIXME ?
+      const renderer = this.props.renderers[viewport.name];
+      const imageBuilder = renderer.builder;
+      const listeners = imageBuilder ? imageBuilder.getListeners() : null; // FIXME ?
 
       if (listeners && listeners.click) {
         // Update relative information
@@ -271,13 +271,13 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   zoomCallback(event, envelope) {
-    var viewport = this.getViewPort(event);
+    const viewport = this.getViewPort(event);
 
     if (viewport) {
       // Forward event to viewport event handler
-      const renderer = this.props.renderers[viewport.name],
-        imageBuilder = renderer.builder,
-        listeners = imageBuilder ? imageBuilder.getListeners() : null;
+      const renderer = this.props.renderers[viewport.name];
+      const imageBuilder = renderer.builder;
+      const listeners = imageBuilder ? imageBuilder.getListeners() : null;
 
       if (listeners && listeners.zoom) {
         // Update relative information
@@ -290,9 +290,11 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   drawViewport(viewport) {
-    var renderer = this.props.renderers[viewport.name],
-      region = viewport.region,
-      ctx = this.canvasRenderer ? this.canvasRenderer.getContext('2d') : null;
+    const renderer = this.props.renderers[viewport.name];
+    const region = viewport.region;
+    const ctx = this.canvasRenderer
+      ? this.canvasRenderer.getContext('2d')
+      : null;
 
     if (
       !ctx ||
@@ -314,19 +316,19 @@ export default class MultiViewRenderer extends React.Component {
       renderer.painter.paint(ctx, location);
     } else {
       // Assume Image builder
-      const dataToDraw = this.props.renderers[viewport.name].dataToDraw,
-        w = region[2] - 2,
-        h = region[3] - 2,
-        iw = dataToDraw.outputSize[0],
-        ih = dataToDraw.outputSize[1],
-        zoomLevel = Math.min(w / iw, h / ih);
+      const dataToDraw = this.props.renderers[viewport.name].dataToDraw;
+      const w = region[2] - 2;
+      const h = region[3] - 2;
+      const iw = dataToDraw.outputSize[0];
+      const ih = dataToDraw.outputSize[1];
+      const zoomLevel = Math.min(w / iw, h / ih);
 
       ctx.clearRect(region[0] + 1, region[1] + 1, region[2] - 2, region[3] - 2);
 
-      const tw = Math.floor(iw * zoomLevel) - 2,
-        th = Math.floor(ih * zoomLevel) - 2,
-        tx = 1 + region[0] + (w * 0.5 - tw / 2),
-        ty = 1 + region[1] + (h * 0.5 - th / 2);
+      const tw = Math.floor(iw * zoomLevel) - 2;
+      const th = Math.floor(ih * zoomLevel) - 2;
+      const tx = 1 + region[0] + (w * 0.5 - tw / 2);
+      const ty = 1 + region[1] + (h * 0.5 - th / 2);
 
       try {
         ctx.drawImage(
@@ -343,8 +345,8 @@ export default class MultiViewRenderer extends React.Component {
 
         // Draw cross hair if any
         if (dataToDraw.crosshair) {
-          const scale = [tw / dataToDraw.area[2], th / dataToDraw.area[3]],
-            translate = [tx, ty];
+          const scale = [tw / dataToDraw.area[2], th / dataToDraw.area[3]];
+          const translate = [tx, ty];
 
           ctx.beginPath();
 
@@ -373,7 +375,7 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   drawViewportByName(name) {
-    var renderer = name ? this.props.renderers[name] : null;
+    const renderer = name ? this.props.renderers[name] : null;
 
     // Update image builder if any
     if (renderer && renderer.builder && !renderer.dataToDraw) {
@@ -389,15 +391,22 @@ export default class MultiViewRenderer extends React.Component {
   }
 
   drawLayout() {
-    var ctx = this.canvasRenderer.getContext('2d'),
-      width = (ctx.canvas.width = this.state.width),
-      height = (ctx.canvas.height = this.state.height),
-      centerPx = [this.center[0] * width, this.center[1] * height],
-      spacing = this.props.spacing,
-      regions = layoutFunctions[this.layout](centerPx, spacing, width, height),
-      viewports = this.viewports,
-      numberOfRegions = regions.length;
+    const ctx = this.canvasRenderer.getContext('2d');
+    const width = this.state.width;
+    const height = this.state.height;
+    const centerPx = [this.center[0] * width, this.center[1] * height];
+    const spacing = this.props.spacing;
+    const regions = layoutFunctions[this.layout](
+      centerPx,
+      spacing,
+      width,
+      height
+    );
+    const viewports = this.viewports;
+    const numberOfRegions = regions.length;
 
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
     ctx.clearRect(0, 0, width, height);
 
     for (let i = 0; i < numberOfRegions; ++i) {
@@ -456,6 +465,7 @@ MultiViewRenderer.defaultProps = {
   activeColor: '#0000FF',
   crosshairColor: '#000000',
   renderers: {},
+  layout: '3xT',
 };
 
 // Add Observer pattern to the class using Monologue.js

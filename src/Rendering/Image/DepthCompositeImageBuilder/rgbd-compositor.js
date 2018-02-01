@@ -164,9 +164,9 @@ export default class RGBACompositor {
   // ------------------------------------------------------------------------
 
   updateQuery(query) {
-    var layers = this.queryDataModel.originalData.CompositePipeline.layers,
-      count = layers.length,
-      offsets = this.queryDataModel.originalData.CompositePipeline.offset;
+    const layers = this.queryDataModel.originalData.CompositePipeline.layers;
+    const count = layers.length;
+    const offsets = this.queryDataModel.originalData.CompositePipeline.offset;
 
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
@@ -195,7 +195,7 @@ export default class RGBACompositor {
     // Compute composite
     this.pingPong.clearFbo();
     this.offsetList.forEach((layerIdx) => {
-      var srcY = layerIdx * this.height;
+      const srcY = layerIdx * this.height;
 
       // Because the png has transparency, we need to clear the canvas, or else
       // we end up with some blending when we draw the next image

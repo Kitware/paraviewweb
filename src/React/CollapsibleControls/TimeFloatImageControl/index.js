@@ -31,8 +31,8 @@ export default class TimeFloatImageControl extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props.model,
-      next = nextProps.model;
+    const previous = this.props.model;
+    const next = nextProps.model;
 
     if (previous !== next) {
       // Force redraw
@@ -100,7 +100,7 @@ export default class TimeFloatImageControl extends React.Component {
   }
 
   toggleProbe(e) {
-    var target = e.target;
+    let target = e.target;
     while (!target.dataset.name) {
       target = target.parentNode;
     }

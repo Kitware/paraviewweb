@@ -100,13 +100,14 @@ export default class ProxyEditorWidget extends React.Component {
 ProxyEditorWidget.propTypes = {
   advanced: PropTypes.bool,
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  onApply: PropTypes.func,
+  onApply: PropTypes.func.isRequired,
   sections: PropTypes.array.isRequired,
-  onCollapseChange: PropTypes.func,
+  onCollapseChange: PropTypes.func.isRequired,
   autoApply: PropTypes.bool,
 };
 
 ProxyEditorWidget.defaultProps = {
   advanced: false,
   autoApply: false,
+  children: null,
 };

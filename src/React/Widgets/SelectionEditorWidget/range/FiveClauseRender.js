@@ -139,10 +139,10 @@ export default function render(props) {
 }
 
 render.propTypes = {
-  getLegend: PropTypes.func,
-  fieldName: PropTypes.string,
-  intervalSpec: PropTypes.object,
-  path: PropTypes.array,
-  onChange: PropTypes.func,
-  onDelete: PropTypes.func,
+  getLegend: PropTypes.func.isRequired,
+  fieldName: PropTypes.string.isRequired,
+  intervalSpec: PropTypes.object.isRequired,
+  path: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };

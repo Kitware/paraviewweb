@@ -11,8 +11,8 @@ export default class ImageBuilderViewer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.imageBuilder,
-      nextDataModel = nextProps.imageBuilder;
+    const previousDataModel = this.props.imageBuilder;
+    const nextDataModel = nextProps.imageBuilder;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -43,14 +43,14 @@ export default class ImageBuilderViewer extends React.Component {
   }
 
   render() {
-    var queryDataModel = this.props.queryDataModel,
-      magicLensController = this.props.config.MagicLens
-        ? this.props.imageBuilder
-        : null,
-      imageBuilder = this.props.config.MagicLens
-        ? this.props.imageBuilder.getActiveImageBuilder()
-        : this.props.imageBuilder,
-      controlWidgets = WidgetFactory.getWidgets(imageBuilder);
+    const queryDataModel = this.props.queryDataModel;
+    const magicLensController = this.props.config.MagicLens
+      ? this.props.imageBuilder
+      : null;
+    const imageBuilder = this.props.config.MagicLens
+      ? this.props.imageBuilder.getActiveImageBuilder()
+      : this.props.imageBuilder;
+    let controlWidgets = WidgetFactory.getWidgets(imageBuilder);
 
     // Add menuAddOn if any at the top
     if (this.props.menuAddOn) {
@@ -84,4 +84,5 @@ ImageBuilderViewer.propTypes = {
 ImageBuilderViewer.defaultProps = {
   config: {},
   userData: {},
+  menuAddOn: undefined,
 };

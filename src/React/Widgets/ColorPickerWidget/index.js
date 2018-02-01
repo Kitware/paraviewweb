@@ -39,7 +39,7 @@ export default class ColorPickerWidget extends React.Component {
   }
 
   componentDidMount() {
-    var ctx = this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = `rgb(${this.state.originalColor.join(',')})`;
     ctx.fillRect(0, 0, 1, 1);
   }
@@ -63,8 +63,8 @@ export default class ColorPickerWidget extends React.Component {
   /* eslint-enable react/no-did-update-set-state */
 
   showColor(event) {
-    var color = this.state.originalColor,
-      ctx = this.canvas.getContext('2d');
+    let color = this.state.originalColor;
+    const ctx = this.canvas.getContext('2d');
     event.preventDefault();
 
     if (event.type === 'mouseleave') {
@@ -76,12 +76,12 @@ export default class ColorPickerWidget extends React.Component {
       return;
     }
 
-    const img = this.swatch,
-      rect = img.getBoundingClientRect();
+    const img = this.swatch;
+    const rect = img.getBoundingClientRect();
 
-    const scale = this.image.width / rect.width,
-      x = scale * (event.pageX - rect.left),
-      y = scale * (event.pageY - rect.top);
+    const scale = this.image.width / rect.width;
+    const x = scale * (event.pageX - rect.left);
+    const y = scale * (event.pageY - rect.top);
 
     ctx.drawImage(img, x, y, 1, 1, 0, 0, 1, 1);
 
@@ -99,9 +99,9 @@ export default class ColorPickerWidget extends React.Component {
   }
 
   rgbColorChange(event) {
-    var color = this.state.color,
-      value = event.target.value,
-      idx = Number(event.target.dataset.colorIdx);
+    const color = this.state.color;
+    const value = event.target.value;
+    const idx = Number(event.target.dataset.colorIdx);
 
     color[idx] = value;
 
@@ -193,4 +193,5 @@ ColorPickerWidget.propTypes = {
 ColorPickerWidget.defaultProps = {
   color: [0, 0, 0],
   swatch: swatchURL,
+  onChange: undefined,
 };

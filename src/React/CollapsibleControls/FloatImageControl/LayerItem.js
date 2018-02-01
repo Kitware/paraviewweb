@@ -51,11 +51,11 @@ export default class FloatImageControlLayerItem extends React.Component {
   }
 
   render() {
-    var layer = this.props.item,
-      visible = layer.active,
-      meshVisible = layer.meshActive,
-      meshAvailable = layer.hasMesh,
-      hasDropDown = layer.arrays.length > 1;
+    const layer = this.props.item;
+    const visible = layer.active;
+    const meshVisible = layer.meshActive;
+    const meshAvailable = layer.hasMesh;
+    const hasDropDown = layer.arrays.length > 1;
 
     return (
       <div className={style.item}>

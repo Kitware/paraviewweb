@@ -77,7 +77,7 @@ render.propTypes = {
   ranges: PropTypes.object,
   getLegend: PropTypes.func,
   rationaleOpen: PropTypes.bool,
-  showUncertainty: PropTypes.bool,
+  // showUncertainty: PropTypes.bool,
 
   onSelectionChange: PropTypes.func,
   onAnnotationChange: PropTypes.func,
@@ -86,5 +86,13 @@ render.propTypes = {
 
 render.defaultProps = {
   rationaleOpen: false,
-  showUncertainty: true,
+  // showUncertainty: true,
+
+  annotation: undefined,
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
+  onSelectionChange: undefined,
+  onAnnotationChange: undefined,
+  onScoreChange: undefined,
 };

@@ -1,8 +1,6 @@
-/* global XMLHttpRequest Blob */
-
 // Generic request handler
 function makeRequest(url, handler) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);
   xhr.responseType = handler.type;

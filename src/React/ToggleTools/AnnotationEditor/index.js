@@ -115,12 +115,12 @@ export default class AnnotationEditorTool extends React.Component {
 }
 
 AnnotationEditorTool.propTypes = {
-  provider: PropTypes.object,
+  provider: PropTypes.object.isRequired,
   size: PropTypes.string,
   showUncertainty: PropTypes.bool,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
 };
 
 AnnotationEditorTool.defaultProps = {

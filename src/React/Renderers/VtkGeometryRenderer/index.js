@@ -301,7 +301,9 @@ export default class VtkGeometryRenderer extends React.Component {
         className={this.props.className}
         data-view-id={this.state.viewId}
         style={this.props.style}
-        ref={(c) => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
       />
     );
   }
@@ -309,31 +311,28 @@ export default class VtkGeometryRenderer extends React.Component {
 
 VtkGeometryRenderer.propTypes = {
   className: PropTypes.string,
-  showFPS: PropTypes.bool,
   style: PropTypes.object,
   viewId: PropTypes.string,
-  interactionTimout: PropTypes.number,
   synchronizerContextName: PropTypes.string,
   resizeOnWindowResize: PropTypes.bool,
   clearOneTimeUpdatersOnUnmount: PropTypes.bool,
   clearInstanceCacheOnUnmount: PropTypes.bool,
   clearArrayCacheOnUnmount: PropTypes.bool,
   onImageReady: PropTypes.func,
-  viewIdUpdated: PropTypes.func,
+  viewIdUpdated: PropTypes.func.isRequired,
   onBusyChange: PropTypes.func,
-  client: PropTypes.object,
-  connection: PropTypes.object,
+  client: PropTypes.object.isRequired,
 };
 
 VtkGeometryRenderer.defaultProps = {
   className: '',
-  showFPS: false,
   style: {},
   viewId: ACTIVE_VIEW_ID,
-  interactionTimout: 500,
   synchronizerContextName: SYNCHRONIZATION_CONTEXT_NAME,
   resizeOnWindowResize: false,
   clearOneTimeUpdatersOnUnmount: false,
   clearInstanceCacheOnUnmount: false,
   clearArrayCacheOnUnmount: false,
+  onImageReady: null,
+  onBusyChange: null,
 };

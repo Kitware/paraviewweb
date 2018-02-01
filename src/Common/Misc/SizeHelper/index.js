@@ -1,5 +1,3 @@
-/* global window */
-
 import Observable from '../Observable';
 import { debounce } from '../Debounce';
 
@@ -33,7 +31,7 @@ function updateSize(domElement, cacheObj) {
 // ------ New API ------
 
 function getSize(domElement, clearCache = false) {
-  var cachedSize = domSizes.get(domElement);
+  let cachedSize = domSizes.get(domElement);
   if (!cachedSize || clearCache) {
     cachedSize = { timestamp: -1 };
     domSizes.set(domElement, cachedSize);

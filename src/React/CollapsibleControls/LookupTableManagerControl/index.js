@@ -25,7 +25,7 @@ export default class LookupTableManagerControl extends React.Component {
   componentWillMount() {
     this.changeSubscription = this.props.lookupTableManager.onFieldsChange(
       (data, enevelope) => {
-        var fields = Object.keys(this.props.lookupTableManager.luts);
+        const fields = Object.keys(this.props.lookupTableManager.luts);
         this.setState({
           fields,
         });
@@ -48,9 +48,9 @@ export default class LookupTableManagerControl extends React.Component {
   }
 
   render() {
-    var lutManager = this.props.lookupTableManager,
-      lut = lutManager.getLookupTable(this.state.field),
-      originalRange = lut.getScalarRange();
+    const lutManager = this.props.lookupTableManager;
+    const lut = lutManager.getLookupTable(this.state.field);
+    const originalRange = lut.getScalarRange();
 
     return (
       <CollapsibleWidget
@@ -75,6 +75,6 @@ export default class LookupTableManagerControl extends React.Component {
 }
 
 LookupTableManagerControl.propTypes = {
-  field: PropTypes.string,
+  field: PropTypes.string.isRequired,
   lookupTableManager: PropTypes.object.isRequired,
 };

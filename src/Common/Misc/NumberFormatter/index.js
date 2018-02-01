@@ -35,7 +35,7 @@ export default class NumberFormatter {
   }
 
   add(num) {
-    if (!isFinite(num)) {
+    if (!Number.isFinite(num)) {
       return -1;
     }
     if (!this.numbers) {
@@ -57,7 +57,7 @@ export default class NumberFormatter {
   }
 
   del(num) {
-    if (!isFinite(num) || !this.numbers) {
+    if (!Number.isFinite(num) || !this.numbers) {
       return -1;
     }
     if (this.numbers.length > 0) {
@@ -80,7 +80,7 @@ export default class NumberFormatter {
       return '∞';
     } else if (num === -Infinity) {
       return '-∞';
-    } else if (isNaN(num)) {
+    } else if (Number.isNaN(num)) {
       return 'NaN';
     }
     const szn = Math.log10(Math.abs(num));
@@ -109,7 +109,7 @@ export default class NumberFormatter {
       return num.toFixed(prec - Math.floor(szn));
     }
     const exponent = -Math.floor(Math.log10(Math.abs(num)) / 3) * 3;
-    const scaled = Math.pow(10, exponent) * num;
+    const scaled = 10 ** exponent * num;
     // console.log(' sca ', scaled, ' exp ', exponent, ' szn ', szn, ' prec ', prec);
     return scaled
       .toFixed(prec - Math.ceil(szn + exponent))

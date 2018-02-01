@@ -53,4 +53,7 @@ render.defaultProps = {
   className: '',
   icon: defaultIcon,
   style: {},
+  width: undefined,
+  height: undefined,
+  onClick: undefined,
 };

@@ -22,7 +22,7 @@ export default class Slider extends React.Component {
   }
 
   render() {
-    var propsCopy = Object.assign({}, this.props);
+    const propsCopy = Object.assign({}, this.props);
     delete propsCopy.onChange;
     delete propsCopy.idx;
 
@@ -31,6 +31,6 @@ export default class Slider extends React.Component {
 }
 
 Slider.propTypes = {
-  idx: PropTypes.number,
-  onChange: PropTypes.func,
+  idx: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

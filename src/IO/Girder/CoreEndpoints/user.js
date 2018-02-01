@@ -25,15 +25,15 @@ export default function({
 
     createUser(user) {
       const expected = [
-          'login',
-          'email',
-          'firstName',
-          'lastName',
-          'password',
-          'admin',
-        ],
-        params = filterQuery(user, ...expected),
-        { missingKeys, promise } = mustContain(user, ...expected);
+        'login',
+        'email',
+        'firstName',
+        'lastName',
+        'password',
+        'admin',
+      ];
+      const params = filterQuery(user, ...expected);
+      const { missingKeys, promise } = mustContain(user, ...expected);
 
       return missingKeys
         ? promise
@@ -68,9 +68,9 @@ export default function({
     },
 
     updateUser(user) {
-      const expected = ['email', 'firstName', 'lastName', '_id'],
-        params = filterQuery(user, ...expected.slice(0, 3)), // Remove '_id'
-        { missingKeys, promise } = mustContain(user, ...expected);
+      const expected = ['email', 'firstName', 'lastName', '_id'];
+      const params = filterQuery(user, ...expected.slice(0, 3)); // Remove '_id'
+      const { missingKeys, promise } = mustContain(user, ...expected);
 
       return missingKeys
         ? promise

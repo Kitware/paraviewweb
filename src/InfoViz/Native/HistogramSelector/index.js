@@ -1,5 +1,3 @@
-/* global document */
-
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
@@ -58,9 +56,9 @@ function histogramSelector(publicAPI, model) {
     const prefixes = ['webkit', 'ms', 'Moz', 'O'];
     let i = -1;
     const n = prefixes.length;
-    const s = document.head
-      ? document.head.style
-      : document.body ? document.body.style : null;
+    let s = null;
+    s = document.head ? document.head.style : null || s;
+    s = document.body ? document.body.style : null || s;
 
     if (s === null || property.toLowerCase() in s) {
       return property.toLowerCase();

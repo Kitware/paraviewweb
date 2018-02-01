@@ -99,8 +99,10 @@ function selectionProvider(publicAPI, model) {
   // --------------------------------
 
   publicAPI.shouldCreateNewAnnotation = () => model.shouldCreateNewAnnotation;
-  publicAPI.setCreateNewAnnotationFlag = (shouldCreate) =>
-    (model.shouldCreateNewAnnotation = shouldCreate);
+  publicAPI.setCreateNewAnnotationFlag = (shouldCreate) => {
+    model.shouldCreateNewAnnotation = shouldCreate;
+    return shouldCreate;
+  };
 
   // --------------------------------
   // When a new selection is made, data dependent on that selection will be pushed

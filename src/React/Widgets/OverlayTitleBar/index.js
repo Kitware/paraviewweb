@@ -25,4 +25,5 @@ overlayTitleBar.propTypes = {
 overlayTitleBar.defaultProps = {
   title: 'Your title here',
   name: 'Overlay name',
+  onClose: undefined,
 };

@@ -50,8 +50,8 @@ export default class Probe3DViewer extends React.Component {
 
   // Auto mount listener unless notified otherwise
   componentWillMount() {
-    var queryDataModel = this.props.queryDataModel,
-      imageBuilder = this.props.imageBuilder;
+    const queryDataModel = this.props.queryDataModel;
+    const imageBuilder = this.props.imageBuilder;
 
     this.dragChartFlag = false;
     this.liveChartAxis = 0;
@@ -79,7 +79,7 @@ export default class Probe3DViewer extends React.Component {
     imageBuilder.setProbeLineNotification(true);
     this.chartListenerSubscription = imageBuilder.onProbeLineReady(
       (data, envelope) => {
-        var chartData = data[chartAxisNames[this.liveChartAxis]];
+        const chartData = data[chartAxisNames[this.liveChartAxis]];
         this.setState({ chartData });
       }
     );
@@ -125,8 +125,8 @@ export default class Probe3DViewer extends React.Component {
   }
 
   validateChartAxis() {
-    var renderCoords = this.props.imageBuilder.getRenderMethod(),
-      chartAxis = 'XYZ'[this.liveChartAxis];
+    const renderCoords = this.props.imageBuilder.getRenderMethod();
+    let chartAxis = 'XYZ'[this.liveChartAxis];
 
     if (renderCoords.indexOf(chartAxis) === -1) {
       const chartData = this.props.imageBuilder.getProbeLine(chartAxis);
@@ -139,18 +139,18 @@ export default class Probe3DViewer extends React.Component {
   }
 
   updateChart(event) {
-    var idx = Number(event.target.getAttribute('data-index')),
-      imageBuilder = this.props.imageBuilder,
-      chartData = imageBuilder.getProbeLine(idx);
+    const idx = Number(event.target.getAttribute('data-index'));
+    const imageBuilder = this.props.imageBuilder;
+    const chartData = imageBuilder.getProbeLine(idx);
 
     this.liveChartAxis = idx;
     this.setState({ chartData, chartAxis: idx });
   }
 
   dragOn(event) {
-    var el = this.chartContainer,
-      top = Number(el.style.top.replace('px', '')),
-      left = Number(el.style.left.replace('px', ''));
+    const el = this.chartContainer;
+    const top = Number(el.style.top.replace('px', ''));
+    const left = Number(el.style.left.replace('px', ''));
 
     this.dragChartFlag = true;
     this.dragPosition = [event.clientX - left, event.clientY - top];
@@ -176,7 +176,7 @@ export default class Probe3DViewer extends React.Component {
 
     const buttonClasses = [];
     [0, 1, 2].forEach((el) => {
-      var classes = [];
+      const classes = [];
       if (axisMap[2] === el) {
         classes.push(style.hidden);
       } else if (this.state.chartAxis === el) {
@@ -276,7 +276,7 @@ Probe3DViewer.propTypes = {
   imageBuilder: PropTypes.object.isRequired,
   probe: PropTypes.bool,
   queryDataModel: PropTypes.object.isRequired,
-  userData: PropTypes.object,
+  // userData: PropTypes.object,
 };
 
 Probe3DViewer.defaultProps = {

@@ -1,13 +1,11 @@
-/* global XMLHttpRequest */
-
 import Monologue from 'monologue.js';
 
-const PROCESS_READY_TOPIC = 'launcher.process.ready',
-  PROCESS_STOPPED_TOPIC = 'launcher.process.stopped',
-  CONNECTION_INFO_TOPIC = 'launcher.info.connection',
-  ERROR_TOPIC = 'launcher.error';
+const PROCESS_READY_TOPIC = 'launcher.process.ready';
+const PROCESS_STOPPED_TOPIC = 'launcher.process.stopped';
+const CONNECTION_INFO_TOPIC = 'launcher.info.connection';
+const ERROR_TOPIC = 'launcher.error';
 
-var connections = [];
+const connections = [];
 
 // DEPRECATED: replaced by wslink/js/src/ProcessLauncher
 export default class ProcessLauncher {
@@ -16,8 +14,8 @@ export default class ProcessLauncher {
   }
 
   start(config) {
-    var xhr = new XMLHttpRequest(),
-      url = this.endPoint;
+    const xhr = new XMLHttpRequest();
+    const url = this.endPoint;
 
     xhr.open('POST', url, true);
     xhr.responseType = 'json';
@@ -42,8 +40,8 @@ export default class ProcessLauncher {
   }
 
   fetchConnection(sessionId) {
-    var xhr = new XMLHttpRequest(),
-      url = [this.endPoint, sessionId].join('/');
+    const xhr = new XMLHttpRequest();
+    const url = [this.endPoint, sessionId].join('/');
 
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
@@ -68,8 +66,8 @@ export default class ProcessLauncher {
   }
 
   stop(connection) {
-    var xhr = new XMLHttpRequest(),
-      url = [this.endPoint, connection.id].join('/');
+    const xhr = new XMLHttpRequest();
+    const url = [this.endPoint, connection.id].join('/');
 
     xhr.open('DELETE', url, true);
     xhr.responseType = 'json';

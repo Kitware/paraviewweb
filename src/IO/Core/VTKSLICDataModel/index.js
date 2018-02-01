@@ -49,7 +49,8 @@ export default class VTKSLICDataModel {
         );
       }
       this.slicSource.update();
-      this.currentImageData = clusterData.dataset = this.slicSource.getOutputData();
+      clusterData.dataset = this.slicSource.getOutputData();
+      this.currentImageData = clusterData.dataset;
       this.currentImageData
         .getPointData()
         .setScalars(

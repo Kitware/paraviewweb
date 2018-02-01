@@ -19,20 +19,20 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/CompositeCo
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
 const texParameter = [
-    ['TEXTURE_MAG_FILTER', 'NEAREST'],
-    ['TEXTURE_MIN_FILTER', 'NEAREST'],
-    ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
-    ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
-  ],
-  pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
+  ['TEXTURE_MAG_FILTER', 'NEAREST'],
+  ['TEXTURE_MIN_FILTER', 'NEAREST'],
+  ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
+  ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
+];
+const pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
 
 // --------------------------------------------------------------------------
 
 function spherical2Cartesian(phi, theta) {
-  var nPhi = parseFloat(phi),
-    nTheta = parseFloat(theta),
-    phiRad = (180.0 - nPhi) * (Math.PI / 180.0),
-    thetaRad = (180.0 - nTheta) * (Math.PI / 180.0);
+  const nPhi = parseFloat(phi);
+  const nTheta = parseFloat(theta);
+  const phiRad = (180.0 - nPhi) * (Math.PI / 180.0);
+  const thetaRad = (180.0 - nTheta) * (Math.PI / 180.0);
   return [
     Math.sin(thetaRad) * Math.cos(phiRad),
     Math.sin(thetaRad) * Math.sin(phiRad),
@@ -44,14 +44,14 @@ function spherical2Cartesian(phi, theta) {
 
 function recomputeDirections(queryModel, relativeLightPosition) {
   // construct a coordinate system relative to eye point
-  var v = spherical2Cartesian(
-      queryModel.getValue('phi'),
-      queryModel.getValue('theta')
-    ),
-    viewDir = vec3.fromValues(v[0], v[1], v[2]),
-    at = vec3.fromValues(0, 0, 0), // assumption always looking at 0
-    north = vec3.fromValues(0, 0, 1), // assumption, north is always up
-    approxUp = vec3.create();
+  const v = spherical2Cartesian(
+    queryModel.getValue('phi'),
+    queryModel.getValue('theta')
+  );
+  const viewDir = vec3.fromValues(v[0], v[1], v[2]);
+  const at = vec3.fromValues(0, 0, 0); // assumption always looking at 0
+  const north = vec3.fromValues(0, 0, 1); // assumption, north is always up
+  const approxUp = vec3.create();
   vec3.add(approxUp, north, viewDir);
   vec3.normalize(approxUp, approxUp);
 
@@ -291,15 +291,15 @@ export default class SXYZLightCompositor {
   // ------------------------------------------------------------------------
 
   resampleLookupTable(fieldName) {
-    var lookupTable = this.lookupTableManager.getLookupTable(fieldName),
-      fieldRange = this.compositePipeline.ranges[fieldName],
-      delta = (fieldRange[1] - fieldRange[0]) / this.numLutSamples,
-      // lutRange = lookupTable.getScalarRange(),
-      samples = this.lutMap[fieldName];
+    const lookupTable = this.lookupTableManager.getLookupTable(fieldName);
+    const fieldRange = this.compositePipeline.ranges[fieldName];
+    const delta = (fieldRange[1] - fieldRange[0]) / this.numLutSamples;
+    // lutRange = lookupTable.getScalarRange(),
+    const samples = this.lutMap[fieldName];
     for (let i = 0; i < this.numLutSamples; ++i) {
-      const scalarValue = fieldRange[0] + i * delta,
-        colorArrayIdx = i * 4,
-        scalarColor = lookupTable.getColor(scalarValue);
+      const scalarValue = fieldRange[0] + i * delta;
+      const colorArrayIdx = i * 4;
+      const scalarColor = lookupTable.getColor(scalarValue);
       samples[colorArrayIdx] = Math.round(scalarColor[0] * 255);
       samples[colorArrayIdx + 1] = Math.round(scalarColor[1] * 255);
       samples[colorArrayIdx + 2] = Math.round(scalarColor[2] * 255);
@@ -311,10 +311,10 @@ export default class SXYZLightCompositor {
   // ------------------------------------------------------------------------
 
   updateQuery(query) {
-    var layers = this.compositePipeline.layers,
-      count = layers.length,
-      offsets = this.compositePipeline.offset,
-      fieldDependencies = this.compositePipeline.color_by_dependencies;
+    const layers = this.compositePipeline.layers;
+    const count = layers.length;
+    const offsets = this.compositePipeline.offset;
+    const fieldDependencies = this.compositePipeline.color_by_dependencies;
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {
       const fieldCode = query[idx * 2 + 1];
@@ -322,9 +322,9 @@ export default class SXYZLightCompositor {
         if (fieldDependencies[fieldCode]) {
           const depends = fieldDependencies[fieldCode];
           if (depends.normal) {
-            const nx = depends.normal[0],
-              ny = depends.normal[1],
-              nz = depends.normal[2];
+            const nx = depends.normal[0];
+            const ny = depends.normal[1];
+            const nz = depends.normal[2];
             this.offsetList.push({
               fieldName: this.compositePipeline.fields[fieldCode],
               scalar: this.spriteSize - offsets[layers[idx] + fieldCode],
@@ -353,12 +353,12 @@ export default class SXYZLightCompositor {
     }
     this.pingPong.clearFbo();
     const { lightDir, viewDir } = recomputeDirections(
-        this.queryDataModel,
-        this.lightProperties.lightPosition
-      ),
-      imgw = this.width,
-      imgh = this.height,
-      srcX = 0;
+      this.queryDataModel,
+      this.lightProperties.lightPosition
+    );
+    const imgw = this.width;
+    const imgh = this.height;
+    const srcX = 0;
 
     let srcY = 0;
 
@@ -377,8 +377,8 @@ export default class SXYZLightCompositor {
     );
     this.drawBackgroundPass(this.bgColor);
     for (let i = 0, size = this.offsetList.length; i < size; i += 1) {
-      const lOffMap = this.offsetList[i],
-        field = lOffMap.fieldName;
+      const lOffMap = this.offsetList[i];
+      const field = lOffMap.fieldName;
       srcY = 0;
       if (this.doLighting) {
         // Copy the nx buffer
@@ -564,7 +564,7 @@ export default class SXYZLightCompositor {
   // ------------------------------------------------------------------------
 
   drawLitCompositePass(viewDir, lightDir, lightProperties, lutData) {
-    var { lightTerms, lightColor } = lightProperties;
+    const { lightTerms, lightColor } = lightProperties;
 
     // Draw to the fbo on this pass
     this.gl.bindFramebuffer(

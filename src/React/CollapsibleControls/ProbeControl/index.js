@@ -57,8 +57,8 @@ export default class ProbeControl extends React.Component {
   /* eslint-enable */
 
   componentWillReceiveProps(nextProps) {
-    var previousImageBuilder = this.getImageBuilder(this.props),
-      nextImageBuilder = this.getImageBuilder(nextProps);
+    const previousImageBuilder = this.getImageBuilder(this.props);
+    const nextImageBuilder = this.getImageBuilder(nextProps);
 
     if (previousImageBuilder !== nextImageBuilder) {
       this.attachImageBuilderListeners(nextImageBuilder);
@@ -94,7 +94,7 @@ export default class ProbeControl extends React.Component {
     this.detachImageBuilderListeners();
     this.probeListenerSubscription = imageBuilder.onProbeChange(
       (probe, envelope) => {
-        var field = imageBuilder.getFieldValueAtProbeLocation();
+        const field = imageBuilder.getFieldValueAtProbeLocation();
         if (this.isReady) {
           this.setState({
             probe,
@@ -106,7 +106,7 @@ export default class ProbeControl extends React.Component {
 
     this.probeDataListenerSubscription = imageBuilder.onProbeLineReady(
       (data, envelope) => {
-        var field = imageBuilder.getFieldValueAtProbeLocation();
+        const field = imageBuilder.getFieldValueAtProbeLocation();
         if (this.isReady && field !== this.state.field) {
           this.setState({
             field,
@@ -136,9 +136,9 @@ export default class ProbeControl extends React.Component {
   }
 
   probeChange(event) {
-    var value = Number(event.target.value),
-      probe = this.state.probe,
-      idx = Number(event.target.name);
+    const value = Number(event.target.value);
+    const probe = this.state.probe;
+    const idx = Number(event.target.name);
 
     probe[idx] = value;
 
@@ -146,9 +146,10 @@ export default class ProbeControl extends React.Component {
   }
 
   render() {
-    var imageBuilder = this.getImageBuilder(this.props),
-      value = this.state.field || imageBuilder.getFieldValueAtProbeLocation(),
-      valueStr = `${value}`;
+    const imageBuilder = this.getImageBuilder(this.props);
+    const value =
+      this.state.field || imageBuilder.getFieldValueAtProbeLocation();
+    let valueStr = `${value}`;
 
     if (value === undefined) {
       valueStr = '';

@@ -36,4 +36,6 @@ render.propTypes = {
 
 render.defaultProps = {
   onChange: () => {},
+  active: undefined,
+  className: '',
 };

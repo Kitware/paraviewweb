@@ -108,4 +108,12 @@ render.propTypes = {
 render.defaultProps = {
   rationaleOpen: false,
   showUncertainty: true,
+
+  annotation: undefined,
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
+  onSelectionChange: undefined,
+  onAnnotationChange: undefined,
+  onScoreChange: undefined,
 };

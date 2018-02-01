@@ -77,8 +77,8 @@ export default function render(props) {
 render.propTypes = {
   onLayoutChange: PropTypes.func,
   onViewportChange: PropTypes.func,
-  activeLayout: PropTypes.string,
-  viewports: PropTypes.object,
+  activeLayout: PropTypes.string.isRequired,
+  viewports: PropTypes.object.isRequired,
   count: PropTypes.number,
 };
 

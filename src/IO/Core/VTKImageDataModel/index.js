@@ -10,7 +10,7 @@ import DataManager from '../DataManager';
 let dataManager = new DataManager();
 const OBJECT_READY_TOPIC = 'object-ready';
 
-var imageDataModelCounter = 0;
+let imageDataModelCounter = 0;
 
 export default class VTKImageDataModel {
   constructor(basepath) {

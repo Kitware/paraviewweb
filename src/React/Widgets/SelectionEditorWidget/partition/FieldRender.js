@@ -47,3 +47,11 @@ render.propTypes = {
   depth: PropTypes.number,
   className: PropTypes.string,
 };
+
+render.defaultProps = {
+  children: undefined,
+  getLegend: undefined,
+  fieldName: undefined,
+  depth: undefined,
+  className: undefined,
+};

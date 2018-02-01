@@ -109,7 +109,9 @@ export default class VtkRenderer extends React.Component {
       <div
         className={this.props.className}
         style={this.props.style}
-        ref={(c) => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
       />
     );
   }
@@ -117,13 +119,13 @@ export default class VtkRenderer extends React.Component {
 
 VtkRenderer.propTypes = {
   className: PropTypes.string,
-  client: PropTypes.object,
+  client: PropTypes.object.isRequired,
   viewId: PropTypes.string,
   interactionTimout: PropTypes.number,
-  connection: PropTypes.object,
   oldImageStream: PropTypes.bool,
   showFPS: PropTypes.bool,
   style: PropTypes.object,
+  connection: PropTypes.object,
 };
 
 VtkRenderer.defaultProps = {
@@ -133,4 +135,5 @@ VtkRenderer.defaultProps = {
   style: {},
   viewId: '-1',
   interactionTimout: 500,
+  connection: null,
 };

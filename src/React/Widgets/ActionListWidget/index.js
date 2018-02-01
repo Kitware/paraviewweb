@@ -12,7 +12,7 @@ export default class ActionListWidget extends React.Component {
   }
 
   processClick(event) {
-    var target = event.target;
+    let target = event.target;
     while (!target.dataset.name) {
       target = target.parentNode;
     }
@@ -27,7 +27,7 @@ export default class ActionListWidget extends React.Component {
   }
 
   render() {
-    var list = [];
+    const list = [];
 
     this.props.list.forEach((item, idx) => {
       list.push(
@@ -53,4 +53,8 @@ export default class ActionListWidget extends React.Component {
 ActionListWidget.propTypes = {
   list: PropTypes.array.isRequired,
   onClick: PropTypes.func,
+};
+
+ActionListWidget.defaultProps = {
+  onClick: undefined,
 };

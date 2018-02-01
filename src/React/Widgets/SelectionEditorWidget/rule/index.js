@@ -130,8 +130,15 @@ export default function render(props) {
 
 render.propTypes = {
   selection: PropTypes.object,
-  ranges: PropTypes.object,
+  // ranges: PropTypes.object,
   onChange: PropTypes.func,
   getLegend: PropTypes.func,
   className: PropTypes.string,
+};
+
+render.defaultProps = {
+  selection: undefined,
+  onChange: undefined,
+  getLegend: undefined,
+  className: undefined,
 };

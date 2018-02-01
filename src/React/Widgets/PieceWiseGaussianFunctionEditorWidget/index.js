@@ -119,7 +119,9 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
     return (
       <div
         style={{ overflow: 'hidden', minHeigh: '10px', minWidth: '10px' }}
-        ref={(c) => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
       />
     );
   }
@@ -128,15 +130,16 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
 PieceWiseGaussianFunctionEditorWidget.defaultProps = {
   height: 200,
   width: -1,
-  points: [],
   bgImage: null,
+
+  gaussians: undefined,
+  onChange: undefined,
+  onEditModeChange: undefined,
 };
 
 PieceWiseGaussianFunctionEditorWidget.propTypes = {
-  points: PropTypes.array,
+  // points: PropTypes.array,
   gaussians: PropTypes.array,
-  rangeMin: PropTypes.number,
-  rangeMax: PropTypes.number,
   onChange: PropTypes.func,
   onEditModeChange: PropTypes.func,
   height: PropTypes.number,

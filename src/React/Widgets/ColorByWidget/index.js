@@ -8,7 +8,7 @@ import AdvancedView from './AdvancedView';
 const SEP = ':|:';
 
 function doubleToHex(number) {
-  var str = Math.floor(number * 255).toString(16);
+  let str = Math.floor(number * 255).toString(16);
   while (str.length < 2) {
     str = `0${str}`;
   }
@@ -62,7 +62,7 @@ export default class ColorByWidget extends React.Component {
   }
 
   onColorChange(event) {
-    var scalarBarVisible = this.state.scalarBarVisible;
+    let scalarBarVisible = this.state.scalarBarVisible;
     const colorValue = event.target.value;
     const [arrayLocation, arrayName] = colorValue.split(SEP);
     const colorMode = arrayName ? 'array' : 'SOLID';
@@ -127,7 +127,7 @@ export default class ColorByWidget extends React.Component {
   }
 
   toggleScalarBar() {
-    var scalarBarVisible = !this.state.scalarBarVisible;
+    let scalarBarVisible = !this.state.scalarBarVisible;
 
     if (this.state.colorMode === 'SOLID') {
       scalarBarVisible = false;
@@ -247,7 +247,17 @@ ColorByWidget.propTypes = {
 };
 
 ColorByWidget.defaultProps = {
+  className: '',
   useGaussian: false,
   min: 0,
   max: 1,
+  gaussians: undefined,
+  onChange: undefined,
+  presets: undefined,
+  representation: undefined,
+  scalarBar: undefined,
+  source: undefined,
+  opacityPoints: undefined,
+  onOpacityPointsChange: undefined,
+  opacityEditorSize: undefined,
 };

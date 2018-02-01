@@ -36,3 +36,9 @@ DepthMatchingRender.propTypes = {
   depth: PropTypes.number,
   maxDepth: PropTypes.number,
 };
+
+DepthMatchingRender.defaultProps = {
+  children: undefined,
+  depth: undefined,
+  maxDepth: undefined,
+};

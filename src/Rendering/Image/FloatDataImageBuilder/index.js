@@ -10,8 +10,8 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTable
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/FloatImageControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const PROBE_CHANGE_TOPIC = 'probe-change',
-  TIME_DATA_READY = 'time-data-ready';
+const PROBE_CHANGE_TOPIC = 'probe-change';
+const TIME_DATA_READY = 'time-data-ready';
 
 export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
@@ -85,9 +85,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     this.registerSubscription(
       queryDataModel.on('pipeline_data', (data, envelope) => {
         this.layers.forEach((item) => {
-          var dataId = `${item.name}_${item.array}`,
-            dataLight = `${item.name}__light`,
-            dataMesh = `${item.name}__mesh`;
+          const dataId = `${item.name}_${item.array}`;
+          const dataLight = `${item.name}__light`;
+          const dataMesh = `${item.name}__mesh`;
           if (item.active && data[dataId]) {
             item.data = new window[item.type](data[dataId].data);
             item.light = new Uint8Array(data[dataLight].data);
@@ -142,7 +142,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getCategories() {
-    var categories = [];
+    const categories = [];
 
     this.layers.forEach((layer) => {
       if (layer.active) {
@@ -160,7 +160,7 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   update() {
-    var categories = this.getCategories();
+    const categories = this.getCategories();
     this.queryDataModel.fetchData({
       name: 'pipeline_data',
       categories,
@@ -170,8 +170,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   fetchTimeData() {
-    var categories = this.getCategories(),
-      query = this.queryDataModel.getQuery();
+    const categories = this.getCategories();
+    const query = this.queryDataModel.getQuery();
 
     // Prevent concurrent data fetching for time
     if (
@@ -205,9 +205,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
 
   /* eslint-disable complexity */
   getTimeChart(xx, yy) {
-    var x = xx;
-    var y = yy;
-    var probeHasChanged = !this.timeProbe.enabled || this.timeProbe.forceUpdate;
+    let x = xx;
+    let y = yy;
+    let probeHasChanged = !this.timeProbe.enabled || this.timeProbe.forceUpdate;
     this.timeProbe.enabled = true;
 
     // this.timeProbe.value = '';
@@ -221,8 +221,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       this.timeProbe.y = y;
     }
 
-    const qA = this.queryDataModel.getQuery(),
-      qB = this.timeProbe.query;
+    const qA = this.queryDataModel.getQuery();
+    const qB = this.timeProbe.query;
 
     // Time is irrelevant
     qB.time = qA.time;
@@ -232,16 +232,16 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     }
 
     // Find the layer under (x,y)
-    const width = this.dimensions[0],
-      height = this.dimensions[1],
-      idx = (height - y - 1) * width + x;
+    const width = this.dimensions[0];
+    const height = this.dimensions[1];
+    const idx = (height - y - 1) * width + x;
 
-    let arrayType = '',
-      field = null,
-      layerName = null;
+    let arrayType = '';
+    let field = null;
+    let layerName = null;
 
     this.layers.forEach((layer) => {
-      if (layer.active && !isNaN(layer.data[idx])) {
+      if (layer.active && !Number.isNaN(layer.data[idx])) {
         arrayType = layer.type;
         field = layer.array;
         layerName = layer.name;
@@ -265,21 +265,21 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
     }
 
     // Build chart data information
-    const timeValues = this.timeDataQueryDataModel.getValues('time'),
-      dataValues = [],
-      chartData = {
-        xRange: [
-          Number(timeValues[0]),
-          Number(timeValues[timeValues.length - 1]),
-        ],
-        fields: [
-          {
-            name: field,
-            data: dataValues,
-          },
-        ],
-      },
-      timeSize = this.timeData.data.length;
+    const timeValues = this.timeDataQueryDataModel.getValues('time');
+    const dataValues = [];
+    const chartData = {
+      xRange: [
+        Number(timeValues[0]),
+        Number(timeValues[timeValues.length - 1]),
+      ],
+      fields: [
+        {
+          name: field,
+          data: dataValues,
+        },
+      ],
+    };
+    const timeSize = this.timeData.data.length;
 
     if (field && this.lookupTableManager.getLookupTable(field)) {
       chartData.fields[0].range = this.lookupTableManager
@@ -314,16 +314,16 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   render() {
-    var ctx = this.bgCanvas.get2DContext(),
-      width = this.dimensions[0],
-      height = this.dimensions[1],
-      size = width * height,
-      imageData = ctx.createImageData(width, height),
-      pixels = imageData.data;
+    const ctx = this.bgCanvas.get2DContext();
+    const width = this.dimensions[0];
+    const height = this.dimensions[1];
+    const size = width * height;
+    const imageData = ctx.createImageData(width, height);
+    const pixels = imageData.data;
 
     function flipY(idx) {
-      var x = idx % width,
-        y = Math.floor(idx / width);
+      const x = idx % width;
+      const y = Math.floor(idx / width);
 
       return (height - y - 1) * width + x;
     }
@@ -333,11 +333,11 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       if (layer.active) {
         const lut = this.lookupTableManager.getLookupTable(layer.array);
         for (let i = 0; i < size; i++) {
-          const flipedY = flipY(i),
-            color = lut.getColor(layer.data[flipedY]),
-            light = layer.light
-              ? layer.light[flipedY] ? layer.light[flipedY] - this.light : 0
-              : 0;
+          const flipedY = flipY(i);
+          const color = lut.getColor(layer.data[flipedY]);
+          const light = layer.light
+            ? layer.light[flipedY] ? layer.light[flipedY] - this.light : 0
+            : 0;
 
           if (color[3]) {
             pixels[i * 4 + 0] = color[0] * 255 + light;
@@ -368,9 +368,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
 
     // Draw time probe if enabled
     if (this.timeProbe.enabled && this.timeProbe.draw) {
-      const x = this.timeProbe.x,
-        y = this.timeProbe.y,
-        delta = 10;
+      const x = this.timeProbe.x;
+      const y = this.timeProbe.y;
+      const delta = 10;
 
       ctx.beginPath();
       ctx.moveTo(x - delta, y);
@@ -433,8 +433,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var model = this,
-      { lookupTableManager, queryDataModel } = this.getControlModels();
+    const model = this;
+    const { lookupTableManager, queryDataModel } = this.getControlModels();
 
     return [
       {
@@ -518,8 +518,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateLayerVisibility(name, visible) {
-    var array = this.layers,
-      count = array.length;
+    const array = this.layers;
+    let count = array.length;
 
     while (count) {
       count -= 1;
@@ -538,8 +538,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateMaskLayerVisibility(name, visible) {
-    var array = this.layers,
-      count = array.length;
+    const array = this.layers;
+    let count = array.length;
 
     while (count) {
       count -= 1;
@@ -554,8 +554,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateLayerColorBy(name, arrayName) {
-    var array = this.layers,
-      count = array.length;
+    const array = this.layers;
+    let count = array.length;
 
     while (count) {
       count -= 1;

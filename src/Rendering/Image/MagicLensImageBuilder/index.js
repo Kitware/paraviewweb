@@ -3,8 +3,8 @@ import now from 'mout/src/time/now';
 
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
-const IMAGE_READY_TOPIC = 'image-ready',
-  MODEL_CHANGE_TOPIC = 'model-change';
+const IMAGE_READY_TOPIC = 'image-ready';
+const MODEL_CHANGE_TOPIC = 'model-change';
 
 // MagicLensImageBuilder Object ----------------------------------------------
 
@@ -75,22 +75,21 @@ export default class MagicLensImageBuilder {
     // Create custom listener for lens drag + zoom
     this.listener = {
       drag: (event, envelope) => {
-        var time = now(),
-          newDrag = this.lastDragTime + this.newMouseTimeout < time,
-          eventManaged = false,
-          activeArea = event.activeArea,
-          xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        const time = now();
+        const newDrag = this.lastDragTime + this.newMouseTimeout < time;
+        let eventManaged = false;
+        const activeArea = event.activeArea;
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         // Clamp bounds
         xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
         yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
-        const xPos = Math.floor(xRatio * this.width),
-          yPos = Math.floor(yRatio * this.height),
-          distFromLensCenter =
-            Math.pow(xPos - this.lensCenterX, 2) +
-            Math.pow(yPos - this.lensCenterY, 2);
+        const xPos = Math.floor(xRatio * this.width);
+        const yPos = Math.floor(yRatio * this.height);
+        const distFromLensCenter =
+          (xPos - this.lensCenterX) ** 2 + (yPos - this.lensCenterY) ** 2;
 
         if (newDrag) {
           this.lensZoom = false;
@@ -106,8 +105,7 @@ export default class MagicLensImageBuilder {
         }
 
         if (
-          (this.lensDrag ||
-            distFromLensCenter < Math.pow(this.lensRadius, 2)) &&
+          (this.lensDrag || distFromLensCenter < this.lensRadius ** 2) &&
           event.modifier === 0 &&
           !this.listenerDrag
         ) {
@@ -146,12 +144,12 @@ export default class MagicLensImageBuilder {
       },
       /* eslint-disable complexity */
       zoom: (event, envelope) => {
-        var time = now(),
-          newZoom = this.lastZoomTime + this.newMouseTimeout < time,
-          eventManaged = false,
-          activeArea = event.activeArea,
-          xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        const time = now();
+        const newZoom = this.lastZoomTime + this.newMouseTimeout < time;
+        let eventManaged = false;
+        const activeArea = event.activeArea;
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         // Reset  flags
         if (newZoom) {
@@ -165,15 +163,13 @@ export default class MagicLensImageBuilder {
         xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
         yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
-        const xPos = Math.floor(xRatio * this.width),
-          yPos = Math.floor(yRatio * this.height),
-          distFromLensCenter =
-            Math.pow(xPos - this.lensCenterX, 2) +
-            Math.pow(yPos - this.lensCenterY, 2);
+        const xPos = Math.floor(xRatio * this.width);
+        const yPos = Math.floor(yRatio * this.height);
+        const distFromLensCenter =
+          (xPos - this.lensCenterX) ** 2 + (yPos - this.lensCenterY) ** 2;
 
         if (
-          (this.lensZoom ||
-            distFromLensCenter < Math.pow(this.lensRadius, 2)) &&
+          (this.lensZoom || distFromLensCenter < this.lensRadius ** 2) &&
           event.modifier === 0 &&
           !this.listenerZoom
         ) {

@@ -29,7 +29,7 @@ export default class TextInputWidget extends React.Component {
   }
 
   valueChange(e) {
-    var newVal = e.target.value;
+    const newVal = e.target.value;
     this.setState({ editing: true, valueRep: newVal });
   }
 
@@ -118,4 +118,8 @@ TextInputWidget.defaultProps = {
   escEndsEdit: false,
   blurEndsEdit: true,
   grabFocus: false,
+  name: '',
+  onChange: undefined,
+  placeholder: '',
+  maxWidth: '',
 };

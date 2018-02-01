@@ -126,7 +126,6 @@ export default class ColorByWidget extends React.Component {
 // ></i>
 
 ColorByWidget.propTypes = {
-  className: PropTypes.string,
   max: PropTypes.number,
   min: PropTypes.number,
   onChange: PropTypes.func,
@@ -146,4 +145,19 @@ ColorByWidget.propTypes = {
 
 ColorByWidget.defaultProps = {
   opacityEditorSize: [-1, 96],
+
+  max: undefined,
+  min: undefined,
+  onChange: undefined,
+  presets: undefined,
+  representation: undefined,
+  scalarBar: undefined,
+  source: undefined,
+  visible: undefined,
+  hidePointControl: undefined,
+  opacityPoints: undefined,
+  onOpacityPointsChange: undefined,
+  onOpacityEditModeChange: undefined,
+  useGaussian: undefined,
+  gaussians: undefined,
 };

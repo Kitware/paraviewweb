@@ -197,7 +197,9 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
     return (
       <div
         className={style.pieceWiseFunctionEditorWidget}
-        ref={(c) => (this.rootContainer = c)}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
       >
         <canvas
           className={style.canvas}
@@ -267,4 +269,9 @@ PieceWiseFunctionEditorWidget.defaultProps = {
   height: 200,
   width: -1,
   points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+  rangeMin: 0,
+  rangeMax: 1,
+  onChange: undefined,
+  onEditModeChange: undefined,
+  hidePointControl: false,
 };

@@ -27,8 +27,8 @@ export default class QueryDataModelControl extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.model,
-      nextDataModel = nextProps.model;
+    const previousDataModel = this.props.model;
+    const nextDataModel = nextProps.model;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -60,7 +60,7 @@ export default class QueryDataModelControl extends React.Component {
   }
 
   render() {
-    var exploreButton = (
+    const exploreButton = (
       <ExploreButton
         key="explore-button"
         icon={style.exploreIcon}
@@ -95,4 +95,5 @@ QueryDataModelControl.propTypes = {
 QueryDataModelControl.defaultProps = {
   handleExploration: false,
   listener: true,
+  model: null,
 };

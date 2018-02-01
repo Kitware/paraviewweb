@@ -19,4 +19,9 @@ render.propTypes = {
 
 render.defaultProps = {
   onChange(selection, isEditDone) {},
+
+  selection: undefined,
+  ranges: undefined,
+  getLegend: undefined,
+  className: undefined,
 };

@@ -63,3 +63,9 @@ ScatterPlotControl.propTypes = {
   activeScores: PropTypes.array,
   onActiveScoresChange: PropTypes.func,
 };
+
+ScatterPlotControl.defaultProps = {
+  manager: undefined,
+  activeScores: undefined,
+  onActiveScoresChange: undefined,
+};

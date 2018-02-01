@@ -16,8 +16,8 @@ export default class CompositePipelineWidget extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props.model,
-      next = nextProps.model;
+    const previous = this.props.model;
+    const next = nextProps.model;
 
     if (previous !== next) {
       this.detachListener();
@@ -44,8 +44,8 @@ export default class CompositePipelineWidget extends React.Component {
   }
 
   render() {
-    var pipelineModel = this.props.model,
-      pipelineDescription = pipelineModel.getPipelineDescription();
+    const pipelineModel = this.props.model;
+    const pipelineDescription = pipelineModel.getPipelineDescription();
 
     return (
       <div className={style.container}>

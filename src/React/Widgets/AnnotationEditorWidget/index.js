@@ -121,4 +121,9 @@ render.defaultProps = {
   onChange(annotation, isEditDone) {},
   rationaleOpen: false,
   showUncertainty: true,
+
+  annotation: undefined,
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
 };

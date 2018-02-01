@@ -1,13 +1,13 @@
 import Monologue from 'monologue.js';
 
 const modifier = {
-    NONE: 0,
-    ALT: 1,
-    META: 2,
-    SHIFT: 4,
-    CTRL: 8,
-  },
-  INTERATION_TOPIC = 'vtk.web.interaction';
+  NONE: 0,
+  ALT: 1,
+  META: 2,
+  SHIFT: 4,
+  CTRL: 8,
+};
+const INTERATION_TOPIC = 'vtk.web.interaction';
 
 const NoOp = () => {};
 

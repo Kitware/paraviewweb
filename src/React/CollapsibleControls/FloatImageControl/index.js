@@ -27,8 +27,8 @@ export default class FloatImageControl extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props.model,
-      next = nextProps.model;
+    const previous = this.props.model;
+    const next = nextProps.model;
 
     if (previous !== next) {
       this.detachListener();
@@ -40,9 +40,9 @@ export default class FloatImageControl extends React.Component {
   }
 
   onProbeChange(e) {
-    var name = e.target.name,
-      newVal = Number(e.target.value),
-      newState = { x: this.state.x, y: this.state.y };
+    const name = e.target.name;
+    const newVal = Number(e.target.value);
+    const newState = { x: this.state.x, y: this.state.y };
 
     newState[name] = newVal;
     this.setState(newState);
@@ -81,10 +81,10 @@ export default class FloatImageControl extends React.Component {
   }
 
   render() {
-    var floatImageModel = this.props.model,
-      timeProbe = floatImageModel.getTimeProbe(),
-      width = floatImageModel.dimensions[0],
-      height = floatImageModel.dimensions[1];
+    const floatImageModel = this.props.model;
+    const timeProbe = floatImageModel.getTimeProbe();
+    const width = floatImageModel.dimensions[0];
+    const height = floatImageModel.dimensions[1];
 
     return (
       <div className={style.container}>

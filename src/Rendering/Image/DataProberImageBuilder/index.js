@@ -7,52 +7,52 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTable
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/ProbeControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
-  PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change',
-  CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
-    'ProbeImageBuilder.crosshair.visibility.change',
-  RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change',
-  dataMapping = {
-    XY: {
-      idx: [0, 1, 2],
-      hasChange: (probe, x, y, z) => probe[2] !== z,
-      updateProbeValue: (self, x, y, z) => {
-        var width = self.metadata.dimensions[0],
-          idx = x + y * width,
-          array = self.scalars[self.getField()];
+const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready';
+const PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change';
+const CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
+  'ProbeImageBuilder.crosshair.visibility.change';
+const RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change';
+const dataMapping = {
+  XY: {
+    idx: [0, 1, 2],
+    hasChange: (probe, x, y, z) => probe[2] !== z,
+    updateProbeValue: (self, x, y, z) => {
+      const width = self.metadata.dimensions[0];
+      const idx = x + y * width;
+      const array = self.scalars[self.getField()];
 
-        if (array) {
-          self.probeValue = array[idx];
-        }
-      },
+      if (array) {
+        self.probeValue = array[idx];
+      }
     },
-    XZ: {
-      idx: [0, 2, 1],
-      hasChange: (probe, x, y, z) => probe[1] !== y,
-      updateProbeValue: (self, x, y, z) => {
-        var width = self.metadata.dimensions[0],
-          idx = x + z * width,
-          array = self.scalars[self.getField()];
+  },
+  XZ: {
+    idx: [0, 2, 1],
+    hasChange: (probe, x, y, z) => probe[1] !== y,
+    updateProbeValue: (self, x, y, z) => {
+      const width = self.metadata.dimensions[0];
+      const idx = x + z * width;
+      const array = self.scalars[self.getField()];
 
-        if (array) {
-          self.probeValue = array[idx];
-        }
-      },
+      if (array) {
+        self.probeValue = array[idx];
+      }
     },
-    ZY: {
-      idx: [2, 1, 0],
-      hasChange: (probe, x, y, z) => probe[0] !== x,
-      updateProbeValue: (self, x, y, z) => {
-        var width = self.metadata.dimensions[2],
-          idx = z + y * width,
-          array = self.scalars[self.getField()];
+  },
+  ZY: {
+    idx: [2, 1, 0],
+    hasChange: (probe, x, y, z) => probe[0] !== x,
+    updateProbeValue: (self, x, y, z) => {
+      const width = self.metadata.dimensions[2];
+      const idx = z + y * width;
+      const array = self.scalars[self.getField()];
 
-        if (array) {
-          self.probeValue = array[idx];
-        }
-      },
+      if (array) {
+        self.probeValue = array[idx];
+      }
     },
-  };
+  },
+};
 
 export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
@@ -142,13 +142,13 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         if (!event.activeArea) {
           return false;
         }
-        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          dimensions = self.metadata.dimensions,
-          activeArea = event.activeArea;
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const dimensions = self.metadata.dimensions;
+        const activeArea = event.activeArea;
 
-        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         if (event.modifier) {
           return false;
@@ -158,8 +158,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
         yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
-        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
-          yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
+        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]);
+        const yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
 
         probe[axisMap[0]] = xPos;
         probe[axisMap[1]] = yPos;
@@ -172,13 +172,13 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         if (!event.activeArea) {
           return false;
         }
-        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          dimensions = self.metadata.dimensions,
-          activeArea = event.activeArea;
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const dimensions = self.metadata.dimensions;
+        const activeArea = event.activeArea;
 
-        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         if (event.modifier) {
           return false;
@@ -188,8 +188,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         xRatio = xRatio < 0 ? 0 : xRatio > 1 ? 1 : xRatio;
         yRatio = yRatio < 0 ? 0 : yRatio > 1 ? 1 : yRatio;
 
-        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
-          yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
+        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]);
+        const yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
 
         probe[axisMap[0]] = xPos;
         probe[axisMap[1]] = yPos;
@@ -199,9 +199,9 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
         return true;
       },
       zoom: (event, envelope) => {
-        var probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          idx = axisMap[2];
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const idx = axisMap[2];
 
         if (event.modifier) {
           return false;
@@ -235,7 +235,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getYOffset(slice) {
-    var sliceIdx = slice;
+    let sliceIdx = slice;
     if (sliceIdx === undefined) {
       sliceIdx = this.probeXYZ[2];
     }
@@ -245,7 +245,7 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getImage(slice, callback) {
-    var sliceIdx = slice;
+    let sliceIdx = slice;
     if (sliceIdx === undefined) {
       sliceIdx = this.probeXYZ[2];
     }
@@ -256,8 +256,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     let idx = Math.floor(sliceIdx / this.metadata.sprite_size);
     idx = idx < 0 ? 0 : idx > max ? max : idx;
 
-    const data = this.lastImageStack[this.metadata.slices[idx]],
-      img = data.image;
+    const data = this.lastImageStack[this.metadata.slices[idx]];
+    const img = data.image;
 
     if (img) {
       if (img.complete) {
@@ -274,12 +274,12 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   setProbe(i, j, k) {
-    var fn = dataMapping[this.renderMethod].hasChange;
-    var idx = dataMapping[this.renderMethod].idx;
-    var previousValue = [].concat(this.probeXYZ);
-    var x = i;
-    var y = j;
-    var z = k;
+    const fn = dataMapping[this.renderMethod].hasChange;
+    const idx = dataMapping[this.renderMethod].idx;
+    const previousValue = [].concat(this.probeXYZ);
+    let x = i;
+    let y = j;
+    let z = k;
 
     // Allow i to be [x,y,z]
     if (Array.isArray(i)) {
@@ -293,8 +293,8 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
       this.render();
     } else {
       this.probeXYZ = [x, y, z];
-      const dimensions = this.metadata.dimensions,
-        spacing = this.metadata.spacing;
+      const dimensions = this.metadata.dimensions;
+      const spacing = this.metadata.spacing;
 
       dataMapping[this.renderMethod].updateProbeValue(this, x, y, z);
       this.pushToFront(
@@ -334,16 +334,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getProbeLine(axisIdx) {
-    var fieldData = {
-        name: this.getField(),
-        data: [],
-      },
-      probeData = {
-        xRange: [0, 100],
-        fields: [fieldData],
-      },
-      axisToProbe = -1,
-      axisMapping = dataMapping[this.renderMethod].idx;
+    const fieldData = {
+      name: this.getField(),
+      data: [],
+    };
+    const probeData = {
+      xRange: [0, 100],
+      fields: [fieldData],
+    };
+    let axisToProbe = -1;
+    const axisMapping = dataMapping[this.renderMethod].idx;
 
     for (let i = 0; i < 2; i++) {
       if (axisIdx === axisMapping[i]) {
@@ -352,16 +352,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     }
 
     if (axisToProbe !== -1) {
-      const scalarPlan = this.scalars[fieldData.name],
-        dimensions = this.metadata.dimensions,
-        width = dimensions[axisMapping[0]],
-        height = dimensions[axisMapping[1]],
-        deltaStep = axisToProbe === 0 ? 1 : width,
-        offset =
-          axisToProbe === 0
-            ? this.probeXYZ[axisMapping[1]] * width
-            : this.probeXYZ[axisMapping[0]],
-        size = axisToProbe === 0 ? width : height;
+      const scalarPlan = this.scalars[fieldData.name];
+      const dimensions = this.metadata.dimensions;
+      const width = dimensions[axisMapping[0]];
+      const height = dimensions[axisMapping[1]];
+      const deltaStep = axisToProbe === 0 ? 1 : width;
+      const offset =
+        axisToProbe === 0
+          ? this.probeXYZ[axisMapping[1]] * width
+          : this.probeXYZ[axisMapping[0]];
+      const size = axisToProbe === 0 ? width : height;
 
       if (this.metadata.origin && this.metadata.spacing) {
         probeData.xRange[0] = this.metadata.origin[axisIdx];
@@ -415,9 +415,9 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsImage(width, height, scaleX, scaleY, lineX, lineY) {
-    var destWidth = Math.floor(width * scaleX),
-      destHeight = Math.floor(height * scaleY),
-      ctx = null;
+    const destWidth = Math.floor(width * scaleX);
+    const destHeight = Math.floor(height * scaleY);
+    let ctx = null;
 
     // Make sure we have a foreground buffer
     if (this.fgCanvas) {
@@ -462,10 +462,10 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsBuffer(width, height, scaleX, scaleY, lineX, lineY) {
-    var destWidth = Math.floor(width * scaleX),
-      destHeight = Math.floor(height * scaleY);
+    const destWidth = Math.floor(width * scaleX);
+    const destHeight = Math.floor(height * scaleY);
 
-    var readyImage = {
+    const readyImage = {
       canvas: this.bgCanvas.el,
       imageData: this.bgCanvas.el
         .getContext('2d')
@@ -487,15 +487,15 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderXY() {
-    var self = this,
-      ctx = this.bgCanvas.get2DContext(),
-      offset = this.getYOffset(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      spacing = this.metadata.spacing;
+    const self = this;
+    const ctx = this.bgCanvas.get2DContext();
+    const offset = this.getYOffset();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    const spacing = this.metadata.spacing;
 
     function drawThisImage() {
-      var image = this;
+      const image = this;
       ctx.drawImage(
         image,
         0,
@@ -526,16 +526,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderZY() {
-    var self = this,
-      ctx = this.bgCanvas.get2DContext(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      activeColumn = dimensions[2],
-      spacing = this.metadata.spacing;
+    const self = this;
+    const ctx = this.bgCanvas.get2DContext();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    let activeColumn = dimensions[2];
+    const spacing = this.metadata.spacing;
 
     function processLine() {
-      const offset = self.getYOffset(activeColumn),
-        image = this;
+      const offset = self.getYOffset(activeColumn);
+      const image = this;
 
       ctx.drawImage(
         image,
@@ -576,16 +576,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderXZ() {
-    var self = this,
-      ctx = this.bgCanvas.get2DContext(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      spacing = this.metadata.spacing,
-      activeLine = dimensions[2];
+    const self = this;
+    const ctx = this.bgCanvas.get2DContext();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    const spacing = this.metadata.spacing;
+    let activeLine = dimensions[2];
 
     function processLine() {
-      const offset = self.getYOffset(activeLine),
-        image = this;
+      const offset = self.getYOffset(activeLine);
+      const image = this;
 
       ctx.drawImage(
         image,
@@ -642,16 +642,16 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   extractNumericalValues(width, height) {
-    var ctx = this.bgCanvas.get2DContext(),
-      fieldName = this.getField(),
-      pixels = ctx.getImageData(0, 0, width, height),
-      pixBuffer = pixels.data,
-      size = pixBuffer.length,
-      idx = 0,
-      fieldRange = this.metadata.ranges[fieldName],
-      delta = fieldRange[1] - fieldRange[0],
-      arrayIdx = 0,
-      array = new Float32Array(width * height);
+    const ctx = this.bgCanvas.get2DContext();
+    const fieldName = this.getField();
+    const pixels = ctx.getImageData(0, 0, width, height);
+    const pixBuffer = pixels.data;
+    const size = pixBuffer.length;
+    let idx = 0;
+    const fieldRange = this.metadata.ranges[fieldName];
+    const delta = fieldRange[1] - fieldRange[0];
+    let arrayIdx = 0;
+    const array = new Float32Array(width * height);
 
     while (idx < size) {
       const value =
@@ -673,15 +673,15 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   applyLookupTable(width, height) {
-    var ctx = this.bgCanvas.get2DContext(),
-      fieldName = this.getField(),
-      lut = this.lookupTableManager.getLookupTable(fieldName),
-      pixels = ctx.getImageData(0, 0, width, height),
-      pixBuffer = pixels.data,
-      size = pixBuffer.length,
-      idx = 0,
-      arrayIdx = 0,
-      array = this.scalars[fieldName];
+    const ctx = this.bgCanvas.get2DContext();
+    const fieldName = this.getField();
+    const lut = this.lookupTableManager.getLookupTable(fieldName);
+    const pixels = ctx.getImageData(0, 0, width, height);
+    const pixBuffer = pixels.data;
+    const size = pixBuffer.length;
+    let idx = 0;
+    let arrayIdx = 0;
+    const array = this.scalars[fieldName];
 
     if (lut) {
       while (idx < size) {
@@ -802,13 +802,13 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var {
-        lookupTable,
-        originalRange,
-        lookupTableManager,
-        queryDataModel,
-      } = this.getControlModels(),
-      model = this;
+    const {
+      lookupTable,
+      originalRange,
+      lookupTableManager,
+      queryDataModel,
+    } = this.getControlModels();
+    const model = this;
     return [
       {
         name: 'LookupTableManagerWidget',

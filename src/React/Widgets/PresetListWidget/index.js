@@ -27,10 +27,10 @@ export default class PresetListWidget extends React.Component {
       return null;
     }
 
-    const activeName = this.state.activeName,
-      height = this.props.height,
-      presets = this.props.presets,
-      names = Object.keys(presets);
+    const activeName = this.state.activeName;
+    const height = this.props.height;
+    const presets = this.props.presets;
+    const names = Object.keys(presets);
 
     return (
       <div className={style.container}>
@@ -65,4 +65,5 @@ PresetListWidget.defaultProps = {
   height: '1em',
   presets: {},
   visible: true,
+  onChange: undefined,
 };

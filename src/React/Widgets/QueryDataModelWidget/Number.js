@@ -19,7 +19,6 @@ export default class ParameterSetNumber extends React.Component {
     this.state = {
       advanced: false,
       button: false,
-      slider: false,
     };
 
     // Bind callback
@@ -48,8 +47,8 @@ export default class ParameterSetNumber extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.model,
-      nextDataModel = nextProps.model;
+    const previousDataModel = this.props.model;
+    const nextDataModel = nextProps.model;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -226,4 +225,5 @@ ParameterSetNumber.propTypes = {
 
 ParameterSetNumber.defaultProps = {
   listener: true,
+  arg: '',
 };

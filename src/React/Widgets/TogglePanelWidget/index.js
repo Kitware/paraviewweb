@@ -74,6 +74,7 @@ TogglePanelWidget.propTypes = {
   panelVisible: PropTypes.bool,
   position: PropTypes.array,
   size: PropTypes.object,
+  value: PropTypes.bool,
 };
 
 TogglePanelWidget.defaultProps = {
@@ -85,4 +86,5 @@ TogglePanelWidget.defaultProps = {
     button: ['2em', '2em'],
     panel: ['400px'],
   },
+  value: false,
 };

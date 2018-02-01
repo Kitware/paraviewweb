@@ -46,11 +46,11 @@ export default class SortedVolumeCompositor {
       return;
     }
 
-    const imageSize = this.width * this.height,
-      pixels = this.imageBuffer.data,
-      height = this.height,
-      width = this.width,
-      ctx = this.bgCanvas.get2DContext();
+    const imageSize = this.width * this.height;
+    const pixels = this.imageBuffer.data;
+    const height = this.height;
+    const width = this.width;
+    const ctx = this.bgCanvas.get2DContext();
 
     // Reset pixels
     if (pixels.fill) {
@@ -67,11 +67,11 @@ export default class SortedVolumeCompositor {
     loop(!!this.reverseCompositePass, this.numLayers, (drawIdx) => {
       for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
-          const idx = this.width * y + x,
-            flipIdx = (height - y - 1) * width + x,
-            layerIdx = this.orderData[drawIdx * imageSize + idx],
-            multiplier = this.colorTable[layerIdx * 4 + 3] / 255.0,
-            alphB = this.alphaData[drawIdx * imageSize + idx] / 255.0;
+          const idx = this.width * y + x;
+          const flipIdx = (height - y - 1) * width + x;
+          const layerIdx = this.orderData[drawIdx * imageSize + idx];
+          const multiplier = this.colorTable[layerIdx * 4 + 3] / 255.0;
+          const alphB = this.alphaData[drawIdx * imageSize + idx] / 255.0;
 
           let intensity = 1.0;
 
@@ -80,31 +80,31 @@ export default class SortedVolumeCompositor {
           }
 
           // Blend
-          const alphA = pixels[flipIdx * 4 + 3] / 255.0,
-            alphANeg = 1.0 - alphA,
-            rgbA = [
-              pixels[flipIdx * 4],
-              pixels[flipIdx * 4 + 1],
-              pixels[flipIdx * 4 + 2],
-            ],
-            rgbB = [
-              this.colorTable[layerIdx * 4] *
-                intensity *
-                alphB *
-                multiplier *
-                alphANeg,
-              this.colorTable[layerIdx * 4 + 1] *
-                intensity *
-                alphB *
-                multiplier *
-                alphANeg,
-              this.colorTable[layerIdx * 4 + 2] *
-                intensity *
-                alphB *
-                multiplier *
-                alphANeg,
-            ],
-            alphOut = alphA + alphB * multiplier * (1.0 - alphA);
+          const alphA = pixels[flipIdx * 4 + 3] / 255.0;
+          const alphANeg = 1.0 - alphA;
+          const rgbA = [
+            pixels[flipIdx * 4],
+            pixels[flipIdx * 4 + 1],
+            pixels[flipIdx * 4 + 2],
+          ];
+          const rgbB = [
+            this.colorTable[layerIdx * 4] *
+              intensity *
+              alphB *
+              multiplier *
+              alphANeg,
+            this.colorTable[layerIdx * 4 + 1] *
+              intensity *
+              alphB *
+              multiplier *
+              alphANeg,
+            this.colorTable[layerIdx * 4 + 2] *
+              intensity *
+              alphB *
+              multiplier *
+              alphANeg,
+          ];
+          const alphOut = alphA + alphB * multiplier * (1.0 - alphA);
 
           pixels[flipIdx * 4] = (rgbA[0] * alphA + rgbB[0]) / alphOut;
           pixels[flipIdx * 4 + 1] = (rgbA[1] * alphA + rgbB[1]) / alphOut;

@@ -35,7 +35,7 @@ export default class CollapsibleWidget extends React.Component {
   }
 
   render() {
-    var localStyle = {};
+    const localStyle = {};
     if (!this.props.visible) {
       localStyle.display = 'none';
     }
@@ -88,4 +88,8 @@ CollapsibleWidget.defaultProps = {
   open: true,
   visible: true,
   disableCollapse: false,
+  activeSubTitle: false,
+
+  children: undefined,
+  onChange: undefined,
 };

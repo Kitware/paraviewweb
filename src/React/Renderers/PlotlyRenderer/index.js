@@ -105,7 +105,7 @@ export default class PlotlyRenderer extends React.Component {
 }
 
 PlotlyRenderer.propTypes = {
-  chartBuilder: PropTypes.object,
+  chartBuilder: PropTypes.object.isRequired,
 };
 
 PlotlyRenderer.defaultProps = {};

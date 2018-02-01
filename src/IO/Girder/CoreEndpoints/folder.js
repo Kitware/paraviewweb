@@ -13,34 +13,34 @@ export default function({
   return {
     listFolders(query = {}) {
       const allowed = [
-          'parentType',
-          'parentId',
-          'text',
-          'limit',
-          'offset',
-          'sort',
-          'sortdir',
-        ],
-        params = filterQuery(query, ...allowed);
+        'parentType',
+        'parentId',
+        'text',
+        'limit',
+        'offset',
+        'sort',
+        'sortdir',
+      ];
+      const params = filterQuery(query, ...allowed);
 
       return busy(client._.get('/folder', { params }));
     },
 
     createFolder(folder) {
       const allowed = [
-          'parentType',
-          'parentId',
-          'name',
-          'description',
-          'public',
-        ],
-        params = filterQuery(folder, ...allowed),
-        { missingKeys, promise } = mustContain(
-          folder,
-          'parentType',
-          'parentId',
-          'name'
-        );
+        'parentType',
+        'parentId',
+        'name',
+        'description',
+        'public',
+      ];
+      const params = filterQuery(folder, ...allowed);
+      const { missingKeys, promise } = mustContain(
+        folder,
+        'parentType',
+        'parentId',
+        'name'
+      );
 
       return missingKeys
         ? promise
@@ -64,9 +64,9 @@ export default function({
     },
 
     editFolder(folder) {
-      const allowed = ['parentType', 'parentId', 'name', 'description'],
-        params = filterQuery(folder, ...allowed),
-        { missingKeys, promise } = mustContain(folder, '_id');
+      const allowed = ['parentType', 'parentId', 'name', 'description'];
+      const params = filterQuery(folder, ...allowed);
+      const { missingKeys, promise } = mustContain(folder, '_id');
 
       return missingKeys
         ? promise
@@ -84,9 +84,9 @@ export default function({
     },
 
     editFolderAccess(folder) {
-      const allowed = ['access', 'public'],
-        params = filterQuery(folder, ...allowed),
-        { missingKeys, promise } = mustContain(folder, '_id');
+      const allowed = ['access', 'public'];
+      const params = filterQuery(folder, ...allowed);
+      const { missingKeys, promise } = mustContain(folder, '_id');
 
       return missingKeys
         ? promise

@@ -30,9 +30,9 @@ GeometryViewer.propTypes = {
   geometryBuilder: PropTypes.object.isRequired,
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
-  userData: PropTypes.object,
 };
 
 GeometryViewer.defaultProps = {
   config: {},
+  menuAddOn: undefined,
 };

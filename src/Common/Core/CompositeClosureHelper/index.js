@@ -201,7 +201,10 @@ function dynamicArray(publicAPI, model, name) {
 
   publicAPI[`get${capitalize(name)}`] = () => model[name];
 
-  publicAPI[`removeAll${capitalize(name)}`] = () => (model[name] = []);
+  publicAPI[`removeAll${capitalize(name)}`] = () => {
+    model[name] = [];
+    return model[name];
+  };
 }
 
 // ----------------------------------------------------------------------------

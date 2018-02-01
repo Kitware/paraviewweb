@@ -376,14 +376,18 @@ export default class OverlayWindow extends React.Component {
       className: this.props.front
         ? style.frontEventContainer
         : style.backEventContainer,
-      ref: (c) => (this.eventContainerDiv = c),
+      ref: (c) => {
+        this.eventContainerDiv = c;
+      },
       style: {},
     };
 
     // Configure the initial main container props and style overrides
     const mainDivProps = {
       className: style.mainContainer,
-      ref: (c) => (this.mainContainerDiv = c),
+      ref: (c) => {
+        this.mainContainerDiv = c;
+      },
       style: {
         width: this.state.width,
         height: this.state.height,
@@ -544,13 +548,14 @@ OverlayWindow.propTypes = {
 };
 
 OverlayWindow.defaultProps = {
+  children: null,
+  onResize: null,
   cloneChildren: false,
   height: 100,
   hotCornerExtra: 2,
   marginSize: 5,
   minContentHeight: 2,
   minContentWidth: 2,
-  resizable: true,
   title: null,
   titleBarHeight: 25,
   visible: true,

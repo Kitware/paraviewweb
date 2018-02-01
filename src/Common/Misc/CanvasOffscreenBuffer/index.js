@@ -1,4 +1,4 @@
-var offscreenCanvasCount = 0;
+let offscreenCanvasCount = 0;
 
 // Create <canvas/> within the DOM
 /* global document */

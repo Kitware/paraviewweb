@@ -251,8 +251,8 @@ export default function EditView(props) {
             {Object.keys(colorMaps).map((name) => (
               <div key={name} className={style.pwfButtonContainer}>
                 <img
-                  height={'20px'}
-                  width={'55px'}
+                  height="20px"
+                  width="55px"
                   title={name}
                   alt={name}
                   src={`data:image/png;base64,${colorMaps[name]}`}
@@ -273,8 +273,8 @@ export default function EditView(props) {
           <label>Legend</label>
           <div className={style.pwfFunctionContainer}>
             <img
-              height={'25px'}
-              alt={'Color Legend'}
+              height="25px"
+              alt="Color Legend"
               style={{ flex: '1 0 auto', width: 25 }}
               src={`data:image/png;base64,${colorMaps[model.colorMapName]}`}
             />
@@ -542,5 +542,15 @@ EditView.propTypes = {
   activeScores: PropTypes.array,
   onActiveScoresChange: PropTypes.func,
   onChange: PropTypes.func,
-  toggleEditMode: PropTypes.func,
+  // toggleEditMode: PropTypes.func,
+};
+
+EditView.defaultProps = {
+  model: undefined,
+  colorMaps: undefined,
+  getScalarRange: undefined,
+  scores: undefined,
+  activeScores: undefined,
+  onActiveScoresChange: undefined,
+  onChange: undefined,
 };

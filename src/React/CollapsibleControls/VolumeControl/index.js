@@ -37,32 +37,32 @@ export default class VolumeControl extends React.Component {
   }
 
   render() {
-    var equalizer = this.props.equalizer,
-      lut = this.props.lookupTable,
-      intensityButton = (
-        <LightButton
-          key="toggle-intensity"
-          onChange={this.props.intensity.toggleState}
-          value={this.props.intensity.getState()}
-        />
-      ),
-      resetOpacityButton = (
-        <LightButton
-          key="reset"
-          icon={style.undoIcon}
-          toggle={false}
-          onChange={this.props.equalizer.resetOpacities}
-          value
-        />
-      ),
-      cpuGpuButton = (
-        <LightButton
-          key="toggle-gpu"
-          icon={style.mobileIcon}
-          onChange={this.props.computation.toggleState}
-          value={!this.props.computation.getState()}
-        />
-      );
+    const equalizer = this.props.equalizer;
+    const lut = this.props.lookupTable;
+    const intensityButton = (
+      <LightButton
+        key="toggle-intensity"
+        onChange={this.props.intensity.toggleState}
+        value={this.props.intensity.getState()}
+      />
+    );
+    const resetOpacityButton = (
+      <LightButton
+        key="reset"
+        icon={style.undoIcon}
+        toggle={false}
+        onChange={this.props.equalizer.resetOpacities}
+        value
+      />
+    );
+    const cpuGpuButton = (
+      <LightButton
+        key="toggle-gpu"
+        icon={style.mobileIcon}
+        onChange={this.props.computation.toggleState}
+        value={!this.props.computation.getState()}
+      />
+    );
 
     return (
       <div>
@@ -100,6 +100,6 @@ export default class VolumeControl extends React.Component {
 VolumeControl.propTypes = {
   computation: PropTypes.object.isRequired,
   equalizer: PropTypes.object.isRequired,
-  intensity: PropTypes.object,
+  intensity: PropTypes.object.isRequired,
   lookupTable: PropTypes.object.isRequired,
 };

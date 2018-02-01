@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import style from 'PVWStyle/ReactWidgets/BusyFeedback.mcss';
 
 export default class BusyFeedback extends React.Component {
@@ -27,5 +29,9 @@ export default class BusyFeedback extends React.Component {
 }
 
 BusyFeedback.propTypes = {
-  provider: React.PropTypes.object,
+  provider: PropTypes.object,
+};
+
+BusyFeedback.defaultProps = {
+  provider: undefined,
 };

@@ -33,9 +33,7 @@ export default class ParallelCoordinatesTool extends React.Component {
       provider: this.props.provider,
     });
     this.component.propagateAnnotationInsteadOfSelection(true, 0, 1);
-    this.component.setVisibleScoresForSelection(
-      this.props.partitionScores || [0, 1, 2]
-    );
+    this.component.setVisibleScoresForSelection(this.props.partitionScores);
     this.component.setShowOnlySelection(!!this.props.showOnlySelection);
   }
 
@@ -43,14 +41,9 @@ export default class ParallelCoordinatesTool extends React.Component {
     let changeDetected = false;
 
     if (
-      !isSame(
-        this.component.getVisibleScores(),
-        this.props.partitionScores || [0, 1, 2]
-      )
+      !isSame(this.component.getVisibleScores(), this.props.partitionScores)
     ) {
-      this.component.setVisibleScoresForSelection(
-        this.props.partitionScores || [0, 1, 2]
-      );
+      this.component.setVisibleScoresForSelection(this.props.partitionScores);
       changeDetected = true;
     }
 
@@ -128,11 +121,11 @@ export default class ParallelCoordinatesTool extends React.Component {
 }
 
 ParallelCoordinatesTool.propTypes = {
-  provider: PropTypes.object,
+  provider: PropTypes.object.isRequired,
   size: PropTypes.string,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
 
   showOnlySelection: PropTypes.bool,
   partitionScores: PropTypes.array,
@@ -141,4 +134,5 @@ ParallelCoordinatesTool.propTypes = {
 ParallelCoordinatesTool.defaultProps = {
   size: '35px',
   showOnlySelection: false,
+  partitionScores: [0, 1, 2],
 };

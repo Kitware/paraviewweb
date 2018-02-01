@@ -235,8 +235,8 @@ export default class FloatTimeDataImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var model = this,
-      { lookupTableManager, queryDataModel } = this.getControlModels();
+    const model = this;
+    const { lookupTableManager, queryDataModel } = this.getControlModels();
     return [
       {
         name: 'TimeFloatImageControl',

@@ -177,4 +177,17 @@ ColorMapEditorWidget.propTypes = {
 ColorMapEditorWidget.defaultProps = {
   pieceWiseHeight: 200,
   pieceWiseWidth: -1,
+
+  currentOpacityPoints: undefined,
+  currentPreset: undefined,
+  dataRangeMin: undefined,
+  dataRangeMax: undefined,
+  presets: undefined,
+  rangeMin: undefined,
+  rangeMax: undefined,
+  onOpacityTransferFunctionChanged: undefined,
+  onPresetChanged: undefined,
+  onRangeEdited: undefined,
+  onScaleRangeToCurrent: undefined,
+  onScaleRangeOverTime: undefined,
 };

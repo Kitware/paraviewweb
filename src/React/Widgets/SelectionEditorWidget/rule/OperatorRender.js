@@ -70,3 +70,14 @@ render.propTypes = {
   onDelete: PropTypes.func,
   className: PropTypes.string,
 };
+
+render.defaultProps = {
+  getLegend: undefined,
+  rule: undefined,
+  depth: undefined,
+  maxDepth: undefined,
+  path: undefined,
+  onChange: undefined,
+  onDelete: undefined,
+  className: undefined,
+};

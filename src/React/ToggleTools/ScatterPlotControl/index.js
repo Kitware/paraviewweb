@@ -73,21 +73,21 @@ export default class ScatterPlotControlTool extends React.Component {
 }
 
 ScatterPlotControlTool.propTypes = {
-  provider: PropTypes.object,
   size: PropTypes.string,
 
-  scatterPlotManager: PropTypes.object,
-  scatterPlotId: PropTypes.string,
+  scatterPlotManager: PropTypes.object.isRequired,
+  scatterPlotId: PropTypes.string.isRequired,
 
-  activeScores: PropTypes.array,
+  activeScores: PropTypes.array.isRequired,
   onActiveScoresChange: PropTypes.func,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
   overlayVisible: PropTypes.bool,
 };
 
 ScatterPlotControlTool.defaultProps = {
   overlayVisible: false,
   size: '35px',
+  onActiveScoresChange: null,
 };

@@ -150,10 +150,10 @@ export default class BinaryCompositor {
   // ------------------------------------------------------------------------
 
   extractLayerData(buffer, pixelOffset) {
-    var px = 0,
-      py = pixelOffset,
-      offset = (py * this.width + px) * 4,
-      length = this.width * this.height * 4;
+    const px = 0;
+    const py = pixelOffset;
+    const offset = (py * this.width + px) * 4;
+    const length = this.width * this.height * 4;
 
     return new Uint8Array(buffer, offset, length);
   }
@@ -161,9 +161,9 @@ export default class BinaryCompositor {
   // ------------------------------------------------------------------------
 
   updateQuery(query) {
-    var layers = this.queryDataModel.originalData.CompositePipeline.layers,
-      count = layers.length,
-      offsets = this.queryDataModel.originalData.CompositePipeline.offset;
+    const layers = this.queryDataModel.originalData.CompositePipeline.layers;
+    const count = layers.length;
+    const offsets = this.queryDataModel.originalData.CompositePipeline.offset;
 
     this.offsetList = [];
     for (let idx = 0; idx < count; idx++) {

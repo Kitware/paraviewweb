@@ -20,7 +20,7 @@ export default class LightControl extends React.Component {
   }
 
   onLightTermsChange(newVal, name) {
-    var newState = {};
+    const newState = {};
     newState[name] = newVal;
     this.setState(newState);
     setImmediate(() => {
@@ -41,7 +41,7 @@ export default class LightControl extends React.Component {
   }
 
   render() {
-    var lightButton = (
+    const lightButton = (
       <LightButton
         key="enable-light-button"
         onChange={this.toggleLight}

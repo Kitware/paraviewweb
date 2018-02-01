@@ -23,16 +23,16 @@ export default class ScalarRangeWidget extends React.Component {
   }
 
   updateRange(event) {
-    const name = event.target.name,
-      value = event.target.value;
+    const name = event.target.name;
+    const value = event.target.value;
 
-    if (!isNaN(parseFloat(value)) && isFinite(value)) {
+    if (!Number.isNaN(parseFloat(value)) && Number.isFinite(Number(value))) {
       this.setState({ [name]: value });
     }
   }
 
   apply(event) {
-    var { min, max } = this.state;
+    let { min, max } = this.state;
     const type = event.target.dataset.type;
 
     min = Number(min);
@@ -93,4 +93,11 @@ ScalarRangeWidget.propTypes = {
   min: PropTypes.number,
   onApply: PropTypes.func,
   visible: PropTypes.bool,
+};
+
+ScalarRangeWidget.defaultProps = {
+  max: undefined,
+  min: undefined,
+  onApply: undefined,
+  visible: false,
 };

@@ -45,8 +45,8 @@ export default class GeometryRenderer extends React.Component {
   }
 
   updateDimensions() {
-    var el = this.canvasRenderer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    const el = this.canvasRenderer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
     if (
       el &&
@@ -90,7 +90,7 @@ export default class GeometryRenderer extends React.Component {
 }
 
 GeometryRenderer.propTypes = {
-  geometryBuilder: PropTypes.object,
+  geometryBuilder: PropTypes.object.isRequired,
 };
 
 GeometryRenderer.defaultProps = {};

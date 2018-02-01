@@ -130,4 +130,11 @@ render.propTypes = {
 
 render.defaultProps = {
   showUncertainty: true,
+
+  children: undefined,
+  selection: undefined,
+  ranges: undefined,
+  onChange: undefined,
+  getLegend: undefined,
+  className: undefined,
 };

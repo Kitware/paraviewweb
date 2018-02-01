@@ -18,8 +18,8 @@ export function zeros(ii, jj) {
 }
 
 export function downsample(src, nn, swap) {
-  var hsz = src ? src.length : 0;
-  var arr;
+  const hsz = src ? src.length : 0;
+  let arr;
   if (hsz === 0) {
     return [];
   }
@@ -61,7 +61,7 @@ export function downsample(src, nn, swap) {
 }
 
 export function freqToProb(src) {
-  var hsz = src ? src.length : 0;
+  const hsz = src ? src.length : 0;
   if (hsz === 0) {
     return [];
   }
@@ -104,7 +104,7 @@ export function flattenMatrix(x) {
 }
 
 export function quantile(xx, qq) {
-  var xs = flattenMatrix(xx).sort((a, b) => a - b);
+  const xs = flattenMatrix(xx).sort((a, b) => a - b);
   return (xs[Math.floor(xs.length * qq)] + xs[Math.ceil(xs.length * qq)]) / 2;
 }
 
@@ -135,8 +135,8 @@ export function matrixChoose(xx, idxs) {
 }
 
 export function topProb(dd, qq) {
-  var qval = quantile(dd.pAB, qq);
-  var idxs = matrixFind(dd.pAB, (d) => d > qval);
+  const qval = quantile(dd.pAB, qq);
+  const idxs = matrixFind(dd.pAB, (d) => d > qval);
   return {
     pAB: matrixChoose(dd.pAB, idxs),
     pmi: matrixChoose(dd.pmi, idxs),
@@ -145,9 +145,9 @@ export function topProb(dd, qq) {
 }
 
 export function topPmi(dd, qq) {
-  var apmi = dd.pmi.map((row) => row.map((v) => Math.abs(v)));
-  var qval = quantile(apmi, qq);
-  var idxs = matrixFind(apmi, (d) => d > qval);
+  const apmi = dd.pmi.map((row) => row.map((v) => Math.abs(v)));
+  const qval = quantile(apmi, qq);
+  const idxs = matrixFind(apmi, (d) => d > qval);
   return {
     pAB: matrixChoose(dd.pAB, idxs),
     pmi: matrixChoose(dd.pmi, idxs),
@@ -157,9 +157,9 @@ export function topPmi(dd, qq) {
 
 // Return the bins most probably linked to the given bin (above the \a qq quantile line of probability).
 export function topBinProb(dd, isA, bin, qq) {
-  var subset = matrixSubset(dd.pAB, !isA, bin);
-  var qval = quantile(subset, qq);
-  var idxs = matrixFind(subset, (d) => d > qval);
+  const subset = matrixSubset(dd.pAB, !isA, bin);
+  const qval = quantile(subset, qq);
+  const idxs = matrixFind(subset, (d) => d > qval);
 
   console.log(
     'binprob, isA:',
@@ -182,10 +182,10 @@ export function topBinProb(dd, isA, bin, qq) {
 }
 
 export function topBinPmi(dd, isA, bin, qq) {
-  var subset = matrixSubset(dd.pmi, !isA, bin);
-  var apmi = subset.map((row) => row.map((v) => Math.abs(v)));
-  var qval = quantile(apmi, qq);
-  var idxs = matrixFind(apmi, (d) => d > qval);
+  const subset = matrixSubset(dd.pmi, !isA, bin);
+  const apmi = subset.map((row) => row.map((v) => Math.abs(v)));
+  const qval = quantile(apmi, qq);
+  const idxs = matrixFind(apmi, (d) => d > qval);
 
   return {
     pAB: matrixChoose(matrixSubset(dd.pAB, !isA, bin), idxs),

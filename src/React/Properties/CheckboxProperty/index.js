@@ -15,7 +15,6 @@ export default class CheckboxProperty extends React.Component {
     this.state = {
       data: props.data,
       helpOpen: false,
-      ui: props.ui,
     };
 
     // Callback binding
@@ -24,7 +23,7 @@ export default class CheckboxProperty extends React.Component {
   }
 
   componentWillMount() {
-    var newState = {};
+    const newState = {};
     if (this.props.ui.default && !this.props.data.value) {
       newState.data = this.state.data;
       newState.data.value = this.props.ui.default;
@@ -52,7 +51,7 @@ export default class CheckboxProperty extends React.Component {
   }
 
   valueChange(idx, newVal) {
-    var newData = this.state.data;
+    const newData = this.state.data;
     if (idx === null) {
       newData.value = newVal;
     } else {
@@ -124,10 +123,10 @@ CheckboxProperty.propTypes = {
   data: PropTypes.object.isRequired,
   help: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func,
-  show: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
-  viewData: PropTypes.object,
+  viewData: PropTypes.object.isRequired,
 };
 
 CheckboxProperty.defaultProps = {

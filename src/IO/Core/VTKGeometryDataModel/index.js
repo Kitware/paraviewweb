@@ -4,7 +4,7 @@ import DataManager from '../DataManager';
 let dataManager = new DataManager();
 const OBJECT_READY_TOPIC = 'object-ready';
 
-var geometryDataModelCounter = 0;
+let geometryDataModelCounter = 0;
 
 function getType(url) {
   return url.split('.').slice(-1)[0];
@@ -67,7 +67,7 @@ export default class VTKGeometryDataModel {
   }
 
   loadField(objectName, fieldName) {
-    var changeDetected = false;
+    let changeDetected = false;
     if (fieldName) {
       changeDetected = this.colorByMapping[objectName] !== fieldName;
       this.colorByMapping[objectName] = fieldName;

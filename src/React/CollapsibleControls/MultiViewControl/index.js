@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
 import LayoutsWidget from '../../Widgets/LayoutsWidget';
 
+/* eslint-disable react/no-unused-state */
+
 /**
  * This React component expect the following input properties:
  *   - renderer:
@@ -56,7 +58,7 @@ export default class MultiViewControl extends React.Component {
   }
 
   onRenderMethodChange(event) {
-    var renderMethod = event.target.value;
+    const renderMethod = event.target.value;
     this.props.renderer.setRenderMethod(renderMethod);
   }
 
@@ -73,8 +75,8 @@ export default class MultiViewControl extends React.Component {
   }
 
   render() {
-    var renderer = this.props.renderer,
-      renderMethods = [];
+    const renderer = this.props.renderer;
+    let renderMethods = [];
 
     if (renderer) {
       renderMethods = renderer.getRenderMethods().map((v) => (
@@ -104,5 +106,5 @@ export default class MultiViewControl extends React.Component {
 }
 
 MultiViewControl.propTypes = {
-  renderer: PropTypes.object,
+  renderer: PropTypes.object.isRequired,
 };

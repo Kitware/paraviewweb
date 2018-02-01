@@ -12,9 +12,9 @@ export default class ButtonSelectorWidget extends React.Component {
   }
 
   processItem(event) {
-    var name = event.target.name,
-      array = this.props.list,
-      count = array.length;
+    const name = event.target.name;
+    const array = this.props.list;
+    let count = array.length;
 
     if (this.props.onChange) {
       while (count) {
@@ -27,7 +27,7 @@ export default class ButtonSelectorWidget extends React.Component {
   }
 
   render() {
-    var list = [];
+    const list = [];
 
     this.props.list.forEach((item) => {
       list.push(
@@ -49,4 +49,8 @@ export default class ButtonSelectorWidget extends React.Component {
 ButtonSelectorWidget.propTypes = {
   list: PropTypes.array.isRequired,
   onChange: PropTypes.func,
+};
+
+ButtonSelectorWidget.defaultProps = {
+  onChange: undefined,
 };

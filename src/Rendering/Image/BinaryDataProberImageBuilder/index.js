@@ -7,25 +7,25 @@ import '../../../React/CollapsibleControls/CollapsibleControlFactory/LookupTable
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/ProbeControl';
 import '../../../React/CollapsibleControls/CollapsibleControlFactory/QueryDataModelWidget';
 
-const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready',
-  PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change',
-  CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
-    'ProbeImageBuilder.crosshair.visibility.change',
-  RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change',
-  dataMapping = {
-    XY: {
-      idx: [0, 1, 2],
-      hasChange: (probe, x, y, z) => probe[2] !== z,
-    },
-    XZ: {
-      idx: [0, 2, 1],
-      hasChange: (probe, x, y, z) => probe[1] !== y,
-    },
-    ZY: {
-      idx: [2, 1, 0],
-      hasChange: (probe, x, y, z) => probe[0] !== x,
-    },
-  };
+const PROBE_LINE_READY_TOPIC = 'ProbeImageBuilder.chart.data.ready';
+const PROBE_CHANGE_TOPIC = 'ProbeImageBuilder.probe.location.change';
+const CROSSHAIR_VISIBILITY_CHANGE_TOPIC =
+  'ProbeImageBuilder.crosshair.visibility.change';
+const RENDER_METHOD_CHANGE_TOPIC = 'ProbeImageBuilder.render.change';
+const dataMapping = {
+  XY: {
+    idx: [0, 1, 2],
+    hasChange: (probe, x, y, z) => probe[2] !== z,
+  },
+  XZ: {
+    idx: [0, 2, 1],
+    hasChange: (probe, x, y, z) => probe[1] !== y,
+  },
+  ZY: {
+    idx: [2, 1, 0],
+    hasChange: (probe, x, y, z) => probe[0] !== x,
+  },
+};
 
 export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   constructor(queryDataModel, lookupTableManager) {
@@ -102,13 +102,13 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         if (!event.activeArea) {
           return false;
         }
-        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          dimensions = self.metadata.dimensions,
-          activeArea = event.activeArea;
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const dimensions = self.metadata.dimensions;
+        const activeArea = event.activeArea;
 
-        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         if (event.modifier) {
           return false;
@@ -123,8 +123,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
           yRatio = 1 - yRatio;
         }
 
-        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
-          yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
+        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]);
+        const yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
 
         probe[axisMap[0]] = xPos;
         probe[axisMap[1]] = yPos;
@@ -137,13 +137,13 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         if (!event.activeArea) {
           return false;
         }
-        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          dimensions = self.metadata.dimensions,
-          activeArea = event.activeArea;
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const dimensions = self.metadata.dimensions;
+        const activeArea = event.activeArea;
 
-        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2],
-          yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
+        let xRatio = (event.relative.x - activeArea[0]) / activeArea[2];
+        let yRatio = (event.relative.y - activeArea[1]) / activeArea[3];
 
         if (event.modifier) {
           return false;
@@ -158,8 +158,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
           yRatio = 1 - yRatio;
         }
 
-        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]),
-          yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
+        const xPos = Math.floor(xRatio * dimensions[axisMap[0]]);
+        const yPos = Math.floor(yRatio * dimensions[axisMap[1]]);
 
         probe[axisMap[0]] = xPos;
         probe[axisMap[1]] = yPos;
@@ -169,9 +169,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
         return true;
       },
       zoom: (event, envelope) => {
-        var probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]],
-          axisMap = dataMapping[self.renderMethod].idx,
-          idx = axisMap[2];
+        const probe = [self.probeXYZ[0], self.probeXYZ[1], self.probeXYZ[2]];
+        const axisMap = dataMapping[self.renderMethod].idx;
+        const idx = axisMap[2];
 
         if (event.modifier) {
           return false;
@@ -217,12 +217,12 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   updateProbeValue() {
-    var x = this.probeXYZ[0],
-      y = this.probeXYZ[1],
-      z = this.probeXYZ[2],
-      xSize = this.metadata.dimensions[0],
-      ySize = this.metadata.dimensions[1],
-      array = this.dataFields[this.field];
+    const x = this.probeXYZ[0];
+    const y = this.probeXYZ[1];
+    const z = this.probeXYZ[2];
+    const xSize = this.metadata.dimensions[0];
+    const ySize = this.metadata.dimensions[1];
+    const array = this.dataFields[this.field];
 
     if (array) {
       this.probeValue = array[x + (ySize - y - 1) * xSize + z * xSize * ySize];
@@ -232,12 +232,12 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   setProbe(i, j, k) {
-    var fn = dataMapping[this.renderMethod].hasChange;
-    var idx = dataMapping[this.renderMethod].idx;
-    var previousValue = [].concat(this.probeXYZ);
-    var x = i;
-    var y = j;
-    var z = k;
+    const fn = dataMapping[this.renderMethod].hasChange;
+    const idx = dataMapping[this.renderMethod].idx;
+    const previousValue = [].concat(this.probeXYZ);
+    let x = i;
+    let y = j;
+    let z = k;
 
     // Allow i to be [i,j,k]
     if (Array.isArray(i)) {
@@ -251,8 +251,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       this.render();
     } else {
       this.probeXYZ = [x, y, z];
-      const dimensions = this.metadata.dimensions,
-        spacing = this.metadata.spacing;
+      const dimensions = this.metadata.dimensions;
+      const spacing = this.metadata.spacing;
 
       this.updateProbeValue();
 
@@ -305,18 +305,18 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getProbeLine(axisIdx) {
-    var probeData = {
-        xRange: [0, 100],
-        fields: [],
-      },
-      fields = this.fields,
-      px = this.probeXYZ[0],
-      py = this.probeXYZ[1],
-      pz = this.probeXYZ[2],
-      xSize = this.metadata.dimensions[0],
-      ySize = this.metadata.dimensions[1],
-      zSize = this.metadata.dimensions[2],
-      idxValues = [];
+    const probeData = {
+      xRange: [0, 100],
+      fields: [],
+    };
+    const fields = this.fields;
+    const px = this.probeXYZ[0];
+    const py = this.probeXYZ[1];
+    const pz = this.probeXYZ[2];
+    const xSize = this.metadata.dimensions[0];
+    const ySize = this.metadata.dimensions[1];
+    const zSize = this.metadata.dimensions[2];
+    const idxValues = [];
 
     if (axisIdx === 0) {
       const offset = (ySize - py - 1) * xSize + pz * xSize * ySize;
@@ -332,8 +332,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
       idxValues.reverse();
     }
     if (axisIdx === 2) {
-      const offset = px + (ySize - py - 1) * xSize,
-        step = xSize * ySize;
+      const offset = px + (ySize - py - 1) * xSize;
+      const step = xSize * ySize;
       for (let z = 0; z < zSize; z++) {
         idxValues.push(offset + z * step);
       }
@@ -342,9 +342,11 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
     // Fill all fields
     const dataSize = idxValues.length;
     fields.forEach((name) => {
-      var array = this.dataFields[name],
-        data = [],
-        range = this.lookupTableManager.getLookupTable(name).getScalarRange();
+      const array = this.dataFields[name];
+      const data = [];
+      const range = this.lookupTableManager
+        .getLookupTable(name)
+        .getScalarRange();
 
       for (let i = 0; i < dataSize; i++) {
         data.push(array[idxValues[i]]);
@@ -388,9 +390,9 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsImage(width, height, scaleX, scaleY, lineX, lineY) {
-    var destWidth = Math.floor(width * scaleX),
-      destHeight = Math.floor(height * scaleY),
-      ctx = null;
+    const destWidth = Math.floor(width * scaleX);
+    const destHeight = Math.floor(height * scaleY);
+    let ctx = null;
 
     // Make sure we have a foreground buffer
     if (this.fgCanvas) {
@@ -436,10 +438,10 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   pushToFrontAsBuffer(width, height, scaleX, scaleY, lineX, lineY) {
-    var destWidth = Math.floor(width * scaleX),
-      destHeight = Math.floor(height * scaleY);
+    const destWidth = Math.floor(width * scaleX);
+    const destHeight = Math.floor(height * scaleY);
 
-    var readyImage = {
+    const readyImage = {
       canvas: this.bgCanvas.el,
       imageData: this.bgCanvas.el
         .getContext('2d')
@@ -461,21 +463,21 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderXY() {
-    var ctx = this.bgCanvas.get2DContext(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      xSize = dimensions[0],
-      ySize = dimensions[1],
-      spacing = this.metadata.spacing,
-      imageBuffer = ctx.createImageData(dimensions[0], dimensions[1]),
-      pixels = imageBuffer.data,
-      imageSize = dimensions[0] * dimensions[1],
-      offset = imageSize * xyz[2],
-      lut = this.lookupTableManager.getLookupTable(this.field),
-      array = this.dataFields[this.field];
+    const ctx = this.bgCanvas.get2DContext();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    const xSize = dimensions[0];
+    const ySize = dimensions[1];
+    const spacing = this.metadata.spacing;
+    const imageBuffer = ctx.createImageData(dimensions[0], dimensions[1]);
+    const pixels = imageBuffer.data;
+    const imageSize = dimensions[0] * dimensions[1];
+    const offset = imageSize * xyz[2];
+    const lut = this.lookupTableManager.getLookupTable(this.field);
+    const array = this.dataFields[this.field];
 
     // Need to flip along Y
-    var idx = 0;
+    let idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let x = 0; x < xSize; x++) {
         const color = lut.getColor(array[offset + x + xSize * (ySize - y - 1)]);
@@ -501,22 +503,22 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderZY() {
-    var ctx = this.bgCanvas.get2DContext(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      offsetX = xyz[0],
-      stepY = dimensions[0],
-      stepZ = dimensions[0] * dimensions[1],
-      ySize = dimensions[1],
-      zSize = dimensions[2],
-      spacing = this.metadata.spacing,
-      imageBuffer = ctx.createImageData(dimensions[2], dimensions[1]),
-      pixels = imageBuffer.data,
-      lut = this.lookupTableManager.getLookupTable(this.field),
-      array = this.dataFields[this.field];
+    const ctx = this.bgCanvas.get2DContext();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    const offsetX = xyz[0];
+    const stepY = dimensions[0];
+    const stepZ = dimensions[0] * dimensions[1];
+    const ySize = dimensions[1];
+    const zSize = dimensions[2];
+    const spacing = this.metadata.spacing;
+    const imageBuffer = ctx.createImageData(dimensions[2], dimensions[1]);
+    const pixels = imageBuffer.data;
+    const lut = this.lookupTableManager.getLookupTable(this.field);
+    const array = this.dataFields[this.field];
 
     // FIXME data is flipped
-    var idx = 0;
+    let idx = 0;
     for (let y = 0; y < ySize; y++) {
       for (let z = 0; z < zSize; z++) {
         const color = lut.getColor(
@@ -543,20 +545,20 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   renderXZ() {
-    var ctx = this.bgCanvas.get2DContext(),
-      xyz = this.probeXYZ,
-      dimensions = this.metadata.dimensions,
-      xSize = dimensions[0],
-      zSize = dimensions[2],
-      zStep = xSize * dimensions[1],
-      offset = xSize * (dimensions[1] - xyz[1] - 1),
-      spacing = this.metadata.spacing,
-      imageBuffer = ctx.createImageData(xSize, zSize),
-      pixels = imageBuffer.data,
-      lut = this.lookupTableManager.getLookupTable(this.field),
-      array = this.dataFields[this.field];
+    const ctx = this.bgCanvas.get2DContext();
+    const xyz = this.probeXYZ;
+    const dimensions = this.metadata.dimensions;
+    const xSize = dimensions[0];
+    const zSize = dimensions[2];
+    const zStep = xSize * dimensions[1];
+    const offset = xSize * (dimensions[1] - xyz[1] - 1);
+    const spacing = this.metadata.spacing;
+    const imageBuffer = ctx.createImageData(xSize, zSize);
+    const pixels = imageBuffer.data;
+    const lut = this.lookupTableManager.getLookupTable(this.field);
+    const array = this.dataFields[this.field];
 
-    var idx = 0;
+    let idx = 0;
     for (let z = 0; z < zSize; z++) {
       for (let x = 0; x < xSize; x++) {
         const color = lut.getColor(array[offset + x + (zSize - z - 1) * zStep]);
@@ -697,8 +699,8 @@ export default class BinaryDataProberImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var model = this,
-      { lookupTableManager, queryDataModel } = this.getControlModels();
+    const model = this;
+    const { lookupTableManager, queryDataModel } = this.getControlModels();
     return [
       {
         name: 'LookupTableManagerWidget',

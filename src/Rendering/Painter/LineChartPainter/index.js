@@ -7,17 +7,17 @@ const PAINTER_READY = 'painter-ready';
 // ----------------------------------------------------------------------------
 
 function paintField(ctx, location, field, range) {
-  var count,
-    min = Number.MAX_VALUE,
-    max = Number.MIN_VALUE;
+  let count;
+  let min = Number.MAX_VALUE;
+  let max = Number.MIN_VALUE;
 
-  const xOffset = location.x,
-    yOffset = location.y,
-    width = location.width,
-    height = location.height,
-    values = field.data,
-    size = values.length,
-    xValues = new Uint16Array(size);
+  const xOffset = location.x;
+  const yOffset = location.y;
+  const width = location.width;
+  const height = location.height;
+  const values = field.data;
+  const size = values.length;
+  const xValues = new Uint16Array(size);
 
   // Compute xValues and min/max
   count = size;
@@ -38,7 +38,7 @@ function paintField(ctx, location, field, range) {
   const scaleY = height / (max - min);
 
   function getY(idx) {
-    var value = values[idx];
+    let value = values[idx];
     value = value > min ? (value < max ? value : max) : min;
     return yOffset + height - Math.floor((value - min) * scaleY);
   }
@@ -49,8 +49,8 @@ function paintField(ctx, location, field, range) {
   ctx.strokeStyle = field.color;
   ctx.moveTo(xValues[0], getY(0));
   for (let idx = 1; idx < size; idx++) {
-    if (isNaN(values[idx])) {
-      if (idx + 1 < size && !isNaN(values[idx + 1])) {
+    if (Number.isNaN(values[idx])) {
+      if (idx + 1 < size && !Number.isNaN(values[idx + 1])) {
         ctx.moveTo(xValues[idx + 1], getY(idx + 1));
       }
     } else {
@@ -67,9 +67,9 @@ function paintMarker(ctx, location, xRatio, color) {
     return;
   }
 
-  const y1 = location.y,
-    y2 = y1 + location.height,
-    x = location.x + Math.floor(xRatio * location.width);
+  const y1 = location.y;
+  const y2 = y1 + location.height;
+  const x = location.x + Math.floor(xRatio * location.width);
 
   ctx.beginPath();
   ctx.lineWidth = 1;
@@ -128,7 +128,7 @@ export default class LineChartPainter {
   // }
 
   updateData(data) {
-    var colorIdx = 0;
+    let colorIdx = 0;
 
     // Keep data
     this.data = data;
@@ -183,7 +183,7 @@ export default class LineChartPainter {
   // ----------------------------------------------------------------------------
 
   paint(ctx, location) {
-    var xValue = '?';
+    let xValue = '?';
 
     if (!this.data) {
       return;
@@ -219,7 +219,7 @@ export default class LineChartPainter {
       if (
         this.data.xRange &&
         this.data.xRange.length === 2 &&
-        !isNaN(this.markerLocation)
+        !Number.isNaN(Number(this.markerLocation))
       ) {
         xValue =
           (this.data.xRange[1] - this.data.xRange[0]) * this.markerLocation +

@@ -36,7 +36,7 @@ export default class FileBrowserWidget extends React.Component {
   }
 
   onPathChange(event) {
-    var target = event.target;
+    let target = event.target;
     while (target.localName !== 'li') {
       target = target.parentNode;
     }
@@ -92,10 +92,12 @@ export default class FileBrowserWidget extends React.Component {
   }
 }
 
+/* eslint-disable react/no-unused-prop-types */
 FileBrowserWidget.propTypes = {
   directories: PropTypes.array.isRequired,
   files: PropTypes.array.isRequired,
   groups: PropTypes.array.isRequired,
-  onAction: PropTypes.func,
+  onAction: PropTypes.func.isRequired,
   path: PropTypes.array.isRequired,
 };
+/* eslint-enable react/no-unused-prop-types */

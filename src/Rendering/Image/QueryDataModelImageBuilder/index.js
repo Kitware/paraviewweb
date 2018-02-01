@@ -38,8 +38,8 @@ export default class QueryDataModelImageBuilder extends AbstractImageBuilder {
     }
 
     if (this.lastQueryImage.complete) {
-      const width = this.lastQueryImage.width,
-        height = this.lastQueryImage.height;
+      const width = this.lastQueryImage.width;
+      const height = this.lastQueryImage.height;
 
       this.imageReady({
         canvas: this.lastQueryImage,

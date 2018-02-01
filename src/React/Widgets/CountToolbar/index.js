@@ -201,3 +201,9 @@ CountToolbar.propTypes = {
   onChange: PropTypes.func,
   activeScores: PropTypes.array,
 };
+
+CountToolbar.defaultProps = {
+  provider: undefined,
+  onChange: undefined,
+  activeScores: undefined,
+};

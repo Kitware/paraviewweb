@@ -34,8 +34,8 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.queryDataModel,
-      nextDataModel = nextProps.queryDataModel;
+    const previousDataModel = this.props.queryDataModel;
+    const nextDataModel = nextProps.queryDataModel;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -70,7 +70,7 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   toggleRecord() {
-    var record = !this.state.record;
+    const record = !this.state.record;
     this.setState({ record });
     this.getRenderer().recordImages(record);
   }
@@ -81,7 +81,7 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   toggleLens() {
-    var magicLensController = this.props.magicLensController;
+    const magicLensController = this.props.magicLensController;
     if (magicLensController) {
       magicLensController.toggleLens();
       this.forceUpdate();
@@ -110,8 +110,8 @@ export default class AbstractViewerMenu extends React.Component {
   }
 
   updateSpeed() {
-    var newIdx = (this.state.speedIdx + 1) % this.state.speeds.length,
-      queryDataModel = this.props.queryDataModel;
+    const newIdx = (this.state.speedIdx + 1) % this.state.speeds.length;
+    const queryDataModel = this.props.queryDataModel;
 
     this.setState({ speedIdx: newIdx });
     if (queryDataModel.isAnimating()) {
@@ -266,4 +266,16 @@ AbstractViewerMenu.defaultProps = {
   initialStateCollapsed: true,
   initialStateSpeedIdx: 0,
   initialStateSpeeds: [20, 50, 100, 200, 500],
+
+  children: undefined,
+  geometryBuilder: undefined,
+  imageBuilder: undefined,
+  chartBuilder: undefined,
+  layout: undefined,
+  magicLensController: undefined,
+  mouseListener: undefined,
+  queryDataModel: undefined,
+  renderers: undefined,
+  rendererClass: undefined,
+  userData: undefined,
 };

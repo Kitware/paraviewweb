@@ -35,8 +35,8 @@ export default class ParameterSetString extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previousDataModel = this.props.model,
-      nextDataModel = nextProps.model;
+    const previousDataModel = this.props.model;
+    const nextDataModel = nextProps.model;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -122,4 +122,5 @@ ParameterSetString.propTypes = {
 
 ParameterSetString.defaultProps = {
   listener: true,
+  arg: '',
 };

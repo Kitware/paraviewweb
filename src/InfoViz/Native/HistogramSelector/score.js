@@ -642,7 +642,7 @@ export default function init(inPublicAPI, inModel) {
 
   function validateDividerVal(n) {
     // is it a finite float number?
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    return !Number.isNaN(Number(n)) && Number.isFinite(Number(n));
   }
 
   function showDividerPopup(dPopupDiv, selectedDef, hobj, coord) {

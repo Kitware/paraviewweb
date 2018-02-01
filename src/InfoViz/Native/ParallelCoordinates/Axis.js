@@ -33,7 +33,8 @@ export default class Axis {
   }
 
   updateSelection(selectionIndex, start, end) {
-    const entry = (this.selections[selectionIndex].interval = [start, end]);
+    const entry = [start, end];
+    this.selections[selectionIndex].interval = entry;
     // if entire selection is outside range, delete it.
     if (
       (start < this.range[0] && end < this.range[0]) ||

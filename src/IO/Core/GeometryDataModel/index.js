@@ -1,12 +1,10 @@
-/* global window */
-
 import Monologue from 'monologue.js';
 import DataManager from '../DataManager';
 
-const dataManager = new DataManager(),
-  OBJECT_READY_TOPIC = 'object-ready';
+const dataManager = new DataManager();
+const OBJECT_READY_TOPIC = 'object-ready';
 
-var geometryDataModelCounter = 0;
+let geometryDataModelCounter = 0;
 
 export default class GeometryDataModel {
   constructor(basepath) {
@@ -20,8 +18,8 @@ export default class GeometryDataModel {
     this.dataMapping = {};
 
     dataManager.on(this.id, (data, envelope) => {
-      const url = data.requestedURL,
-        dataDescription = this.dataMapping[url];
+      const url = data.requestedURL;
+      const dataDescription = this.dataMapping[url];
 
       if (dataDescription) {
         const obj = this.sceneData[dataDescription.name];
@@ -52,7 +50,7 @@ export default class GeometryDataModel {
   }
 
   colorGeometryBy(objectName, fieldName) {
-    var changeDetected = false;
+    let changeDetected = false;
     if (fieldName) {
       changeDetected = this.coloByMapping[objectName] !== fieldName;
       this.coloByMapping[objectName] = fieldName;
@@ -75,8 +73,8 @@ export default class GeometryDataModel {
 
       // Fill data with expected
       scene.forEach((obj) => {
-        const name = obj.name,
-          urls = [];
+        const name = obj.name;
+        const urls = [];
         let url = null;
 
         // Init structure

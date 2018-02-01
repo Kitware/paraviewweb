@@ -132,3 +132,12 @@ render.propTypes = {
   onChange: PropTypes.func,
   onDelete: PropTypes.func,
 };
+
+render.defaultProps = {
+  getLegend: undefined,
+  rule: undefined,
+  depth: undefined,
+  path: undefined,
+  onChange: undefined,
+  onDelete: undefined,
+};

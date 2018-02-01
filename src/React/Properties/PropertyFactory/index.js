@@ -95,7 +95,7 @@ function capitalize(str) {
 }
 
 export default function render(prop, vd, onChange) {
-  var fn =
+  const fn =
     factoryMapping[capitalize(prop.ui.propType)] ||
     factoryMapping[capitalizeOld(prop.ui.propType)];
   if (fn) {

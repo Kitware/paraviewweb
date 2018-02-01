@@ -1,5 +1,3 @@
-/* global Image */
-
 import hasOwn from 'mout/object/hasOwn';
 import max from 'mout/object/max';
 import min from 'mout/object/min';
@@ -11,15 +9,15 @@ import size from 'mout/object/size';
 import DataManager from '../DataManager';
 
 // ============================================================================
-const dataManager = new DataManager(),
-  DEFAULT_KEY_NAME = '_';
+const dataManager = new DataManager();
+const DEFAULT_KEY_NAME = '_';
 // ============================================================================
-var queryDataModelCounter = 0;
+let queryDataModelCounter = 0;
 // ============================================================================
 
 // Helper function used to handle next/previous when the loop function is 'reverse'
 function deltaReverse(arg, increment) {
-  var newIdx = arg.idx + arg.direction * increment;
+  let newIdx = arg.idx + arg.direction * increment;
   if (newIdx >= arg.values.length) {
     arg.direction *= -1; // Reverse direction
     newIdx = arg.values.length - 2;
@@ -45,7 +43,7 @@ function deltaModulo(arg, increment) {
 
 // Helper function used to handle next/previous when the loop function is 'none'
 function deltaNone(arg, increment) {
-  var newIdx = arg.idx + increment;
+  let newIdx = arg.idx + increment;
 
   if (newIdx >= arg.values.length) {
     newIdx = arg.values.length - 1;
@@ -114,10 +112,10 @@ export default class QueryDataModel {
     };
 
     const processRequest = (request) => {
-      var dataToBroadcast = {},
-        count = request.urls.length,
-        hasPending = false,
-        hasError = false;
+      const dataToBroadcast = {};
+      let count = request.urls.length;
+      let hasPending = false;
+      let hasError = false;
 
       if (this.animationTimerId !== 0) {
         clearTimeout(this.animationTimerId);
@@ -187,9 +185,9 @@ export default class QueryDataModel {
       }
 
       // All fetched request are complete
-      const minValue = min(this.dataCount),
-        maxValue = max(this.dataCount),
-        dataSize = size(this.dataCount);
+      const minValue = min(this.dataCount);
+      const maxValue = max(this.dataCount);
+      const dataSize = size(this.dataCount);
 
       if (minValue === maxValue && (dataSize === 1 ? minValue === 0 : true)) {
         // Handling requests after any re-queue
@@ -204,6 +202,13 @@ export default class QueryDataModel {
     // Flatten args
     Object.keys(jsonData.arguments).forEach((key) => {
       const arg = jsonData.arguments[key];
+      let delta = deltaNone;
+      if (arg.loop === 'reverse') {
+        delta = deltaReverse;
+      }
+      if (arg.loop === 'modulo') {
+        delta = deltaModulo;
+      }
       this.args[key] = {
         label: arg.label ? arg.label : key,
         idx: arg.default ? arg.default : 0,
@@ -211,17 +216,13 @@ export default class QueryDataModel {
         anime: false,
         values: arg.values,
         ui: arg.ui ? arg.ui : 'list',
-        delta: arg.loop
-          ? arg.loop === 'reverse'
-            ? deltaReverse
-            : arg.loop === 'modulo' ? deltaModulo : deltaNone
-          : deltaNone,
+        delta,
       };
     });
 
     // Register all data urls
     jsonData.data.forEach((dataEntry) => {
-      var dataId = this.id + dataEntry.name;
+      const dataId = this.id + dataEntry.name;
 
       // Register data metadata if any
       this.dataMetadata[dataEntry.name] = dataEntry.metadata || {};
@@ -269,7 +270,7 @@ export default class QueryDataModel {
 
   // Return the current set of arguments values
   getQuery() {
-    var query = {};
+    const query = {};
 
     Object.keys(this.args).forEach((key) => {
       const arg = this.args[key];
@@ -286,11 +287,9 @@ export default class QueryDataModel {
 
   // Fetch data for a given category or _ if none provided
   fetchData(category = DEFAULT_KEY_NAME) {
-    var dataToFetch = [],
-      query = this.getQuery(),
-      request = {
-        urls: [],
-      };
+    let dataToFetch = [];
+    const query = this.getQuery();
+    const request = { urls: [] };
 
     // fill the data to fetch
     if (category.name) {
@@ -329,7 +328,7 @@ export default class QueryDataModel {
 
   // Got to the first value of a given attribute and return true if data has changed
   first(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
 
     if (arg && arg.idx !== 0) {
       arg.idx = 0;
@@ -347,8 +346,8 @@ export default class QueryDataModel {
 
   // Got to the last value of a given attribute and return true if data has changed
   last(attributeName) {
-    var arg = this.args[attributeName],
-      last = arg.values.length - 1;
+    const arg = this.args[attributeName];
+    const last = arg.values.length - 1;
 
     if (arg && arg.idx !== last) {
       arg.idx = last;
@@ -366,7 +365,7 @@ export default class QueryDataModel {
 
   // Got to the next value of a given attribute and return true if data has changed
   next(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     if (arg && arg.delta(arg, +1)) {
       this.emit('state.change.next', {
         delta: 1,
@@ -382,7 +381,7 @@ export default class QueryDataModel {
 
   // Got to the previous value of a given attribute and return true if data has changed
   previous(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     if (arg && arg.delta(arg, -1)) {
       this.emit('state.change.previous', {
         delta: -1,
@@ -399,8 +398,8 @@ export default class QueryDataModel {
   // Set a value to an argument (must be in values) and return true if data has changed
   // If argument is not in the argument list. This will be added inside the external argument list.
   setValue(attributeName, value) {
-    var arg = this.args[attributeName],
-      newIdx = arg ? arg.values.indexOf(value) : 0;
+    const arg = this.args[attributeName];
+    const newIdx = arg ? arg.values.indexOf(value) : 0;
 
     if (arg && newIdx !== -1 && newIdx !== arg.idx) {
       arg.idx = newIdx;
@@ -429,7 +428,7 @@ export default class QueryDataModel {
 
   // Set a new index to an argument (must be in values range) and return true if data has changed
   setIndex(attributeName, idx) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
 
     if (arg && idx > -1 && idx < arg.values.length && arg.idx !== idx) {
       arg.idx = idx;
@@ -449,49 +448,49 @@ export default class QueryDataModel {
   // If argument is not in the argument list.
   // We will also search inside the external argument list.
   getValue(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.values[arg.idx] : this.externalArgs[attributeName];
   }
 
   // Return the argument values list or null if the argument was not found
   getValues(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.values : null;
   }
 
   // Return the argument index or null if the argument was not found
   getIndex(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.idx : null;
   }
 
   // Return the argument index or null if the argument was not found
   getUiType(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.ui : null;
   }
 
   // Return the argument size or null if the argument was not found
   getSize(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.values.length : null;
   }
 
   // Return the argument label or null if the argument was not found
   label(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.label : null;
   }
 
   // Return the argument animation flag or false if the argument was not found
   getAnimationFlag(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
     return arg ? arg.anime : false;
   }
 
   // Set the argument animation flag and return true if the value changed
   setAnimationFlag(attributeName, state) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
 
     if (arg && arg.anime !== state) {
       arg.anime = state;
@@ -509,7 +508,7 @@ export default class QueryDataModel {
   // Toggle the argument animation flag state and return the current state or
   // null if not found.
   toggleAnimationFlag(attributeName) {
-    var arg = this.args[attributeName];
+    const arg = this.args[attributeName];
 
     if (arg) {
       arg.anime = !arg.anime;
@@ -562,8 +561,8 @@ export default class QueryDataModel {
     this.newMouseTimeout = 250;
 
     // We need to create a mouse listener
-    const self = this,
-      actions = {};
+    const self = this;
+    const actions = {};
 
     // Create an action map
     Object.keys(this.originalData.arguments).forEach((key) => {
@@ -587,18 +586,18 @@ export default class QueryDataModel {
 
     /* eslint-disable complexity */
     function processEvent(event, envelope) {
-      var array = actions[event.topic],
-        time = now(),
-        newEvent = self.lastTime[event.topic] + self.newMouseTimeout < time,
-        count = array.length,
-        changeDetected = false,
-        eventHandled = false;
+      const array = actions[event.topic];
+      const time = now();
+      const newEvent = self.lastTime[event.topic] + self.newMouseTimeout < time;
+      let count = array.length;
+      let changeDetected = false;
+      let eventHandled = false;
 
       // Check all associated actions
       while (count) {
         count -= 1;
-        const item = array[count],
-          deltaName = item.coordinate === 0 ? 'deltaX' : 'deltaY';
+        const item = array[count];
+        const deltaName = item.coordinate === 0 ? 'deltaX' : 'deltaY';
 
         if (newEvent) {
           item.lastCoord = 0;
@@ -701,8 +700,8 @@ export default class QueryDataModel {
       });
 
       // Move to next step
-      const idxs = this.exploreState.idxs,
-        sizes = this.exploreState.sizes;
+      const idxs = this.exploreState.idxs;
+      const sizes = this.exploreState.sizes;
       let count = idxs.length;
 
       // May overshoot

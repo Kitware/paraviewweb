@@ -21,7 +21,9 @@ export default class ToggleIconButtonWidget extends React.Component {
   }
 
   buttonClicked() {
-    var enabled = this.props.toggle ? !this.state.enabled : this.state.enabled;
+    const enabled = this.props.toggle
+      ? !this.state.enabled
+      : this.state.enabled;
     if (this.props.onChange) {
       this.props.onChange(enabled, this.props.name);
     }
@@ -61,4 +63,7 @@ ToggleIconButtonWidget.defaultProps = {
   icon: 'fa-sun-o',
   toggle: true,
   name: 'toggle-button',
+  onChange: undefined,
+  alwaysOn: false,
+  iconDisabled: '',
 };

@@ -118,3 +118,11 @@ render.propTypes = {
   onDelete: PropTypes.func,
   showUncertainty: PropTypes.bool,
 };
+
+render.defaultProps = {
+  divider: undefined,
+  path: undefined,
+  onChange: undefined,
+  onDelete: undefined,
+  showUncertainty: undefined,
+};

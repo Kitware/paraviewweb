@@ -54,3 +54,10 @@ render.propTypes = {
   depth: PropTypes.number,
   className: PropTypes.string,
 };
+
+render.defaultProps = {
+  children: undefined,
+  operator: undefined,
+  depth: undefined,
+  className: undefined,
+};

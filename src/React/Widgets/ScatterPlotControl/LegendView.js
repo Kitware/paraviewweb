@@ -106,5 +106,10 @@ export default function LegendView(props) {
 
 LegendView.propTypes = {
   model: PropTypes.object,
-  toggleEditMode: PropTypes.func,
+  // toggleEditMode: PropTypes.func,
+};
+
+LegendView.defaultProps = {
+  model: undefined,
+  // toggleEditMode: undefined,
 };

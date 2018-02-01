@@ -12,9 +12,9 @@ export default class ImageExporter {
   }
 
   exportImage(data) {
-    var xhr = new XMLHttpRequest();
-    var dataToSend = {};
-    var ts = Number(this.counter).toString();
+    const xhr = new XMLHttpRequest();
+    const dataToSend = {};
+    let ts = Number(this.counter).toString();
     this.counter += 1;
 
     if (!data.canvas || !data.arguments) {
@@ -35,7 +35,7 @@ export default class ImageExporter {
 
     xhr.onload = (e) => {
       if (xhr.status === 200) {
-        return;
+        console.log('exportImage success');
       }
     };
 
@@ -73,7 +73,7 @@ export default class ImageExporter {
 
     xhr.onload = (e) => {
       if (xhr.status === 200) {
-        return;
+        console.log('updateMetadata success');
       }
     };
 

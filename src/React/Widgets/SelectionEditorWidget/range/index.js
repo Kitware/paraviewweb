@@ -62,11 +62,11 @@ export default function render(props) {
   };
 
   return (
-    <OperatorRender operator={'and'} depth={0} className={props.className}>
+    <OperatorRender operator="and" depth={0} className={props.className}>
       {Object.keys(vars).map((fieldName, idx) => {
         if (vars[fieldName].length > 1) {
           return (
-            <OperatorRender operator={'or'} depth={1} key={idx}>
+            <OperatorRender operator="or" depth={1} key={idx}>
               {vars[fieldName].map((clause, j) => (
                 <FiveClauseRender
                   getLegend={props.getLegend}
@@ -101,8 +101,14 @@ export default function render(props) {
 
 render.propTypes = {
   selection: PropTypes.object,
-  ranges: PropTypes.object,
+  // ranges: PropTypes.object,
   onChange: PropTypes.func,
-  getLegend: PropTypes.func,
+  // getLegend: PropTypes.func,
   className: PropTypes.string,
+};
+
+render.defaultProps = {
+  selection: undefined,
+  className: undefined,
+  onChange: undefined,
 };

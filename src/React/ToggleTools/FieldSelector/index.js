@@ -92,11 +92,11 @@ export default class FieldSelectorTool extends React.Component {
 }
 
 FieldSelectorTool.propTypes = {
-  provider: PropTypes.object,
+  provider: PropTypes.object.isRequired,
   size: PropTypes.string,
 
-  activeWindow: PropTypes.object,
-  onActiveWindow: PropTypes.func,
+  activeWindow: PropTypes.object.isRequired,
+  onActiveWindow: PropTypes.func.isRequired,
   overlayVisible: PropTypes.bool,
 };
 

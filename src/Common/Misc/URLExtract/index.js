@@ -13,7 +13,7 @@ function toNativeType(str) {
     return false;
   } else if (str === undefined || str === 'undefined') {
     return undefined;
-  } else if (str === '' || isNaN(str)) {
+  } else if (str === '' || Number.isNaN(Number(str))) {
     return str;
   }
   return parseFloat(str);

@@ -27,4 +27,7 @@ SvgIconWidget.defaultProps = {
   className: '',
   icon: defaultIcon,
   style: {},
+  height: undefined,
+  width: undefined,
+  onClick: undefined,
 };

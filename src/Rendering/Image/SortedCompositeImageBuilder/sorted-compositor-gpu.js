@@ -9,13 +9,16 @@ import fragmentShaderColor from './shaders/fragment/rgbaColor.c';
 import fragmentShaderAlpha from './shaders/fragment/alphaBlend.c';
 
 const texParameter = [
-    ['TEXTURE_MAG_FILTER', 'NEAREST'],
-    ['TEXTURE_MIN_FILTER', 'NEAREST'],
-    ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
-    ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
-  ],
-  pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]],
-  align1PixelStore = [['UNPACK_FLIP_Y_WEBGL', true], ['UNPACK_ALIGNMENT', 1]];
+  ['TEXTURE_MAG_FILTER', 'NEAREST'],
+  ['TEXTURE_MIN_FILTER', 'NEAREST'],
+  ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
+  ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
+];
+const pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
+const align1PixelStore = [
+  ['UNPACK_FLIP_Y_WEBGL', true],
+  ['UNPACK_ALIGNMENT', 1],
+];
 
 export default class WebGLSortedVolumeCompositor {
   constructor(queryDataModel, imageBuilder, colorTable, reverseCompositePass) {
@@ -194,8 +197,8 @@ export default class WebGLSortedVolumeCompositor {
   // --------------------------------------------------------------------------
 
   extractLayerData(buffer, layerIndex) {
-    var offset = layerIndex * this.width * this.height,
-      length = this.width * this.height;
+    const offset = layerIndex * this.width * this.height;
+    const length = this.width * this.height;
 
     return new Uint8Array(buffer, offset, length);
   }

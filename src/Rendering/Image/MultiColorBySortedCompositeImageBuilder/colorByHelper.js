@@ -70,8 +70,8 @@ export default class ColorByHelper {
   updatePipeline(query) {
     this.categories = [];
     for (let layerIdx = 0; layerIdx < this.nbLayers; layerIdx++) {
-      const layerCode = encoding[layerIdx],
-        colorCode = query[layerIdx * 2 + 1];
+      const layerCode = encoding[layerIdx];
+      const colorCode = query[layerIdx * 2 + 1];
 
       if (colorCode === '_') {
         this.layerVisible[layerCode] = 0.0;
@@ -90,17 +90,17 @@ export default class ColorByHelper {
   }
 
   hasNoContent(layerIdx) {
-    var layerCode = encoding[layerIdx],
-      alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
+    const layerCode = encoding[layerIdx];
+    const alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
     return alpha === 0;
   }
 
   getColor(layerIdx, pixelIdx) {
-    var layerCode = encoding[layerIdx],
-      color = this.layerGetColor[layerCode][this.layerColorBy[layerCode]](
-        pixelIdx
-      ),
-      alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
+    const layerCode = encoding[layerIdx];
+    const color = this.layerGetColor[layerCode][this.layerColorBy[layerCode]](
+      pixelIdx
+    );
+    const alpha = this.layerAlpha[layerCode] * this.layerVisible[layerCode];
 
     return [color[0] * 255, color[1] * 255, color[2] * 255, color[3] * alpha];
   }
@@ -124,7 +124,7 @@ export default class ColorByHelper {
   }
 
   getLayerFloatData(layerIdx) {
-    var layerName = encoding[layerIdx];
+    const layerName = encoding[layerIdx];
     return this.layerFloatData[layerName][this.layerColorBy[layerName]];
   }
 

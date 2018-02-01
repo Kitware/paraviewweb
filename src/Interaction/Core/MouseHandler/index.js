@@ -3,24 +3,24 @@ import Monologue from 'monologue.js';
 
 // Module dependencies and constants
 const Modifier = {
-    NONE: 0,
-    ALT: 1,
-    META: 2,
-    SHIFT: 4,
-    CTRL: 8,
-  },
-  eventTypeMapping = {
-    mousemove: 'zoom',
-    mouseup: 'zoom',
-    mousewheel: 'zoom',
-    DOMMouseScroll: 'zoom',
-  },
-  TIMEOUT_BETWEEN_ZOOM = 300;
+  NONE: 0,
+  ALT: 1,
+  META: 2,
+  SHIFT: 4,
+  CTRL: 8,
+};
+const eventTypeMapping = {
+  mousemove: 'zoom',
+  mouseup: 'zoom',
+  mousewheel: 'zoom',
+  DOMMouseScroll: 'zoom',
+};
+const TIMEOUT_BETWEEN_ZOOM = 300;
 
-var handlerCount = 0;
+let handlerCount = 0;
 
 function getModifier(e) {
-  var modifier = 0;
+  let modifier = 0;
   if (e.srcEvent) {
     modifier += e.srcEvent.altKey ? Modifier.ALT : 0;
     modifier += e.srcEvent.ctrlKey ? Modifier.CTRL : 0;
@@ -60,7 +60,7 @@ function broadcast(ctx, topic, event, preventDefault = true) {
 
 export default class MouseHandler {
   constructor(domElement, options) {
-    var defaultOptions = {
+    const defaultOptions = {
       preventDefault: true,
       pan: {
         threshold: 0,
@@ -286,7 +286,7 @@ export default class MouseHandler {
   }
 
   attach(listeners) {
-    var subscriptions = {};
+    const subscriptions = {};
     Object.keys(listeners).forEach((key) => {
       subscriptions[key] = this.on(key, listeners[key]);
     });

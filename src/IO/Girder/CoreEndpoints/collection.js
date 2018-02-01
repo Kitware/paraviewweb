@@ -8,16 +8,16 @@ export default function({
 }) {
   return {
     listCollections(query = {}) {
-      const expected = ['text', 'limit', 'offset', 'sort', 'sortdir'],
-        params = filterQuery(query, ...expected);
+      const expected = ['text', 'limit', 'offset', 'sort', 'sortdir'];
+      const params = filterQuery(query, ...expected);
 
       return client._.get('/collection', { params });
     },
 
     createCollection(collection) {
-      const expected = ['name', 'description', 'public'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(params, ...expected);
+      const expected = ['name', 'description', 'public'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(params, ...expected);
 
       return missingKeys
         ? promise
@@ -33,9 +33,9 @@ export default function({
     },
 
     editCollection(collection = {}) {
-      const expected = ['name', 'description'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(collection, '_id');
+      const expected = ['name', 'description'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(collection, '_id');
 
       return missingKeys
         ? promise
@@ -51,9 +51,9 @@ export default function({
     },
 
     editCollectionAccess(collection) {
-      const expected = ['access', 'public'],
-        params = filterQuery(collection, ...expected),
-        { missingKeys, promise } = mustContain(collection, '_id');
+      const expected = ['access', 'public'];
+      const params = filterQuery(collection, ...expected);
+      const { missingKeys, promise } = mustContain(collection, '_id');
 
       return missingKeys
         ? promise

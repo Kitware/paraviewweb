@@ -30,7 +30,6 @@ export default class EnumProperty extends React.Component {
     this.state = {
       data: props.data,
       helpOpen: false,
-      ui: props.ui,
     };
 
     // Bind callback
@@ -39,7 +38,7 @@ export default class EnumProperty extends React.Component {
   }
 
   componentWillMount() {
-    var newState = {};
+    const newState = {};
     if (this.props.ui.default && !this.props.data.value) {
       newState.data = this.state.data;
       newState.data.value = this.props.ui.default;
@@ -67,7 +66,7 @@ export default class EnumProperty extends React.Component {
   }
 
   valueChange(e) {
-    var newData = this.state.data;
+    const newData = this.state.data;
     if (Array.isArray(this.state.data.value)) {
       const newVals = [];
       for (let i = 0; i < e.target.options.length; i++) {
@@ -94,27 +93,27 @@ export default class EnumProperty extends React.Component {
   }
 
   render() {
-    var selectedValue = null;
-    const multiple = this.props.ui.size === -1,
-      mapper = () => {
-        var ret = [];
-        if (!multiple && !this.props.ui.noEmpty) {
-          ret.push(<option key="empty-value" value={null} />);
-        }
+    let selectedValue = null;
+    const multiple = this.props.ui.size === -1;
+    const mapper = () => {
+      const ret = [];
+      if (!multiple && !this.props.ui.noEmpty) {
+        ret.push(<option key="empty-value" value={null} />);
+      }
 
-        Object.keys(this.props.ui.domain).forEach((key) => {
-          ret.push(
-            <option
-              value={valueToString(this.props.ui.domain[key])}
-              key={`${this.props.data.id}_${key}`}
-            >
-              {key}
-            </option>
-          );
-        });
+      Object.keys(this.props.ui.domain).forEach((key) => {
+        ret.push(
+          <option
+            value={valueToString(this.props.ui.domain[key])}
+            key={`${this.props.data.id}_${key}`}
+          >
+            {key}
+          </option>
+        );
+      });
 
-        return ret;
-      };
+      return ret;
+    };
 
     if (multiple) {
       selectedValue = this.props.data.value.map(valueToString);
@@ -183,10 +182,10 @@ EnumProperty.propTypes = {
   data: PropTypes.object.isRequired,
   help: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func,
-  show: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
-  viewData: PropTypes.object,
+  viewData: PropTypes.object.isRequired,
 };
 
 EnumProperty.defaultProps = {

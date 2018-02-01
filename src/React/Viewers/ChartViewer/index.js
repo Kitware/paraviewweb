@@ -35,9 +35,9 @@ ChartViewer.propTypes = {
   chartBuilder: PropTypes.object.isRequired,
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
-  userData: PropTypes.object,
 };
 
 ChartViewer.defaultProps = {
   config: {},
+  menuAddOn: undefined,
 };

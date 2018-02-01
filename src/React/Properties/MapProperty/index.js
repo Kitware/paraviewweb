@@ -14,7 +14,6 @@ export default class MapProperty extends React.Component {
     this.state = {
       data: props.data,
       helpOpen: false,
-      ui: props.ui,
     };
 
     // Bind callback
@@ -24,7 +23,7 @@ export default class MapProperty extends React.Component {
   }
 
   componentWillMount() {
-    var newState = {};
+    const newState = {};
     if (this.props.ui.default && !this.props.data.value) {
       newState.data = this.state.data;
       newState.data.value = this.props.ui.default;
@@ -135,14 +134,12 @@ export default class MapProperty extends React.Component {
 MapProperty.propTypes = {
   data: PropTypes.object.isRequired,
   help: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
-  show: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
-  viewData: PropTypes.object,
+  viewData: PropTypes.object.isRequired,
 };
 
 MapProperty.defaultProps = {
-  name: '',
   help: '',
 };

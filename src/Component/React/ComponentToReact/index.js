@@ -36,12 +36,17 @@ export default class ComponentToReact extends React.Component {
 
   render() {
     return (
-      <div className={this.props.className} ref={(c) => (this.container = c)} />
+      <div
+        className={this.props.className}
+        ref={(c) => {
+          this.container = c;
+        }}
+      />
     );
   }
 }
 
 ComponentToReact.propTypes = {
-  className: PropTypes.string,
-  component: PropTypes.object,
+  className: PropTypes.string.isRequired,
+  component: PropTypes.object.isRequired,
 };

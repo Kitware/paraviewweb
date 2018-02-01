@@ -81,7 +81,7 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
       this.update();
     });
     this.equalizerModel.onChange((data, envelope) => {
-      var opacities = data.getOpacities();
+      const opacities = data.getOpacities();
       for (let idx = 0; idx < this.metadata.layers; idx++) {
         this.lutTextureData[idx * 4 + 3] = opacities[idx] * 255;
       }
@@ -154,7 +154,7 @@ export default class SortedCompositeImageBuilder extends AbstractImageBuilder {
   // ------------------------------------------------------------------------
 
   getControlWidgets() {
-    var {
+    const {
       lookupTable,
       equalizer,
       intensity,

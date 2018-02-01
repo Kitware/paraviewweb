@@ -20,11 +20,19 @@ module.exports = {
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
     'prefer-destructuring': 0, // Can have unwanted side effect
+    'react/jsx-filename-extension': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
 
     // Introduced with new eslint
     // and no time to fix them...
     // [...]
     'linebreak-style': 0,
+    'no-useless-escape': 0,
+    'no-nested-ternary': 0,
+    'react/forbid-prop-types': 0,
+    'react/no-array-index-key': 0,
   },
   plugins: [
     'prettier'

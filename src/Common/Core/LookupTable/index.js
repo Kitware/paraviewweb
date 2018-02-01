@@ -10,7 +10,7 @@ function applyRatio(a, b, ratio) {
 }
 
 function interpolateColor(pointA, pointB, scalar) {
-  var ratio = (scalar - pointA[0]) / (pointB[0] - pointA[0]);
+  const ratio = (scalar - pointA[0]) / (pointB[0] - pointA[0]);
   return [
     applyRatio(pointA[1], pointB[1], ratio),
     applyRatio(pointA[2], pointB[2], ratio),
@@ -123,7 +123,7 @@ export default class LookupTable {
   }
 
   build(trigger) {
-    var currentControlIdx = 0;
+    let currentControlIdx = 0;
 
     if (this.colorTable) {
       return;
@@ -231,10 +231,10 @@ export default class LookupTable {
   }
 
   drawToCanvas(canvas) {
-    var colors = this.colorTable;
-    var length = this.scale * colors.length;
-    var ctx = canvas.getContext('2d');
-    var canvasData = ctx.getImageData(0, 0, length, 1);
+    const colors = this.colorTable;
+    const length = this.scale * colors.length;
+    const ctx = canvas.getContext('2d');
+    const canvasData = ctx.getImageData(0, 0, length, 1);
 
     for (let i = 0; i < length; i++) {
       const colorIdx = Math.floor(i / this.scale);
@@ -247,7 +247,7 @@ export default class LookupTable {
   }
 
   getColor(scalar) {
-    if (isNaN(scalar)) {
+    if (Number.isNaN(scalar)) {
       return this.colorNaN;
     }
     const idxValue = Math.floor(

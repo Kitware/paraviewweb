@@ -7,11 +7,11 @@ import style from 'PVWStyle/ReactViewers/LineChartViewer.mcss';
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 
 function interpolate(values, xRatio) {
-  var size = values.length,
-    idx = size * xRatio,
-    a = values[Math.floor(idx)],
-    b = values[Math.ceil(idx)],
-    ratio = idx - Math.floor(idx);
+  const size = values.length;
+  const idx = size * xRatio;
+  const a = values[Math.floor(idx)];
+  const b = values[Math.ceil(idx)];
+  const ratio = idx - Math.floor(idx);
   return ((b - a) * ratio + a).toFixed(5);
 }
 
@@ -80,8 +80,8 @@ export default class LineChartViewer extends React.Component {
   updateDimensions() {
     this.xPosition = 0;
 
-    const el = this.rootContainer.parentNode,
-      elSize = sizeHelper.getSize(el);
+    const el = this.rootContainer.parentNode;
+    const elSize = sizeHelper.getSize(el);
 
     if (
       el &&
@@ -106,11 +106,11 @@ export default class LineChartViewer extends React.Component {
       return;
     }
 
-    const ctx = this.canvas.getContext('2d'),
-      fields = this.props.data.fields,
-      size = fields.length,
-      fieldsColors = {},
-      ratio = this.xPosition / ctx.canvas.width;
+    const ctx = this.canvas.getContext('2d');
+    const fields = this.props.data.fields;
+    const size = fields.length;
+    const fieldsColors = {};
+    const ratio = this.xPosition / ctx.canvas.width;
 
     ctx.canvas.width = this.state.width;
     ctx.canvas.height = this.state.height;
@@ -154,13 +154,13 @@ export default class LineChartViewer extends React.Component {
   }
 
   drawField(ctx, fieldIndex, values, range) {
-    var min = Number.MAX_VALUE,
-      max = Number.MIN_VALUE,
-      width = ctx.canvas.width,
-      height = ctx.canvas.height,
-      size = values.length,
-      count = values.length,
-      xValues = new Uint16Array(count);
+    let min = Number.MAX_VALUE;
+    let max = -Number.MAX_VALUE;
+    const width = ctx.canvas.width;
+    const height = ctx.canvas.height;
+    const size = values.length;
+    let count = values.length;
+    const xValues = new Uint16Array(count);
 
     // Compute xValues and min/max
     while (count) {
@@ -180,7 +180,7 @@ export default class LineChartViewer extends React.Component {
     const scaleY = height / (max - min);
 
     function getY(idx) {
-      var value = values[idx];
+      let value = values[idx];
       value = value > min ? (value < max ? value : max) : min;
       return height - Math.floor((value - min) * scaleY);
     }
@@ -191,8 +191,8 @@ export default class LineChartViewer extends React.Component {
     ctx.strokeStyle = this.props.colors[fieldIndex];
     ctx.moveTo(xValues[0], getY(0));
     for (let idx = 1; idx < size; idx++) {
-      if (isNaN(values[idx])) {
-        if (idx + 1 < size && !isNaN(values[idx + 1])) {
+      if (Number.isNaN(values[idx])) {
+        if (idx + 1 < size && !Number.isNaN(values[idx + 1])) {
           ctx.moveTo(xValues[idx + 1], getY(idx + 1));
         }
       } else {
@@ -205,7 +205,7 @@ export default class LineChartViewer extends React.Component {
   }
 
   render() {
-    var legend = [];
+    const legend = [];
 
     Object.keys(this.state.fieldsColors).forEach((name) => {
       const color = this.state.fieldsColors[name];
@@ -224,7 +224,12 @@ export default class LineChartViewer extends React.Component {
     });
 
     return (
-      <div className={style.container} ref={(c) => (this.rootContainer = c)}>
+      <div
+        className={style.container}
+        ref={(c) => {
+          this.rootContainer = c;
+        }}
+      >
         <canvas
           className={style.canvas}
           ref={(c) => {
@@ -269,7 +274,6 @@ LineChartViewer.propTypes = {
   height: PropTypes.number,
   legend: PropTypes.bool,
   width: PropTypes.number,
-  userData: PropTypes.object,
 };
 
 LineChartViewer.defaultProps = {
@@ -277,4 +281,5 @@ LineChartViewer.defaultProps = {
   height: 200,
   legend: false,
   width: 200,
+  cursor: undefined,
 };

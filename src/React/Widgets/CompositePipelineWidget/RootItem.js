@@ -59,22 +59,22 @@ export default class CompositePipelineWidgetRootItem extends React.Component {
   }
 
   render() {
-    var model = this.props.model,
-      layer = this.props.layer,
-      visible = model.isLayerVisible(this.props.layer),
-      children = this.props.item.children || [],
-      inEditMode = this.props.model.isLayerInEditMode(this.props.layer),
-      hasChildren = children.length > 0,
-      hasOpacity = model.hasOpacity(),
-      hasDropDown = this.props.model.getColor(this.props.layer).length > 1,
-      editButton = hasChildren ? (
-        <i
-          className={inEditMode ? style.editButtonOn : style.editButtonOff}
-          onClick={this.toggleEditMode}
-        />
-      ) : (
-        ''
-      );
+    const model = this.props.model;
+    const layer = this.props.layer;
+    const visible = model.isLayerVisible(this.props.layer);
+    const children = this.props.item.children || [];
+    const inEditMode = this.props.model.isLayerInEditMode(this.props.layer);
+    const hasChildren = children.length > 0;
+    const hasOpacity = model.hasOpacity();
+    const hasDropDown = this.props.model.getColor(this.props.layer).length > 1;
+    const editButton = hasChildren ? (
+      <i
+        className={inEditMode ? style.editButtonOn : style.editButtonOff}
+        onClick={this.toggleEditMode}
+      />
+    ) : (
+      ''
+    );
 
     return (
       <div className={style.section}>
@@ -143,4 +143,10 @@ CompositePipelineWidgetRootItem.propTypes = {
   item: PropTypes.object,
   layer: PropTypes.string,
   model: PropTypes.object,
+};
+
+CompositePipelineWidgetRootItem.defaultProps = {
+  item: undefined,
+  layer: undefined,
+  model: undefined,
 };

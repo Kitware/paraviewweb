@@ -22,7 +22,7 @@ export default class InputCell extends React.Component {
   }
 
   getTooltip() {
-    var tooltip = '';
+    let tooltip = '';
     const idx = this.props.idx;
 
     if (!this.props.domain) {
@@ -66,7 +66,7 @@ export default class InputCell extends React.Component {
   }
 
   valueChange(e) {
-    var newVal = e.target.value;
+    const newVal = e.target.value;
     const isValid = validate[this.props.type](newVal);
     this.setState({
       editing: true,
@@ -105,11 +105,11 @@ export default class InputCell extends React.Component {
 }
 
 InputCell.propTypes = {
-  domain: PropTypes.object,
-  idx: PropTypes.number.isRequired,
+  domain: PropTypes.object.isRequired,
+  idx: PropTypes.number,
   label: PropTypes.string,
-  noEmpty: PropTypes.bool,
-  onChange: PropTypes.func,
+  noEmpty: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   value: PropTypes.any,
 };

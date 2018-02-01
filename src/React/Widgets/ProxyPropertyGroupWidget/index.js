@@ -35,8 +35,8 @@ export default class ProxyPropertyGroup extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var previous = this.props.proxy,
-      next = nextProps.proxy;
+    const previous = this.props.proxy;
+    const next = nextProps.proxy;
 
     if (!equals(previous, next)) {
       this.setState({
@@ -115,4 +115,9 @@ ProxyPropertyGroup.propTypes = {
 ProxyPropertyGroup.defaultProps = {
   advanced: false,
   collapsed: false,
+
+  filter: undefined,
+  onChange: undefined,
+  onCollapseChange: undefined,
+  proxy: undefined,
 };

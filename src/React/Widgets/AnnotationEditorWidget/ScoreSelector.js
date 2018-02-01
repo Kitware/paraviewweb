@@ -42,4 +42,8 @@ render.defaultProps = {
   name: 'default',
   horizontal: false,
   onChange(name, score) {},
+  className: '',
+
+  score: undefined,
+  scores: undefined,
 };

@@ -6,7 +6,7 @@ import LookupTableManagerControl from '../LookupTableManagerControl';
 CollapsibleControlFactory.registerWidget(
   'LookupTableManagerWidget',
   ({ lookupTableManager, activeField }) => {
-    var field = activeField;
+    let field = activeField;
     if (!field) {
       field = lookupTableManager.getActiveField();
     }

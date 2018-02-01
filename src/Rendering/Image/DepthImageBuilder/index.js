@@ -36,14 +36,14 @@ export default class DepthImageBuilder extends AbstractImageBuilder {
       return;
     }
 
-    const ctx = this.bgCanvas.get2DContext(),
-      width = this.dimensions[0],
-      height = this.dimensions[1],
-      imageData = this.bgCanvas.el
-        .getContext('2d')
-        .getImageData(0, 0, width, height),
-      pixels = imageData.data,
-      size = width * height;
+    const ctx = this.bgCanvas.get2DContext();
+    const width = this.dimensions[0];
+    const height = this.dimensions[1];
+    const imageData = this.bgCanvas.el
+      .getContext('2d')
+      .getImageData(0, 0, width, height);
+    const pixels = imageData.data;
+    const size = width * height;
 
     // Fill bgCanvas with depth
     for (let i = 0; i < size; i++) {

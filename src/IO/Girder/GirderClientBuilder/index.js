@@ -44,8 +44,8 @@ function filterQuery(query = {}, ...keys) {
 // ----------------------------------------------------------------------------
 
 function mustContain(object = {}, ...keys) {
-  var missingKeys = [],
-    promise;
+  let missingKeys = [];
+  let promise;
   keys.forEach((key) => {
     if (object[key] === undefined) {
       missingKeys.push(key);
@@ -53,10 +53,10 @@ function mustContain(object = {}, ...keys) {
   });
   if (missingKeys.length === 0) {
     missingKeys = undefined;
-    promise = new Promise((resolve, reject) => resolve());
+    promise = Promise.resolve();
   } else {
-    promise = new Promise((resolve, reject) =>
-      reject(`Missing keys ${missingKeys.join(', ')}`)
+    promise = Promise.reject(
+      new Error(`Missing keys ${missingKeys.join(', ')}`)
     );
   }
 
@@ -69,106 +69,110 @@ function mustContain(object = {}, ...keys) {
 // ----------------------------------------------------------------------------
 
 export function build(config = window.location, ...extensions) {
-  var userData,
-    token,
-    loginPromise,
-    isAuthenticated = false,
-    eventSource = null,
-    busyCounter = 0;
+  let userData;
+  let token;
+  let loginPromise;
+  let isAuthenticated = false;
+  let eventSource = null;
+  let busyCounter = 0;
 
-  const client = {}, // Must be const otherwise the created closure will fail
-    notification = new Observable(),
-    idle = () => {
-      busyCounter -= 1;
-      notification.emit(BUSY_TOPIC, busyCounter);
-    },
-    busy = (promise) => {
-      busyCounter += 1;
-      notification.emit(BUSY_TOPIC, busyCounter);
-      promise.then(idle, idle);
-      return promise;
-    },
-    { protocol, hostname, port, basepath = '/api/v1' } = config,
-    baseURL = `${protocol}//${hostname}:${port}${basepath}`,
-    connectToNotificationStream = () => {
-      if (EventSource) {
-        eventSource = new EventSource(`${baseURL}/notification/stream`);
-        eventSource.onmessage = (e) => {
-          var parsed = JSON.parse(e.data);
-          notification.emit(EVENT_TOPIC, parsed);
-        };
+  const client = {}; // Must be const otherwise the created closure will fail
+  const notification = new Observable();
+  const idle = () => {
+    busyCounter -= 1;
+    notification.emit(BUSY_TOPIC, busyCounter);
+  };
+  const busy = (promise) => {
+    busyCounter += 1;
+    notification.emit(BUSY_TOPIC, busyCounter);
+    promise.then(idle, idle);
+    return promise;
+  };
+  const { protocol, hostname, port, basepath = '/api/v1' } = config;
+  const baseURL = `${protocol}//${hostname}:${port}${basepath}`;
+  const connectToNotificationStream = () => {
+    if (EventSource) {
+      eventSource = new EventSource(`${baseURL}/notification/stream`);
+      eventSource.onmessage = (e) => {
+        const parsed = JSON.parse(e.data);
+        notification.emit(EVENT_TOPIC, parsed);
+      };
 
-        eventSource.onerror = (e) => {
-          // Wait 10 seconds if the browser hasn't reconnected then
-          // reinitialize.
-          setTimeout(() => {
-            if (eventSource && eventSource.readyState === 2) {
-              connectToNotificationStream();
-            } else {
-              eventSource = null;
-            }
-          }, 10000);
-        };
+      eventSource.onerror = (e) => {
+        // Wait 10 seconds if the browser hasn't reconnected then
+        // reinitialize.
+        setTimeout(() => {
+          if (eventSource && eventSource.readyState === 2) {
+            connectToNotificationStream();
+          } else {
+            eventSource = null;
+          }
+        }, 10000);
+      };
+    }
+  };
+  const {
+    extractLocalToken,
+    updateGirderInstance,
+    updateAuthenticationState,
+  } = {
+    extractLocalToken() {
+      try {
+        return document.cookie
+          .split('girderToken=')[1]
+          .split(';')[0]
+          .trim();
+      } catch (e) {
+        return undefined;
       }
     },
-    { extractLocalToken, updateGirderInstance, updateAuthenticationState } = {
-      extractLocalToken() {
-        try {
-          return document.cookie
-            .split('girderToken=')[1]
-            .split(';')[0]
-            .trim();
-        } catch (e) {
-          return undefined;
-        }
-      },
-      updateGirderInstance() {
-        const timeout = 60000;
-        const headers = {};
+    updateGirderInstance() {
+      const timeout = 60000;
+      const headers = {};
 
-        if (token) {
-          headers['Girder-Token'] = token;
-        }
+      if (token) {
+        headers['Girder-Token'] = token;
+      }
 
-        client._ = axios.create({
-          baseURL,
-          timeout,
-          headers,
-        });
-      },
-      updateAuthenticationState(state) {
-        if (isAuthenticated !== !!state) {
-          // Clear cache data if not logged-in
-          if (!state) {
-            userData = undefined;
-            token = undefined;
-            // Update userData for external modules
-            client.user = userData;
-            client.token = undefined;
-          }
-
-          // Update internal state
-          isAuthenticated = !!state;
-          updateGirderInstance();
-
-          // Broadcast information
-          /* eslint-disable babel/new-cap */
-          loginPromise = state ? loginPromiseBuilder() : logoutPromiseBuilder();
-          /* eslint-enable babel/new-cap */
-          notification.emit(AUTH_CHANGE_TOPIC, isAuthenticated);
-          if (isAuthenticated && eventSource === null) {
-            connectToNotificationStream();
-          }
-        }
-      },
-    },
-    progress = (id, current, total = 1) => {
-      notification.emit(PROGRESS_TOPIC, {
-        id,
-        current,
-        total,
+      client._ = axios.create({
+        baseURL,
+        timeout,
+        headers,
       });
-    };
+    },
+    updateAuthenticationState(state) {
+      if (isAuthenticated !== !!state) {
+        // Clear cache data if not logged-in
+        if (!state) {
+          userData = undefined;
+          token = undefined;
+          // Update userData for external modules
+          client.user = userData;
+          client.token = undefined;
+        }
+
+        // Update internal state
+        isAuthenticated = !!state;
+        updateGirderInstance();
+
+        // Broadcast information
+        /* eslint-disable babel/new-cap */
+        loginPromise = state ? loginPromiseBuilder() : logoutPromiseBuilder();
+        /* eslint-enable babel/new-cap */
+        notification.emit(AUTH_CHANGE_TOPIC, isAuthenticated);
+        if (isAuthenticated && eventSource === null) {
+          connectToNotificationStream();
+        }
+      }
+    },
+  };
+  const progress = (id, current, total = 1) => {
+    notification.emit(PROGRESS_TOPIC, {
+      id,
+      current,
+      total,
+    });
+  };
 
   // Fill up public object
   const publicObject = {

@@ -13,14 +13,17 @@ import fragmentShaderLitLayerColor from './shaders/fragment/addLitLayerColor.c';
 import fragmentShaderAlphaBlend from '../SortedCompositeImageBuilder/shaders/fragment/alphaBlend.c';
 
 const texParameter = [
-    ['TEXTURE_MAG_FILTER', 'NEAREST'],
-    ['TEXTURE_MIN_FILTER', 'NEAREST'],
-    ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
-    ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
-  ],
-  pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]],
-  align1PixelStore = [['UNPACK_FLIP_Y_WEBGL', true], ['UNPACK_ALIGNMENT', 1]],
-  EMPTY_LAYER_BUFFER = new Float32Array([0.0]);
+  ['TEXTURE_MAG_FILTER', 'NEAREST'],
+  ['TEXTURE_MIN_FILTER', 'NEAREST'],
+  ['TEXTURE_WRAP_S', 'CLAMP_TO_EDGE'],
+  ['TEXTURE_WRAP_T', 'CLAMP_TO_EDGE'],
+];
+const pixelStore = [['UNPACK_FLIP_Y_WEBGL', true]];
+const align1PixelStore = [
+  ['UNPACK_FLIP_Y_WEBGL', true],
+  ['UNPACK_ALIGNMENT', 1],
+];
+const EMPTY_LAYER_BUFFER = new Float32Array([0.0]);
 
 export default class GPUCompositor {
   constructor(queryDataModel, imageBuilder, colorHelper, reverseCompositePass) {
@@ -72,9 +75,9 @@ export default class GPUCompositor {
     this.gl.clearColor(1.0, 1.0, 1.0, 0.0);
 
     const maxTextureUnits = this.gl.getParameter(
-        this.gl.MAX_TEXTURE_IMAGE_UNITS
-      ),
-      simultaneousLayers = (maxTextureUnits - 2) / 2;
+      this.gl.MAX_TEXTURE_IMAGE_UNITS
+    );
+    const simultaneousLayers = (maxTextureUnits - 2) / 2;
 
     this.shaderLayers =
       simultaneousLayers < this.numLayers ? simultaneousLayers : this.numLayers;
@@ -268,8 +271,8 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   extractLayerData(buffer, layerIndex, pixelSize) {
-    var offset = layerIndex * this.width * this.height * pixelSize,
-      length = this.width * this.height * pixelSize;
+    const offset = layerIndex * this.width * this.height * pixelSize;
+    const length = this.width * this.height * pixelSize;
 
     return new Uint8Array(buffer, offset, length);
   }
@@ -277,7 +280,7 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   getAndUseCurrentColorProgram() {
-    var currentProgram = this.glResources.programs.colorProgram;
+    let currentProgram = this.glResources.programs.colorProgram;
 
     // Using the coloring shader program
     if (this.hasNormal) {
@@ -292,23 +295,23 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   uploadLayerTextures(minIdx, maxIdx) {
-    var layerColorUnits = [],
-      lutUnits = [],
-      texCount = 2,
-      bufferViewSizeList = [],
-      bufferViewList = [],
-      ranges = [],
-      alphas = [],
-      currentLutIndex = 0;
+    const layerColorUnits = [];
+    const lutUnits = [];
+    let texCount = 2;
+    const bufferViewSizeList = [];
+    const bufferViewList = [];
+    const ranges = [];
+    const alphas = [];
+    let currentLutIndex = 0;
 
     for (
       let activeLayerIdx = minIdx;
       activeLayerIdx <= maxIdx;
       ++activeLayerIdx
     ) {
-      const lut = this.colorHelper.getLayerLut(activeLayerIdx),
-        colorByName = this.colorHelper.getLayerColorByName(activeLayerIdx),
-        range = this.metadata.ranges[colorByName];
+      const lut = this.colorHelper.getLayerLut(activeLayerIdx);
+      const colorByName = this.colorHelper.getLayerColorByName(activeLayerIdx);
+      const range = this.metadata.ranges[colorByName];
 
       if (this.colorHelper.getLayerVisible(activeLayerIdx)) {
         const layerBufferView = this.colorHelper.getLayerFloatData(
@@ -427,12 +430,16 @@ export default class GPUCompositor {
 
     // Just iterate through all the layers in the data for now
     loop(!this.reverseCompositePass, this.numLayers, (layerIdx) => {
-      var orderLayerArray = this.extractLayerData(this.orderData, layerIdx, 1),
-        lightingLayerArray = this.extractLayerData(
-          this.intensityData,
-          layerIdx,
-          1
-        );
+      const orderLayerArray = this.extractLayerData(
+        this.orderData,
+        layerIdx,
+        1
+      );
+      let lightingLayerArray = this.extractLayerData(
+        this.intensityData,
+        layerIdx,
+        1
+      );
 
       if (this.hasNormal) {
         lightingLayerArray = this.extractLayerData(
@@ -494,8 +501,8 @@ export default class GPUCompositor {
   // --------------------------------------------------------------------------
 
   findLayerConstantValue(layerIdx) {
-    var colorByName = this.colorHelper.getLayerColorByName(layerIdx),
-      colorBys = this.metadata.pipeline[layerIdx].colorBy;
+    const colorByName = this.colorHelper.getLayerColorByName(layerIdx);
+    const colorBys = this.metadata.pipeline[layerIdx].colorBy;
     for (let i = 0; i < colorBys.length; ++i) {
       if (colorBys[i].name === colorByName) {
         return colorBys[i].value;

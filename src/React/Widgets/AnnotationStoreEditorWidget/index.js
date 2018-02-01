@@ -118,4 +118,11 @@ render.defaultProps = {
   rationaleOpen: false,
   showUncertainty: true,
   ignoreGeneration: false,
+
+  annotation: undefined,
+  annotations: undefined,
+
+  scores: undefined,
+  ranges: undefined,
+  getLegend: undefined,
 };

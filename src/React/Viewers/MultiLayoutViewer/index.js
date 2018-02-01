@@ -22,7 +22,7 @@ export default class MultiLayoutViewer extends React.Component {
   // FIXME need to do that properly if possible?
   /* eslint-disable react/no-did-mount-set-state */
   componentDidMount() {
-    var renderer = this.catalystWidget.getRenderer();
+    const renderer = this.catalystWidget.getRenderer();
 
     this.setState({ renderer });
 
@@ -37,18 +37,18 @@ export default class MultiLayoutViewer extends React.Component {
   /* eslint-enable react/no-did-mount-set-state */
 
   componentWillUpdate(nextProps, nextState) {
-    var previousDataModel =
-        this.state.activeRenderer &&
-        this.state.activeRenderer.builder &&
-        this.state.activeRenderer.builder.queryDataModel
-          ? this.state.activeRenderer.builder.queryDataModel
-          : this.props.queryDataModel,
-      nextDataModel =
-        nextState.activeRenderer &&
-        nextState.activeRenderer.builder &&
-        nextState.activeRenderer.builder.queryDataModel
-          ? nextState.activeRenderer.builder.queryDataModel
-          : nextProps.queryDataModel;
+    const previousDataModel =
+      this.state.activeRenderer &&
+      this.state.activeRenderer.builder &&
+      this.state.activeRenderer.builder.queryDataModel
+        ? this.state.activeRenderer.builder.queryDataModel
+        : this.props.queryDataModel;
+    const nextDataModel =
+      nextState.activeRenderer &&
+      nextState.activeRenderer.builder &&
+      nextState.activeRenderer.builder.queryDataModel
+        ? nextState.activeRenderer.builder.queryDataModel
+        : nextProps.queryDataModel;
 
     if (previousDataModel !== nextDataModel) {
       this.detachListener();
@@ -84,13 +84,13 @@ export default class MultiLayoutViewer extends React.Component {
   }
 
   render() {
-    var queryDataModel =
-        this.state.activeRenderer &&
-        this.state.activeRenderer.builder &&
-        this.state.activeRenderer.builder.queryDataModel
-          ? this.state.activeRenderer.builder.queryDataModel
-          : this.props.queryDataModel,
-      controlWidgets = [];
+    const queryDataModel =
+      this.state.activeRenderer &&
+      this.state.activeRenderer.builder &&
+      this.state.activeRenderer.builder.queryDataModel
+        ? this.state.activeRenderer.builder.queryDataModel
+        : this.props.queryDataModel;
+    let controlWidgets = [];
 
     if (this.state.activeRenderer) {
       controlWidgets = WidgetFactory.getWidgets(
@@ -126,5 +126,10 @@ MultiLayoutViewer.propTypes = {
   menuAddOn: PropTypes.array,
   queryDataModel: PropTypes.object.isRequired,
   renderers: PropTypes.object.isRequired,
-  userData: PropTypes.object,
+  // userData: PropTypes.object,
+};
+
+MultiLayoutViewer.defaultProps = {
+  layout: undefined,
+  menuAddOn: undefined,
 };

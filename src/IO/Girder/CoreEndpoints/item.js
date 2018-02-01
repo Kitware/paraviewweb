@@ -34,14 +34,14 @@ export default function({
     // query = { folderId, text, limit, offset, sort, sortdir }
     listItems(query = {}) {
       const allowed = [
-          'folderId',
-          'text',
-          'limit',
-          'offset',
-          'sort',
-          'sortdir',
-        ],
-        params = filterQuery(query, ...allowed);
+        'folderId',
+        'text',
+        'limit',
+        'offset',
+        'sort',
+        'sortdir',
+      ];
+      const params = filterQuery(query, ...allowed);
 
       return busy(client._.get(`/item${encodeQueryAsString(params)}`));
     },
@@ -57,13 +57,11 @@ export default function({
 
     // query = { limit, offset, sort }
     listFiles(id, query) {
-      const allowed = ['limit', 'offset', 'sort'],
-        params = filterQuery(query, ...allowed);
+      const allowed = ['limit', 'offset', 'sort'];
+      const params = filterQuery(query, ...allowed);
 
       if (!id) {
-        return new Promise((resolve, reject) =>
-          reject('No argument id provided')
-        );
+        return Promise.reject(new Error('No argument id provided'));
       }
 
       return busy(
@@ -85,9 +83,9 @@ export default function({
 
     // item = { id, folderId, name, description }
     editItem(item) {
-      const expected = ['folderId', 'name', 'description'],
-        params = filterQuery(item, ...expected),
-        { missingKeys, promise } = mustContain(params, '_id');
+      const expected = ['folderId', 'name', 'description'];
+      const params = filterQuery(item, ...expected);
+      const { missingKeys, promise } = mustContain(params, '_id');
 
       return missingKeys
         ? promise
@@ -96,9 +94,9 @@ export default function({
 
     // destinationItem = { folderId, name, description }
     copyItem(id, destinationItem) {
-      const expected = ['folderId', 'name', 'description'],
-        params = filterQuery(destinationItem, ...expected),
-        { missingKeys, promise } = mustContain(params, 'folderId');
+      const expected = ['folderId', 'name', 'description'];
+      const params = filterQuery(destinationItem, ...expected);
+      const { missingKeys, promise } = mustContain(params, 'folderId');
 
       return missingKeys
         ? promise

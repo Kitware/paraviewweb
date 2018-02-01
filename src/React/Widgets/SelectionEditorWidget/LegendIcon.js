@@ -35,3 +35,14 @@ render.propTypes = {
 
   onClick: PropTypes.func,
 };
+
+render.defaultProps = {
+  name: undefined,
+  getLegend: undefined,
+
+  width: undefined,
+  height: undefined,
+  style: undefined,
+
+  onClick: undefined,
+};

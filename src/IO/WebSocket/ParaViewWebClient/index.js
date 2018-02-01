@@ -27,12 +27,12 @@ const protocolsMap = {
 };
 
 export function createClient(connection, protocols = [], customProtocols = {}) {
-  var session = connection.getSession(),
-    result = {
-      connection,
-      session,
-    },
-    count = protocols.length;
+  const session = connection.getSession();
+  const result = {
+    connection,
+    session,
+  };
+  let count = protocols.length;
 
   while (count) {
     count -= 1;

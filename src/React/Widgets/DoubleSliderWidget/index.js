@@ -10,9 +10,10 @@ export default class DoubleSliderWidget extends React.Component {
     super(props);
     this.state = {
       txtValue: null,
-      value: props.value ? props.value : 0.5 * (props.max + props.min),
-      max: props.max,
-      min: props.min,
+      value:
+        props.value || props.value === 0
+          ? props.value
+          : 0.5 * (props.max + props.min),
     };
 
     // Bind callback
@@ -46,10 +47,11 @@ export default class DoubleSliderWidget extends React.Component {
   }
 
   sliderInput(e) {
-    const min = Number(this.props.min),
-      max = Number(this.props.max),
-      delta = max - min,
-      value = delta * Number(e.target.value) / Number(this.props.size) + min;
+    const min = Number(this.props.min);
+    const max = Number(this.props.max);
+    const delta = max - min;
+    const value =
+      delta * Number(e.target.value) / Number(this.props.size) + min;
 
     this.setState({ value, txtValue: null });
     if (this.props.onChange) {
@@ -58,7 +60,7 @@ export default class DoubleSliderWidget extends React.Component {
   }
 
   render() {
-    var [min, max, size, value] = [
+    const [min, max, size, value] = [
       this.props.min,
       this.props.max,
       this.props.size,
@@ -105,4 +107,6 @@ DoubleSliderWidget.defaultProps = {
   min: 0,
   size: 100,
   name: 'DoubleValue',
+  onChange: undefined,
+  value: undefined,
 };

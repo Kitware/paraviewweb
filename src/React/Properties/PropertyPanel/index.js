@@ -19,21 +19,21 @@ export default class PropertyPanel extends React.Component {
   }
 
   render() {
-    var viewData = this.props.viewData,
-      uiContents = (content) =>
-        factory(
-          content,
-          viewData,
-          this.props.onChange ? this.valueChange : undefined
-        ),
-      uiContainer = (property) => (
-        <div key={property.title}>
-          <div className={style.propertyHeader}>
-            <strong>{property.title}</strong>
-          </div>
-          {property.contents.map(uiContents)}
-        </div>
+    const viewData = this.props.viewData;
+    const uiContents = (content) =>
+      factory(
+        content,
+        viewData,
+        this.props.onChange ? this.valueChange : undefined
       );
+    const uiContainer = (property) => (
+      <div key={property.title}>
+        <div className={style.propertyHeader}>
+          <strong>{property.title}</strong>
+        </div>
+        {property.contents.map(uiContents)}
+      </div>
+    );
 
     return (
       <section
@@ -48,7 +48,6 @@ export default class PropertyPanel extends React.Component {
 PropertyPanel.propTypes = {
   className: PropTypes.string,
   input: PropTypes.array,
-  labels: PropTypes.object,
   onChange: PropTypes.func,
   viewData: PropTypes.object,
 };
@@ -57,4 +56,5 @@ PropertyPanel.defaultProps = {
   className: '',
   input: [],
   viewData: {},
+  onChange: () => {},
 };

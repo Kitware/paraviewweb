@@ -1,4 +1,3 @@
-/* global document */
 import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
@@ -620,8 +619,8 @@ function informationDiagram(publicAPI, model) {
         .classed('positive', (data, index) => data[1] >= 0.0)
         .classed('negative', (data, index) => data[1] < 0.0)
         .attr('data-details', (data, index) => {
-          var sIdx = swap ? 1 : 0;
-          var tIdx = swap ? 0 : 1;
+          const sIdx = swap ? 1 : 0;
+          const tIdx = swap ? 0 : 1;
           const sourceBinRange = getParamBinRange(
             data[0][sIdx],
             histogram1DnumberOfBins,
@@ -1199,8 +1198,8 @@ function informationDiagram(publicAPI, model) {
     }
 
     function drawPMIOneBinAllVars() {
-      var binVar = model.renderState.pmiOneBinAllVars.group; // Hold on to the name of the variable whose bin we should draw.
-      var binIdx = model.renderState.pmiOneBinAllVars.bin;
+      const binVar = model.renderState.pmiOneBinAllVars.group; // Hold on to the name of the variable whose bin we should draw.
+      const binIdx = model.renderState.pmiOneBinAllVars.bin;
 
       pmiChordMode.mode = PMI_CHORD_MODE_ONE_BIN_ALL_VARS;
       pmiChordMode.srcParam = binVar;
@@ -1215,7 +1214,7 @@ function informationDiagram(publicAPI, model) {
         // Turn on PMI rendering
         let linkAccum = [];
         Object.keys(model.mutualInformationData.vmap).forEach((iother) => {
-          var other = model.mutualInformationData.vmap[iother];
+          const other = model.mutualInformationData.vmap[iother];
           let va = binVar;
           let vb = other.name;
           if (!vb || vb === va) {
@@ -1264,18 +1263,18 @@ function informationDiagram(publicAPI, model) {
         linkData
           .classed('fade', false)
           .attr('d', (data, index) => {
-            var vaGrp = layout.groups()[
+            const vaGrp = layout.groups()[
               model.mutualInformationData.lkup[data[3][0]]
             ];
-            var vbGrp = layout.groups()[
+            const vbGrp = layout.groups()[
               model.mutualInformationData.lkup[data[3][1]]
             ];
-            var vaRange = [
+            const vaRange = [
               vaGrp.startAngle,
               vaGrp.endAngle - vaGrp.startAngle,
               (vaGrp.endAngle - vaGrp.startAngle) / histogram1DnumberOfBins,
             ];
-            var vbRange = [
+            const vbRange = [
               vbGrp.startAngle,
               vbGrp.endAngle - vbGrp.startAngle,
               (vbGrp.endAngle - vbGrp.startAngle) / histogram1DnumberOfBins,
