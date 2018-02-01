@@ -5,7 +5,6 @@ dist: trusty
 notifications:
   email:
     recipients:
-      - tristan.wright@kitware.com
       - sebastien.jourdain@kitware.com
     on_success: change
     on_failure: always
@@ -14,7 +13,7 @@ cache:
     - node_modules
     - documentation/www/node_modules
 node_js:
-  - '6'
+  - '8'
 env:
   - CXX=g++-4.8
 addons:
