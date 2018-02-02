@@ -26327,7 +26327,13 @@ function createMethods(session) {
       return session.call('viewport.image.push.enabled', [viewId, enabled]);
     },
     viewQuality: function viewQuality(viewId, quality) {
-      return session.call('viewport.image.push.quality', [viewId, quality]);
+      var ratio = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+      return session.call('viewport.image.push.quality', [viewId, quality, ratio]);
+    },
+    viewSize: function viewSize(viewId) {
+      var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 400;
+      var height = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 400;
+      return session.call('viewport.image.push.original.size', [viewId, width, height]);
     },
     invalidateCache: function invalidateCache(viewId) {
       return session.call('viewport.image.push.invalidate.cache', [viewId]);
