@@ -28,6 +28,10 @@ export default class VtkRenderer extends React.Component {
 
     // Attach interaction listener for image quality
     this.mouseListener.onInteraction((interact) => {
+      if (this.interacting === interact) {
+        return;
+      }
+      this.interacting = interact;
       if (interact) {
         this.binaryImageStream.startInteractiveQuality();
       } else {
@@ -45,11 +49,15 @@ export default class VtkRenderer extends React.Component {
       const { clientWidth, clientHeight } = sizeHelper.getSize(container);
       /* eslint-enable no-shadow */
       this.mouseListener.updateSize(clientWidth, clientHeight);
-      this.props.client.session.call('viewport.size.update', [
-        parseInt(this.props.viewId, 10),
-        clientWidth,
-        clientHeight,
-      ]);
+      if (this.binaryImageStream.setViewSize) {
+        this.binaryImageStream.setViewSize(clientWidth, clientHeight);
+      } else {
+        this.props.client.session.call('viewport.size.update', [
+          parseInt(this.props.viewId, 10),
+          clientWidth,
+          clientHeight,
+        ]);
+      }
     });
 
     // Create render
@@ -67,8 +75,8 @@ export default class VtkRenderer extends React.Component {
       })
       .then(() => {
         // Update size and do a force push
-        this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
+        this.binaryImageStream.invalidateCache();
       });
   }
 

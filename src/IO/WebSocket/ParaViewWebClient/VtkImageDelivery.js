@@ -12,8 +12,14 @@ export default function createMethods(session) {
       session.call('viewport.image.push.observer.remove', [viewId]),
     enableView: (viewId, enabled) =>
       session.call('viewport.image.push.enabled', [viewId, enabled]),
-    viewQuality: (viewId, quality) =>
-      session.call('viewport.image.push.quality', [viewId, quality]),
+    viewQuality: (viewId, quality, ratio = 1) =>
+      session.call('viewport.image.push.quality', [viewId, quality, ratio]),
+    viewSize: (viewId, width = 400, height = 400) =>
+      session.call('viewport.image.push.original.size', [
+        viewId,
+        width,
+        height,
+      ]),
     invalidateCache: (viewId) =>
       session.call('viewport.image.push.invalidate.cache', [viewId]),
   };
