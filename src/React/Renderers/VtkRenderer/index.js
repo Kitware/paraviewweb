@@ -35,7 +35,9 @@ export default class VtkRenderer extends React.Component {
       if (interact) {
         this.binaryImageStream.startInteractiveQuality();
       } else {
-        this.binaryImageStream.stopInteractiveQuality();
+        this.binaryImageStream
+          .stopInteractiveQuality()
+          .then(this.binaryImageStream.invalidateCache);
         setTimeout(
           this.binaryImageStream.invalidateCache,
           this.props.interactionTimout

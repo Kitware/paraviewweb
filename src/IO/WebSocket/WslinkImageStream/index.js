@@ -16,21 +16,19 @@ function wslinkImageStream(publicAPI, model) {
     model.client.VtkImageDelivery.enableView(model.view_id, enabled);
   };
 
-  publicAPI.startInteractiveQuality = () => {
+  publicAPI.startInteractiveQuality = () =>
     model.client.VtkImageDelivery.viewQuality(
       model.view_id,
       model.interactiveQuality,
       model.interactiveRatio
     );
-  };
 
-  publicAPI.stopInteractiveQuality = () => {
+  publicAPI.stopInteractiveQuality = () =>
     model.client.VtkImageDelivery.viewQuality(
       model.view_id,
       model.stillQuality,
       model.stillRatio
     );
-  };
 
   publicAPI.setViewSize = (width, height) => {
     model.client.VtkImageDelivery.viewSize(model.view_id, width, height);
@@ -107,7 +105,7 @@ function wslinkImageStream(publicAPI, model) {
 
   publicAPI.viewChanged = (data) => {
     const msg = data[0];
-    if (!msg) return;
+    if (!msg || !msg.image) return;
     const imgBlob = new Blob([msg.image], {
       type: model.mimeType,
     });

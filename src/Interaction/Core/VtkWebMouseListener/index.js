@@ -19,6 +19,7 @@ export default class VtkMouseListener {
     this.height = height;
     this.viewId = viewId;
     this.setInteractionDoneCallback();
+    this.lastEvent = null;
     this.listeners = {
       drag: (event) => {
         const vtkEvent = {
@@ -45,9 +46,31 @@ export default class VtkMouseListener {
           // Move
           vtkEvent.action = 'move';
         }
-        this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
+        if (vtkEvent.action !== 'up') {
+          this.emit(INTERATION_TOPIC, true);
+        }
         if (this.client) {
           if (this.ready || vtkEvent.action !== 'move') {
+            // Make sure we only send the last down or first up before/after a move
+            if (vtkEvent.action !== 'move' && this.lastEvent) {
+              // eat first down action
+              if (
+                this.lastEvent.action !== vtkEvent.action &&
+                vtkEvent.action === 'down'
+              ) {
+                this.lastEvent = vtkEvent;
+                return;
+              }
+              // eat second up action
+              if (
+                this.lastEvent.action === vtkEvent.action &&
+                vtkEvent.action === 'up'
+              ) {
+                this.lastEvent = vtkEvent;
+                return;
+              }
+            }
+            this.lastEvent = vtkEvent;
             this.ready = false;
             this.client.MouseHandler.interaction(vtkEvent).then(
               (resp) => {
@@ -60,6 +83,9 @@ export default class VtkMouseListener {
               }
             );
           }
+        }
+        if (vtkEvent.action === 'up') {
+          this.emit(INTERATION_TOPIC, false);
         }
       },
       zoom: (event) => {
@@ -85,16 +111,26 @@ export default class VtkMouseListener {
           // Move
           vtkEvent.action = 'move';
         }
-        this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
+        if (vtkEvent.action !== 'up') {
+          this.emit(INTERATION_TOPIC, true);
+        }
         if (this.client) {
-          this.client.MouseHandler.interaction(vtkEvent).then(
-            (resp) => {
-              this.doneCallback(vtkEvent.action !== 'up');
-            },
-            (err) => {
-              this.doneCallback(vtkEvent.action !== 'up');
-            }
-          );
+          if (this.ready || vtkEvent.action !== 'move') {
+            this.ready = false;
+            this.client.MouseHandler.interaction(vtkEvent).then(
+              (resp) => {
+                this.ready = true;
+                this.doneCallback(vtkEvent.action !== 'up');
+              },
+              (err) => {
+                this.ready = true;
+                this.doneCallback(vtkEvent.action !== 'up');
+              }
+            );
+          }
+        }
+        if (vtkEvent.action === 'up') {
+          this.emit(INTERATION_TOPIC, false);
         }
       },
     };
