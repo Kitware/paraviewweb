@@ -102,7 +102,13 @@ export default class NativeImageRenderer {
       this.ctx.textBaseline = 'top';
       this.ctx.textAlign = 'end';
       this.ctx.fillStyle = '#888';
-      this.ctx.fillText(`${this.workTime}ms - ${formatSize(this.memsize)}${this.image.width}x${this.image.height} - ${this.fps} FPS`, this.size.clientWidth - 5, 5);
+      this.ctx.fillText(
+        `${this.workTime}ms - ${formatSize(this.memsize)}${this.image.width}x${
+          this.image.height
+        } - ${this.fps} FPS`,
+        this.size.clientWidth - 5,
+        5
+      );
     }
   }
 }
