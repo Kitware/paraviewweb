@@ -4,6 +4,19 @@ import MouseHandler from '../../../Interaction/Core/MouseHandler';
 
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
+function formatSize(memorySize) {
+  if (!memorySize) {
+    return '';
+  }
+  if (memorySize > 1000000) {
+    return `${Math.round(memorySize / 10000) / 100} MB - `;
+  }
+  if (memorySize > 1000) {
+    return `${Math.round(memorySize / 10) / 100} KB - `;
+  }
+  return `${memorySize} B - `;
+}
+
 export default class NativeImageRenderer {
   constructor(
     domElement,
@@ -39,7 +52,9 @@ export default class NativeImageRenderer {
     this.subscriptions.push(
       imageProvider.onImageReady((data, envelope) => {
         this.image.src = data.url;
-        this.fps = `${data.fps} fps`;
+        this.fps = data.fps;
+        this.memsize = data.metadata.memory || '';
+        this.workTime = data.metadata.workTime;
       })
     );
 
@@ -87,7 +102,7 @@ export default class NativeImageRenderer {
       this.ctx.textBaseline = 'top';
       this.ctx.textAlign = 'end';
       this.ctx.fillStyle = '#888';
-      this.ctx.fillText(this.fps, this.size.clientWidth - 5, 5);
+      this.ctx.fillText(`${this.workTime}ms - ${formatSize(this.memsize)}${this.image.width}x${this.image.height} - ${this.fps} FPS`, this.size.clientWidth - 5, 5);
     }
   }
 }

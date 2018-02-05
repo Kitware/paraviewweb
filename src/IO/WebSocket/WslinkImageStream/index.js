@@ -119,9 +119,15 @@ function wslinkImageStream(publicAPI, model) {
     model.lastTime = time;
 
     model.lastImageReadyEvent = {
+
       url: model.activeURL,
       fps: model.fps,
-      metadata: { size: msg.size, id: msg.id },
+      metadata: {
+        size: msg.size,
+        id: msg.id,
+        memory: msg.memsize,
+        workTime: msg.workTime,
+      },
     };
 
     publicAPI.fireImageReady(model.lastImageReadyEvent);
