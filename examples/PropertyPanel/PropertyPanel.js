@@ -22372,7 +22372,7 @@ exports.default = Checkbox;
 
 
 Checkbox.propTypes = {
-  idx: _propTypes2.default.number.isRequired,
+  idx: _propTypes2.default.number,
   label: _propTypes2.default.string,
   onChange: _propTypes2.default.func.isRequired,
   value: _propTypes2.default.bool
@@ -22380,7 +22380,8 @@ Checkbox.propTypes = {
 
 Checkbox.defaultProps = {
   value: false,
-  label: ''
+  label: '',
+  idx: undefined
 };
 
 /***/ }),
@@ -23364,7 +23365,7 @@ var SliderProperty = function (_React$Component) {
           value: _this2.props.data.value,
           min: _this2.props.ui.domain.min,
           max: _this2.props.ui.domain.max,
-          step: step,
+          step: _this2.props.ui.domain.step || step,
           onChange: _this2.valueChange
         });
       };
