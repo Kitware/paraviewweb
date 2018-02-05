@@ -119,7 +119,6 @@ function wslinkImageStream(publicAPI, model) {
     model.lastTime = time;
 
     model.lastImageReadyEvent = {
-
       url: model.activeURL,
       fps: model.fps,
       metadata: {
