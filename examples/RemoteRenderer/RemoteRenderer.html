@@ -25567,6 +25567,7 @@ var VtkMouseListener = function () {
     this.height = height;
     this.viewId = viewId;
     this.setInteractionDoneCallback();
+    this.lastEvent = null;
     this.listeners = {
       drag: function drag(event) {
         var vtkEvent = {
@@ -25593,9 +25594,25 @@ var VtkMouseListener = function () {
           // Move
           vtkEvent.action = 'move';
         }
-        _this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
+        if (vtkEvent.action !== 'up') {
+          _this.emit(INTERATION_TOPIC, true);
+        }
         if (_this.client) {
           if (_this.ready || vtkEvent.action !== 'move') {
+            // Make sure we only send the last down or first up before/after a move
+            if (vtkEvent.action !== 'move' && _this.lastEvent) {
+              // eat first down action
+              if (_this.lastEvent.action !== vtkEvent.action && vtkEvent.action === 'down') {
+                _this.lastEvent = vtkEvent;
+                return;
+              }
+              // eat second up action
+              if (_this.lastEvent.action === vtkEvent.action && vtkEvent.action === 'up') {
+                _this.lastEvent = vtkEvent;
+                return;
+              }
+            }
+            _this.lastEvent = vtkEvent;
             _this.ready = false;
             _this.client.MouseHandler.interaction(vtkEvent).then(function (resp) {
               _this.ready = true;
@@ -25605,6 +25622,9 @@ var VtkMouseListener = function () {
               _this.doneCallback(vtkEvent.action !== 'up');
             });
           }
+        }
+        if (vtkEvent.action === 'up') {
+          _this.emit(INTERATION_TOPIC, false);
         }
       },
       zoom: function zoom(event) {
@@ -25630,13 +25650,23 @@ var VtkMouseListener = function () {
           // Move
           vtkEvent.action = 'move';
         }
-        _this.emit(INTERATION_TOPIC, vtkEvent.action !== 'up');
+        if (vtkEvent.action !== 'up') {
+          _this.emit(INTERATION_TOPIC, true);
+        }
         if (_this.client) {
-          _this.client.MouseHandler.interaction(vtkEvent).then(function (resp) {
-            _this.doneCallback(vtkEvent.action !== 'up');
-          }, function (err) {
-            _this.doneCallback(vtkEvent.action !== 'up');
-          });
+          if (_this.ready || vtkEvent.action !== 'move') {
+            _this.ready = false;
+            _this.client.MouseHandler.interaction(vtkEvent).then(function (resp) {
+              _this.ready = true;
+              _this.doneCallback(vtkEvent.action !== 'up');
+            }, function (err) {
+              _this.ready = true;
+              _this.doneCallback(vtkEvent.action !== 'up');
+            });
+          }
+        }
+        if (vtkEvent.action === 'up') {
+          _this.emit(INTERATION_TOPIC, false);
         }
       }
     };
