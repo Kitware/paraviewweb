@@ -96,7 +96,7 @@ export default class SliderProperty extends React.Component {
           value={this.props.data.value}
           min={this.props.ui.domain.min}
           max={this.props.ui.domain.max}
-          step={step}
+          step={this.props.ui.domain.step || step}
           onChange={this.valueChange}
         />
       );
