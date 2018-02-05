@@ -16,18 +16,22 @@ function wslinkImageStream(publicAPI, model) {
     model.client.VtkImageDelivery.enableView(model.view_id, enabled);
   };
 
-  publicAPI.startInteractiveQuality = () => {
+  publicAPI.startInteractiveQuality = () =>
     model.client.VtkImageDelivery.viewQuality(
       model.view_id,
-      model.interactiveQuality
+      model.interactiveQuality,
+      model.interactiveRatio
     );
-  };
 
-  publicAPI.stopInteractiveQuality = () => {
+  publicAPI.stopInteractiveQuality = () =>
     model.client.VtkImageDelivery.viewQuality(
       model.view_id,
-      model.stillQuality
+      model.stillQuality,
+      model.stillRatio
     );
+
+  publicAPI.setViewSize = (width, height) => {
+    model.client.VtkImageDelivery.viewSize(model.view_id, width, height);
   };
 
   publicAPI.invalidateCache = () => {
@@ -37,6 +41,11 @@ function wslinkImageStream(publicAPI, model) {
   publicAPI.updateQuality = (stillQuality = 100, interactiveQuality = 50) => {
     model.stillQuality = stillQuality;
     model.interactiveQuality = interactiveQuality;
+  };
+
+  publicAPI.updateResolutionRatio = (sRatio = 1, iRatio = 0.5) => {
+    model.stillRatio = sRatio;
+    model.interactiveRatio = iRatio;
   };
 
   publicAPI.unsubscribeRenderTopic = () => {
@@ -96,7 +105,7 @@ function wslinkImageStream(publicAPI, model) {
 
   publicAPI.viewChanged = (data) => {
     const msg = data[0];
-    if (!msg) return;
+    if (!msg || !msg.image) return;
     const imgBlob = new Blob([msg.image], {
       type: model.mimeType,
     });
@@ -165,6 +174,8 @@ function wslinkImageStream(publicAPI, model) {
 }
 
 const DEFAULT_VALUES = {
+  stillRatio: 1,
+  interactiveRatio: 0.5,
   stillQuality: 100,
   interactiveQuality: 50,
   mimeType: 'image/jpeg',

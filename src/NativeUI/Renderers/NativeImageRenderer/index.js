@@ -57,6 +57,10 @@ export default class NativeImageRenderer {
     SizeHelper.startListening();
   }
 
+  setDrawFPS(visible) {
+    this.drawFPS = visible;
+  }
+
   destroy() {
     while (this.subscriptions.length) {
       this.subscriptions.pop().unsubscribe();
@@ -81,8 +85,9 @@ export default class NativeImageRenderer {
     );
     if (this.drawFPS) {
       this.ctx.textBaseline = 'top';
-      this.ctx.textAlign = 'left';
-      this.ctx.fillText(this.fps, 5, 5);
+      this.ctx.textAlign = 'end';
+      this.ctx.fillStyle = '#888';
+      this.ctx.fillText(this.fps, this.size.clientWidth - 5, 5);
     }
   }
 }

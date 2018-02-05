@@ -28,12 +28,18 @@ export default class VtkRenderer extends React.Component {
 
     // Attach interaction listener for image quality
     this.mouseListener.onInteraction((interact) => {
+      if (this.interacting === interact) {
+        return;
+      }
+      this.interacting = interact;
       if (interact) {
         this.binaryImageStream.startInteractiveQuality();
       } else {
-        this.binaryImageStream.stopInteractiveQuality();
+        this.binaryImageStream
+          .stopInteractiveQuality()
+          .then(this.binaryImageStream.invalidateCache);
         setTimeout(
-          () => this.binaryImageStream.invalidateCache(),
+          this.binaryImageStream.invalidateCache,
           this.props.interactionTimout
         );
       }
@@ -45,11 +51,15 @@ export default class VtkRenderer extends React.Component {
       const { clientWidth, clientHeight } = sizeHelper.getSize(container);
       /* eslint-enable no-shadow */
       this.mouseListener.updateSize(clientWidth, clientHeight);
-      this.props.client.session.call('viewport.size.update', [
-        parseInt(this.props.viewId, 10),
-        clientWidth,
-        clientHeight,
-      ]);
+      if (this.binaryImageStream.setViewSize) {
+        this.binaryImageStream.setViewSize(clientWidth, clientHeight);
+      } else {
+        this.props.client.session.call('viewport.size.update', [
+          parseInt(this.props.viewId, 10),
+          clientWidth,
+          clientHeight,
+        ]);
+      }
     });
 
     // Create render
@@ -67,8 +77,8 @@ export default class VtkRenderer extends React.Component {
       })
       .then(() => {
         // Update size and do a force push
-        this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
+        this.binaryImageStream.invalidateCache();
       });
   }
 
@@ -79,6 +89,22 @@ export default class VtkRenderer extends React.Component {
         this.binaryImageStream.invalidateCache();
         sizeHelper.triggerChange();
       }
+    }
+    if (this.binaryImageStream.updateQuality) {
+      this.binaryImageStream.updateQuality(
+        nextProps.stillQuality,
+        nextProps.interactiveQuality
+      );
+    }
+    if (this.binaryImageStream.updateResolutionRatio) {
+      this.binaryImageStream.updateResolutionRatio(
+        nextProps.stillRatio,
+        nextProps.interactiveRatio
+      );
+    }
+
+    if (this.imageRenderer.setDrawFPS) {
+      this.imageRenderer.setDrawFPS(nextProps.showFPS);
     }
   }
 
@@ -126,6 +152,11 @@ VtkRenderer.propTypes = {
   showFPS: PropTypes.bool,
   style: PropTypes.object,
   connection: PropTypes.object,
+
+  stillQuality: PropTypes.number,
+  interactiveQuality: PropTypes.number,
+  stillRatio: PropTypes.number,
+  interactiveRatio: PropTypes.number,
 };
 
 VtkRenderer.defaultProps = {
@@ -136,4 +167,9 @@ VtkRenderer.defaultProps = {
   viewId: '-1',
   interactionTimout: 500,
   connection: null,
+
+  stillQuality: 100,
+  interactiveQuality: 50,
+  stillRatio: 1,
+  interactiveRatio: 0.5,
 };
