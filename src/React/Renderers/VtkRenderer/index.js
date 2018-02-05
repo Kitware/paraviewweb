@@ -88,6 +88,22 @@ export default class VtkRenderer extends React.Component {
         sizeHelper.triggerChange();
       }
     }
+    if (this.binaryImageStream.updateQuality) {
+      this.binaryImageStream.updateQuality(
+        nextProps.stillQuality,
+        nextProps.interactiveQuality
+      );
+    }
+    if (this.binaryImageStream.updateResolutionRatio) {
+      this.binaryImageStream.updateResolutionRatio(
+        nextProps.stillRatio,
+        nextProps.interactiveRatio
+      );
+    }
+
+    if (this.imageRenderer.setDrawFPS) {
+      this.imageRenderer.setDrawFPS(nextProps.showFPS);
+    }
   }
 
   componentWillUnmount() {
@@ -134,6 +150,11 @@ VtkRenderer.propTypes = {
   showFPS: PropTypes.bool,
   style: PropTypes.object,
   connection: PropTypes.object,
+
+  stillQuality: PropTypes.number,
+  interactiveQuality: PropTypes.number,
+  stillRatio: PropTypes.number,
+  interactiveRatio: PropTypes.number,
 };
 
 VtkRenderer.defaultProps = {
@@ -144,4 +165,9 @@ VtkRenderer.defaultProps = {
   viewId: '-1',
   interactionTimout: 500,
   connection: null,
+
+  stillQuality: 100,
+  interactiveQuality: 50,
+  stillRatio: 1,
+  interactiveRatio: 0.5,
 };
