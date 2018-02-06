@@ -2905,6 +2905,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var IMAGE_READY_TOPIC = 'image-ready';
+var IMAGE_LOADED_TOPIC = 'image-loaded';
 
 var RemoteRenderer = function () {
   function RemoteRenderer(pvwClient) {
@@ -2946,6 +2947,7 @@ var RemoteRenderer = function () {
       _this.canvas.setAttribute('height', _this.imageDecoder.height);
       var ctx = _this.canvas.getContext('2d');
       ctx.drawImage(_this.imageDecoder, 0, 0);
+      _this.emit(IMAGE_LOADED_TOPIC, _this);
     });
 
     this.container = null;
@@ -3141,6 +3143,11 @@ var RemoteRenderer = function () {
     key: 'onImageReady',
     value: function onImageReady(callback) {
       return this.on(IMAGE_READY_TOPIC, callback);
+    }
+  }, {
+    key: 'onImageLoaded',
+    value: function onImageLoaded(callback) {
+      return this.on(IMAGE_LOADED_TOPIC, callback);
     }
   }, {
     key: 'destroy',
