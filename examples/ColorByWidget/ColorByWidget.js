@@ -45220,6 +45220,22 @@ function vtkPiecewiseGaussianWidget(publicAPI, model) {
     piecewiseFunction.sortAndUpdateRange();
   };
 
+  publicAPI.getOpacityRange = function (dataRange) {
+    var rangeToUse = dataRange || model.dataRange;
+    var delta = (rangeToUse[1] - rangeToUse[0]) / (model.opacities.length - 1);
+    var minIndex = model.opacities.length - 1;
+    var maxIndex = 0;
+    for (var index = 0; index < model.opacities.length; index++) {
+      if (model.opacities[index] > 0) {
+        minIndex = Math.min(minIndex, index);
+      }
+      if (model.opacities[index] > 0) {
+        maxIndex = Math.max(maxIndex, index);
+      }
+    }
+    return [rangeToUse[0] + minIndex * delta, rangeToUse[0] + maxIndex * delta];
+  };
+
   // Trigger rendering for any modified event
   publicAPI.onModified(publicAPI.render);
   publicAPI.setSize.apply(publicAPI, _toConsumableArray(model.size));
@@ -45584,6 +45600,7 @@ exports.chain = chain;
 exports.isVtkObject = isVtkObject;
 exports.traverseInstanceTree = traverseInstanceTree;
 exports.debounce = debounce;
+exports.keystore = keystore;
 exports.proxy = proxy;
 exports.proxyPropertyMapping = proxyPropertyMapping;
 exports.proxyPropertyState = proxyPropertyState;
@@ -45607,7 +45624,7 @@ function getCurrentGlobalMTime() {
 }
 
 // ----------------------------------------------------------------------------
-// Loggins function calls
+// Logging function calls
 // ----------------------------------------------------------------------------
 /* eslint-disable no-prototype-builtins                                      */
 
@@ -46530,6 +46547,43 @@ function debounce(func, wait, immediate) {
 }
 
 // ----------------------------------------------------------------------------
+// keystore(publicAPI, model, initialKeystore)
+//
+//    - initialKeystore: Initial keystore. This can be either a Map or an
+//      object.
+//
+// Generated API
+//  setKey(key, value) : mixed (returns value)
+//  getKey(key) : mixed
+//  getAllKeys() : [mixed]
+//  deleteKey(key) : Boolean
+// ----------------------------------------------------------------------------
+
+function keystore(publicAPI, model) {
+  var initialKeystore = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  model.keystore = Object.assign(model.keystore || {}, initialKeystore);
+
+  publicAPI.setKey = function (key, value) {
+    model.keystore[key] = value;
+  };
+  publicAPI.getKey = function (key, value) {
+    return model.keystore[key];
+  };
+  publicAPI.getAllKeys = function (key, value) {
+    return Object.keys(model.keystore);
+  };
+  publicAPI.deleteKey = function (key, value) {
+    return delete model.keystore[key];
+  };
+  publicAPI.clearKeystore = function () {
+    return publicAPI.getAllKeys().forEach(function (key) {
+      return delete model.keystore[key];
+    });
+  };
+}
+
+// ----------------------------------------------------------------------------
 // proxy(publicAPI, model, sectionName, propertyUI)
 //
 //    - sectionName: Name of the section for UI
@@ -46545,6 +46599,9 @@ var nextProxyId = 1;
 var ROOT_GROUP_NAME = '__root__';
 
 function proxy(publicAPI, model) {
+  // Proxies are keystores
+  keystore(publicAPI, model);
+
   var parentDelete = publicAPI.delete;
 
   // getProxyId
@@ -46886,6 +46943,7 @@ exports.default = {
   getCurrentGlobalMTime: getCurrentGlobalMTime,
   getStateArrayMapFunc: getStateArrayMapFunc,
   isVtkObject: isVtkObject,
+  keystore: keystore,
   newInstance: newInstance,
   obj: obj,
   safeArrays: safeArrays,
