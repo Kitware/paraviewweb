@@ -19,7 +19,7 @@
         "pako": "1.0.6",
         "plotly.js": "1.33.1",
         "shelljs": "0.7.8",
-        "vtk.js": "5.15.14",
+        "vtk.js": "5.15.21",
         "wslink": "0.1.4"
     },
     "devDependencies": {

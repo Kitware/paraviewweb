@@ -7,6 +7,7 @@ import VtkWebMouseListener from '../../../Interaction/Core/VtkWebMouseListener';
 import SizeHelper from '../../../Common/Misc/SizeHelper';
 
 const IMAGE_READY_TOPIC = 'image-ready';
+const IMAGE_LOADED_TOPIC = 'image-loaded';
 
 export default class RemoteRenderer {
   constructor(pvwClient, container = null, id = -1, statRenderer = null) {
@@ -42,6 +43,7 @@ export default class RemoteRenderer {
       this.canvas.setAttribute('height', this.imageDecoder.height);
       const ctx = this.canvas.getContext('2d');
       ctx.drawImage(this.imageDecoder, 0, 0);
+      this.emit(IMAGE_LOADED_TOPIC, this);
     });
 
     this.container = null;
@@ -224,6 +226,10 @@ export default class RemoteRenderer {
 
   onImageReady(callback) {
     return this.on(IMAGE_READY_TOPIC, callback);
+  }
+
+  onImageLoaded(callback) {
+    return this.on(IMAGE_LOADED_TOPIC, callback);
   }
 
   destroy() {
