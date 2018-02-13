@@ -19194,7 +19194,8 @@ var GitTreeWidget = function (_React$Component) {
           }
           this.setState({ actives: actives });
         } else {
-          this.setState({ actives: [yVal] });
+          actives[0] = yVal;
+          this.setState({ actives: actives });
         }
 
         if (this.props.onChange) {
