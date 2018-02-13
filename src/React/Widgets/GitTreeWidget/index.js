@@ -192,7 +192,8 @@ export default class GitTreeWidget extends React.Component {
         }
         this.setState({ actives });
       } else {
-        this.setState({ actives: [yVal] });
+        actives[0] = yVal;
+        this.setState({ actives });
       }
 
       if (this.props.onChange) {
