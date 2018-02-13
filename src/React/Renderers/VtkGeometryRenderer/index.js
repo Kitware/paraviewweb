@@ -7,10 +7,8 @@ import vtkOpenGLRenderWindow from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow'
 import vtkSynchronizableRenderWindow from 'vtk.js/Sources/Rendering/Misc/SynchronizableRenderWindow';
 import vtkRenderWindowInteractor from 'vtk.js/Sources/Rendering/Core/RenderWindowInteractor';
 import vtkInteractorStyleManipulator from 'vtk.js/Sources/Interaction/Style/InteractorStyleManipulator';
-import vtkTrackballPan from 'vtk.js/Sources/Interaction/Manipulators/TrackballPan';
-import vtkTrackballZoom from 'vtk.js/Sources/Interaction/Manipulators/TrackballZoom';
-import vtkTrackballRotate from 'vtk.js/Sources/Interaction/Manipulators/TrackballRotate';
 import vtkFPSMonitor from 'vtk.js/Sources/Interaction/UI/FPSMonitor';
+import vtkInteractorStyleManipulatorPresets from 'vtk.js/Sources/Interaction/Style/InteractorStyleManipulator/Presets';
 
 import BusyMonitor from '../../../Common/Misc/BusyMonitor';
 
@@ -53,19 +51,6 @@ export default class VtkGeometryRenderer extends React.Component {
       initialValues
     );
 
-    // FPS monitor
-    this.fpsMonitor = vtkFPSMonitor.newInstance();
-    this.fpsMonitor.setRenderWindow(this.renderWindow);
-    // Update fps style
-    const v = this.props.showFPS;
-    this.fpsMonitor.setMonitorVisibility(v, v, v);
-    const fpsDOM = this.fpsMonitor.getFpsMonitorContainer();
-    fpsDOM.style.position = 'absolute';
-    fpsDOM.style.bottom = '10px';
-    fpsDOM.style.right = '10px';
-    fpsDOM.style.borderRadius = '5px';
-    fpsDOM.style.background = 'rgba(255,255,255,0.5)';
-
     // OpenGlRenderWindow
     this.openGlRenderWindow = vtkOpenGLRenderWindow.newInstance({
       notifyImageReady: !!props.onImageReady,
@@ -79,24 +64,10 @@ export default class VtkGeometryRenderer extends React.Component {
     this.renderWindow.addView(this.openGlRenderWindow);
 
     this.interactorStyle = vtkInteractorStyleManipulator.newInstance();
-
-    const panManipulator = vtkTrackballPan.newInstance();
-    panManipulator.setButton(1);
-    panManipulator.setShift(true);
-    panManipulator.setControl(false);
-    this.interactorStyle.addManipulator(panManipulator);
-
-    const zoomManipulator = vtkTrackballZoom.newInstance();
-    zoomManipulator.setButton(1);
-    zoomManipulator.setShift(false);
-    zoomManipulator.setControl(true);
-    this.interactorStyle.addManipulator(zoomManipulator);
-
-    const rotateManipulator = vtkTrackballRotate.newInstance();
-    rotateManipulator.setButton(1);
-    rotateManipulator.setShift(false);
-    rotateManipulator.setControl(false);
-    this.interactorStyle.addManipulator(rotateManipulator);
+    vtkInteractorStyleManipulatorPresets.applyPreset(
+      '3D',
+      this.interactorStyle
+    );
 
     // Interactor
     this.interactor = vtkRenderWindowInteractor.newInstance();
@@ -113,6 +84,29 @@ export default class VtkGeometryRenderer extends React.Component {
       this
     );
     this.updateRenderWindowSize = this.updateRenderWindowSize.bind(this);
+
+    // FPS monitor
+    let busyTime = 0;
+    this.fpsMonitor = vtkFPSMonitor.newInstance();
+    this.fpsMonitor.setRenderWindow(this.renderWindow);
+    this.monitor.onBusyStatusChanged((isBusy) => {
+      if (isBusy) {
+        busyTime = Date.now();
+      } else {
+        busyTime = Date.now() - busyTime;
+        this.fpsMonitor.setAddOnStats({ busyTime });
+      }
+      this.fpsMonitor.update();
+    });
+    // Update fps style
+    const v = this.props.showFPS;
+    this.fpsMonitor.setMonitorVisibility(v, v, v);
+    const fpsDOM = this.fpsMonitor.getFpsMonitorContainer();
+    fpsDOM.style.position = 'absolute';
+    fpsDOM.style.bottom = '10px';
+    fpsDOM.style.right = '10px';
+    fpsDOM.style.borderRadius = '5px';
+    fpsDOM.style.background = 'rgba(255,255,255,0.5)';
   }
 
   componentDidMount() {
@@ -150,6 +144,7 @@ export default class VtkGeometryRenderer extends React.Component {
         initialValues
       );
       this.renderWindow.addView(this.openGlRenderWindow);
+      this.fpsMonitor.setRenderWindow(this.renderWindow);
     }
 
     if (nextProps.showFPS !== this.props.showFPS) {
