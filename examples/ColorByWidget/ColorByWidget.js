@@ -60,19 +60,19 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 33);
+/******/ 	return __webpack_require__(__webpack_require__.s = 36);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(53) + ");\n  src: url(" + __webpack_require__(54) + "?#iefix&v=4.7.0) format('embedded-opentype'), url(" + __webpack_require__(55) + ") format('woff2'), url(" + __webpack_require__(56) + ") format('woff'), url(" + __webpack_require__(57) + ") format('truetype'), url(" + __webpack_require__(58) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome-fa_3nqz4 {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome-fa-lg_2uq3c {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome-fa-2x_2hfhw {\n  font-size: 2em;\n}\n.font-awesome-fa-3x_43xq9 {\n  font-size: 3em;\n}\n.font-awesome-fa-4x_6bygg {\n  font-size: 4em;\n}\n.font-awesome-fa-5x_3cfrj {\n  font-size: 5em;\n}\n.font-awesome-fa-fw_41emh {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome-fa-ul_45gv7 {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome-fa-ul_45gv7 > li {\n  position: relative;\n}\n.font-awesome-fa-li_95eyn {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome-fa-li_95eyn.font-awesome-fa-lg_2uq3c {\n  left: -1.85714286em;\n}\n.font-awesome-fa-border_3vkxd {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome-fa-pull-left_4qwcd {\n  float: left;\n}\n.font-awesome-fa-pull-right_3vu9s {\n  float: right;\n}\n.font-awesome-fa_3nqz4.font-awesome-fa-pull-left_4qwcd {\n  margin-right: .3em;\n}\n.font-awesome-fa_3nqz4.font-awesome-fa-pull-right_3vu9s {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome-pull-right_391a4 {\n  float: right;\n}\n.font-awesome-pull-left_4qwy8 {\n  float: left;\n}\n.font-awesome-fa_3nqz4.font-awesome-pull-left_4qwy8 {\n  margin-right: .3em;\n}\n.font-awesome-fa_3nqz4.font-awesome-pull-right_391a4 {\n  margin-left: .3em;\n}\n.font-awesome-fa-spin_3jhtx {\n  -webkit-animation: font-awesome-fa-spin_3jhtx 2s infinite linear;\n  animation: font-awesome-fa-spin_3jhtx 2s infinite linear;\n}\n.font-awesome-fa-pulse_3txbs {\n  -webkit-animation: font-awesome-fa-spin_3jhtx 1s infinite steps(8);\n  animation: font-awesome-fa-spin_3jhtx 1s infinite steps(8);\n}\n@-webkit-keyframes font-awesome-fa-spin_3jhtx {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n@keyframes font-awesome-fa-spin_3jhtx {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n.font-awesome-fa-rotate-90_456eb {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n  -ms-transform: rotate(90deg);\n  transform: rotate(90deg);\n}\n.font-awesome-fa-rotate-180_48nwr {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg);\n}\n.font-awesome-fa-rotate-270_a7rpt {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n  -ms-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\n.font-awesome-fa-flip-horizontal_wyack {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n  -ms-transform: scale(-1, 1);\n  transform: scale(-1, 1);\n}\n.font-awesome-fa-flip-vertical_2k1sk {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n  -ms-transform: scale(1, -1);\n  transform: scale(1, -1);\n}\n:root .font-awesome-fa-rotate-90_456eb,\n:root .font-awesome-fa-rotate-180_48nwr,\n:root .font-awesome-fa-rotate-270_a7rpt,\n:root .font-awesome-fa-flip-horizontal_wyack,\n:root .font-awesome-fa-flip-vertical_2k1sk {\n  filter: none;\n}\n.font-awesome-fa-stack_2d23t {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome-fa-stack-1x_29dce,\n.font-awesome-fa-stack-2x_277n7 {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome-fa-stack-1x_29dce {\n  line-height: inherit;\n}\n.font-awesome-fa-stack-2x_277n7 {\n  font-size: 2em;\n}\n.font-awesome-fa-inverse_2nc3d {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome-fa-glass_4btzw:before {\n  content: \"\\F000\";\n}\n.font-awesome-fa-music_4agvw:before {\n  content: \"\\F001\";\n}\n.font-awesome-fa-search_3kfd2:before {\n  content: \"\\F002\";\n}\n.font-awesome-fa-envelope-o_2favh:before {\n  content: \"\\F003\";\n}\n.font-awesome-fa-heart_hdy2u:before {\n  content: \"\\F004\";\n}\n.font-awesome-fa-star_4pv64:before {\n  content: \"\\F005\";\n}\n.font-awesome-fa-star-o_chy54:before {\n  content: \"\\F006\";\n}\n.font-awesome-fa-user_2xwkc:before {\n  content: \"\\F007\";\n}\n.font-awesome-fa-film_4m783:before {\n  content: \"\\F008\";\n}\n.font-awesome-fa-th-large_eqgps:before {\n  content: \"\\F009\";\n}\n.font-awesome-fa-th_2cja2:before {\n  content: \"\\F00A\";\n}\n.font-awesome-fa-th-list_3v1b4:before {\n  content: \"\\F00B\";\n}\n.font-awesome-fa-check_4gd6f:before {\n  content: \"\\F00C\";\n}\n.font-awesome-fa-remove_jww5c:before,\n.font-awesome-fa-close_4s4jh:before,\n.font-awesome-fa-times_23qe4:before {\n  content: \"\\F00D\";\n}\n.font-awesome-fa-search-plus_2bq9s:before {\n  content: \"\\F00E\";\n}\n.font-awesome-fa-search-minus_3g6np:before {\n  content: \"\\F010\";\n}\n.font-awesome-fa-power-off_47j3v:before {\n  content: \"\\F011\";\n}\n.font-awesome-fa-signal_26y41:before {\n  content: \"\\F012\";\n}\n.font-awesome-fa-gear_33yyb:before,\n.font-awesome-fa-cog_wa2qf:before {\n  content: \"\\F013\";\n}\n.font-awesome-fa-trash-o_3kzqg:before {\n  content: \"\\F014\";\n}\n.font-awesome-fa-home_28ett:before {\n  content: \"\\F015\";\n}\n.font-awesome-fa-file-o_414wr:before {\n  content: \"\\F016\";\n}\n.font-awesome-fa-clock-o_2veg8:before {\n  content: \"\\F017\";\n}\n.font-awesome-fa-road_2ykx9:before {\n  content: \"\\F018\";\n}\n.font-awesome-fa-download_2mucq:before {\n  content: \"\\F019\";\n}\n.font-awesome-fa-arrow-circle-o-down_3f1zz:before {\n  content: \"\\F01A\";\n}\n.font-awesome-fa-arrow-circle-o-up_3dvr2:before {\n  content: \"\\F01B\";\n}\n.font-awesome-fa-inbox_3ybwr:before {\n  content: \"\\F01C\";\n}\n.font-awesome-fa-play-circle-o_4sr8h:before {\n  content: \"\\F01D\";\n}\n.font-awesome-fa-rotate-right_393sh:before,\n.font-awesome-fa-repeat_q99jt:before {\n  content: \"\\F01E\";\n}\n.font-awesome-fa-refresh_34ap9:before {\n  content: \"\\F021\";\n}\n.font-awesome-fa-list-alt_2jmv8:before {\n  content: \"\\F022\";\n}\n.font-awesome-fa-lock_4ekru:before {\n  content: \"\\F023\";\n}\n.font-awesome-fa-flag_36n2d:before {\n  content: \"\\F024\";\n}\n.font-awesome-fa-headphones_36h7x:before {\n  content: \"\\F025\";\n}\n.font-awesome-fa-volume-off_24swq:before {\n  content: \"\\F026\";\n}\n.font-awesome-fa-volume-down_pwdhd:before {\n  content: \"\\F027\";\n}\n.font-awesome-fa-volume-up_ntqbj:before {\n  content: \"\\F028\";\n}\n.font-awesome-fa-qrcode_8tut1:before {\n  content: \"\\F029\";\n}\n.font-awesome-fa-barcode_2r8qd:before {\n  content: \"\\F02A\";\n}\n.font-awesome-fa-tag_3gne8:before {\n  content: \"\\F02B\";\n}\n.font-awesome-fa-tags_259aw:before {\n  content: \"\\F02C\";\n}\n.font-awesome-fa-book_2u36a:before {\n  content: \"\\F02D\";\n}\n.font-awesome-fa-bookmark_29f62:before {\n  content: \"\\F02E\";\n}\n.font-awesome-fa-print_2s573:before {\n  content: \"\\F02F\";\n}\n.font-awesome-fa-camera_3u3bj:before {\n  content: \"\\F030\";\n}\n.font-awesome-fa-font_4c828:before {\n  content: \"\\F031\";\n}\n.font-awesome-fa-bold_4k5vs:before {\n  content: \"\\F032\";\n}\n.font-awesome-fa-italic_35vrs:before {\n  content: \"\\F033\";\n}\n.font-awesome-fa-text-height_27m25:before {\n  content: \"\\F034\";\n}\n.font-awesome-fa-text-width_2y3x2:before {\n  content: \"\\F035\";\n}\n.font-awesome-fa-align-left_4dqdd:before {\n  content: \"\\F036\";\n}\n.font-awesome-fa-align-center_35xqu:before {\n  content: \"\\F037\";\n}\n.font-awesome-fa-align-right_4qa81:before {\n  content: \"\\F038\";\n}\n.font-awesome-fa-align-justify_3r8f5:before {\n  content: \"\\F039\";\n}\n.font-awesome-fa-list_2z1ed:before {\n  content: \"\\F03A\";\n}\n.font-awesome-fa-dedent_4ks1z:before,\n.font-awesome-fa-outdent_21yce:before {\n  content: \"\\F03B\";\n}\n.font-awesome-fa-indent_rc21m:before {\n  content: \"\\F03C\";\n}\n.font-awesome-fa-video-camera_2c5dn:before {\n  content: \"\\F03D\";\n}\n.font-awesome-fa-photo_2nyqr:before,\n.font-awesome-fa-image_3qpmp:before,\n.font-awesome-fa-picture-o_35zt3:before {\n  content: \"\\F03E\";\n}\n.font-awesome-fa-pencil_3g9ew:before {\n  content: \"\\F040\";\n}\n.font-awesome-fa-map-marker_3brgm:before {\n  content: \"\\F041\";\n}\n.font-awesome-fa-adjust_g517c:before {\n  content: \"\\F042\";\n}\n.font-awesome-fa-tint_2n958:before {\n  content: \"\\F043\";\n}\n.font-awesome-fa-edit_4ypwb:before,\n.font-awesome-fa-pencil-square-o_3e3zu:before {\n  content: \"\\F044\";\n}\n.font-awesome-fa-share-square-o_2ktkj:before {\n  content: \"\\F045\";\n}\n.font-awesome-fa-check-square-o_2krf3:before {\n  content: \"\\F046\";\n}\n.font-awesome-fa-arrows_45ew1:before {\n  content: \"\\F047\";\n}\n.font-awesome-fa-step-backward_2h9d2:before {\n  content: \"\\F048\";\n}\n.font-awesome-fa-fast-backward_2syxz:before {\n  content: \"\\F049\";\n}\n.font-awesome-fa-backward_2np3h:before {\n  content: \"\\F04A\";\n}\n.font-awesome-fa-play_t5x61:before {\n  content: \"\\F04B\";\n}\n.font-awesome-fa-pause_n2w49:before {\n  content: \"\\F04C\";\n}\n.font-awesome-fa-stop_29v29:before {\n  content: \"\\F04D\";\n}\n.font-awesome-fa-forward_2ntwp:before {\n  content: \"\\F04E\";\n}\n.font-awesome-fa-fast-forward_tx3u1:before {\n  content: \"\\F050\";\n}\n.font-awesome-fa-step-forward_v39xm:before {\n  content: \"\\F051\";\n}\n.font-awesome-fa-eject_3swgu:before {\n  content: \"\\F052\";\n}\n.font-awesome-fa-chevron-left_4f5j3:before {\n  content: \"\\F053\";\n}\n.font-awesome-fa-chevron-right_2k5j6:before {\n  content: \"\\F054\";\n}\n.font-awesome-fa-plus-circle_v5fb8:before {\n  content: \"\\F055\";\n}\n.font-awesome-fa-minus-circle_42zed:before {\n  content: \"\\F056\";\n}\n.font-awesome-fa-times-circle_z612t:before {\n  content: \"\\F057\";\n}\n.font-awesome-fa-check-circle_7x6yj:before {\n  content: \"\\F058\";\n}\n.font-awesome-fa-question-circle_2c6r4:before {\n  content: \"\\F059\";\n}\n.font-awesome-fa-info-circle_raq7x:before {\n  content: \"\\F05A\";\n}\n.font-awesome-fa-crosshairs_2ge9q:before {\n  content: \"\\F05B\";\n}\n.font-awesome-fa-times-circle-o_3unw8:before {\n  content: \"\\F05C\";\n}\n.font-awesome-fa-check-circle-o_3zqyh:before {\n  content: \"\\F05D\";\n}\n.font-awesome-fa-ban_4cv2d:before {\n  content: \"\\F05E\";\n}\n.font-awesome-fa-arrow-left_48gmt:before {\n  content: \"\\F060\";\n}\n.font-awesome-fa-arrow-right_4mjf6:before {\n  content: \"\\F061\";\n}\n.font-awesome-fa-arrow-up_ur2gm:before {\n  content: \"\\F062\";\n}\n.font-awesome-fa-arrow-down_rs3bg:before {\n  content: \"\\F063\";\n}\n.font-awesome-fa-mail-forward_3q1z6:before,\n.font-awesome-fa-share_3by4b:before {\n  content: \"\\F064\";\n}\n.font-awesome-fa-expand_wak4k:before {\n  content: \"\\F065\";\n}\n.font-awesome-fa-compress_336kq:before {\n  content: \"\\F066\";\n}\n.font-awesome-fa-plus_4u4t9:before {\n  content: \"\\F067\";\n}\n.font-awesome-fa-minus_et4rr:before {\n  content: \"\\F068\";\n}\n.font-awesome-fa-asterisk_qccwj:before {\n  content: \"\\F069\";\n}\n.font-awesome-fa-exclamation-circle_mavzf:before {\n  content: \"\\F06A\";\n}\n.font-awesome-fa-gift_2tn1u:before {\n  content: \"\\F06B\";\n}\n.font-awesome-fa-leaf_2tkkz:before {\n  content: \"\\F06C\";\n}\n.font-awesome-fa-fire_73jhy:before {\n  content: \"\\F06D\";\n}\n.font-awesome-fa-eye_236js:before {\n  content: \"\\F06E\";\n}\n.font-awesome-fa-eye-slash_2ssyx:before {\n  content: \"\\F070\";\n}\n.font-awesome-fa-warning_37kn4:before,\n.font-awesome-fa-exclamation-triangle_4p3as:before {\n  content: \"\\F071\";\n}\n.font-awesome-fa-plane_3dx6x:before {\n  content: \"\\F072\";\n}\n.font-awesome-fa-calendar_raf12:before {\n  content: \"\\F073\";\n}\n.font-awesome-fa-random_3yyjh:before {\n  content: \"\\F074\";\n}\n.font-awesome-fa-comment_31stw:before {\n  content: \"\\F075\";\n}\n.font-awesome-fa-magnet_4k15e:before {\n  content: \"\\F076\";\n}\n.font-awesome-fa-chevron-up_2dken:before {\n  content: \"\\F077\";\n}\n.font-awesome-fa-chevron-down_2uy71:before {\n  content: \"\\F078\";\n}\n.font-awesome-fa-retweet_2bx1v:before {\n  content: \"\\F079\";\n}\n.font-awesome-fa-shopping-cart_3t4en:before {\n  content: \"\\F07A\";\n}\n.font-awesome-fa-folder_31erh:before {\n  content: \"\\F07B\";\n}\n.font-awesome-fa-folder-open_t8ya7:before {\n  content: \"\\F07C\";\n}\n.font-awesome-fa-arrows-v_4gvr6:before {\n  content: \"\\F07D\";\n}\n.font-awesome-fa-arrows-h_tf7qg:before {\n  content: \"\\F07E\";\n}\n.font-awesome-fa-bar-chart-o_36z1y:before,\n.font-awesome-fa-bar-chart_3hj19:before {\n  content: \"\\F080\";\n}\n.font-awesome-fa-twitter-square_3gq7u:before {\n  content: \"\\F081\";\n}\n.font-awesome-fa-facebook-square_25ywy:before {\n  content: \"\\F082\";\n}\n.font-awesome-fa-camera-retro_q2axg:before {\n  content: \"\\F083\";\n}\n.font-awesome-fa-key_2yz8h:before {\n  content: \"\\F084\";\n}\n.font-awesome-fa-gears_4e2dt:before,\n.font-awesome-fa-cogs_4cxc3:before {\n  content: \"\\F085\";\n}\n.font-awesome-fa-comments_4t21x:before {\n  content: \"\\F086\";\n}\n.font-awesome-fa-thumbs-o-up_4r3yv:before {\n  content: \"\\F087\";\n}\n.font-awesome-fa-thumbs-o-down_87w4r:before {\n  content: \"\\F088\";\n}\n.font-awesome-fa-star-half_4p9th:before {\n  content: \"\\F089\";\n}\n.font-awesome-fa-heart-o_36nkc:before {\n  content: \"\\F08A\";\n}\n.font-awesome-fa-sign-out_23hy7:before {\n  content: \"\\F08B\";\n}\n.font-awesome-fa-linkedin-square_25u8h:before {\n  content: \"\\F08C\";\n}\n.font-awesome-fa-thumb-tack_hx4pc:before {\n  content: \"\\F08D\";\n}\n.font-awesome-fa-external-link_4wsan:before {\n  content: \"\\F08E\";\n}\n.font-awesome-fa-sign-in_36s82:before {\n  content: \"\\F090\";\n}\n.font-awesome-fa-trophy_44smk:before {\n  content: \"\\F091\";\n}\n.font-awesome-fa-github-square_4n4cq:before {\n  content: \"\\F092\";\n}\n.font-awesome-fa-upload_447cp:before {\n  content: \"\\F093\";\n}\n.font-awesome-fa-lemon-o_4c54e:before {\n  content: \"\\F094\";\n}\n.font-awesome-fa-phone_4d79t:before {\n  content: \"\\F095\";\n}\n.font-awesome-fa-square-o_2bwmf:before {\n  content: \"\\F096\";\n}\n.font-awesome-fa-bookmark-o_3thnz:before {\n  content: \"\\F097\";\n}\n.font-awesome-fa-phone-square_2w6s5:before {\n  content: \"\\F098\";\n}\n.font-awesome-fa-twitter_2yrmk:before {\n  content: \"\\F099\";\n}\n.font-awesome-fa-facebook-f_4v7uq:before,\n.font-awesome-fa-facebook_2yhkm:before {\n  content: \"\\F09A\";\n}\n.font-awesome-fa-github_69r4s:before {\n  content: \"\\F09B\";\n}\n.font-awesome-fa-unlock_f83k2:before {\n  content: \"\\F09C\";\n}\n.font-awesome-fa-credit-card_449gj:before {\n  content: \"\\F09D\";\n}\n.font-awesome-fa-feed_s1ygu:before,\n.font-awesome-fa-rss_2xt6h:before {\n  content: \"\\F09E\";\n}\n.font-awesome-fa-hdd-o_22gas:before {\n  content: \"\\F0A0\";\n}\n.font-awesome-fa-bullhorn_22e4d:before {\n  content: \"\\F0A1\";\n}\n.font-awesome-fa-bell_42g1x:before {\n  content: \"\\F0F3\";\n}\n.font-awesome-fa-certificate_3a1xn:before {\n  content: \"\\F0A3\";\n}\n.font-awesome-fa-hand-o-right_tvqe4:before {\n  content: \"\\F0A4\";\n}\n.font-awesome-fa-hand-o-left_5786p:before {\n  content: \"\\F0A5\";\n}\n.font-awesome-fa-hand-o-up_4bjwk:before {\n  content: \"\\F0A6\";\n}\n.font-awesome-fa-hand-o-down_f16eq:before {\n  content: \"\\F0A7\";\n}\n.font-awesome-fa-arrow-circle-left_2qtps:before {\n  content: \"\\F0A8\";\n}\n.font-awesome-fa-arrow-circle-right_3y551:before {\n  content: \"\\F0A9\";\n}\n.font-awesome-fa-arrow-circle-up_3y9j3:before {\n  content: \"\\F0AA\";\n}\n.font-awesome-fa-arrow-circle-down_4x2wc:before {\n  content: \"\\F0AB\";\n}\n.font-awesome-fa-globe_cq718:before {\n  content: \"\\F0AC\";\n}\n.font-awesome-fa-wrench_3kja1:before {\n  content: \"\\F0AD\";\n}\n.font-awesome-fa-tasks_9ru8u:before {\n  content: \"\\F0AE\";\n}\n.font-awesome-fa-filter_2brfv:before {\n  content: \"\\F0B0\";\n}\n.font-awesome-fa-briefcase_3w38j:before {\n  content: \"\\F0B1\";\n}\n.font-awesome-fa-arrows-alt_2jmka:before {\n  content: \"\\F0B2\";\n}\n.font-awesome-fa-group_4gxpz:before,\n.font-awesome-fa-users_3mxwv:before {\n  content: \"\\F0C0\";\n}\n.font-awesome-fa-chain_4gkrt:before,\n.font-awesome-fa-link_7fhh1:before {\n  content: \"\\F0C1\";\n}\n.font-awesome-fa-cloud_27q1n:before {\n  content: \"\\F0C2\";\n}\n.font-awesome-fa-flask_45bp5:before {\n  content: \"\\F0C3\";\n}\n.font-awesome-fa-cut_25zds:before,\n.font-awesome-fa-scissors_35mfp:before {\n  content: \"\\F0C4\";\n}\n.font-awesome-fa-copy_2yg9v:before,\n.font-awesome-fa-files-o_22zey:before {\n  content: \"\\F0C5\";\n}\n.font-awesome-fa-paperclip_2q7sr:before {\n  content: \"\\F0C6\";\n}\n.font-awesome-fa-save_2xs7f:before,\n.font-awesome-fa-floppy-o_3yk97:before {\n  content: \"\\F0C7\";\n}\n.font-awesome-fa-square_36mh3:before {\n  content: \"\\F0C8\";\n}\n.font-awesome-fa-navicon_4zuhn:before,\n.font-awesome-fa-reorder_pf8w2:before,\n.font-awesome-fa-bars_x22xx:before {\n  content: \"\\F0C9\";\n}\n.font-awesome-fa-list-ul_3wjuq:before {\n  content: \"\\F0CA\";\n}\n.font-awesome-fa-list-ol_3hbz4:before {\n  content: \"\\F0CB\";\n}\n.font-awesome-fa-strikethrough_2x3sm:before {\n  content: \"\\F0CC\";\n}\n.font-awesome-fa-underline_uyyw5:before {\n  content: \"\\F0CD\";\n}\n.font-awesome-fa-table_aw6xr:before {\n  content: \"\\F0CE\";\n}\n.font-awesome-fa-magic_44uhk:before {\n  content: \"\\F0D0\";\n}\n.font-awesome-fa-truck_7kx9m:before {\n  content: \"\\F0D1\";\n}\n.font-awesome-fa-pinterest_47g65:before {\n  content: \"\\F0D2\";\n}\n.font-awesome-fa-pinterest-square_3m3jn:before {\n  content: \"\\F0D3\";\n}\n.font-awesome-fa-google-plus-square_4ag18:before {\n  content: \"\\F0D4\";\n}\n.font-awesome-fa-google-plus_4qvun:before {\n  content: \"\\F0D5\";\n}\n.font-awesome-fa-money_w1buu:before {\n  content: \"\\F0D6\";\n}\n.font-awesome-fa-caret-down_29wrf:before {\n  content: \"\\F0D7\";\n}\n.font-awesome-fa-caret-up_29ag3:before {\n  content: \"\\F0D8\";\n}\n.font-awesome-fa-caret-left_4vdaf:before {\n  content: \"\\F0D9\";\n}\n.font-awesome-fa-caret-right_4ve4r:before {\n  content: \"\\F0DA\";\n}\n.font-awesome-fa-columns_4t6jc:before {\n  content: \"\\F0DB\";\n}\n.font-awesome-fa-unsorted_wc53a:before,\n.font-awesome-fa-sort_2q7tc:before {\n  content: \"\\F0DC\";\n}\n.font-awesome-fa-sort-down_kbtzj:before,\n.font-awesome-fa-sort-desc_thcem:before {\n  content: \"\\F0DD\";\n}\n.font-awesome-fa-sort-up_2r65v:before,\n.font-awesome-fa-sort-asc_3wzqf:before {\n  content: \"\\F0DE\";\n}\n.font-awesome-fa-envelope_er48e:before {\n  content: \"\\F0E0\";\n}\n.font-awesome-fa-linkedin_jhwtj:before {\n  content: \"\\F0E1\";\n}\n.font-awesome-fa-rotate-left_21j9u:before,\n.font-awesome-fa-undo_24jhh:before {\n  content: \"\\F0E2\";\n}\n.font-awesome-fa-legal_3gmnd:before,\n.font-awesome-fa-gavel_2vs2w:before {\n  content: \"\\F0E3\";\n}\n.font-awesome-fa-dashboard_4mp88:before,\n.font-awesome-fa-tachometer_3c5xs:before {\n  content: \"\\F0E4\";\n}\n.font-awesome-fa-comment-o_4t3zs:before {\n  content: \"\\F0E5\";\n}\n.font-awesome-fa-comments-o_px6a9:before {\n  content: \"\\F0E6\";\n}\n.font-awesome-fa-flash_9cvs3:before,\n.font-awesome-fa-bolt_4r5uf:before {\n  content: \"\\F0E7\";\n}\n.font-awesome-fa-sitemap_7718n:before {\n  content: \"\\F0E8\";\n}\n.font-awesome-fa-umbrella_y76mn:before {\n  content: \"\\F0E9\";\n}\n.font-awesome-fa-paste_41f38:before,\n.font-awesome-fa-clipboard_78akd:before {\n  content: \"\\F0EA\";\n}\n.font-awesome-fa-lightbulb-o_4ky58:before {\n  content: \"\\F0EB\";\n}\n.font-awesome-fa-exchange_2zcw2:before {\n  content: \"\\F0EC\";\n}\n.font-awesome-fa-cloud-download_39mmy:before {\n  content: \"\\F0ED\";\n}\n.font-awesome-fa-cloud-upload_4e69r:before {\n  content: \"\\F0EE\";\n}\n.font-awesome-fa-user-md_4swqb:before {\n  content: \"\\F0F0\";\n}\n.font-awesome-fa-stethoscope_judkz:before {\n  content: \"\\F0F1\";\n}\n.font-awesome-fa-suitcase_2cmaq:before {\n  content: \"\\F0F2\";\n}\n.font-awesome-fa-bell-o_4nnrz:before {\n  content: \"\\F0A2\";\n}\n.font-awesome-fa-coffee_qfm34:before {\n  content: \"\\F0F4\";\n}\n.font-awesome-fa-cutlery_21gt2:before {\n  content: \"\\F0F5\";\n}\n.font-awesome-fa-file-text-o_4qf7t:before {\n  content: \"\\F0F6\";\n}\n.font-awesome-fa-building-o_36rp6:before {\n  content: \"\\F0F7\";\n}\n.font-awesome-fa-hospital-o_49bft:before {\n  content: \"\\F0F8\";\n}\n.font-awesome-fa-ambulance_387ym:before {\n  content: \"\\F0F9\";\n}\n.font-awesome-fa-medkit_27epf:before {\n  content: \"\\F0FA\";\n}\n.font-awesome-fa-fighter-jet_26c59:before {\n  content: \"\\F0FB\";\n}\n.font-awesome-fa-beer_3uhs8:before {\n  content: \"\\F0FC\";\n}\n.font-awesome-fa-h-square_4qnua:before {\n  content: \"\\F0FD\";\n}\n.font-awesome-fa-plus-square_4nv7d:before {\n  content: \"\\F0FE\";\n}\n.font-awesome-fa-angle-double-left_2xsmp:before {\n  content: \"\\F100\";\n}\n.font-awesome-fa-angle-double-right_qesan:before {\n  content: \"\\F101\";\n}\n.font-awesome-fa-angle-double-up_3ndzd:before {\n  content: \"\\F102\";\n}\n.font-awesome-fa-angle-double-down_2v752:before {\n  content: \"\\F103\";\n}\n.font-awesome-fa-angle-left_xjnub:before {\n  content: \"\\F104\";\n}\n.font-awesome-fa-angle-right_4bdut:before {\n  content: \"\\F105\";\n}\n.font-awesome-fa-angle-up_gkpp3:before {\n  content: \"\\F106\";\n}\n.font-awesome-fa-angle-down_4hx4b:before {\n  content: \"\\F107\";\n}\n.font-awesome-fa-desktop_r164m:before {\n  content: \"\\F108\";\n}\n.font-awesome-fa-laptop_f7ep1:before {\n  content: \"\\F109\";\n}\n.font-awesome-fa-tablet_46axh:before {\n  content: \"\\F10A\";\n}\n.font-awesome-fa-mobile-phone_4q548:before,\n.font-awesome-fa-mobile_rh7p1:before {\n  content: \"\\F10B\";\n}\n.font-awesome-fa-circle-o_32k7p:before {\n  content: \"\\F10C\";\n}\n.font-awesome-fa-quote-left_swtcq:before {\n  content: \"\\F10D\";\n}\n.font-awesome-fa-quote-right_2zfpd:before {\n  content: \"\\F10E\";\n}\n.font-awesome-fa-spinner_4t5rh:before {\n  content: \"\\F110\";\n}\n.font-awesome-fa-circle_474bg:before {\n  content: \"\\F111\";\n}\n.font-awesome-fa-mail-reply_27j8v:before,\n.font-awesome-fa-reply_43hx8:before {\n  content: \"\\F112\";\n}\n.font-awesome-fa-github-alt_49duw:before {\n  content: \"\\F113\";\n}\n.font-awesome-fa-folder-o_28w2t:before {\n  content: \"\\F114\";\n}\n.font-awesome-fa-folder-open-o_2g9qr:before {\n  content: \"\\F115\";\n}\n.font-awesome-fa-smile-o_46wr5:before {\n  content: \"\\F118\";\n}\n.font-awesome-fa-frown-o_32h72:before {\n  content: \"\\F119\";\n}\n.font-awesome-fa-meh-o_4auak:before {\n  content: \"\\F11A\";\n}\n.font-awesome-fa-gamepad_2m3vr:before {\n  content: \"\\F11B\";\n}\n.font-awesome-fa-keyboard-o_3uhae:before {\n  content: \"\\F11C\";\n}\n.font-awesome-fa-flag-o_25ncu:before {\n  content: \"\\F11D\";\n}\n.font-awesome-fa-flag-checkered_2tmuv:before {\n  content: \"\\F11E\";\n}\n.font-awesome-fa-terminal_2r8hu:before {\n  content: \"\\F120\";\n}\n.font-awesome-fa-code_44rxt:before {\n  content: \"\\F121\";\n}\n.font-awesome-fa-mail-reply-all_3bgj2:before,\n.font-awesome-fa-reply-all_bfrb1:before {\n  content: \"\\F122\";\n}\n.font-awesome-fa-star-half-empty_4wzyw:before,\n.font-awesome-fa-star-half-full_p1m6e:before,\n.font-awesome-fa-star-half-o_rpczx:before {\n  content: \"\\F123\";\n}\n.font-awesome-fa-location-arrow_4htbm:before {\n  content: \"\\F124\";\n}\n.font-awesome-fa-crop_zzzug:before {\n  content: \"\\F125\";\n}\n.font-awesome-fa-code-fork_p4hda:before {\n  content: \"\\F126\";\n}\n.font-awesome-fa-unlink_47g53:before,\n.font-awesome-fa-chain-broken_4pdaj:before {\n  content: \"\\F127\";\n}\n.font-awesome-fa-question_4nhpt:before {\n  content: \"\\F128\";\n}\n.font-awesome-fa-info_3tnpx:before {\n  content: \"\\F129\";\n}\n.font-awesome-fa-exclamation_3pyqb:before {\n  content: \"\\F12A\";\n}\n.font-awesome-fa-superscript_45c9q:before {\n  content: \"\\F12B\";\n}\n.font-awesome-fa-subscript_4hmqx:before {\n  content: \"\\F12C\";\n}\n.font-awesome-fa-eraser_4cqsr:before {\n  content: \"\\F12D\";\n}\n.font-awesome-fa-puzzle-piece_46stc:before {\n  content: \"\\F12E\";\n}\n.font-awesome-fa-microphone_3gzkx:before {\n  content: \"\\F130\";\n}\n.font-awesome-fa-microphone-slash_2zske:before {\n  content: \"\\F131\";\n}\n.font-awesome-fa-shield_rnz5n:before {\n  content: \"\\F132\";\n}\n.font-awesome-fa-calendar-o_2sak9:before {\n  content: \"\\F133\";\n}\n.font-awesome-fa-fire-extinguisher_26nw2:before {\n  content: \"\\F134\";\n}\n.font-awesome-fa-rocket_6yq52:before {\n  content: \"\\F135\";\n}\n.font-awesome-fa-maxcdn_34ekh:before {\n  content: \"\\F136\";\n}\n.font-awesome-fa-chevron-circle-left_4w82y:before {\n  content: \"\\F137\";\n}\n.font-awesome-fa-chevron-circle-right_3875r:before {\n  content: \"\\F138\";\n}\n.font-awesome-fa-chevron-circle-up_2v74p:before {\n  content: \"\\F139\";\n}\n.font-awesome-fa-chevron-circle-down_3qtm9:before {\n  content: \"\\F13A\";\n}\n.font-awesome-fa-html5_22fhv:before {\n  content: \"\\F13B\";\n}\n.font-awesome-fa-css3_4a4qz:before {\n  content: \"\\F13C\";\n}\n.font-awesome-fa-anchor_4et8y:before {\n  content: \"\\F13D\";\n}\n.font-awesome-fa-unlock-alt_4y7nt:before {\n  content: \"\\F13E\";\n}\n.font-awesome-fa-bullseye_2katg:before {\n  content: \"\\F140\";\n}\n.font-awesome-fa-ellipsis-h_3rc7s:before {\n  content: \"\\F141\";\n}\n.font-awesome-fa-ellipsis-v_4f723:before {\n  content: \"\\F142\";\n}\n.font-awesome-fa-rss-square_3ez61:before {\n  content: \"\\F143\";\n}\n.font-awesome-fa-play-circle_4pk9q:before {\n  content: \"\\F144\";\n}\n.font-awesome-fa-ticket_38p8s:before {\n  content: \"\\F145\";\n}\n.font-awesome-fa-minus-square_2e5ae:before {\n  content: \"\\F146\";\n}\n.font-awesome-fa-minus-square-o_33v3x:before {\n  content: \"\\F147\";\n}\n.font-awesome-fa-level-up_xy6rd:before {\n  content: \"\\F148\";\n}\n.font-awesome-fa-level-down_4gwkn:before {\n  content: \"\\F149\";\n}\n.font-awesome-fa-check-square_4a4bn:before {\n  content: \"\\F14A\";\n}\n.font-awesome-fa-pencil-square_2b2zh:before {\n  content: \"\\F14B\";\n}\n.font-awesome-fa-external-link-square_4w6tc:before {\n  content: \"\\F14C\";\n}\n.font-awesome-fa-share-square_35wpn:before {\n  content: \"\\F14D\";\n}\n.font-awesome-fa-compass_2hmyy:before {\n  content: \"\\F14E\";\n}\n.font-awesome-fa-toggle-down_474xf:before,\n.font-awesome-fa-caret-square-o-down_2p24p:before {\n  content: \"\\F150\";\n}\n.font-awesome-fa-toggle-up_3sykb:before,\n.font-awesome-fa-caret-square-o-up_49c2q:before {\n  content: \"\\F151\";\n}\n.font-awesome-fa-toggle-right_45c5f:before,\n.font-awesome-fa-caret-square-o-right_3fusp:before {\n  content: \"\\F152\";\n}\n.font-awesome-fa-euro_2v8h2:before,\n.font-awesome-fa-eur_22ybn:before {\n  content: \"\\F153\";\n}\n.font-awesome-fa-gbp_4rfu1:before {\n  content: \"\\F154\";\n}\n.font-awesome-fa-dollar_2wmex:before,\n.font-awesome-fa-usd_4nvs4:before {\n  content: \"\\F155\";\n}\n.font-awesome-fa-rupee_2161g:before,\n.font-awesome-fa-inr_23pms:before {\n  content: \"\\F156\";\n}\n.font-awesome-fa-cny_mpt6y:before,\n.font-awesome-fa-rmb_46vbm:before,\n.font-awesome-fa-yen_kun9p:before,\n.font-awesome-fa-jpy_2w1zh:before {\n  content: \"\\F157\";\n}\n.font-awesome-fa-ruble_mgkd7:before,\n.font-awesome-fa-rouble_48mfq:before,\n.font-awesome-fa-rub_3py6w:before {\n  content: \"\\F158\";\n}\n.font-awesome-fa-won_21skz:before,\n.font-awesome-fa-krw_3rsug:before {\n  content: \"\\F159\";\n}\n.font-awesome-fa-bitcoin_2x78c:before,\n.font-awesome-fa-btc_34vnu:before {\n  content: \"\\F15A\";\n}\n.font-awesome-fa-file_2hvak:before {\n  content: \"\\F15B\";\n}\n.font-awesome-fa-file-text_27xvy:before {\n  content: \"\\F15C\";\n}\n.font-awesome-fa-sort-alpha-asc_3dcru:before {\n  content: \"\\F15D\";\n}\n.font-awesome-fa-sort-alpha-desc_3r41w:before {\n  content: \"\\F15E\";\n}\n.font-awesome-fa-sort-amount-asc_49k5d:before {\n  content: \"\\F160\";\n}\n.font-awesome-fa-sort-amount-desc_3tsuv:before {\n  content: \"\\F161\";\n}\n.font-awesome-fa-sort-numeric-asc_3r4w9:before {\n  content: \"\\F162\";\n}\n.font-awesome-fa-sort-numeric-desc_as49b:before {\n  content: \"\\F163\";\n}\n.font-awesome-fa-thumbs-up_2tzkr:before {\n  content: \"\\F164\";\n}\n.font-awesome-fa-thumbs-down_mh1xf:before {\n  content: \"\\F165\";\n}\n.font-awesome-fa-youtube-square_vnsz8:before {\n  content: \"\\F166\";\n}\n.font-awesome-fa-youtube_k2x8r:before {\n  content: \"\\F167\";\n}\n.font-awesome-fa-xing_df4tt:before {\n  content: \"\\F168\";\n}\n.font-awesome-fa-xing-square_pnamd:before {\n  content: \"\\F169\";\n}\n.font-awesome-fa-youtube-play_45xmt:before {\n  content: \"\\F16A\";\n}\n.font-awesome-fa-dropbox_3qmj7:before {\n  content: \"\\F16B\";\n}\n.font-awesome-fa-stack-overflow_4e4qy:before {\n  content: \"\\F16C\";\n}\n.font-awesome-fa-instagram_494gw:before {\n  content: \"\\F16D\";\n}\n.font-awesome-fa-flickr_deqj4:before {\n  content: \"\\F16E\";\n}\n.font-awesome-fa-adn_v5nmz:before {\n  content: \"\\F170\";\n}\n.font-awesome-fa-bitbucket_r8hwb:before {\n  content: \"\\F171\";\n}\n.font-awesome-fa-bitbucket-square_3xm43:before {\n  content: \"\\F172\";\n}\n.font-awesome-fa-tumblr_32ha5:before {\n  content: \"\\F173\";\n}\n.font-awesome-fa-tumblr-square_pdna6:before {\n  content: \"\\F174\";\n}\n.font-awesome-fa-long-arrow-down_4r4z9:before {\n  content: \"\\F175\";\n}\n.font-awesome-fa-long-arrow-up_p2zsg:before {\n  content: \"\\F176\";\n}\n.font-awesome-fa-long-arrow-left_3a13c:before {\n  content: \"\\F177\";\n}\n.font-awesome-fa-long-arrow-right_n2csd:before {\n  content: \"\\F178\";\n}\n.font-awesome-fa-apple_23cfc:before {\n  content: \"\\F179\";\n}\n.font-awesome-fa-windows_41qkc:before {\n  content: \"\\F17A\";\n}\n.font-awesome-fa-android_eqd3c:before {\n  content: \"\\F17B\";\n}\n.font-awesome-fa-linux_44v3q:before {\n  content: \"\\F17C\";\n}\n.font-awesome-fa-dribbble_47y5k:before {\n  content: \"\\F17D\";\n}\n.font-awesome-fa-skype_qm14u:before {\n  content: \"\\F17E\";\n}\n.font-awesome-fa-foursquare_s3f6a:before {\n  content: \"\\F180\";\n}\n.font-awesome-fa-trello_3u7xe:before {\n  content: \"\\F181\";\n}\n.font-awesome-fa-female_3tvmu:before {\n  content: \"\\F182\";\n}\n.font-awesome-fa-male_4xm1v:before {\n  content: \"\\F183\";\n}\n.font-awesome-fa-gittip_2nj8a:before,\n.font-awesome-fa-gratipay_426vx:before {\n  content: \"\\F184\";\n}\n.font-awesome-fa-sun-o_3gdqn:before {\n  content: \"\\F185\";\n}\n.font-awesome-fa-moon-o_3hgcr:before {\n  content: \"\\F186\";\n}\n.font-awesome-fa-archive_2s6kh:before {\n  content: \"\\F187\";\n}\n.font-awesome-fa-bug_4nfg1:before {\n  content: \"\\F188\";\n}\n.font-awesome-fa-vk_4emrb:before {\n  content: \"\\F189\";\n}\n.font-awesome-fa-weibo_hffdj:before {\n  content: \"\\F18A\";\n}\n.font-awesome-fa-renren_3t69a:before {\n  content: \"\\F18B\";\n}\n.font-awesome-fa-pagelines_4dv2u:before {\n  content: \"\\F18C\";\n}\n.font-awesome-fa-stack-exchange_2qzu3:before {\n  content: \"\\F18D\";\n}\n.font-awesome-fa-arrow-circle-o-right_mm9wb:before {\n  content: \"\\F18E\";\n}\n.font-awesome-fa-arrow-circle-o-left_33d94:before {\n  content: \"\\F190\";\n}\n.font-awesome-fa-toggle-left_2ewjj:before,\n.font-awesome-fa-caret-square-o-left_2zj29:before {\n  content: \"\\F191\";\n}\n.font-awesome-fa-dot-circle-o_4erqk:before {\n  content: \"\\F192\";\n}\n.font-awesome-fa-wheelchair_2kywz:before {\n  content: \"\\F193\";\n}\n.font-awesome-fa-vimeo-square_3mbrk:before {\n  content: \"\\F194\";\n}\n.font-awesome-fa-turkish-lira_2uqer:before,\n.font-awesome-fa-try_2kmx4:before {\n  content: \"\\F195\";\n}\n.font-awesome-fa-plus-square-o_w7515:before {\n  content: \"\\F196\";\n}\n.font-awesome-fa-space-shuttle_6tqcb:before {\n  content: \"\\F197\";\n}\n.font-awesome-fa-slack_3af9m:before {\n  content: \"\\F198\";\n}\n.font-awesome-fa-envelope-square_33zcz:before {\n  content: \"\\F199\";\n}\n.font-awesome-fa-wordpress_qrhjk:before {\n  content: \"\\F19A\";\n}\n.font-awesome-fa-openid_w919x:before {\n  content: \"\\F19B\";\n}\n.font-awesome-fa-institution_4du1u:before,\n.font-awesome-fa-bank_2bn5f:before,\n.font-awesome-fa-university_zjzzx:before {\n  content: \"\\F19C\";\n}\n.font-awesome-fa-mortar-board_sx7fa:before,\n.font-awesome-fa-graduation-cap_2x9gx:before {\n  content: \"\\F19D\";\n}\n.font-awesome-fa-yahoo_4a38y:before {\n  content: \"\\F19E\";\n}\n.font-awesome-fa-google_4j6rh:before {\n  content: \"\\F1A0\";\n}\n.font-awesome-fa-reddit_ttaqm:before {\n  content: \"\\F1A1\";\n}\n.font-awesome-fa-reddit-square_e68ag:before {\n  content: \"\\F1A2\";\n}\n.font-awesome-fa-stumbleupon-circle_22nux:before {\n  content: \"\\F1A3\";\n}\n.font-awesome-fa-stumbleupon_4f2py:before {\n  content: \"\\F1A4\";\n}\n.font-awesome-fa-delicious_2g9z8:before {\n  content: \"\\F1A5\";\n}\n.font-awesome-fa-digg_318jp:before {\n  content: \"\\F1A6\";\n}\n.font-awesome-fa-pied-piper-pp_bd4k7:before {\n  content: \"\\F1A7\";\n}\n.font-awesome-fa-pied-piper-alt_3wvk1:before {\n  content: \"\\F1A8\";\n}\n.font-awesome-fa-drupal_34wky:before {\n  content: \"\\F1A9\";\n}\n.font-awesome-fa-joomla_u2kmu:before {\n  content: \"\\F1AA\";\n}\n.font-awesome-fa-language_ct8zj:before {\n  content: \"\\F1AB\";\n}\n.font-awesome-fa-fax_2rmvv:before {\n  content: \"\\F1AC\";\n}\n.font-awesome-fa-building_41y7v:before {\n  content: \"\\F1AD\";\n}\n.font-awesome-fa-child_2fxxn:before {\n  content: \"\\F1AE\";\n}\n.font-awesome-fa-paw_2q2pd:before {\n  content: \"\\F1B0\";\n}\n.font-awesome-fa-spoon_6jpqt:before {\n  content: \"\\F1B1\";\n}\n.font-awesome-fa-cube_zhw4z:before {\n  content: \"\\F1B2\";\n}\n.font-awesome-fa-cubes_2ztsn:before {\n  content: \"\\F1B3\";\n}\n.font-awesome-fa-behance_2f597:before {\n  content: \"\\F1B4\";\n}\n.font-awesome-fa-behance-square_4kh21:before {\n  content: \"\\F1B5\";\n}\n.font-awesome-fa-steam_3vp2q:before {\n  content: \"\\F1B6\";\n}\n.font-awesome-fa-steam-square_3rv42:before {\n  content: \"\\F1B7\";\n}\n.font-awesome-fa-recycle_3jhdn:before {\n  content: \"\\F1B8\";\n}\n.font-awesome-fa-automobile_3uz5x:before,\n.font-awesome-fa-car_4j8hq:before {\n  content: \"\\F1B9\";\n}\n.font-awesome-fa-cab_4by8y:before,\n.font-awesome-fa-taxi_2gs3n:before {\n  content: \"\\F1BA\";\n}\n.font-awesome-fa-tree_2uvft:before {\n  content: \"\\F1BB\";\n}\n.font-awesome-fa-spotify_281ek:before {\n  content: \"\\F1BC\";\n}\n.font-awesome-fa-deviantart_3ejsp:before {\n  content: \"\\F1BD\";\n}\n.font-awesome-fa-soundcloud_289pm:before {\n  content: \"\\F1BE\";\n}\n.font-awesome-fa-database_41m81:before {\n  content: \"\\F1C0\";\n}\n.font-awesome-fa-file-pdf-o_31hj1:before {\n  content: \"\\F1C1\";\n}\n.font-awesome-fa-file-word-o_3dxtr:before {\n  content: \"\\F1C2\";\n}\n.font-awesome-fa-file-excel-o_28ptw:before {\n  content: \"\\F1C3\";\n}\n.font-awesome-fa-file-powerpoint-o_swugq:before {\n  content: \"\\F1C4\";\n}\n.font-awesome-fa-file-photo-o_35n2w:before,\n.font-awesome-fa-file-picture-o_4jnw7:before,\n.font-awesome-fa-file-image-o_2s4k1:before {\n  content: \"\\F1C5\";\n}\n.font-awesome-fa-file-zip-o_3fj5w:before,\n.font-awesome-fa-file-archive-o_2jbs3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome-fa-file-sound-o_wpxgw:before,\n.font-awesome-fa-file-audio-o_4ga2e:before {\n  content: \"\\F1C7\";\n}\n.font-awesome-fa-file-movie-o_4h9bn:before,\n.font-awesome-fa-file-video-o_348mx:before {\n  content: \"\\F1C8\";\n}\n.font-awesome-fa-file-code-o_47r14:before {\n  content: \"\\F1C9\";\n}\n.font-awesome-fa-vine_31j6c:before {\n  content: \"\\F1CA\";\n}\n.font-awesome-fa-codepen_2kvff:before {\n  content: \"\\F1CB\";\n}\n.font-awesome-fa-jsfiddle_2r1q8:before {\n  content: \"\\F1CC\";\n}\n.font-awesome-fa-life-bouy_4vxu3:before,\n.font-awesome-fa-life-buoy_2jk7n:before,\n.font-awesome-fa-life-saver_4bbkw:before,\n.font-awesome-fa-support_3ezhk:before,\n.font-awesome-fa-life-ring_4sg2e:before {\n  content: \"\\F1CD\";\n}\n.font-awesome-fa-circle-o-notch_3g7ub:before {\n  content: \"\\F1CE\";\n}\n.font-awesome-fa-ra_4gyjy:before,\n.font-awesome-fa-resistance_4rr8t:before,\n.font-awesome-fa-rebel_4bnzf:before {\n  content: \"\\F1D0\";\n}\n.font-awesome-fa-ge_v7j6f:before,\n.font-awesome-fa-empire_9gcr3:before {\n  content: \"\\F1D1\";\n}\n.font-awesome-fa-git-square_4j2zg:before {\n  content: \"\\F1D2\";\n}\n.font-awesome-fa-git_nyxmt:before {\n  content: \"\\F1D3\";\n}\n.font-awesome-fa-y-combinator-square_3fkhb:before,\n.font-awesome-fa-yc-square_423e8:before,\n.font-awesome-fa-hacker-news_3bvkf:before {\n  content: \"\\F1D4\";\n}\n.font-awesome-fa-tencent-weibo_2aayn:before {\n  content: \"\\F1D5\";\n}\n.font-awesome-fa-qq_28ush:before {\n  content: \"\\F1D6\";\n}\n.font-awesome-fa-wechat_3uxxv:before,\n.font-awesome-fa-weixin_4xybv:before {\n  content: \"\\F1D7\";\n}\n.font-awesome-fa-send_37fju:before,\n.font-awesome-fa-paper-plane_4ev2k:before {\n  content: \"\\F1D8\";\n}\n.font-awesome-fa-send-o_43d1j:before,\n.font-awesome-fa-paper-plane-o_26nqv:before {\n  content: \"\\F1D9\";\n}\n.font-awesome-fa-history_3kffs:before {\n  content: \"\\F1DA\";\n}\n.font-awesome-fa-circle-thin_4n3yw:before {\n  content: \"\\F1DB\";\n}\n.font-awesome-fa-header_tc2an:before {\n  content: \"\\F1DC\";\n}\n.font-awesome-fa-paragraph_cpbsw:before {\n  content: \"\\F1DD\";\n}\n.font-awesome-fa-sliders_4t17f:before {\n  content: \"\\F1DE\";\n}\n.font-awesome-fa-share-alt_2e7g5:before {\n  content: \"\\F1E0\";\n}\n.font-awesome-fa-share-alt-square_2bq2e:before {\n  content: \"\\F1E1\";\n}\n.font-awesome-fa-bomb_hqjyv:before {\n  content: \"\\F1E2\";\n}\n.font-awesome-fa-soccer-ball-o_3wmxx:before,\n.font-awesome-fa-futbol-o_3rp5h:before {\n  content: \"\\F1E3\";\n}\n.font-awesome-fa-tty_4qhux:before {\n  content: \"\\F1E4\";\n}\n.font-awesome-fa-binoculars_23j3x:before {\n  content: \"\\F1E5\";\n}\n.font-awesome-fa-plug_39bvm:before {\n  content: \"\\F1E6\";\n}\n.font-awesome-fa-slideshare_2d3d3:before {\n  content: \"\\F1E7\";\n}\n.font-awesome-fa-twitch_3ssvr:before {\n  content: \"\\F1E8\";\n}\n.font-awesome-fa-yelp_4nuk1:before {\n  content: \"\\F1E9\";\n}\n.font-awesome-fa-newspaper-o_3sxxc:before {\n  content: \"\\F1EA\";\n}\n.font-awesome-fa-wifi_41v3p:before {\n  content: \"\\F1EB\";\n}\n.font-awesome-fa-calculator_dpsuw:before {\n  content: \"\\F1EC\";\n}\n.font-awesome-fa-paypal_3j8p3:before {\n  content: \"\\F1ED\";\n}\n.font-awesome-fa-google-wallet_3pzk6:before {\n  content: \"\\F1EE\";\n}\n.font-awesome-fa-cc-visa_27gek:before {\n  content: \"\\F1F0\";\n}\n.font-awesome-fa-cc-mastercard_41xcs:before {\n  content: \"\\F1F1\";\n}\n.font-awesome-fa-cc-discover_2uy8h:before {\n  content: \"\\F1F2\";\n}\n.font-awesome-fa-cc-amex_32wjy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome-fa-cc-paypal_454sh:before {\n  content: \"\\F1F4\";\n}\n.font-awesome-fa-cc-stripe_473cn:before {\n  content: \"\\F1F5\";\n}\n.font-awesome-fa-bell-slash_3cm53:before {\n  content: \"\\F1F6\";\n}\n.font-awesome-fa-bell-slash-o_3e1gw:before {\n  content: \"\\F1F7\";\n}\n.font-awesome-fa-trash_4nzep:before {\n  content: \"\\F1F8\";\n}\n.font-awesome-fa-copyright_294ey:before {\n  content: \"\\F1F9\";\n}\n.font-awesome-fa-at_4msds:before {\n  content: \"\\F1FA\";\n}\n.font-awesome-fa-eyedropper_36gh6:before {\n  content: \"\\F1FB\";\n}\n.font-awesome-fa-paint-brush_34vj3:before {\n  content: \"\\F1FC\";\n}\n.font-awesome-fa-birthday-cake_3kbnm:before {\n  content: \"\\F1FD\";\n}\n.font-awesome-fa-area-chart_sptnx:before {\n  content: \"\\F1FE\";\n}\n.font-awesome-fa-pie-chart_2eh7a:before {\n  content: \"\\F200\";\n}\n.font-awesome-fa-line-chart_jjwww:before {\n  content: \"\\F201\";\n}\n.font-awesome-fa-lastfm_3smzv:before {\n  content: \"\\F202\";\n}\n.font-awesome-fa-lastfm-square_2t54c:before {\n  content: \"\\F203\";\n}\n.font-awesome-fa-toggle-off_jc9q6:before {\n  content: \"\\F204\";\n}\n.font-awesome-fa-toggle-on_4gwhm:before {\n  content: \"\\F205\";\n}\n.font-awesome-fa-bicycle_32rmk:before {\n  content: \"\\F206\";\n}\n.font-awesome-fa-bus_2vfp5:before {\n  content: \"\\F207\";\n}\n.font-awesome-fa-ioxhost_sbk8m:before {\n  content: \"\\F208\";\n}\n.font-awesome-fa-angellist_4jenu:before {\n  content: \"\\F209\";\n}\n.font-awesome-fa-cc_2vggh:before {\n  content: \"\\F20A\";\n}\n.font-awesome-fa-shekel_3sq2h:before,\n.font-awesome-fa-sheqel_2y7zg:before,\n.font-awesome-fa-ils_nyhdp:before {\n  content: \"\\F20B\";\n}\n.font-awesome-fa-meanpath_mazqu:before {\n  content: \"\\F20C\";\n}\n.font-awesome-fa-buysellads_36q3j:before {\n  content: \"\\F20D\";\n}\n.font-awesome-fa-connectdevelop_3d5v3:before {\n  content: \"\\F20E\";\n}\n.font-awesome-fa-dashcube_3kfhh:before {\n  content: \"\\F210\";\n}\n.font-awesome-fa-forumbee_4e897:before {\n  content: \"\\F211\";\n}\n.font-awesome-fa-leanpub_ryycy:before {\n  content: \"\\F212\";\n}\n.font-awesome-fa-sellsy_cra3f:before {\n  content: \"\\F213\";\n}\n.font-awesome-fa-shirtsinbulk_2b28m:before {\n  content: \"\\F214\";\n}\n.font-awesome-fa-simplybuilt_39prv:before {\n  content: \"\\F215\";\n}\n.font-awesome-fa-skyatlas_2c3tg:before {\n  content: \"\\F216\";\n}\n.font-awesome-fa-cart-plus_44ddt:before {\n  content: \"\\F217\";\n}\n.font-awesome-fa-cart-arrow-down_6e1jb:before {\n  content: \"\\F218\";\n}\n.font-awesome-fa-diamond_4zs72:before {\n  content: \"\\F219\";\n}\n.font-awesome-fa-ship_2prea:before {\n  content: \"\\F21A\";\n}\n.font-awesome-fa-user-secret_2j5rz:before {\n  content: \"\\F21B\";\n}\n.font-awesome-fa-motorcycle_qarcs:before {\n  content: \"\\F21C\";\n}\n.font-awesome-fa-street-view_47tzq:before {\n  content: \"\\F21D\";\n}\n.font-awesome-fa-heartbeat_y5uun:before {\n  content: \"\\F21E\";\n}\n.font-awesome-fa-venus_mb92c:before {\n  content: \"\\F221\";\n}\n.font-awesome-fa-mars_2euar:before {\n  content: \"\\F222\";\n}\n.font-awesome-fa-mercury_45dqh:before {\n  content: \"\\F223\";\n}\n.font-awesome-fa-intersex_422zr:before,\n.font-awesome-fa-transgender_4yfry:before {\n  content: \"\\F224\";\n}\n.font-awesome-fa-transgender-alt_4c5pf:before {\n  content: \"\\F225\";\n}\n.font-awesome-fa-venus-double_48zm8:before {\n  content: \"\\F226\";\n}\n.font-awesome-fa-mars-double_3fc9p:before {\n  content: \"\\F227\";\n}\n.font-awesome-fa-venus-mars_djcv7:before {\n  content: \"\\F228\";\n}\n.font-awesome-fa-mars-stroke_2gbkd:before {\n  content: \"\\F229\";\n}\n.font-awesome-fa-mars-stroke-v_x8vf7:before {\n  content: \"\\F22A\";\n}\n.font-awesome-fa-mars-stroke-h_2e6p1:before {\n  content: \"\\F22B\";\n}\n.font-awesome-fa-neuter_4rffn:before {\n  content: \"\\F22C\";\n}\n.font-awesome-fa-genderless_4a5g4:before {\n  content: \"\\F22D\";\n}\n.font-awesome-fa-facebook-official_3fwrg:before {\n  content: \"\\F230\";\n}\n.font-awesome-fa-pinterest-p_35ahe:before {\n  content: \"\\F231\";\n}\n.font-awesome-fa-whatsapp_2c26g:before {\n  content: \"\\F232\";\n}\n.font-awesome-fa-server_31pqg:before {\n  content: \"\\F233\";\n}\n.font-awesome-fa-user-plus_z4h7u:before {\n  content: \"\\F234\";\n}\n.font-awesome-fa-user-times_2bxym:before {\n  content: \"\\F235\";\n}\n.font-awesome-fa-hotel_48f28:before,\n.font-awesome-fa-bed_4hvja:before {\n  content: \"\\F236\";\n}\n.font-awesome-fa-viacoin_2hhde:before {\n  content: \"\\F237\";\n}\n.font-awesome-fa-train_32d84:before {\n  content: \"\\F238\";\n}\n.font-awesome-fa-subway_4857d:before {\n  content: \"\\F239\";\n}\n.font-awesome-fa-medium_35sb6:before {\n  content: \"\\F23A\";\n}\n.font-awesome-fa-yc_8kbu1:before,\n.font-awesome-fa-y-combinator_f9zkf:before {\n  content: \"\\F23B\";\n}\n.font-awesome-fa-optin-monster_2ddkf:before {\n  content: \"\\F23C\";\n}\n.font-awesome-fa-opencart_46rg9:before {\n  content: \"\\F23D\";\n}\n.font-awesome-fa-expeditedssl_3855e:before {\n  content: \"\\F23E\";\n}\n.font-awesome-fa-battery-4_48z1r:before,\n.font-awesome-fa-battery_29xxh:before,\n.font-awesome-fa-battery-full_2utkx:before {\n  content: \"\\F240\";\n}\n.font-awesome-fa-battery-3_2qvtk:before,\n.font-awesome-fa-battery-three-quarters_4seaz:before {\n  content: \"\\F241\";\n}\n.font-awesome-fa-battery-2_25rh3:before,\n.font-awesome-fa-battery-half_8dk8m:before {\n  content: \"\\F242\";\n}\n.font-awesome-fa-battery-1_2hg4t:before,\n.font-awesome-fa-battery-quarter_3c8tu:before {\n  content: \"\\F243\";\n}\n.font-awesome-fa-battery-0_39afe:before,\n.font-awesome-fa-battery-empty_2zde7:before {\n  content: \"\\F244\";\n}\n.font-awesome-fa-mouse-pointer_t31pc:before {\n  content: \"\\F245\";\n}\n.font-awesome-fa-i-cursor_4emxz:before {\n  content: \"\\F246\";\n}\n.font-awesome-fa-object-group_3phf2:before {\n  content: \"\\F247\";\n}\n.font-awesome-fa-object-ungroup_4wrkk:before {\n  content: \"\\F248\";\n}\n.font-awesome-fa-sticky-note_3j699:before {\n  content: \"\\F249\";\n}\n.font-awesome-fa-sticky-note-o_shtd6:before {\n  content: \"\\F24A\";\n}\n.font-awesome-fa-cc-jcb_3fnhw:before {\n  content: \"\\F24B\";\n}\n.font-awesome-fa-cc-diners-club_4chnm:before {\n  content: \"\\F24C\";\n}\n.font-awesome-fa-clone_w3s26:before {\n  content: \"\\F24D\";\n}\n.font-awesome-fa-balance-scale_3jjac:before {\n  content: \"\\F24E\";\n}\n.font-awesome-fa-hourglass-o_4mn3p:before {\n  content: \"\\F250\";\n}\n.font-awesome-fa-hourglass-1_44j36:before,\n.font-awesome-fa-hourglass-start_34mh7:before {\n  content: \"\\F251\";\n}\n.font-awesome-fa-hourglass-2_ap4ct:before,\n.font-awesome-fa-hourglass-half_2cnad:before {\n  content: \"\\F252\";\n}\n.font-awesome-fa-hourglass-3_3eea3:before,\n.font-awesome-fa-hourglass-end_fkq2j:before {\n  content: \"\\F253\";\n}\n.font-awesome-fa-hourglass_33pjw:before {\n  content: \"\\F254\";\n}\n.font-awesome-fa-hand-grab-o_ycmpd:before,\n.font-awesome-fa-hand-rock-o_2c791:before {\n  content: \"\\F255\";\n}\n.font-awesome-fa-hand-stop-o_9ysmn:before,\n.font-awesome-fa-hand-paper-o_2dbma:before {\n  content: \"\\F256\";\n}\n.font-awesome-fa-hand-scissors-o_2sf2a:before {\n  content: \"\\F257\";\n}\n.font-awesome-fa-hand-lizard-o_4bdae:before {\n  content: \"\\F258\";\n}\n.font-awesome-fa-hand-spock-o_4z4w1:before {\n  content: \"\\F259\";\n}\n.font-awesome-fa-hand-pointer-o_ppq8m:before {\n  content: \"\\F25A\";\n}\n.font-awesome-fa-hand-peace-o_4a51t:before {\n  content: \"\\F25B\";\n}\n.font-awesome-fa-trademark_24gm6:before {\n  content: \"\\F25C\";\n}\n.font-awesome-fa-registered_sdn1b:before {\n  content: \"\\F25D\";\n}\n.font-awesome-fa-creative-commons_4kfu3:before {\n  content: \"\\F25E\";\n}\n.font-awesome-fa-gg_47btu:before {\n  content: \"\\F260\";\n}\n.font-awesome-fa-gg-circle_tcj1h:before {\n  content: \"\\F261\";\n}\n.font-awesome-fa-tripadvisor_31fw4:before {\n  content: \"\\F262\";\n}\n.font-awesome-fa-odnoklassniki_2ehez:before {\n  content: \"\\F263\";\n}\n.font-awesome-fa-odnoklassniki-square_2pteu:before {\n  content: \"\\F264\";\n}\n.font-awesome-fa-get-pocket_244rz:before {\n  content: \"\\F265\";\n}\n.font-awesome-fa-wikipedia-w_c9xg3:before {\n  content: \"\\F266\";\n}\n.font-awesome-fa-safari_3bmzu:before {\n  content: \"\\F267\";\n}\n.font-awesome-fa-chrome_26cee:before {\n  content: \"\\F268\";\n}\n.font-awesome-fa-firefox_uyzy3:before {\n  content: \"\\F269\";\n}\n.font-awesome-fa-opera_34xaf:before {\n  content: \"\\F26A\";\n}\n.font-awesome-fa-internet-explorer_376vp:before {\n  content: \"\\F26B\";\n}\n.font-awesome-fa-tv_y9snd:before,\n.font-awesome-fa-television_3dsne:before {\n  content: \"\\F26C\";\n}\n.font-awesome-fa-contao_4u34r:before {\n  content: \"\\F26D\";\n}\n.font-awesome-fa-500px_34p35:before {\n  content: \"\\F26E\";\n}\n.font-awesome-fa-amazon_2ybs9:before {\n  content: \"\\F270\";\n}\n.font-awesome-fa-calendar-plus-o_329he:before {\n  content: \"\\F271\";\n}\n.font-awesome-fa-calendar-minus-o_3e527:before {\n  content: \"\\F272\";\n}\n.font-awesome-fa-calendar-times-o_378tu:before {\n  content: \"\\F273\";\n}\n.font-awesome-fa-calendar-check-o_2ttqe:before {\n  content: \"\\F274\";\n}\n.font-awesome-fa-industry_2ur6r:before {\n  content: \"\\F275\";\n}\n.font-awesome-fa-map-pin_33vje:before {\n  content: \"\\F276\";\n}\n.font-awesome-fa-map-signs_3xrzv:before {\n  content: \"\\F277\";\n}\n.font-awesome-fa-map-o_32rzr:before {\n  content: \"\\F278\";\n}\n.font-awesome-fa-map_3huyt:before {\n  content: \"\\F279\";\n}\n.font-awesome-fa-commenting_33qys:before {\n  content: \"\\F27A\";\n}\n.font-awesome-fa-commenting-o_tsnef:before {\n  content: \"\\F27B\";\n}\n.font-awesome-fa-houzz_35b1a:before {\n  content: \"\\F27C\";\n}\n.font-awesome-fa-vimeo_ruckq:before {\n  content: \"\\F27D\";\n}\n.font-awesome-fa-black-tie_3s1bt:before {\n  content: \"\\F27E\";\n}\n.font-awesome-fa-fonticons_jgf1y:before {\n  content: \"\\F280\";\n}\n.font-awesome-fa-reddit-alien_34vgx:before {\n  content: \"\\F281\";\n}\n.font-awesome-fa-edge_2yze4:before {\n  content: \"\\F282\";\n}\n.font-awesome-fa-credit-card-alt_kuzgu:before {\n  content: \"\\F283\";\n}\n.font-awesome-fa-codiepie_yge6f:before {\n  content: \"\\F284\";\n}\n.font-awesome-fa-modx_4g6qt:before {\n  content: \"\\F285\";\n}\n.font-awesome-fa-fort-awesome_3k3f9:before {\n  content: \"\\F286\";\n}\n.font-awesome-fa-usb_3cu5y:before {\n  content: \"\\F287\";\n}\n.font-awesome-fa-product-hunt_ab9yq:before {\n  content: \"\\F288\";\n}\n.font-awesome-fa-mixcloud_28sam:before {\n  content: \"\\F289\";\n}\n.font-awesome-fa-scribd_377am:before {\n  content: \"\\F28A\";\n}\n.font-awesome-fa-pause-circle_4yhhc:before {\n  content: \"\\F28B\";\n}\n.font-awesome-fa-pause-circle-o_2z28w:before {\n  content: \"\\F28C\";\n}\n.font-awesome-fa-stop-circle_3b1e2:before {\n  content: \"\\F28D\";\n}\n.font-awesome-fa-stop-circle-o_2ut5m:before {\n  content: \"\\F28E\";\n}\n.font-awesome-fa-shopping-bag_4jhne:before {\n  content: \"\\F290\";\n}\n.font-awesome-fa-shopping-basket_3m51b:before {\n  content: \"\\F291\";\n}\n.font-awesome-fa-hashtag_4k9pe:before {\n  content: \"\\F292\";\n}\n.font-awesome-fa-bluetooth_28489:before {\n  content: \"\\F293\";\n}\n.font-awesome-fa-bluetooth-b_4zxgw:before {\n  content: \"\\F294\";\n}\n.font-awesome-fa-percent_f1c9m:before {\n  content: \"\\F295\";\n}\n.font-awesome-fa-gitlab_w8qj5:before {\n  content: \"\\F296\";\n}\n.font-awesome-fa-wpbeginner_pv72u:before {\n  content: \"\\F297\";\n}\n.font-awesome-fa-wpforms_2gbe8:before {\n  content: \"\\F298\";\n}\n.font-awesome-fa-envira_nde6q:before {\n  content: \"\\F299\";\n}\n.font-awesome-fa-universal-access_25j1t:before {\n  content: \"\\F29A\";\n}\n.font-awesome-fa-wheelchair-alt_32en1:before {\n  content: \"\\F29B\";\n}\n.font-awesome-fa-question-circle-o_2zwvc:before {\n  content: \"\\F29C\";\n}\n.font-awesome-fa-blind_cu4y3:before {\n  content: \"\\F29D\";\n}\n.font-awesome-fa-audio-description_4hf45:before {\n  content: \"\\F29E\";\n}\n.font-awesome-fa-volume-control-phone_23hwp:before {\n  content: \"\\F2A0\";\n}\n.font-awesome-fa-braille_3me8j:before {\n  content: \"\\F2A1\";\n}\n.font-awesome-fa-assistive-listening-systems_4fekb:before {\n  content: \"\\F2A2\";\n}\n.font-awesome-fa-asl-interpreting_hmevn:before,\n.font-awesome-fa-american-sign-language-interpreting_4ggx7:before {\n  content: \"\\F2A3\";\n}\n.font-awesome-fa-deafness_2tkcd:before,\n.font-awesome-fa-hard-of-hearing_f1q1g:before,\n.font-awesome-fa-deaf_4hn44:before {\n  content: \"\\F2A4\";\n}\n.font-awesome-fa-glide_27xcy:before {\n  content: \"\\F2A5\";\n}\n.font-awesome-fa-glide-g_3k21p:before {\n  content: \"\\F2A6\";\n}\n.font-awesome-fa-signing_k93er:before,\n.font-awesome-fa-sign-language_332d4:before {\n  content: \"\\F2A7\";\n}\n.font-awesome-fa-low-vision_4qhxr:before {\n  content: \"\\F2A8\";\n}\n.font-awesome-fa-viadeo_4uhvu:before {\n  content: \"\\F2A9\";\n}\n.font-awesome-fa-viadeo-square_3k33g:before {\n  content: \"\\F2AA\";\n}\n.font-awesome-fa-snapchat_41hsm:before {\n  content: \"\\F2AB\";\n}\n.font-awesome-fa-snapchat-ghost_459pf:before {\n  content: \"\\F2AC\";\n}\n.font-awesome-fa-snapchat-square_447we:before {\n  content: \"\\F2AD\";\n}\n.font-awesome-fa-pied-piper_2tz9d:before {\n  content: \"\\F2AE\";\n}\n.font-awesome-fa-first-order_35gb2:before {\n  content: \"\\F2B0\";\n}\n.font-awesome-fa-yoast_4y2s4:before {\n  content: \"\\F2B1\";\n}\n.font-awesome-fa-themeisle_26fyu:before {\n  content: \"\\F2B2\";\n}\n.font-awesome-fa-google-plus-circle_452rm:before,\n.font-awesome-fa-google-plus-official_3nz5a:before {\n  content: \"\\F2B3\";\n}\n.font-awesome-fa-fa_3x9e8:before,\n.font-awesome-fa-font-awesome_3bm5r:before {\n  content: \"\\F2B4\";\n}\n.font-awesome-fa-handshake-o_2uy6d:before {\n  content: \"\\F2B5\";\n}\n.font-awesome-fa-envelope-open_2u4s3:before {\n  content: \"\\F2B6\";\n}\n.font-awesome-fa-envelope-open-o_3d1r8:before {\n  content: \"\\F2B7\";\n}\n.font-awesome-fa-linode_4mx5s:before {\n  content: \"\\F2B8\";\n}\n.font-awesome-fa-address-book_2ryeb:before {\n  content: \"\\F2B9\";\n}\n.font-awesome-fa-address-book-o_3mhbe:before {\n  content: \"\\F2BA\";\n}\n.font-awesome-fa-vcard_xquxx:before,\n.font-awesome-fa-address-card_4s8z6:before {\n  content: \"\\F2BB\";\n}\n.font-awesome-fa-vcard-o_2q19h:before,\n.font-awesome-fa-address-card-o_g4rjs:before {\n  content: \"\\F2BC\";\n}\n.font-awesome-fa-user-circle_paca9:before {\n  content: \"\\F2BD\";\n}\n.font-awesome-fa-user-circle-o_ym32y:before {\n  content: \"\\F2BE\";\n}\n.font-awesome-fa-user-o_2axq8:before {\n  content: \"\\F2C0\";\n}\n.font-awesome-fa-id-badge_3zvve:before {\n  content: \"\\F2C1\";\n}\n.font-awesome-fa-drivers-license_3zpw3:before,\n.font-awesome-fa-id-card_z4vpk:before {\n  content: \"\\F2C2\";\n}\n.font-awesome-fa-drivers-license-o_3a2cq:before,\n.font-awesome-fa-id-card-o_zze8k:before {\n  content: \"\\F2C3\";\n}\n.font-awesome-fa-quora_3nddk:before {\n  content: \"\\F2C4\";\n}\n.font-awesome-fa-free-code-camp_2nvj3:before {\n  content: \"\\F2C5\";\n}\n.font-awesome-fa-telegram_t33bq:before {\n  content: \"\\F2C6\";\n}\n.font-awesome-fa-thermometer-4_b35kc:before,\n.font-awesome-fa-thermometer_22q6p:before,\n.font-awesome-fa-thermometer-full_a5kq1:before {\n  content: \"\\F2C7\";\n}\n.font-awesome-fa-thermometer-3_348r6:before,\n.font-awesome-fa-thermometer-three-quarters_y137a:before {\n  content: \"\\F2C8\";\n}\n.font-awesome-fa-thermometer-2_4vbbf:before,\n.font-awesome-fa-thermometer-half_3s5w6:before {\n  content: \"\\F2C9\";\n}\n.font-awesome-fa-thermometer-1_333ug:before,\n.font-awesome-fa-thermometer-quarter_3qkaz:before {\n  content: \"\\F2CA\";\n}\n.font-awesome-fa-thermometer-0_2jvbk:before,\n.font-awesome-fa-thermometer-empty_2c9a4:before {\n  content: \"\\F2CB\";\n}\n.font-awesome-fa-shower_48bz1:before {\n  content: \"\\F2CC\";\n}\n.font-awesome-fa-bathtub_p2q19:before,\n.font-awesome-fa-s15_48krf:before,\n.font-awesome-fa-bath_kbg2f:before {\n  content: \"\\F2CD\";\n}\n.font-awesome-fa-podcast_2wbnv:before {\n  content: \"\\F2CE\";\n}\n.font-awesome-fa-window-maximize_pund6:before {\n  content: \"\\F2D0\";\n}\n.font-awesome-fa-window-minimize_215tn:before {\n  content: \"\\F2D1\";\n}\n.font-awesome-fa-window-restore_35vvq:before {\n  content: \"\\F2D2\";\n}\n.font-awesome-fa-times-rectangle_grwwj:before,\n.font-awesome-fa-window-close_2cwbb:before {\n  content: \"\\F2D3\";\n}\n.font-awesome-fa-times-rectangle-o_2pxcj:before,\n.font-awesome-fa-window-close-o_3fk5e:before {\n  content: \"\\F2D4\";\n}\n.font-awesome-fa-bandcamp_3k33r:before {\n  content: \"\\F2D5\";\n}\n.font-awesome-fa-grav_48c86:before {\n  content: \"\\F2D6\";\n}\n.font-awesome-fa-etsy_4nxsk:before {\n  content: \"\\F2D7\";\n}\n.font-awesome-fa-imdb_3ymn9:before {\n  content: \"\\F2D8\";\n}\n.font-awesome-fa-ravelry_2wf71:before {\n  content: \"\\F2D9\";\n}\n.font-awesome-fa-eercast_43sb9:before {\n  content: \"\\F2DA\";\n}\n.font-awesome-fa-microchip_39g56:before {\n  content: \"\\F2DB\";\n}\n.font-awesome-fa-snowflake-o_27fzf:before {\n  content: \"\\F2DC\";\n}\n.font-awesome-fa-superpowers_3yutd:before {\n  content: \"\\F2DD\";\n}\n.font-awesome-fa-wpexplorer_4ymkj:before {\n  content: \"\\F2DE\";\n}\n.font-awesome-fa-meetup_3zzy9:before {\n  content: \"\\F2E0\";\n}\n.font-awesome-sr-only_3t6pf {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n.font-awesome-sr-only-focusable_wwj67:active,\n.font-awesome-sr-only-focusable_wwj67:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto;\n}\n", ""]);
+exports.push([module.i, "/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(56) + ");\n  src: url(" + __webpack_require__(57) + "?#iefix&v=4.7.0) format('embedded-opentype'), url(" + __webpack_require__(58) + ") format('woff2'), url(" + __webpack_require__(59) + ") format('woff'), url(" + __webpack_require__(60) + ") format('truetype'), url(" + __webpack_require__(61) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.font-awesome-fa_3nqz4 {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.font-awesome-fa-lg_2uq3c {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.font-awesome-fa-2x_2hfhw {\n  font-size: 2em;\n}\n.font-awesome-fa-3x_43xq9 {\n  font-size: 3em;\n}\n.font-awesome-fa-4x_6bygg {\n  font-size: 4em;\n}\n.font-awesome-fa-5x_3cfrj {\n  font-size: 5em;\n}\n.font-awesome-fa-fw_41emh {\n  width: 1.28571429em;\n  text-align: center;\n}\n.font-awesome-fa-ul_45gv7 {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.font-awesome-fa-ul_45gv7 > li {\n  position: relative;\n}\n.font-awesome-fa-li_95eyn {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.font-awesome-fa-li_95eyn.font-awesome-fa-lg_2uq3c {\n  left: -1.85714286em;\n}\n.font-awesome-fa-border_3vkxd {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.font-awesome-fa-pull-left_4qwcd {\n  float: left;\n}\n.font-awesome-fa-pull-right_3vu9s {\n  float: right;\n}\n.font-awesome-fa_3nqz4.font-awesome-fa-pull-left_4qwcd {\n  margin-right: .3em;\n}\n.font-awesome-fa_3nqz4.font-awesome-fa-pull-right_3vu9s {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.font-awesome-pull-right_391a4 {\n  float: right;\n}\n.font-awesome-pull-left_4qwy8 {\n  float: left;\n}\n.font-awesome-fa_3nqz4.font-awesome-pull-left_4qwy8 {\n  margin-right: .3em;\n}\n.font-awesome-fa_3nqz4.font-awesome-pull-right_391a4 {\n  margin-left: .3em;\n}\n.font-awesome-fa-spin_3jhtx {\n  -webkit-animation: font-awesome-fa-spin_3jhtx 2s infinite linear;\n  animation: font-awesome-fa-spin_3jhtx 2s infinite linear;\n}\n.font-awesome-fa-pulse_3txbs {\n  -webkit-animation: font-awesome-fa-spin_3jhtx 1s infinite steps(8);\n  animation: font-awesome-fa-spin_3jhtx 1s infinite steps(8);\n}\n@-webkit-keyframes font-awesome-fa-spin_3jhtx {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n@keyframes font-awesome-fa-spin_3jhtx {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n.font-awesome-fa-rotate-90_456eb {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n  -ms-transform: rotate(90deg);\n  transform: rotate(90deg);\n}\n.font-awesome-fa-rotate-180_48nwr {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg);\n}\n.font-awesome-fa-rotate-270_a7rpt {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n  -ms-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\n.font-awesome-fa-flip-horizontal_wyack {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n  -ms-transform: scale(-1, 1);\n  transform: scale(-1, 1);\n}\n.font-awesome-fa-flip-vertical_2k1sk {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n  -ms-transform: scale(1, -1);\n  transform: scale(1, -1);\n}\n:root .font-awesome-fa-rotate-90_456eb,\n:root .font-awesome-fa-rotate-180_48nwr,\n:root .font-awesome-fa-rotate-270_a7rpt,\n:root .font-awesome-fa-flip-horizontal_wyack,\n:root .font-awesome-fa-flip-vertical_2k1sk {\n  filter: none;\n}\n.font-awesome-fa-stack_2d23t {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.font-awesome-fa-stack-1x_29dce,\n.font-awesome-fa-stack-2x_277n7 {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.font-awesome-fa-stack-1x_29dce {\n  line-height: inherit;\n}\n.font-awesome-fa-stack-2x_277n7 {\n  font-size: 2em;\n}\n.font-awesome-fa-inverse_2nc3d {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.font-awesome-fa-glass_4btzw:before {\n  content: \"\\F000\";\n}\n.font-awesome-fa-music_4agvw:before {\n  content: \"\\F001\";\n}\n.font-awesome-fa-search_3kfd2:before {\n  content: \"\\F002\";\n}\n.font-awesome-fa-envelope-o_2favh:before {\n  content: \"\\F003\";\n}\n.font-awesome-fa-heart_hdy2u:before {\n  content: \"\\F004\";\n}\n.font-awesome-fa-star_4pv64:before {\n  content: \"\\F005\";\n}\n.font-awesome-fa-star-o_chy54:before {\n  content: \"\\F006\";\n}\n.font-awesome-fa-user_2xwkc:before {\n  content: \"\\F007\";\n}\n.font-awesome-fa-film_4m783:before {\n  content: \"\\F008\";\n}\n.font-awesome-fa-th-large_eqgps:before {\n  content: \"\\F009\";\n}\n.font-awesome-fa-th_2cja2:before {\n  content: \"\\F00A\";\n}\n.font-awesome-fa-th-list_3v1b4:before {\n  content: \"\\F00B\";\n}\n.font-awesome-fa-check_4gd6f:before {\n  content: \"\\F00C\";\n}\n.font-awesome-fa-remove_jww5c:before,\n.font-awesome-fa-close_4s4jh:before,\n.font-awesome-fa-times_23qe4:before {\n  content: \"\\F00D\";\n}\n.font-awesome-fa-search-plus_2bq9s:before {\n  content: \"\\F00E\";\n}\n.font-awesome-fa-search-minus_3g6np:before {\n  content: \"\\F010\";\n}\n.font-awesome-fa-power-off_47j3v:before {\n  content: \"\\F011\";\n}\n.font-awesome-fa-signal_26y41:before {\n  content: \"\\F012\";\n}\n.font-awesome-fa-gear_33yyb:before,\n.font-awesome-fa-cog_wa2qf:before {\n  content: \"\\F013\";\n}\n.font-awesome-fa-trash-o_3kzqg:before {\n  content: \"\\F014\";\n}\n.font-awesome-fa-home_28ett:before {\n  content: \"\\F015\";\n}\n.font-awesome-fa-file-o_414wr:before {\n  content: \"\\F016\";\n}\n.font-awesome-fa-clock-o_2veg8:before {\n  content: \"\\F017\";\n}\n.font-awesome-fa-road_2ykx9:before {\n  content: \"\\F018\";\n}\n.font-awesome-fa-download_2mucq:before {\n  content: \"\\F019\";\n}\n.font-awesome-fa-arrow-circle-o-down_3f1zz:before {\n  content: \"\\F01A\";\n}\n.font-awesome-fa-arrow-circle-o-up_3dvr2:before {\n  content: \"\\F01B\";\n}\n.font-awesome-fa-inbox_3ybwr:before {\n  content: \"\\F01C\";\n}\n.font-awesome-fa-play-circle-o_4sr8h:before {\n  content: \"\\F01D\";\n}\n.font-awesome-fa-rotate-right_393sh:before,\n.font-awesome-fa-repeat_q99jt:before {\n  content: \"\\F01E\";\n}\n.font-awesome-fa-refresh_34ap9:before {\n  content: \"\\F021\";\n}\n.font-awesome-fa-list-alt_2jmv8:before {\n  content: \"\\F022\";\n}\n.font-awesome-fa-lock_4ekru:before {\n  content: \"\\F023\";\n}\n.font-awesome-fa-flag_36n2d:before {\n  content: \"\\F024\";\n}\n.font-awesome-fa-headphones_36h7x:before {\n  content: \"\\F025\";\n}\n.font-awesome-fa-volume-off_24swq:before {\n  content: \"\\F026\";\n}\n.font-awesome-fa-volume-down_pwdhd:before {\n  content: \"\\F027\";\n}\n.font-awesome-fa-volume-up_ntqbj:before {\n  content: \"\\F028\";\n}\n.font-awesome-fa-qrcode_8tut1:before {\n  content: \"\\F029\";\n}\n.font-awesome-fa-barcode_2r8qd:before {\n  content: \"\\F02A\";\n}\n.font-awesome-fa-tag_3gne8:before {\n  content: \"\\F02B\";\n}\n.font-awesome-fa-tags_259aw:before {\n  content: \"\\F02C\";\n}\n.font-awesome-fa-book_2u36a:before {\n  content: \"\\F02D\";\n}\n.font-awesome-fa-bookmark_29f62:before {\n  content: \"\\F02E\";\n}\n.font-awesome-fa-print_2s573:before {\n  content: \"\\F02F\";\n}\n.font-awesome-fa-camera_3u3bj:before {\n  content: \"\\F030\";\n}\n.font-awesome-fa-font_4c828:before {\n  content: \"\\F031\";\n}\n.font-awesome-fa-bold_4k5vs:before {\n  content: \"\\F032\";\n}\n.font-awesome-fa-italic_35vrs:before {\n  content: \"\\F033\";\n}\n.font-awesome-fa-text-height_27m25:before {\n  content: \"\\F034\";\n}\n.font-awesome-fa-text-width_2y3x2:before {\n  content: \"\\F035\";\n}\n.font-awesome-fa-align-left_4dqdd:before {\n  content: \"\\F036\";\n}\n.font-awesome-fa-align-center_35xqu:before {\n  content: \"\\F037\";\n}\n.font-awesome-fa-align-right_4qa81:before {\n  content: \"\\F038\";\n}\n.font-awesome-fa-align-justify_3r8f5:before {\n  content: \"\\F039\";\n}\n.font-awesome-fa-list_2z1ed:before {\n  content: \"\\F03A\";\n}\n.font-awesome-fa-dedent_4ks1z:before,\n.font-awesome-fa-outdent_21yce:before {\n  content: \"\\F03B\";\n}\n.font-awesome-fa-indent_rc21m:before {\n  content: \"\\F03C\";\n}\n.font-awesome-fa-video-camera_2c5dn:before {\n  content: \"\\F03D\";\n}\n.font-awesome-fa-photo_2nyqr:before,\n.font-awesome-fa-image_3qpmp:before,\n.font-awesome-fa-picture-o_35zt3:before {\n  content: \"\\F03E\";\n}\n.font-awesome-fa-pencil_3g9ew:before {\n  content: \"\\F040\";\n}\n.font-awesome-fa-map-marker_3brgm:before {\n  content: \"\\F041\";\n}\n.font-awesome-fa-adjust_g517c:before {\n  content: \"\\F042\";\n}\n.font-awesome-fa-tint_2n958:before {\n  content: \"\\F043\";\n}\n.font-awesome-fa-edit_4ypwb:before,\n.font-awesome-fa-pencil-square-o_3e3zu:before {\n  content: \"\\F044\";\n}\n.font-awesome-fa-share-square-o_2ktkj:before {\n  content: \"\\F045\";\n}\n.font-awesome-fa-check-square-o_2krf3:before {\n  content: \"\\F046\";\n}\n.font-awesome-fa-arrows_45ew1:before {\n  content: \"\\F047\";\n}\n.font-awesome-fa-step-backward_2h9d2:before {\n  content: \"\\F048\";\n}\n.font-awesome-fa-fast-backward_2syxz:before {\n  content: \"\\F049\";\n}\n.font-awesome-fa-backward_2np3h:before {\n  content: \"\\F04A\";\n}\n.font-awesome-fa-play_t5x61:before {\n  content: \"\\F04B\";\n}\n.font-awesome-fa-pause_n2w49:before {\n  content: \"\\F04C\";\n}\n.font-awesome-fa-stop_29v29:before {\n  content: \"\\F04D\";\n}\n.font-awesome-fa-forward_2ntwp:before {\n  content: \"\\F04E\";\n}\n.font-awesome-fa-fast-forward_tx3u1:before {\n  content: \"\\F050\";\n}\n.font-awesome-fa-step-forward_v39xm:before {\n  content: \"\\F051\";\n}\n.font-awesome-fa-eject_3swgu:before {\n  content: \"\\F052\";\n}\n.font-awesome-fa-chevron-left_4f5j3:before {\n  content: \"\\F053\";\n}\n.font-awesome-fa-chevron-right_2k5j6:before {\n  content: \"\\F054\";\n}\n.font-awesome-fa-plus-circle_v5fb8:before {\n  content: \"\\F055\";\n}\n.font-awesome-fa-minus-circle_42zed:before {\n  content: \"\\F056\";\n}\n.font-awesome-fa-times-circle_z612t:before {\n  content: \"\\F057\";\n}\n.font-awesome-fa-check-circle_7x6yj:before {\n  content: \"\\F058\";\n}\n.font-awesome-fa-question-circle_2c6r4:before {\n  content: \"\\F059\";\n}\n.font-awesome-fa-info-circle_raq7x:before {\n  content: \"\\F05A\";\n}\n.font-awesome-fa-crosshairs_2ge9q:before {\n  content: \"\\F05B\";\n}\n.font-awesome-fa-times-circle-o_3unw8:before {\n  content: \"\\F05C\";\n}\n.font-awesome-fa-check-circle-o_3zqyh:before {\n  content: \"\\F05D\";\n}\n.font-awesome-fa-ban_4cv2d:before {\n  content: \"\\F05E\";\n}\n.font-awesome-fa-arrow-left_48gmt:before {\n  content: \"\\F060\";\n}\n.font-awesome-fa-arrow-right_4mjf6:before {\n  content: \"\\F061\";\n}\n.font-awesome-fa-arrow-up_ur2gm:before {\n  content: \"\\F062\";\n}\n.font-awesome-fa-arrow-down_rs3bg:before {\n  content: \"\\F063\";\n}\n.font-awesome-fa-mail-forward_3q1z6:before,\n.font-awesome-fa-share_3by4b:before {\n  content: \"\\F064\";\n}\n.font-awesome-fa-expand_wak4k:before {\n  content: \"\\F065\";\n}\n.font-awesome-fa-compress_336kq:before {\n  content: \"\\F066\";\n}\n.font-awesome-fa-plus_4u4t9:before {\n  content: \"\\F067\";\n}\n.font-awesome-fa-minus_et4rr:before {\n  content: \"\\F068\";\n}\n.font-awesome-fa-asterisk_qccwj:before {\n  content: \"\\F069\";\n}\n.font-awesome-fa-exclamation-circle_mavzf:before {\n  content: \"\\F06A\";\n}\n.font-awesome-fa-gift_2tn1u:before {\n  content: \"\\F06B\";\n}\n.font-awesome-fa-leaf_2tkkz:before {\n  content: \"\\F06C\";\n}\n.font-awesome-fa-fire_73jhy:before {\n  content: \"\\F06D\";\n}\n.font-awesome-fa-eye_236js:before {\n  content: \"\\F06E\";\n}\n.font-awesome-fa-eye-slash_2ssyx:before {\n  content: \"\\F070\";\n}\n.font-awesome-fa-warning_37kn4:before,\n.font-awesome-fa-exclamation-triangle_4p3as:before {\n  content: \"\\F071\";\n}\n.font-awesome-fa-plane_3dx6x:before {\n  content: \"\\F072\";\n}\n.font-awesome-fa-calendar_raf12:before {\n  content: \"\\F073\";\n}\n.font-awesome-fa-random_3yyjh:before {\n  content: \"\\F074\";\n}\n.font-awesome-fa-comment_31stw:before {\n  content: \"\\F075\";\n}\n.font-awesome-fa-magnet_4k15e:before {\n  content: \"\\F076\";\n}\n.font-awesome-fa-chevron-up_2dken:before {\n  content: \"\\F077\";\n}\n.font-awesome-fa-chevron-down_2uy71:before {\n  content: \"\\F078\";\n}\n.font-awesome-fa-retweet_2bx1v:before {\n  content: \"\\F079\";\n}\n.font-awesome-fa-shopping-cart_3t4en:before {\n  content: \"\\F07A\";\n}\n.font-awesome-fa-folder_31erh:before {\n  content: \"\\F07B\";\n}\n.font-awesome-fa-folder-open_t8ya7:before {\n  content: \"\\F07C\";\n}\n.font-awesome-fa-arrows-v_4gvr6:before {\n  content: \"\\F07D\";\n}\n.font-awesome-fa-arrows-h_tf7qg:before {\n  content: \"\\F07E\";\n}\n.font-awesome-fa-bar-chart-o_36z1y:before,\n.font-awesome-fa-bar-chart_3hj19:before {\n  content: \"\\F080\";\n}\n.font-awesome-fa-twitter-square_3gq7u:before {\n  content: \"\\F081\";\n}\n.font-awesome-fa-facebook-square_25ywy:before {\n  content: \"\\F082\";\n}\n.font-awesome-fa-camera-retro_q2axg:before {\n  content: \"\\F083\";\n}\n.font-awesome-fa-key_2yz8h:before {\n  content: \"\\F084\";\n}\n.font-awesome-fa-gears_4e2dt:before,\n.font-awesome-fa-cogs_4cxc3:before {\n  content: \"\\F085\";\n}\n.font-awesome-fa-comments_4t21x:before {\n  content: \"\\F086\";\n}\n.font-awesome-fa-thumbs-o-up_4r3yv:before {\n  content: \"\\F087\";\n}\n.font-awesome-fa-thumbs-o-down_87w4r:before {\n  content: \"\\F088\";\n}\n.font-awesome-fa-star-half_4p9th:before {\n  content: \"\\F089\";\n}\n.font-awesome-fa-heart-o_36nkc:before {\n  content: \"\\F08A\";\n}\n.font-awesome-fa-sign-out_23hy7:before {\n  content: \"\\F08B\";\n}\n.font-awesome-fa-linkedin-square_25u8h:before {\n  content: \"\\F08C\";\n}\n.font-awesome-fa-thumb-tack_hx4pc:before {\n  content: \"\\F08D\";\n}\n.font-awesome-fa-external-link_4wsan:before {\n  content: \"\\F08E\";\n}\n.font-awesome-fa-sign-in_36s82:before {\n  content: \"\\F090\";\n}\n.font-awesome-fa-trophy_44smk:before {\n  content: \"\\F091\";\n}\n.font-awesome-fa-github-square_4n4cq:before {\n  content: \"\\F092\";\n}\n.font-awesome-fa-upload_447cp:before {\n  content: \"\\F093\";\n}\n.font-awesome-fa-lemon-o_4c54e:before {\n  content: \"\\F094\";\n}\n.font-awesome-fa-phone_4d79t:before {\n  content: \"\\F095\";\n}\n.font-awesome-fa-square-o_2bwmf:before {\n  content: \"\\F096\";\n}\n.font-awesome-fa-bookmark-o_3thnz:before {\n  content: \"\\F097\";\n}\n.font-awesome-fa-phone-square_2w6s5:before {\n  content: \"\\F098\";\n}\n.font-awesome-fa-twitter_2yrmk:before {\n  content: \"\\F099\";\n}\n.font-awesome-fa-facebook-f_4v7uq:before,\n.font-awesome-fa-facebook_2yhkm:before {\n  content: \"\\F09A\";\n}\n.font-awesome-fa-github_69r4s:before {\n  content: \"\\F09B\";\n}\n.font-awesome-fa-unlock_f83k2:before {\n  content: \"\\F09C\";\n}\n.font-awesome-fa-credit-card_449gj:before {\n  content: \"\\F09D\";\n}\n.font-awesome-fa-feed_s1ygu:before,\n.font-awesome-fa-rss_2xt6h:before {\n  content: \"\\F09E\";\n}\n.font-awesome-fa-hdd-o_22gas:before {\n  content: \"\\F0A0\";\n}\n.font-awesome-fa-bullhorn_22e4d:before {\n  content: \"\\F0A1\";\n}\n.font-awesome-fa-bell_42g1x:before {\n  content: \"\\F0F3\";\n}\n.font-awesome-fa-certificate_3a1xn:before {\n  content: \"\\F0A3\";\n}\n.font-awesome-fa-hand-o-right_tvqe4:before {\n  content: \"\\F0A4\";\n}\n.font-awesome-fa-hand-o-left_5786p:before {\n  content: \"\\F0A5\";\n}\n.font-awesome-fa-hand-o-up_4bjwk:before {\n  content: \"\\F0A6\";\n}\n.font-awesome-fa-hand-o-down_f16eq:before {\n  content: \"\\F0A7\";\n}\n.font-awesome-fa-arrow-circle-left_2qtps:before {\n  content: \"\\F0A8\";\n}\n.font-awesome-fa-arrow-circle-right_3y551:before {\n  content: \"\\F0A9\";\n}\n.font-awesome-fa-arrow-circle-up_3y9j3:before {\n  content: \"\\F0AA\";\n}\n.font-awesome-fa-arrow-circle-down_4x2wc:before {\n  content: \"\\F0AB\";\n}\n.font-awesome-fa-globe_cq718:before {\n  content: \"\\F0AC\";\n}\n.font-awesome-fa-wrench_3kja1:before {\n  content: \"\\F0AD\";\n}\n.font-awesome-fa-tasks_9ru8u:before {\n  content: \"\\F0AE\";\n}\n.font-awesome-fa-filter_2brfv:before {\n  content: \"\\F0B0\";\n}\n.font-awesome-fa-briefcase_3w38j:before {\n  content: \"\\F0B1\";\n}\n.font-awesome-fa-arrows-alt_2jmka:before {\n  content: \"\\F0B2\";\n}\n.font-awesome-fa-group_4gxpz:before,\n.font-awesome-fa-users_3mxwv:before {\n  content: \"\\F0C0\";\n}\n.font-awesome-fa-chain_4gkrt:before,\n.font-awesome-fa-link_7fhh1:before {\n  content: \"\\F0C1\";\n}\n.font-awesome-fa-cloud_27q1n:before {\n  content: \"\\F0C2\";\n}\n.font-awesome-fa-flask_45bp5:before {\n  content: \"\\F0C3\";\n}\n.font-awesome-fa-cut_25zds:before,\n.font-awesome-fa-scissors_35mfp:before {\n  content: \"\\F0C4\";\n}\n.font-awesome-fa-copy_2yg9v:before,\n.font-awesome-fa-files-o_22zey:before {\n  content: \"\\F0C5\";\n}\n.font-awesome-fa-paperclip_2q7sr:before {\n  content: \"\\F0C6\";\n}\n.font-awesome-fa-save_2xs7f:before,\n.font-awesome-fa-floppy-o_3yk97:before {\n  content: \"\\F0C7\";\n}\n.font-awesome-fa-square_36mh3:before {\n  content: \"\\F0C8\";\n}\n.font-awesome-fa-navicon_4zuhn:before,\n.font-awesome-fa-reorder_pf8w2:before,\n.font-awesome-fa-bars_x22xx:before {\n  content: \"\\F0C9\";\n}\n.font-awesome-fa-list-ul_3wjuq:before {\n  content: \"\\F0CA\";\n}\n.font-awesome-fa-list-ol_3hbz4:before {\n  content: \"\\F0CB\";\n}\n.font-awesome-fa-strikethrough_2x3sm:before {\n  content: \"\\F0CC\";\n}\n.font-awesome-fa-underline_uyyw5:before {\n  content: \"\\F0CD\";\n}\n.font-awesome-fa-table_aw6xr:before {\n  content: \"\\F0CE\";\n}\n.font-awesome-fa-magic_44uhk:before {\n  content: \"\\F0D0\";\n}\n.font-awesome-fa-truck_7kx9m:before {\n  content: \"\\F0D1\";\n}\n.font-awesome-fa-pinterest_47g65:before {\n  content: \"\\F0D2\";\n}\n.font-awesome-fa-pinterest-square_3m3jn:before {\n  content: \"\\F0D3\";\n}\n.font-awesome-fa-google-plus-square_4ag18:before {\n  content: \"\\F0D4\";\n}\n.font-awesome-fa-google-plus_4qvun:before {\n  content: \"\\F0D5\";\n}\n.font-awesome-fa-money_w1buu:before {\n  content: \"\\F0D6\";\n}\n.font-awesome-fa-caret-down_29wrf:before {\n  content: \"\\F0D7\";\n}\n.font-awesome-fa-caret-up_29ag3:before {\n  content: \"\\F0D8\";\n}\n.font-awesome-fa-caret-left_4vdaf:before {\n  content: \"\\F0D9\";\n}\n.font-awesome-fa-caret-right_4ve4r:before {\n  content: \"\\F0DA\";\n}\n.font-awesome-fa-columns_4t6jc:before {\n  content: \"\\F0DB\";\n}\n.font-awesome-fa-unsorted_wc53a:before,\n.font-awesome-fa-sort_2q7tc:before {\n  content: \"\\F0DC\";\n}\n.font-awesome-fa-sort-down_kbtzj:before,\n.font-awesome-fa-sort-desc_thcem:before {\n  content: \"\\F0DD\";\n}\n.font-awesome-fa-sort-up_2r65v:before,\n.font-awesome-fa-sort-asc_3wzqf:before {\n  content: \"\\F0DE\";\n}\n.font-awesome-fa-envelope_er48e:before {\n  content: \"\\F0E0\";\n}\n.font-awesome-fa-linkedin_jhwtj:before {\n  content: \"\\F0E1\";\n}\n.font-awesome-fa-rotate-left_21j9u:before,\n.font-awesome-fa-undo_24jhh:before {\n  content: \"\\F0E2\";\n}\n.font-awesome-fa-legal_3gmnd:before,\n.font-awesome-fa-gavel_2vs2w:before {\n  content: \"\\F0E3\";\n}\n.font-awesome-fa-dashboard_4mp88:before,\n.font-awesome-fa-tachometer_3c5xs:before {\n  content: \"\\F0E4\";\n}\n.font-awesome-fa-comment-o_4t3zs:before {\n  content: \"\\F0E5\";\n}\n.font-awesome-fa-comments-o_px6a9:before {\n  content: \"\\F0E6\";\n}\n.font-awesome-fa-flash_9cvs3:before,\n.font-awesome-fa-bolt_4r5uf:before {\n  content: \"\\F0E7\";\n}\n.font-awesome-fa-sitemap_7718n:before {\n  content: \"\\F0E8\";\n}\n.font-awesome-fa-umbrella_y76mn:before {\n  content: \"\\F0E9\";\n}\n.font-awesome-fa-paste_41f38:before,\n.font-awesome-fa-clipboard_78akd:before {\n  content: \"\\F0EA\";\n}\n.font-awesome-fa-lightbulb-o_4ky58:before {\n  content: \"\\F0EB\";\n}\n.font-awesome-fa-exchange_2zcw2:before {\n  content: \"\\F0EC\";\n}\n.font-awesome-fa-cloud-download_39mmy:before {\n  content: \"\\F0ED\";\n}\n.font-awesome-fa-cloud-upload_4e69r:before {\n  content: \"\\F0EE\";\n}\n.font-awesome-fa-user-md_4swqb:before {\n  content: \"\\F0F0\";\n}\n.font-awesome-fa-stethoscope_judkz:before {\n  content: \"\\F0F1\";\n}\n.font-awesome-fa-suitcase_2cmaq:before {\n  content: \"\\F0F2\";\n}\n.font-awesome-fa-bell-o_4nnrz:before {\n  content: \"\\F0A2\";\n}\n.font-awesome-fa-coffee_qfm34:before {\n  content: \"\\F0F4\";\n}\n.font-awesome-fa-cutlery_21gt2:before {\n  content: \"\\F0F5\";\n}\n.font-awesome-fa-file-text-o_4qf7t:before {\n  content: \"\\F0F6\";\n}\n.font-awesome-fa-building-o_36rp6:before {\n  content: \"\\F0F7\";\n}\n.font-awesome-fa-hospital-o_49bft:before {\n  content: \"\\F0F8\";\n}\n.font-awesome-fa-ambulance_387ym:before {\n  content: \"\\F0F9\";\n}\n.font-awesome-fa-medkit_27epf:before {\n  content: \"\\F0FA\";\n}\n.font-awesome-fa-fighter-jet_26c59:before {\n  content: \"\\F0FB\";\n}\n.font-awesome-fa-beer_3uhs8:before {\n  content: \"\\F0FC\";\n}\n.font-awesome-fa-h-square_4qnua:before {\n  content: \"\\F0FD\";\n}\n.font-awesome-fa-plus-square_4nv7d:before {\n  content: \"\\F0FE\";\n}\n.font-awesome-fa-angle-double-left_2xsmp:before {\n  content: \"\\F100\";\n}\n.font-awesome-fa-angle-double-right_qesan:before {\n  content: \"\\F101\";\n}\n.font-awesome-fa-angle-double-up_3ndzd:before {\n  content: \"\\F102\";\n}\n.font-awesome-fa-angle-double-down_2v752:before {\n  content: \"\\F103\";\n}\n.font-awesome-fa-angle-left_xjnub:before {\n  content: \"\\F104\";\n}\n.font-awesome-fa-angle-right_4bdut:before {\n  content: \"\\F105\";\n}\n.font-awesome-fa-angle-up_gkpp3:before {\n  content: \"\\F106\";\n}\n.font-awesome-fa-angle-down_4hx4b:before {\n  content: \"\\F107\";\n}\n.font-awesome-fa-desktop_r164m:before {\n  content: \"\\F108\";\n}\n.font-awesome-fa-laptop_f7ep1:before {\n  content: \"\\F109\";\n}\n.font-awesome-fa-tablet_46axh:before {\n  content: \"\\F10A\";\n}\n.font-awesome-fa-mobile-phone_4q548:before,\n.font-awesome-fa-mobile_rh7p1:before {\n  content: \"\\F10B\";\n}\n.font-awesome-fa-circle-o_32k7p:before {\n  content: \"\\F10C\";\n}\n.font-awesome-fa-quote-left_swtcq:before {\n  content: \"\\F10D\";\n}\n.font-awesome-fa-quote-right_2zfpd:before {\n  content: \"\\F10E\";\n}\n.font-awesome-fa-spinner_4t5rh:before {\n  content: \"\\F110\";\n}\n.font-awesome-fa-circle_474bg:before {\n  content: \"\\F111\";\n}\n.font-awesome-fa-mail-reply_27j8v:before,\n.font-awesome-fa-reply_43hx8:before {\n  content: \"\\F112\";\n}\n.font-awesome-fa-github-alt_49duw:before {\n  content: \"\\F113\";\n}\n.font-awesome-fa-folder-o_28w2t:before {\n  content: \"\\F114\";\n}\n.font-awesome-fa-folder-open-o_2g9qr:before {\n  content: \"\\F115\";\n}\n.font-awesome-fa-smile-o_46wr5:before {\n  content: \"\\F118\";\n}\n.font-awesome-fa-frown-o_32h72:before {\n  content: \"\\F119\";\n}\n.font-awesome-fa-meh-o_4auak:before {\n  content: \"\\F11A\";\n}\n.font-awesome-fa-gamepad_2m3vr:before {\n  content: \"\\F11B\";\n}\n.font-awesome-fa-keyboard-o_3uhae:before {\n  content: \"\\F11C\";\n}\n.font-awesome-fa-flag-o_25ncu:before {\n  content: \"\\F11D\";\n}\n.font-awesome-fa-flag-checkered_2tmuv:before {\n  content: \"\\F11E\";\n}\n.font-awesome-fa-terminal_2r8hu:before {\n  content: \"\\F120\";\n}\n.font-awesome-fa-code_44rxt:before {\n  content: \"\\F121\";\n}\n.font-awesome-fa-mail-reply-all_3bgj2:before,\n.font-awesome-fa-reply-all_bfrb1:before {\n  content: \"\\F122\";\n}\n.font-awesome-fa-star-half-empty_4wzyw:before,\n.font-awesome-fa-star-half-full_p1m6e:before,\n.font-awesome-fa-star-half-o_rpczx:before {\n  content: \"\\F123\";\n}\n.font-awesome-fa-location-arrow_4htbm:before {\n  content: \"\\F124\";\n}\n.font-awesome-fa-crop_zzzug:before {\n  content: \"\\F125\";\n}\n.font-awesome-fa-code-fork_p4hda:before {\n  content: \"\\F126\";\n}\n.font-awesome-fa-unlink_47g53:before,\n.font-awesome-fa-chain-broken_4pdaj:before {\n  content: \"\\F127\";\n}\n.font-awesome-fa-question_4nhpt:before {\n  content: \"\\F128\";\n}\n.font-awesome-fa-info_3tnpx:before {\n  content: \"\\F129\";\n}\n.font-awesome-fa-exclamation_3pyqb:before {\n  content: \"\\F12A\";\n}\n.font-awesome-fa-superscript_45c9q:before {\n  content: \"\\F12B\";\n}\n.font-awesome-fa-subscript_4hmqx:before {\n  content: \"\\F12C\";\n}\n.font-awesome-fa-eraser_4cqsr:before {\n  content: \"\\F12D\";\n}\n.font-awesome-fa-puzzle-piece_46stc:before {\n  content: \"\\F12E\";\n}\n.font-awesome-fa-microphone_3gzkx:before {\n  content: \"\\F130\";\n}\n.font-awesome-fa-microphone-slash_2zske:before {\n  content: \"\\F131\";\n}\n.font-awesome-fa-shield_rnz5n:before {\n  content: \"\\F132\";\n}\n.font-awesome-fa-calendar-o_2sak9:before {\n  content: \"\\F133\";\n}\n.font-awesome-fa-fire-extinguisher_26nw2:before {\n  content: \"\\F134\";\n}\n.font-awesome-fa-rocket_6yq52:before {\n  content: \"\\F135\";\n}\n.font-awesome-fa-maxcdn_34ekh:before {\n  content: \"\\F136\";\n}\n.font-awesome-fa-chevron-circle-left_4w82y:before {\n  content: \"\\F137\";\n}\n.font-awesome-fa-chevron-circle-right_3875r:before {\n  content: \"\\F138\";\n}\n.font-awesome-fa-chevron-circle-up_2v74p:before {\n  content: \"\\F139\";\n}\n.font-awesome-fa-chevron-circle-down_3qtm9:before {\n  content: \"\\F13A\";\n}\n.font-awesome-fa-html5_22fhv:before {\n  content: \"\\F13B\";\n}\n.font-awesome-fa-css3_4a4qz:before {\n  content: \"\\F13C\";\n}\n.font-awesome-fa-anchor_4et8y:before {\n  content: \"\\F13D\";\n}\n.font-awesome-fa-unlock-alt_4y7nt:before {\n  content: \"\\F13E\";\n}\n.font-awesome-fa-bullseye_2katg:before {\n  content: \"\\F140\";\n}\n.font-awesome-fa-ellipsis-h_3rc7s:before {\n  content: \"\\F141\";\n}\n.font-awesome-fa-ellipsis-v_4f723:before {\n  content: \"\\F142\";\n}\n.font-awesome-fa-rss-square_3ez61:before {\n  content: \"\\F143\";\n}\n.font-awesome-fa-play-circle_4pk9q:before {\n  content: \"\\F144\";\n}\n.font-awesome-fa-ticket_38p8s:before {\n  content: \"\\F145\";\n}\n.font-awesome-fa-minus-square_2e5ae:before {\n  content: \"\\F146\";\n}\n.font-awesome-fa-minus-square-o_33v3x:before {\n  content: \"\\F147\";\n}\n.font-awesome-fa-level-up_xy6rd:before {\n  content: \"\\F148\";\n}\n.font-awesome-fa-level-down_4gwkn:before {\n  content: \"\\F149\";\n}\n.font-awesome-fa-check-square_4a4bn:before {\n  content: \"\\F14A\";\n}\n.font-awesome-fa-pencil-square_2b2zh:before {\n  content: \"\\F14B\";\n}\n.font-awesome-fa-external-link-square_4w6tc:before {\n  content: \"\\F14C\";\n}\n.font-awesome-fa-share-square_35wpn:before {\n  content: \"\\F14D\";\n}\n.font-awesome-fa-compass_2hmyy:before {\n  content: \"\\F14E\";\n}\n.font-awesome-fa-toggle-down_474xf:before,\n.font-awesome-fa-caret-square-o-down_2p24p:before {\n  content: \"\\F150\";\n}\n.font-awesome-fa-toggle-up_3sykb:before,\n.font-awesome-fa-caret-square-o-up_49c2q:before {\n  content: \"\\F151\";\n}\n.font-awesome-fa-toggle-right_45c5f:before,\n.font-awesome-fa-caret-square-o-right_3fusp:before {\n  content: \"\\F152\";\n}\n.font-awesome-fa-euro_2v8h2:before,\n.font-awesome-fa-eur_22ybn:before {\n  content: \"\\F153\";\n}\n.font-awesome-fa-gbp_4rfu1:before {\n  content: \"\\F154\";\n}\n.font-awesome-fa-dollar_2wmex:before,\n.font-awesome-fa-usd_4nvs4:before {\n  content: \"\\F155\";\n}\n.font-awesome-fa-rupee_2161g:before,\n.font-awesome-fa-inr_23pms:before {\n  content: \"\\F156\";\n}\n.font-awesome-fa-cny_mpt6y:before,\n.font-awesome-fa-rmb_46vbm:before,\n.font-awesome-fa-yen_kun9p:before,\n.font-awesome-fa-jpy_2w1zh:before {\n  content: \"\\F157\";\n}\n.font-awesome-fa-ruble_mgkd7:before,\n.font-awesome-fa-rouble_48mfq:before,\n.font-awesome-fa-rub_3py6w:before {\n  content: \"\\F158\";\n}\n.font-awesome-fa-won_21skz:before,\n.font-awesome-fa-krw_3rsug:before {\n  content: \"\\F159\";\n}\n.font-awesome-fa-bitcoin_2x78c:before,\n.font-awesome-fa-btc_34vnu:before {\n  content: \"\\F15A\";\n}\n.font-awesome-fa-file_2hvak:before {\n  content: \"\\F15B\";\n}\n.font-awesome-fa-file-text_27xvy:before {\n  content: \"\\F15C\";\n}\n.font-awesome-fa-sort-alpha-asc_3dcru:before {\n  content: \"\\F15D\";\n}\n.font-awesome-fa-sort-alpha-desc_3r41w:before {\n  content: \"\\F15E\";\n}\n.font-awesome-fa-sort-amount-asc_49k5d:before {\n  content: \"\\F160\";\n}\n.font-awesome-fa-sort-amount-desc_3tsuv:before {\n  content: \"\\F161\";\n}\n.font-awesome-fa-sort-numeric-asc_3r4w9:before {\n  content: \"\\F162\";\n}\n.font-awesome-fa-sort-numeric-desc_as49b:before {\n  content: \"\\F163\";\n}\n.font-awesome-fa-thumbs-up_2tzkr:before {\n  content: \"\\F164\";\n}\n.font-awesome-fa-thumbs-down_mh1xf:before {\n  content: \"\\F165\";\n}\n.font-awesome-fa-youtube-square_vnsz8:before {\n  content: \"\\F166\";\n}\n.font-awesome-fa-youtube_k2x8r:before {\n  content: \"\\F167\";\n}\n.font-awesome-fa-xing_df4tt:before {\n  content: \"\\F168\";\n}\n.font-awesome-fa-xing-square_pnamd:before {\n  content: \"\\F169\";\n}\n.font-awesome-fa-youtube-play_45xmt:before {\n  content: \"\\F16A\";\n}\n.font-awesome-fa-dropbox_3qmj7:before {\n  content: \"\\F16B\";\n}\n.font-awesome-fa-stack-overflow_4e4qy:before {\n  content: \"\\F16C\";\n}\n.font-awesome-fa-instagram_494gw:before {\n  content: \"\\F16D\";\n}\n.font-awesome-fa-flickr_deqj4:before {\n  content: \"\\F16E\";\n}\n.font-awesome-fa-adn_v5nmz:before {\n  content: \"\\F170\";\n}\n.font-awesome-fa-bitbucket_r8hwb:before {\n  content: \"\\F171\";\n}\n.font-awesome-fa-bitbucket-square_3xm43:before {\n  content: \"\\F172\";\n}\n.font-awesome-fa-tumblr_32ha5:before {\n  content: \"\\F173\";\n}\n.font-awesome-fa-tumblr-square_pdna6:before {\n  content: \"\\F174\";\n}\n.font-awesome-fa-long-arrow-down_4r4z9:before {\n  content: \"\\F175\";\n}\n.font-awesome-fa-long-arrow-up_p2zsg:before {\n  content: \"\\F176\";\n}\n.font-awesome-fa-long-arrow-left_3a13c:before {\n  content: \"\\F177\";\n}\n.font-awesome-fa-long-arrow-right_n2csd:before {\n  content: \"\\F178\";\n}\n.font-awesome-fa-apple_23cfc:before {\n  content: \"\\F179\";\n}\n.font-awesome-fa-windows_41qkc:before {\n  content: \"\\F17A\";\n}\n.font-awesome-fa-android_eqd3c:before {\n  content: \"\\F17B\";\n}\n.font-awesome-fa-linux_44v3q:before {\n  content: \"\\F17C\";\n}\n.font-awesome-fa-dribbble_47y5k:before {\n  content: \"\\F17D\";\n}\n.font-awesome-fa-skype_qm14u:before {\n  content: \"\\F17E\";\n}\n.font-awesome-fa-foursquare_s3f6a:before {\n  content: \"\\F180\";\n}\n.font-awesome-fa-trello_3u7xe:before {\n  content: \"\\F181\";\n}\n.font-awesome-fa-female_3tvmu:before {\n  content: \"\\F182\";\n}\n.font-awesome-fa-male_4xm1v:before {\n  content: \"\\F183\";\n}\n.font-awesome-fa-gittip_2nj8a:before,\n.font-awesome-fa-gratipay_426vx:before {\n  content: \"\\F184\";\n}\n.font-awesome-fa-sun-o_3gdqn:before {\n  content: \"\\F185\";\n}\n.font-awesome-fa-moon-o_3hgcr:before {\n  content: \"\\F186\";\n}\n.font-awesome-fa-archive_2s6kh:before {\n  content: \"\\F187\";\n}\n.font-awesome-fa-bug_4nfg1:before {\n  content: \"\\F188\";\n}\n.font-awesome-fa-vk_4emrb:before {\n  content: \"\\F189\";\n}\n.font-awesome-fa-weibo_hffdj:before {\n  content: \"\\F18A\";\n}\n.font-awesome-fa-renren_3t69a:before {\n  content: \"\\F18B\";\n}\n.font-awesome-fa-pagelines_4dv2u:before {\n  content: \"\\F18C\";\n}\n.font-awesome-fa-stack-exchange_2qzu3:before {\n  content: \"\\F18D\";\n}\n.font-awesome-fa-arrow-circle-o-right_mm9wb:before {\n  content: \"\\F18E\";\n}\n.font-awesome-fa-arrow-circle-o-left_33d94:before {\n  content: \"\\F190\";\n}\n.font-awesome-fa-toggle-left_2ewjj:before,\n.font-awesome-fa-caret-square-o-left_2zj29:before {\n  content: \"\\F191\";\n}\n.font-awesome-fa-dot-circle-o_4erqk:before {\n  content: \"\\F192\";\n}\n.font-awesome-fa-wheelchair_2kywz:before {\n  content: \"\\F193\";\n}\n.font-awesome-fa-vimeo-square_3mbrk:before {\n  content: \"\\F194\";\n}\n.font-awesome-fa-turkish-lira_2uqer:before,\n.font-awesome-fa-try_2kmx4:before {\n  content: \"\\F195\";\n}\n.font-awesome-fa-plus-square-o_w7515:before {\n  content: \"\\F196\";\n}\n.font-awesome-fa-space-shuttle_6tqcb:before {\n  content: \"\\F197\";\n}\n.font-awesome-fa-slack_3af9m:before {\n  content: \"\\F198\";\n}\n.font-awesome-fa-envelope-square_33zcz:before {\n  content: \"\\F199\";\n}\n.font-awesome-fa-wordpress_qrhjk:before {\n  content: \"\\F19A\";\n}\n.font-awesome-fa-openid_w919x:before {\n  content: \"\\F19B\";\n}\n.font-awesome-fa-institution_4du1u:before,\n.font-awesome-fa-bank_2bn5f:before,\n.font-awesome-fa-university_zjzzx:before {\n  content: \"\\F19C\";\n}\n.font-awesome-fa-mortar-board_sx7fa:before,\n.font-awesome-fa-graduation-cap_2x9gx:before {\n  content: \"\\F19D\";\n}\n.font-awesome-fa-yahoo_4a38y:before {\n  content: \"\\F19E\";\n}\n.font-awesome-fa-google_4j6rh:before {\n  content: \"\\F1A0\";\n}\n.font-awesome-fa-reddit_ttaqm:before {\n  content: \"\\F1A1\";\n}\n.font-awesome-fa-reddit-square_e68ag:before {\n  content: \"\\F1A2\";\n}\n.font-awesome-fa-stumbleupon-circle_22nux:before {\n  content: \"\\F1A3\";\n}\n.font-awesome-fa-stumbleupon_4f2py:before {\n  content: \"\\F1A4\";\n}\n.font-awesome-fa-delicious_2g9z8:before {\n  content: \"\\F1A5\";\n}\n.font-awesome-fa-digg_318jp:before {\n  content: \"\\F1A6\";\n}\n.font-awesome-fa-pied-piper-pp_bd4k7:before {\n  content: \"\\F1A7\";\n}\n.font-awesome-fa-pied-piper-alt_3wvk1:before {\n  content: \"\\F1A8\";\n}\n.font-awesome-fa-drupal_34wky:before {\n  content: \"\\F1A9\";\n}\n.font-awesome-fa-joomla_u2kmu:before {\n  content: \"\\F1AA\";\n}\n.font-awesome-fa-language_ct8zj:before {\n  content: \"\\F1AB\";\n}\n.font-awesome-fa-fax_2rmvv:before {\n  content: \"\\F1AC\";\n}\n.font-awesome-fa-building_41y7v:before {\n  content: \"\\F1AD\";\n}\n.font-awesome-fa-child_2fxxn:before {\n  content: \"\\F1AE\";\n}\n.font-awesome-fa-paw_2q2pd:before {\n  content: \"\\F1B0\";\n}\n.font-awesome-fa-spoon_6jpqt:before {\n  content: \"\\F1B1\";\n}\n.font-awesome-fa-cube_zhw4z:before {\n  content: \"\\F1B2\";\n}\n.font-awesome-fa-cubes_2ztsn:before {\n  content: \"\\F1B3\";\n}\n.font-awesome-fa-behance_2f597:before {\n  content: \"\\F1B4\";\n}\n.font-awesome-fa-behance-square_4kh21:before {\n  content: \"\\F1B5\";\n}\n.font-awesome-fa-steam_3vp2q:before {\n  content: \"\\F1B6\";\n}\n.font-awesome-fa-steam-square_3rv42:before {\n  content: \"\\F1B7\";\n}\n.font-awesome-fa-recycle_3jhdn:before {\n  content: \"\\F1B8\";\n}\n.font-awesome-fa-automobile_3uz5x:before,\n.font-awesome-fa-car_4j8hq:before {\n  content: \"\\F1B9\";\n}\n.font-awesome-fa-cab_4by8y:before,\n.font-awesome-fa-taxi_2gs3n:before {\n  content: \"\\F1BA\";\n}\n.font-awesome-fa-tree_2uvft:before {\n  content: \"\\F1BB\";\n}\n.font-awesome-fa-spotify_281ek:before {\n  content: \"\\F1BC\";\n}\n.font-awesome-fa-deviantart_3ejsp:before {\n  content: \"\\F1BD\";\n}\n.font-awesome-fa-soundcloud_289pm:before {\n  content: \"\\F1BE\";\n}\n.font-awesome-fa-database_41m81:before {\n  content: \"\\F1C0\";\n}\n.font-awesome-fa-file-pdf-o_31hj1:before {\n  content: \"\\F1C1\";\n}\n.font-awesome-fa-file-word-o_3dxtr:before {\n  content: \"\\F1C2\";\n}\n.font-awesome-fa-file-excel-o_28ptw:before {\n  content: \"\\F1C3\";\n}\n.font-awesome-fa-file-powerpoint-o_swugq:before {\n  content: \"\\F1C4\";\n}\n.font-awesome-fa-file-photo-o_35n2w:before,\n.font-awesome-fa-file-picture-o_4jnw7:before,\n.font-awesome-fa-file-image-o_2s4k1:before {\n  content: \"\\F1C5\";\n}\n.font-awesome-fa-file-zip-o_3fj5w:before,\n.font-awesome-fa-file-archive-o_2jbs3:before {\n  content: \"\\F1C6\";\n}\n.font-awesome-fa-file-sound-o_wpxgw:before,\n.font-awesome-fa-file-audio-o_4ga2e:before {\n  content: \"\\F1C7\";\n}\n.font-awesome-fa-file-movie-o_4h9bn:before,\n.font-awesome-fa-file-video-o_348mx:before {\n  content: \"\\F1C8\";\n}\n.font-awesome-fa-file-code-o_47r14:before {\n  content: \"\\F1C9\";\n}\n.font-awesome-fa-vine_31j6c:before {\n  content: \"\\F1CA\";\n}\n.font-awesome-fa-codepen_2kvff:before {\n  content: \"\\F1CB\";\n}\n.font-awesome-fa-jsfiddle_2r1q8:before {\n  content: \"\\F1CC\";\n}\n.font-awesome-fa-life-bouy_4vxu3:before,\n.font-awesome-fa-life-buoy_2jk7n:before,\n.font-awesome-fa-life-saver_4bbkw:before,\n.font-awesome-fa-support_3ezhk:before,\n.font-awesome-fa-life-ring_4sg2e:before {\n  content: \"\\F1CD\";\n}\n.font-awesome-fa-circle-o-notch_3g7ub:before {\n  content: \"\\F1CE\";\n}\n.font-awesome-fa-ra_4gyjy:before,\n.font-awesome-fa-resistance_4rr8t:before,\n.font-awesome-fa-rebel_4bnzf:before {\n  content: \"\\F1D0\";\n}\n.font-awesome-fa-ge_v7j6f:before,\n.font-awesome-fa-empire_9gcr3:before {\n  content: \"\\F1D1\";\n}\n.font-awesome-fa-git-square_4j2zg:before {\n  content: \"\\F1D2\";\n}\n.font-awesome-fa-git_nyxmt:before {\n  content: \"\\F1D3\";\n}\n.font-awesome-fa-y-combinator-square_3fkhb:before,\n.font-awesome-fa-yc-square_423e8:before,\n.font-awesome-fa-hacker-news_3bvkf:before {\n  content: \"\\F1D4\";\n}\n.font-awesome-fa-tencent-weibo_2aayn:before {\n  content: \"\\F1D5\";\n}\n.font-awesome-fa-qq_28ush:before {\n  content: \"\\F1D6\";\n}\n.font-awesome-fa-wechat_3uxxv:before,\n.font-awesome-fa-weixin_4xybv:before {\n  content: \"\\F1D7\";\n}\n.font-awesome-fa-send_37fju:before,\n.font-awesome-fa-paper-plane_4ev2k:before {\n  content: \"\\F1D8\";\n}\n.font-awesome-fa-send-o_43d1j:before,\n.font-awesome-fa-paper-plane-o_26nqv:before {\n  content: \"\\F1D9\";\n}\n.font-awesome-fa-history_3kffs:before {\n  content: \"\\F1DA\";\n}\n.font-awesome-fa-circle-thin_4n3yw:before {\n  content: \"\\F1DB\";\n}\n.font-awesome-fa-header_tc2an:before {\n  content: \"\\F1DC\";\n}\n.font-awesome-fa-paragraph_cpbsw:before {\n  content: \"\\F1DD\";\n}\n.font-awesome-fa-sliders_4t17f:before {\n  content: \"\\F1DE\";\n}\n.font-awesome-fa-share-alt_2e7g5:before {\n  content: \"\\F1E0\";\n}\n.font-awesome-fa-share-alt-square_2bq2e:before {\n  content: \"\\F1E1\";\n}\n.font-awesome-fa-bomb_hqjyv:before {\n  content: \"\\F1E2\";\n}\n.font-awesome-fa-soccer-ball-o_3wmxx:before,\n.font-awesome-fa-futbol-o_3rp5h:before {\n  content: \"\\F1E3\";\n}\n.font-awesome-fa-tty_4qhux:before {\n  content: \"\\F1E4\";\n}\n.font-awesome-fa-binoculars_23j3x:before {\n  content: \"\\F1E5\";\n}\n.font-awesome-fa-plug_39bvm:before {\n  content: \"\\F1E6\";\n}\n.font-awesome-fa-slideshare_2d3d3:before {\n  content: \"\\F1E7\";\n}\n.font-awesome-fa-twitch_3ssvr:before {\n  content: \"\\F1E8\";\n}\n.font-awesome-fa-yelp_4nuk1:before {\n  content: \"\\F1E9\";\n}\n.font-awesome-fa-newspaper-o_3sxxc:before {\n  content: \"\\F1EA\";\n}\n.font-awesome-fa-wifi_41v3p:before {\n  content: \"\\F1EB\";\n}\n.font-awesome-fa-calculator_dpsuw:before {\n  content: \"\\F1EC\";\n}\n.font-awesome-fa-paypal_3j8p3:before {\n  content: \"\\F1ED\";\n}\n.font-awesome-fa-google-wallet_3pzk6:before {\n  content: \"\\F1EE\";\n}\n.font-awesome-fa-cc-visa_27gek:before {\n  content: \"\\F1F0\";\n}\n.font-awesome-fa-cc-mastercard_41xcs:before {\n  content: \"\\F1F1\";\n}\n.font-awesome-fa-cc-discover_2uy8h:before {\n  content: \"\\F1F2\";\n}\n.font-awesome-fa-cc-amex_32wjy:before {\n  content: \"\\F1F3\";\n}\n.font-awesome-fa-cc-paypal_454sh:before {\n  content: \"\\F1F4\";\n}\n.font-awesome-fa-cc-stripe_473cn:before {\n  content: \"\\F1F5\";\n}\n.font-awesome-fa-bell-slash_3cm53:before {\n  content: \"\\F1F6\";\n}\n.font-awesome-fa-bell-slash-o_3e1gw:before {\n  content: \"\\F1F7\";\n}\n.font-awesome-fa-trash_4nzep:before {\n  content: \"\\F1F8\";\n}\n.font-awesome-fa-copyright_294ey:before {\n  content: \"\\F1F9\";\n}\n.font-awesome-fa-at_4msds:before {\n  content: \"\\F1FA\";\n}\n.font-awesome-fa-eyedropper_36gh6:before {\n  content: \"\\F1FB\";\n}\n.font-awesome-fa-paint-brush_34vj3:before {\n  content: \"\\F1FC\";\n}\n.font-awesome-fa-birthday-cake_3kbnm:before {\n  content: \"\\F1FD\";\n}\n.font-awesome-fa-area-chart_sptnx:before {\n  content: \"\\F1FE\";\n}\n.font-awesome-fa-pie-chart_2eh7a:before {\n  content: \"\\F200\";\n}\n.font-awesome-fa-line-chart_jjwww:before {\n  content: \"\\F201\";\n}\n.font-awesome-fa-lastfm_3smzv:before {\n  content: \"\\F202\";\n}\n.font-awesome-fa-lastfm-square_2t54c:before {\n  content: \"\\F203\";\n}\n.font-awesome-fa-toggle-off_jc9q6:before {\n  content: \"\\F204\";\n}\n.font-awesome-fa-toggle-on_4gwhm:before {\n  content: \"\\F205\";\n}\n.font-awesome-fa-bicycle_32rmk:before {\n  content: \"\\F206\";\n}\n.font-awesome-fa-bus_2vfp5:before {\n  content: \"\\F207\";\n}\n.font-awesome-fa-ioxhost_sbk8m:before {\n  content: \"\\F208\";\n}\n.font-awesome-fa-angellist_4jenu:before {\n  content: \"\\F209\";\n}\n.font-awesome-fa-cc_2vggh:before {\n  content: \"\\F20A\";\n}\n.font-awesome-fa-shekel_3sq2h:before,\n.font-awesome-fa-sheqel_2y7zg:before,\n.font-awesome-fa-ils_nyhdp:before {\n  content: \"\\F20B\";\n}\n.font-awesome-fa-meanpath_mazqu:before {\n  content: \"\\F20C\";\n}\n.font-awesome-fa-buysellads_36q3j:before {\n  content: \"\\F20D\";\n}\n.font-awesome-fa-connectdevelop_3d5v3:before {\n  content: \"\\F20E\";\n}\n.font-awesome-fa-dashcube_3kfhh:before {\n  content: \"\\F210\";\n}\n.font-awesome-fa-forumbee_4e897:before {\n  content: \"\\F211\";\n}\n.font-awesome-fa-leanpub_ryycy:before {\n  content: \"\\F212\";\n}\n.font-awesome-fa-sellsy_cra3f:before {\n  content: \"\\F213\";\n}\n.font-awesome-fa-shirtsinbulk_2b28m:before {\n  content: \"\\F214\";\n}\n.font-awesome-fa-simplybuilt_39prv:before {\n  content: \"\\F215\";\n}\n.font-awesome-fa-skyatlas_2c3tg:before {\n  content: \"\\F216\";\n}\n.font-awesome-fa-cart-plus_44ddt:before {\n  content: \"\\F217\";\n}\n.font-awesome-fa-cart-arrow-down_6e1jb:before {\n  content: \"\\F218\";\n}\n.font-awesome-fa-diamond_4zs72:before {\n  content: \"\\F219\";\n}\n.font-awesome-fa-ship_2prea:before {\n  content: \"\\F21A\";\n}\n.font-awesome-fa-user-secret_2j5rz:before {\n  content: \"\\F21B\";\n}\n.font-awesome-fa-motorcycle_qarcs:before {\n  content: \"\\F21C\";\n}\n.font-awesome-fa-street-view_47tzq:before {\n  content: \"\\F21D\";\n}\n.font-awesome-fa-heartbeat_y5uun:before {\n  content: \"\\F21E\";\n}\n.font-awesome-fa-venus_mb92c:before {\n  content: \"\\F221\";\n}\n.font-awesome-fa-mars_2euar:before {\n  content: \"\\F222\";\n}\n.font-awesome-fa-mercury_45dqh:before {\n  content: \"\\F223\";\n}\n.font-awesome-fa-intersex_422zr:before,\n.font-awesome-fa-transgender_4yfry:before {\n  content: \"\\F224\";\n}\n.font-awesome-fa-transgender-alt_4c5pf:before {\n  content: \"\\F225\";\n}\n.font-awesome-fa-venus-double_48zm8:before {\n  content: \"\\F226\";\n}\n.font-awesome-fa-mars-double_3fc9p:before {\n  content: \"\\F227\";\n}\n.font-awesome-fa-venus-mars_djcv7:before {\n  content: \"\\F228\";\n}\n.font-awesome-fa-mars-stroke_2gbkd:before {\n  content: \"\\F229\";\n}\n.font-awesome-fa-mars-stroke-v_x8vf7:before {\n  content: \"\\F22A\";\n}\n.font-awesome-fa-mars-stroke-h_2e6p1:before {\n  content: \"\\F22B\";\n}\n.font-awesome-fa-neuter_4rffn:before {\n  content: \"\\F22C\";\n}\n.font-awesome-fa-genderless_4a5g4:before {\n  content: \"\\F22D\";\n}\n.font-awesome-fa-facebook-official_3fwrg:before {\n  content: \"\\F230\";\n}\n.font-awesome-fa-pinterest-p_35ahe:before {\n  content: \"\\F231\";\n}\n.font-awesome-fa-whatsapp_2c26g:before {\n  content: \"\\F232\";\n}\n.font-awesome-fa-server_31pqg:before {\n  content: \"\\F233\";\n}\n.font-awesome-fa-user-plus_z4h7u:before {\n  content: \"\\F234\";\n}\n.font-awesome-fa-user-times_2bxym:before {\n  content: \"\\F235\";\n}\n.font-awesome-fa-hotel_48f28:before,\n.font-awesome-fa-bed_4hvja:before {\n  content: \"\\F236\";\n}\n.font-awesome-fa-viacoin_2hhde:before {\n  content: \"\\F237\";\n}\n.font-awesome-fa-train_32d84:before {\n  content: \"\\F238\";\n}\n.font-awesome-fa-subway_4857d:before {\n  content: \"\\F239\";\n}\n.font-awesome-fa-medium_35sb6:before {\n  content: \"\\F23A\";\n}\n.font-awesome-fa-yc_8kbu1:before,\n.font-awesome-fa-y-combinator_f9zkf:before {\n  content: \"\\F23B\";\n}\n.font-awesome-fa-optin-monster_2ddkf:before {\n  content: \"\\F23C\";\n}\n.font-awesome-fa-opencart_46rg9:before {\n  content: \"\\F23D\";\n}\n.font-awesome-fa-expeditedssl_3855e:before {\n  content: \"\\F23E\";\n}\n.font-awesome-fa-battery-4_48z1r:before,\n.font-awesome-fa-battery_29xxh:before,\n.font-awesome-fa-battery-full_2utkx:before {\n  content: \"\\F240\";\n}\n.font-awesome-fa-battery-3_2qvtk:before,\n.font-awesome-fa-battery-three-quarters_4seaz:before {\n  content: \"\\F241\";\n}\n.font-awesome-fa-battery-2_25rh3:before,\n.font-awesome-fa-battery-half_8dk8m:before {\n  content: \"\\F242\";\n}\n.font-awesome-fa-battery-1_2hg4t:before,\n.font-awesome-fa-battery-quarter_3c8tu:before {\n  content: \"\\F243\";\n}\n.font-awesome-fa-battery-0_39afe:before,\n.font-awesome-fa-battery-empty_2zde7:before {\n  content: \"\\F244\";\n}\n.font-awesome-fa-mouse-pointer_t31pc:before {\n  content: \"\\F245\";\n}\n.font-awesome-fa-i-cursor_4emxz:before {\n  content: \"\\F246\";\n}\n.font-awesome-fa-object-group_3phf2:before {\n  content: \"\\F247\";\n}\n.font-awesome-fa-object-ungroup_4wrkk:before {\n  content: \"\\F248\";\n}\n.font-awesome-fa-sticky-note_3j699:before {\n  content: \"\\F249\";\n}\n.font-awesome-fa-sticky-note-o_shtd6:before {\n  content: \"\\F24A\";\n}\n.font-awesome-fa-cc-jcb_3fnhw:before {\n  content: \"\\F24B\";\n}\n.font-awesome-fa-cc-diners-club_4chnm:before {\n  content: \"\\F24C\";\n}\n.font-awesome-fa-clone_w3s26:before {\n  content: \"\\F24D\";\n}\n.font-awesome-fa-balance-scale_3jjac:before {\n  content: \"\\F24E\";\n}\n.font-awesome-fa-hourglass-o_4mn3p:before {\n  content: \"\\F250\";\n}\n.font-awesome-fa-hourglass-1_44j36:before,\n.font-awesome-fa-hourglass-start_34mh7:before {\n  content: \"\\F251\";\n}\n.font-awesome-fa-hourglass-2_ap4ct:before,\n.font-awesome-fa-hourglass-half_2cnad:before {\n  content: \"\\F252\";\n}\n.font-awesome-fa-hourglass-3_3eea3:before,\n.font-awesome-fa-hourglass-end_fkq2j:before {\n  content: \"\\F253\";\n}\n.font-awesome-fa-hourglass_33pjw:before {\n  content: \"\\F254\";\n}\n.font-awesome-fa-hand-grab-o_ycmpd:before,\n.font-awesome-fa-hand-rock-o_2c791:before {\n  content: \"\\F255\";\n}\n.font-awesome-fa-hand-stop-o_9ysmn:before,\n.font-awesome-fa-hand-paper-o_2dbma:before {\n  content: \"\\F256\";\n}\n.font-awesome-fa-hand-scissors-o_2sf2a:before {\n  content: \"\\F257\";\n}\n.font-awesome-fa-hand-lizard-o_4bdae:before {\n  content: \"\\F258\";\n}\n.font-awesome-fa-hand-spock-o_4z4w1:before {\n  content: \"\\F259\";\n}\n.font-awesome-fa-hand-pointer-o_ppq8m:before {\n  content: \"\\F25A\";\n}\n.font-awesome-fa-hand-peace-o_4a51t:before {\n  content: \"\\F25B\";\n}\n.font-awesome-fa-trademark_24gm6:before {\n  content: \"\\F25C\";\n}\n.font-awesome-fa-registered_sdn1b:before {\n  content: \"\\F25D\";\n}\n.font-awesome-fa-creative-commons_4kfu3:before {\n  content: \"\\F25E\";\n}\n.font-awesome-fa-gg_47btu:before {\n  content: \"\\F260\";\n}\n.font-awesome-fa-gg-circle_tcj1h:before {\n  content: \"\\F261\";\n}\n.font-awesome-fa-tripadvisor_31fw4:before {\n  content: \"\\F262\";\n}\n.font-awesome-fa-odnoklassniki_2ehez:before {\n  content: \"\\F263\";\n}\n.font-awesome-fa-odnoklassniki-square_2pteu:before {\n  content: \"\\F264\";\n}\n.font-awesome-fa-get-pocket_244rz:before {\n  content: \"\\F265\";\n}\n.font-awesome-fa-wikipedia-w_c9xg3:before {\n  content: \"\\F266\";\n}\n.font-awesome-fa-safari_3bmzu:before {\n  content: \"\\F267\";\n}\n.font-awesome-fa-chrome_26cee:before {\n  content: \"\\F268\";\n}\n.font-awesome-fa-firefox_uyzy3:before {\n  content: \"\\F269\";\n}\n.font-awesome-fa-opera_34xaf:before {\n  content: \"\\F26A\";\n}\n.font-awesome-fa-internet-explorer_376vp:before {\n  content: \"\\F26B\";\n}\n.font-awesome-fa-tv_y9snd:before,\n.font-awesome-fa-television_3dsne:before {\n  content: \"\\F26C\";\n}\n.font-awesome-fa-contao_4u34r:before {\n  content: \"\\F26D\";\n}\n.font-awesome-fa-500px_34p35:before {\n  content: \"\\F26E\";\n}\n.font-awesome-fa-amazon_2ybs9:before {\n  content: \"\\F270\";\n}\n.font-awesome-fa-calendar-plus-o_329he:before {\n  content: \"\\F271\";\n}\n.font-awesome-fa-calendar-minus-o_3e527:before {\n  content: \"\\F272\";\n}\n.font-awesome-fa-calendar-times-o_378tu:before {\n  content: \"\\F273\";\n}\n.font-awesome-fa-calendar-check-o_2ttqe:before {\n  content: \"\\F274\";\n}\n.font-awesome-fa-industry_2ur6r:before {\n  content: \"\\F275\";\n}\n.font-awesome-fa-map-pin_33vje:before {\n  content: \"\\F276\";\n}\n.font-awesome-fa-map-signs_3xrzv:before {\n  content: \"\\F277\";\n}\n.font-awesome-fa-map-o_32rzr:before {\n  content: \"\\F278\";\n}\n.font-awesome-fa-map_3huyt:before {\n  content: \"\\F279\";\n}\n.font-awesome-fa-commenting_33qys:before {\n  content: \"\\F27A\";\n}\n.font-awesome-fa-commenting-o_tsnef:before {\n  content: \"\\F27B\";\n}\n.font-awesome-fa-houzz_35b1a:before {\n  content: \"\\F27C\";\n}\n.font-awesome-fa-vimeo_ruckq:before {\n  content: \"\\F27D\";\n}\n.font-awesome-fa-black-tie_3s1bt:before {\n  content: \"\\F27E\";\n}\n.font-awesome-fa-fonticons_jgf1y:before {\n  content: \"\\F280\";\n}\n.font-awesome-fa-reddit-alien_34vgx:before {\n  content: \"\\F281\";\n}\n.font-awesome-fa-edge_2yze4:before {\n  content: \"\\F282\";\n}\n.font-awesome-fa-credit-card-alt_kuzgu:before {\n  content: \"\\F283\";\n}\n.font-awesome-fa-codiepie_yge6f:before {\n  content: \"\\F284\";\n}\n.font-awesome-fa-modx_4g6qt:before {\n  content: \"\\F285\";\n}\n.font-awesome-fa-fort-awesome_3k3f9:before {\n  content: \"\\F286\";\n}\n.font-awesome-fa-usb_3cu5y:before {\n  content: \"\\F287\";\n}\n.font-awesome-fa-product-hunt_ab9yq:before {\n  content: \"\\F288\";\n}\n.font-awesome-fa-mixcloud_28sam:before {\n  content: \"\\F289\";\n}\n.font-awesome-fa-scribd_377am:before {\n  content: \"\\F28A\";\n}\n.font-awesome-fa-pause-circle_4yhhc:before {\n  content: \"\\F28B\";\n}\n.font-awesome-fa-pause-circle-o_2z28w:before {\n  content: \"\\F28C\";\n}\n.font-awesome-fa-stop-circle_3b1e2:before {\n  content: \"\\F28D\";\n}\n.font-awesome-fa-stop-circle-o_2ut5m:before {\n  content: \"\\F28E\";\n}\n.font-awesome-fa-shopping-bag_4jhne:before {\n  content: \"\\F290\";\n}\n.font-awesome-fa-shopping-basket_3m51b:before {\n  content: \"\\F291\";\n}\n.font-awesome-fa-hashtag_4k9pe:before {\n  content: \"\\F292\";\n}\n.font-awesome-fa-bluetooth_28489:before {\n  content: \"\\F293\";\n}\n.font-awesome-fa-bluetooth-b_4zxgw:before {\n  content: \"\\F294\";\n}\n.font-awesome-fa-percent_f1c9m:before {\n  content: \"\\F295\";\n}\n.font-awesome-fa-gitlab_w8qj5:before {\n  content: \"\\F296\";\n}\n.font-awesome-fa-wpbeginner_pv72u:before {\n  content: \"\\F297\";\n}\n.font-awesome-fa-wpforms_2gbe8:before {\n  content: \"\\F298\";\n}\n.font-awesome-fa-envira_nde6q:before {\n  content: \"\\F299\";\n}\n.font-awesome-fa-universal-access_25j1t:before {\n  content: \"\\F29A\";\n}\n.font-awesome-fa-wheelchair-alt_32en1:before {\n  content: \"\\F29B\";\n}\n.font-awesome-fa-question-circle-o_2zwvc:before {\n  content: \"\\F29C\";\n}\n.font-awesome-fa-blind_cu4y3:before {\n  content: \"\\F29D\";\n}\n.font-awesome-fa-audio-description_4hf45:before {\n  content: \"\\F29E\";\n}\n.font-awesome-fa-volume-control-phone_23hwp:before {\n  content: \"\\F2A0\";\n}\n.font-awesome-fa-braille_3me8j:before {\n  content: \"\\F2A1\";\n}\n.font-awesome-fa-assistive-listening-systems_4fekb:before {\n  content: \"\\F2A2\";\n}\n.font-awesome-fa-asl-interpreting_hmevn:before,\n.font-awesome-fa-american-sign-language-interpreting_4ggx7:before {\n  content: \"\\F2A3\";\n}\n.font-awesome-fa-deafness_2tkcd:before,\n.font-awesome-fa-hard-of-hearing_f1q1g:before,\n.font-awesome-fa-deaf_4hn44:before {\n  content: \"\\F2A4\";\n}\n.font-awesome-fa-glide_27xcy:before {\n  content: \"\\F2A5\";\n}\n.font-awesome-fa-glide-g_3k21p:before {\n  content: \"\\F2A6\";\n}\n.font-awesome-fa-signing_k93er:before,\n.font-awesome-fa-sign-language_332d4:before {\n  content: \"\\F2A7\";\n}\n.font-awesome-fa-low-vision_4qhxr:before {\n  content: \"\\F2A8\";\n}\n.font-awesome-fa-viadeo_4uhvu:before {\n  content: \"\\F2A9\";\n}\n.font-awesome-fa-viadeo-square_3k33g:before {\n  content: \"\\F2AA\";\n}\n.font-awesome-fa-snapchat_41hsm:before {\n  content: \"\\F2AB\";\n}\n.font-awesome-fa-snapchat-ghost_459pf:before {\n  content: \"\\F2AC\";\n}\n.font-awesome-fa-snapchat-square_447we:before {\n  content: \"\\F2AD\";\n}\n.font-awesome-fa-pied-piper_2tz9d:before {\n  content: \"\\F2AE\";\n}\n.font-awesome-fa-first-order_35gb2:before {\n  content: \"\\F2B0\";\n}\n.font-awesome-fa-yoast_4y2s4:before {\n  content: \"\\F2B1\";\n}\n.font-awesome-fa-themeisle_26fyu:before {\n  content: \"\\F2B2\";\n}\n.font-awesome-fa-google-plus-circle_452rm:before,\n.font-awesome-fa-google-plus-official_3nz5a:before {\n  content: \"\\F2B3\";\n}\n.font-awesome-fa-fa_3x9e8:before,\n.font-awesome-fa-font-awesome_3bm5r:before {\n  content: \"\\F2B4\";\n}\n.font-awesome-fa-handshake-o_2uy6d:before {\n  content: \"\\F2B5\";\n}\n.font-awesome-fa-envelope-open_2u4s3:before {\n  content: \"\\F2B6\";\n}\n.font-awesome-fa-envelope-open-o_3d1r8:before {\n  content: \"\\F2B7\";\n}\n.font-awesome-fa-linode_4mx5s:before {\n  content: \"\\F2B8\";\n}\n.font-awesome-fa-address-book_2ryeb:before {\n  content: \"\\F2B9\";\n}\n.font-awesome-fa-address-book-o_3mhbe:before {\n  content: \"\\F2BA\";\n}\n.font-awesome-fa-vcard_xquxx:before,\n.font-awesome-fa-address-card_4s8z6:before {\n  content: \"\\F2BB\";\n}\n.font-awesome-fa-vcard-o_2q19h:before,\n.font-awesome-fa-address-card-o_g4rjs:before {\n  content: \"\\F2BC\";\n}\n.font-awesome-fa-user-circle_paca9:before {\n  content: \"\\F2BD\";\n}\n.font-awesome-fa-user-circle-o_ym32y:before {\n  content: \"\\F2BE\";\n}\n.font-awesome-fa-user-o_2axq8:before {\n  content: \"\\F2C0\";\n}\n.font-awesome-fa-id-badge_3zvve:before {\n  content: \"\\F2C1\";\n}\n.font-awesome-fa-drivers-license_3zpw3:before,\n.font-awesome-fa-id-card_z4vpk:before {\n  content: \"\\F2C2\";\n}\n.font-awesome-fa-drivers-license-o_3a2cq:before,\n.font-awesome-fa-id-card-o_zze8k:before {\n  content: \"\\F2C3\";\n}\n.font-awesome-fa-quora_3nddk:before {\n  content: \"\\F2C4\";\n}\n.font-awesome-fa-free-code-camp_2nvj3:before {\n  content: \"\\F2C5\";\n}\n.font-awesome-fa-telegram_t33bq:before {\n  content: \"\\F2C6\";\n}\n.font-awesome-fa-thermometer-4_b35kc:before,\n.font-awesome-fa-thermometer_22q6p:before,\n.font-awesome-fa-thermometer-full_a5kq1:before {\n  content: \"\\F2C7\";\n}\n.font-awesome-fa-thermometer-3_348r6:before,\n.font-awesome-fa-thermometer-three-quarters_y137a:before {\n  content: \"\\F2C8\";\n}\n.font-awesome-fa-thermometer-2_4vbbf:before,\n.font-awesome-fa-thermometer-half_3s5w6:before {\n  content: \"\\F2C9\";\n}\n.font-awesome-fa-thermometer-1_333ug:before,\n.font-awesome-fa-thermometer-quarter_3qkaz:before {\n  content: \"\\F2CA\";\n}\n.font-awesome-fa-thermometer-0_2jvbk:before,\n.font-awesome-fa-thermometer-empty_2c9a4:before {\n  content: \"\\F2CB\";\n}\n.font-awesome-fa-shower_48bz1:before {\n  content: \"\\F2CC\";\n}\n.font-awesome-fa-bathtub_p2q19:before,\n.font-awesome-fa-s15_48krf:before,\n.font-awesome-fa-bath_kbg2f:before {\n  content: \"\\F2CD\";\n}\n.font-awesome-fa-podcast_2wbnv:before {\n  content: \"\\F2CE\";\n}\n.font-awesome-fa-window-maximize_pund6:before {\n  content: \"\\F2D0\";\n}\n.font-awesome-fa-window-minimize_215tn:before {\n  content: \"\\F2D1\";\n}\n.font-awesome-fa-window-restore_35vvq:before {\n  content: \"\\F2D2\";\n}\n.font-awesome-fa-times-rectangle_grwwj:before,\n.font-awesome-fa-window-close_2cwbb:before {\n  content: \"\\F2D3\";\n}\n.font-awesome-fa-times-rectangle-o_2pxcj:before,\n.font-awesome-fa-window-close-o_3fk5e:before {\n  content: \"\\F2D4\";\n}\n.font-awesome-fa-bandcamp_3k33r:before {\n  content: \"\\F2D5\";\n}\n.font-awesome-fa-grav_48c86:before {\n  content: \"\\F2D6\";\n}\n.font-awesome-fa-etsy_4nxsk:before {\n  content: \"\\F2D7\";\n}\n.font-awesome-fa-imdb_3ymn9:before {\n  content: \"\\F2D8\";\n}\n.font-awesome-fa-ravelry_2wf71:before {\n  content: \"\\F2D9\";\n}\n.font-awesome-fa-eercast_43sb9:before {\n  content: \"\\F2DA\";\n}\n.font-awesome-fa-microchip_39g56:before {\n  content: \"\\F2DB\";\n}\n.font-awesome-fa-snowflake-o_27fzf:before {\n  content: \"\\F2DC\";\n}\n.font-awesome-fa-superpowers_3yutd:before {\n  content: \"\\F2DD\";\n}\n.font-awesome-fa-wpexplorer_4ymkj:before {\n  content: \"\\F2DE\";\n}\n.font-awesome-fa-meetup_3zzy9:before {\n  content: \"\\F2E0\";\n}\n.font-awesome-sr-only_3t6pf {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n.font-awesome-sr-only-focusable_wwj67:active,\n.font-awesome-sr-only-focusable_wwj67:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -1083,21 +1083,30 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(38);
+  module.exports = __webpack_require__(41);
 } else {
-  module.exports = __webpack_require__(39);
+  module.exports = __webpack_require__(42);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1124,7 +1133,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1166,7 +1175,35 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 5 */
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1191,17 +1228,17 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(50)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(53)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(51)();
+  module.exports = __webpack_require__(54)();
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /*
@@ -1283,7 +1320,16 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 7 */
+/* 9 */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(exports, {}))
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1339,7 +1385,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(37);
+var	fixUrls = __webpack_require__(40);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1655,7 +1701,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1752,7 +1798,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1812,7 +1858,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1836,7 +1882,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1850,7 +1896,7 @@ module.exports = emptyObject;
 
 
 
-var emptyFunction = __webpack_require__(4);
+var emptyFunction = __webpack_require__(5);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1905,7 +1951,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1919,9 +1965,9 @@ module.exports = warning;
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(11);
-  var ReactPropTypesSecret = __webpack_require__(13);
+  var invariant = __webpack_require__(12);
+  var warning = __webpack_require__(14);
+  var ReactPropTypesSecret = __webpack_require__(16);
   var loggedTypeFailures = {};
 }
 
@@ -1972,7 +2018,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1991,7 +2037,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -2021,10 +2067,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function ()
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (isKind) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(30)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (isKind) {
     /**
      */
     var isArray = Array.isArray || function (val) {
@@ -2036,7 +2082,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -2055,7 +2101,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function ()
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {(function (global, factory) {
@@ -2329,10 +2375,10 @@ return BrowserSpriteSymbol;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {(function (global, factory) {
@@ -3338,10 +3384,10 @@ return sprite$1;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3380,7 +3426,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3395,7 +3441,7 @@ module.exports = ExecutionEnvironment;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(4);
+var emptyFunction = __webpack_require__(5);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -3461,7 +3507,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3503,7 +3549,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3574,7 +3620,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3589,7 +3635,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(42);
+var isTextNode = __webpack_require__(45);
 
 /*eslint-disable no-bitwise */
 
@@ -3617,7 +3663,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3647,13 +3693,13 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(52);
+var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3661,7 +3707,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3678,10 +3724,10 @@ if(false) {
 }
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (isKind) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(30)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (isKind) {
     /**
      */
     function isObject(val) {
@@ -3693,10 +3739,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(68)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (kindOf) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(71)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (kindOf) {
     /**
      * Check if value is from a specific "kind".
      */
@@ -3709,10 +3755,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(16), __webpack_require__(71)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (hasOwn, forIn) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(19), __webpack_require__(74)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (hasOwn, forIn) {
 
     /**
      * Similar to Array/forEach but works over object properties and fixes Don't
@@ -3734,10 +3780,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(72), __webpack_require__(73), __webpack_require__(74)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(identity, prop, deepMatches) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(75), __webpack_require__(76), __webpack_require__(77)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(identity, prop, deepMatches) {
 
     /**
      * Converts argument into a valid iterator.
@@ -3773,7 +3819,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -3788,7 +3834,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	/* istanbul ignore if  */
 	if ( true ) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(80), __webpack_require__(81) ], __WEBPACK_AMD_DEFINE_RESULT__ = (function( _, riveter ) {
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(83), __webpack_require__(84) ], __WEBPACK_AMD_DEFINE_RESULT__ = (function( _, riveter ) {
 			return factory( _, riveter, root );
 		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -4241,35 +4287,7 @@ Monologue.mixInto = function( target ) {
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4279,11 +4297,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Observable = __webpack_require__(85);
+var _Observable = __webpack_require__(88);
 
 var _Observable2 = _interopRequireDefault(_Observable);
 
-var _Debounce = __webpack_require__(86);
+var _Debounce = __webpack_require__(89);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4368,42 +4386,1479 @@ exports.default = {
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["ColorByWidget"] = __webpack_require__(34);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EVENT_ABORT = exports.VOID = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.setLoggerFunction = setLoggerFunction;
+exports.vtkLogMacro = vtkLogMacro;
+exports.vtkInfoMacro = vtkInfoMacro;
+exports.vtkDebugMacro = vtkDebugMacro;
+exports.vtkErrorMacro = vtkErrorMacro;
+exports.vtkWarningMacro = vtkWarningMacro;
+exports.capitalize = capitalize;
+exports.obj = obj;
+exports.get = get;
+exports.set = set;
+exports.setGet = setGet;
+exports.getArray = getArray;
+exports.setArray = setArray;
+exports.setGetArray = setGetArray;
+exports.algo = algo;
+exports.event = event;
+exports.newInstance = newInstance;
+exports.chain = chain;
+exports.isVtkObject = isVtkObject;
+exports.traverseInstanceTree = traverseInstanceTree;
+exports.debounce = debounce;
+exports.throttle = throttle;
+exports.keystore = keystore;
+exports.proxy = proxy;
+exports.proxyPropertyMapping = proxyPropertyMapping;
+exports.proxyPropertyState = proxyPropertyState;
+
+var _vtk = __webpack_require__(96);
+
+var _vtk2 = _interopRequireDefault(_vtk);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var globalMTime = 0;
+
+var VOID = exports.VOID = Symbol('void');
+
+function getCurrentGlobalMTime() {
+  return globalMTime;
+}
+
+// ----------------------------------------------------------------------------
+// Logging function calls
+// ----------------------------------------------------------------------------
+/* eslint-disable no-prototype-builtins                                      */
+
+var fakeConsole = {};
+
+function noOp() {}
+
+var consoleMethods = ['log', 'debug', 'info', 'warn', 'error', 'time', 'timeEnd', 'group', 'groupEnd'];
+consoleMethods.forEach(function (methodName) {
+  fakeConsole[methodName] = noOp;
+});
+
+global.console = window.console.hasOwnProperty('log') ? window.console : fakeConsole;
+
+var loggerFunctions = {
+  debug: noOp, // Don't print debug by default
+  error: global.console.error || noOp,
+  info: global.console.info || noOp,
+  log: global.console.log || noOp,
+  warn: global.console.warn || noOp
+};
+
+function setLoggerFunction(name, fn) {
+  if (loggerFunctions[name]) {
+    loggerFunctions[name] = fn || noOp;
+  }
+}
+
+function vtkLogMacro() {
+  loggerFunctions.log.apply(loggerFunctions, arguments);
+}
+
+function vtkInfoMacro() {
+  loggerFunctions.info.apply(loggerFunctions, arguments);
+}
+
+function vtkDebugMacro() {
+  loggerFunctions.debug.apply(loggerFunctions, arguments);
+}
+
+function vtkErrorMacro() {
+  loggerFunctions.error.apply(loggerFunctions, arguments);
+}
+
+function vtkWarningMacro() {
+  loggerFunctions.warn.apply(loggerFunctions, arguments);
+}
+
+// ----------------------------------------------------------------------------
+// capitilze provided string
+// ----------------------------------------------------------------------------
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ----------------------------------------------------------------------------
+// Array helper
+// ----------------------------------------------------------------------------
+
+function safeArrays(model) {
+  Object.keys(model).forEach(function (key) {
+    if (Array.isArray(model[key])) {
+      model[key] = [].concat(model[key]);
+    }
+  });
+}
+
+// ----------------------------------------------------------------------------
+
+function enumToString(e, value) {
+  return Object.keys(e).find(function (key) {
+    return e[key] === value;
+  });
+}
+
+function getStateArrayMapFunc(item) {
+  if (item.isA) {
+    return item.getState();
+  }
+  return item;
+}
+
+// ----------------------------------------------------------------------------
+// vtkObject: modified(), onModified(callback), delete()
+// ----------------------------------------------------------------------------
+
+function obj() {
+  var publicAPI = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  // Ensure each instance as a unique ref of array
+  safeArrays(model);
+
+  var callbacks = [];
+  model.mtime = Number.isInteger(model.mtime) ? model.mtime : ++globalMTime;
+  model.classHierarchy = ['vtkObject'];
+
+  function off(index) {
+    callbacks[index] = null;
+  }
+
+  function on(index) {
+    function unsubscribe() {
+      off(index);
+    }
+    return Object.freeze({
+      unsubscribe: unsubscribe
+    });
+  }
+
+  publicAPI.isDeleted = function () {
+    return !!model.deleted;
+  };
+
+  publicAPI.modified = function (otherMTime) {
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+
+    if (otherMTime && otherMTime < model.mtime) {
+      return;
+    }
+
+    model.mtime = ++globalMTime;
+    callbacks.forEach(function (callback) {
+      return callback && callback(publicAPI);
+    });
+  };
+
+  publicAPI.onModified = function (callback) {
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return null;
+    }
+
+    var index = callbacks.length;
+    callbacks.push(callback);
+    return on(index);
+  };
+
+  publicAPI.getMTime = function () {
+    return model.mtime;
+  };
+
+  publicAPI.isA = function (className) {
+    var count = model.classHierarchy.length;
+    // we go backwards as that is more likely for
+    // early termination
+    while (count--) {
+      if (model.classHierarchy[count] === className) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  publicAPI.getClassName = function () {
+    var depth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    return model.classHierarchy[model.classHierarchy.length - 1 - depth];
+  };
+
+  publicAPI.set = function () {
+    var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var noWarning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var noFunction = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    var ret = false;
+    Object.keys(map).forEach(function (name) {
+      var fn = noFunction ? null : publicAPI['set' + capitalize(name)];
+      if (fn && Array.isArray(map[name])) {
+        ret = fn.apply(undefined, _toConsumableArray(map[name])) || ret;
+      } else if (fn) {
+        ret = fn(map[name]) || ret;
+      } else {
+        // Set data on model directly
+        if (['mtime'].indexOf(name) === -1 && !noWarning) {
+          vtkWarningMacro('Warning: Set value to model directly ' + name + ', ' + map[name]);
+        }
+        model[name] = map[name];
+        ret = true;
+      }
+    });
+    return ret;
+  };
+
+  publicAPI.get = function () {
+    for (var _len = arguments.length, list = Array(_len), _key = 0; _key < _len; _key++) {
+      list[_key] = arguments[_key];
+    }
+
+    if (!list.length) {
+      return model;
+    }
+    var subset = {};
+    list.forEach(function (name) {
+      subset[name] = model[name];
+    });
+    return subset;
+  };
+
+  publicAPI.getReferenceByName = function (val) {
+    return model[val];
+  };
+
+  publicAPI.delete = function () {
+    Object.keys(model).forEach(function (field) {
+      return delete model[field];
+    });
+    callbacks.forEach(function (el, index) {
+      return off(index);
+    });
+
+    // Flag the instance being deleted
+    model.deleted = true;
+  };
+
+  // Add serialization support
+  publicAPI.getState = function () {
+    var jsonArchive = Object.assign({}, model, {
+      vtkClass: publicAPI.getClassName()
+    });
+
+    // Convert every vtkObject to its serializable form
+    Object.keys(jsonArchive).forEach(function (keyName) {
+      if (jsonArchive[keyName] === null || jsonArchive[keyName] === undefined) {
+        delete jsonArchive[keyName];
+      } else if (jsonArchive[keyName].isA) {
+        jsonArchive[keyName] = jsonArchive[keyName].getState();
+      } else if (Array.isArray(jsonArchive[keyName])) {
+        jsonArchive[keyName] = jsonArchive[keyName].map(getStateArrayMapFunc);
+      }
+    });
+
+    // Sort resulting object by key name
+    var sortedObj = {};
+    Object.keys(jsonArchive).sort().forEach(function (name) {
+      sortedObj[name] = jsonArchive[name];
+    });
+
+    // Remove mtime
+    if (sortedObj.mtime) {
+      delete sortedObj.mtime;
+    }
+
+    return sortedObj;
+  };
+
+  // Add shallowCopy(otherInstance) support
+  publicAPI.shallowCopy = function (other) {
+    var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    if (other.getClassName() !== publicAPI.getClassName()) {
+      throw new Error('Cannot ShallowCopy ' + other.getClassName() + ' into ' + publicAPI.getClassName());
+    }
+    var otherModel = other.get();
+
+    var keyList = Object.keys(model).sort();
+    var otherKeyList = Object.keys(otherModel).sort();
+
+    otherKeyList.forEach(function (key) {
+      var keyIdx = keyList.indexOf(key);
+      if (keyIdx === -1) {
+        if (debug) {
+          vtkDebugMacro('add ' + key + ' in shallowCopy');
+        }
+      } else {
+        keyList.splice(keyIdx, 1);
+      }
+      model[key] = otherModel[key];
+    });
+    if (keyList.length && debug) {
+      vtkDebugMacro('Untouched keys: ' + keyList.join(', '));
+    }
+
+    publicAPI.modified();
+  };
+}
+
+// ----------------------------------------------------------------------------
+// getXXX: add getters
+// ----------------------------------------------------------------------------
+
+function get(publicAPI, model, fieldNames) {
+  fieldNames.forEach(function (field) {
+    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+      publicAPI['get' + capitalize(field.name)] = function () {
+        return model[field.name];
+      };
+    } else {
+      publicAPI['get' + capitalize(field)] = function () {
+        return model[field];
+      };
+    }
+  });
+}
+
+// ----------------------------------------------------------------------------
+// setXXX: add setters
+// ----------------------------------------------------------------------------
+
+var objectSetterMap = {
+  enum: function _enum(publicAPI, model, field) {
+    return function (value) {
+      if (typeof value === 'string') {
+        if (field.enum[value] !== undefined) {
+          if (model[field.name] !== field.enum[value]) {
+            model[field.name] = field.enum[value];
+            publicAPI.modified();
+            return true;
+          }
+          return false;
+        }
+        vtkErrorMacro('Set Enum with invalid argument ' + field + ', ' + value);
+        throw new RangeError('Set Enum with invalid string argument');
+      }
+      if (typeof value === 'number') {
+        if (model[field.name] !== value) {
+          if (Object.keys(field.enum).map(function (key) {
+            return field.enum[key];
+          }).indexOf(value) !== -1) {
+            model[field.name] = value;
+            publicAPI.modified();
+            return true;
+          }
+          vtkErrorMacro('Set Enum outside numeric range ' + field + ', ' + value);
+          throw new RangeError('Set Enum outside numeric range');
+        }
+        return false;
+      }
+      vtkErrorMacro('Set Enum with invalid argument (String/Number) ' + field + ', ' + value);
+      throw new TypeError('Set Enum with invalid argument (String/Number)');
+    };
+  }
+};
+
+function findSetter(field) {
+  if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+    var fn = objectSetterMap[field.type];
+    if (fn) {
+      return function (publicAPI, model) {
+        return fn(publicAPI, model, field);
+      };
+    }
+
+    vtkErrorMacro('No setter for field ' + field);
+    throw new TypeError('No setter for field');
+  }
+  return function getSetter(publicAPI, model) {
+    return function setter(value) {
+      if (model.deleted) {
+        vtkErrorMacro('instance deleted - cannot call any method');
+        return false;
+      }
+
+      if (model[field] !== value) {
+        model[field] = value;
+        publicAPI.modified();
+        return true;
+      }
+      return false;
+    };
+  };
+}
+
+function set(publicAPI, model, fields) {
+  fields.forEach(function (field) {
+    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
+      publicAPI['set' + capitalize(field.name)] = findSetter(field)(publicAPI, model);
+    } else {
+      publicAPI['set' + capitalize(field)] = findSetter(field)(publicAPI, model);
+    }
+  });
+}
+
+// ----------------------------------------------------------------------------
+// set/get XXX: add both setters and getters
+// ----------------------------------------------------------------------------
+
+function setGet(publicAPI, model, fieldNames) {
+  get(publicAPI, model, fieldNames);
+  set(publicAPI, model, fieldNames);
+}
+
+// ----------------------------------------------------------------------------
+// getXXX: add getters for object of type array with copy to be safe
+// getXXXByReference: add getters for object of type array without copy
+// ----------------------------------------------------------------------------
+
+function getArray(publicAPI, model, fieldNames) {
+  fieldNames.forEach(function (field) {
+    publicAPI['get' + capitalize(field)] = function () {
+      return [].concat(model[field]);
+    };
+    publicAPI['get' + capitalize(field) + 'ByReference'] = function () {
+      return model[field];
+    };
+  });
+}
+
+// ----------------------------------------------------------------------------
+// setXXX: add setter for object of type array
+// if 'defaultVal' is supplied, shorter arrays will be padded to 'size' with 'defaultVal'
+// set...From: fast path to copy the content of an array to the current one without call to modified.
+// ----------------------------------------------------------------------------
+
+function setArray(publicAPI, model, fieldNames, size) {
+  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+
+  fieldNames.forEach(function (field) {
+    publicAPI['set' + capitalize(field)] = function () {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      if (model.deleted) {
+        vtkErrorMacro('instance deleted - cannot call any method');
+        return false;
+      }
+
+      var array = args;
+      // allow an array passed as a single arg.
+      if (array.length === 1 && Array.isArray(array[0])) {
+        /* eslint-disable prefer-destructuring */
+        array = array[0];
+        /* eslint-enable prefer-destructuring */
+      }
+
+      if (array.length !== size) {
+        if (array.length < size && defaultVal !== undefined) {
+          array = [].concat(array);
+          while (array.length < size) {
+            array.push(defaultVal);
+          }
+        } else {
+          throw new RangeError('Invalid number of values for array setter');
+        }
+      }
+      var changeDetected = false;
+      model[field].forEach(function (item, index) {
+        if (item !== array[index]) {
+          if (changeDetected) {
+            return;
+          }
+          changeDetected = true;
+        }
+      });
+
+      if (changeDetected || model[field].length !== array.length) {
+        model[field] = [].concat(array);
+        publicAPI.modified();
+      }
+      return true;
+    };
+
+    publicAPI['set' + capitalize(field) + 'From'] = function (otherArray) {
+      var target = model[field];
+      otherArray.forEach(function (v, i) {
+        target[i] = v;
+      });
+    };
+  });
+}
+
+// ----------------------------------------------------------------------------
+// set/get XXX: add setter and getter for object of type array
+// ----------------------------------------------------------------------------
+
+function setGetArray(publicAPI, model, fieldNames, size) {
+  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+
+  getArray(publicAPI, model, fieldNames);
+  setArray(publicAPI, model, fieldNames, size, defaultVal);
+}
+
+// ----------------------------------------------------------------------------
+// vtkAlgorithm: setInputData(), setInputConnection(), getOutputData(), getOutputPort()
+// ----------------------------------------------------------------------------
+
+function algo(publicAPI, model, numberOfInputs, numberOfOutputs) {
+  if (model.inputData) {
+    model.inputData = model.inputData.map(_vtk2.default);
+  } else {
+    model.inputData = [];
+  }
+
+  if (model.inputConnection) {
+    model.inputConnection = model.inputConnection.map(_vtk2.default);
+  } else {
+    model.inputConnection = [];
+  }
+
+  if (model.output) {
+    model.output = model.output.map(_vtk2.default);
+  } else {
+    model.output = [];
+  }
+
+  if (model.inputArrayToProcess) {
+    model.inputArrayToProcess = model.inputArrayToProcess.map(_vtk2.default);
+  } else {
+    model.inputArrayToProcess = [];
+  }
+
+  // Cache the argument for later manipulation
+  model.numberOfInputs = numberOfInputs;
+
+  // Methods
+  function setInputData(dataset) {
+    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+    if (port >= model.numberOfInputs) {
+      var msg = 'algorithm ' + publicAPI.getClassName() + ' only has ';
+      msg += '' + model.numberOfInputs;
+      msg += ' input ports. To add more input ports, use addInputData()';
+      vtkErrorMacro(msg);
+      return;
+    }
+    if (model.inputData[port] !== dataset || model.inputConnection[port]) {
+      model.inputData[port] = dataset;
+      model.inputConnection[port] = null;
+      if (publicAPI.modified) {
+        publicAPI.modified();
+      }
+    }
+  }
+
+  function getInputData() {
+    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    if (model.inputConnection[port]) {
+      model.inputData[port] = model.inputConnection[port]();
+    }
+    return model.inputData[port];
+  }
+
+  function setInputConnection(outputPort) {
+    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+    if (port >= model.numberOfInputs) {
+      var msg = 'algorithm ' + publicAPI.getClassName() + ' only has ';
+      msg += '' + model.numberOfInputs;
+      msg += ' input ports. To add more input ports, use addInputConnection()';
+      vtkErrorMacro(msg);
+      return;
+    }
+    model.inputData[port] = null;
+    model.inputConnection[port] = outputPort;
+  }
+
+  function getInputConnection() {
+    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    return model.inputConnection[port];
+  }
+
+  function addInputConnection(outputPort) {
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+    model.numberOfInputs++;
+    setInputConnection(outputPort, model.numberOfInputs - 1);
+  }
+
+  function addInputData(dataset) {
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+    model.numberOfInputs++;
+    setInputData(dataset, model.numberOfInputs - 1);
+  }
+
+  function getOutputData() {
+    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return null;
+    }
+    if (publicAPI.shouldUpdate()) {
+      publicAPI.update();
+    }
+    return model.output[port];
+  }
+
+  publicAPI.shouldUpdate = function () {
+    var localMTime = model.mtime;
+    var count = numberOfOutputs;
+    var minOutputMTime = Infinity;
+    while (count--) {
+      if (!model.output[count]) {
+        return true;
+      }
+      var mt = model.output[count].getMTime();
+      if (mt < localMTime) {
+        return true;
+      }
+      if (mt < minOutputMTime) {
+        minOutputMTime = mt;
+      }
+    }
+
+    count = model.numberOfInputs;
+    while (count--) {
+      if (model.inputConnection[count] && model.inputConnection[count].filter.shouldUpdate()) {
+        return true;
+      }
+    }
+
+    count = model.numberOfInputs;
+    while (count--) {
+      if (publicAPI.getInputData(count) && publicAPI.getInputData(count).getMTime() > minOutputMTime) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  function getOutputPort() {
+    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    var outputPortAccess = function outputPortAccess() {
+      return getOutputData(port);
+    };
+    // Add reference to filter
+    outputPortAccess.filter = publicAPI;
+    return outputPortAccess;
+  }
+
+  // Handle input if needed
+  if (model.numberOfInputs) {
+    // Reserve inputs
+    var count = model.numberOfInputs;
+    while (count--) {
+      model.inputData.push(null);
+      model.inputConnection.push(null);
+    }
+
+    // Expose public methods
+    publicAPI.setInputData = setInputData;
+    publicAPI.setInputConnection = setInputConnection;
+    publicAPI.addInputData = addInputData;
+    publicAPI.addInputConnection = addInputConnection;
+    publicAPI.getInputData = getInputData;
+    publicAPI.getInputConnection = getInputConnection;
+  }
+
+  if (numberOfOutputs) {
+    publicAPI.getOutputData = getOutputData;
+    publicAPI.getOutputPort = getOutputPort;
+  }
+
+  publicAPI.update = function () {
+    var ins = [];
+    if (model.numberOfInputs) {
+      var _count = 0;
+      while (_count < model.numberOfInputs) {
+        ins[_count] = publicAPI.getInputData(_count);
+        _count++;
+      }
+    }
+    if (publicAPI.shouldUpdate() && publicAPI.requestData) {
+      publicAPI.requestData(ins, model.output);
+    }
+  };
+
+  publicAPI.getNumberOfInputPorts = function () {
+    return model.numberOfInputs;
+  };
+  publicAPI.getNumberOfOutputPorts = function () {
+    return numberOfOutputs;
+  };
+
+  publicAPI.getInputArrayToProcess = function (inputPort) {
+    var arrayDesc = model.inputArrayToProcess[inputPort];
+    var ds = model.inputData[inputPort];
+    if (arrayDesc && ds) {
+      return ds['get' + arrayDesc.fieldAssociation]().getArray(arrayDesc.arrayName);
+    }
+    return null;
+  };
+  publicAPI.setInputArrayToProcess = function (inputPort, arrayName, fieldAssociation) {
+    var attributeType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'Scalars';
+
+    while (model.inputArrayToProcess.length < inputPort) {
+      model.inputArrayToProcess.push(null);
+    }
+    model.inputArrayToProcess[inputPort] = {
+      arrayName: arrayName,
+      fieldAssociation: fieldAssociation,
+      attributeType: attributeType
+    };
+  };
+}
+
+// ----------------------------------------------------------------------------
+// Event handling: onXXX(callback), invokeXXX(args...)
+// ----------------------------------------------------------------------------
+
+var EVENT_ABORT = exports.EVENT_ABORT = Symbol('Event abort');
+
+function event(publicAPI, model, eventName) {
+  var callbacks = [];
+  var previousDelete = publicAPI.delete;
+  var curCallbackID = 1;
+
+  function off(callbackID) {
+    for (var i = 0; i < callbacks.length; ++i) {
+      var _callbacks$i = _slicedToArray(callbacks[i], 1),
+          cbID = _callbacks$i[0];
+
+      if (cbID === callbackID) {
+        callbacks.splice(i, 1);
+        return;
+      }
+    }
+  }
+
+  function on(callbackID) {
+    function unsubscribe() {
+      off(callbackID);
+    }
+    return Object.freeze({
+      unsubscribe: unsubscribe
+    });
+  }
+
+  function invoke() {
+    var _arguments = arguments;
+
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return;
+    }
+    /* eslint-disable prefer-rest-params */
+    // Go through a copy of the callbacks array in case new callbacks
+    // get prepended within previous callbacks
+    var currentCallbacks = callbacks.slice();
+
+    var _loop = function _loop(index) {
+      var _currentCallbacks$ind = _slicedToArray(currentCallbacks[index], 3),
+          cb = _currentCallbacks$ind[1],
+          priority = _currentCallbacks$ind[2];
+
+      if (priority < 0) {
+        setTimeout(function () {
+          return cb.apply(publicAPI, _arguments);
+        }, 1 - priority);
+      } else if (cb) {
+        // Abort only if the callback explicitly returns false
+        var continueNext = cb.apply(publicAPI, _arguments);
+        if (continueNext === EVENT_ABORT) {
+          return 'break';
+        }
+      }
+    };
+
+    for (var index = 0; index < currentCallbacks.length; ++index) {
+      var _ret = _loop(index);
+
+      if (_ret === 'break') break;
+    }
+    /* eslint-enable prefer-rest-params */
+  }
+
+  publicAPI['invoke' + capitalize(eventName)] = invoke;
+
+  publicAPI['on' + capitalize(eventName)] = function (callback) {
+    var priority = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
+
+    if (model.deleted) {
+      vtkErrorMacro('instance deleted - cannot call any method');
+      return null;
+    }
+
+    var callbackID = curCallbackID++;
+    callbacks.push([callbackID, callback, priority]);
+    callbacks.sort(function (cb1, cb2) {
+      return cb2[2] - cb1[2];
+    });
+    return on(callbackID);
+  };
+
+  publicAPI.delete = function () {
+    previousDelete();
+    callbacks.forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 1),
+          cbID = _ref2[0];
+
+      return off(cbID);
+    });
+  };
+}
+
+// ----------------------------------------------------------------------------
+// newInstance
+// ----------------------------------------------------------------------------
+
+function newInstance(extend, className) {
+  var constructor = function constructor() {
+    var initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var model = {};
+    var publicAPI = {};
+    extend(publicAPI, model, initialValues);
+    return Object.freeze(publicAPI);
+  };
+
+  // Register constructor to factory
+  if (className) {
+    _vtk2.default.register(className, constructor);
+  }
+
+  return constructor;
+}
+
+// ----------------------------------------------------------------------------
+// Chain function calls
+// ----------------------------------------------------------------------------
+
+function chain() {
+  for (var _len3 = arguments.length, fn = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    fn[_key3] = arguments[_key3];
+  }
+
+  return function () {
+    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+
+    return fn.filter(function (i) {
+      return !!i;
+    }).forEach(function (i) {
+      return i.apply(undefined, args);
+    });
+  };
+}
+
+// ----------------------------------------------------------------------------
+// Some utility methods for vtk objects
+// ----------------------------------------------------------------------------
+
+function isVtkObject(instance) {
+  return instance && instance.isA && instance.isA('vtkObject');
+}
+
+function traverseInstanceTree(instance, extractFunction) {
+  var accumulator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var visitedInstances = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+
+  if (isVtkObject(instance)) {
+    if (visitedInstances.indexOf(instance) >= 0) {
+      // avoid cycles
+      return accumulator;
+    }
+
+    visitedInstances.push(instance);
+    var result = extractFunction(instance);
+    if (result !== undefined) {
+      accumulator.push(result);
+    }
+
+    // Now go through this instance's model
+    var model = instance.get();
+    Object.keys(model).forEach(function (key) {
+      var modelObj = model[key];
+      if (Array.isArray(modelObj)) {
+        modelObj.forEach(function (subObj) {
+          traverseInstanceTree(subObj, extractFunction, accumulator, visitedInstances);
+        });
+      } else {
+        traverseInstanceTree(modelObj, extractFunction, accumulator, visitedInstances);
+      }
+    });
+  }
+
+  return accumulator;
+}
+
+// ----------------------------------------------------------------------------
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+function debounce(func, wait, immediate) {
+  var _this = this;
+
+  var timeout = void 0;
+  return function () {
+    for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+      args[_key5] = arguments[_key5];
+    }
+
+    var context = _this;
+    var later = function later() {
+      timeout = null;
+      if (!immediate) {
+        func.apply(context, args);
+      }
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}
+
+// ----------------------------------------------------------------------------
+// Creates a throttled function that only invokes `func` at most once per
+// every `wait` milliseconds.
+
+function throttle(callback, delay) {
+  var isThrottled = false;
+  var argsToUse = null;
+
+  function next() {
+    isThrottled = false;
+    if (argsToUse !== null) {
+      wrapper.apply(undefined, _toConsumableArray(argsToUse)); // eslint-disable-line
+      argsToUse = null;
+    }
+  }
+
+  function wrapper() {
+    for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+      args[_key6] = arguments[_key6];
+    }
+
+    if (isThrottled) {
+      argsToUse = args;
+      return;
+    }
+    isThrottled = true;
+    callback.apply(undefined, args);
+    setTimeout(next, delay);
+  }
+
+  return wrapper;
+}
+
+// ----------------------------------------------------------------------------
+// keystore(publicAPI, model, initialKeystore)
+//
+//    - initialKeystore: Initial keystore. This can be either a Map or an
+//      object.
+//
+// Generated API
+//  setKey(key, value) : mixed (returns value)
+//  getKey(key) : mixed
+//  getAllKeys() : [mixed]
+//  deleteKey(key) : Boolean
+// ----------------------------------------------------------------------------
+
+function keystore(publicAPI, model) {
+  var initialKeystore = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  model.keystore = Object.assign(model.keystore || {}, initialKeystore);
+
+  publicAPI.setKey = function (key, value) {
+    model.keystore[key] = value;
+  };
+  publicAPI.getKey = function (key, value) {
+    return model.keystore[key];
+  };
+  publicAPI.getAllKeys = function (key, value) {
+    return Object.keys(model.keystore);
+  };
+  publicAPI.deleteKey = function (key, value) {
+    return delete model.keystore[key];
+  };
+  publicAPI.clearKeystore = function () {
+    return publicAPI.getAllKeys().forEach(function (key) {
+      return delete model.keystore[key];
+    });
+  };
+}
+
+// ----------------------------------------------------------------------------
+// proxy(publicAPI, model, sectionName, propertyUI)
+//
+//    - sectionName: Name of the section for UI
+//    - propertyUI: List of props with their UI description
+//
+// Generated API
+//  getProxyId() : String
+//  listProxyProperties() : [string]
+//  updateProxyProperty(name, prop)
+//  getProxySection() => List of properties for UI generation
+// ----------------------------------------------------------------------------
+var nextProxyId = 1;
+var ROOT_GROUP_NAME = '__root__';
+
+function proxy(publicAPI, model) {
+  // Proxies are keystores
+  keystore(publicAPI, model);
+
+  var parentDelete = publicAPI.delete;
+
+  // getProxyId
+  model.proxyId = '' + nextProxyId++;
+
+  // ui handling
+  model.ui = JSON.parse(JSON.stringify(model.ui || [])); // deep copy
+  get(publicAPI, model, ['proxyId', 'proxyGroup', 'proxyName']);
+  setGet(publicAPI, model, ['proxyManager']);
+
+  // group properties
+  var propertyMap = {};
+  var groupChildrenNames = {};
+
+  function registerProperties(descriptionList, currentGroupName) {
+    if (!groupChildrenNames[currentGroupName]) {
+      groupChildrenNames[currentGroupName] = [];
+    }
+    var childrenNames = groupChildrenNames[currentGroupName];
+
+    for (var i = 0; i < descriptionList.length; i++) {
+      childrenNames.push(descriptionList[i].name);
+      propertyMap[descriptionList[i].name] = descriptionList[i];
+      if (descriptionList[i].children && descriptionList[i].children.length) {
+        registerProperties(descriptionList[i].children, descriptionList[i].name);
+      }
+    }
+  }
+  registerProperties(model.ui, ROOT_GROUP_NAME);
+
+  publicAPI.updateUI = function (ui) {
+    model.ui = JSON.parse(JSON.stringify(ui || [])); // deep copy
+    Object.keys(propertyMap).forEach(function (k) {
+      return delete propertyMap[k];
+    });
+    Object.keys(groupChildrenNames).forEach(function (k) {
+      return delete groupChildrenNames[k];
+    });
+    registerProperties(model.ui, ROOT_GROUP_NAME);
+    publicAPI.modified();
+  };
+
+  function listProxyProperties() {
+    var gName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ROOT_GROUP_NAME;
+
+    return groupChildrenNames[gName];
+  }
+
+  publicAPI.updateProxyProperty = function (propertyName, propUI) {
+    var prop = propertyMap[propertyName];
+    if (prop) {
+      Object.assign(prop, propUI);
+    }
+  };
+
+  // property link
+  model.propertyLinkSubscribers = [];
+  publicAPI.registerPropertyLinkForGC = function (otherLink) {
+    model.propertyLinkSubscribers.push(otherLink);
+  };
+
+  publicAPI.gcPropertyLinks = function () {
+    while (model.propertyLinkSubscribers.length) {
+      model.propertyLinkSubscribers.pop().unbind(publicAPI);
+    }
+  };
+
+  model.propertyLinkMap = {};
+  publicAPI.getPropertyLink = function (id) {
+    if (model.propertyLinkMap[id]) {
+      return model.propertyLinkMap[id];
+    }
+    var value = null;
+    var links = [];
+    var count = 0;
+    var updateInProgress = false;
+
+    function update(source) {
+      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      if (updateInProgress) {
+        return null;
+      }
+
+      var needUpdate = [];
+      var sourceLink = null;
+      count = links.length;
+      while (count--) {
+        var link = links[count];
+        if (link.instance === source) {
+          sourceLink = link;
+        } else {
+          needUpdate.push(link);
+        }
+      }
+
+      var newValue = sourceLink.instance['get' + capitalize(sourceLink.propertyName)]();
+      if (newValue !== value || force) {
+        value = newValue;
+        updateInProgress = true;
+        while (needUpdate.length) {
+          var linkToUpdate = needUpdate.pop();
+          linkToUpdate.instance.set(_defineProperty({}, linkToUpdate.propertyName, value));
+        }
+        updateInProgress = false;
+      }
+      return newValue;
+    }
+
+    function unbind(instance, propertyName) {
+      var indexToDelete = [];
+      count = links.length;
+      while (count--) {
+        var link = links[count];
+        if (link.instance === instance && (link.propertyName === propertyName || propertyName === undefined)) {
+          link.subscription.unsubscribe();
+          indexToDelete.push(count);
+        }
+      }
+      while (indexToDelete.length) {
+        links.splice(indexToDelete.pop(), 1);
+      }
+    }
+
+    function bind(instance, propertyName) {
+      var updateMe = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      var subscription = instance.onModified(update);
+      var other = links[0];
+      links.push({
+        instance: instance,
+        propertyName: propertyName,
+        subscription: subscription
+      });
+      if (updateMe && other) {
+        update(other.instance, true);
+      }
+      return {
+        unsubscribe: function unsubscribe() {
+          return unbind(instance, propertyName);
+        }
+      };
+    }
+
+    function unsubscribe() {
+      while (links.length) {
+        links.pop().subscription.unsubscribe();
+      }
+    }
+
+    var linkHandler = {
+      bind: bind,
+      unbind: unbind,
+      unsubscribe: unsubscribe
+    };
+    model.propertyLinkMap[id] = linkHandler;
+    return linkHandler;
+  };
+
+  // extract values
+  function getProperties() {
+    var groupName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ROOT_GROUP_NAME;
+
+    var values = [];
+    var id = model.proxyId;
+    var propertyNames = listProxyProperties(groupName) || [];
+    for (var i = 0; i < propertyNames.length; i++) {
+      var name = propertyNames[i];
+      var method = publicAPI['get' + capitalize(name)];
+      var value = method ? method() : undefined;
+      var prop = {
+        id: id,
+        name: name,
+        value: value
+      };
+      var children = getProperties(name);
+      if (children.length) {
+        prop.children = children;
+      }
+      values.push(prop);
+    }
+    return values;
+  }
+
+  publicAPI.listPropertyNames = function () {
+    return getProperties().map(function (p) {
+      return p.name;
+    });
+  };
+
+  publicAPI.getPropertyByName = function (name) {
+    return getProperties().find(function (p) {
+      return p.name === name;
+    });
+  };
+
+  // ui section
+  publicAPI.getProxySection = function () {
+    return {
+      id: model.proxyId,
+      name: model.proxyGroup,
+      ui: model.ui,
+      properties: getProperties()
+    };
+  };
+
+  // free resources
+  publicAPI.delete = function () {
+    var list = Object.keys(model.propertyLinkMap);
+    var count = list.length;
+    while (count--) {
+      model.propertyLinkMap[list[count]].unsubscribe();
+    }
+    count = model.propertyLinkSubscribers.length;
+    while (count--) {
+      model.propertyLinkSubscribers[count].unbind(publicAPI);
+    }
+    parentDelete();
+  };
+}
+
+// ----------------------------------------------------------------------------
+// proxyPropertyMapping(publicAPI, model, map)
+//
+//   map = {
+//      opacity: { modelKey: 'property', property: 'opacity' },
+//   }
+//
+// Generated API:
+//  Elevate set/get methods from internal object stored in the model to current one
+// ----------------------------------------------------------------------------
+
+function proxyPropertyMapping(publicAPI, model, map) {
+  var parentDelete = publicAPI.delete;
+  var subscriptions = [];
+
+  var propertyNames = Object.keys(map);
+  var count = propertyNames.length;
+  while (count--) {
+    var propertyName = propertyNames[count];
+    var _map$propertyName = map[propertyName],
+        modelKey = _map$propertyName.modelKey,
+        property = _map$propertyName.property;
+
+    var methodSrc = capitalize(property);
+    var methodDst = capitalize(propertyName);
+    publicAPI['get' + methodDst] = model[modelKey]['get' + methodSrc];
+    publicAPI['set' + methodDst] = model[modelKey]['set' + methodSrc];
+    subscriptions.push(model[modelKey].onModified(publicAPI.modified));
+  }
+
+  publicAPI.delete = function () {
+    while (subscriptions.length) {
+      subscriptions.pop().unsubscribe();
+    }
+    parentDelete();
+  };
+}
+
+// ----------------------------------------------------------------------------
+// proxyPropertyState(publicAPI, model, state, defaults)
+//
+//   state = {
+//     representation: {
+//       'Surface with edges': { property: { edgeVisibility: true, representation: 2 } },
+//       Surface: { property: { edgeVisibility: false, representation: 2 } },
+//       Wireframe: { property: { edgeVisibility: false, representation: 1 } },
+//       Points: { property: { edgeVisibility: false, representation: 0 } },
+//     },
+//   }
+//
+//   defaults = {
+//      representation: 'Surface',
+//   }
+//
+// Generated API
+//   get / set Representation ( string ) => push state to various internal objects
+// ----------------------------------------------------------------------------
+
+function proxyPropertyState(publicAPI, model) {
+  var state = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var defaults = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
+  model.this = publicAPI;
+
+  function applyState(map) {
+    var modelKeys = Object.keys(map);
+    var count = modelKeys.length;
+    while (count--) {
+      var modelKey = modelKeys[count];
+      model[modelKey].set(map[modelKey]);
+    }
+  }
+
+  var modelKeys = Object.keys(defaults);
+  var count = modelKeys.length;
+
+  var _loop2 = function _loop2() {
+    // Add default
+    var key = modelKeys[count];
+    model[key] = defaults[key];
+
+    // Add set method
+    var mapping = state[key];
+    publicAPI['set' + capitalize(key)] = function (value) {
+      if (value !== model[key]) {
+        model[key] = value;
+        var propValues = mapping[value];
+        applyState(propValues);
+        publicAPI.modified();
+      }
+    };
+  };
+
+  while (count--) {
+    _loop2();
+  }
+
+  // Add getter
+  if (modelKeys.length) {
+    get(publicAPI, model, modelKeys);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Default export
+// ----------------------------------------------------------------------------
+
+exports.default = {
+  EVENT_ABORT: EVENT_ABORT,
+  VOID: VOID,
+  algo: algo,
+  capitalize: capitalize,
+  chain: chain,
+  enumToString: enumToString,
+  event: event,
+  get: get,
+  getArray: getArray,
+  getCurrentGlobalMTime: getCurrentGlobalMTime,
+  getStateArrayMapFunc: getStateArrayMapFunc,
+  isVtkObject: isVtkObject,
+  keystore: keystore,
+  newInstance: newInstance,
+  obj: obj,
+  safeArrays: safeArrays,
+  set: set,
+  setArray: setArray,
+  setGet: setGet,
+  setGetArray: setGetArray,
+  setLoggerFunction: setLoggerFunction,
+  traverseInstanceTree: traverseInstanceTree,
+  vtkDebugMacro: vtkDebugMacro,
+  vtkErrorMacro: vtkErrorMacro,
+  vtkInfoMacro: vtkInfoMacro,
+  vtkLogMacro: vtkLogMacro,
+  vtkWarningMacro: vtkWarningMacro,
+  debounce: debounce,
+  throttle: throttle,
+  proxy: proxy,
+  proxyPropertyMapping: proxyPropertyMapping,
+  proxyPropertyState: proxyPropertyState
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 34 */
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["ColorByWidget"] = __webpack_require__(37);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(35);
+__webpack_require__(38);
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(40);
+var _reactDom = __webpack_require__(43);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(49);
+var _ = __webpack_require__(52);
 
 var _2 = _interopRequireDefault(_);
 
-var _sourceProxy = __webpack_require__(95);
+var _sourceProxy = __webpack_require__(107);
 
 var _sourceProxy2 = _interopRequireDefault(_sourceProxy);
 
-var _representationProxy = __webpack_require__(96);
+var _representationProxy = __webpack_require__(108);
 
 var _representationProxy2 = _interopRequireDefault(_representationProxy);
 
-var _presets = __webpack_require__(97);
+var _presets = __webpack_require__(109);
 
 var _presets2 = _interopRequireDefault(_presets);
 
@@ -4429,13 +5884,13 @@ _reactDom2.default.render(_react2.default.createElement(_2.default, {
 document.body.style.margin = '10px';
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(36);
+var content = __webpack_require__(39);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -4443,7 +5898,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -4460,10 +5915,10 @@ if(false) {
 }
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 
 
@@ -4474,7 +5929,7 @@ exports.push([module.i, "/*! normalize.css v7.0.0 | MIT License | github.com/nec
 
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports) {
 
 
@@ -4569,7 +6024,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4582,7 +6037,7 @@ module.exports = function (css) {
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(8),n=__webpack_require__(10),p=__webpack_require__(4),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(11),n=__webpack_require__(13),p=__webpack_require__(5),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -4597,7 +6052,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4618,12 +6073,12 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(8);
-var emptyObject = __webpack_require__(10);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(11);
-var emptyFunction = __webpack_require__(4);
-var checkPropTypes = __webpack_require__(12);
+var _assign = __webpack_require__(11);
+var emptyObject = __webpack_require__(13);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(14);
+var emptyFunction = __webpack_require__(5);
+var checkPropTypes = __webpack_require__(15);
 
 // TODO: this is special because it gets imported during build.
 
@@ -5962,7 +7417,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6000,15 +7455,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(41);
-} else {
   module.exports = __webpack_require__(44);
+} else {
+  module.exports = __webpack_require__(47);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6024,7 +7479,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(2),l=__webpack_require__(19),B=__webpack_require__(8),C=__webpack_require__(4),ba=__webpack_require__(20),da=__webpack_require__(21),ea=__webpack_require__(22),fa=__webpack_require__(23),ia=__webpack_require__(24),D=__webpack_require__(10);
+var aa=__webpack_require__(3),l=__webpack_require__(22),B=__webpack_require__(11),C=__webpack_require__(5),ba=__webpack_require__(23),da=__webpack_require__(24),ea=__webpack_require__(25),fa=__webpack_require__(26),ia=__webpack_require__(27),D=__webpack_require__(13);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -6244,7 +7699,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6259,7 +7714,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(43);
+var isNode = __webpack_require__(46);
 
 /**
  * @param {*} object The object to check.
@@ -6272,7 +7727,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6300,7 +7755,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6321,21 +7776,21 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(2);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(11);
-var ExecutionEnvironment = __webpack_require__(19);
-var _assign = __webpack_require__(8);
-var emptyFunction = __webpack_require__(4);
-var EventListener = __webpack_require__(20);
-var getActiveElement = __webpack_require__(21);
-var shallowEqual = __webpack_require__(22);
-var containsNode = __webpack_require__(23);
-var focusNode = __webpack_require__(24);
-var emptyObject = __webpack_require__(10);
-var checkPropTypes = __webpack_require__(12);
-var hyphenateStyleName = __webpack_require__(45);
-var camelizeStyleName = __webpack_require__(47);
+var React = __webpack_require__(3);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(14);
+var ExecutionEnvironment = __webpack_require__(22);
+var _assign = __webpack_require__(11);
+var emptyFunction = __webpack_require__(5);
+var EventListener = __webpack_require__(23);
+var getActiveElement = __webpack_require__(24);
+var shallowEqual = __webpack_require__(25);
+var containsNode = __webpack_require__(26);
+var focusNode = __webpack_require__(27);
+var emptyObject = __webpack_require__(13);
+var checkPropTypes = __webpack_require__(15);
+var hyphenateStyleName = __webpack_require__(48);
+var camelizeStyleName = __webpack_require__(50);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -21702,7 +23157,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21717,7 +23172,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(46);
+var hyphenate = __webpack_require__(49);
 
 var msPattern = /^ms-/;
 
@@ -21744,7 +23199,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21780,7 +23235,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21795,7 +23250,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(48);
+var camelize = __webpack_require__(51);
 
 var msPattern = /^-ms-/;
 
@@ -21823,7 +23278,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21858,7 +23313,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21874,19 +23329,19 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _ColorByWidget = __webpack_require__(25);
+var _ColorByWidget = __webpack_require__(28);
 
 var _ColorByWidget2 = _interopRequireDefault(_ColorByWidget);
 
-var _AdvancedView = __webpack_require__(59);
+var _AdvancedView = __webpack_require__(62);
 
 var _AdvancedView2 = _interopRequireDefault(_AdvancedView);
 
@@ -22172,7 +23627,7 @@ ColorByWidget.defaultProps = {
 };
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22185,13 +23640,13 @@ ColorByWidget.defaultProps = {
 
 
 
-var emptyFunction = __webpack_require__(4);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(11);
-var assign = __webpack_require__(8);
+var emptyFunction = __webpack_require__(5);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(14);
+var assign = __webpack_require__(11);
 
-var ReactPropTypesSecret = __webpack_require__(13);
-var checkPropTypes = __webpack_require__(12);
+var ReactPropTypesSecret = __webpack_require__(16);
+var checkPropTypes = __webpack_require__(15);
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -22722,7 +24177,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22735,9 +24190,9 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 
-var emptyFunction = __webpack_require__(4);
-var invariant = __webpack_require__(9);
-var ReactPropTypesSecret = __webpack_require__(13);
+var emptyFunction = __webpack_require__(5);
+var invariant = __webpack_require__(12);
+var ReactPropTypesSecret = __webpack_require__(16);
 
 module.exports = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -22787,10 +24242,10 @@ module.exports = function() {
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 exports.i(__webpack_require__(0), undefined);
 
@@ -22826,43 +24281,43 @@ exports.locals = {
 };
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "af7ae505a9eed503f8b8e6982036873e.woff2";
-
-/***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "fee66e712a8a08eef5805a46892932ad.woff";
+module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
 
 /***/ }),
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "b06871f281fee6b241d60582ae9369b9.ttf";
+module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "912ec66d7572ff821749319396470bde.svg";
+module.exports = __webpack_require__.p + "af7ae505a9eed503f8b8e6982036873e.woff2";
 
 /***/ }),
 /* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "fee66e712a8a08eef5805a46892932ad.woff";
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "b06871f281fee6b241d60582ae9369b9.ttf";
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "912ec66d7572ff821749319396470bde.svg";
+
+/***/ }),
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22874,31 +24329,31 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _ColorByWidget = __webpack_require__(25);
+var _ColorByWidget = __webpack_require__(28);
 
 var _ColorByWidget2 = _interopRequireDefault(_ColorByWidget);
 
-var _PresetListWidget = __webpack_require__(60);
+var _PresetListWidget = __webpack_require__(63);
 
 var _PresetListWidget2 = _interopRequireDefault(_PresetListWidget);
 
-var _ScalarRangeWidget = __webpack_require__(63);
+var _ScalarRangeWidget = __webpack_require__(66);
 
 var _ScalarRangeWidget2 = _interopRequireDefault(_ScalarRangeWidget);
 
-var _PieceWiseFunctionEditorWidget = __webpack_require__(66);
+var _PieceWiseFunctionEditorWidget = __webpack_require__(69);
 
 var _PieceWiseFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseFunctionEditorWidget);
 
-var _PieceWiseGaussianFunctionEditorWidget = __webpack_require__(89);
+var _PieceWiseGaussianFunctionEditorWidget = __webpack_require__(92);
 
 var _PieceWiseGaussianFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseGaussianFunctionEditorWidget);
 
@@ -23068,7 +24523,7 @@ ColorByWidget.defaultProps = {
 };
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23080,15 +24535,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _PresetListWidget = __webpack_require__(61);
+var _PresetListWidget = __webpack_require__(64);
 
 var _PresetListWidget2 = _interopRequireDefault(_PresetListWidget);
 
@@ -23183,13 +24638,13 @@ PresetListWidget.defaultProps = {
 };
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(62);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -23197,7 +24652,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -23214,10 +24669,10 @@ if(false) {
 }
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 
 
@@ -23233,7 +24688,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23245,15 +24700,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _ScalarRangeWidget = __webpack_require__(64);
+var _ScalarRangeWidget = __webpack_require__(67);
 
 var _ScalarRangeWidget2 = _interopRequireDefault(_ScalarRangeWidget);
 
@@ -23392,13 +24847,13 @@ ScalarRangeWidget.defaultProps = {
 };
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(65);
+var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -23406,7 +24861,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -23423,10 +24878,10 @@ if(false) {
 }
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 exports.i(__webpack_require__(0), undefined);
 
@@ -23445,7 +24900,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23457,39 +24912,39 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _deepEquals = __webpack_require__(67);
+var _deepEquals = __webpack_require__(70);
 
 var _deepEquals2 = _interopRequireDefault(_deepEquals);
 
-var _PieceWiseFunctionEditorWidget = __webpack_require__(77);
+var _PieceWiseFunctionEditorWidget = __webpack_require__(80);
 
 var _PieceWiseFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseFunctionEditorWidget);
 
-var _LinearPieceWiseEditor = __webpack_require__(79);
+var _LinearPieceWiseEditor = __webpack_require__(82);
 
 var _LinearPieceWiseEditor2 = _interopRequireDefault(_LinearPieceWiseEditor);
 
-var _SvgIconWidget = __webpack_require__(83);
+var _SvgIconWidget = __webpack_require__(86);
 
 var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
 
-var _SizeHelper = __webpack_require__(32);
+var _SizeHelper = __webpack_require__(34);
 
 var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
-var _Plus = __webpack_require__(87);
+var _Plus = __webpack_require__(90);
 
 var _Plus2 = _interopRequireDefault(_Plus);
 
-var _Trash = __webpack_require__(88);
+var _Trash = __webpack_require__(91);
 
 var _Trash2 = _interopRequireDefault(_Trash);
 
@@ -23803,10 +25258,10 @@ PieceWiseFunctionEditorWidget.defaultProps = {
 };
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(14), __webpack_require__(26), __webpack_require__(15), __webpack_require__(69), __webpack_require__(75)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (is, isObject, isArray, objEquals, arrEquals) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(17), __webpack_require__(29), __webpack_require__(18), __webpack_require__(72), __webpack_require__(78)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (is, isObject, isArray, objEquals, arrEquals) {
 
     /**
      * Recursively checks for same properties and values.
@@ -23836,7 +25291,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -23852,10 +25307,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function ()
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(16), __webpack_require__(70), __webpack_require__(26), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(hasOwn, every, isObject, is) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(19), __webpack_require__(73), __webpack_require__(29), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(hasOwn, every, isObject, is) {
 
     // Makes a function to compare the object values from the specified compare
     // operation callback.
@@ -23889,10 +25344,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(28), __webpack_require__(29)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(forOwn, makeIterator) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(31), __webpack_require__(32)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(forOwn, makeIterator) {
 
     /**
      * Object every
@@ -23918,10 +25373,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (hasOwn) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(19)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (hasOwn) {
 
     var _hasDontEnumBug,
         _dontEnums;
@@ -24001,7 +25456,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -24020,7 +25475,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function ()
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -24041,10 +25496,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = (function ()
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(28), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(forOwn, isArray) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(31), __webpack_require__(18)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(forOwn, isArray) {
 
     function containsMatch(array, pattern) {
         var i = -1, length = array.length;
@@ -24103,10 +25558,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(14), __webpack_require__(15), __webpack_require__(76)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(is, isArray, every) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(17), __webpack_require__(18), __webpack_require__(79)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(is, isArray, every) {
 
     /**
      * Compares if both arrays have the same elements
@@ -24138,10 +25593,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(29)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (makeIterator) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(32)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (makeIterator) {
 
     /**
      * Array every
@@ -24172,13 +25627,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -24186,7 +25641,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -24203,10 +25658,10 @@ if(false) {
 }
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 
 
@@ -24225,7 +25680,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24239,7 +25694,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.getCanvasSize = getCanvasSize;
 
-var _monologue = __webpack_require__(30);
+var _monologue = __webpack_require__(33);
 
 var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -24586,7 +26041,7 @@ exports.default = LinearPieceWiseEditor;
 _monologue2.default.mixInto(LinearPieceWiseEditor);
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36942,10 +38397,10 @@ _monologue2.default.mixInto(LinearPieceWiseEditor);
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)(module), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module), __webpack_require__(4)))
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36959,7 +38414,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 (function (root, factory) {
     if (true) {
         // AMD. Register as an anonymous module.
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(82)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (_) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(85)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (_) {
             return factory(_, root);
         }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -37137,7 +38592,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 }));
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -43928,10 +45383,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)(module), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module), __webpack_require__(4)))
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43942,15 +45397,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = SvgIconWidget;
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _kitware = __webpack_require__(84);
+var _kitware = __webpack_require__(87);
 
 var _kitware2 = _interopRequireDefault(_kitware);
 
@@ -43987,14 +45442,14 @@ SvgIconWidget.defaultProps = {
 };
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__);
 
 
@@ -44008,7 +45463,7 @@ var result = __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprit
 /* harmony default export */ __webpack_exports__["default"] = ("#" + symbol.id);
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44020,7 +45475,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _monologue = __webpack_require__(30);
+var _monologue = __webpack_require__(33);
 
 var _monologue2 = _interopRequireDefault(_monologue);
 
@@ -44050,7 +45505,7 @@ exports.default = Observable;
 _monologue2.default.mixInto(Observable);
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44095,14 +45550,14 @@ exports.default = {
 };
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__);
 
 
@@ -44116,14 +45571,14 @@ var result = __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprit
 /* harmony default export */ __webpack_exports__["default"] = ("#" + symbol.id);
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_svg_baker_runtime_browser_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprite_build__);
 
 
@@ -44137,7 +45592,7 @@ var result = __WEBPACK_IMPORTED_MODULE_1_svg_sprite_loader_runtime_browser_sprit
 /* harmony default export */ __webpack_exports__["default"] = ("#" + symbol.id);
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44149,19 +45604,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(2);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(7);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _PiecewiseGaussianWidget = __webpack_require__(90);
+var _PiecewiseGaussianWidget = __webpack_require__(93);
 
 var _PiecewiseGaussianWidget2 = _interopRequireDefault(_PiecewiseGaussianWidget);
 
-var _SizeHelper = __webpack_require__(32);
+var _SizeHelper = __webpack_require__(34);
 
 var _SizeHelper2 = _interopRequireDefault(_SizeHelper);
 
@@ -44333,7 +45788,7 @@ PieceWiseGaussianFunctionEditorWidget.propTypes = {
 };
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44348,9 +45803,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 exports.extend = extend;
 
-var _macro = __webpack_require__(93);
+var _macro = __webpack_require__(35);
 
 var _macro2 = _interopRequireDefault(_macro);
+
+var _Math = __webpack_require__(97);
+
+var _Math2 = _interopRequireDefault(_Math);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44779,13 +46238,8 @@ function vtkPiecewiseGaussianWidget(publicAPI, model) {
     var numberOfBinsToSkip = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
     model.histogramArray = array;
-    var size = array.length;
-    var max = array[0];
-    var min = array[0];
-    for (var i = 1; i < size; i++) {
-      max = Math.max(max, array[i]);
-      min = Math.min(min, array[i]);
-    }
+    var max = _Math2.default.arrayMax(array);
+    var min = _Math2.default.arrayMin(array);
 
     var delta = max - min;
     model.dataRange = [min, max];
@@ -44793,10 +46247,10 @@ function vtkPiecewiseGaussianWidget(publicAPI, model) {
     while (model.histogram.length < model.numberOfBins) {
       model.histogram.push(0);
     }
-    array.forEach(function (value) {
-      var idx = Math.floor((model.numberOfBins - 1) * (Number(value) - min) / delta);
+    for (var i = 0, len = array.length; i < len; i++) {
+      var idx = Math.floor((model.numberOfBins - 1) * (Number(array[i]) - min) / delta);
       model.histogram[idx] += 1;
-    });
+    }
 
     // Smart Rescale Histogram
     var sampleSize = Math.min(numberOfBinToConsider, model.histogram.length - numberOfBinsToSkip);
@@ -45301,10 +46755,10 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 // ----------------------------------------------------------------------------
 
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(91).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(94).setImmediate))
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -45357,7 +46811,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(92);
+__webpack_require__(95);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -45368,10 +46822,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -45561,1412 +47015,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(1)))
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.EVENT_ABORT = exports.VOID = undefined;
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.setLoggerFunction = setLoggerFunction;
-exports.vtkLogMacro = vtkLogMacro;
-exports.vtkInfoMacro = vtkInfoMacro;
-exports.vtkDebugMacro = vtkDebugMacro;
-exports.vtkErrorMacro = vtkErrorMacro;
-exports.vtkWarningMacro = vtkWarningMacro;
-exports.capitalize = capitalize;
-exports.obj = obj;
-exports.get = get;
-exports.set = set;
-exports.setGet = setGet;
-exports.getArray = getArray;
-exports.setArray = setArray;
-exports.setGetArray = setGetArray;
-exports.algo = algo;
-exports.event = event;
-exports.newInstance = newInstance;
-exports.chain = chain;
-exports.isVtkObject = isVtkObject;
-exports.traverseInstanceTree = traverseInstanceTree;
-exports.debounce = debounce;
-exports.keystore = keystore;
-exports.proxy = proxy;
-exports.proxyPropertyMapping = proxyPropertyMapping;
-exports.proxyPropertyState = proxyPropertyState;
-
-var _vtk = __webpack_require__(94);
-
-var _vtk2 = _interopRequireDefault(_vtk);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var globalMTime = 0;
-
-var VOID = exports.VOID = Symbol('void');
-
-function getCurrentGlobalMTime() {
-  return globalMTime;
-}
-
-// ----------------------------------------------------------------------------
-// Logging function calls
-// ----------------------------------------------------------------------------
-/* eslint-disable no-prototype-builtins                                      */
-
-var fakeConsole = {};
-
-function noOp() {}
-
-var consoleMethods = ['log', 'debug', 'info', 'warn', 'error', 'time', 'timeEnd', 'group', 'groupEnd'];
-consoleMethods.forEach(function (methodName) {
-  fakeConsole[methodName] = noOp;
-});
-
-global.console = window.console.hasOwnProperty('log') ? window.console : fakeConsole;
-
-var loggerFunctions = {
-  debug: noOp, // Don't print debug by default
-  error: global.console.error || noOp,
-  info: global.console.info || noOp,
-  log: global.console.log || noOp,
-  warn: global.console.warn || noOp
-};
-
-function setLoggerFunction(name, fn) {
-  if (loggerFunctions[name]) {
-    loggerFunctions[name] = fn || noOp;
-  }
-}
-
-function vtkLogMacro() {
-  loggerFunctions.log.apply(loggerFunctions, arguments);
-}
-
-function vtkInfoMacro() {
-  loggerFunctions.info.apply(loggerFunctions, arguments);
-}
-
-function vtkDebugMacro() {
-  loggerFunctions.debug.apply(loggerFunctions, arguments);
-}
-
-function vtkErrorMacro() {
-  loggerFunctions.error.apply(loggerFunctions, arguments);
-}
-
-function vtkWarningMacro() {
-  loggerFunctions.warn.apply(loggerFunctions, arguments);
-}
-
-// ----------------------------------------------------------------------------
-// capitilze provided string
-// ----------------------------------------------------------------------------
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// ----------------------------------------------------------------------------
-// Array helper
-// ----------------------------------------------------------------------------
-
-function safeArrays(model) {
-  Object.keys(model).forEach(function (key) {
-    if (Array.isArray(model[key])) {
-      model[key] = [].concat(model[key]);
-    }
-  });
-}
-
-// ----------------------------------------------------------------------------
-
-function enumToString(e, value) {
-  return Object.keys(e).find(function (key) {
-    return e[key] === value;
-  });
-}
-
-function getStateArrayMapFunc(item) {
-  if (item.isA) {
-    return item.getState();
-  }
-  return item;
-}
-
-// ----------------------------------------------------------------------------
-// vtkObject: modified(), onModified(callback), delete()
-// ----------------------------------------------------------------------------
-
-function obj() {
-  var publicAPI = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  // Ensure each instance as a unique ref of array
-  safeArrays(model);
-
-  var callbacks = [];
-  model.mtime = Number.isInteger(model.mtime) ? model.mtime : ++globalMTime;
-  model.classHierarchy = ['vtkObject'];
-
-  function off(index) {
-    callbacks[index] = null;
-  }
-
-  function on(index) {
-    function unsubscribe() {
-      off(index);
-    }
-    return Object.freeze({
-      unsubscribe: unsubscribe
-    });
-  }
-
-  publicAPI.isDeleted = function () {
-    return !!model.deleted;
-  };
-
-  publicAPI.modified = function (otherMTime) {
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-
-    if (otherMTime && otherMTime < model.mtime) {
-      return;
-    }
-
-    model.mtime = ++globalMTime;
-    callbacks.forEach(function (callback) {
-      return callback && callback(publicAPI);
-    });
-  };
-
-  publicAPI.onModified = function (callback) {
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return null;
-    }
-
-    var index = callbacks.length;
-    callbacks.push(callback);
-    return on(index);
-  };
-
-  publicAPI.getMTime = function () {
-    return model.mtime;
-  };
-
-  publicAPI.isA = function (className) {
-    var count = model.classHierarchy.length;
-    // we go backwards as that is more likely for
-    // early termination
-    while (count--) {
-      if (model.classHierarchy[count] === className) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  publicAPI.getClassName = function () {
-    var depth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    return model.classHierarchy[model.classHierarchy.length - 1 - depth];
-  };
-
-  publicAPI.set = function () {
-    var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var noWarning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var noFunction = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-    var ret = false;
-    Object.keys(map).forEach(function (name) {
-      var fn = noFunction ? null : publicAPI['set' + capitalize(name)];
-      if (fn && Array.isArray(map[name])) {
-        ret = fn.apply(undefined, _toConsumableArray(map[name])) || ret;
-      } else if (fn) {
-        ret = fn(map[name]) || ret;
-      } else {
-        // Set data on model directly
-        if (['mtime'].indexOf(name) === -1 && !noWarning) {
-          vtkWarningMacro('Warning: Set value to model directly ' + name + ', ' + map[name]);
-        }
-        model[name] = map[name];
-        ret = true;
-      }
-    });
-    return ret;
-  };
-
-  publicAPI.get = function () {
-    for (var _len = arguments.length, list = Array(_len), _key = 0; _key < _len; _key++) {
-      list[_key] = arguments[_key];
-    }
-
-    if (!list.length) {
-      return model;
-    }
-    var subset = {};
-    list.forEach(function (name) {
-      subset[name] = model[name];
-    });
-    return subset;
-  };
-
-  publicAPI.getReferenceByName = function (val) {
-    return model[val];
-  };
-
-  publicAPI.delete = function () {
-    Object.keys(model).forEach(function (field) {
-      return delete model[field];
-    });
-    callbacks.forEach(function (el, index) {
-      return off(index);
-    });
-
-    // Flag the instance being deleted
-    model.deleted = true;
-  };
-
-  // Add serialization support
-  publicAPI.getState = function () {
-    var jsonArchive = Object.assign({}, model, {
-      vtkClass: publicAPI.getClassName()
-    });
-
-    // Convert every vtkObject to its serializable form
-    Object.keys(jsonArchive).forEach(function (keyName) {
-      if (jsonArchive[keyName] === null || jsonArchive[keyName] === undefined) {
-        delete jsonArchive[keyName];
-      } else if (jsonArchive[keyName].isA) {
-        jsonArchive[keyName] = jsonArchive[keyName].getState();
-      } else if (Array.isArray(jsonArchive[keyName])) {
-        jsonArchive[keyName] = jsonArchive[keyName].map(getStateArrayMapFunc);
-      }
-    });
-
-    // Sort resulting object by key name
-    var sortedObj = {};
-    Object.keys(jsonArchive).sort().forEach(function (name) {
-      sortedObj[name] = jsonArchive[name];
-    });
-
-    // Remove mtime
-    if (sortedObj.mtime) {
-      delete sortedObj.mtime;
-    }
-
-    return sortedObj;
-  };
-
-  // Add shallowCopy(otherInstance) support
-  publicAPI.shallowCopy = function (other) {
-    var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    if (other.getClassName() !== publicAPI.getClassName()) {
-      throw new Error('Cannot ShallowCopy ' + other.getClassName() + ' into ' + publicAPI.getClassName());
-    }
-    var otherModel = other.get();
-
-    var keyList = Object.keys(model).sort();
-    var otherKeyList = Object.keys(otherModel).sort();
-
-    otherKeyList.forEach(function (key) {
-      var keyIdx = keyList.indexOf(key);
-      if (keyIdx === -1) {
-        if (debug) {
-          vtkDebugMacro('add ' + key + ' in shallowCopy');
-        }
-      } else {
-        keyList.splice(keyIdx, 1);
-      }
-      model[key] = otherModel[key];
-    });
-    if (keyList.length && debug) {
-      vtkDebugMacro('Untouched keys: ' + keyList.join(', '));
-    }
-
-    publicAPI.modified();
-  };
-}
-
-// ----------------------------------------------------------------------------
-// getXXX: add getters
-// ----------------------------------------------------------------------------
-
-function get(publicAPI, model, fieldNames) {
-  fieldNames.forEach(function (field) {
-    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
-      publicAPI['get' + capitalize(field.name)] = function () {
-        return model[field.name];
-      };
-    } else {
-      publicAPI['get' + capitalize(field)] = function () {
-        return model[field];
-      };
-    }
-  });
-}
-
-// ----------------------------------------------------------------------------
-// setXXX: add setters
-// ----------------------------------------------------------------------------
-
-var objectSetterMap = {
-  enum: function _enum(publicAPI, model, field) {
-    return function (value) {
-      if (typeof value === 'string') {
-        if (field.enum[value] !== undefined) {
-          if (model[field.name] !== field.enum[value]) {
-            model[field.name] = field.enum[value];
-            publicAPI.modified();
-            return true;
-          }
-          return false;
-        }
-        vtkErrorMacro('Set Enum with invalid argument ' + field + ', ' + value);
-        throw new RangeError('Set Enum with invalid string argument');
-      }
-      if (typeof value === 'number') {
-        if (model[field.name] !== value) {
-          if (Object.keys(field.enum).map(function (key) {
-            return field.enum[key];
-          }).indexOf(value) !== -1) {
-            model[field.name] = value;
-            publicAPI.modified();
-            return true;
-          }
-          vtkErrorMacro('Set Enum outside numeric range ' + field + ', ' + value);
-          throw new RangeError('Set Enum outside numeric range');
-        }
-        return false;
-      }
-      vtkErrorMacro('Set Enum with invalid argument (String/Number) ' + field + ', ' + value);
-      throw new TypeError('Set Enum with invalid argument (String/Number)');
-    };
-  }
-};
-
-function findSetter(field) {
-  if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
-    var fn = objectSetterMap[field.type];
-    if (fn) {
-      return function (publicAPI, model) {
-        return fn(publicAPI, model, field);
-      };
-    }
-
-    vtkErrorMacro('No setter for field ' + field);
-    throw new TypeError('No setter for field');
-  }
-  return function getSetter(publicAPI, model) {
-    return function setter(value) {
-      if (model.deleted) {
-        vtkErrorMacro('instance deleted - cannot call any method');
-        return false;
-      }
-
-      if (model[field] !== value) {
-        model[field] = value;
-        publicAPI.modified();
-        return true;
-      }
-      return false;
-    };
-  };
-}
-
-function set(publicAPI, model, fields) {
-  fields.forEach(function (field) {
-    if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === 'object') {
-      publicAPI['set' + capitalize(field.name)] = findSetter(field)(publicAPI, model);
-    } else {
-      publicAPI['set' + capitalize(field)] = findSetter(field)(publicAPI, model);
-    }
-  });
-}
-
-// ----------------------------------------------------------------------------
-// set/get XXX: add both setters and getters
-// ----------------------------------------------------------------------------
-
-function setGet(publicAPI, model, fieldNames) {
-  get(publicAPI, model, fieldNames);
-  set(publicAPI, model, fieldNames);
-}
-
-// ----------------------------------------------------------------------------
-// getXXX: add getters for object of type array with copy to be safe
-// getXXXByReference: add getters for object of type array without copy
-// ----------------------------------------------------------------------------
-
-function getArray(publicAPI, model, fieldNames) {
-  fieldNames.forEach(function (field) {
-    publicAPI['get' + capitalize(field)] = function () {
-      return [].concat(model[field]);
-    };
-    publicAPI['get' + capitalize(field) + 'ByReference'] = function () {
-      return model[field];
-    };
-  });
-}
-
-// ----------------------------------------------------------------------------
-// setXXX: add setter for object of type array
-// if 'defaultVal' is supplied, shorter arrays will be padded to 'size' with 'defaultVal'
-// set...From: fast path to copy the content of an array to the current one without call to modified.
-// ----------------------------------------------------------------------------
-
-function setArray(publicAPI, model, fieldNames, size) {
-  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
-
-  fieldNames.forEach(function (field) {
-    publicAPI['set' + capitalize(field)] = function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      if (model.deleted) {
-        vtkErrorMacro('instance deleted - cannot call any method');
-        return false;
-      }
-
-      var array = args;
-      // allow an array passed as a single arg.
-      if (array.length === 1 && Array.isArray(array[0])) {
-        /* eslint-disable prefer-destructuring */
-        array = array[0];
-        /* eslint-enable prefer-destructuring */
-      }
-
-      if (array.length !== size) {
-        if (array.length < size && defaultVal !== undefined) {
-          array = [].concat(array);
-          while (array.length < size) {
-            array.push(defaultVal);
-          }
-        } else {
-          throw new RangeError('Invalid number of values for array setter');
-        }
-      }
-      var changeDetected = false;
-      model[field].forEach(function (item, index) {
-        if (item !== array[index]) {
-          if (changeDetected) {
-            return;
-          }
-          changeDetected = true;
-        }
-      });
-
-      if (changeDetected || model[field].length !== array.length) {
-        model[field] = [].concat(array);
-        publicAPI.modified();
-      }
-      return true;
-    };
-
-    publicAPI['set' + capitalize(field) + 'From'] = function (otherArray) {
-      var target = model[field];
-      otherArray.forEach(function (v, i) {
-        target[i] = v;
-      });
-    };
-  });
-}
-
-// ----------------------------------------------------------------------------
-// set/get XXX: add setter and getter for object of type array
-// ----------------------------------------------------------------------------
-
-function setGetArray(publicAPI, model, fieldNames, size) {
-  var defaultVal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
-
-  getArray(publicAPI, model, fieldNames);
-  setArray(publicAPI, model, fieldNames, size, defaultVal);
-}
-
-// ----------------------------------------------------------------------------
-// vtkAlgorithm: setInputData(), setInputConnection(), getOutputData(), getOutputPort()
-// ----------------------------------------------------------------------------
-
-function algo(publicAPI, model, numberOfInputs, numberOfOutputs) {
-  if (model.inputData) {
-    model.inputData = model.inputData.map(_vtk2.default);
-  } else {
-    model.inputData = [];
-  }
-
-  if (model.inputConnection) {
-    model.inputConnection = model.inputConnection.map(_vtk2.default);
-  } else {
-    model.inputConnection = [];
-  }
-
-  if (model.output) {
-    model.output = model.output.map(_vtk2.default);
-  } else {
-    model.output = [];
-  }
-
-  if (model.inputArrayToProcess) {
-    model.inputArrayToProcess = model.inputArrayToProcess.map(_vtk2.default);
-  } else {
-    model.inputArrayToProcess = [];
-  }
-
-  // Cache the argument for later manipulation
-  model.numberOfInputs = numberOfInputs;
-
-  // Methods
-  function setInputData(dataset) {
-    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-    if (port >= model.numberOfInputs) {
-      var msg = 'algorithm ' + publicAPI.getClassName() + ' only has ';
-      msg += '' + model.numberOfInputs;
-      msg += ' input ports. To add more input ports, use addInputData()';
-      vtkErrorMacro(msg);
-      return;
-    }
-    if (model.inputData[port] !== dataset || model.inputConnection[port]) {
-      model.inputData[port] = dataset;
-      model.inputConnection[port] = null;
-      if (publicAPI.modified) {
-        publicAPI.modified();
-      }
-    }
-  }
-
-  function getInputData() {
-    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-    if (model.inputConnection[port]) {
-      model.inputData[port] = model.inputConnection[port]();
-    }
-    return model.inputData[port];
-  }
-
-  function setInputConnection(outputPort) {
-    var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-    if (port >= model.numberOfInputs) {
-      var msg = 'algorithm ' + publicAPI.getClassName() + ' only has ';
-      msg += '' + model.numberOfInputs;
-      msg += ' input ports. To add more input ports, use addInputConnection()';
-      vtkErrorMacro(msg);
-      return;
-    }
-    model.inputData[port] = null;
-    model.inputConnection[port] = outputPort;
-  }
-
-  function getInputConnection() {
-    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-    return model.inputConnection[port];
-  }
-
-  function addInputConnection(outputPort) {
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-    model.numberOfInputs++;
-    setInputConnection(outputPort, model.numberOfInputs - 1);
-  }
-
-  function addInputData(dataset) {
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-    model.numberOfInputs++;
-    setInputData(dataset, model.numberOfInputs - 1);
-  }
-
-  function getOutputData() {
-    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return null;
-    }
-    if (publicAPI.shouldUpdate()) {
-      publicAPI.update();
-    }
-    return model.output[port];
-  }
-
-  publicAPI.shouldUpdate = function () {
-    var localMTime = model.mtime;
-    var count = numberOfOutputs;
-    var minOutputMTime = Infinity;
-    while (count--) {
-      if (!model.output[count]) {
-        return true;
-      }
-      var mt = model.output[count].getMTime();
-      if (mt < localMTime) {
-        return true;
-      }
-      if (mt < minOutputMTime) {
-        minOutputMTime = mt;
-      }
-    }
-
-    count = model.numberOfInputs;
-    while (count--) {
-      if (model.inputConnection[count] && model.inputConnection[count].filter.shouldUpdate()) {
-        return true;
-      }
-    }
-
-    count = model.numberOfInputs;
-    while (count--) {
-      if (publicAPI.getInputData(count) && publicAPI.getInputData(count).getMTime() > minOutputMTime) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  function getOutputPort() {
-    var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-    var outputPortAccess = function outputPortAccess() {
-      return getOutputData(port);
-    };
-    // Add reference to filter
-    outputPortAccess.filter = publicAPI;
-    return outputPortAccess;
-  }
-
-  // Handle input if needed
-  if (model.numberOfInputs) {
-    // Reserve inputs
-    var count = model.numberOfInputs;
-    while (count--) {
-      model.inputData.push(null);
-      model.inputConnection.push(null);
-    }
-
-    // Expose public methods
-    publicAPI.setInputData = setInputData;
-    publicAPI.setInputConnection = setInputConnection;
-    publicAPI.addInputData = addInputData;
-    publicAPI.addInputConnection = addInputConnection;
-    publicAPI.getInputData = getInputData;
-    publicAPI.getInputConnection = getInputConnection;
-  }
-
-  if (numberOfOutputs) {
-    publicAPI.getOutputData = getOutputData;
-    publicAPI.getOutputPort = getOutputPort;
-  }
-
-  publicAPI.update = function () {
-    var ins = [];
-    if (model.numberOfInputs) {
-      var _count = 0;
-      while (_count < model.numberOfInputs) {
-        ins[_count] = publicAPI.getInputData(_count);
-        _count++;
-      }
-    }
-    if (publicAPI.shouldUpdate() && publicAPI.requestData) {
-      publicAPI.requestData(ins, model.output);
-    }
-  };
-
-  publicAPI.getNumberOfInputPorts = function () {
-    return model.numberOfInputs;
-  };
-  publicAPI.getNumberOfOutputPorts = function () {
-    return numberOfOutputs;
-  };
-
-  publicAPI.getInputArrayToProcess = function (inputPort) {
-    var arrayDesc = model.inputArrayToProcess[inputPort];
-    var ds = model.inputData[inputPort];
-    if (arrayDesc && ds) {
-      return ds['get' + arrayDesc.fieldAssociation]().getArray(arrayDesc.arrayName);
-    }
-    return null;
-  };
-  publicAPI.setInputArrayToProcess = function (inputPort, arrayName, fieldAssociation) {
-    var attributeType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'Scalars';
-
-    while (model.inputArrayToProcess.length < inputPort) {
-      model.inputArrayToProcess.push(null);
-    }
-    model.inputArrayToProcess[inputPort] = {
-      arrayName: arrayName,
-      fieldAssociation: fieldAssociation,
-      attributeType: attributeType
-    };
-  };
-}
-
-// ----------------------------------------------------------------------------
-// Event handling: onXXX(callback), invokeXXX(args...)
-// ----------------------------------------------------------------------------
-
-var EVENT_ABORT = exports.EVENT_ABORT = Symbol('Event abort');
-
-function event(publicAPI, model, eventName) {
-  var callbacks = [];
-  var previousDelete = publicAPI.delete;
-  var curCallbackID = 1;
-
-  function off(callbackID) {
-    for (var i = 0; i < callbacks.length; ++i) {
-      var _callbacks$i = _slicedToArray(callbacks[i], 1),
-          cbID = _callbacks$i[0];
-
-      if (cbID === callbackID) {
-        callbacks.splice(i, 1);
-        return;
-      }
-    }
-  }
-
-  function on(callbackID) {
-    function unsubscribe() {
-      off(callbackID);
-    }
-    return Object.freeze({
-      unsubscribe: unsubscribe
-    });
-  }
-
-  function invoke() {
-    var _arguments = arguments;
-
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return;
-    }
-    /* eslint-disable prefer-rest-params */
-    // Go through a copy of the callbacks array in case new callbacks
-    // get prepended within previous callbacks
-    var currentCallbacks = callbacks.slice();
-
-    var _loop = function _loop(index) {
-      var _currentCallbacks$ind = _slicedToArray(currentCallbacks[index], 3),
-          cb = _currentCallbacks$ind[1],
-          priority = _currentCallbacks$ind[2];
-
-      if (priority < 0) {
-        setTimeout(function () {
-          return cb.apply(publicAPI, _arguments);
-        }, 1 - priority);
-      } else if (cb) {
-        // Abort only if the callback explicitly returns false
-        var continueNext = cb.apply(publicAPI, _arguments);
-        if (continueNext === EVENT_ABORT) {
-          return 'break';
-        }
-      }
-    };
-
-    for (var index = 0; index < currentCallbacks.length; ++index) {
-      var _ret = _loop(index);
-
-      if (_ret === 'break') break;
-    }
-    /* eslint-enable prefer-rest-params */
-  }
-
-  publicAPI['invoke' + capitalize(eventName)] = invoke;
-
-  publicAPI['on' + capitalize(eventName)] = function (callback) {
-    var priority = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
-
-    if (model.deleted) {
-      vtkErrorMacro('instance deleted - cannot call any method');
-      return null;
-    }
-
-    var callbackID = curCallbackID++;
-    callbacks.push([callbackID, callback, priority]);
-    callbacks.sort(function (cb1, cb2) {
-      return cb2[2] - cb1[2];
-    });
-    return on(callbackID);
-  };
-
-  publicAPI.delete = function () {
-    previousDelete();
-    callbacks.forEach(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 1),
-          cbID = _ref2[0];
-
-      return off(cbID);
-    });
-  };
-}
-
-// ----------------------------------------------------------------------------
-// newInstance
-// ----------------------------------------------------------------------------
-
-function newInstance(extend, className) {
-  var constructor = function constructor() {
-    var initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    var model = {};
-    var publicAPI = {};
-    extend(publicAPI, model, initialValues);
-    return Object.freeze(publicAPI);
-  };
-
-  // Register constructor to factory
-  if (className) {
-    _vtk2.default.register(className, constructor);
-  }
-
-  return constructor;
-}
-
-// ----------------------------------------------------------------------------
-// Chain function calls
-// ----------------------------------------------------------------------------
-
-function chain() {
-  for (var _len3 = arguments.length, fn = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-    fn[_key3] = arguments[_key3];
-  }
-
-  return function () {
-    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-      args[_key4] = arguments[_key4];
-    }
-
-    return fn.filter(function (i) {
-      return !!i;
-    }).forEach(function (i) {
-      return i.apply(undefined, args);
-    });
-  };
-}
-
-// ----------------------------------------------------------------------------
-// Some utility methods for vtk objects
-// ----------------------------------------------------------------------------
-
-function isVtkObject(instance) {
-  return instance && instance.isA && instance.isA('vtkObject');
-}
-
-function traverseInstanceTree(instance, extractFunction) {
-  var accumulator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var visitedInstances = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
-
-  if (isVtkObject(instance)) {
-    if (visitedInstances.indexOf(instance) >= 0) {
-      // avoid cycles
-      return accumulator;
-    }
-
-    visitedInstances.push(instance);
-    var result = extractFunction(instance);
-    if (result !== undefined) {
-      accumulator.push(result);
-    }
-
-    // Now go through this instance's model
-    var model = instance.get();
-    Object.keys(model).forEach(function (key) {
-      var modelObj = model[key];
-      if (Array.isArray(modelObj)) {
-        modelObj.forEach(function (subObj) {
-          traverseInstanceTree(subObj, extractFunction, accumulator, visitedInstances);
-        });
-      } else {
-        traverseInstanceTree(modelObj, extractFunction, accumulator, visitedInstances);
-      }
-    });
-  }
-
-  return accumulator;
-}
-
-// ----------------------------------------------------------------------------
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
-// leading edge, instead of the trailing.
-
-function debounce(func, wait, immediate) {
-  var _this = this;
-
-  var timeout = void 0;
-  return function () {
-    for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-      args[_key5] = arguments[_key5];
-    }
-
-    var context = _this;
-    var later = function later() {
-      timeout = null;
-      if (!immediate) {
-        func.apply(context, args);
-      }
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) {
-      func.apply(context, args);
-    }
-  };
-}
-
-// ----------------------------------------------------------------------------
-// keystore(publicAPI, model, initialKeystore)
-//
-//    - initialKeystore: Initial keystore. This can be either a Map or an
-//      object.
-//
-// Generated API
-//  setKey(key, value) : mixed (returns value)
-//  getKey(key) : mixed
-//  getAllKeys() : [mixed]
-//  deleteKey(key) : Boolean
-// ----------------------------------------------------------------------------
-
-function keystore(publicAPI, model) {
-  var initialKeystore = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  model.keystore = Object.assign(model.keystore || {}, initialKeystore);
-
-  publicAPI.setKey = function (key, value) {
-    model.keystore[key] = value;
-  };
-  publicAPI.getKey = function (key, value) {
-    return model.keystore[key];
-  };
-  publicAPI.getAllKeys = function (key, value) {
-    return Object.keys(model.keystore);
-  };
-  publicAPI.deleteKey = function (key, value) {
-    return delete model.keystore[key];
-  };
-  publicAPI.clearKeystore = function () {
-    return publicAPI.getAllKeys().forEach(function (key) {
-      return delete model.keystore[key];
-    });
-  };
-}
-
-// ----------------------------------------------------------------------------
-// proxy(publicAPI, model, sectionName, propertyUI)
-//
-//    - sectionName: Name of the section for UI
-//    - propertyUI: List of props with their UI description
-//
-// Generated API
-//  getProxyId() : String
-//  listProxyProperties() : [string]
-//  updateProxyProperty(name, prop)
-//  getProxySection() => List of properties for UI generation
-// ----------------------------------------------------------------------------
-var nextProxyId = 1;
-var ROOT_GROUP_NAME = '__root__';
-
-function proxy(publicAPI, model) {
-  // Proxies are keystores
-  keystore(publicAPI, model);
-
-  var parentDelete = publicAPI.delete;
-
-  // getProxyId
-  model.proxyId = '' + nextProxyId++;
-
-  // ui handling
-  model.ui = JSON.parse(JSON.stringify(model.ui || [])); // deep copy
-  get(publicAPI, model, ['proxyId', 'proxyGroup', 'proxyName']);
-  setGet(publicAPI, model, ['proxyManager']);
-
-  // group properties
-  var propertyMap = {};
-  var groupChildrenNames = {};
-
-  function registerProperties(descriptionList, currentGroupName) {
-    if (!groupChildrenNames[currentGroupName]) {
-      groupChildrenNames[currentGroupName] = [];
-    }
-    var childrenNames = groupChildrenNames[currentGroupName];
-
-    for (var i = 0; i < descriptionList.length; i++) {
-      childrenNames.push(descriptionList[i].name);
-      propertyMap[descriptionList[i].name] = descriptionList[i];
-      if (descriptionList[i].children && descriptionList[i].children.length) {
-        registerProperties(descriptionList[i].children, descriptionList[i].name);
-      }
-    }
-  }
-  registerProperties(model.ui, ROOT_GROUP_NAME);
-
-  publicAPI.updateUI = function (ui) {
-    model.ui = JSON.parse(JSON.stringify(ui || [])); // deep copy
-    Object.keys(propertyMap).forEach(function (k) {
-      return delete propertyMap[k];
-    });
-    Object.keys(groupChildrenNames).forEach(function (k) {
-      return delete groupChildrenNames[k];
-    });
-    registerProperties(model.ui, ROOT_GROUP_NAME);
-    publicAPI.modified();
-  };
-
-  function listProxyProperties() {
-    var gName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ROOT_GROUP_NAME;
-
-    return groupChildrenNames[gName];
-  }
-
-  publicAPI.updateProxyProperty = function (propertyName, propUI) {
-    var prop = propertyMap[propertyName];
-    if (prop) {
-      Object.assign(prop, propUI);
-    }
-  };
-
-  // property link
-  model.propertyLinkSubscribers = [];
-  publicAPI.registerPropertyLinkForGC = function (otherLink) {
-    model.propertyLinkSubscribers.push(otherLink);
-  };
-
-  publicAPI.gcPropertyLinks = function () {
-    while (model.propertyLinkSubscribers.length) {
-      model.propertyLinkSubscribers.pop().unbind(publicAPI);
-    }
-  };
-
-  model.propertyLinkMap = {};
-  publicAPI.getPropertyLink = function (id) {
-    if (model.propertyLinkMap[id]) {
-      return model.propertyLinkMap[id];
-    }
-    var value = null;
-    var links = [];
-    var count = 0;
-    var updateInProgress = false;
-
-    function update(source) {
-      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      if (updateInProgress) {
-        return null;
-      }
-
-      var needUpdate = [];
-      var sourceLink = null;
-      count = links.length;
-      while (count--) {
-        var link = links[count];
-        if (link.instance === source) {
-          sourceLink = link;
-        } else {
-          needUpdate.push(link);
-        }
-      }
-
-      var newValue = sourceLink.instance['get' + capitalize(sourceLink.propertyName)]();
-      if (newValue !== value || force) {
-        value = newValue;
-        updateInProgress = true;
-        while (needUpdate.length) {
-          var linkToUpdate = needUpdate.pop();
-          linkToUpdate.instance.set(_defineProperty({}, linkToUpdate.propertyName, value));
-        }
-        updateInProgress = false;
-      }
-      return newValue;
-    }
-
-    function unbind(instance, propertyName) {
-      var indexToDelete = [];
-      count = links.length;
-      while (count--) {
-        var link = links[count];
-        if (link.instance === instance && (link.propertyName === propertyName || propertyName === undefined)) {
-          link.subscription.unsubscribe();
-          indexToDelete.push(count);
-        }
-      }
-      while (indexToDelete.length) {
-        links.splice(indexToDelete.pop(), 1);
-      }
-    }
-
-    function bind(instance, propertyName) {
-      var updateMe = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      var subscription = instance.onModified(update);
-      var other = links[0];
-      links.push({
-        instance: instance,
-        propertyName: propertyName,
-        subscription: subscription
-      });
-      if (updateMe && other) {
-        update(other.instance, true);
-      }
-      return {
-        unsubscribe: function unsubscribe() {
-          return unbind(instance, propertyName);
-        }
-      };
-    }
-
-    function unsubscribe() {
-      while (links.length) {
-        links.pop().subscription.unsubscribe();
-      }
-    }
-
-    var linkHandler = {
-      bind: bind,
-      unbind: unbind,
-      unsubscribe: unsubscribe
-    };
-    model.propertyLinkMap[id] = linkHandler;
-    return linkHandler;
-  };
-
-  // extract values
-  function getProperties() {
-    var groupName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ROOT_GROUP_NAME;
-
-    var values = [];
-    var id = model.proxyId;
-    var propertyNames = listProxyProperties(groupName) || [];
-    for (var i = 0; i < propertyNames.length; i++) {
-      var name = propertyNames[i];
-      var method = publicAPI['get' + capitalize(name)];
-      var value = method ? method() : undefined;
-      var prop = {
-        id: id,
-        name: name,
-        value: value
-      };
-      var children = getProperties(name);
-      if (children.length) {
-        prop.children = children;
-      }
-      values.push(prop);
-    }
-    return values;
-  }
-
-  publicAPI.listPropertyNames = function () {
-    return getProperties().map(function (p) {
-      return p.name;
-    });
-  };
-
-  publicAPI.getPropertyByName = function (name) {
-    return getProperties().find(function (p) {
-      return p.name === name;
-    });
-  };
-
-  // ui section
-  publicAPI.getProxySection = function () {
-    return {
-      id: model.proxyId,
-      name: model.proxyGroup,
-      ui: model.ui,
-      properties: getProperties()
-    };
-  };
-
-  // free resources
-  publicAPI.delete = function () {
-    var list = Object.keys(model.propertyLinkMap);
-    var count = list.length;
-    while (count--) {
-      model.propertyLinkMap[list[count]].unsubscribe();
-    }
-    count = model.propertyLinkSubscribers.length;
-    while (count--) {
-      model.propertyLinkSubscribers[count].unbind(publicAPI);
-    }
-    parentDelete();
-  };
-}
-
-// ----------------------------------------------------------------------------
-// proxyPropertyMapping(publicAPI, model, map)
-//
-//   map = {
-//      opacity: { modelKey: 'property', property: 'opacity' },
-//   }
-//
-// Generated API:
-//  Elevate set/get methods from internal object stored in the model to current one
-// ----------------------------------------------------------------------------
-
-function proxyPropertyMapping(publicAPI, model, map) {
-  var parentDelete = publicAPI.delete;
-  var subscriptions = [];
-
-  var propertyNames = Object.keys(map);
-  var count = propertyNames.length;
-  while (count--) {
-    var propertyName = propertyNames[count];
-    var _map$propertyName = map[propertyName],
-        modelKey = _map$propertyName.modelKey,
-        property = _map$propertyName.property;
-
-    var methodSrc = capitalize(property);
-    var methodDst = capitalize(propertyName);
-    publicAPI['get' + methodDst] = model[modelKey]['get' + methodSrc];
-    publicAPI['set' + methodDst] = model[modelKey]['set' + methodSrc];
-    subscriptions.push(model[modelKey].onModified(publicAPI.modified));
-  }
-
-  publicAPI.delete = function () {
-    while (subscriptions.length) {
-      subscriptions.pop().unsubscribe();
-    }
-    parentDelete();
-  };
-}
-
-// ----------------------------------------------------------------------------
-// proxyPropertyState(publicAPI, model, state, defaults)
-//
-//   state = {
-//     representation: {
-//       'Surface with edges': { property: { edgeVisibility: true, representation: 2 } },
-//       Surface: { property: { edgeVisibility: false, representation: 2 } },
-//       Wireframe: { property: { edgeVisibility: false, representation: 1 } },
-//       Points: { property: { edgeVisibility: false, representation: 0 } },
-//     },
-//   }
-//
-//   defaults = {
-//      representation: 'Surface',
-//   }
-//
-// Generated API
-//   get / set Representation ( string ) => push state to various internal objects
-// ----------------------------------------------------------------------------
-
-function proxyPropertyState(publicAPI, model) {
-  var state = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var defaults = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-
-  model.this = publicAPI;
-
-  function applyState(map) {
-    var modelKeys = Object.keys(map);
-    var count = modelKeys.length;
-    while (count--) {
-      var modelKey = modelKeys[count];
-      model[modelKey].set(map[modelKey]);
-    }
-  }
-
-  var modelKeys = Object.keys(defaults);
-  var count = modelKeys.length;
-
-  var _loop2 = function _loop2() {
-    // Add default
-    var key = modelKeys[count];
-    model[key] = defaults[key];
-
-    // Add set method
-    var mapping = state[key];
-    publicAPI['set' + capitalize(key)] = function (value) {
-      if (value !== model[key]) {
-        model[key] = value;
-        var propValues = mapping[value];
-        applyState(propValues);
-        publicAPI.modified();
-      }
-    };
-  };
-
-  while (count--) {
-    _loop2();
-  }
-
-  // Add getter
-  if (modelKeys.length) {
-    get(publicAPI, model, modelKeys);
-  }
-}
-
-// ----------------------------------------------------------------------------
-// Default export
-// ----------------------------------------------------------------------------
-
-exports.default = {
-  EVENT_ABORT: EVENT_ABORT,
-  VOID: VOID,
-  algo: algo,
-  capitalize: capitalize,
-  chain: chain,
-  enumToString: enumToString,
-  event: event,
-  get: get,
-  getArray: getArray,
-  getCurrentGlobalMTime: getCurrentGlobalMTime,
-  getStateArrayMapFunc: getStateArrayMapFunc,
-  isVtkObject: isVtkObject,
-  keystore: keystore,
-  newInstance: newInstance,
-  obj: obj,
-  safeArrays: safeArrays,
-  set: set,
-  setArray: setArray,
-  setGet: setGet,
-  setGetArray: setGetArray,
-  setLoggerFunction: setLoggerFunction,
-  traverseInstanceTree: traverseInstanceTree,
-  vtkDebugMacro: vtkDebugMacro,
-  vtkErrorMacro: vtkErrorMacro,
-  vtkInfoMacro: vtkInfoMacro,
-  vtkLogMacro: vtkLogMacro,
-  vtkWarningMacro: vtkWarningMacro,
-  debounce: debounce,
-  proxy: proxy,
-  proxyPropertyMapping: proxyPropertyMapping,
-  proxyPropertyState: proxyPropertyState
-};
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47030,22 +47082,3157 @@ function register(vtkClassName, constructor) {
 
 // Nest register method under the vtk function
 vtk.register = register;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 95 */
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _seedrandom = __webpack_require__(98);
+
+var _seedrandom2 = _interopRequireDefault(_seedrandom);
+
+var _macro = __webpack_require__(35);
+
+var _macro2 = _interopRequireDefault(_macro);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var vtkErrorMacro = _macro2.default.vtkErrorMacro,
+    vtkWarningMacro = _macro2.default.vtkWarningMacro;
+
+// ----------------------------------------------------------------------------
+/* eslint-disable camelcase                                                  */
+/* eslint-disable no-cond-assign                                             */
+/* eslint-disable no-bitwise                                                 */
+/* eslint-disable no-multi-assign                                            */
+// ----------------------------------------------------------------------------
+
+var randomSeedValue = 0;
+var VTK_MAX_ROTATIONS = 20;
+var VTK_SMALL_NUMBER = 1.0e-12;
+
+function notImplemented(method) {
+  return function () {
+    return vtkErrorMacro('vtkMath::' + method + ' - NOT IMPLEMENTED');
+  };
+}
+
+function vtkSwapVectors3(v1, v2) {
+  for (var i = 0; i < 3; i++) {
+    var tmp = v1[i];
+    v1[i] = v2[i];
+    v2[i] = tmp;
+  }
+}
+
+function createArray() {
+  var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 3;
+
+  var array = [];
+  while (array.length < size) {
+    array.push(0);
+  }
+  return array;
+}
+
+// ----------------------------------------------------------------------------
+// Global methods
+// ----------------------------------------------------------------------------
+
+var Pi = function Pi() {
+  return Math.PI;
+};
+var radiansFromDegrees = function radiansFromDegrees(deg) {
+  return deg / 180 * Math.PI;
+};
+var degreesFromRadians = function degreesFromRadians(rad) {
+  return rad * 180 / Math.PI;
+};
+var round = Math.round,
+    floor = Math.floor,
+    ceil = Math.ceil,
+    min = Math.min,
+    max = Math.max;
+
+
+function arrayMin(arr) {
+  var minValue = Infinity;
+  for (var i = 0, len = arr.length; i < len; ++i) {
+    if (arr[i] < minValue) {
+      minValue = arr[i];
+    }
+  }
+
+  return minValue;
+}
+
+function arrayMax(arr) {
+  var maxValue = -Infinity;
+  for (var i = 0, len = arr.length; i < len; ++i) {
+    if (maxValue < arr[i]) {
+      maxValue = arr[i];
+    }
+  }
+
+  return maxValue;
+}
+
+var ceilLog2 = notImplemented('ceilLog2');
+var factorial = notImplemented('factorial');
+
+function nearestPowerOfTwo(xi) {
+  var v = 1;
+  while (v < xi) {
+    v *= 2;
+  }
+  return v;
+}
+
+function isPowerOfTwo(x) {
+  return x === nearestPowerOfTwo(x);
+}
+
+function binomial(m, n) {
+  var r = 1;
+  for (var i = 1; i <= n; ++i) {
+    r *= (m - i + 1) / i;
+  }
+  return Math.floor(r);
+}
+
+function beginCombination(m, n) {
+  if (m < n) {
+    return 0;
+  }
+
+  var r = createArray(n);
+  for (var i = 0; i < n; ++i) {
+    r[i] = i;
+  }
+  return r;
+}
+
+function nextCombination(m, n, r) {
+  var status = 0;
+  for (var i = n - 1; i >= 0; --i) {
+    if (r[i] < m - n + i) {
+      var j = r[i] + 1;
+      while (i < n) {
+        r[i++] = j++;
+      }
+      status = 1;
+      break;
+    }
+  }
+  return status;
+}
+
+var randomSeed = function randomSeed(seed) {
+  (0, _seedrandom2.default)('' + seed, { global: true });
+  randomSeedValue = seed;
+};
+
+var getSeed = function getSeed() {
+  return randomSeedValue;
+};
+
+function random() {
+  var minValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var maxValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+  var delta = maxValue - minValue;
+  return minValue + delta * Math.random();
+}
+
+var gaussian = notImplemented('gaussian');
+
+// Vect3 operations
+function add(a, b, out) {
+  out[0] = a[0] + b[0];
+  out[1] = a[1] + b[1];
+  out[2] = a[2] + b[2];
+}
+
+function subtract(a, b, out) {
+  out[0] = a[0] - b[0];
+  out[1] = a[1] - b[1];
+  out[2] = a[2] - b[2];
+}
+
+function multiplyScalar(vec, scalar) {
+  vec[0] *= scalar;
+  vec[1] *= scalar;
+  vec[2] *= scalar;
+}
+
+function multiplyScalar2D(vec, scalar) {
+  vec[0] *= scalar;
+  vec[1] *= scalar;
+}
+
+function dot(x, y) {
+  return x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
+}
+
+function outer(x, y, out_3x3) {
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      out_3x3[i][j] = x[i] * y[j];
+    }
+  }
+}
+
+function cross(x, y, out) {
+  var Zx = x[1] * y[2] - x[2] * y[1];
+  var Zy = x[2] * y[0] - x[0] * y[2];
+  var Zz = x[0] * y[1] - x[1] * y[0];
+  out[0] = Zx;
+  out[1] = Zy;
+  out[2] = Zz;
+}
+
+function norm(x) {
+  var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
+
+  switch (n) {
+    case 1:
+      return Math.abs(x);
+    case 2:
+      return Math.sqrt(x[0] * x[0] + x[1] * x[1]);
+    case 3:
+      return Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
+    default:
+      {
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+          sum += x[i] * x[i];
+        }
+        return Math.sqrt(sum);
+      }
+  }
+}
+
+function normalize(x) {
+  var den = norm(x);
+  if (den !== 0.0) {
+    x[0] /= den;
+    x[1] /= den;
+    x[2] /= den;
+  }
+  return den;
+}
+
+function perpendiculars(x, y, z, theta) {
+  var x2 = x[0] * x[0];
+  var y2 = x[1] * x[1];
+  var z2 = x[2] * x[2];
+  var r = Math.sqrt(x2 + y2 + z2);
+
+  var dx = void 0;
+  var dy = void 0;
+  var dz = void 0;
+
+  // transpose the vector to avoid divide-by-zero error
+  if (x2 > y2 && x2 > z2) {
+    dx = 0;
+    dy = 1;
+    dz = 2;
+  } else if (y2 > z2) {
+    dx = 1;
+    dy = 2;
+    dz = 0;
+  } else {
+    dx = 2;
+    dy = 0;
+    dz = 1;
+  }
+
+  var a = x[dx] / r;
+  var b = x[dy] / r;
+  var c = x[dz] / r;
+  var tmp = Math.sqrt(a * a + c * c);
+
+  if (theta !== 0) {
+    var sintheta = Math.sin(theta);
+    var costheta = Math.cos(theta);
+
+    if (y) {
+      y[dx] = (c * costheta - a * b * sintheta) / tmp;
+      y[dy] = sintheta * tmp;
+      y[dz] = (-(a * costheta) - b * c * sintheta) / tmp;
+    }
+
+    if (z) {
+      z[dx] = (-(c * sintheta) - a * b * costheta) / tmp;
+      z[dy] = costheta * tmp;
+      z[dz] = (a * sintheta - b * c * costheta) / tmp;
+    }
+  } else {
+    if (y) {
+      y[dx] = c / tmp;
+      y[dy] = 0;
+      y[dz] = -a / tmp;
+    }
+
+    if (z) {
+      z[dx] = -a * b / tmp;
+      z[dy] = tmp;
+      z[dz] = -b * c / tmp;
+    }
+  }
+}
+
+function projectVector(a, b, projection) {
+  var bSquared = dot(b, b);
+
+  if (bSquared === 0) {
+    projection[0] = 0;
+    projection[1] = 0;
+    projection[2] = 0;
+    return false;
+  }
+
+  var scale = dot(a, b) / bSquared;
+
+  for (var i = 0; i < 3; i++) {
+    projection[i] = b[i];
+  }
+  multiplyScalar(projection, scale);
+
+  return true;
+}
+
+function dot2D(x, y) {
+  return x[0] * y[0] + x[1] * y[1];
+}
+
+function projectVector2D(a, b, projection) {
+  var bSquared = dot2D(b, b);
+
+  if (bSquared === 0) {
+    projection[0] = 0;
+    projection[1] = 0;
+    return false;
+  }
+
+  var scale = dot2D(a, b) / bSquared;
+
+  for (var i = 0; i < 2; i++) {
+    projection[i] = b[i];
+  }
+  multiplyScalar2D(projection, scale);
+
+  return true;
+}
+
+function distance2BetweenPoints(x, y) {
+  return (x[0] - y[0]) * (x[0] - y[0]) + (x[1] - y[1]) * (x[1] - y[1]) + (x[2] - y[2]) * (x[2] - y[2]);
+}
+
+function angleBetweenVectors(v1, v2) {
+  var crossVect = [0, 0, 0];
+  cross(v1, v2, crossVect);
+  return Math.atan2(norm(crossVect), dot(v1, v2));
+}
+
+function gaussianAmplitude(mean, variance, position) {
+  var distanceFromMean = Math.abs(mean - position);
+  return 1 / Math.sqrt(2 * Math.PI * variance) * Math.exp(-Math.pow(distanceFromMean, 2) / (2 * variance));
+}
+
+function gaussianWeight(mean, variance, position) {
+  var distanceFromMean = Math.abs(mean - position);
+  return Math.exp(-Math.pow(distanceFromMean, 2) / (2 * variance));
+}
+
+function outer2D(x, y, out_2x2) {
+  for (var i = 0; i < 2; i++) {
+    for (var j = 0; j < 2; j++) {
+      out_2x2[i][j] = x[i] * y[j];
+    }
+  }
+}
+
+function norm2D(x2D) {
+  return Math.sqrt(x2D[0] * x2D[0] + x2D[1] * x2D[1]);
+}
+
+function normalize2D(x) {
+  var den = norm2D(x);
+  if (den !== 0.0) {
+    x[0] /= den;
+    x[1] /= den;
+  }
+  return den;
+}
+
+function determinant2x2() {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  if (args.length === 2) {
+    return args[0][0] * args[1][1] - args[1][0] * args[0][1];
+  }
+  if (args.length === 4) {
+    return args[0] * args[3] - args[1] * args[2];
+  }
+  return Number.NaN;
+}
+
+function LUFactor3x3(mat_3x3, index_3) {
+  var maxI = void 0;
+  var tmp = void 0;
+  var largest = void 0;
+  var scale = [0, 0, 0];
+
+  // Loop over rows to get implicit scaling information
+  for (var i = 0; i < 3; i++) {
+    largest = Math.abs(mat_3x3[i][0]);
+    if ((tmp = Math.abs(mat_3x3[i][1])) > largest) {
+      largest = tmp;
+    }
+    if ((tmp = Math.abs(mat_3x3[i][2])) > largest) {
+      largest = tmp;
+    }
+    scale[i] = 1 / largest;
+  }
+
+  // Loop over all columns using Crout's method
+
+  // first column
+  largest = scale[0] * Math.abs(mat_3x3[0][0]);
+  maxI = 0;
+  if ((tmp = scale[1] * Math.abs(mat_3x3[1][0])) >= largest) {
+    largest = tmp;
+    maxI = 1;
+  }
+  if ((tmp = scale[2] * Math.abs(mat_3x3[2][0])) >= largest) {
+    maxI = 2;
+  }
+  if (maxI !== 0) {
+    vtkSwapVectors3(mat_3x3[maxI], mat_3x3[0]);
+    scale[maxI] = scale[0];
+  }
+  index_3[0] = maxI;
+
+  mat_3x3[1][0] /= mat_3x3[0][0];
+  mat_3x3[2][0] /= mat_3x3[0][0];
+
+  // second column
+  mat_3x3[1][1] -= mat_3x3[1][0] * mat_3x3[0][1];
+  mat_3x3[2][1] -= mat_3x3[2][0] * mat_3x3[0][1];
+  largest = scale[1] * Math.abs(mat_3x3[1][1]);
+  maxI = 1;
+  if ((tmp = scale[2] * Math.abs(mat_3x3[2][1])) >= largest) {
+    maxI = 2;
+    vtkSwapVectors3(mat_3x3[2], mat_3x3[1]);
+    scale[2] = scale[1];
+  }
+  index_3[1] = maxI;
+  mat_3x3[2][1] /= mat_3x3[1][1];
+
+  // third column
+  mat_3x3[1][2] -= mat_3x3[1][0] * mat_3x3[0][2];
+  mat_3x3[2][2] -= mat_3x3[2][0] * mat_3x3[0][2] + mat_3x3[2][1] * mat_3x3[1][2];
+  index_3[2] = 2;
+}
+
+function LUSolve3x3(mat_3x3, index_3, x_3) {
+  // forward substitution
+  var sum = x_3[index_3[0]];
+  x_3[index_3[0]] = x_3[0];
+  x_3[0] = sum;
+
+  sum = x_3[index_3[1]];
+  x_3[index_3[1]] = x_3[1];
+  x_3[1] = sum - mat_3x3[1][0] * x_3[0];
+
+  sum = x_3[index_3[2]];
+  x_3[index_3[2]] = x_3[2];
+  x_3[2] = sum - mat_3x3[2][0] * x_3[0] - mat_3x3[2][1] * x_3[1];
+
+  // back substitution
+  x_3[2] /= mat_3x3[2][2];
+  x_3[1] = (x_3[1] - mat_3x3[1][2] * x_3[2]) / mat_3x3[1][1];
+  x_3[0] = (x_3[0] - mat_3x3[0][1] * x_3[1] - mat_3x3[0][2] * x_3[2]) / mat_3x3[0][0];
+}
+
+function linearSolve3x3(mat_3x3, x_3, y_3) {
+  var a1 = mat_3x3[0][0];
+  var b1 = mat_3x3[0][1];
+  var c1 = mat_3x3[0][2];
+  var a2 = mat_3x3[1][0];
+  var b2 = mat_3x3[1][1];
+  var c2 = mat_3x3[1][2];
+  var a3 = mat_3x3[2][0];
+  var b3 = mat_3x3[2][1];
+  var c3 = mat_3x3[2][2];
+
+  // Compute the adjoint
+  var d1 = +determinant2x2(b2, b3, c2, c3);
+  var d2 = -determinant2x2(a2, a3, c2, c3);
+  var d3 = +determinant2x2(a2, a3, b2, b3);
+
+  var e1 = -determinant2x2(b1, b3, c1, c3);
+  var e2 = +determinant2x2(a1, a3, c1, c3);
+  var e3 = -determinant2x2(a1, a3, b1, b3);
+
+  var f1 = +determinant2x2(b1, b2, c1, c2);
+  var f2 = -determinant2x2(a1, a2, c1, c2);
+  var f3 = +determinant2x2(a1, a2, b1, b2);
+
+  // Compute the determinant
+  var det = a1 * d1 + b1 * d2 + c1 * d3;
+
+  // Multiply by the adjoint
+  var v1 = d1 * x_3[0] + e1 * x_3[1] + f1 * x_3[2];
+  var v2 = d2 * x_3[0] + e2 * x_3[1] + f2 * x_3[2];
+  var v3 = d3 * x_3[0] + e3 * x_3[1] + f3 * x_3[2];
+
+  // Divide by the determinant
+  y_3[0] = v1 / det;
+  y_3[1] = v2 / det;
+  y_3[2] = v3 / det;
+}
+
+function multiply3x3_vect3(mat_3x3, in_3, out_3) {
+  var x = mat_3x3[0][0] * in_3[0] + mat_3x3[0][1] * in_3[1] + mat_3x3[0][2] * in_3[2];
+  var y = mat_3x3[1][0] * in_3[0] + mat_3x3[1][1] * in_3[1] + mat_3x3[1][2] * in_3[2];
+  var z = mat_3x3[2][0] * in_3[0] + mat_3x3[2][1] * in_3[1] + mat_3x3[2][2] * in_3[2];
+
+  out_3[0] = x;
+  out_3[1] = y;
+  out_3[2] = z;
+}
+
+function multiply3x3_mat3(a_3x3, b_3x3, out_3x3) {
+  var tmp = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+  for (var i = 0; i < 3; i++) {
+    tmp[0][i] = a_3x3[0][0] * b_3x3[0][i] + a_3x3[0][1] * b_3x3[1][i] + a_3x3[0][2] * b_3x3[2][i];
+    tmp[1][i] = a_3x3[1][0] * b_3x3[0][i] + a_3x3[1][1] * b_3x3[1][i] + a_3x3[1][2] * b_3x3[2][i];
+    tmp[2][i] = a_3x3[2][0] * b_3x3[0][i] + a_3x3[2][1] * b_3x3[1][i] + a_3x3[2][2] * b_3x3[2][i];
+  }
+
+  for (var j = 0; j < 3; j++) {
+    out_3x3[j][0] = tmp[j][0];
+    out_3x3[j][1] = tmp[j][1];
+    out_3x3[j][2] = tmp[j][2];
+  }
+}
+
+function multiplyMatrix(a, b, rowA, colA, rowB, colB, out_rowXcol) {
+  // we need colA == rowB
+  if (colA !== rowB) {
+    vtkErrorMacro('Number of columns of A must match number of rows of B.');
+  }
+
+  // output matrix is rowA*colB
+  // output row
+  for (var i = 0; i < rowA; i++) {
+    // output col
+    for (var j = 0; j < colB; j++) {
+      out_rowXcol[i][j] = 0;
+      // sum for this point
+      for (var k = 0; k < colA; k++) {
+        out_rowXcol[i][j] += a[i][k] * b[k][j];
+      }
+    }
+  }
+}
+
+function transpose3x3(in_3x3, outT_3x3) {
+  var tmp = void 0;
+  tmp = in_3x3[1][0];
+  outT_3x3[1][0] = in_3x3[0][1];
+  outT_3x3[0][1] = tmp;
+  tmp = in_3x3[2][0];
+  outT_3x3[2][0] = in_3x3[0][2];
+  outT_3x3[0][2] = tmp;
+  tmp = in_3x3[2][1];
+  outT_3x3[2][1] = in_3x3[1][2];
+  outT_3x3[1][2] = tmp;
+
+  outT_3x3[0][0] = in_3x3[0][0];
+  outT_3x3[1][1] = in_3x3[1][1];
+  outT_3x3[2][2] = in_3x3[2][2];
+}
+
+function invert3x3(in_3x3, outI_3x3) {
+  var a1 = in_3x3[0][0];
+  var b1 = in_3x3[0][1];
+  var c1 = in_3x3[0][2];
+  var a2 = in_3x3[1][0];
+  var b2 = in_3x3[1][1];
+  var c2 = in_3x3[1][2];
+  var a3 = in_3x3[2][0];
+  var b3 = in_3x3[2][1];
+  var c3 = in_3x3[2][2];
+
+  // Compute the adjoint
+  var d1 = +determinant2x2(b2, b3, c2, c3);
+  var d2 = -determinant2x2(a2, a3, c2, c3);
+  var d3 = +determinant2x2(a2, a3, b2, b3);
+
+  var e1 = -determinant2x2(b1, b3, c1, c3);
+  var e2 = +determinant2x2(a1, a3, c1, c3);
+  var e3 = -determinant2x2(a1, a3, b1, b3);
+
+  var f1 = +determinant2x2(b1, b2, c1, c2);
+  var f2 = -determinant2x2(a1, a2, c1, c2);
+  var f3 = +determinant2x2(a1, a2, b1, b2);
+
+  // Divide by the determinant
+  var det = a1 * d1 + b1 * d2 + c1 * d3;
+
+  outI_3x3[0][0] = d1 / det;
+  outI_3x3[1][0] = d2 / det;
+  outI_3x3[2][0] = d3 / det;
+
+  outI_3x3[0][1] = e1 / det;
+  outI_3x3[1][1] = e2 / det;
+  outI_3x3[2][1] = e3 / det;
+
+  outI_3x3[0][2] = f1 / det;
+  outI_3x3[1][2] = f2 / det;
+  outI_3x3[2][2] = f3 / det;
+}
+
+function identity3x3(mat_3x3) {
+  for (var i = 0; i < 3; i++) {
+    mat_3x3[i][0] = mat_3x3[i][1] = mat_3x3[i][2] = 0;
+    mat_3x3[i][i] = 1;
+  }
+}
+
+function determinant3x3(mat_3x3) {
+  return mat_3x3[0][0] * mat_3x3[1][1] * mat_3x3[2][2] + mat_3x3[1][0] * mat_3x3[2][1] * mat_3x3[0][2] + mat_3x3[2][0] * mat_3x3[0][1] * mat_3x3[1][2] - mat_3x3[0][0] * mat_3x3[2][1] * mat_3x3[1][2] - mat_3x3[1][0] * mat_3x3[0][1] * mat_3x3[2][2] - mat_3x3[2][0] * mat_3x3[1][1] * mat_3x3[0][2];
+}
+
+function quaternionToMatrix3x3(quat_4, mat_3x3) {
+  var ww = quat_4[0] * quat_4[0];
+  var wx = quat_4[0] * quat_4[1];
+  var wy = quat_4[0] * quat_4[2];
+  var wz = quat_4[0] * quat_4[3];
+
+  var xx = quat_4[1] * quat_4[1];
+  var yy = quat_4[2] * quat_4[2];
+  var zz = quat_4[3] * quat_4[3];
+
+  var xy = quat_4[1] * quat_4[2];
+  var xz = quat_4[1] * quat_4[3];
+  var yz = quat_4[2] * quat_4[3];
+
+  var rr = xx + yy + zz;
+  // normalization factor, just in case quaternion was not normalized
+  var f = 1 / (ww + rr);
+  var s = (ww - rr) * f;
+  f *= 2;
+
+  mat_3x3[0][0] = xx * f + s;
+  mat_3x3[1][0] = (xy + wz) * f;
+  mat_3x3[2][0] = (xz - wy) * f;
+
+  mat_3x3[0][1] = (xy - wz) * f;
+  mat_3x3[1][1] = yy * f + s;
+  mat_3x3[2][1] = (yz + wx) * f;
+
+  mat_3x3[0][2] = (xz + wy) * f;
+  mat_3x3[1][2] = (yz - wx) * f;
+  mat_3x3[2][2] = zz * f + s;
+}
+
+function areMatricesEqual(matA, matB) {
+  if (!matA.length === matB.length) {
+    return false;
+  }
+
+  function isEqual(element, index) {
+    return element === matB[index];
+  }
+  return matA.every(isEqual);
+}
+
+function jacobiN(a, n, w, v) {
+  var i = void 0;
+  var j = void 0;
+  var k = void 0;
+  var iq = void 0;
+  var ip = void 0;
+  var numPos = void 0;
+  var tresh = void 0;
+  var theta = void 0;
+  var t = void 0;
+  var tau = void 0;
+  var sm = void 0;
+  var s = void 0;
+  var h = void 0;
+  var g = void 0;
+  var c = void 0;
+  var tmp = void 0;
+  var b = createArray(n);
+  var z = createArray(n);
+
+  var vtkROTATE = function vtkROTATE(aa, ii, jj, kk, ll) {
+    g = aa[ii][jj];
+    h = aa[kk][ll];
+    aa[ii][jj] = g - s * (h + g * tau);
+    aa[kk][ll] = h + s * (g - h * tau);
+  };
+
+  // initialize
+  for (ip = 0; ip < n; ip++) {
+    for (iq = 0; iq < n; iq++) {
+      v[ip][iq] = 0.0;
+    }
+    v[ip][ip] = 1.0;
+  }
+  for (ip = 0; ip < n; ip++) {
+    b[ip] = w[ip] = a[ip][ip];
+    z[ip] = 0.0;
+  }
+
+  // begin rotation sequence
+  for (i = 0; i < VTK_MAX_ROTATIONS; i++) {
+    sm = 0.0;
+    for (ip = 0; ip < n - 1; ip++) {
+      for (iq = ip + 1; iq < n; iq++) {
+        sm += Math.abs(a[ip][iq]);
+      }
+    }
+    if (sm === 0.0) {
+      break;
+    }
+
+    // first 3 sweeps
+    if (i < 3) {
+      tresh = 0.2 * sm / (n * n);
+    } else {
+      tresh = 0.0;
+    }
+
+    for (ip = 0; ip < n - 1; ip++) {
+      for (iq = ip + 1; iq < n; iq++) {
+        g = 100.0 * Math.abs(a[ip][iq]);
+
+        // after 4 sweeps
+        if (i > 3 && Math.abs(w[ip]) + g === Math.abs(w[ip]) && Math.abs(w[iq]) + g === Math.abs(w[iq])) {
+          a[ip][iq] = 0.0;
+        } else if (Math.abs(a[ip][iq]) > tresh) {
+          h = w[iq] - w[ip];
+          if (Math.abs(h) + g === Math.abs(h)) {
+            t = a[ip][iq] / h;
+          } else {
+            theta = 0.5 * h / a[ip][iq];
+            t = 1.0 / (Math.abs(theta) + Math.sqrt(1.0 + theta * theta));
+            if (theta < 0.0) {
+              t = -t;
+            }
+          }
+          c = 1.0 / Math.sqrt(1 + t * t);
+          s = t * c;
+          tau = s / (1.0 + c);
+          h = t * a[ip][iq];
+          z[ip] -= h;
+          z[iq] += h;
+          w[ip] -= h;
+          w[iq] += h;
+          a[ip][iq] = 0.0;
+
+          // ip already shifted left by 1 unit
+          for (j = 0; j <= ip - 1; j++) {
+            vtkROTATE(a, j, ip, j, iq);
+          }
+          // ip and iq already shifted left by 1 unit
+          for (j = ip + 1; j <= iq - 1; j++) {
+            vtkROTATE(a, ip, j, j, iq);
+          }
+          // iq already shifted left by 1 unit
+          for (j = iq + 1; j < n; j++) {
+            vtkROTATE(a, ip, j, iq, j);
+          }
+          for (j = 0; j < n; j++) {
+            vtkROTATE(v, j, ip, j, iq);
+          }
+        }
+      }
+    }
+
+    for (ip = 0; ip < n; ip++) {
+      b[ip] += z[ip];
+      w[ip] = b[ip];
+      z[ip] = 0.0;
+    }
+  }
+
+  // this is NEVER called
+  if (i >= VTK_MAX_ROTATIONS) {
+    vtkWarningMacro('vtkMath::Jacobi: Error extracting eigenfunctions');
+    return 0;
+  }
+
+  // sort eigenfunctions: these changes do not affect accuracy
+  for (j = 0; j < n - 1; j++) {
+    // boundary incorrect
+    k = j;
+    tmp = w[k];
+    for (i = j + 1; i < n; i++) {
+      // boundary incorrect, shifted already
+      if (w[i] >= tmp) {
+        // why exchange if same?
+        k = i;
+        tmp = w[k];
+      }
+    }
+    if (k !== j) {
+      w[k] = w[j];
+      w[j] = tmp;
+      for (i = 0; i < n; i++) {
+        tmp = v[i][j];
+        v[i][j] = v[i][k];
+        v[i][k] = tmp;
+      }
+    }
+  }
+  // ensure eigenvector consistency (i.e., Jacobi can compute vectors that
+  // are negative of one another (.707,.707,0) and (-.707,-.707,0). This can
+  // reek havoc in hyperstreamline/other stuff. We will select the most
+  // positive eigenvector.
+  var ceil_half_n = (n >> 1) + (n & 1);
+  for (j = 0; j < n; j++) {
+    for (numPos = 0, i = 0; i < n; i++) {
+      if (v[i][j] >= 0.0) {
+        numPos++;
+      }
+    }
+    //    if ( numPos < ceil(double(n)/double(2.0)) )
+    if (numPos < ceil_half_n) {
+      for (i = 0; i < n; i++) {
+        v[i][j] *= -1.0;
+      }
+    }
+  }
+  return 1;
+}
+
+function matrix3x3ToQuaternion(mat_3x3, quat_4) {
+  var tmp = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+
+  // on-diagonal elements
+  tmp[0][0] = mat_3x3[0][0] + mat_3x3[1][1] + mat_3x3[2][2];
+  tmp[1][1] = mat_3x3[0][0] - mat_3x3[1][1] - mat_3x3[2][2];
+  tmp[2][2] = -mat_3x3[0][0] + mat_3x3[1][1] - mat_3x3[2][2];
+  tmp[3][3] = -mat_3x3[0][0] - mat_3x3[1][1] + mat_3x3[2][2];
+
+  // off-diagonal elements
+  tmp[0][1] = tmp[1][0] = mat_3x3[2][1] - mat_3x3[1][2];
+  tmp[0][2] = tmp[2][0] = mat_3x3[0][2] - mat_3x3[2][0];
+  tmp[0][3] = tmp[3][0] = mat_3x3[1][0] - mat_3x3[0][1];
+
+  tmp[1][2] = tmp[2][1] = mat_3x3[1][0] + mat_3x3[0][1];
+  tmp[1][3] = tmp[3][1] = mat_3x3[0][2] + mat_3x3[2][0];
+  tmp[2][3] = tmp[3][2] = mat_3x3[2][1] + mat_3x3[1][2];
+
+  var eigenvectors = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+  var eigenvalues = [0, 0, 0, 0];
+
+  // convert into format that JacobiN can use,
+  // then use Jacobi to find eigenvalues and eigenvectors
+  var NTemp = [0, 0, 0, 0];
+  var eigenvectorsTemp = [0, 0, 0, 0];
+  for (var i = 0; i < 4; i++) {
+    NTemp[i] = tmp[i];
+    eigenvectorsTemp[i] = eigenvectors[i];
+  }
+  jacobiN(NTemp, 4, eigenvalues, eigenvectorsTemp);
+
+  // the first eigenvector is the one we want
+  quat_4[0] = eigenvectors[0][0];
+  quat_4[1] = eigenvectors[1][0];
+  quat_4[2] = eigenvectors[2][0];
+  quat_4[3] = eigenvectors[3][0];
+}
+
+function multiplyQuaternion(quat_1, quat_2, quat_out) {
+  var ww = quat_1[0] * quat_2[0];
+  var wx = quat_1[0] * quat_2[1];
+  var wy = quat_1[0] * quat_2[2];
+  var wz = quat_1[0] * quat_2[3];
+
+  var xw = quat_1[1] * quat_2[0];
+  var xx = quat_1[1] * quat_2[1];
+  var xy = quat_1[1] * quat_2[2];
+  var xz = quat_1[1] * quat_2[3];
+
+  var yw = quat_1[2] * quat_2[0];
+  var yx = quat_1[2] * quat_2[1];
+  var yy = quat_1[2] * quat_2[2];
+  var yz = quat_1[2] * quat_2[3];
+
+  var zw = quat_1[3] * quat_2[0];
+  var zx = quat_1[3] * quat_2[1];
+  var zy = quat_1[3] * quat_2[2];
+  var zz = quat_1[3] * quat_2[3];
+
+  quat_out[0] = ww - xx - yy - zz;
+  quat_out[1] = wx + xw + yz - zy;
+  quat_out[2] = wy - xz + yw + zx;
+  quat_out[3] = wz + xy - yx + zw;
+}
+
+function orthogonalize3x3(a_3x3, out_3x3) {
+  // copy the matrix
+  for (var i = 0; i < 3; i++) {
+    out_3x3[0][i] = a_3x3[0][i];
+    out_3x3[1][i] = a_3x3[1][i];
+    out_3x3[2][i] = a_3x3[2][i];
+  }
+
+  // Pivot the matrix to improve accuracy
+  var scale = createArray(3);
+  var index = createArray(3);
+  var largest = void 0;
+
+  // Loop over rows to get implicit scaling information
+  for (var _i = 0; _i < 3; _i++) {
+    var _x5 = Math.abs(out_3x3[_i][0]);
+    var _x6 = Math.abs(out_3x3[_i][1]);
+    var _x7 = Math.abs(out_3x3[_i][2]);
+    largest = _x6 > _x5 ? _x6 : _x5;
+    largest = _x7 > largest ? _x7 : largest;
+    scale[_i] = 1;
+    if (largest !== 0) {
+      scale[_i] /= largest;
+    }
+  }
+
+  // first column
+  var x1 = Math.abs(out_3x3[0][0]) * scale[0];
+  var x2 = Math.abs(out_3x3[1][0]) * scale[1];
+  var x3 = Math.abs(out_3x3[2][0]) * scale[2];
+  index[0] = 0;
+  largest = x1;
+  if (x2 >= largest) {
+    largest = x2;
+    index[0] = 1;
+  }
+  if (x3 >= largest) {
+    index[0] = 2;
+  }
+  if (index[0] !== 0) {
+    vtkSwapVectors3(out_3x3[index[0]], out_3x3[0]);
+    scale[index[0]] = scale[0];
+  }
+
+  // second column
+  var y2 = Math.abs(out_3x3[1][1]) * scale[1];
+  var y3 = Math.abs(out_3x3[2][1]) * scale[2];
+  index[1] = 1;
+  largest = y2;
+  if (y3 >= largest) {
+    index[1] = 2;
+    vtkSwapVectors3(out_3x3[2], out_3x3[1]);
+  }
+
+  // third column
+  index[2] = 2;
+
+  // A quaternion can only describe a pure rotation, not
+  // a rotation with a flip, therefore the flip must be
+  // removed before the matrix is converted to a quaternion.
+  var flip = 0;
+  if (determinant3x3(out_3x3) < 0) {
+    flip = 1;
+    for (var _i2 = 0; _i2 < 3; _i2++) {
+      out_3x3[0][_i2] = -out_3x3[0][_i2];
+      out_3x3[1][_i2] = -out_3x3[1][_i2];
+      out_3x3[2][_i2] = -out_3x3[2][_i2];
+    }
+  }
+
+  // Do orthogonalization using a quaternion intermediate
+  // (this, essentially, does the orthogonalization via
+  // diagonalization of an appropriately constructed symmetric
+  // 4x4 matrix rather than by doing SVD of the 3x3 matrix)
+  var quat = createArray(4);
+  matrix3x3ToQuaternion(out_3x3, quat);
+  quaternionToMatrix3x3(quat, out_3x3);
+
+  // Put the flip back into the orthogonalized matrix.
+  if (flip) {
+    for (var _i3 = 0; _i3 < 3; _i3++) {
+      out_3x3[0][_i3] = -out_3x3[0][_i3];
+      out_3x3[1][_i3] = -out_3x3[1][_i3];
+      out_3x3[2][_i3] = -out_3x3[2][_i3];
+    }
+  }
+
+  // Undo the pivoting
+  if (index[1] !== 1) {
+    vtkSwapVectors3(out_3x3[index[1]], out_3x3[1]);
+  }
+  if (index[0] !== 0) {
+    vtkSwapVectors3(out_3x3[index[0]], out_3x3[0]);
+  }
+}
+
+function diagonalize3x3(a_3x3, w_3, v_3x3) {
+  var i = void 0;
+  var j = void 0;
+  var k = void 0;
+  var maxI = void 0;
+  var tmp = void 0;
+  var maxVal = void 0;
+
+  // do the matrix[3][3] to **matrix conversion for Jacobi
+  var C = [createArray(3), createArray(3), createArray(3)];
+  var ATemp = createArray(3);
+  var VTemp = createArray(3);
+  for (i = 0; i < 3; i++) {
+    C[i][0] = a_3x3[i][0];
+    C[i][1] = a_3x3[i][1];
+    C[i][2] = a_3x3[i][2];
+    ATemp[i] = C[i];
+    VTemp[i] = v_3x3[i];
+  }
+
+  // diagonalize using Jacobi
+  jacobiN(ATemp, 3, w_3, VTemp);
+
+  // if all the eigenvalues are the same, return identity matrix
+  if (w_3[0] === w_3[1] && w_3[0] === w_3[2]) {
+    identity3x3(v_3x3);
+    return;
+  }
+
+  // transpose temporarily, it makes it easier to sort the eigenvectors
+  transpose3x3(v_3x3, v_3x3);
+
+  // if two eigenvalues are the same, re-orthogonalize to optimally line
+  // up the eigenvectors with the x, y, and z axes
+  for (i = 0; i < 3; i++) {
+    // two eigenvalues are the same
+    if (w_3[(i + 1) % 3] === w_3[(i + 2) % 3]) {
+      // find maximum element of the independent eigenvector
+      maxVal = Math.abs(v_3x3[i][0]);
+      maxI = 0;
+      for (j = 1; j < 3; j++) {
+        if (maxVal < (tmp = Math.abs(v_3x3[i][j]))) {
+          maxVal = tmp;
+          maxI = j;
+        }
+      }
+      // swap the eigenvector into its proper position
+      if (maxI !== i) {
+        tmp = w_3[maxI];
+        w_3[maxI] = w_3[i];
+        w_3[i] = tmp;
+        vtkSwapVectors3(v_3x3[i], v_3x3[maxI]);
+      }
+      // maximum element of eigenvector should be positive
+      if (v_3x3[maxI][maxI] < 0) {
+        v_3x3[maxI][0] = -v_3x3[maxI][0];
+        v_3x3[maxI][1] = -v_3x3[maxI][1];
+        v_3x3[maxI][2] = -v_3x3[maxI][2];
+      }
+
+      // re-orthogonalize the other two eigenvectors
+      j = (maxI + 1) % 3;
+      k = (maxI + 2) % 3;
+
+      v_3x3[j][0] = 0.0;
+      v_3x3[j][1] = 0.0;
+      v_3x3[j][2] = 0.0;
+      v_3x3[j][j] = 1.0;
+      cross(v_3x3[maxI], v_3x3[j], v_3x3[k]);
+      normalize(v_3x3[k]);
+      cross(v_3x3[k], v_3x3[maxI], v_3x3[j]);
+
+      // transpose vectors back to columns
+      transpose3x3(v_3x3, v_3x3);
+      return;
+    }
+  }
+
+  // the three eigenvalues are different, just sort the eigenvectors
+  // to align them with the x, y, and z axes
+
+  // find the vector with the largest x element, make that vector
+  // the first vector
+  maxVal = Math.abs(v_3x3[0][0]);
+  maxI = 0;
+  for (i = 1; i < 3; i++) {
+    if (maxVal < (tmp = Math.abs(v_3x3[i][0]))) {
+      maxVal = tmp;
+      maxI = i;
+    }
+  }
+  // swap eigenvalue and eigenvector
+  if (maxI !== 0) {
+    tmp = w_3[maxI];
+    w_3[maxI] = w_3[0];
+    w_3[0] = tmp;
+    vtkSwapVectors3(v_3x3[maxI], v_3x3[0]);
+  }
+  // do the same for the y element
+  if (Math.abs(v_3x3[1][1]) < Math.abs(v_3x3[2][1])) {
+    tmp = w_3[2];
+    w_3[2] = w_3[1];
+    w_3[1] = tmp;
+    vtkSwapVectors3(v_3x3[2], v_3x3[1]);
+  }
+
+  // ensure that the sign of the eigenvectors is correct
+  for (i = 0; i < 2; i++) {
+    if (v_3x3[i][i] < 0) {
+      v_3x3[i][0] = -v_3x3[i][0];
+      v_3x3[i][1] = -v_3x3[i][1];
+      v_3x3[i][2] = -v_3x3[i][2];
+    }
+  }
+  // set sign of final eigenvector to ensure that determinant is positive
+  if (determinant3x3(v_3x3) < 0) {
+    v_3x3[2][0] = -v_3x3[2][0];
+    v_3x3[2][1] = -v_3x3[2][1];
+    v_3x3[2][2] = -v_3x3[2][2];
+  }
+
+  // transpose the eigenvectors back again
+  transpose3x3(v_3x3, v_3x3);
+}
+
+function singularValueDecomposition3x3(a_3x3, u_3x3, w_3, vT_3x3) {
+  var i = void 0;
+  var B = [createArray(3), createArray(3), createArray(3)];
+
+  // copy so that A can be used for U or VT without risk
+  for (i = 0; i < 3; i++) {
+    B[0][i] = a_3x3[0][i];
+    B[1][i] = a_3x3[1][i];
+    B[2][i] = a_3x3[2][i];
+  }
+
+  // temporarily flip if determinant is negative
+  var d = determinant3x3(B);
+  if (d < 0) {
+    for (i = 0; i < 3; i++) {
+      B[0][i] = -B[0][i];
+      B[1][i] = -B[1][i];
+      B[2][i] = -B[2][i];
+    }
+  }
+
+  // orthogonalize, diagonalize, etc.
+  orthogonalize3x3(B, u_3x3);
+  transpose3x3(B, B);
+  multiply3x3_mat3(B, u_3x3, vT_3x3);
+  diagonalize3x3(vT_3x3, w_3, vT_3x3);
+  multiply3x3_mat3(u_3x3, vT_3x3, u_3x3);
+  transpose3x3(vT_3x3, vT_3x3);
+
+  // re-create the flip
+  if (d < 0) {
+    w_3[0] = -w_3[0];
+    w_3[1] = -w_3[1];
+    w_3[2] = -w_3[2];
+  }
+}
+
+function luFactorLinearSystem(A, index, size) {
+  var i = void 0;
+  var j = void 0;
+  var k = void 0;
+  var largest = void 0;
+  var maxI = 0;
+  var sum = void 0;
+  var temp1 = void 0;
+  var temp2 = void 0;
+  var scale = createArray(size);
+
+  //
+  // Loop over rows to get implicit scaling information
+  //
+  for (i = 0; i < size; i++) {
+    for (largest = 0.0, j = 0; j < size; j++) {
+      if ((temp2 = Math.abs(A[i][j])) > largest) {
+        largest = temp2;
+      }
+    }
+
+    if (largest === 0.0) {
+      vtkWarningMacro('Unable to factor linear system');
+      return 0;
+    }
+    scale[i] = 1.0 / largest;
+  }
+  //
+  // Loop over all columns using Crout's method
+  //
+  for (j = 0; j < size; j++) {
+    for (i = 0; i < j; i++) {
+      sum = A[i][j];
+      for (k = 0; k < i; k++) {
+        sum -= A[i][k] * A[k][j];
+      }
+      A[i][j] = sum;
+    }
+    //
+    // Begin search for largest pivot element
+    //
+    for (largest = 0.0, i = j; i < size; i++) {
+      sum = A[i][j];
+      for (k = 0; k < j; k++) {
+        sum -= A[i][k] * A[k][j];
+      }
+      A[i][j] = sum;
+
+      if ((temp1 = scale[i] * Math.abs(sum)) >= largest) {
+        largest = temp1;
+        maxI = i;
+      }
+    }
+    //
+    // Check for row interchange
+    //
+    if (j !== maxI) {
+      for (k = 0; k < size; k++) {
+        temp1 = A[maxI][k];
+        A[maxI][k] = A[j][k];
+        A[j][k] = temp1;
+      }
+      scale[maxI] = scale[j];
+    }
+    //
+    // Divide by pivot element and perform elimination
+    //
+    index[j] = maxI;
+
+    if (Math.abs(A[j][j]) <= VTK_SMALL_NUMBER) {
+      vtkWarningMacro('Unable to factor linear system');
+      return 0;
+    }
+
+    if (j !== size - 1) {
+      temp1 = 1.0 / A[j][j];
+      for (i = j + 1; i < size; i++) {
+        A[i][j] *= temp1;
+      }
+    }
+  }
+  return 1;
+}
+
+function luSolveLinearSystem(A, index, x, size) {
+  var i = void 0;
+  var j = void 0;
+  var ii = void 0;
+  var idx = void 0;
+  var sum = void 0;
+  //
+  // Proceed with forward and backsubstitution for L and U
+  // matrices.  First, forward substitution.
+  //
+  for (ii = -1, i = 0; i < size; i++) {
+    idx = index[i];
+    sum = x[idx];
+    x[idx] = x[i];
+
+    if (ii >= 0) {
+      for (j = ii; j <= i - 1; j++) {
+        sum -= A[i][j] * x[j];
+      }
+    } else if (sum !== 0.0) {
+      ii = i;
+    }
+
+    x[i] = sum;
+  }
+  //
+  // Now, back substitution
+  //
+  for (i = size - 1; i >= 0; i--) {
+    sum = x[i];
+    for (j = i + 1; j < size; j++) {
+      sum -= A[i][j] * x[j];
+    }
+    x[i] = sum / A[i][i];
+  }
+}
+
+function solveLinearSystem(A, x, size) {
+  // if we solving something simple, just solve it
+  if (size === 2) {
+    var y = createArray(2);
+    var det = determinant2x2(A[0][0], A[0][1], A[1][0], A[1][1]);
+
+    if (det === 0.0) {
+      // Unable to solve linear system
+      return 0;
+    }
+
+    y[0] = (A[1][1] * x[0] - A[0][1] * x[1]) / det;
+    y[1] = (-(A[1][0] * x[0]) + A[0][0] * x[1]) / det;
+
+    x[0] = y[0];
+    x[1] = y[1];
+    return 1;
+  } else if (size === 1) {
+    if (A[0][0] === 0.0) {
+      // Unable to solve linear system
+      return 0;
+    }
+
+    x[0] /= A[0][0];
+    return 1;
+  }
+
+  //
+  // System of equations is not trivial, use Crout's method
+  //
+
+  // Check on allocation of working vectors
+  var index = createArray(size);
+
+  // Factor and solve matrix
+  if (luFactorLinearSystem(A, index, size) === 0) {
+    return 0;
+  }
+  luSolveLinearSystem(A, index, x, size);
+
+  return 1;
+}
+
+function invertMatrix(A, AI, size) {
+  var index = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  var column = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+  var tmp1Size = index || createArray(size);
+  var tmp2Size = column || createArray(size);
+
+  // Factor matrix; then begin solving for inverse one column at a time.
+  // Note: tmp1Size returned value is used later, tmp2Size is just working
+  // memory whose values are not used in LUSolveLinearSystem
+  if (luFactorLinearSystem(A, tmp1Size, size, tmp2Size) === 0) {
+    return 0;
+  }
+
+  for (var j = 0; j < size; j++) {
+    for (var i = 0; i < size; i++) {
+      tmp2Size[i] = 0.0;
+    }
+    tmp2Size[j] = 1.0;
+
+    luSolveLinearSystem(A, tmp1Size, tmp2Size, size);
+
+    for (var _i4 = 0; _i4 < size; _i4++) {
+      AI[_i4][j] = tmp2Size[_i4];
+    }
+  }
+
+  return 1;
+}
+
+function estimateMatrixCondition(A, size) {
+  var minValue = +Number.MAX_VALUE;
+  var maxValue = -Number.MAX_VALUE;
+
+  // find the maximum value
+  for (var i = 0; i < size; i++) {
+    for (var j = i; j < size; j++) {
+      if (Math.abs(A[i][j]) > max) {
+        maxValue = Math.abs(A[i][j]);
+      }
+    }
+  }
+
+  // find the minimum diagonal value
+  for (var _i5 = 0; _i5 < size; _i5++) {
+    if (Math.abs(A[_i5][_i5]) < min) {
+      minValue = Math.abs(A[_i5][_i5]);
+    }
+  }
+
+  if (minValue === 0.0) {
+    return Number.MAX_VALUE;
+  }
+  return maxValue / minValue;
+}
+
+function jacobi(a_3x3, w, v) {
+  return jacobiN(a_3x3, 3, w, v);
+}
+
+function solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, mt) {
+  // check dimensional consistency
+  if (numberOfSamples < xOrder) {
+    vtkWarningMacro('Insufficient number of samples. Underdetermined.');
+    return 0;
+  }
+
+  var i = void 0;
+  var j = void 0;
+  var k = void 0;
+
+  // set up intermediate variables
+  // Allocate matrix to hold X times transpose of X
+  var XXt = createArray(xOrder); // size x by x
+  // Allocate the array of eigenvalues and eigenvectors
+  var eigenvals = createArray(xOrder);
+  var eigenvecs = createArray(xOrder);
+
+  // Clear the upper triangular region (and btw, allocate the eigenvecs as well)
+  for (i = 0; i < xOrder; i++) {
+    eigenvecs[i] = createArray(xOrder);
+    XXt[i] = createArray(xOrder);
+    for (j = 0; j < xOrder; j++) {
+      XXt[i][j] = 0.0;
+    }
+  }
+
+  // Calculate XXt upper half only, due to symmetry
+  for (k = 0; k < numberOfSamples; k++) {
+    for (i = 0; i < xOrder; i++) {
+      for (j = i; j < xOrder; j++) {
+        XXt[i][j] += xt[k][i] * xt[k][j];
+      }
+    }
+  }
+
+  // now fill in the lower half of the XXt matrix
+  for (i = 0; i < xOrder; i++) {
+    for (j = 0; j < i; j++) {
+      XXt[i][j] = XXt[j][i];
+    }
+  }
+
+  // Compute the eigenvectors and eigenvalues
+  jacobiN(XXt, xOrder, eigenvals, eigenvecs);
+
+  // Smallest eigenval is at the end of the list (xOrder-1), and solution is
+  // corresponding eigenvec.
+  for (i = 0; i < xOrder; i++) {
+    mt[i][0] = eigenvecs[i][xOrder - 1];
+  }
+
+  return 1;
+}
+
+function solveLeastSquares(numberOfSamples, xt, xOrder, yt, yOrder, mt) {
+  var checkHomogeneous = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : true;
+
+  // check dimensional consistency
+  if (numberOfSamples < xOrder || numberOfSamples < yOrder) {
+    vtkWarningMacro('Insufficient number of samples. Underdetermined.');
+    return 0;
+  }
+
+  var homogenFlags = createArray(yOrder);
+  var allHomogeneous = 1;
+  var hmt = void 0;
+  var homogRC = 0;
+  var i = void 0;
+  var j = void 0;
+  var k = void 0;
+  var someHomogeneous = 0;
+
+  // Ok, first init some flags check and see if all the systems are homogeneous
+  if (checkHomogeneous) {
+    // If Y' is zero, it's a homogeneous system and can't be solved via
+    // the pseudoinverse method. Detect this case, warn the user, and
+    // invoke SolveHomogeneousLeastSquares instead. Note that it doesn't
+    // really make much sense for yOrder to be greater than one in this case,
+    // since that's just yOrder occurrences of a 0 vector on the RHS, but
+    // we allow it anyway. N
+
+    // Initialize homogeneous flags on a per-right-hand-side basis
+    for (j = 0; j < yOrder; j++) {
+      homogenFlags[j] = 1;
+    }
+    for (i = 0; i < numberOfSamples; i++) {
+      for (j = 0; j < yOrder; j++) {
+        if (Math.abs(yt[i][j]) > VTK_SMALL_NUMBER) {
+          allHomogeneous = 0;
+          homogenFlags[j] = 0;
+        }
+      }
+    }
+
+    // If we've got one system, and it's homogeneous, do it and bail out quickly.
+    if (allHomogeneous && yOrder === 1) {
+      vtkWarningMacro('Detected homogeneous system (Y=0), calling SolveHomogeneousLeastSquares()');
+      return solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, mt);
+    }
+
+    // Ok, we've got more than one system of equations.
+    // Figure out if we need to calculate the homogeneous equation solution for
+    // any of them.
+    if (allHomogeneous) {
+      someHomogeneous = 1;
+    } else {
+      for (j = 0; j < yOrder; j++) {
+        if (homogenFlags[j]) {
+          someHomogeneous = 1;
+        }
+      }
+    }
+  }
+
+  // If necessary, solve the homogeneous problem
+  if (someHomogeneous) {
+    // hmt is the homogeneous equation version of mt, the general solution.
+    hmt = createArray(xOrder);
+    for (j = 0; j < xOrder; j++) {
+      // Only allocate 1 here, not yOrder, because here we're going to solve
+      // just the one homogeneous equation subset of the entire problem
+      hmt[j] = [0];
+    }
+
+    // Ok, solve the homogeneous problem
+    homogRC = solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, hmt);
+  }
+
+  // set up intermediate variables
+  var XXt = createArray(xOrder); // size x by x
+  var XXtI = createArray(xOrder); // size x by x
+  var XYt = createArray(xOrder); // size x by y
+  for (i = 0; i < xOrder; i++) {
+    XXt[i] = createArray(xOrder);
+    XXtI[i] = createArray(xOrder);
+
+    for (j = 0; j < xOrder; j++) {
+      XXt[i][j] = 0.0;
+      XXtI[i][j] = 0.0;
+    }
+
+    XYt[i] = createArray(yOrder);
+    for (j = 0; j < yOrder; j++) {
+      XYt[i][j] = 0.0;
+    }
+  }
+
+  // first find the pseudoinverse matrix
+  for (k = 0; k < numberOfSamples; k++) {
+    for (i = 0; i < xOrder; i++) {
+      // first calculate the XXt matrix, only do the upper half (symmetrical)
+      for (j = i; j < xOrder; j++) {
+        XXt[i][j] += xt[k][i] * xt[k][j];
+      }
+
+      // now calculate the XYt matrix
+      for (j = 0; j < yOrder; j++) {
+        XYt[i][j] += xt[k][i] * yt[k][j];
+      }
+    }
+  }
+
+  // now fill in the lower half of the XXt matrix
+  for (i = 0; i < xOrder; i++) {
+    for (j = 0; j < i; j++) {
+      XXt[i][j] = XXt[j][i];
+    }
+  }
+
+  var successFlag = invertMatrix(XXt, XXtI, xOrder);
+
+  // next get the inverse of XXt
+  if (successFlag) {
+    for (i = 0; i < xOrder; i++) {
+      for (j = 0; j < yOrder; j++) {
+        mt[i][j] = 0.0;
+        for (k = 0; k < xOrder; k++) {
+          mt[i][j] += XXtI[i][k] * XYt[k][j];
+        }
+      }
+    }
+  }
+
+  // Fix up any of the solutions that correspond to the homogeneous equation
+  // problem.
+  if (someHomogeneous) {
+    for (j = 0; j < yOrder; j++) {
+      if (homogenFlags[j]) {
+        // Fix this one
+        for (i = 0; i < xOrder; i++) {
+          mt[i][j] = hmt[i][0];
+        }
+      }
+    }
+  }
+
+  if (someHomogeneous) {
+    return homogRC && successFlag;
+  }
+
+  return successFlag;
+}
+
+function hex2float(hexStr) {
+  var outFloatArray = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0.5, 1];
+
+  switch (hexStr.length) {
+    case 3:
+      // abc => #aabbcc
+      outFloatArray[0] = parseInt(hexStr[0], 16) * 17 / 255;
+      outFloatArray[1] = parseInt(hexStr[1], 16) * 17 / 255;
+      outFloatArray[2] = parseInt(hexStr[2], 16) * 17 / 255;
+      return outFloatArray;
+    case 4:
+      // #abc => #aabbcc
+      outFloatArray[0] = parseInt(hexStr[1], 16) * 17 / 255;
+      outFloatArray[1] = parseInt(hexStr[2], 16) * 17 / 255;
+      outFloatArray[2] = parseInt(hexStr[3], 16) * 17 / 255;
+      return outFloatArray;
+    case 6:
+      // ab01df => #ab01df
+      outFloatArray[0] = parseInt(hexStr.substr(0, 2), 16) / 255;
+      outFloatArray[1] = parseInt(hexStr.substr(2, 2), 16) / 255;
+      outFloatArray[2] = parseInt(hexStr.substr(4, 2), 16) / 255;
+      return outFloatArray;
+    case 7:
+      // #ab01df
+      outFloatArray[0] = parseInt(hexStr.substr(1, 2), 16) / 255;
+      outFloatArray[1] = parseInt(hexStr.substr(3, 2), 16) / 255;
+      outFloatArray[2] = parseInt(hexStr.substr(5, 2), 16) / 255;
+      return outFloatArray;
+    case 9:
+      // #ab01df00
+      outFloatArray[0] = parseInt(hexStr.substr(1, 2), 16) / 255;
+      outFloatArray[1] = parseInt(hexStr.substr(3, 2), 16) / 255;
+      outFloatArray[2] = parseInt(hexStr.substr(5, 2), 16) / 255;
+      outFloatArray[3] = parseInt(hexStr.substr(7, 2), 16) / 255;
+      return outFloatArray;
+    default:
+      return outFloatArray;
+  }
+}
+
+function rgb2hsv(rgb, hsv) {
+  var h = void 0;
+  var s = void 0;
+
+  var _rgb = _slicedToArray(rgb, 3),
+      r = _rgb[0],
+      g = _rgb[1],
+      b = _rgb[2];
+
+  var onethird = 1.0 / 3.0;
+  var onesixth = 1.0 / 6.0;
+  var twothird = 2.0 / 3.0;
+
+  var cmax = r;
+  var cmin = r;
+
+  if (g > cmax) {
+    cmax = g;
+  } else if (g < cmin) {
+    cmin = g;
+  }
+  if (b > cmax) {
+    cmax = b;
+  } else if (b < cmin) {
+    cmin = b;
+  }
+  var v = cmax;
+
+  if (v > 0.0) {
+    s = (cmax - cmin) / cmax;
+  } else {
+    s = 0.0;
+  }
+  if (s > 0) {
+    if (r === cmax) {
+      h = onesixth * (g - b) / (cmax - cmin);
+    } else if (g === cmax) {
+      h = onethird + onesixth * (b - r) / (cmax - cmin);
+    } else {
+      h = twothird + onesixth * (r - g) / (cmax - cmin);
+    }
+    if (h < 0.0) {
+      h += 1.0;
+    }
+  } else {
+    h = 0.0;
+  }
+
+  // Set the values back to the array
+  hsv[0] = h;
+  hsv[1] = s;
+  hsv[2] = v;
+}
+
+function hsv2rgb(hsv, rgb) {
+  var _hsv = _slicedToArray(hsv, 3),
+      h = _hsv[0],
+      s = _hsv[1],
+      v = _hsv[2];
+
+  var onethird = 1.0 / 3.0;
+  var onesixth = 1.0 / 6.0;
+  var twothird = 2.0 / 3.0;
+  var fivesixth = 5.0 / 6.0;
+  var r = void 0;
+  var g = void 0;
+  var b = void 0;
+
+  // compute RGB from HSV
+  if (h > onesixth && h <= onethird) {
+    // green/red
+    g = 1.0;
+    r = (onethird - h) / onesixth;
+    b = 0.0;
+  } else if (h > onethird && h <= 0.5) {
+    // green/blue
+    g = 1.0;
+    b = (h - onethird) / onesixth;
+    r = 0.0;
+  } else if (h > 0.5 && h <= twothird) {
+    // blue/green
+    b = 1.0;
+    g = (twothird - h) / onesixth;
+    r = 0.0;
+  } else if (h > twothird && h <= fivesixth) {
+    // blue/red
+    b = 1.0;
+    r = (h - twothird) / onesixth;
+    g = 0.0;
+  } else if (h > fivesixth && h <= 1.0) {
+    // red/blue
+    r = 1.0;
+    b = (1.0 - h) / onesixth;
+    g = 0.0;
+  } else {
+    // red/green
+    r = 1.0;
+    g = h / onesixth;
+    b = 0.0;
+  }
+
+  // add Saturation to the equation.
+  r = s * r + (1.0 - s);
+  g = s * g + (1.0 - s);
+  b = s * b + (1.0 - s);
+
+  r *= v;
+  g *= v;
+  b *= v;
+
+  // Assign back to the array
+  rgb[0] = r;
+  rgb[1] = g;
+  rgb[2] = b;
+}
+
+function lab2xyz(lab, xyz) {
+  // LAB to XYZ
+  var _lab = _slicedToArray(lab, 3),
+      L = _lab[0],
+      a = _lab[1],
+      b = _lab[2];
+
+  var var_Y = (L + 16) / 116;
+  var var_X = a / 500 + var_Y;
+  var var_Z = var_Y - b / 200;
+
+  if (Math.pow(var_Y, 3) > 0.008856) {
+    var_Y = Math.pow(var_Y, 3);
+  } else {
+    var_Y = (var_Y - 16.0 / 116.0) / 7.787;
+  }
+
+  if (Math.pow(var_X, 3) > 0.008856) {
+    var_X = Math.pow(var_X, 3);
+  } else {
+    var_X = (var_X - 16.0 / 116.0) / 7.787;
+  }
+
+  if (Math.pow(var_Z, 3) > 0.008856) {
+    var_Z = Math.pow(var_Z, 3);
+  } else {
+    var_Z = (var_Z - 16.0 / 116.0) / 7.787;
+  }
+  var ref_X = 0.9505;
+  var ref_Y = 1.0;
+  var ref_Z = 1.089;
+  xyz[0] = ref_X * var_X; // ref_X = 0.9505  Observer= 2 deg Illuminant= D65
+  xyz[1] = ref_Y * var_Y; // ref_Y = 1.000
+  xyz[2] = ref_Z * var_Z; // ref_Z = 1.089
+}
+
+function xyz2lab(xyz, lab) {
+  var _xyz = _slicedToArray(xyz, 3),
+      x = _xyz[0],
+      y = _xyz[1],
+      z = _xyz[2];
+
+  var ref_X = 0.9505;
+  var ref_Y = 1.0;
+  var ref_Z = 1.089;
+  var var_X = x / ref_X; // ref_X = 0.9505  Observer= 2 deg, Illuminant= D65
+  var var_Y = y / ref_Y; // ref_Y = 1.000
+  var var_Z = z / ref_Z; // ref_Z = 1.089
+
+  if (var_X > 0.008856) {
+    var_X = Math.pow(var_X, 1.0 / 3.0);
+  } else var_X = 7.787 * var_X + 16.0 / 116.0;
+  if (var_Y > 0.008856) {
+    var_Y = Math.pow(var_Y, 1.0 / 3.0);
+  } else var_Y = 7.787 * var_Y + 16.0 / 116.0;
+  if (var_Z > 0.008856) {
+    var_Z = Math.pow(var_Z, 1.0 / 3.0);
+  } else var_Z = 7.787 * var_Z + 16.0 / 116.0;
+
+  lab[0] = 116 * var_Y - 16;
+  lab[1] = 500 * (var_X - var_Y);
+  lab[2] = 200 * (var_Y - var_Z);
+}
+
+function xyz2rgb(xyz, rgb) {
+  var _xyz2 = _slicedToArray(xyz, 3),
+      x = _xyz2[0],
+      y = _xyz2[1],
+      z = _xyz2[2];
+
+  var r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+  var g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+  var b = x * 0.0557 + y * -0.204 + z * 1.057;
+
+  // The following performs a "gamma correction" specified by the sRGB color
+  // space.  sRGB is defined by a canonical definition of a display monitor and
+  // has been standardized by the International Electrotechnical Commission (IEC
+  // 61966-2-1).  The nonlinearity of the correction is designed to make the
+  // colors more perceptually uniform.  This color space has been adopted by
+  // several applications including Adobe Photoshop and Microsoft Windows color
+  // management.  OpenGL is agnostic on its RGB color space, but it is reasonable
+  // to assume it is close to this one.
+  if (r > 0.0031308) r = 1.055 * Math.pow(r, 1 / 2.4) - 0.055;else r *= 12.92;
+  if (g > 0.0031308) g = 1.055 * Math.pow(g, 1 / 2.4) - 0.055;else g *= 12.92;
+  if (b > 0.0031308) b = 1.055 * Math.pow(b, 1 / 2.4) - 0.055;else b *= 12.92;
+
+  // Clip colors. ideally we would do something that is perceptually closest
+  // (since we can see colors outside of the display gamut), but this seems to
+  // work well enough.
+  var maxVal = r;
+  if (maxVal < g) maxVal = g;
+  if (maxVal < b) maxVal = b;
+  if (maxVal > 1.0) {
+    r /= maxVal;
+    g /= maxVal;
+    b /= maxVal;
+  }
+  if (r < 0) r = 0;
+  if (g < 0) g = 0;
+  if (b < 0) b = 0;
+
+  // Push values back to array
+  rgb[0] = r;
+  rgb[1] = g;
+  rgb[2] = b;
+}
+
+function rgb2xyz(rgb, xyz) {
+  var _rgb2 = _slicedToArray(rgb, 3),
+      r = _rgb2[0],
+      g = _rgb2[1],
+      b = _rgb2[2];
+  // The following performs a "gamma correction" specified by the sRGB color
+  // space.  sRGB is defined by a canonical definition of a display monitor and
+  // has been standardized by the International Electrotechnical Commission (IEC
+  // 61966-2-1).  The nonlinearity of the correction is designed to make the
+  // colors more perceptually uniform.  This color space has been adopted by
+  // several applications including Adobe Photoshop and Microsoft Windows color
+  // management.  OpenGL is agnostic on its RGB color space, but it is reasonable
+  // to assume it is close to this one.
+
+
+  if (r > 0.04045) r = Math.pow((r + 0.055) / 1.055, 2.4);else r /= 12.92;
+  if (g > 0.04045) g = Math.pow((g + 0.055) / 1.055, 2.4);else g /= 12.92;
+  if (b > 0.04045) b = Math.pow((b + 0.055) / 1.055, 2.4);else b /= 12.92;
+
+  // Observer. = 2 deg, Illuminant = D65
+  xyz[0] = r * 0.4124 + g * 0.3576 + b * 0.1805;
+  xyz[1] = r * 0.2126 + g * 0.7152 + b * 0.0722;
+  xyz[2] = r * 0.0193 + g * 0.1192 + b * 0.9505;
+}
+
+function rgb2lab(rgb, lab) {
+  var xyz = [0, 0, 0];
+  rgb2xyz(rgb, xyz);
+  xyz2lab(xyz, lab);
+}
+
+function lab2rgb(lab, rgb) {
+  var xyz = [0, 0, 0];
+  lab2xyz(lab, xyz);
+  xyz2rgb(xyz, rgb);
+}
+
+function uninitializeBounds(bounds) {
+  bounds[0] = 1.0;
+  bounds[1] = -1.0;
+  bounds[2] = 1.0;
+  bounds[3] = -1.0;
+  bounds[4] = 1.0;
+  bounds[5] = -1.0;
+}
+
+function areBoundsInitialized(bounds) {
+  return !(bounds[1] - bounds[0] < 0.0);
+}
+
+function clampValue(value, minValue, maxValue) {
+  if (value < minValue) {
+    return minValue;
+  }
+  if (value > maxValue) {
+    return maxValue;
+  }
+  return value;
+}
+
+function clampAndNormalizeValue(value, range) {
+  var result = 0;
+  if (range[0] !== range[1]) {
+    // clamp
+    if (value < range[0]) {
+      result = range[0];
+    } else if (value > range[1]) {
+      result = range[1];
+    } else {
+      result = value;
+    }
+    // normalize
+    result = (result - range[0]) / (range[1] - range[0]);
+  }
+
+  return result;
+}
+
+var getScalarTypeFittingRange = notImplemented('GetScalarTypeFittingRange');
+var getAdjustedScalarRange = notImplemented('GetAdjustedScalarRange');
+
+function extentIsWithinOtherExtent(extent1, extent2) {
+  if (!extent1 || !extent2) {
+    return 0;
+  }
+
+  for (var i = 0; i < 6; i += 2) {
+    if (extent1[i] < extent2[i] || extent1[i] > extent2[i + 1] || extent1[i + 1] < extent2[i] || extent1[i + 1] > extent2[i + 1]) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
+function boundsIsWithinOtherBounds(bounds1_6, bounds2_6, delta_3) {
+  if (!bounds1_6 || !bounds2_6) {
+    return 0;
+  }
+  for (var i = 0; i < 6; i += 2) {
+    if (bounds1_6[i] + delta_3[i / 2] < bounds2_6[i] || bounds1_6[i] - delta_3[i / 2] > bounds2_6[i + 1] || bounds1_6[i + 1] + delta_3[i / 2] < bounds2_6[i] || bounds1_6[i + 1] - delta_3[i / 2] > bounds2_6[i + 1]) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+function pointIsWithinBounds(point_3, bounds_6, delta_3) {
+  if (!point_3 || !bounds_6 || !delta_3) {
+    return 0;
+  }
+  for (var i = 0; i < 3; i++) {
+    if (point_3[i] + delta_3[i] < bounds_6[2 * i] || point_3[i] - delta_3[i] > bounds_6[2 * i + 1]) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+function solve3PointCircle(p1, p2, p3, center) {
+  var v21 = createArray(3);
+  var v32 = createArray(3);
+  var v13 = createArray(3);
+  var v12 = createArray(3);
+  var v23 = createArray(3);
+  var v31 = createArray(3);
+
+  for (var i = 0; i < 3; ++i) {
+    v21[i] = p1[i] - p2[i];
+    v32[i] = p2[i] - p3[i];
+    v13[i] = p3[i] - p1[i];
+    v12[i] = -v21[i];
+    v23[i] = -v32[i];
+    v31[i] = -v13[i];
+  }
+
+  var norm12 = norm(v12);
+  var norm23 = norm(v23);
+  var norm13 = norm(v13);
+
+  var crossv21v32 = createArray(3);
+  cross(v21, v32, crossv21v32);
+  var normCross = norm(crossv21v32);
+
+  var radius = norm12 * norm23 * norm13 / (2 * normCross);
+
+  var normCross22 = 2 * normCross * normCross;
+  var alpha = norm23 * norm23 * dot(v21, v31) / normCross22;
+  var beta = norm13 * norm13 * dot(v12, v32) / normCross22;
+  var gamma = norm12 * norm12 * dot(v13, v23) / normCross22;
+
+  for (var _i6 = 0; _i6 < 3; ++_i6) {
+    center[_i6] = alpha * p1[_i6] + beta * p2[_i6] + gamma * p3[_i6];
+  }
+  return radius;
+}
+
+var inf = Infinity;
+var negInf = -Infinity;
+
+var isInf = function isInf(value) {
+  return !Number.isFinite(value);
+};
+var isFinite = Number.isFinite,
+    isNaN = Number.isNaN;
+
+// JavaScript - add-on ----------------------
+
+function createUninitializedBounds() {
+  return [].concat([Number.MAX_VALUE, -Number.MAX_VALUE, // X
+  Number.MAX_VALUE, -Number.MAX_VALUE, // Y
+  Number.MAX_VALUE, -Number.MAX_VALUE] // Z
+  );
+}
+
+// ----------------------------------------------------------------------------
+// Only Static API
+// ----------------------------------------------------------------------------
+
+exports.default = {
+  Pi: Pi,
+  radiansFromDegrees: radiansFromDegrees,
+  degreesFromRadians: degreesFromRadians,
+  round: round,
+  floor: floor,
+  ceil: ceil,
+  ceilLog2: ceilLog2,
+  min: min,
+  max: max,
+  arrayMin: arrayMin,
+  arrayMax: arrayMax,
+  isPowerOfTwo: isPowerOfTwo,
+  nearestPowerOfTwo: nearestPowerOfTwo,
+  factorial: factorial,
+  binomial: binomial,
+  beginCombination: beginCombination,
+  nextCombination: nextCombination,
+  randomSeed: randomSeed,
+  getSeed: getSeed,
+  random: random,
+  gaussian: gaussian,
+  add: add,
+  subtract: subtract,
+  multiplyScalar: multiplyScalar,
+  multiplyScalar2D: multiplyScalar2D,
+  dot: dot,
+  outer: outer,
+  cross: cross,
+  norm: norm,
+  normalize: normalize,
+  perpendiculars: perpendiculars,
+  projectVector: projectVector,
+  projectVector2D: projectVector2D,
+  distance2BetweenPoints: distance2BetweenPoints,
+  angleBetweenVectors: angleBetweenVectors,
+  gaussianAmplitude: gaussianAmplitude,
+  gaussianWeight: gaussianWeight,
+  dot2D: dot2D,
+  outer2D: outer2D,
+  norm2D: norm2D,
+  normalize2D: normalize2D,
+  determinant2x2: determinant2x2,
+  LUFactor3x3: LUFactor3x3,
+  LUSolve3x3: LUSolve3x3,
+  linearSolve3x3: linearSolve3x3,
+  multiply3x3_vect3: multiply3x3_vect3,
+  multiply3x3_mat3: multiply3x3_mat3,
+  multiplyMatrix: multiplyMatrix,
+  transpose3x3: transpose3x3,
+  invert3x3: invert3x3,
+  identity3x3: identity3x3,
+  determinant3x3: determinant3x3,
+  quaternionToMatrix3x3: quaternionToMatrix3x3,
+  areMatricesEqual: areMatricesEqual,
+  matrix3x3ToQuaternion: matrix3x3ToQuaternion,
+  multiplyQuaternion: multiplyQuaternion,
+  orthogonalize3x3: orthogonalize3x3,
+  diagonalize3x3: diagonalize3x3,
+  singularValueDecomposition3x3: singularValueDecomposition3x3,
+  solveLinearSystem: solveLinearSystem,
+  invertMatrix: invertMatrix,
+  luFactorLinearSystem: luFactorLinearSystem,
+  luSolveLinearSystem: luSolveLinearSystem,
+  estimateMatrixCondition: estimateMatrixCondition,
+  jacobi: jacobi,
+  jacobiN: jacobiN,
+  solveHomogeneousLeastSquares: solveHomogeneousLeastSquares,
+  solveLeastSquares: solveLeastSquares,
+  hex2float: hex2float,
+  rgb2hsv: rgb2hsv,
+  hsv2rgb: hsv2rgb,
+  lab2xyz: lab2xyz,
+  xyz2lab: xyz2lab,
+  xyz2rgb: xyz2rgb,
+  rgb2xyz: rgb2xyz,
+  rgb2lab: rgb2lab,
+  lab2rgb: lab2rgb,
+  uninitializeBounds: uninitializeBounds,
+  areBoundsInitialized: areBoundsInitialized,
+  clampValue: clampValue,
+  clampAndNormalizeValue: clampAndNormalizeValue,
+  getScalarTypeFittingRange: getScalarTypeFittingRange,
+  getAdjustedScalarRange: getAdjustedScalarRange,
+  extentIsWithinOtherExtent: extentIsWithinOtherExtent,
+  boundsIsWithinOtherBounds: boundsIsWithinOtherBounds,
+  pointIsWithinBounds: pointIsWithinBounds,
+  solve3PointCircle: solve3PointCircle,
+  inf: inf,
+  negInf: negInf,
+  isInf: isInf,
+  isNan: isNaN,
+  isNaN: isNaN,
+  isFinite: isFinite,
+
+  // JS add-on
+  createUninitializedBounds: createUninitializedBounds
+};
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// A library of seedable RNGs implemented in Javascript.
+//
+// Usage:
+//
+// var seedrandom = require('seedrandom');
+// var random = seedrandom(1); // or any seed.
+// var x = random();       // 0 <= x < 1.  Every bit is random.
+// var x = random.quick(); // 0 <= x < 1.  32 bits of randomness.
+
+// alea, a 53-bit multiply-with-carry generator by Johannes Baagøe.
+// Period: ~2^116
+// Reported to pass all BigCrush tests.
+var alea = __webpack_require__(99);
+
+// xor128, a pure xor-shift generator by George Marsaglia.
+// Period: 2^128-1.
+// Reported to fail: MatrixRank and LinearComp.
+var xor128 = __webpack_require__(100);
+
+// xorwow, George Marsaglia's 160-bit xor-shift combined plus weyl.
+// Period: 2^192-2^32
+// Reported to fail: CollisionOver, SimpPoker, and LinearComp.
+var xorwow = __webpack_require__(101);
+
+// xorshift7, by François Panneton and Pierre L'ecuyer, takes
+// a different approach: it adds robustness by allowing more shifts
+// than Marsaglia's original three.  It is a 7-shift generator
+// with 256 bits, that passes BigCrush with no systmatic failures.
+// Period 2^256-1.
+// No systematic BigCrush failures reported.
+var xorshift7 = __webpack_require__(102);
+
+// xor4096, by Richard Brent, is a 4096-bit xor-shift with a
+// very long period that also adds a Weyl generator. It also passes
+// BigCrush with no systematic failures.  Its long period may
+// be useful if you have many generators and need to avoid
+// collisions.
+// Period: 2^4128-2^32.
+// No systematic BigCrush failures reported.
+var xor4096 = __webpack_require__(103);
+
+// Tyche-i, by Samuel Neves and Filipe Araujo, is a bit-shifting random
+// number generator derived from ChaCha, a modern stream cipher.
+// https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+// Period: ~2^127
+// No systematic BigCrush failures reported.
+var tychei = __webpack_require__(104);
+
+// The original ARC4-based prng included in this library.
+// Period: ~2^1600
+var sr = __webpack_require__(105);
+
+sr.alea = alea;
+sr.xor128 = xor128;
+sr.xorwow = xorwow;
+sr.xorshift7 = xorshift7;
+sr.xor4096 = xor4096;
+sr.tychei = tychei;
+
+module.exports = sr;
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+// http://baagoe.com/en/RandomMusings/javascript/
+// https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+// Original work is under MIT license -
+
+// Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+
+
+(function(global, module, define) {
+
+function Alea(seed) {
+  var me = this, mash = Mash();
+
+  me.next = function() {
+    var t = 2091639 * me.s0 + me.c * 2.3283064365386963e-10; // 2^-32
+    me.s0 = me.s1;
+    me.s1 = me.s2;
+    return me.s2 = t - (me.c = t | 0);
+  };
+
+  // Apply the seeding algorithm from Baagoe.
+  me.c = 1;
+  me.s0 = mash(' ');
+  me.s1 = mash(' ');
+  me.s2 = mash(' ');
+  me.s0 -= mash(seed);
+  if (me.s0 < 0) { me.s0 += 1; }
+  me.s1 -= mash(seed);
+  if (me.s1 < 0) { me.s1 += 1; }
+  me.s2 -= mash(seed);
+  if (me.s2 < 0) { me.s2 += 1; }
+  mash = null;
+}
+
+function copy(f, t) {
+  t.c = f.c;
+  t.s0 = f.s0;
+  t.s1 = f.s1;
+  t.s2 = f.s2;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new Alea(seed),
+      state = opts && opts.state,
+      prng = xg.next;
+  prng.int32 = function() { return (xg.next() * 0x100000000) | 0; }
+  prng.double = function() {
+    return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
+  };
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+function Mash() {
+  var n = 0xefc8249d;
+
+  var mash = function(data) {
+    data = data.toString();
+    for (var i = 0; i < data.length; i++) {
+      n += data.charCodeAt(i);
+      var h = 0.02519603282416938 * n;
+      n = h >>> 0;
+      h -= n;
+      h *= n;
+      n = h >>> 0;
+      h -= n;
+      n += h * 0x100000000; // 2^32
+    }
+    return (n >>> 0) * 2.3283064365386963e-10; // 2^-32
+  };
+
+  return mash;
+}
+
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.alea = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xor128" prng algorithm by
+// George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  me.x = 0;
+  me.y = 0;
+  me.z = 0;
+  me.w = 0;
+
+  // Set up generator function.
+  me.next = function() {
+    var t = me.x ^ (me.x << 11);
+    me.x = me.y;
+    me.y = me.z;
+    me.z = me.w;
+    return me.w ^= (me.w >>> 19) ^ t ^ (t >>> 8);
+  };
+
+  if (seed === (seed | 0)) {
+    // Integer seed.
+    me.x = seed;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 64; k++) {
+    me.x ^= strseed.charCodeAt(k) | 0;
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.x = f.x;
+  t.y = f.y;
+  t.z = f.z;
+  t.w = f.w;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xor128 = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorwow" prng algorithm by
+// George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  // Set up generator function.
+  me.next = function() {
+    var t = (me.x ^ (me.x >>> 2));
+    me.x = me.y; me.y = me.z; me.z = me.w; me.w = me.v;
+    return (me.d = (me.d + 362437 | 0)) +
+       (me.v = (me.v ^ (me.v << 4)) ^ (t ^ (t << 1))) | 0;
+  };
+
+  me.x = 0;
+  me.y = 0;
+  me.z = 0;
+  me.w = 0;
+  me.v = 0;
+
+  if (seed === (seed | 0)) {
+    // Integer seed.
+    me.x = seed;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 64; k++) {
+    me.x ^= strseed.charCodeAt(k) | 0;
+    if (k == strseed.length) {
+      me.d = me.x << 10 ^ me.x >>> 4;
+    }
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.x = f.x;
+  t.y = f.y;
+  t.z = f.z;
+  t.w = f.w;
+  t.v = f.v;
+  t.d = f.d;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xorwow = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorshift7" algorithm by
+// François Panneton and Pierre L'ecuyer:
+// "On the Xorgshift Random Number Generators"
+// http://saluc.engr.uconn.edu/refs/crypto/rng/panneton05onthexorshift.pdf
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this;
+
+  // Set up generator function.
+  me.next = function() {
+    // Update xor generator.
+    var X = me.x, i = me.i, t, v, w;
+    t = X[i]; t ^= (t >>> 7); v = t ^ (t << 24);
+    t = X[(i + 1) & 7]; v ^= t ^ (t >>> 10);
+    t = X[(i + 3) & 7]; v ^= t ^ (t >>> 3);
+    t = X[(i + 4) & 7]; v ^= t ^ (t << 7);
+    t = X[(i + 7) & 7]; t = t ^ (t << 13); v ^= t ^ (t << 9);
+    X[i] = v;
+    me.i = (i + 1) & 7;
+    return v;
+  };
+
+  function init(me, seed) {
+    var j, w, X = [];
+
+    if (seed === (seed | 0)) {
+      // Seed state array using a 32-bit integer.
+      w = X[0] = seed;
+    } else {
+      // Seed state using a string.
+      seed = '' + seed;
+      for (j = 0; j < seed.length; ++j) {
+        X[j & 7] = (X[j & 7] << 15) ^
+            (seed.charCodeAt(j) + X[(j + 1) & 7] << 13);
+      }
+    }
+    // Enforce an array length of 8, not all zeroes.
+    while (X.length < 8) X.push(0);
+    for (j = 0; j < 8 && X[j] === 0; ++j);
+    if (j == 8) w = X[7] = -1; else w = X[j];
+
+    me.x = X;
+    me.i = 0;
+
+    // Discard an initial 256 values.
+    for (j = 256; j > 0; --j) {
+      me.next();
+    }
+  }
+
+  init(me, seed);
+}
+
+function copy(f, t) {
+  t.x = f.x.slice();
+  t.i = f.i;
+  return t;
+}
+
+function impl(seed, opts) {
+  if (seed == null) seed = +(new Date);
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (state.x) copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xorshift7 = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
+//
+// This fast non-cryptographic random number generator is designed for
+// use in Monte-Carlo algorithms. It combines a long-period xorshift
+// generator with a Weyl generator, and it passes all common batteries
+// of stasticial tests for randomness while consuming only a few nanoseconds
+// for each prng generated.  For background on the generator, see Brent's
+// paper: "Some long-period random number generators using shifts and xors."
+// http://arxiv.org/pdf/1004.3115v1.pdf
+//
+// Usage:
+//
+// var xor4096 = require('xor4096');
+// random = xor4096(1);                        // Seed with int32 or string.
+// assert.equal(random(), 0.1520436450538547); // (0, 1) range, 53 bits.
+// assert.equal(random.int32(), 1806534897);   // signed int32, 32 bits.
+//
+// For nonzero numeric keys, this impelementation provides a sequence
+// identical to that by Brent's xorgens 3 implementaion in C.  This
+// implementation also provides for initalizing the generator with
+// string seeds, or for saving and restoring the state of the generator.
+//
+// On Chrome, this prng benchmarks about 2.1 times slower than
+// Javascript's built-in Math.random().
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this;
+
+  // Set up generator function.
+  me.next = function() {
+    var w = me.w,
+        X = me.X, i = me.i, t, v;
+    // Update Weyl generator.
+    me.w = w = (w + 0x61c88647) | 0;
+    // Update xor generator.
+    v = X[(i + 34) & 127];
+    t = X[i = ((i + 1) & 127)];
+    v ^= v << 13;
+    t ^= t << 17;
+    v ^= v >>> 15;
+    t ^= t >>> 12;
+    // Update Xor generator array state.
+    v = X[i] = v ^ t;
+    me.i = i;
+    // Result is the combination.
+    return (v + (w ^ (w >>> 16))) | 0;
+  };
+
+  function init(me, seed) {
+    var t, v, i, j, w, X = [], limit = 128;
+    if (seed === (seed | 0)) {
+      // Numeric seeds initialize v, which is used to generates X.
+      v = seed;
+      seed = null;
+    } else {
+      // String seeds are mixed into v and X one character at a time.
+      seed = seed + '\0';
+      v = 0;
+      limit = Math.max(limit, seed.length);
+    }
+    // Initialize circular array and weyl value.
+    for (i = 0, j = -32; j < limit; ++j) {
+      // Put the unicode characters into the array, and shuffle them.
+      if (seed) v ^= seed.charCodeAt((j + 32) % seed.length);
+      // After 32 shuffles, take v as the starting w value.
+      if (j === 0) w = v;
+      v ^= v << 10;
+      v ^= v >>> 15;
+      v ^= v << 4;
+      v ^= v >>> 13;
+      if (j >= 0) {
+        w = (w + 0x61c88647) | 0;     // Weyl.
+        t = (X[j & 127] ^= (v + w));  // Combine xor and weyl to init array.
+        i = (0 == t) ? i + 1 : 0;     // Count zeroes.
+      }
+    }
+    // We have detected all zeroes; make the key nonzero.
+    if (i >= 128) {
+      X[(seed && seed.length || 0) & 127] = -1;
+    }
+    // Run the generator 512 times to further mix the state before using it.
+    // Factoring this as a function slows the main generator, so it is just
+    // unrolled here.  The weyl generator is not advanced while warming up.
+    i = 127;
+    for (j = 4 * 128; j > 0; --j) {
+      v = X[(i + 34) & 127];
+      t = X[i = ((i + 1) & 127)];
+      v ^= v << 13;
+      t ^= t << 17;
+      v ^= v >>> 15;
+      t ^= t >>> 12;
+      X[i] = v ^ t;
+    }
+    // Storing state as object members is faster than using closure variables.
+    me.w = w;
+    me.X = X;
+    me.i = i;
+  }
+
+  init(me, seed);
+}
+
+function copy(f, t) {
+  t.i = f.i;
+  t.w = f.w;
+  t.X = f.X.slice();
+  return t;
+};
+
+function impl(seed, opts) {
+  if (seed == null) seed = +(new Date);
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (state.X) copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xor4096 = impl;
+}
+
+})(
+  this,                                     // window object or global
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "Tyche-i" prng algorithm by
+// Samuel Neves and Filipe Araujo.
+// See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  // Set up generator function.
+  me.next = function() {
+    var b = me.b, c = me.c, d = me.d, a = me.a;
+    b = (b << 25) ^ (b >>> 7) ^ c;
+    c = (c - d) | 0;
+    d = (d << 24) ^ (d >>> 8) ^ a;
+    a = (a - b) | 0;
+    me.b = b = (b << 20) ^ (b >>> 12) ^ c;
+    me.c = c = (c - d) | 0;
+    me.d = (d << 16) ^ (c >>> 16) ^ a;
+    return me.a = (a - b) | 0;
+  };
+
+  /* The following is non-inverted tyche, which has better internal
+   * bit diffusion, but which is about 25% slower than tyche-i in JS.
+  me.next = function() {
+    var a = me.a, b = me.b, c = me.c, d = me.d;
+    a = (me.a + me.b | 0) >>> 0;
+    d = me.d ^ a; d = d << 16 ^ d >>> 16;
+    c = me.c + d | 0;
+    b = me.b ^ c; b = b << 12 ^ d >>> 20;
+    me.a = a = a + b | 0;
+    d = d ^ a; me.d = d = d << 8 ^ d >>> 24;
+    me.c = c = c + d | 0;
+    b = b ^ c;
+    return me.b = (b << 7 ^ b >>> 25);
+  }
+  */
+
+  me.a = 0;
+  me.b = 0;
+  me.c = 2654435769 | 0;
+  me.d = 1367130551;
+
+  if (seed === Math.floor(seed)) {
+    // Integer seed.
+    me.a = (seed / 0x100000000) | 0;
+    me.b = seed | 0;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 20; k++) {
+    me.b ^= strseed.charCodeAt(k) | 0;
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.a = f.a;
+  t.b = f.b;
+  t.c = f.c;
+  t.d = f.d;
+  return t;
+};
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(2) && __webpack_require__(9)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return impl; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.tychei = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(2)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/*
+Copyright 2014 David Bau.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
+(function (pool, math) {
+//
+// The following constants are related to IEEE 754 limits.
+//
+var global = this,
+    width = 256,        // each RC4 output is 0 <= x < 256
+    chunks = 6,         // at least six RC4 outputs for each double
+    digits = 52,        // there are 52 significant digits in a double
+    rngname = 'random', // rngname: name for Math.random and Math.seedrandom
+    startdenom = math.pow(width, chunks),
+    significance = math.pow(2, digits),
+    overflow = significance * 2,
+    mask = width - 1,
+    nodecrypto;         // node.js crypto module, initialized at the bottom.
+
+//
+// seedrandom()
+// This is the seedrandom function described above.
+//
+function seedrandom(seed, options, callback) {
+  var key = [];
+  options = (options == true) ? { entropy: true } : (options || {});
+
+  // Flatten the seed string or build one from local entropy if needed.
+  var shortseed = mixkey(flatten(
+    options.entropy ? [seed, tostring(pool)] :
+    (seed == null) ? autoseed() : seed, 3), key);
+
+  // Use the seed to initialize an ARC4 generator.
+  var arc4 = new ARC4(key);
+
+  // This function returns a random double in [0, 1) that contains
+  // randomness in every bit of the mantissa of the IEEE 754 value.
+  var prng = function() {
+    var n = arc4.g(chunks),             // Start with a numerator n < 2 ^ 48
+        d = startdenom,                 //   and denominator d = 2 ^ 48.
+        x = 0;                          //   and no 'extra last byte'.
+    while (n < significance) {          // Fill up all significant digits by
+      n = (n + x) * width;              //   shifting numerator and
+      d *= width;                       //   denominator and generating a
+      x = arc4.g(1);                    //   new least-significant-byte.
+    }
+    while (n >= overflow) {             // To avoid rounding up, before adding
+      n /= 2;                           //   last byte, shift everything
+      d /= 2;                           //   right using integer math until
+      x >>>= 1;                         //   we have exactly the desired bits.
+    }
+    return (n + x) / d;                 // Form the number within [0, 1).
+  };
+
+  prng.int32 = function() { return arc4.g(4) | 0; }
+  prng.quick = function() { return arc4.g(4) / 0x100000000; }
+  prng.double = prng;
+
+  // Mix the randomness into accumulated entropy.
+  mixkey(tostring(arc4.S), pool);
+
+  // Calling convention: what to return as a function of prng, seed, is_math.
+  return (options.pass || callback ||
+      function(prng, seed, is_math_call, state) {
+        if (state) {
+          // Load the arc4 state from the given state if it has an S array.
+          if (state.S) { copy(state, arc4); }
+          // Only provide the .state method if requested via options.state.
+          prng.state = function() { return copy(arc4, {}); }
+        }
+
+        // If called as a method of Math (Math.seedrandom()), mutate
+        // Math.random because that is how seedrandom.js has worked since v1.0.
+        if (is_math_call) { math[rngname] = prng; return seed; }
+
+        // Otherwise, it is a newer calling convention, so return the
+        // prng directly.
+        else return prng;
+      })(
+  prng,
+  shortseed,
+  'global' in options ? options.global : (this == math),
+  options.state);
+}
+math['seed' + rngname] = seedrandom;
+
+//
+// ARC4
+//
+// An ARC4 implementation.  The constructor takes a key in the form of
+// an array of at most (width) integers that should be 0 <= x < (width).
+//
+// The g(count) method returns a pseudorandom integer that concatenates
+// the next (count) outputs from ARC4.  Its return value is a number x
+// that is in the range 0 <= x < (width ^ count).
+//
+function ARC4(key) {
+  var t, keylen = key.length,
+      me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
+
+  // The empty key [] is treated as [0].
+  if (!keylen) { key = [keylen++]; }
+
+  // Set up S using the standard key scheduling algorithm.
+  while (i < width) {
+    s[i] = i++;
+  }
+  for (i = 0; i < width; i++) {
+    s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
+    s[j] = t;
+  }
+
+  // The "g" method returns the next (count) outputs as one number.
+  (me.g = function(count) {
+    // Using instance members instead of closure state nearly doubles speed.
+    var t, r = 0,
+        i = me.i, j = me.j, s = me.S;
+    while (count--) {
+      t = s[i = mask & (i + 1)];
+      r = r * width + s[mask & ((s[i] = s[j = mask & (j + t)]) + (s[j] = t))];
+    }
+    me.i = i; me.j = j;
+    return r;
+    // For robust unpredictability, the function call below automatically
+    // discards an initial batch of values.  This is called RC4-drop[256].
+    // See http://google.com/search?q=rsa+fluhrer+response&btnI
+  })(width);
+}
+
+//
+// copy()
+// Copies internal state of ARC4 to or from a plain object.
+//
+function copy(f, t) {
+  t.i = f.i;
+  t.j = f.j;
+  t.S = f.S.slice();
+  return t;
+};
+
+//
+// flatten()
+// Converts an object tree to nested arrays of strings.
+//
+function flatten(obj, depth) {
+  var result = [], typ = (typeof obj), prop;
+  if (depth && typ == 'object') {
+    for (prop in obj) {
+      try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+    }
+  }
+  return (result.length ? result : typ == 'string' ? obj : obj + '\0');
+}
+
+//
+// mixkey()
+// Mixes a string seed into a key that is an array of integers, and
+// returns a shortened string seed that is equivalent to the result key.
+//
+function mixkey(seed, key) {
+  var stringseed = seed + '', smear, j = 0;
+  while (j < stringseed.length) {
+    key[mask & j] =
+      mask & ((smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++));
+  }
+  return tostring(key);
+}
+
+//
+// autoseed()
+// Returns an object for autoseeding, using window.crypto and Node crypto
+// module if available.
+//
+function autoseed() {
+  try {
+    var out;
+    if (nodecrypto && (out = nodecrypto.randomBytes)) {
+      // The use of 'out' to remember randomBytes makes tight minified code.
+      out = out(width);
+    } else {
+      out = new Uint8Array(width);
+      (global.crypto || global.msCrypto).getRandomValues(out);
+    }
+    return tostring(out);
+  } catch (e) {
+    var browser = global.navigator,
+        plugins = browser && browser.plugins;
+    return [+new Date, global, plugins, global.screen, tostring(pool)];
+  }
+}
+
+//
+// tostring()
+// Converts an array of charcodes to a string
+//
+function tostring(a) {
+  return String.fromCharCode.apply(0, a);
+}
+
+//
+// When seedrandom.js is loaded, we immediately mix a few bits
+// from the built-in RNG into the entropy pool.  Because we do
+// not want to interfere with deterministic PRNG state later,
+// seedrandom will not call math.random on its own again after
+// initialization.
+//
+mixkey(math.random(), pool);
+
+//
+// Nodejs and AMD support: export the implementation as a module using
+// either convention.
+//
+if ((typeof module) == 'object' && module.exports) {
+  module.exports = seedrandom;
+  // When in node.js, try using crypto package for autoseeding.
+  try {
+    nodecrypto = __webpack_require__(106);
+  } catch (ex) {}
+} else if (true) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() { return seedrandom; }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}
+
+// End anonymous scope, and pass initial values.
+})(
+  [],     // pool: entropy pool starts empty
+  Math    // math: package containing random, pow, and seedrandom
+);
+
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 107 */
 /***/ (function(module, exports) {
 
 module.exports = {"data":{"arrays":[{"range":[{"max":0.000013329898584157294,"name":"Magnitude","min":0},{"max":3.212448973499704e-7,"name":"X","min":-4.965284006175352e-7},{"max":5.920081207477779e-7,"name":"Y","min":-5.920087460253853e-7},{"max":0.000010021663911174983,"name":"Z","min":-0.000013328498425835278}],"location":"POINTS","type":"double","name":"ACCL","size":3},{"range":[{"max":0,"name":"Magnitude","min":0},{"max":0,"name":"X","min":0},{"max":0,"name":"Y","min":0},{"max":0,"name":"Z","min":0}],"location":"POINTS","type":"double","name":"DISPL","size":3},{"range":[{"max":10088,"name":"","min":1}],"location":"POINTS","type":"id_type","name":"GlobalNodeId","size":1},{"range":[{"max":10088,"name":"","min":1}],"location":"POINTS","type":"id_type","name":"PedigreeNodeId","size":1},{"range":[{"max":5000,"name":"Magnitude","min":0},{"max":0,"name":"X","min":0},{"max":0,"name":"Y","min":0},{"max":0,"name":"Z","min":-5000}],"location":"POINTS","type":"double","name":"VEL","size":3},{"range":[{"max":0,"name":"","min":0}],"location":"CELLS","type":"double","name":"EQPS","size":1},{"range":[{"max":7152,"name":"","min":7152}],"location":"CELLS","type":"id_type","name":"GlobalElementId","size":1},{"range":[{"max":2,"name":"","min":2}],"location":"CELLS","type":"int","name":"ObjectId","size":1},{"range":[{"max":7152,"name":"","min":7152}],"location":"CELLS","type":"id_type","name":"PedigreeElementId","size":1},{"range":[{"max":2,"name":"","min":1}],"location":"FIELDS","type":"int","name":"ElementBlockIds","size":1},{"range":[{"max":48,"name":"0","min":48},{"max":50,"name":"1","min":49},{"max":47,"name":"2","min":47},{"max":32,"name":"3","min":32},{"max":99,"name":"4","min":71},{"max":108,"name":"5","min":97},{"max":111,"name":"6","min":110},{"max":99,"name":"7","min":51},{"max":107,"name":"8","min":68},{"max":97,"name":"9","min":58},{"max":108,"name":"10","min":32},{"max":102,"name":"11","min":97},{"max":108,"name":"12","min":46},{"max":111,"name":"13","min":102},{"max":99,"name":"14","min":46},{"max":107,"name":"15","min":100},{"max":97,"name":"16","min":0},{"max":108,"name":"17","min":0},{"max":102,"name":"18","min":0},{"max":108,"name":"19","min":0},{"max":103,"name":"20","min":0},{"max":50,"name":"21","min":0},{"max":103,"name":"22","min":0},{"max":50,"name":"23","min":0},{"max":100,"name":"24","min":0},{"max":0,"name":"25","min":0},{"max":0,"name":"26","min":0},{"max":0,"name":"27","min":0},{"max":0,"name":"28","min":0},{"max":0,"name":"29","min":0},{"max":0,"name":"30","min":0},{"max":0,"name":"31","min":0},{"max":0,"name":"32","min":0},{"max":0,"name":"33","min":0},{"max":0,"name":"34","min":0},{"max":0,"name":"35","min":0},{"max":0,"name":"36","min":0},{"max":0,"name":"37","min":0},{"max":0,"name":"38","min":0},{"max":0,"name":"39","min":0},{"max":0,"name":"40","min":0},{"max":0,"name":"41","min":0},{"max":0,"name":"42","min":0},{"max":0,"name":"43","min":0},{"max":0,"name":"44","min":0},{"max":0,"name":"45","min":0},{"max":0,"name":"46","min":0},{"max":0,"name":"47","min":0},{"max":0,"name":"48","min":0},{"max":0,"name":"49","min":0},{"max":0,"name":"50","min":0},{"max":0,"name":"51","min":0},{"max":0,"name":"52","min":0},{"max":0,"name":"53","min":0},{"max":0,"name":"54","min":0},{"max":0,"name":"55","min":0},{"max":0,"name":"56","min":0},{"max":0,"name":"57","min":0},{"max":0,"name":"58","min":0},{"max":0,"name":"59","min":0},{"max":0,"name":"60","min":0},{"max":0,"name":"61","min":0},{"max":0,"name":"62","min":0},{"max":0,"name":"63","min":0},{"max":0,"name":"64","min":0},{"max":0,"name":"65","min":0},{"max":0,"name":"66","min":0},{"max":0,"name":"67","min":0},{"max":0,"name":"68","min":0},{"max":0,"name":"69","min":0},{"max":0,"name":"70","min":0},{"max":0,"name":"71","min":0},{"max":0,"name":"72","min":0},{"max":0,"name":"73","min":0},{"max":0,"name":"74","min":0},{"max":0,"name":"75","min":0},{"max":0,"name":"76","min":0},{"max":0,"name":"77","min":0},{"max":0,"name":"78","min":0},{"max":0,"name":"79","min":0},{"max":0,"name":"80","min":0}],"location":"FIELDS","type":"char","name":"Info_Records","size":81},{"range":[{"max":2959999.75,"name":"","min":1467643.625}],"location":"FIELDS","type":"double","name":"KE","size":1},{"range":[{"max":28318,"name":"","min":0}],"location":"FIELDS","type":"double","name":"NSTEPS","size":1},{"range":[{"max":80,"name":"0","min":32},{"max":101,"name":"1","min":32},{"max":111,"name":"2","min":32},{"max":105,"name":"3","min":46},{"max":110,"name":"4","min":0},{"max":79,"name":"5","min":0},{"max":57,"name":"6","min":0},{"max":68,"name":"7","min":0},{"max":0,"name":"8","min":0},{"max":0,"name":"9","min":0},{"max":0,"name":"10","min":0},{"max":0,"name":"11","min":0},{"max":0,"name":"12","min":0},{"max":0,"name":"13","min":0},{"max":0,"name":"14","min":0},{"max":0,"name":"15","min":0},{"max":0,"name":"16","min":0},{"max":0,"name":"17","min":0},{"max":0,"name":"18","min":0},{"max":0,"name":"19","min":0},{"max":0,"name":"20","min":0},{"max":0,"name":"21","min":0},{"max":0,"name":"22","min":0},{"max":0,"name":"23","min":0},{"max":0,"name":"24","min":0},{"max":0,"name":"25","min":0},{"max":0,"name":"26","min":0},{"max":0,"name":"27","min":0},{"max":0,"name":"28","min":0},{"max":0,"name":"29","min":0},{"max":0,"name":"30","min":0},{"max":0,"name":"31","min":0},{"max":0,"name":"32","min":0}],"location":"FIELDS","type":"char","name":"QA_Records","size":33},{"range":[{"max":-1e+299,"name":"","min":1e+299}],"location":"FIELDS","type":"unspecified","name":"Title","size":1},{"range":[{"max":2.4712693402761943e-7,"name":"","min":5.355158805286919e-8}],"location":"FIELDS","type":"double","name":"TMSTEP","size":1},{"range":[{"max":0.2753971517086029,"name":"","min":-0.04863959178328514}],"location":"FIELDS","type":"double","name":"XMOM","size":1},{"range":[{"max":0.007546288892626762,"name":"","min":-5.840920925140381}],"location":"FIELDS","type":"double","name":"YMOM","size":1},{"range":[{"max":-765.4190673828125,"name":"","min":-1183.9998779296875}],"location":"FIELDS","type":"double","name":"ZMOM","size":1}],"cells":7152,"memory":2171,"bounds":[-7.878461837768555,8.312582015991211,0,8,-14.999999046325684,4.778104782104492],"points":10088,"time":["0.0","0.000100073739304","0.000199905101908","0.000299964391161","0.000400086544687","0.000499919231515","0.000599935126957","0.000700049218722","0.000800035253633","0.00090006069513","0.00100000598468","0.00109998101834","0.00119993311819","0.00129998673219","0.00140009319875","0.00150004134048","0.0015999188181","0.00169999850914","0.00180007342715","0.00190002250019","0.00199998565949","0.0020999298431","0.00219992105849","0.00229999283329","0.00240005389787","0.00249994290061","0.00259992131032","0.00269998027943","0.00279999966733","0.00289991078898","0.00300002051517","0.00309997936711","0.00319999479689","0.00329994247295","0.00340002309531","0.00349996844307","0.00359999225475","0.00369996228255","0.00379998679273","0.00389998196624","0.00399998575449","0.00410001119599","0.00419997423887","0.0042999885045"],"type":"Multi-block Dataset"},"ui":[{"widget":"PropertyGroup","type":null,"name":"Variables","advanced":0,"children":[{"widget":"checkbox","name":"Generate Object Id Cell Array","doc":"Specifies whether a variable named \"ObjectId\" should be\n        created for each entry of each block and set being loaded and assigned\n        the identifying number of the block or set, so that given a cell one\n        can readily identify the block or set it came from. This is useful for\n        coloring a mesh by block ID or set ID.","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Generate Global Element Id Array","doc":"Should the reader retrieve the first new-style element\n        map, or if that is not present, the solitary old-style element map\n        (which always exists but may be procedurally generated if it is not\n        stored with the file)?","type":"int","advanced":0,"size":1},{"widget":"list-n","name":"Element Variables","doc":"Use this property to select which variables defined over\n        elements (cells) should be loaded. Element variables specify a single\n        value per entry in some element block.","values":["EQPS"],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Face Variables","doc":"Use this property to select which variables defined over\n        faces should be loaded. Faces are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Face variables\n        specify a single value per entry in some face block.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Edge Variables","doc":"Use this property to select which variables defined over\n        edges should be loaded. Edges are oriented boundaries of one or more\n        higher-dimensional cells also present in the mesh. Edge variables\n        specify a single value per entry in some edge block.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Side Set Result Array Status","doc":"An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. Variables, such as boundary conditions, may then be defined over\n        these sets by specifying a single number per side. For example, a\n        hexahedron has 18 sides: 6 faces and 12 edges. Any of these sides may\n        be individually called out in a set and assigned a result value. This\n        property specifies which of those variables should be loaded. The\n        corresponding set must also be loaded using the SideSetArrayStatus\n        property in order for the variable to appear.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Node Set Result Array Status","doc":"An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those\n        variables should be loaded. The corresponding set must also be loaded\n        using the NodeSetArrayStatus property in order for the variable to\n        appear.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Face Set Result Array Status","doc":"An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per face. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the FaceSetArrayStatus property in order for the\n        variable to appear.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Edge Set Result Array Status","doc":"An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per edge. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the EdgeSetArrayStatus property in order for the\n        variable to appear.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"checkbox","name":"Generate Global Node Id Array","doc":"Should the reader retrieve the first new-style node map,\n        or if that is not present, the solitary old-style node map (which\n        always exists but may be procedurally generated if it is not stored\n        with the file)?","type":"int","advanced":0,"size":1},{"widget":"list-n","name":"Element Set Result Array Status","doc":"An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right.\n        Variables, such as feature classifiers, may then be defined over these\n        sets by specifying a single number per element. This property specifies\n        which of those variables should be loaded. The corresponding set must\n        also be loaded using the ElementSetArrayStatus property in order for\n        the variable to appear.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Point Variables","doc":"Use this property to select which nodal (i.e.,\n        per-point) variables should be loaded.","values":["DISPL","VEL","ACCL"],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Global Variables","doc":"Use this property to select which global (i.e.,\n        per-mesh) variables should be loaded. Global variables are stored as\n        arrays in the field data of the reader's output.","values":["KE","XMOM","YMOM","ZMOM","NSTEPS","TMSTEP"],"type":"str","advanced":0,"size":-1}]},{"widget":"checkbox","name":"Apply Displacements","doc":"Geometric locations can include displacements. When this\n        option is on, the nodal positions are 'displaced' by the standard\n        exodus displacement vector. If displacements are turned 'off', the user\n        can explicitly add them by applying a warp filter.","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Displacement Magnitude","doc":"When displacements are being applied, they are scaled by\n        this amount. Set to 1 for no scaling.","range":[],"type":"float","advanced":0,"size":1},{"widget":"list-n","name":"Edge Blocks","doc":"Use this property to select which blocks of edges should\n        be loaded. All edges in the same block will have the same interpolant\n        (linear, quadratic, etc.) and have the same variables defined over\n        them.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"PropertyGroup","type":null,"name":"Sets","advanced":1,"children":[{"widget":"list-n","name":"Node Set Array Status","doc":"An Exodus II file may define subsets of all the nodes\n        (points) in a file as sets in their own right. Variables, such as\n        boundary conditions, may then be defined over these sets by specifying\n        a single number per node. This property specifies which of those sets\n        should be loaded. The accompanying NodeSetResultArrayStatus property\n        specifies which variables defined over those sets should be\n        loaded.","values":["Unnamed set ID: 1","Unnamed set ID: 100"],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Side Set Array Status","doc":"An Exodus II file may define subsets of all the\n        of all the elements in a file as sets in their own\n        right. This property specifies which of those sets should be loaded.\n        Variables, such as boundary conditions, may then be defined over these\n        sets by specifying a single number per side. For example, a hexahedron\n        has 18 sides: 6 faces and 12 edges. Any of these sides may be\n        individually called out in a set and assigned a result value. The\n        accompanying SideSetResultArrayStatus property specifies which\n        variables defined over those sets should be loaded.","values":["Unnamed set ID: 4"],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Face Set Array Status","doc":"An Exodus II file may define subsets of all the faces\n        (across all face blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per face. The accompanying\n        FaceSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Edge Set Array Status","doc":"An Exodus II file may define subsets of all the edges\n        (across all edge blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as boundary conditions, may then be defined over these sets by\n        specifying a single number per edge. The accompanying\n        EdgeSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Element Set Array Status","doc":"An Exodus II file may define subsets of all the elements\n        (across all element blocks) in a file as sets in their own right. This\n        property specifies which of those sets should be loaded. Variables,\n        such as feature classifiers, may then be defined over these sets by\n        specifying a single number per element. The accompanying\n        ElementSetResultArrayStatus property specifies which variables defined\n        over those sets should be loaded.","values":[],"type":"str","advanced":0,"size":-1}]},{"widget":"PropertyGroup","type":null,"name":"Maps","advanced":1,"children":[{"widget":"list-n","name":"Node Map Array Status","doc":"Specify which maps defined over nodes (points) in the\n        mesh should be loaded. A node map is a renumbering of all the points in\n        a file from their offset in the file to some arbitrary integers,\n        usually specifying a unique global ID across a set of files. These are\n        sometimes called new-style maps because they are specified differently\n        than in older Exodus files, which only allowed a single node\n        map.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Edge Map Array Status","doc":"Specify which maps defined over edges in the mesh should\n        be loaded. An edge map is a renumbering of all the edges (across all\n        the edge blocks of a file) from their offset in the file to some\n        arbitrary integers, usually specifying a unique global ID across a set\n        of files.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Face Map Array Status","doc":"Specify which maps defined over faces in the mesh should\n        be loaded. A face map is a renumbering of all the faces (across all the\n        face blocks of a file) from their offset in the file to some arbitrary\n        integers, usually specifying a unique global ID across a set of\n        files.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Element Map Array Status","doc":"Specify which maps defined over elements (cells) in the\n        mesh should be loaded. An element map is a renumbering of all the\n        elements (across all the element blocks of a file) from their offset in\n        the file to some arbitrary integers, usually specifying a unique global\n        ID across a set of files. These are sometimes called new-style maps\n        because they are specified differently than in older Exodus files,\n        which only allowed a single element map.","values":[],"type":"str","advanced":0,"size":-1}]},{"widget":"textfield","name":"Element Blocks","doc":"Use this property to select which blocks of elements\n        (cells) should be loaded. All elements (cells) in the same block will\n        have the same interpolant (tetrahedral, triangular, trilinear\n        hexahedral, etc.) and have the same variables defined over\n        them.","type":"str","advanced":0,"size":-1},{"widget":"list-n","name":"Face Blocks","doc":"Use this property to select which blocks of faces should\n        be loaded. All faces in the same block will have the same interpolant\n        (triangular, bilinear quadrilateral, etc.) and have the same variables\n        defined over them.","values":[],"type":"str","advanced":0,"size":-1},{"widget":"PropertyGroup","type":null,"name":"Mode Shapes","advanced":1,"children":[{"widget":"checkbox","name":"Has Mode Shapes","doc":"Some simulations overload the Exodus time steps to\n        represent mode shapes. In this case, it does not make sense to iterate\n        over the \"time steps\", because they are not meant to be played in\n        order. Rather, each represents the vibration at a different \"mode.\"\n        Setting the value of this property to 1 changes the semantics of the\n        reader to not report the time steps to downstream\n        filters.","type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Mode Shape","doc":"Specify which mode shape to animate when HasModeShapes\n        is on.","range":[{"max":44,"min":1}],"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Animate Vibrations","doc":"If this flag is on and HasModeShapes is also on, then\n        this reader will report a continuous time range [0,1] and animate the\n        displacements in a periodic sinusoid. If this flag is off and\n        HasModeShapes is on, this reader ignores time. This flag has no effect\n        if HasModeShapes is off.","type":"int","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"File Pattern","advanced":1,"children":[{"widget":"textfield","name":"File Prefix","doc":"This property specifies the file root used with the file\n        pattern to format a file name. (See the File Pattern\n        property).","type":"str","advanced":1,"size":1},{"widget":"textfield","name":"File Pattern","doc":"This property contains a text string specifying the\n        pattern used to load files. There are two parts to it: the prefix (%s)\n        and the file number (%i). The format used is the same as that used for\n        printf.","type":"str","advanced":1,"size":1},{"widget":"textfield","name":"File Range","doc":"This property controls the indices of the first and last\n        files to be read.","range":[{"max":0,"min":0}],"type":"int","advanced":1,"size":2},{"widget":"textfield","name":"XML File Name","doc":"This property specifies the name of an XML file\n        containing part and material descriptions and a mapping to element\n        blocks.","type":"str","advanced":1,"size":1}]},{"widget":"checkbox","name":"Generate File Id Array","doc":"Should each cell in the mesh be assigned an integer\n        identifying the file it came from? If turned on, a cell variable named\n        \"FileId\" should be present.","type":"int","advanced":0,"size":1}],"id":"370","properties":[{"children":[{"name":"GenerateObjectIdCellArray","value":1,"id":"370"},{"name":"GenerateGlobalElementIdArray","value":1,"id":"370"},{"name":"ElementVariables","value":["EQPS"],"id":"370"},{"name":"FaceVariables","value":[],"id":"370"},{"name":"EdgeVariables","value":[],"id":"370"},{"name":"SideSetResultArrayStatus","value":[],"id":"370"},{"name":"NodeSetResultArrayStatus","value":[],"id":"370"},{"name":"FaceSetResultArrayStatus","value":[],"id":"370"},{"name":"EdgeSetResultArrayStatus","value":[],"id":"370"},{"name":"GenerateGlobalNodeIdArray","value":1,"id":"370"},{"name":"ElementSetResultArrayStatus","value":[],"id":"370"},{"name":"PointVariables","value":["DISPL","VEL","ACCL"],"id":"370"},{"name":"GlobalVariables","value":["KE","XMOM","YMOM","ZMOM","NSTEPS","TMSTEP"],"id":"370"}],"id":"370:Variables","value":false,"name":"Variables"},{"name":"ApplyDisplacements","value":1,"id":"370"},{"name":"DisplacementMagnitude","value":1,"id":"370"},{"name":"EdgeBlocks","value":[],"id":"370"},{"children":[{"name":"NodeSetArrayStatus","value":[],"id":"370"},{"name":"SideSetArrayStatus","value":[],"id":"370"},{"name":"FaceSetArrayStatus","value":[],"id":"370"},{"name":"EdgeSetArrayStatus","value":[],"id":"370"},{"name":"ElementSetArrayStatus","value":[],"id":"370"}],"id":"370:Sets","value":false,"name":"Sets"},{"children":[{"name":"NodeMapArrayStatus","value":[],"id":"370"},{"name":"EdgeMapArrayStatus","value":[],"id":"370"},{"name":"FaceMapArrayStatus","value":[],"id":"370"},{"name":"ElementMapArrayStatus","value":[],"id":"370"}],"id":"370:Maps","value":false,"name":"Maps"},{"name":"ElementBlocks","value":[],"id":"370"},{"name":"FaceBlocks","value":[],"id":"370"},{"children":[{"name":"HasModeShapes","value":0,"id":"370"},{"name":"ModeShape","value":1,"id":"370"},{"name":"AnimateVibrations","value":1,"id":"370"}],"id":"370:Mode Shapes","value":false,"name":"Mode Shapes"},{"children":[{"name":"FilePrefix","value":"/.../ParaViewData-v4.0.1/Data/can.ex2","id":"370"},{"name":"FilePattern","value":"%s","id":"370"},{"name":"FileRange","value":[0,0],"id":"370"},{"name":"XMLFileName","value":"/.../ParaViewData-v4.0.1/Data/artifact.dta","id":"370"}],"id":"370:File Pattern","value":false,"name":"File Pattern"},{"name":"GenerateFileIdArray","value":0,"id":"370"}]}
 
 /***/ }),
-/* 96 */
+/* 108 */
 /***/ (function(module, exports) {
 
 module.exports = {"colorBy":{"color":[1,1,1],"representation":"589","scalarBar":0,"array":[null,"",-1],"mode":"array"},"ui":[{"widget":"list-1","name":"Representation","doc":"Choose the type for the representation.","values":["3D Glyphs","Outline","Point Gaussian","Points","Surface","Surface With Edges","Volume","Wireframe"],"type":"str","advanced":0,"size":1},{"widget":"PropertyGroup","type":null,"name":"Coloring","advanced":0,"children":[{"widget":"textfield","name":"Ambient Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Diffuse Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":0,"size":3}]},{"widget":"PropertyGroup","type":null,"name":"Scalar Coloring","advanced":1,"children":[{"widget":"checkbox","name":"Map Scalars","doc":"When set to True, LookupTable will always be\n        used for scalar mapping. Otherwise, when up to 4 component\n        scalars are present, the components are clamped to a valid\n        color interval (0-255 for an integral type and 0.0-1.0 for a\n        floating point type) and then directly used as\n        color.","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Interpolate Scalars Before Mapping","doc":"When set to true (default), texture coordinates\n        are sent to and interpolated by the graphics card. This is\n        equivalent with interpolating scalars and then mapping them to\n        obtain colors between points. Otherwise, colors are sent to\n        and interpolated by the graphics card.\n        ","type":"int","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Styling","advanced":0,"children":[{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"type":"float","advanced":0,"size":1},{"widget":"textfield","name":"Point Size","range":[],"type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Line Width","range":[],"type":"float","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Lighting","advanced":0,"children":[{"widget":"list-1","name":"Interpolation","values":{"Flat":0,"Gouraud":1},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Specular","range":[{"max":1,"min":0}],"type":"float","advanced":0,"size":1},{"widget":"textfield","name":"Specular Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Specular Power","range":[{"max":100,"min":0}],"type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Ambient","range":[{"max":1,"min":0}],"type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Diffuse","range":[{"max":1,"min":0}],"type":"float","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Edge Styling","advanced":1,"children":[{"widget":"textfield","name":"Edge Color","doc":"Set the edge color. This color is used to draw the edge\n        for the polygonal data when EdgeVisibility is on.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":1,"size":3}]},{"widget":"PropertyGroup","type":null,"name":"Backface Styling","advanced":1,"children":[{"widget":"list-1","name":"Backface Representation","doc":"Choose the representation type for the\n        backface.","values":{"Cull Frontface":402,"Surface With Edges":3,"Wireframe":1,"Surface":2,"Cull Backface":401,"Points":0,"Follow Frontface":400},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Backface Ambient Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Backface Diffuse Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Backface Opacity","range":[{"max":1,"min":0}],"type":"float","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Transforming","advanced":1,"children":[{"widget":"textfield","name":"Translation","range":[],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Scale","range":[],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Orientation","range":[],"type":"float","advanced":1,"size":3},{"widget":"textfield","name":"Origin","range":[],"type":"float","advanced":1,"size":3}]},{"widget":"PropertyGroup","type":null,"name":"Miscellaneous","advanced":0,"children":[{"widget":"checkbox","type":"int","name":"Pickable","advanced":1,"size":1},{"widget":"checkbox","name":"Triangulate","doc":"Triangulate the geometry internally to avoid rendering\n        issues of non-convex polygons. This feature has a processing and memory\n        cost, it should be enabled only when needed.","type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Nonlinear Subdivision Level","range":[{"max":4,"min":0}],"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Block Colors Distinct Values","doc":"\n          Determines the number of distinct values in\n          vtkBlockColors. This array is added to each block if\n          the dataset is a composite dataset. The array has one value\n          set to (blockIndex % BlockColorsDistinctValues)\n        ","range":[],"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Use Data Partitions","doc":"Specify whether or not to redistribute the data when actor is translucent.\n        Default is false.","type":"int","advanced":0,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"OSPRay","advanced":1,"children":[{"widget":"checkbox","name":"OSPRay Use Scale Array","doc":"\n          Allows OSPRay implicit points and lines to be sized by an array.\n        ","type":"int","advanced":0,"size":1},{"widget":"list-1","name":"OSPRay Scale Array","doc":"\n          Choice of an array for OSPRay implicit points and lines sizes.\n        ","values":["ElementBlockIds","Info_Records","KE","NSTEPS","QA_Records","TMSTEP","Title","XMOM","YMOM","ZMOM"],"type":"str","advanced":1,"size":1},{"widget":"list-1","name":"OSPRay Scale Function","doc":"Set the piecewise function used to map data array to sprite size.\n        ScaleTransferFunction is only used if ScaleByArray is set.","values":{"PiecewiseFunction":"561"},"type":"proxy","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Glyph Parameters","advanced":1,"children":[{"widget":"checkbox","name":"Orient","doc":"If this property is set to 1, the glyphs will be\n        oriented based on the selected orientation vector\n        array.","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Orientation Mode","doc":"Orientation mode indicates if the OrientationArray\n        provides the direction vector for the orientation or the rotations\n        around each axes. Default is DIRECTION.","values":{"Direction":0,"Rotation":1},"type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Orientation Vectors","values":["ElementBlockIds","Info_Records","KE","NSTEPS","QA_Records","TMSTEP","Title","XMOM","YMOM","ZMOM"],"type":"str","advanced":1,"size":1},{"widget":"checkbox","name":"Scaling","doc":"Enable/Disable scaling of source\n        geometry.","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Scale Mode","values":{"Vector Components":2,"Magnitude":1,"No Data Scaling Off":0},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Scale Factor","doc":"The value of this property will be used as a multiplier\n        for scaling the glyphs before adding them to the\n        output.","range":[],"type":"float","advanced":1,"size":1},{"widget":"list-1","name":"Scale Array","values":["ElementBlockIds","Info_Records","KE","NSTEPS","QA_Records","TMSTEP","Title","XMOM","YMOM","ZMOM"],"type":"str","advanced":1,"size":1},{"widget":"list-1","name":"Glyph Type","doc":"Specify the source objects.","values":{"Box":"438","2D Glyph":"482","Cylinder":"449","Pipeline Connection":"493","Sphere":"471","Cone":"427","Arrow":"416","Line":"460"},"type":"proxy","advanced":1,"size":1},{"widget":"checkbox","name":"Use Glyph Table","doc":"When true, the glyph data is expected to be a multiblock\n        dataset, where each top-level node contains a separate glyph which may\n        be selected by a point data array on the input dataset.","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Glyph Table Index Array","values":["ElementBlockIds","Info_Records","KE","NSTEPS","QA_Records","TMSTEP","Title","XMOM","YMOM","ZMOM"],"type":"str","advanced":1,"size":1},{"widget":"checkbox","name":"Use Composite Glyph Table","doc":"When true, the glyph data is expected to be a multiblock\n        dataset, where each top-level node contains a separate glyph which may\n        be selected by a point data array on the input dataset.","type":"int","advanced":1,"size":1}]},{"widget":"ProxyEditorPropertyWidget","type":"ProxyEditorPropertyWidget","name":"DataAxesGrid","advanced":0,"children":[{"widget":"checkbox","name":"Grid Axes Visibility","doc":"Used for the checkbox in the UI.","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"list-1","name":"Data Axes Grid","values":{"GridAxesRepresentation":"390"},"type":"proxy","visibilityProperty":"GridAxesVisibility","advanced":0,"size":1},{"widget":"PropertyGroup","name":"Title Texts","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"X Title","doc":"\n          Set the title string for X axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"str","advanced":0,"size":1},{"widget":"textfield","name":"Y Title","doc":"\n          Set the title string for Y axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"str","advanced":0,"size":1},{"widget":"textfield","name":"Z Title","doc":"\n          Set the title string for Z axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"str","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"X Title Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Y Title Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Z Title Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Face Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Faces To Render","doc":"\n          Set the mask to select faces. The faces rendered will be a subset of the\n          faces selected depending on the status of **CullBackface** and\n          **CullFrontface** properties.\n        ","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Cull Backface","doc":"\n              Set to true to hide faces of the grid facing away from the camera i.e. hide all\n              back faces.\n            ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":-1},{"widget":"checkbox","name":"Cull Frontface","doc":"\n              Set to true to hide faces of the grid facing towards from the camera i.e. hide all\n              front faces.\n            ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":-1},{"widget":"textfield","name":"Grid Color","doc":"Color used when coloring the grid wireframe","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":-1}],"advanced":0},{"widget":"checkbox","name":"Show Grid","doc":"\n          Turn off to not render the plane grids.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Show Edges","doc":"\n          Turn off to not render the plane edges.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Show Ticks","doc":"\n          Turn off to not render the tick marks.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"PropertyGroup","name":"Label Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"checkbox","name":"Label Unique Edges Only","doc":"\n          Set to true to only label edges shared with 1 face. Note that\n          if all faces are being rendered, this will generate no labels.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Axes To Label","doc":"\n          Set the mask to select the axes to label. The axes labelled will be a subset of the\n          axes selected depending on which faces are also being rendered.\n        ","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1}],"advanced":1},{"widget":"PropertyGroup","name":"X Axis Label Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Y Axis Label Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Z Axis Label Font Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"X Axis Label Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"list-1","name":"X Axis Notation","doc":"\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for X Axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Mixed":0,"Fixed":2,"Scientific":1},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"X Axis Precision","doc":"\n          Get/set the numerical precision to use for the X Axis, default is 2.\n        ","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"X Axis Use Custom Labels","doc":"\n          Specify whether to use custom labels for the X axis. Labels\n          specified by **XAxisLabels** are used only when\n          this flag is set to 1.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"X Axis Labels","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":0}],"advanced":0},{"widget":"PropertyGroup","name":"Y Axis Label Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"list-1","name":"Y Axis Notation","doc":"\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Y Axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Mixed":0,"Fixed":2,"Scientific":1},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Y Axis Precision","doc":"\n          Get/set the numerical precision to use for the Y Axis, default is 2.\n        ","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Y Axis Use Custom Labels","doc":"\n          Specify whether to use custom labels for the Y axis. Labels\n          specified by **YAxisLabels** are used only when\n          this flag is set to 1.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Y Axis Labels","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":0}],"advanced":0},{"widget":"PropertyGroup","name":"Z Axis Label Properties","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":null,"children":[{"widget":"list-1","name":"Z Axis Notation","doc":"\n          Get/set the numerical notation, standard, scientific or mixed (0, 1, 2) for Z Axis.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","values":{"Mixed":0,"Fixed":2,"Scientific":1},"type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Z Axis Precision","doc":"\n          Get/set the numerical precision to use for the Z Axis, default is 2.\n        ","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Z Axis Use Custom Labels","doc":"\n          Specify whether to use custom labels for the Z axis. Labels\n          specified by **ZAxisLabels** are used only when\n          this flag is set to 1.\n        ","depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Z Axis Labels","range":[],"depends":"589:DataAxesGrid:GridAxesRepresentation:1","type":"float","advanced":0,"size":0}],"advanced":0}]},{"widget":"ProxyEditorPropertyWidget","type":"ProxyEditorPropertyWidget","name":"PolarAxes","advanced":1,"children":[{"widget":"checkbox","name":"Visibility","doc":"Set the visibility of the representation.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"PropertyGroup","name":"Transform","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Translation","doc":"Set the polar axes origin position.","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Scale","doc":"Set the polar axes bounds transform scale.","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Orientation","doc":"Set the polar axes bounds transform orientation.","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3}],"advanced":0},{"widget":"PropertyGroup","name":"Custom Bounds and Range","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Enable Custom Bounds","doc":"Activate the use of polar axes custom bounds.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":3},{"widget":"textfield","name":"Custom Bounds","doc":"Set the polar axes custom bounds.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":6},{"widget":"checkbox","name":"Enable Custom Range","doc":"Activate the use of polar axes custom range.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Custom Range","doc":"Set the polar axes custom range.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":2}],"advanced":0},{"widget":"PropertyGroup","name":"Visibility Control","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"checkbox","name":"Polar Axis Visibility","doc":"Set the visibility of polar axis.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Radial Axes Visibility","doc":"Set all radial axes visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Draw Radial Gridlines","doc":"Set the visibility of radial grid lines.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Polar Arcs Visibility","doc":"Set all polar arcs visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Draw Polar Arcs Gridlines","doc":"Set the visibility of polar arcs grid lines.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Aspect Control","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Number Of Radial Axes","doc":"Set the number of radial axes,\n        If value is 0 (the default), the number of radial axes is automatically calculated.\n        ","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Auto Subdivide Polar Axis","doc":"Automatically compute the number of\n        polar axis ticks and tick size. If true, will override NumberOfPolarAxisTicks,\n        PolarAxisMajorTickSize, LastRadialAxisMajorTickSize, ArcMajorTickSize properties.\n        ","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Number Of Polar Axis","doc":"Set the number of polar axis and of course polar axis ticks,\n        If value is 0 (the default), the number of polar axis tick\n        is automatically calculated.\n        ignored if AutoSubdividePolarAxis is true.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Minimum Radius","doc":"Set the minimum radius, Maximum radius is automatically computed.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1},{"widget":"textfield","name":"Minimum Angle","doc":"Set the minimum angle.","range":[{"max":180,"min":-180}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1},{"widget":"textfield","name":"Maximum Angle","doc":"Set the maximum angle.","range":[{"max":180,"min":-180}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1},{"widget":"checkbox","name":"Radial Axes Origin To Polar Axis","doc":"If On, the radial axes are drawn from the angle of the polar Axis\n        (i.e. MinimumAngle) and continue counterclockwise with the step DeltaAngleRadialAxes.\n        if Off, the start angle is 0.0.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Ratio","doc":"Set the polar ellipse ratio.","range":[{"max":100,"min":0.001}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Colors","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Polar Axis Color","doc":"Set the Polar Axis color.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Polar Arcs Color","doc":"Set the Polar Arcs color.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Last Radial Axis Color","doc":"Set the Last Radial Axis color.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Secondary Polar Arcs Color","doc":"Set the Secondary Polar Arcs color.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"textfield","name":"Secondary Radial Axes Color","doc":"Set the Secondary Radial Axes color.","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3}],"advanced":0},{"widget":"PropertyGroup","name":"Title and Labels Control","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Polar Axis Title","doc":"Set the polar axis title.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"str","advanced":0,"size":1},{"widget":"checkbox","name":"Polar Axis Title Visibility","doc":"Set the visibility of polar axis title.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"list-1","name":"Polar Axis Title Location","doc":"Set the location of polar axis title.","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Extern":1,"Bottom":0},"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Polar Label Visibility","doc":"Set the visibility of polar axis label.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Polar Label Format","doc":"Set the polar axis label format.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"str","advanced":1,"size":1},{"widget":"list-1","name":"Polar Label Exponent Location","doc":"Set the location of exponent.","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Extern":1,"Labels":2,"Bottom":0},"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Radial Label Visibility","doc":"Set radial label visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Radial Label Format","doc":"Set the polar radial label format.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"str","advanced":1,"size":1},{"widget":"list-1","name":"Radial Label Location","doc":"Set the location of radial labels.","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Extern":1,"Bottom":0},"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Radial Units Visibility","doc":"Show radial units in labels (degrees).","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"textfield","name":"Screen Size","doc":"Set the screen size to use, which impact label and title\n        relative location to the axes.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Polar Axis Title Font Properties","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Polar Axis Label Font Properties","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Last Radial Axis Text Font Properties","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Secondary Radial Axes Text Font Properties","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"textfield","name":"Color","range":[{"max":1,"min":0},{"max":1,"min":0},{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":3},{"widget":"list-1","name":"Font Family","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Arial":0,"Courier":1,"Times":2},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Bold","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Italic","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Font Size","range":[],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Shadow","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Opacity","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":0,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"LOD and Details control","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"checkbox","name":"Enable Distance LOD","doc":"Set the use of LOD based on distance.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Distance LODThreshold","doc":"Set the LOD distance threshold to use.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"checkbox","name":"Enable View Angle LOD","doc":"Set the use of LOD based on the View Angle.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"View Angle LODThreshold","doc":"Set the LOD View Angle threshold to use.","range":[{"max":360,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Smallest Visible Polar Angle","doc":"Set the smallest radial angle distinguishable from polar axis.","range":[{"max":2,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Ticks Control","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"checkbox","name":"Polar Ticks Visibility","doc":"Set all ticks visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Arc Ticks Origin To Polar Axis","doc":"If On, the ticks are drawn from the angle of the polar Axis\n        (MinimumAngle) and continue counterclockwise with the step Delta Angle Major/Minor.\n        If Off, the start angle is 0.0","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Tick Location","doc":"Set the location of ticks.","depends":"589:PolarAxes:PolarAxesRepresentation:1","values":{"Both":2,"Inside":0,"Outside":1},"type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Axis Tick Visibility","doc":"Set polar axis and last radial axis tick visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Axis Minor Tick Visibility","doc":"Set polar axis and last radial axis minor tick visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Arc Tick Visibility","doc":"Set polar arc tick visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Arc Minor Tick Visibility","doc":"Set polar arc minor tick visibility.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"textfield","name":"Delta Angle Major","doc":"Set the delta between major ticks on last arc.","range":[{"max":359,"min":1}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Delta Angle Minor","doc":"Set the delta between minor and major ticks on last arc.","range":[{"max":359,"min":1}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Polar Axis Major Tick Size","doc":"Set the polar axis major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Polar Axis Tick Ratio Size","doc":"Set the polar axis size ratio between major and minor ticks.","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Polar Axis Major Tick Thickness","doc":"Set the thickness of polar axis major ticks.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Polar Axis Tick Ratio Thickness","doc":"Set the thickness ratio between major and minor ticks of polar axis.\n        ","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Last Radial Axis Major Tick Size","doc":"Set the last radial axis major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Last Radial Axis Tick Ratio Size","doc":"Set the last radial axis size ratio between major and minor ticks.","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Last Radial Axis Major Tick Thickness","doc":"Set the thickness of last radial axis major ticks.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Last Radial Axis Tick Ratio Thickness","doc":"Set the thickness ratio between major and minor ticks of last radial axis.","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Arc Major Tick Size","doc":"Set the arc major tick size,\n        If value is 0 (the default), tick size is automatically calculated.\n        ","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Arc Tick Ratio Size","doc":"Set the arc size ratio between major and minor ticks.","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Arc Major Tick Thickness","doc":"Set the thickness of arc major ticks.","range":[{"max":100,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1},{"widget":"textfield","name":"Arc Tick Ratio Thickness","doc":"Set the thickness ratio between major and minor ticks of arc.","range":[{"max":1,"min":0}],"depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"float","advanced":1,"size":1}],"advanced":0},{"widget":"PropertyGroup","name":"Miscellaneous","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":null,"children":[{"widget":"checkbox","name":"Use 2D Mode","doc":"Set the use of 2D Mode for all axes.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Use Log Axis","doc":"Set the use of Log axis.","depends":"589:PolarAxes:PolarAxesRepresentation:1","type":"int","advanced":0,"size":1}],"advanced":0}]},{"widget":"PropertyGroup","type":null,"name":"Annotations","advanced":1,"children":[{"widget":"list-1","name":"Polar Axes","values":{"PolarAxesRepresentation":"405"},"type":"proxy","visibilityProperty":"Visibility","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Volume Rendering","advanced":0,"children":[{"widget":"textfield","type":"proxy","name":"Scalar Opacity Function","advanced":0,"size":-1},{"widget":"textfield","type":"float","name":"Scalar Opacity Unit Distance","advanced":1,"size":1},{"widget":"list-1","name":"Select Mapper","doc":"Select the volume mapper to use for Volume\n        rendering.","values":["Projected tetra","Z sweep","Bunyk ray cast","Resample To Image"],"type":"str","advanced":1,"size":1},{"widget":"textfield","name":"Sampling Dimensions","doc":"\n        How many linear samples we want along each axis\n        ","depends":"578:SelectMapper:Resample To Image:1","range":[],"type":"int","advanced":1,"size":3},{"widget":"checkbox","name":"Use Floating Point Frame Buffer","doc":"\n          Enable use of floating point frame buffers. If not enabled,\n          you may encounter artifacts when mixing volumes with geometry.\n        ","type":"int","advanced":1,"size":1}]},{"widget":"PropertyGroup","type":null,"name":"Point Gaussian","advanced":0,"children":[{"widget":"textfield","name":"Gaussian Radius","doc":"\n          The radius of the gaussian blur for each point.\n        ","type":"float","advanced":0,"size":1},{"widget":"list-1","name":"Shader Preset","values":{"Triangle":4,"Square Outline":5,"Gaussian Blur (Default)":0,"Black-edged circle":2,"Sphere":1,"Plain circle":3},"type":"int","advanced":0,"size":1},{"widget":"checkbox","name":"Emissive","doc":"\n          Should the splat be emissive lke a light source or not. For cosmology emissive should be on. For scanned point clouds typically it woudl be off.\n        ","type":"int","advanced":1,"size":1},{"widget":"checkbox","name":"Use Scale Array","doc":"\n          If this property is on, the Scale Array will be used to determine that radii\n          of the gaussians.  Otherwise the Default Radius will be used.\n        ","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Gaussian Scale Array","doc":"\n          This property specifies the name of the input array to scale the splats by.\n        ","values":{"PedigreeNodeId":["POINTS","PedigreeNodeId"],"GlobalNodeId":["POINTS","GlobalNodeId"]},"type":"str","advanced":1,"size":5},{"widget":"list-1","name":"Scale Transfer Function","doc":"Set the piecewise function used to map data array to sprite size.\n        ScaleTransferFunction is only used if ScaleByArray is set.","values":{"PiecewiseFunction":"527"},"type":"proxy","advanced":1,"size":1},{"widget":"checkbox","name":"Use Opacity Array","doc":"\n          If this property is on, the Opacity Array will be used to determine the\n          point gaussian sprites.\n        ","type":"int","advanced":1,"size":1},{"widget":"list-1","name":"Gaussian Opacity Array","doc":"\n          This property specifies the name of the input array to map to point opacity.\n        ","values":{"PedigreeNodeId":["POINTS","PedigreeNodeId"],"GlobalNodeId":["POINTS","GlobalNodeId"]},"type":"str","advanced":1,"size":5},{"widget":"list-1","name":"Opacity Transfer Function","doc":"Set the piecewise function used to map data array to sprite opacity.\n        OpacityTransferFunction is only used if ScaleByArray is set and OpacityArray is\n        also given.","values":{"PiecewiseFunction":"526"},"type":"proxy","advanced":1,"size":1}]}],"id":"589","properties":[{"name":"Representation","value":"Surface","id":"589"},{"children":[{"name":"AmbientColor","value":[1,1,1],"id":"589"},{"name":"DiffuseColor","value":[1,1,1],"id":"589"}],"id":"589:Coloring","value":false,"name":"Coloring"},{"children":[{"name":"MapScalars","value":1,"id":"589"},{"name":"InterpolateScalarsBeforeMapping","value":1,"id":"589"}],"id":"589:Scalar Coloring","value":false,"name":"Scalar Coloring"},{"children":[{"name":"Opacity","value":1,"id":"589"},{"name":"PointSize","value":2,"id":"589"},{"name":"LineWidth","value":1,"id":"589"}],"id":"589:Styling","value":false,"name":"Styling"},{"children":[{"name":"Interpolation","value":"Gouraud","id":"589"},{"name":"Specular","value":0,"id":"589"},{"name":"SpecularColor","value":[1,1,1],"id":"589"},{"name":"SpecularPower","value":100,"id":"589"},{"name":"Ambient","value":0,"id":"589"},{"name":"Diffuse","value":1,"id":"589"}],"id":"589:Lighting","value":false,"name":"Lighting"},{"children":[{"name":"EdgeColor","value":[0,0,0.5],"id":"589"}],"id":"589:Edge Styling","value":false,"name":"Edge Styling"},{"children":[{"name":"BackfaceRepresentation","value":"Follow Frontface","id":"589"},{"name":"BackfaceAmbientColor","value":[1,1,1],"id":"589"},{"name":"BackfaceDiffuseColor","value":[1,1,1],"id":"589"},{"name":"BackfaceOpacity","value":1,"id":"589"}],"id":"589:Backface Styling","value":false,"name":"Backface Styling"},{"children":[{"name":"Position","value":[0,0,0],"id":"589"},{"name":"Scale","value":[1,1,1],"id":"589"},{"name":"Orientation","value":[0,0,0],"id":"589"},{"name":"Origin","value":[0,0,0],"id":"589"}],"id":"589:Transforming","value":false,"name":"Transforming"},{"children":[{"name":"Pickable","value":1,"id":"589"},{"name":"Triangulate","value":0,"id":"589"},{"name":"NonlinearSubdivisionLevel","value":1,"id":"589"},{"name":"BlockColorsDistinctValues","value":12,"id":"589"},{"name":"UseDataPartitions","value":0,"id":"589"}],"id":"589:Miscellaneous","value":false,"name":"Miscellaneous"},{"children":[{"name":"OSPRayUseScaleArray","value":0,"id":"589"},{"name":"OSPRayScaleArray","value":"ACCL","id":"589"},{"name":"OSPRayScaleFunction","value":"PiecewiseFunction","id":"589"}],"id":"589:OSPRay","value":false,"name":"OSPRay"},{"children":[{"name":"Orient","value":0,"id":"589"},{"name":"OrientationMode","value":"Direction","id":"589"},{"name":"SelectOrientationVectors","value":"ACCL","id":"589"},{"name":"Scaling","value":0,"id":"589"},{"name":"ScaleMode","value":"No Data Scaling Off","id":"589"},{"name":"ScaleFactor","value":1.9778103828430176,"id":"589"},{"name":"SelectScaleArray","value":"ACCL","id":"589"},{"name":"GlyphType","value":"Arrow","id":"589"},{"name":"UseGlyphTable","value":0,"id":"589"},{"name":"GlyphTableIndexArray","value":"ACCL","id":"589"},{"name":"UseCompositeGlyphTable","value":0,"id":"589"}],"id":"589:Glyph Parameters","value":false,"name":"Glyph Parameters"},{"children":[{"name":"GridAxesVisibility","value":0,"id":"390"},{"name":"DataAxesGrid","value":"GridAxesRepresentation","id":"589"},{"children":[{"name":"XTitle","value":"X Axis","id":"390"},{"name":"YTitle","value":"Y Axis","id":"390"},{"name":"ZTitle","value":"Z Axis","id":"390"}],"id":"390:Title Texts","value":false,"name":"Title Texts"},{"children":[{"name":"XTitleColor","value":[1,1,1],"id":"390"},{"name":"XTitleFontFamily","value":"Arial","id":"390"},{"name":"XTitleBold","value":0,"id":"390"},{"name":"XTitleItalic","value":0,"id":"390"},{"name":"XTitleFontSize","value":12,"id":"390"},{"name":"XTitleShadow","value":0,"id":"390"},{"name":"XTitleOpacity","value":1,"id":"390"}],"id":"390:X Title Font Properties","value":false,"name":"X Title Font Properties"},{"children":[{"name":"YTitleColor","value":[1,1,1],"id":"390"},{"name":"YTitleFontFamily","value":"Arial","id":"390"},{"name":"YTitleBold","value":0,"id":"390"},{"name":"YTitleItalic","value":0,"id":"390"},{"name":"YTitleFontSize","value":12,"id":"390"},{"name":"YTitleShadow","value":0,"id":"390"},{"name":"YTitleOpacity","value":1,"id":"390"}],"id":"390:Y Title Font Properties","value":false,"name":"Y Title Font Properties"},{"children":[{"name":"ZTitleColor","value":[1,1,1],"id":"390"},{"name":"ZTitleFontFamily","value":"Arial","id":"390"},{"name":"ZTitleBold","value":0,"id":"390"},{"name":"ZTitleItalic","value":0,"id":"390"},{"name":"ZTitleFontSize","value":12,"id":"390"},{"name":"ZTitleShadow","value":0,"id":"390"},{"name":"ZTitleOpacity","value":1,"id":"390"}],"id":"390:Z Title Font Properties","value":false,"name":"Z Title Font Properties"},{"children":[{"name":"FacesToRender","value":63,"id":"390"},{"name":"CullBackface","value":0,"id":"390"},{"name":"CullFrontface","value":1,"id":"390"},{"name":"GridColor","value":[1,1,1],"id":"390"}],"id":"390:Face Properties","value":false,"name":"Face Properties"},{"name":"ShowGrid","value":0,"id":"390"},{"name":"ShowEdges","value":1,"id":"390"},{"name":"ShowTicks","value":1,"id":"390"},{"children":[{"name":"LabelUniqueEdgesOnly","value":1,"id":"390"},{"name":"AxesToLabel","value":63,"id":"390"}],"id":"390:Label Properties","value":false,"name":"Label Properties"},{"children":[{"name":"XLabelColor","value":[1,1,1],"id":"390"},{"name":"XLabelFontFamily","value":"Arial","id":"390"},{"name":"XLabelBold","value":0,"id":"390"},{"name":"XLabelItalic","value":0,"id":"390"},{"name":"XLabelFontSize","value":12,"id":"390"},{"name":"XLabelShadow","value":0,"id":"390"},{"name":"XLabelOpacity","value":1,"id":"390"}],"id":"390:X Axis Label Font Properties","value":false,"name":"X Axis Label Font Properties"},{"children":[{"name":"YLabelColor","value":[1,1,1],"id":"390"},{"name":"YLabelFontFamily","value":"Arial","id":"390"},{"name":"YLabelBold","value":0,"id":"390"},{"name":"YLabelItalic","value":0,"id":"390"},{"name":"YLabelFontSize","value":12,"id":"390"},{"name":"YLabelShadow","value":0,"id":"390"},{"name":"YLabelOpacity","value":1,"id":"390"}],"id":"390:Y Axis Label Font Properties","value":false,"name":"Y Axis Label Font Properties"},{"children":[{"name":"ZLabelColor","value":[1,1,1],"id":"390"},{"name":"ZLabelFontFamily","value":"Arial","id":"390"},{"name":"ZLabelBold","value":0,"id":"390"},{"name":"ZLabelItalic","value":0,"id":"390"},{"name":"ZLabelFontSize","value":12,"id":"390"},{"name":"ZLabelShadow","value":0,"id":"390"},{"name":"ZLabelOpacity","value":1,"id":"390"}],"id":"390:Z Axis Label Font Properties","value":false,"name":"Z Axis Label Font Properties"},{"children":[{"name":"XAxisNotation","value":"Mixed","id":"390"},{"name":"XAxisPrecision","value":2,"id":"390"},{"name":"XAxisUseCustomLabels","value":0,"id":"390"},{"name":"XAxisLabels","value":[],"id":"390"}],"id":"390:X Axis Label Properties","value":false,"name":"X Axis Label Properties"},{"children":[{"name":"YAxisNotation","value":"Mixed","id":"390"},{"name":"YAxisPrecision","value":2,"id":"390"},{"name":"YAxisUseCustomLabels","value":0,"id":"390"},{"name":"YAxisLabels","value":[],"id":"390"}],"id":"390:Y Axis Label Properties","value":false,"name":"Y Axis Label Properties"},{"children":[{"name":"ZAxisNotation","value":"Mixed","id":"390"},{"name":"ZAxisPrecision","value":2,"id":"390"},{"name":"ZAxisUseCustomLabels","value":0,"id":"390"},{"name":"ZAxisLabels","value":[],"id":"390"}],"id":"390:Z Axis Label Properties","value":false,"name":"Z Axis Label Properties"}],"id":"589:DataAxesGrid","value":false,"name":"DataAxesGrid"},{"children":[{"name":"Visibility","value":0,"id":"405"},{"children":[{"name":"Position","value":[0,0,0],"id":"405"},{"name":"Scale","value":[1,1,1],"id":"405"},{"name":"Orientation","value":[0,0,0],"id":"405"}],"id":"405:Transform","value":false,"name":"Transform"},{"children":[{"name":"EnableCustomBounds","value":[0,0,0],"id":"405"},{"name":"CustomBounds","value":[0,1,0,1,0,1],"id":"405"},{"name":"EnableCustomRange","value":0,"id":"405"},{"name":"CustomRange","value":[0,1],"id":"405"}],"id":"405:Custom Bounds and Range","value":false,"name":"Custom Bounds and Range"},{"children":[{"name":"PolarAxisVisibility","value":1,"id":"405"},{"name":"RadialAxesVisibility","value":1,"id":"405"},{"name":"DrawRadialGridlines","value":1,"id":"405"},{"name":"PolarArcsVisibility","value":1,"id":"405"},{"name":"DrawPolarArcsGridlines","value":1,"id":"405"}],"id":"405:Visibility Control","value":false,"name":"Visibility Control"},{"children":[{"name":"NumberOfRadialAxes","value":0,"id":"405"},{"name":"AutoSubdividePolarAxis","value":1,"id":"405"},{"name":"NumberOfPolarAxis","value":0,"id":"405"},{"name":"MinimumRadius","value":0,"id":"405"},{"name":"MinimumAngle","value":0,"id":"405"},{"name":"MaximumAngle","value":90,"id":"405"},{"name":"RadialAxesOriginToPolarAxis","value":1,"id":"405"},{"name":"Ratio","value":1,"id":"405"}],"id":"405:Aspect Control","value":false,"name":"Aspect Control"},{"children":[{"name":"PolarAxisColor","value":[1,1,1],"id":"405"},{"name":"PolarArcsColor","value":[1,1,1],"id":"405"},{"name":"LastRadialAxisColor","value":[1,1,1],"id":"405"},{"name":"SecondaryPolarArcsColor","value":[1,1,1],"id":"405"},{"name":"SecondaryRadialAxesColor","value":[1,1,1],"id":"405"}],"id":"405:Colors","value":false,"name":"Colors"},{"children":[{"name":"PolarAxisTitle","value":"Radial Distance","id":"405"},{"name":"PolarAxisTitleVisibility","value":1,"id":"405"},{"name":"PolarAxisTitleLocation","value":"Bottom","id":"405"},{"name":"PolarLabelVisibility","value":1,"id":"405"},{"name":"PolarLabelFormat","value":"%-#6.3g","id":"405"},{"name":"PolarLabelExponentLocation","value":"Labels","id":"405"},{"name":"RadialLabelVisibility","value":1,"id":"405"},{"name":"RadialLabelFormat","value":"%-#3.1f","id":"405"},{"name":"RadialLabelLocation","value":"Bottom","id":"405"},{"name":"RadialUnitsVisibility","value":1,"id":"405"},{"name":"ScreenSize","value":10,"id":"405"}],"id":"405:Title and Labels Control","value":false,"name":"Title and Labels Control"},{"children":[{"name":"PolarAxisTitleColor","value":[1,1,1],"id":"405"},{"name":"PolarAxisTitleFontFamily","value":"Arial","id":"405"},{"name":"PolarAxisTitleBold","value":0,"id":"405"},{"name":"PolarAxisTitleItalic","value":0,"id":"405"},{"name":"PolarAxisTitleFontSize","value":12,"id":"405"},{"name":"PolarAxisTitleShadow","value":0,"id":"405"},{"name":"PolarAxisTitleOpacity","value":1,"id":"405"}],"id":"405:Polar Axis Title Font Properties","value":false,"name":"Polar Axis Title Font Properties"},{"children":[{"name":"PolarAxisLabelColor","value":[1,1,1],"id":"405"},{"name":"PolarAxisLabelFontFamily","value":"Arial","id":"405"},{"name":"PolarAxisLabelBold","value":0,"id":"405"},{"name":"PolarAxisLabelItalic","value":0,"id":"405"},{"name":"PolarAxisLabelFontSize","value":12,"id":"405"},{"name":"PolarAxisLabelShadow","value":0,"id":"405"},{"name":"PolarAxisLabelOpacity","value":1,"id":"405"}],"id":"405:Polar Axis Label Font Properties","value":false,"name":"Polar Axis Label Font Properties"},{"children":[{"name":"LastRadialAxisTextColor","value":[1,1,1],"id":"405"},{"name":"LastRadialAxisTextFontFamily","value":"Arial","id":"405"},{"name":"LastRadialAxisTextBold","value":0,"id":"405"},{"name":"LastRadialAxisTextItalic","value":0,"id":"405"},{"name":"LastRadialAxisTextFontSize","value":12,"id":"405"},{"name":"LastRadialAxisTextShadow","value":0,"id":"405"},{"name":"LastRadialAxisTextOpacity","value":1,"id":"405"}],"id":"405:Last Radial Axis Text Font Properties","value":false,"name":"Last Radial Axis Text Font Properties"},{"children":[{"name":"SecondaryRadialAxesTextColor","value":[1,1,1],"id":"405"},{"name":"SecondaryRadialAxesTextFontFamily","value":"Arial","id":"405"},{"name":"SecondaryRadialAxesTextBold","value":0,"id":"405"},{"name":"SecondaryRadialAxesTextItalic","value":0,"id":"405"},{"name":"SecondaryRadialAxesTextFontSize","value":12,"id":"405"},{"name":"SecondaryRadialAxesTextShadow","value":0,"id":"405"},{"name":"SecondaryRadialAxesTextOpacity","value":1,"id":"405"}],"id":"405:Secondary Radial Axes Text Font Properties","value":false,"name":"Secondary Radial Axes Text Font Properties"},{"children":[{"name":"EnableDistanceLOD","value":1,"id":"405"},{"name":"DistanceLODThreshold","value":0.7,"id":"405"},{"name":"EnableViewAngleLOD","value":1,"id":"405"},{"name":"ViewAngleLODThreshold","value":0.7,"id":"405"},{"name":"SmallestVisiblePolarAngle","value":0.5,"id":"405"}],"id":"405:LOD and Details control","value":false,"name":"LOD and Details control"},{"children":[{"name":"PolarTicksVisibility","value":1,"id":"405"},{"name":"ArcTicksOriginToPolarAxis","value":1,"id":"405"},{"name":"TickLocation","value":"Both","id":"405"},{"name":"AxisTickVisibility","value":1,"id":"405"},{"name":"AxisMinorTickVisibility","value":0,"id":"405"},{"name":"ArcTickVisibility","value":1,"id":"405"},{"name":"ArcMinorTickVisibility","value":0,"id":"405"},{"name":"DeltaAngleMajor","value":10,"id":"405"},{"name":"DeltaAngleMinor","value":5,"id":"405"},{"name":"PolarAxisMajorTickSize","value":0,"id":"405"},{"name":"PolarAxisTickRatioSize","value":0.3,"id":"405"},{"name":"PolarAxisMajorTickThickness","value":1,"id":"405"},{"name":"PolarAxisTickRatioThickness","value":0.5,"id":"405"},{"name":"LastRadialAxisMajorTickSize","value":0,"id":"405"},{"name":"LastRadialAxisTickRatioSize","value":0.3,"id":"405"},{"name":"LastRadialAxisMajorTickThickness","value":1,"id":"405"},{"name":"LastRadialAxisTickRatioThickness","value":0.5,"id":"405"},{"name":"ArcMajorTickSize","value":0,"id":"405"},{"name":"ArcTickRatioSize","value":0.3,"id":"405"},{"name":"ArcMajorTickThickness","value":1,"id":"405"},{"name":"ArcTickRatioThickness","value":0.5,"id":"405"}],"id":"405:Ticks Control","value":false,"name":"Ticks Control"},{"children":[{"name":"Use2DMode","value":0,"id":"405"},{"name":"UseLogAxis","value":0,"id":"405"}],"id":"405:Miscellaneous","value":false,"name":"Miscellaneous"}],"id":"589:PolarAxes","value":false,"name":"PolarAxes"},{"children":[{"name":"PolarAxes","value":"PolarAxesRepresentation","id":"589"}],"id":"589:Annotations","value":false,"name":"Annotations"},{"children":[{"name":"ScalarOpacityFunction","value":[],"id":"589"},{"name":"ScalarOpacityUnitDistance","value":1.3901072164734267,"id":"589"},{"name":"SelectMapper","value":"Projected tetra","id":"589"},{"name":"SamplingDimensions","value":[128,128,128],"id":"589"},{"name":"UseFloatingPointFrameBuffer","value":1,"id":"589"}],"id":"589:Volume Rendering","value":false,"name":"Volume Rendering"},{"children":[{"name":"GaussianRadius","value":0.9889051914215088,"id":"589"},{"name":"ShaderPreset","value":"Sphere","id":"589"},{"name":"Emissive","value":0,"id":"589"},{"name":"ScaleByArray","value":0,"id":"589"},{"name":"SetScaleArray","value":["POINTS","GlobalNodeId"],"id":"589"},{"name":"ScaleTransferFunction","value":"PiecewiseFunction","id":"589"},{"name":"OpacityByArray","value":0,"id":"589"},{"name":"OpacityArray","value":["POINTS","GlobalNodeId"],"id":"589"},{"name":"OpacityTransferFunction","value":"PiecewiseFunction","id":"589"}],"id":"589:Point Gaussian","value":false,"name":"Point Gaussian"}]}
 
 /***/ }),
-/* 97 */
+/* 109 */
 /***/ (function(module, exports) {
 
 module.exports = {"Brewer Diverging Purple-Orange (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV48mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ3BATWK0Q0LAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQFmXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFP+AMf72HzHAAAAAElFTkSuQmCC","coolwarm":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATtMwAECAgECAQEBAgICAQECAQEBAgECAQECAgICAQEBAgECAQECAgECAQEBAgECAQICAgEBAQECAQICAQEBAQECAQECAQIBAgECAQEBAQECAQICAQEBAQECAgECAQIBAQECAQECAQIBAQECAAEBAQICAQEBAQECAQIBAQECAAEBAQICAQEBAQECAQIBAAECAQEBAQICAAEBAQIBAAECAQEBAAIBAQECAAIBAAECAQEBAAIBAQECAAEBAQIBAAECAAEBAQIBAAEBAAIBAAEBAAECAAIBAAEBAAIBAAEBAAEBAAIBAAEBAAECAAIBAAEBAQEB/wIBAAEBAAIB/wEAAAEBAAIB/wEBAAEBAAIB/wEBAAEBAAIA/wEBAAEBAAEB/wIBAAEA/wEB/wEAAAIB/wEB/wEA/wEBAAIA/wEB/wEAAAEB/wEB/wIA/wEBAAEA/wEB/wEA/wEA/wIB/wEA/wEA/wEA/wEB/wEA/wEA/wEA/wEB/gEA/wEA/wEA/wEB/wH//wEA/gH//wEA/wH//gH//wEA/gH//wEA/gH//wH//gEA/wH//gH//wAA/wH//gH//wEA/gD//wH//gD//gH//wH//gD//wH//gD//wH//gD//wH//gD//wEA/gD//gH//wD+/gD//wD//gH//wD//gD+/gD//wD//gD//wH+/gD//wD//gD//gD//wD+/gD//wD//gD+/wD//gD+/v///wD+/gD//wD+/gD////+/gD//gD//wD+/gD////+/gD+/////gD+///+/gD////+/gD+/////gD+///+/gD////+/v/+/wD//v/+/wD+/v/+///+/v/////+/gD+///+///+/v/+///+/v/+///+/////v/+/wD+/v/+///+///+/v7+///+///9///+/v/+///+//7+/v/+///+///9///+/v/+//79///+///+/v/9//7+///9//7+///9//79/v/9///9//79///9//78///9//77///7/v76///5/6Y3Uu837Q1rAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWYlBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALjgAJOYDd69AAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVQniAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA34AQVdYF9GAAAAAElFTkSuQmCC","BLUE-WHITE":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAgEAAQAAAQAAAgEAAQAAAQAAAgAAAQAAAQAAAgAAAQAAAf8AAgAAAQAAAv8AAQEAAQAAAgEAAQAAAQAAAgAAAQEAAQAAAgAAAf8AAgAAAQAAAf8AAgAAAf8AAgAAAQAAAQAAAgABAQAAAQAAAQAAAgAAAQAAAQAAAgAAAQAAAQAAAgAAAQD/AQAAAgAAAQAAAQAAAgAAAQABAQAAAgAAAQAAAgAAAQAAAQD/AgAAAQAAAQAAAgAAAQAAAgAAAQAAAQAAAgAAAQAAAQAAAgAAAQAAAgAAAQAAAQAAAgAAAQAAAQAAAgAAAQAAAgAAAQACAQABAgACAQACAQEBAgACAQACAQACAQACAgABAQACAf8BAgACAQABAQACAgABAQACAQECAgABAQACAQACAgABAQACAgABAQACAQACAgABAQACAQABAgACAf8BAgACAQACAQEBAgACAQABAQACAgABAQACAgACAQABAQACAgABAQACAQABAgACAf8BAgACAQACAQEBAgACAQABAQACAgACAQABAgACAQACAQABAgACAQABAQACAgACAf8BAgACAQACAQEBAgACAQABAQACAgACAQABAQACAQACAgABAQACAQABAgACAQACAf8BAgACAQACAQEBAQACAQABAQACAQABAQECAQABAQACAgACAf8BAQACAQABAQACAf8BAQACAQsCAAgBAAcCAAUBAAQCAAQCAAMBAAMCAAMCAAMBAAMCAAIBAAMCAAICAAIBAAICAAYCAAUBAAUCAAUBAAQCAAQCAAQBAAQCAAQBAAQCAAMCAAQBAAMCAAQCAAMBAAMCAAUCAAQBAAUCAAQBAAQCAAQBAAUCAAQBAAQCAAMBAAQCAAQCAAQBAAQCAAMBAAQCAAQCAAQBAAUCAAQBAAQCAAQBAAQCAAQCAAQBAAQCAAQCAAMBAAQCAAQBAAQCAJENEP/7eYICAAAAAElFTkSuQmCC","erdc_blue2gold":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AS0L/wED/wED/wED/wACAAEC/wEC/wEC/wEB/wAC/wEB/wEC/wEBAAAC/wEB/wAB/wEC/wEB/wEB/wECAAEB/wEB/wAB/wEC/wEB/wEB/wEBAAAB/wEB/wEB/wAB/wEB/wAB/wECAAEB/wEB/wEB/wEB/wEB/wEB/wAB/wEBAAEB/wEB/wAB/wEB/wEB/wAA/wEBAAEB/wEB/wEB/wAB/wEB/wEB/wEBAAEB/wAB/wEB/wEB/wEB/wAA/wEB/wEBAAAB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wAB/wEB/wEB/wEA/wABAAEB/wEB/wAB/wEB/wEB/wEA/wEB/wEBAAAB/wEB/wEB/wEA/wAB/wEB/wEB/wEBAAAB/wEB/wEA/wEB/wAB/wEB/wEB/wEA/wEBAAAB/wEB/wEB/wEB/wAA/wEB/wEB/wEB/wAB/wEAAAEB/wEB/wEA/wEB/wEB/wEA/wEB/wEB/wEA/wABAAEA/wEB/wEB/wEA/wEB/wEB/wEAAAAB/wEB/wEAAAEB/wEA/wEBAAEB/wEA/wEBAAEB/wEA/wABAAEA/wEB/wEBAAEA/wEB/wEAAAEB/wEA/wEBAAEA/wEB/wEAAAEB/wEA/wEBAAAA/wEA/wEB/wEAAAEB/wEA/wEBAAEA/wEB/wEA/wABAAEA/wEB/wEAAAEB/wEA/wEB/wEAAAAB/wEA/wEB/wEAAAEB/wEA/wEB/wAB/wEAAAEB/wEA/wEB/wEAAAEB/wAA/wEB/wEA/wEB/wEAAAEB/wAA/wEB/wEA/wEB/wEAAAAB/wEA/wEB/wEA/wEB/wAA/wEB/wEA/wEB/wEA/wABAAEA/wEB/wEA/wEB/wAA/wEB/wEB/wEA/gEB/wAA/wEB/wEA/wEB/wEA/wAB/wEA/gEB/wEA/wAB/wEA/gEB/wEA/wEB/gAB/wEA/wEB/gEA/wAB/gEA/gEB/wEA/gAB/gEA/gEB/gEA/gAB/gEA/QEB/gEB/QEA/QAB/AEA/AEB+gEA+2h229Hb+xOtAAAAAElFTkSuQmCC","Haze":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/V/v7///7+//7///7+//7///7///7+//7///7+//7///7///7+//////7+//7///7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///////7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//////7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7///7+//7///7+//7///7///7+//7///7+//////7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7///7+//7///7///7+//////7+//7///7///7+//7///7+//7///7///7+//7///7+//7///7//wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wEC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wEB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wEB/wIB/wIB/wIC/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wECAAIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIC/wIB/wIB/wEB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wEB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wEC/wIB/wIB/wIB/wIC/wIB/wIB/wIB/wIC/wIB/2fh/8/XWt1tAAAAAElFTkSuQmCC","GREEN-WHITE_LINEAR":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAABAAABAAABAAABAAABAAABAAABAAACAAABAAABAAABAAABAAABAAAAAAABAAABAAABAAACAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAAAAAABAAABAAABAAEBAAABAAEBAAABAAABAAABAAABAAABAAABAAABAAABAP8BAAABAAABAP8BAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAEBAAIBAAEBAAEBAAIBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAIBAAEBAAIBAAIBAAEBAAIBAAEBAAIBAAIBAwEBAwIBBAIBAwEBAwIBAgEBAgIBAwIBAgEBAgIBAQIBAgEBAgIBAgEBAQIBAgIBBQEBBAIBBAIBBAEBAwIBBAIBAwEBBAIBAwEBAwIBBAIBAwEBAwIBAwEBAwIBAwIBBAEBAwIBBAEBAwIBBAIBAwEBBAIBAwEBAwIBBAEBAwIBBAIBAwEBAwIBBAEBAwIBAwEBBAIBAwIBBAEBAwIBBAIBAwEBAwIBBAIBAwEBBAIBAwEBBAIBAwEBBAIBAwIBAwEBBAIBAwIBBAIBAwEBBAIBAwIBBAEBAwIBBAEBAwIBBAIBAwEBBAIBA9CZBP/PUQxWAAAAAElFTkSuQmCC","erdc_purple2green":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATwMhwEBAQEBAAECAAEBAQIBAAEBAAEAAQEBAAEBAAEBAQEBAAEBAAEBAQEBAAEBAQEBAAEBAAEBAAEBAQEAAAEBAAEBAQEBAAEBAAEBAAEBAQABAAEBAAEBAAEBAQEAAAEBAAEBAAABAQEBAAEBAAEBAAABAAEBAAEBAAEBAQABAAEBAAEBAAEBAAABAAEBAQEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAABAAEBAAAB/wEBAAABAAEBAAABAAABAAEBAAAB/wEBAAABAAABAAECAAABAAAB/wEBAAABAAEBAAABAAABAAEB/wABAAABAAEBAAABAAAB/wEBAAABAAABAAEB/wABAAABAAEBAAAB/wABAAEBAAABAAEBAAABAAAB/wEBAAABAAABAAEBAAABAAEB/wABAAABAAEAAAABAAAB/wEBAAABAAEBAAAB/wABAAEBAAABAAEBAAAB/wABAAEBAAABAAAB/wEBAAABAAABAAEB/wABAAEBAAABAAEBAAABAAEB/wABAAEAAAABAAEBAAABAAAB/wEBAAABAAEBAAABAAEBAAABAAEB/wABAAEBAAEAAAABAAEBAAABAAEBAAABAAEBAAAB/wEBAAABAAEBAAABAAEBAAEAAAABAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAAAAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEAAAABAAEBAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEAAAABAAEBAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAAAAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAEBAAABAAEBAQABAAEAAAEBAAABAAEBAAEBAAABAAEBAAAAAAEBAAEBAAABAAEBAAABAAEAAAEBAAABAAEBAGpGFFXJSE+tAAAAAElFTkSuQmCC","Brewer Qualitative Pastel2":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AczMzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAHAmYTDVWaAAAAAElFTkSuQmCC","Brewer Qualitative Pastel1":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfLy8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIWkAtiNC1MiAAAAAElFTkSuQmCC","erdc_purple_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIBAwMBBAIBAwIBAwIBAwIBAgIBAwIBAgEBAQIBAgEBAgEBAgEBAgEBAQEAAgEBAgEBAgEAAQEBAgEBAgEAAgEAAQEBAgEAAgEBAgEAAQEBAgEAAgEAAgIBAQEAAgEBAgEAAgEBAQEAAgEBAgEAAQEBAgEAAgEBAQEBAgEAAgEBAQEAAgEBAgEAAQEBAgEAAgEBAgEBAQEAAgEBAQEBAgEAAQEBAgEAAgEBAQEBAgEAAQEBAgEBAgIAAQEBAgEBAgEAAQEBAgEBAQEAAQEBAgEBAQEBAgEAAQEBAgEBAQEBAgEAAQEBAgEBAQIBAgEAAQEBAQEBAgEBAQEBAQEAAgEBAQEBAQEBAgEBAQEBAQEAAgIBAQEBAQEBAgEBAQEAAQEBAgEBAQEBAQEBAQEBAQEBAQEBAQEBAQIBAQEBAQEBAQEBAgEBAQEBAQEBAQEBAQEBAQEBAQEAAQEBAgIBAQEBAQEBAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQIBAQEBAQEBAQEBAgEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAQABAQEBAQEBAQEBAQEBAQEBAAEBAQECAQEBAQEBAQEBAQEBAAEBAQEBAQECAQEBAQEBAAEBAQABAQEBAQECAAEBAQEBAQEBAAEBAQEBAQECAAEBAQEBAQEBAQEBAAECAQEBAQEBAAEBAQEBAAECAQABAQEBAAEBAQEBAAECAQEBAQEBAAEBAQECAAEBAQABAQEBAAECAQEBAAEBAAACAAEBAAEBAQACAAEBAAEBAAECAQABAAECAAEBAAEBAQACAAEBAAEBAAECAAABAAEBAAECAAABAAEBAAECAAEBAAACAAEBAAEBAAECAAABAAEBAAECAAEBAQABAAECAAEBAAEBAAECAAEBAAACAAEBAAEBAAECAAEBAAABAAECAAEBAAEBAAECAAEBAAEBAAACAAEBAAEBAAEBAAECAAEBAAEBAQECAAABAAEBAAECAAEBAPe0Av8FjhUIAAAAAElFTkSuQmCC","blot":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKoAAFUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/7BAEtZRGJAAAAAElFTkSuQmCC","Brewer Diverging Spectral (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AZnVlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApfAgQ+V4EVAAAAAElFTkSuQmCC","erdc_divLow_icePeach":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AXrQ/wD//v///v/+/v///v/+/v///v/+/////gD+/v///v///v/+/v/////+/v///gD+/v///v/+/v///v/+/v///v/+///+/v///v/+/v///v/+/v///v/+/v///v/+/gD//v/+/v/+/v///v/+/v///v/+///+/v///v/+/v///v/+/v///v/+/gD//v/+/v/+/v///v/+/v/////+/gD//v/+/v///v/+/v///gD+/////v/+/v///v/+/gD//v/+/v///wD//v/+/v///wD//v/+/v///gD////+/gD//v/////+/gD//v///wD+/v///gD//////gD+/////gD//wD//v///wD//gD////+/gD//////gD//wD//v///wD//gD//wD//////wD//gD//wD//wD//wAA/wD//gD//////wD//wD//gD//wAA/wD//wD//wAA/wD//wAA/wD//wD/AAAA/wH//wAA/wD//wAA/wD//wAAAAD//wAA/wD//wEAAAEBAAEAAAEAAAEBAAEAAAEBAAEAAAEAAAEBAAEAAAEAAAEBAAEAAAEAAAEBAAIAAAEBAAEBAQIAAAEBAAEAAAIBAQEBAAEAAAIBAAEBAQEAAAIBAAEBAAEAAAIBAQEBAAIBAQIAAAEBAAIBAQIBAAEBAQIBAAIBAQEBAAIAAAIBAQEBAAIBAQIBAAEBAQIBAAIBAQIBAAIBAQIBAQIBAAIBAQIBAAIBAQEBAQICAAIBAQIBAAIBAQIBAQIBAAIBAQIBAAIBAQMCAQIBAQIBAAIBAQIBAQICAAIBAQIBAQIBAAMBAQICAQIBAAIBAQIBAQIBAQMCAAIBAQIBAQIBAQICAAMBAQIBAQIBAAICAQIBAQMBAQIBAAICAQIBAQIBAQMCAQIBAAIBAQICAQIBAQIBAQMCAQIBAAICAQIBAQIBAQICAQMBAQIBAAICAQEBAQACAQABAQECAQACAQEBAQACAQEBAQACAQEBAQACAQEBAQACAQEBAgACASRKQT2QmpQOAAAAAElFTkSuQmCC","Grayscale":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAX7BAv8QUFyOAAAAAElFTkSuQmCC","erdc_rainbow_bright":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVMm9QAFAAAEAAAEAP8EAAAEAAADAAAEAP8DAAADAP8EAQADAP8DAAACAP8DAP8DAAADAP8DAP8CAP8DAP8CAP8DAP4CAP8DAP8CAP4DAP8CAP4CAP4DAP4CAP4CAP4DAP0CAP0CAP0DAAABAAAC//8CAAAB/wAC//8CAAAC//8BAP8C/wACAP8B//8CAP8C//8BAP4C//8CAP8B//8C/wAB/wAC/wAB//8C/wAB//8C//8B//8C/v8B//8C//4B//4C//4B//4C//0B//wC/wEB/gIB/gIC/gEB/gEB/gEB/gAB/gAC/gAB/gAB/v8B/v8B/v8C/v8B/v4B/v0B/v0B/ggB/QgB/gYA/QUB/QQA/gQB/QMA/QMB/gIA/QMB/QIA/gIB/QIB/QEA/gIB/QEA/QIB/gMA/QMA/QQB/QMA/QMB/QMA/QMA/QIB/QMA/AIA/QIB/QIA/QIA/AIB/QIA/QIB/AIA/QIA/QIA/gIA/gMB/wIA/gIA/gIA/gMA/gIA/gIA/gIA/QIB/gIA/gIA/gEA/QIA/gIA/QMA/gIA/wMA/wMA/gIA/wMA/wP//gIA/wMA/wIA/gMA/wIA/gMA/gIA/gL//gMA/gIA/gIA/wL//wEA/wIA/wL//wEAAAL//wIA/wH//wIA/wEA/wL//gIA/wH//wIA/wH//wIA/gH/AAEA/wH/AAH/AAH/AAH//wEAAAH/AAH/AAH/AAH//wEAAAH/AAH/AAH/AAH//wEAAAH/AAH+AAH/AAD+AAH/AAH+AAH/AAH+AAD/AAH/AAH+AAH/AAD+AAH/AAH+AAD/AAH+AAH/AAD+AAH+AQH/AAD+AAH/AAD+AQH+AAD/AAH+AAD+AQH/AAD+AAH+AAH/AQD+AAH+AAD/AgD9BgD+BQD+BAD+AwD+AwD9AwD+Av/+AgD9AgD+AgD+AgD9AgD+AgD+AQD9AgD+Af/9AgD+AQD9AQD9AgD9AQD+Af/9AQD9AQD9AQD9AQD8Af/9AQD9AQD8AQD9Af/8AQD8Af87Go1Kyik0AAAAAElFTkSuQmCC","bone_Matlab":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBAQEBAgEBAQEBAQEBAgAAAQEBAgEBAQEBAQEBAQEBAgEBAQEBAQAAAQEBAAEBAQEBAgEBAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQAAAQEBAgEBAQEBAQAAAQEBAQEBAgEBAQEBAQEBAQAAAQEBAgEBAQEBAQEBAQEBAQEBAgEBAQAAAQEBAQEBAgEBAQEBAQEBAQEBAQEBAgAAAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQAAAQEBAgEBAQEBAQEBAQEBAgEBAQEBAQAAAQEBAQEBAQEBAgEBAQEBAQEBAQEBAgAAAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQAAAQEBAgEBAQEBAQEBAQEBAQEBAgEBAQABAQEAAQEBAQEBAgEBAQEBAQECAQEBAAABAQEBAQEBAQECAQEBAQEBAQEBAQEBAAACAQEBAQEBAQEBAQEBAQECAQEBAQEBAAABAQEBAQECAQEBAQEBAQEBAQEBAQECAAABAQEBAQEBAQECAQEBAQEBAQEBAQEBAAACAQEBAQEBAQEBAQEBAQECAQEBAQEBAAABAQEBAQECAQEBAQEBAQEBAQECAQEBAAABAQEBAQEBAQECAQEBAQEBAQEBAQEBAAACAQEBAQEBAQEBAQEBAQECAQEBAQEBAAABAQEBAQECAQEBAQEBAQEBAQECAQEBAAABAQEBAQEBAQECAQEBAQEBAQEBAQEBAAECAQABAQEBAQEBAQEBAQEBAQECAQEBAAEBAQEBAQEBAQACAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQIBAQEBAXLNAv/1qKklAAAAAElFTkSuQmCC","Brewer Qualitative Accent":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWZmZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJr9ATTHBWfOAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (11)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQA8MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEl1AG5abVZ8AAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYEPfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACkoAQ4EmOC/AAAAAElFTkSuQmCC","Green Linear (9_17f)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/89wD++wD+/AD/+wD+/AD++////f/+/f/+/P///f/+/P///f/+/f///AAA/v8A/QD//gAA/f8A/QAA/v8A/QAA/gAA/f///gAA/f8A/QAA/v///v8A//8A/v///v8A/v///v8A//8A/v///v8A/v///v8A/v8A/////v8A//8A/v////8A/v////8A/v4A/////v8A//////8A/v3///3///0A//3///z///3///0A//3///3/AP3///3///wA//3///3///z///3///z///3///z///3///z///3///z///3///z///z///3///3///3///z///3///z///3///z///z///3///z///z///7/Af//Af//Af/+Af//Af//Av7+Af//Af//Af//Af/+Af7/Af//Af8AAf//Af8AAQD/Af8AAP8AAf//Af8AAf//Af8AAf8AAf//AP8AAf//AQD/AQD/Af8AAQD/Af//Af//AQAAAf//AgD/Af//Af//AQAAAf//AQD/Af8AAQD/Af8AAQD/Af//Af8AAQD/Af//Af8AAf//AQD/AP//AAD/Af//AP//AAD/AP//AQD/AP//AP//AP//AQD/AP//AAD/AAD/AAD+AAD//wD/AP//AAD/AAD/AAD+AAD/////AAD/AAD/AAD+AAD//wD/AAD/AAD+AP//AAD//wD/AAD+AAD/AP///wD/AAD+AAD/AAD+AAD//wD+AAD/AAD+AP//AAD+AAD/AAD+////AAD+AAD/AAD/AAH//wD+AAD/AAD/AAD//wD+AAD/AAD/AAD//wD+AAD/AAD/AAEAAAD/AAAA/wD/AAH/AAAAAAD/AAD/AAAA/wH/AAD/AAAAAAD/AAH//wAAAAD/AAD/AAEAAAD//wD/AAAAAAH/AAD//wD/AAEAAAH//wAAAAH/AAEA/wH/AAEA/wH/AAH/AAEA/wD/AAEA/wH/AAEAAAIB/wIB/wEAAAIB/wEB/wEAAAIB/wEAAAEB/wIB/wEAAAEB/4qcrvX0SKVKAAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASyiXwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIvPAS8iZ1l8AAAAAElFTkSuQmCC","RdPu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWcAHwIAAQEAAQIAAQEAAQIAAgEAAQIAAQEAAQIAAQEAAQIAAQEAAQIAAgEAAQIAAQIAAQEAAQIAAQEAAQIAAQEAAgIAAQEAAQIAAQEAAQIAAQEAAQIAAQIAAgEAAQIAAQEAAQIBAQIAAAEAAQIBAAIAAQEBAQIBAAIAAQEBAAIAAQIBAQEAAAIBAQIBAAIAAQEBAQIBAAIAAQEBAAIBAQIAAQEBAAIAAQIBAAEAAQIBAQIAAAEBAQIBAQIAAAEBAQIAAAEBAgEBAgEBAQAAAgEBAQEBAgEAAgEBAQABAgEBAgEAAQEBAgABAgEAAQEBAgEBAgEBAQAAAgEBAQEBAgEBAgAAAQEBAgEBAQEBAgAAAgEBAQEBAgEBAgAAAQEBAgEBAQACAv8CAQADAQACAQACAQACAv8CAQACAQABAQACAf8CAgABAQACAf8CAQABAQACAgACAf8CAQACAQACAQACAQACAv8CAQACAQACAf8BAQACAQACAgACAf8BAQACAQACAf8BAf8CAQABAf8CAP8CAQABAf8CAP8BAQABAf8CAf8BAAACAf8BAf8CAP8BAQABAf8CAf8BAAACAf8BAQACAP8BAf8CAQABAf8CAP8BAQACAf8BAP8CAQABAf8BAf8CAAEBAQABAQABAAEBAQACAAABAQEBAQABAAABAQEBAAACAQABAQEBAAABAQABAAEBAQABAQACAAEBAQABAAEBAQABAQABAAECAQABAAABAQEBAAABAQABAQECAAABAQABAAEBAQEBAQACAAEBAQABAQEBAAECAQABAQEBAAABAQECAQEBAAABAQECAQABAAEBAQEBAQABAAECAQABAQEBAAEBAQACAQEBAAABAQEBAAEBAQACAQEBAAABAQEBAQACAAEAAQABAAEAAAABAQEAAAABAAEBAAAAAQEBAAAAAAEBAQABAAEAAAABAQEAAAABAAEBAQAAAAEBAAAAAQEBAAABAAEAAAABAQEAAAABAAEBAQAAAAEBAAAAAQEBALoOIOYjb73ZAAAAAElFTkSuQmCC","erdc_divHi_purpleGreen_dim":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWchlwECAQICAQECAQEBAQICAQEBAQECAQICAQEBAQECAAIBAQECAQEBAQECAQIBAQECAQECAQIBAQECAQICAQECAQIBAQECAQECAgICAQEBAQICAQECAQEBAQICAQECAQICAQEBAQECAQICAQECAQICAQECAQEBAQICAQECAgICAQECAQECAQIBAQECAQICAQECAQECAQICAQEBAQECAQECAQICAQECAQECAAEBAQICAQECAQECAQECAQICAQECAQEBAQECAQECAAECAQEBAQECAAECAQICAQEBAAECAQECAQEBAQECAAECAQECAQEBAAECAQECAAABAQECAAEBAAABAQECAAEBAAECAQABAAECAAEBAQACAAEBAAECAQEBAAACAAEBAAABAAABAAEBAAABAAABAAEBAAABAAABAAEBAAAB/wABAAEBAAABAAABAAECAAAA/wAAAP8B/wAAAAAB/wAAAAAB/wAA/wABAAAA/wABAP8A/wABAAAA/wABAAAA//8A/wAA//8A/wAA/////v8A/wAA//8A/wAA//8A//8A/wD///8A//8A/gAA//8A/////////v8A/////v///v8A/////v////8A/v///////v////8A/v///////v4A/////v/+/v7//v///v///v7//////v7//v///v/+/v7//v///////v7//v///v7//v/+/v7//v///v7+/v///v7+/v7//v///v7+/v///v7+/v7//////v7+/v///v7//v7+/v///v7+/v7//v/+/f7+/v7//v/+/v7//v7+/v///v7+/v7//v/+/v7//v7+/v7//v/+/v7//v7+/v///v7+/v7//v/+//7//v7+/v///v7+/v7//v/+/v7//v7+/v///v7//v7+/v///v7+/v///v7//v7+/////v7+/v///v7//v7+/v///v7//v/+/f7///////7//v/+/////v7//v////7//v///v/+//7//v////7//////v///xJUcJCCs2zzAAAAAElFTkSuQmCC","Brewer Diverging Spectral (11)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV5PogAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPGcAVHQ6DqeAAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVQniAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA34AQVdYF9GAAAAAElFTkSuQmCC","erdc_blue2gold_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMBBgIABgMBBAIBBAIABAIBAwIBAwEAAwEBAwEBAwABAwABAwAABAABAwABAwAABAEAAgABAwEAAwEAAwH/AwEAAwEAAwAAAwH/AwEAAwEAAwH/AwEAAwD/AwH/AwEAAwAAAwH/AgAAAwAAAwEAAwAAAgAAAwEAAwAAAwD/AwEAAwAAAgAAAwAAAwD/AwEAAwEBAgEAAQEBAgEBAgEAAgEBAgEBAQEBAgIBAgEAAgEBAgEBAQEBAgEAAgEBAgEBAgIBAQECAQIBAQICAQEBAAIBAQEBAQICAQEBAQIBAQEBAQEBAQICAQEBAQIBAQEBAQICAAEBAAICAAEBAAECAQIBAAECAAIBAAECAAEBAAIBAAECAQEBAAECAAIBAAEBAAEC/wIC/wEC/wEB/wEC/wIC/wEB/wEC/wEC/wEB/wEC/wEB/wEC/wEC/wEB/wEC/wEB/gIC/gEB/gIC/gEB/gIC/gEB/gEB/wIC/gEB/gEC/gEB/gEC/gEB/gEC/gEB/gIB/gEC/gEB/gIB/gEB/gEC/gIB/gEB/gEC/gEB/gEB/gEB/gEC/gEB/gEB/gEC/gIB/QEB/gIB/gEB/QIB/gEB/gIC/QEB/gEB/gIB/QEB/gEB/QEB/gIB/QEC/QEB/gIB/gEB/gIB/gEB/gEB/gIB/gEB/gIB/gEB/gEB/gIB/gEB/QEB/gIB/QEB/QIB/QEBAAEC/wEB/wIBAAEB/wEB/wEB/wIBAAEB/wEB/wIB/wEB/wEB/wEB/wIB/wEB/wEBAQEBAAECAQEBAAEBAQEBAQEBAAEBAQEBAQECAAIBAQEBAQEBAAEBAQEBAAEBAQACBQEBBQABBQEBBAACBQEBBAABBAECBAABBAEBAwABBAECBAABAwEBBAACAwABBAEBBQABBQEBBQABBQECBQABBAABBQEBBQABBQACBQEBBAABBQABBQABBQACBAABBQEBBQABBQEBBQABBQABBAEBBQABBQABBQEBBQACBQABBAABBQABBQABBQABBVieZ//zBDguAAAAAElFTkSuQmCC","RED-PURPLE":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAYAAAUAAAUAAAQAAAMAAQMBAAMAAAIAAAMAAAIAAAIAAAIAAAIAAQIAAAIAAAL/AAIBAAIAAQMAAAIAAQMAAAIAAQMAAAIAAQMAAAIAAQMAAAIAAQMAAAP/AAIAAQMAAAEAAQIAAgEAAQIAAQEAAQIAAQEAAQIAAQEAAQIAAQEAAQIAAQEAAQIAAAEAAQIAAQEAAQIAAQEAAQIAAAEAAQIAAQEAAQIAAQEAAQIAAQEAAQIAAAEAAQIAAQEAAQIAAQEAAQIAAQEBAQIAAQEAAQIAAQEBAAIAAQEAAQIAAQEBAQIAAQEAAQIAAQEBAQIAAQEAAQIAAQEBAQIAAAEAAQIAAQEBAQIAAQEAAQIAAQEBAQIAAAEAAQIAAQEBAQIAAQEAAQEAAQIBAQEAAQEAAQEAAQIBAQEAAQEAAQEAAQIBAQEAAQEAAQEBAQIAAQEAAQEAAQEAAQEAAgEAAQEAAQEAAQEAAQEAAQEAAgEAAQEAAQEAAQEAAQEAAgEAAQEAAQEAAQEBAQIAAQEAAQEAAQEBAQIAAQEAAQEAAQEBAQIAAQEAAQEAAQEBAQIAAQEAAQEAAQEBAgAAAQEAAQEAAgEAAQABAQEAAQEAAgEAAQABAQEAAgEAAQEBAQAAAgEAAQABAQABAgACAQABAgABAQABAgABAQABAgABAQABAgABAQABAgAAAQABAgABAQABAgACAQACAgACAQACAQACAgACAQACAgACAQABAQACAgACAQABAQACAgABAQACAgABAQACAQADAgACAQACAQACAgACAQACAQACAQACAgACAQACAQACAgACAQABAQACAgACAQADAQADAQADAgADAQADAQADAQACAQADAQADAgADAQACAQADAQACAQADAgACAQADAQADAQAEAQADAQAEAQADAQEDAQADAQAEAgADAQADAf8DAQADAQAEAQADAQADAQADAQAEAQEEAQAFAAAEAQAEAQEEAQAEAAAEAQAEAQAFAAAEAQAEAQAEAQAEAAAEAcW1BfxnMQXEAAAAAElFTkSuQmCC","Rainbow Desaturated":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AUdH2/7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f///P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P7+/f7+/P///f7+/f7+/P7+/f7+/P7+/f7+/P7+/f8DAAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAIBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAHBAAHBQAEAQD8+QD9+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+gD9+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD8+QD9+QD9+QD8+QD9+QD8+gD9+QD8+QD9+QD8+QQB/QcEAAcDAAcEAAcDAAcEAAgDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAcDAAcEAAgDAAcEAAcDAAcEAAcDAAcEAAQAAAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7AAD8AAD8AAD7APz+APz9APz9APz+APz9APz9APz+APz9APz9APz+APz9APz9APz+APv9APz9APz+APz9APz9APz+APz9APz9APz+APz9APz9APz+APz9APz9APz+APz9APz9APv+APz9APz9APz+APz9APz9AP8AAQQCAgMCAgMCAgMCAgQDAwMCAgMCAgMCAgMCAgQCAgMCAgMCAgMCAgMDAwQCAgMCAgMCAgMCAgMCAgQCAgMCAgMCAgMDAwMCAgQCAgMCAgMCAgMCAgQCAgMCAgMCAgMDAwMCAgQCAgMCAgMCAv+QJIuPLqP7AAAAAElFTkSuQmCC","erdc_red2yellow_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAUBAAYAAAQBAAQAAAMBAAMAAAMBAAIAAAMBAAIAAAIBAAIAAAEBAAIAAAMAAAIAAAEAAAIAAAIAAAL/AAIAAAIAAAL/AAIAAAL/AAIAAAL/AAIAAAL/AAIAAAL/AAL/AAIAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAEAAAIAAAEAAAEAAAEAAAIAAAEAAAEAAAIAAAEAAAEAAAIDAAEDAAEDAAEDAAEDAAEDAAECAAECAAECAAECAAECAAECAAEBAAECAAECAAEBAAECAAECAAECAAEBAAECAAECAAEBAAECAAACAAEBAAECAAEBAAECAAEBAAECAAEBAAECAAABAAECAAEBAAECAAEBAAEBAAACAAEBAAECAAEBAAECAAEBAAEBAAACAAEBAAECAAEBAAABAAECAAEBAAACAAEBAAECAAEBAAACAAEBAAEBAAACAAEBAAECAAABAAECAAABAAECAAABAAECAAABAAECAAABAAECAAABAAEBAAACAAEBAAACAAEBAAACAAEBAAACAAABAAECAAABAAECAAABAAACAAEBAAACAAEBAAABAAACAAEBAAACAAEBAAACAAEBAAABAAACAAEBAAACAAEBAAABAAECAAABAAEBAAACAAEBAAACAAEBAAABAAECBwABBgEBBQACBQEBAwABBAECAwABAwEBAwACAwEBAwABAgECAwABAgEBAwACAgEBBQABBAEBBQACBAEBBAABBAABBAECBAABBAEBBAACAwABBAEBBAABAwECBAABBAABBAEBBQABBAECBQABBAABBQEBBAABBQACBAEBBAABBQABBAABBQACBAEBBAABBQABBAABBAEBBAABBAACBQEBBAABBAABBAABBQEBBAABBAACBAABBAABBQABBFz6Cf/Hfz8fAAAAAElFTkSuQmCC","Brewer Qualitative Dark2":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWZmZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJr9ATTHBWfOAAAAAElFTkSuQmCC","Blue to Yellow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQoK8gEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wAAAAEB/wEB/wEB/wEB/wEB/7d+6fCnseAvAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AZk0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHjkANPzsXBSAAAAAElFTkSuQmCC","Linear YGB 1211g":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/89wD++wD+/AD/+wD+/AD++////f/+/f/+/P///f/+/P///f/+/f///AAA/v8A/QD//gAA/f8A/QAA/v8A/QAA/gAA/f///gAA/f8A/QAA/v///v8A//8A/v///v8A/v///v8A//8A/v///v8A/v///v8A/v8A/////v8A//8A/v////8A/v////8A/v4A/////v8A//////8A/v3///3///0A//3///z///3///0A//3///3/AP3///3///wA//3///3///z///3///z///3///z///3///z///3///z///3///z///z///3///3///3///z///3///z///3///z///z///3///z///z///7/Af//Af//Af/+Af//Af//Av7+Af//Af//Af//Af/+Af7/Af//Af8AAf//Af8AAQD/Af8AAP8AAf//Af8AAf//Af8AAf8AAf//AP8AAf//AQD/AQD/Af8AAQD/Af//Af//AQAAAf//AgD/Af//Af//AQAAAf//AQD/Af8AAQD/Af8AAQD/Af//Af8AAQD/Af//Af8AAf//AQD/AP//AAD/Af//AP//AAD/AP//AQD/AP//AP//AP//AQD/AP//AAD/AAD/AAD+AAD//wD/AP//AAD/AAD/AAD+AAD/////AAD/AAD/AAD+AAD//wD/AAD/AAD+AP//AAD//wD/AAD+AAD/AP///wD/AAD+AAD/AAD+AAD//wD+AAD/AAD+AP//AAD+AAD/AAD+////AAD+AAD/AAD/AAH//wD+AAD/AAD/AAD//wD+AAD/AAD/AAD//wD+AAD/AAD/AAEAAAD/AAAA/wD/AAH/AAAAAAD/AAD/AAAA/wH/AAD/AAAAAAD/AAH//wAAAAD/AAD/AAEAAAD//wD/AAAAAAH/AAD//wD/AAEAAAH//wAAAAH/AAEA/wH/AAEA/wH/AAH/AAEA/wD/AAEA/wH/AAEAAAIB/wIB/wEAAAIB/wEB/wEAAAIB/wEAAAEB/wIB/wEAAAEB/4qcrvX0SKVKAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVq0rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADJBAbwqQHuCAAAAAElFTkSuQmCC","GnBu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBEGwABAQACAAABAQABAAABAQACAAABAQABAAABAQACAAABAQABAAACAQABAAABAQACAQABAAABAQABAAACAQABAAABAQABAAACAQABAAABAQACAAABAQABAAACAQABAQABAAEBAQEBAQEBAAEBAQEBAQIBAQEBAQEBAAEBAQEAAQIBAQEBAAEBAQEBAQEBAQEBAQEBAAEBAQEBAQIBAQEBAQEBAAEBAQEBAQEBAQEBAQEBAAEAAQEBAQEBAQEBAQEBAAEBAgEBAQECAgEBAgEBAQEBAgEBAQEBAgEBAQEBAgEBAQEBAgECAQEBAgABAQEBAgEBAgEBAQEBAgEBAQEBAgEBAQEBAgECAQEBAgEBAQEBAgEBAQEBAgEBAQEBAgABAgIBAQEAAQEBAgEBAQIAAgEBAQEBAgEAAQEBAgEBAQEAAQIBAgEAAQEBAgEBAQEAAgEBAQEBAQIAAgEBAQEAAgEBAQEBAgIAAQEBAgEBAQEAAQEBAgEAAQIBAgEBAQEAAgEBAQIBAQIAAQEBAQIBAQIAAgEBAQIBAQEBAQIAAQIBAQEBAQIAAgEBAQIBAQEAAQIBAQIBAQEAAgIBAQIBAQEBAQIAAQEBAQIBAQIAAgEBAQIBAQEAAQIBAQEBAQIAAgIBAAEBAQIAAQEBAQIBAQIAAQEBAQIAAQIBAQEBAQIAAQEBAAIBAQEAAQIBAQIAAQEBAQIBAQEAAQIBAQEBAQIAAAIBAQEAAQIBAQEBAQIAAQEBAQIAAQEBAQIBAQIAAAABAQEAAQEAAAEAAQEBAAAAAQEAAQEAAAEBAQAAAAEAAQEBAQEAAAEAAQAAAAEBAQEAAQEAAAABAQEAAAEAAQEAAAEBAQAAAQEAAAEBAQEAAAAAAQEAAAEBAQEAAQAAAAEAAAEBAAAAAAEAAQAAAAEBAAAAAAEAAAEAAAAAAAEBAAAAAQEAAAAAAAEAAAEBAAAAAAEAAAAAAAEBAQAAAAEAAAAAAAEAAAEBAAAAAAEAAAAAAQEBAAAAAAEAAEjcAvIYz0VtAAAAAElFTkSuQmCC","erdc_divLow_purpleGreen":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfSq8//+AP7////+AP//AP7+AP/////+AP7/AP/+AP/////+AP7/AP//AP/+//7/AP/+AP7///7+AP7///7/AP7+AP////7/AP7+//7/AP7///7+AP7/AP7+//7/AP7///7/AP7+/f7//v7//v7//f7+/v///v7//f7//v7//v7//v7+/f7//v7//v7//f7//v7+/v///f7//v7//v7//f7//v7//v7//v7//f7//v7//v///f7+/v7//v7//v7//f7//v7//v///v7//v7//f4A/v///v7//v7//v7//f///v7//v7//v7//v///v7//v7//v8A/v7//v///v4A/v///v7//v///v4A/v///v7//v///v4A/v///v7//v////4A/v///v8A/v////8A/v////4A/v///v8A/////v////8A/v7//v8A/////v8A/////v8A//8A/wAA//////8A/v8A/wD///8A//8A/wAA//////8A//8A/gAA//////8A/wABAAAA/wEBAAABAAAA/wABAAAB/wAAAAABAAAB/wEAAAABAAAB/wAAAAAB/wAAAAEBAAABAAEBAAABAAEBAAABAAABAAEBAAABAAEBAAAB/wEBAAABAAEBAAAAAAEBAAACAAEBAQEBAAEBAAEBAAABAAECAQEBAAEBAAEBAAABAQECAAEBAAEBAAABAAEBAQECAAEBAAEBAQECAAEBAQECAAIBAQEBAAECAAEBAQECAAEBAQEBAAECAQEBAAECAAEBAQECAQIBAAECAQEBAAECAQEBAQICAAEBAQECAAEBAQICAQEBAAECAQECAAEBAQICAQEBAAECAQIBAQECAAECAQIBAQECAAEBAQECAAICAQEBAQECAQICAAEBAQECAQIBAAECAQEBAAECAQICAQEBAAECAQIBAQECAAECAQEBAQICAAEBAQECAQECAAIBAQECAAEBAQECAAEBAQECAQIBAAECAQEBAAECAQEBAAEBAQECAAIBAQECAAEBARESVudTCUwLAAAAAElFTkSuQmCC","CIELab Blue to Red":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQCZvwgAAAcA/wUAAAUA/wT/AAMAAAMA/wMAAAIA/wMAAAIA/wIAAAIAAAL//wIAAAIA/wIAAAEAAAIA/wIAAAEA/wIAAAH//wIAAAEAAAEA/wIAAAEA/wEAAAEAAAL//wEAAAEA/wEAAAEAAAEA/wEAAAEA/wEAAAL//wEAAAEAAAEA/wEAAAAA/wEAAAEAAAEA/wH/AAEA/wEAAAEAAAEA/wEAAAAA/wEAAAH//wEAAAEAAAEA/wAAAAEA/wEAAAEAAAD//wEAAAEA/wEAAAAAAAEA/wEAAAEA/wAAAAH/AAEA/wAAAAEA/wEAAAAA/wEAAAEAAAD//wEAAAEA/wAAAAEAAAEA/wAAAAEA/wH/AAAAAAEA/wAAAAEA/wEAAAAAAAEA/wD/AAEA/wEAAAAA/wEAAAAAAAEA/wAAAAH//wEAAAAAAAEA/wAAAAEA/wAAAAEAAAD//wEAAAAA/wEAAAEAAAAA/wEAAAAA/wH/AAAAAAEA/wAAAAEA/wAAAAEAAAD//wEAAAAA/wEAAAAA/wEAAAAAAAAA/wH/AAAA/wEAAAAAAAEA/wAAAAEA/wD/AAEAAAAA/wEAAAAA/wAAAAEAAAAA/wH/AAAA/wEAAAAAAAEA/wAAAAAA/wH/AAAAAAEA/wAAAAEA/wAAAAAAAAH//wAAAAEA/wAAAAEAAAAA/wAAAAH//wAAAAEAAAAA/wAAAAEA/wAAAAH//wAAAAAAAAEA/wAAAAEA/wAAAAD/AAEA/wAAAAAA/wEAAAAAAAEA/wD/AAAA/wEAAAAAAAAA/wEAAAAA/wH/AAAAAAAA/wEAAAAA/wAAAAEAAAD//wEAAAAA/wAAAAEAAAAA/wD/AAEA/wAAAAAAAAEA/wAAAAAA/wH/AAAA/wAAAAEAAAAA/wAAAAH//wAAAAAAAAEA/wAAAAEA/wAAAAD/AAEA/wAAAAAA/wEAAAAAAAD//wAAAAEA/wAAAAAAAAEA/wD/AAAA/wEAAAAA/wAAAAEAAAD//wAAAAEA/wAAACFji5TtXksSAAAAAElFTkSuQmCC","GYPi":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASdkGQECAAICAQEBAAICAAECAQICAAEBAAICAQECAAICAAECAAICAQEBAAICAAECAQICAAICAQEBAAICAQICAQEBAAICAQICAQECAQIBAAICAQECAQICAAIBAQECAQICAAICAQIBAQICAgICAQIBAQICAQICAgEBAQICAQIBAQICAgICAQIBAQICAQICAgIBAQICAQICAwMBAgICAwIBAgIBAwICAgMBAwICAgIBAgICAwIBAgICAwMBAgICAgIBAwICAgIBAwIBAwMCAwIBAgIBAwICAwIBAwIBAgICAwMBAwIBAgICAwIBAwIBAwIBAgICAwIBAwIAAwIBAwIBAwIBAwEAAwIBAgIBAwIBAwIBAwEAAwIBAwIBAwIBAwEBAwIAAwEBAgEAAgIAAgEBAgEAAgEAAgEBAgEAAgEAAgEBAgEAAgEAAgEBAgIAAgEAAgEBAgAAAgEAAQEAAgAAAQEAAgEAAQAAAgEAAQEAAgAAAQEAAQEAAgAAAQEAAgABAQEAAgD/AAH//wD/AAD/AAD//wH/AAD/AAD//wD/AAEAAAD//wD/AAD/AAD//wH/AAD/AAD//wD/AAD+/wD/AAD//wD/AP///wD+AAD//wD//wD/AAD+/wD/AAD//wD/AAD+/////wD+AP///wD+///+/wD//wD+///+AAD////+/wD+/////wD+AP/+/wD////+/wD+/v/9///+/gD+///9/v/+/v/+/wD9/v/+///+/gD9///+/v/+/v/9/wD+/v/+///9/v/9/gD+/v/9///9/v/+/gD9/v/9/v/9///+/v/9/gD9/v/9///9/v/9/v/+/v/8/v/9/v/9/v/9///9/gD8/v/9/v/9/v/8/v/9/v/8/v/8/v/8/v/8/v78/v/7///+/v7//v7+/v7+/v////7+/v7+/v7+/v/+//7//v7+/v7+/v/9//7+/v7+/v79/v7///7//v7//v7//v3///7//v7//v7///7+/v7//v4A//3//v7//v7///7//m9xNvIg2ovIAAAAAElFTkSuQmCC","hue_L60":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfZmWQAAAwD/AwAAAwD/AwAAAwD/AwAAAwEAAwD/A/8AAwD/AwAAAwD/AwAAAwD/AwAAA/8ABP8BA/8ABP8BA/8ABP8BA/8ABP8AA/8BBP8AA/4BBP8AA/8BBP4ABP8BA/8ABP4BAv8BAv4BAv8AA/4BAv8BAv4AA/8BAv4BAv8BAv4AA/4BAv8BAv4BA/4AAv4BAv8BAf4BAf4BAf8BAf4AAf4BAf8BAf4BAf4BAf4BAf4AAf8BAf4BAf4BAf4BAf4AAv4BAP4BAP8BAP4BAP4BAP4BAP4BAP8BAP4AAP4BAP4BAP4BAP4BAP4AAP4BAP4BAP4B//4B//4B//8B//4B//4A//4B//4B/v4B//4B//4B//4A//4B//4B//4B//4B//4B/v4A/v4B/f4B/v4B/v4B/v4B/v4A/v4B/f4B/v4B/v0B/v4A/v0B/v4B/f0B/v8A/v4B/v8A/f8B/v4A/v8B/f4A/v8B/v4A/v4B/f4A/v4B/v4A/f4A/v4B/v0A/QEB/gAA/gAA/QEA/gAB/gAA/QAA/gAA/gAA/QAB/v8A/QAA/gAA/v8B/QAA/v8A/gIA/QEA/gIA/gEA/QEA/gEA/QEA/gEA/gAB/QEA/gEA/QEA/gAA/QEA/gAA/QEA/gIA/gIA/gIA/gIA/wH//gIA/gIA/gEA/wIA/gEA/gIA/gH//gIA/gEA/gEA/gIA/gL//wMA/wMA/gL//wMA/wL//wMA/wL//wIA/gP//wIA/wIA/gL//wIA/wL//gIA/wL/AAP//wIAAAP/AAL//wIAAAP/AAL/AAIA/wL/AAL/AAIA/wL/AAL/AAP/AAIA/wL/AQL/AQL/AQL/AQL/AQIAAAL/AQL/AQL/AQL/AQL/AAL/AQL/AQL/AAH/AQL/AQL/AQP/AgL+AQL/AgL/AQL+AgL/AQL/AQL+AgL/AQL+AQL/AgL+AQL/AQL+AQL/AQH+AgH/AgL/AgH/AgH+AgL/AgH/AgH+AgH/AgL/AQH+AgH/AgL+AgH/AQH+AvGDM8aO/jjIAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (10)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQA8MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEl1AG5abVZ8AAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBtLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANBMAJtwOX2uAAAAAElFTkSuQmCC","Brewer Diverging Spectral (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASuDugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADxHAWqWZMCYAAAAAElFTkSuQmCC","Brewer Diverging Spectral (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASuDugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADxHAWqWZMCYAAAAAElFTkSuQmCC","erdc_blue2cyan_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBBAECBQEBBAEBBAABAwECAgEBAwEBAgECAgABAwABAgABAgABA/8BAv8BA/8BAgABAgABAv8AAgABAgABAgABAgAAAf8BAgABAgAAAv8BAgABAgABAv8AAgABAv8BAgABAgAAAgABAgABAQAAAgABAgABAgABAgAAAQABAgABAgABAgAAAgABAQABAgABAgAAAgABAgABAQABAgAAAgABAQABAgABAgABAgAAAQABAgABAgABAgABAQAAAgABAgABAQABAQEBAgABAQABAQABAgEBAQABAQABAgEBAQABAQAAAgABAQEBAQABAgABAQEBAQEBAQACAQEBAAEBAQABAQEBAQEBAQABAAEBAQABAQEBAQACAQEBAAABAQEBAQEBAQABAAEBAQECAAABAAEBAQEBAAABAQECAAABAQEBAAABAQABAAEBAQACAAABAQEBAAEBAQEBAAECAQABAAEBAQEBAAABAQEBAAACAQEBAAEBAQABAAEBAQABAAECAQABAAABAQEBAAABAQEBAQACAAABAQEBAAABAQABAQECAAABAQABAAEBAQABAAACAQEBAQEBAAABAQEBAAEBAQACAAEBAQABAQEBAAEBAQACAAEBAQABAAEBAQEBAAACAQEBAQEBAAEBAQEBAAEBAQECAAEBAQEBAQEBAAEBAQABAAECAQEBAAEBAQEBAAEBAQECAQEBAQIBAAEBAQIBAQEBAQEBAAIBAQECAQEBAQIBAAEBAQEBAQEBAQIBAAEBAQICAQIBAAIBAQIBAQMBAQIBAAIBAQIBAQEBAAIBAQIBAQIBAAIBAQIBAQIBAQIBAAMBAQMBAAMBAQMBAAIBAQMBAQMBAAMBAQIBAAMBAQMBAAIBAQMAAQMBAAIBAQMBAAMBAQMBAAQBAQMAAAMBAAMBAQMBAAQAAQMBAAMBAAMBAQMAAAMBAQMBAAMBAQMAAAMBAAMBAQMBAAMAAAMBAQMBAAMAAAMBAQMBAAMBAAMAAQMBAAMBAAMAAQMBAB0ECv+AHijQAAAAAElFTkSuQmCC","erdc_red2purple_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAUAAQUBAAQAAQMAAQQBAAIAAQMAAQIAAAIBAQIAAQIAAQIBAAEAAQIAAQIAAAIAAQEBAQIAAAEAAQEAAQIAAAEAAQIAAAEAAQIAAQH/AAIAAQIAAAEAAQL/AAEAAQIAAAEAAQIAAAEAAAIAAQEAAAEAAAIAAQEAAAIAAAEAAQEAAAIAAAEAAQIAAAEAAAIAAQEAAAIAAQEAAAEAAQIAAAEAAQIAAAEAAQEAAAIAAQEBAAIAAQEAAAIAAQEAAAIAAQEBAQEAAQEBAQIAAQEBAQEBAQEAAQIBAQEAAQEBAQIBAQEBAQEAAQIBAQEBAQEAAQEBAgEBAQIBAgEAAgEBAgEBAgEBAQEBAgIAAgEBAgEBAgEBAgEAAgEBAQEBAgEBAgEAAgEBAgEBAwEBAgEBAgEBAgEBAgEBAwEAAgEBAgEBAgEBAgEBAwEBAgEAAgEBAgEBAgEBAgEBAgABAgEBAgEBAgEBAgEBAgEBAgABAgEBAgEBAgEBAQEBAgEBAgABAgECAgEBAgABAgEBAQEBAgEBAgACAQEBAgEBAgABAgEBAQEBAgABAgECAgABAQEBAgEBAgABAQECAgABAQEBAgABAgECAQABAgEBAQABAgEBAgACAQEBAgABAQEBAgABAgECAQABAQEBAQACAgEBAQABAQECAQABAQABAgEBAQACAQEBAQABAgECAQABAQEBAQABAQECAQABAAEBAQACAQEBAAABAQEBAQACAQEBAAEBAQABAQECAAABAQEBAQACAQEBAAABAAACAAEBAQACAAABAAECAAABAQABAAECAAABAAACAQEBAAACAAABAAEBAQACAAAB/wACAAABAAECAAABAAACAAABAAACAAABAAACAAEBAAAC/wABAAACAAABAAACAAABAAEC/wABAAABAAACAAABAAAC/wABAAACAAABAAAC/wABAAACAAEBAAABAAAC/wABAAACAAABAAABAAACAAEBAAAC/wABAAABAAACAAABAAACAAAB/wABAK21DKgwo7U5AAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQGFcQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOm5APkFomP2AAAAAElFTkSuQmCC","Warm to Cool (Extended)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVkAIQIA/wIA/wIA/wIB/wIA/wIA/gMAAAMB/wIAAAMB/wMAAAMB/wMAAAMB/wMA/wMAAAMB/wMA/wQB/wIB/wMC/wMB/wMC/wMB/wMB/wIC/wMDAQMDAQMCAQMDAQMCAAICAQIDAQICAAIDAAICAQICAAICAQIEAQIDAAIEAQIDAQIDAQIDAAEDAQEEAQEDAQEDAQEDAAEDAQEDAQEDAQECAQADAAEDAQECAQEDAQEDAAACAQEDAAECAQEDAAACAQEDAAEDAQEDAAEDAQADAAEDAAEDAQADAAECAQADAAADAQEDAAADAQACAQEBAQACAQEBAQACAQECAQABAQEDAgECAQACAgEDAQECAgECAgEDAQACAgECAgEDAQECAgEDAgACAgECAgECAgEDAgECAgECAwECAwEDBAECBAECAwACBAECBAECBAACBAEBBAACBAACBAECBAABBQECBQABBQACBQEBBQACBQABBgABBQEABQABBQABCQABCgABCv8BC+wCEvr//fsA/fr//PsA/vwA/vsA//wA//sA/vkA//kA/vkA//r///sA//z/APr///v/APv/Avr/Avr/Afn/Avn/Avn/Afj+//j9APf+//f+//j+APr+Afr+APn+APj+APX+Aff+AP/+///9///9///+///9/wD+/wD9AP/8///9AP/9///9//79AP/9/wL9/wH9AAD9/wD9/wD9AAD9/wD9AP/+/wH9/wD+AAD+/wH+/wD+AP/+/wD+/wD+AP/+/wH9/wH9AAD9/wH9/wD+///9/wH9AAH9/gD9/wH9/wD+/wD9/wD9/wH9/wD9/gH9/wD8/wD9///9/gD9/wH9/wD9/wD9/gD9///9/wD9/wD9/gD9/v/9/wD9/v/9///8/gD+/wD9/v/+/gD9///9/v/9/wD+/gH+/wD+/gD9/gH+/wD9/gH+/wQB/gMA/gIB/gMA/gIA/gIB/gD//QH//gD//QD//gH//gD//QD//gH//QD+/QEA/QD//gH//QD//UBlIZJAqDAxAAAAAElFTkSuQmCC","Haze_cyan":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfT/1QD////+/wD//gD//////wD+/////wD//gD//////wD+/wD//////wD//v/+/wD////+///+/v/+///+/v/////+/v/+///+///+/v/+///+/v/+/////v/+///+///+/v/+///+/v/+///+///+/v/+/////v/+///+///+/v/+///+/v/+///+///+/v/+/////v/+///+/v/+///+///+/v/////+/v/+///+/v/+///+/////v/+///+/v/+///+/v/+///+/v/+/v/+///+/v/9/v/+///+/v/+/v/+///+/v/+/v/+///+/v/+/v/9/v/+/v/+/v/9/v/+/gD+/v/9/v/+/v/9/v/+/v/+/v/9/v/+/v/9/v/+/v79/gD+/v/+/v/+/v/+/v/+/v/+/v/9/v/+/v/+/v/+/v/9/v/+///+/v/9/v/9/v7+/gD+/v/////+/v/////+/v/+/////v/+///+/v/+///+/v/+//7+/v/9/v/9///+/v8DAQADAv8DAv8CAf8CAf8CAv8CAf8BAv8CAf8CAf8BAf8BAv8CAf8BAf8BAv4BAQADAv8CAv8CAv8CAgADAv8CAv8CAv8CAv8CAv8BAv8CAv8CAv4CAv8CAv8BAv4CAgACAv8CAv8CAgACAf8CAv8CAv8CAv8BAv8CAv8CAv8CAf8CAv4CAv8CAv8CAv4BAgACAv8CAv8CAgACAv8CAv8CAf8CAv8CAv8CAv8CAv8CAv8CAv8CAv4CAv8CAv4CAv8BAgACAv8CAgACAv8CAv8CAv8CAv8CAv8CAv8CAv8CAv8CAv8CAv4CAv8CAv4DAv8BAgACAv8CAv8CAgACAv8CAv8CAv8CAv8CAv8CAv8CAv8CAv8CAv4CAv8CAv4DA/8BAQACAv8CAv8CAgACAv8CAv8CAv8CAv8CAv8CAf8CAv8CAv8CAv4CAv8CAv4BAv8CAgACAv8CAv8CAf8CAv8CAv8CAgACAv8CAv8BAv4CAf8CAv8CAv8CAv8CAj7Q5QbaTLIBAAAAAElFTkSuQmCC","2hot":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQsAAAUAAAQAAAMBAAMAAAMAAAIAAAMBAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAL/AAP/AAIAAAMAAAIAAAMAAAIAAAMAAAIAAAMAAAMAAAIAAAMAAAMAAAIAAAMAAAMAAAMAAAIAAAMAAAIAAAMAAAIAAAMAAQMAAAIAAAMAAAMAAAIAAAMA/wIAAAMAAAMAAAMAAAIAAAMAAAIAAAMAAAMAAQIAAAMAAAIAAAMAAAMAAAIAAAMAAAMA/wIAAAMAAAMAAAIAAAIAAAMAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAMAAAIAAAIAAAMAAAIAAAEBAAEAAAIBAAEAAAEBAAIAAAEBAAEBAAIAAAEBAAEBAAIAAAEBAAEBAAIAAAEBAAEEAAEFAAEDAAEEAAEDAAECAAEDAAECAAEDAAECAAECAAECAAECAAECAAECAAECAAACAAAEAAADAAADAAADAAADAAACAAADAAACAAADAAACAAADAAACAAACAAACAAADAAACAAADAAADAAADAAACAAADAAADAAACAAADAAACAAADAAADAAACAAACAAADAAACAAADAAADAAACAAADAAADAAACAAADAAACAAADAAADAAACAAADAAADAAACAAADAAACAAADAAACAAADAQACAAACAQADAAACAAACAQADAAACAQACAAADAQACAAADAQACAQACAAADAQABAwACAwABAgABAwACAgABAgACAgABAgABAQACAgABAgACAQABAgABAgACAQABAQABAwABAwABAwABAwAAAgABAwABAwABAgABAgAAAwABAgABAgABAgABAwABAgABAgAAAwAABQAABAAABAAABAAABQD/BAAAAwAABAAABAABBAAABAAAAwAABAAAAwAABAAABAAABAAABAD/BAAABAAABAAAAwAABAAABAAABAAABAAABAAABAABBAAABAAABAAABAAABAAAAwAABAAABAD/BAAABAAABAABBAAABAAABAAABAAABGw+Cf97ZLQNAAAAAElFTkSuQmCC","erdc_purple2green_dark":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARsAbQIAAQIAAAEAAAIAAQEAAAEAAAIAAQEAAAEAAAIAAQEAAAEAAAEAAQIAAAEAAAEAAQEBAAEBAAEBAQEBAAEBAAEBAAEBAQEBAAEBAAEBAAEBAQEBAAEBAAECAAEBAQEBAAEBAAEBAAEBAQABAAEBAAECAAEBAAEBAAABAAEBAQEBAAEBAAABAAEBAAEBAAEBAQABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAABAAEBAAABAAEBAAAB/wEBAAABAAEBAAABAAABAAEBAAAB/wEBAAABAAABAAEBAAABAAEBAAAB/wABAAEBAAABAAABAAEB/wABAAABAAEBAAABAAEB/wABAAABAAEBAAABAAAB/wABAAEBAAABAAABAAEB/wABAAEBAAABAAABAAEBAAAA/wEBAAABAAABAAEBAAABAAAB/wEBAAABAAABAAEBAAAB/wEBAAABAAABAAEB/wABAAAAAAEBAAAB/wABAAEBAAABAAAB/wEBAAABAAEBAAABAAEBAAAB/wAAAAEBAAABAAEBAAABAAEB/wABAAABAAEBAAABAAEB/wAAAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEA/wABAAEBAAABAAEBAAABAAEBAAABAAEBAAAAAAEBAAEBAAABAAEB/wABAAEBAAABAAEBAAAAAAEBAAEBAAABAAEBAAABAAEBAAABAAEBAAEAAAABAAEBAAABAAEBAAEBAAABAAEBAAAAAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEAAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEAAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEAAAABAAEBAAEBAAABAAEBAAABAAEBAAEBAAABAAEBAAAAAAEBAAABAAEBAAEBAAABAAEBAAABAAEBAAABAAEBAOCPFAIwM4cXAAAAAElFTkSuQmCC","OrPu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AS0ASwEBAgIBAwIBAgECAgIBAwECAgICAgEBAwICAgECAwIBAgECAgICAwEBAgICAwEBAgIDAgICAgECAgICAgICAgEDAgICAgECAgICAgICAgECAgICAgECAgICAgICAgECAgIDAgIDAQIDAQEDAgIDAQIDAgIDAQEDAQIDAgIDAQIDAgEDAQIDAgIDAQEDAQIDAgICAQIDAgICAQICAgEDAQICAgICAQIDAgICAQICAQIDAgICAQICAgIDAQICAgEDAQICAgICAQICAQICAgICAQICAgECAQICAQICAgIDAQICAgICAQICAQECAgICAQICAQICAQECAQICAQECAQICAQEBAQICAQECAQICAQECAQICAQECAQIBAQECAQICAQECAQEBAQICAAEBAQECAQIBAAEBAQECAQIBAAECAQEBAQIBAAECAQEBAQICAAEBAQEBAQEBAAICAAEBAQEBAAEBAQEBAAEBAAIBAQEBAAEBAAEBAQEBAAIBAQEBAAEBAAECAQH//QD//gD//QH//QD//gD//QH//gD//QD//gAA/QH//gD//QD//gD//QD//QH//gD//QD//QD//QD+/QH//gD//QD//QD//QD+/QD//QD//QH//gD//QD+/QD//QD//QD+/QD//QD+/AD//QD+/QD//QD+/QD+/AD//QD+/QD//QD+/AD//f/+/QD+/AD//f/+/f/+/f/+/QD+/f/+/f/+/f/+/f/+/f/+/f/+/f/+/P/+/f/9/f/+/f/+/f/+/P7+/v/+/v/+/v/+/f7+/v/+/v/+/v7+/f/+/v/+/v/+/f7+/f/+/v/+/f7+/f/+/f7///7+AP/+//7/AP7+//7+AP////7+//7/AP7+//7+AP////7+AP7+//7/AP/+//7/AP7+AP7/AP7///7+AP7/AP7/AP7+AP7/AP7/AP7///7+AP7/AP7/AP/+AP7/AP7/AP3/AP7/AP7+AP7/AP7/AP7/Af7/AP7/AP7/AP7+AP7/AP7/AP7/AP7/AApNKNOH3cMeAAAAAElFTkSuQmCC","Yellow 15":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af///AAA/wAA/P///QAA/QAA/f8A/QD//QAA/f8A/QAA/QD//f8A/QAA/QAA/gAA/gAA/gAA/gEA/gAA/gAA/gAA/gAA/gAA/gAA/gAA/gAA/gD//gAA/wAA/v///gAA/wD//gAA/gAA/gD///8A/gD//gAA/gAA/wD//gAA/wD//gAA/wD//gAA/gD//wAA/gD//wAA/gD//wAA/gD//gD//v8A/wD//gD//gD//v8A/gD//wD//gD//v///gAA/gD//wD//gD//gD//gD//gD//gAA/gD//gD//gD//gD//gD//gD//gD//gD//gD//gD//v///gD//gD+/gD//gD//gD//v///gD+/gD//gD//gD//////gD+/wD//wD//v///wD+/wD//gD//wD////+/gD//wD//wD//gD+/////wD//gD+/wD//gD//wD////+/gD//wD//gD//wD+/wD////+/wD//wD//wD+/v///wD+/wD//wD////+/wD//wD+/wD//wD//////wD+AAD//wD//wD//wD+AAD//////wD//wD+/wD/AAD/////AAD/AAD+/wD/AP///wD/AAD/AAD////+AAD//wD/AAD/AP/+/wD/AP/+AAD//wD+AP//AAD+/wD/AP/+AAD////+AAD+AP7+//7+AP7+//7+AP/+AP7+//7+AP7+//7+AP/9AP7+//7+AP/+AP//AP//AP/+AP//AAD/AP//AP/+AP//AAD+AP//AP//AP/+AP//AP7/AP7/Af//AP7+AP7/Af//AP7/AP//AP7/AP7+Af//AP7/AP7/AP//Af7/AP/+AP7/AP//Af7/AP7/AP//AP7+AP//Af7/AP//AP7+AP7/Af7/AP7/AP7+AP7/AP7/Af7+AP7/AP7/AP7+AP7/AP7/AP4AAf7/Af4AAP4AAf7/Af4AAP4AAf7/AP4AAf4AAP7/AP4AAf4AAf4AAP4BAf4AAf4AAP4AAf4AAf4BAP4AAf4AAP4AAf4AAP4AAX2jzYGu5yuaAAAAAElFTkSuQmCC","Black, Orange and White":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAIBAAECAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAAICAAEBAQACAwABAgACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABAwACAwABA4JYAv8EQZ6EAAAAAElFTkSuQmCC","Cool to Warm":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATtMwAECAgECAQEBAgICAQECAgEBAQECAgECAQECAgIBAQECAgECAQECAQEBAgICAQECAQEBAgECAQICAQEBAQECAgECAQIBAQECAQECAQEBAgICAQECAQEBAQICAQEBAQECAQECAQIBAQECAQEBAQICAQEBAAECAQIBAQECAQEBAQICAAEBAQECAQIBAQECAAEBAQICAAEBAQICAQEBAAEBAQICAAEBAQEBAAICAQEBAAIBAAECAQEBAAIBAAECAQEBAAIBAAEBAAICAAEBAQEBAAIBAAEBAAIBAAEBAAECAAIBAAEBAAEBAAIBAAEBAAEB/wIBAAEBAAIBAAEBAAEB/wIBAAEAAAEB/wIBAAEBAAEB/wEBAAIA/wEBAAEB/wIBAAEA/wEBAAEB/wIA/wEBAAEB/wEA/wIBAAEA/wEB/wEA/wEBAAIA/wEB/wEA/wEB/wEA/wEB/wIA/wEA/wEB/wEA/wEA/wEA/wEB/wEA/wEA/wEA/wEA/wEA/gEB/wH//wEA/gH//wEA/wH//gEA/wH//gEA/wH//gH//wEA/wH//gH//wEA/gH//wD//gH//wEA/gD//wH//gH//wD//gH//gEA/wD//gH//wD//gH//wD//gH//wD//gD//gH//wD+/gD//wH//gD//wD//gD//gH//wD+/gD//wD//gD//wD+/gD//gD//wD+/gD//wD//gD+/wD//gD//gD+/wD//gD+/////gD+/wD//gD+/v///wD+/gD////+/gD//wD+/v/+/wD//v/+/wD+/v///wD+/v/+/wD//v/+///+/gD////+/gD+///+/v/+/////gD+///+/v/+///+/v/+///+/wD//v/+///+/v/+///+///+/v/+///+///+/v/+///+///+/v79///+///+/v/+///+///+//79/v/+///+///+//79/v/+///9//7+///9///+/v79///9//79///9///9//79/v/8//78///8//77///6//75/yPGUu/gMTvLAAAAAElFTkSuQmCC","gray_Matlab":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAgEBAQEBAQEBAQEBAQEBAQAAAAEBAQEBAQEBAQEBAQICAgEBAQEBAQEBAQAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAX8bAv/4oUV2AAAAAElFTkSuQmCC","pink_Matlab":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAgFBQcFBQYFBAQDBAQDAwQDAwUDAwQCAgUDAwQDAwUDAwQDAgUCAwUDAwUDAwUDAwIBAQICAgIBAQIBAQICAgIBAQIBAQICAgIBAQICAgIBAQIBAQICAgIBAQMBAQICAgEBAQIBAQEBAQIBAQEBAQIBAQIBAQEBAQIBAQEBAQIBAQIBAQEBAQIBAQEBAQIBAQEBAQIBAQEBAQEBAQIBAQEBAQEAAAIBAQEBAQEBAQIBAQEBAQEBAQIBAQEAAAEBAQEBAQIBAQEBAQEAAAEBAQEBAQIBAQEAAAEBAQEBAQEBAQEBAQIAAAEBAQEBAQEBAQEAAAEBAQEBAQEAAAEBAQEBAQEBAAEAAQIBAQEBAQEAAAEBAQEBAQEBAAEAAQEBAQACAAEBAQABAQECAAABAQECAQABAAACAQEBAAABAQECAQABAAECAQABAQABAAECAQABAQEBAAACAQABAAEBAQABAQEBAAACAQEBAAABAQABAQECAAABAQEBAAABAQACAQEBAAABAQEBAAABAQABAAEBAQABAAEBAQACAQABAAEBAQABAAEBAQABAAABAQEBAAABAQEBAQABAAABAQEBAAABAQEBAAABAQABAAEBAQABAAEBAQABAAABAQEBAAABAQABAAEBAQABAAEBAQABAAABAQEBAAABAQEBAAABAQABAAEBAQABAAABAQEAAAABAQEBAAABAQABAQEBAAABAQABAAEAAQABAAABAQEBAAABAQEBAAAAAQABAAEBAQABAAAAAgEBAQAAAQEAAgABAQAAAQEBAgAAAQAAAQEBAgAAAQAAAQEBAgAAAQAAAQEBAgAAAQEBAQAAAQAAAQEBAgAAAQAAAQEBAQAAAQAAAgEBAQAAAQAAAQEBAQAAAgAAAQEBAQAAAQEAAQABAQAAAQEBAQAAAgAAAQEBAQAAAQAAAQEBAQAAAQAAAQEBAQAAAgAAAQEBAQAAAQAAAQEBAQAAAQAAAQEBAQAAAQAAAQEBAQAAAQAAAQEBAQAAAdD7Av8GKfntAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYEPfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACkoAQ4EmOC/AAAAAElFTkSuQmCC","BuGn":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQhAgQABAQABAgACAQABAQABAgABAQACAQABAgABAQABAQACAgABAQABAQACAgABAQABAgABAQACAQABAgABAQABAQACAgABAQABAQABAgACAQABAQABAgABAQACAQABAgABAQIBAQEBAAIBAQECAAEBAQEBAAIBAQEBAQEBAAEBAQECAAABAQEBAAEBAQEBAQEBAAEBAQEBAAICAQEBAAEBAQEBAQEBAAEBAQEBAAEBAQICAAABAQEBAAEBAQEBAQEBAAICAQEBAAEBAQEBAQEBAAECAQEBAQIBAAEBAQEBAQECAAEBAQEBAQEBAAECAQEBAQEBAAEBAQEBAQICAAEBAQEBAQEBAAECAQEBAAEBAQEBAQEBAAECAQEBAQEBAAIBAQEB/wIBAAEB/wIAAAEBAAIB/wEBAAIB/wEAAAEB/wIBAAEB/wEAAAIB/wEBAAEB/wIBAAEA/wIBAAEB/wIBAAEAAAIB/wEBAAEB/wIBAAEA/wEBAAIB/wEBAAEA/wIBAAEB/wIAAAEB/wIAAAEB/wIAAAEBAAEB/wIAAAEB/wIAAAEB/wEAAAIB/wEAAAEB/wIAAAEB/wIAAAEBAAIA/wEBAAEB/wIAAAEB/wIAAAEBAAEA/wIBAAEA/wEBAAIA/wEBAQEAAAEBAQEAAAEAAQIBAAEAAQEBAAEAAQEBAAEAAQEBAAEAAQIAAAEBAQEAAAEBAQEAAAEBAQEAAAEAAQEBAAIAAQEBAAEAAQEBAAEAAQEAAAEBAQEAAAEBAQEAAQEAAAEBAQAAAQEAAAEAAQABAQEAAAAAAQEAAQEBAAAAAQEAAQEAAAABAQEAAQEAAQAAAAEBAQAAAQEAAAEAAQABAQEAAAEAAQAAAQEBAAAAAQEAAQEAAQABAAEAAQEAAQABAAEAAQEAAQEAAAABAQEAAQEAAAABAQEAAAEAAQEAAQABAAEAAQEAAQAAAAEBAQEAAQEAAAABAQEAAQEAAAEAAQABAQEAAAEAAQABAQEAAAEAAQEAAQABAAEAAY74IOUDpmpuAAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBYJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHlxAH4ezj+pAAAAAElFTkSuQmCC","Warm":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/lBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMNcAewNEq2dAAAAAElFTkSuQmCC","erdc_blue_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBBAECAwEBBAEBAwECAwABAgECAgEBAgEBAgEBAgEBAgACAgEBAgABAgABAQAAAgABAgEBAgABAgAAAgABAgEBAgAAAgABAgABAgEAAgABAgABAgAAAgABAgABAgEAAgABAgABAgABAgAAAgABAgABAQEAAgABAgABAgABAgAAAgABAgABAgABAgAAAgABAgABAgEBAQAAAgABAgABAgEBAgAAAQABAgABAgEBAgABAgAAAgABAQABAgEBAgABAgAAAgEBAQABAgEBAgABAQEBAgAAAgABAQEBAgABAgEBAQABAgEBAgAAAQEBAgABAgABAgEBAQABAgABAQABAgEBAgAAAQABAgABAgEBAQABAgABAgABAgEBAQABAgABAgEBAQABAQEBAgEBAQABAQEBAgEBAQABAgEBAQABAQEBAgEBAQABAgEBAQABAQEBAgEBAQEBAQEBAQEBAQABAQEBAgEBAQEBAQEBAQEBAQABAQEBAQEBAQECAgEBAQEBAQABAQEBAQEBAAEBAQEBAQEBAQECAQEBAQABAQEBAQEBAAEBAQEBAQECAQABAQEBAQEBAAEBAQEBAAECAQEBAQEBAAEBAQEBAAEBAQECAAEBAQEBAQEBAAEBAQACAAEBAQIBAAEBAAEBAQICAAEBAAEBAAEBAQIBAAECAAEBAQEBAAEBAAEBAAICAQEBAAEBAAIBAAEBAQIBAAECAAIBAAIBAQEBAAIBAAEBAAIBAQEBAAICAAEBAAIBAQEBAAEBAAIBAAIBAAIBAAIBAAICAAIBAAIBAAIBAAEBAAIBAAIBAAIBAAIBAAEBAAIBAAICAAIBAAIBAAIBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAAIBAJO7Av9B/96pAAAAAElFTkSuQmCC","CIELab_blue2red":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQCZvwgAAAcA/wUAAAUA/wT/AAMAAAMA/wMAAAIA/wMAAAIA/wIAAAIAAAL//wIAAAIA/wIAAAEAAAIA/wIAAAEA/wIAAAH//wIAAAEAAAEA/wIAAAEA/wEAAAEAAAL//wEAAAEA/wEAAAEAAAEA/wEAAAEA/wEAAAL//wEAAAEAAAEA/wEAAAAA/wEAAAEAAAEA/wH/AAEA/wEAAAEAAAEA/wEAAAAA/wEAAAH//wEAAAEAAAEA/wAAAAEA/wEAAAEAAAD//wEAAAEA/wEAAAAAAAEA/wEAAAEA/wAAAAH/AAEA/wAAAAEA/wEAAAAA/wEAAAEAAAD//wEAAAEA/wAAAAEAAAEA/wAAAAEA/wH/AAAAAAEA/wAAAAEA/wEAAAAAAAEA/wD/AAEA/wEAAAAA/wEAAAAAAAEA/wAAAAH//wEAAAAAAAEA/wAAAAEA/wAAAAEAAAD//wEAAAAA/wEAAAEAAAAA/wEAAAAA/wH/AAAAAAEA/wAAAAEA/wAAAAEAAAD//wEAAAAA/wEAAAAA/wEAAAAAAAAA/wH/AAAA/wEAAAAAAAEA/wAAAAEA/wD/AAEAAAAA/wEAAAAA/wAAAAEAAAAA/wH/AAAA/wEAAAAAAAEA/wAAAAAA/wH/AAAAAAEA/wAAAAEA/wAAAAAAAAH//wAAAAEA/wAAAAEAAAAA/wAAAAH//wAAAAEAAAAA/wAAAAEA/wAAAAH//wAAAAAAAAEA/wAAAAEA/wAAAAD/AAEA/wAAAAAA/wEAAAAAAAEA/wD/AAAA/wEAAAAAAAAA/wEAAAAA/wH/AAAAAAAA/wEAAAAA/wAAAAEAAAD//wEAAAAA/wAAAAEAAAAA/wD/AAEA/wAAAAAAAAEA/wAAAAAA/wH/AAAA/wAAAAEAAAAA/wAAAAH//wAAAAAAAAEA/wAAAAEA/wAAAAD/AAEA/wAAAAAA/wEAAAAAAAD//wAAAAEA/wAAAAAAAAEA/wD/AAAA/wEAAAAA/wAAAAEAAAAA/wD/AAEA/wAAAB5mi5Rpl/nhAAAAAElFTkSuQmCC","Cool":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV8zgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADr8ARRH3VIDAAAAAElFTkSuQmCC","Asymmtrical Earth Tones (6_21b)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASQmMwECAgICAwECAgIDAgECAwICAgECAwICAgEDAwICAgECAwICAgEDAgECAQACAgECAQECAQACAQEDAQACAgECAQACAQECAQADAQECAQACAQEBAQEBAAACAAEBAQECAAABAQECAAABAAEBAQECAAABAQECAAEBAAEB/wEBAAECAAEBAAEB/wEBAAECAAEB/wEBAAEBAAEC/wEBAAICAQECAAICAQECAQICAQECAAICAQICAQECAAICAQECAQICAAECAQICAQICAQECAAICAQICAQECAAICAQICAQECAQICAAICAQECAQIBAAEBAQIBAQEBAQEBAQIBAAEBAQIBAQEBAQEBAAIBAQEBAQIBAQIBAQIBAQIBAQMBAQIBAQIBAQIBAQMBAQIBAQIBAQIBAQMBAQIBAQIBAQIBAQIBAQEBAAIBAQIBAQIBAQIBAQIBAQEBAQIBAAIBAQIBAQIBAQIBAQEBAQIBAQIBAAIBAQIBAQIBAQIBAQEBAQIBAQIBAQIBAQEBAQIBAQEBAQEBAgIAAQEBAQIBAQEBAgEAAQIBAQEBAQIBAgEAAQAAAgEAAgEBAQAAAgEAAQEAAgEAAgAAAQEBAgEAAgAAAQEAAgEAAwABAgEAAwABAwEAAgAAAwEBAwEAAgABAwEAAwAAAgEBA///Af39/v39/f39/f39/f39/f39/v39/f39/f39/v39/f39/f39/f78/f39/f39/f39/f79/f39/f39/P39/f79/f39/f39/f39/f79/f39/f79/f7+/f79/v79/f7+/f79/f79/v7+/f79/f79/f7+/v79/f79/v7+/f79/v7+/f79/v7+/v79/f7+/v79/v7+/f79/v7+/v/+/v7+/v/+///+/v/+//7+/////v/+///+/v7+///+/v/////+//7+/v/////+//7////+//7////+/v////7+//////7+///////+/v7////+//////7+//////7+///////+//7//v/+//////7+/////7/kEbV8TJMUAAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV48mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ3BATWK0Q0LAAAAAElFTkSuQmCC","erdc_red_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAQBAQQBAAQAAQMBAQMBAAIBAQIBAAIAAQIBAQIBAAIBAQIAAQEBAAIBAQEBAQIAAAEBAAIAAAEBAAIAAAIA/wEAAAIAAAIBAAIAAAEAAAIAAAIA/wEAAAIBAAIAAAIAAAEAAAIAAAEAAAIBAQIAAAEAAAIAAQIBAAEAAAIAAAEAAAIAAQIBAAEAAAIAAAIAAAEAAQIBAAIAAQEAAAIBAAEAAQIAAAIAAAEBAAIAAQEAAAIBAAIAAQEAAAIBAAIAAAEAAQIBAAEAAAIBAQIAAAEBAAIAAQEBAAIAAAEAAQIBAAIAAAEBAQIAAAEBAQIAAAIBAAEAAQIAAAIBAAIAAAEAAQIBAAIAAAEAAQIBAAIAAAIAAQEBAAIAAAIAAQIBAAEAAAIBAQEBAAIBAQEAAQIBAAIBAQEAAAIBAQEBAAIAAQEBAAIBAQIAAAEBAQIBAAEBAQEBAQIBAQEBAQEBAAIBAQEBAQEBAQICAQEBAAEBAQIBAQEBAQEBAQIBAAEBAQEBAQECAQEBAgECAQEBAQECAQEBAQECAQABAQECAQEBAQECAQEBAgEBAQECAQEBAQECAQACAgEBAQACAQECAgABAQECAgEBAQACAQECAgABAQECAgABAQECAQEBAgACAQACAgEBAgACAgECAQABAgACAgEBAgACAQABAgECAgACAgABAgECAQABAgACAgABAgECAQABAgECAgABAgECAgABAQACAgEBAgABAgECAgABAQACAgEBAgACAgEBAgACAQABAgACAgABAgECAgABAgACAgABAQACAgABAgACAgABAgACAgABAgACAgABAgECAQABAgACAgABAgACAgABAQACAgABAgACAgABAQACAgABAgACAgABAv8CAgABAQACAgABAgACAQABAgEBAgACAgABAQACAgABAgACAQABAgACAgABAQACAgABAgABAQACAgABAgACAQABAgACAQABAgABAgACAQEBAgACAQABAgABAgACAQABAgACAQABAgL0Bf+i9CV0AAAAAElFTkSuQmCC","Greens":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBEGwABAQACAAABAQABAAABAQACAAABAQABAAABAQACAAABAQABAAACAQABAAABAQACAQABAAABAQABAAACAQABAAABAQABAAACAQABAAABAQACAAABAQABAAACAQABAQABAAEBAQEBAQEBAAEBAQEBAQIBAQEBAQEBAAEBAQEAAQIBAQEBAAEBAQEBAQEBAQEBAQEBAAEBAQEBAQIBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQEAAQEBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQEBAQABAQEBAAEBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAAEBAQIBAQIBAQEAAAIBAQIBAQEBAQIBAQEAAAIBAQIBAQEBAQIAAAEBAQIBAQEBAQIBAQIAAAEBAQIBAQEBAQIBAQIAAAEBAQIBAQEBAQIAAQIBAAEBAQIBAQEBAQIAAQEBAQIBAQEAAQEBAQIBAQEAAgIBAQEBAQIAAQEBAQEBAQIAAQEBAgIBAQEAAQEBAQIBAQEAAQIBAgEAAQEBAQIBAQEAAQIBAQEBAgEAAQIBAQEBAQIAAQEBAQEBAgIAAQEBAQEAAQEBAQIAAQEBAgEAAQEBAQEAAQIBAQEAAQEBAQEAAgEBAQEAAQIBAQEAAQEBAQEAAgEBAQIAAQEBAQEAAQEBAQEAAgEBAQIAAQEBAQEAAQEBAQEAAQIBAgEAAQEBAQEAAQEAAQABAQEAAQEBAQEAAQEAAQEBAQEAAQEAAQEBAQEAAQEBAQEAAQEAAQEBAQEAAQEAAQABAQEAAQEBAQEAAQEAAQEBAQEAAQEAAQEBAQEAAQEAAQEBAQAAAQEAAAEBAQAAAQEAAAAAAQEBAQAAAAEAAQEAAQAAAAEBAQAAAAEAAQAAAQEAAAEBAQAAAQEAAAAAAQEBAQAAAAEAAQAAAQEAAAEBAQAAAQEAAAAAAQEBAQAAAAEAAQllAuqO2aMQAAAAAElFTkSuQmCC","PRGn":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AUAASwIBAgICAgIBAgIBAwICAgICAgMCAgICAgICAgIBAwICAgICAgIBAgMCAwICAgIBAgIDAgECAgICAgICAgICAgICAgIDAgECAgICAQICAgICAgICAgECAgICAgICAgICAgEDAgIDAQECAgIDAQEDAgEDAgICAQEDAgEDAQIDAgECAQIDAgEDAgECAQIDAgEDAQECAgICAQICAgEDAQICAQECAgICAQECAgIDAQICAgECAQICAgECAQIDAQECAgICAQECAgICAQICAQECAgICAQECAQICAgECAQICAQICAQECAgICAQECAQICAgICAQECAQICAQECAQECAQICAQECAQIBAQECAQICAQECAQICAQECAQECAQIBAQECAQICAQECAQEBAQECAQECAAEBAQECAQEBAQECAAEBAQECAQEBAAECAQECAQABAQECAAEBAQECAQEBAAABAQECAAEBAQABAQECAAABAQEBAAACAQEBAAEBAQACAAEBAQABAAECAQABAP8A/////v8A//8A//8A/v7///8A/v8A//////8A/v8A//4A/v////8A//8A/v////4A/v///v4A//7//v8A/v7///8A/v7//v8A//7//v8A/v7///8A/v7//v8A//7//v7//v4A/v7//v7//v7//v7//v4A/v7//v7//v7//v7//v7//v4A/v7//v7//v7//v3+/v3//f7+/v3//f3+/v3+/f3//v7+/v3+/f3//v3+/v3//f3+/v7+/f3//v3+/v3+/f3+/v3//v7+/f3+/v3+/v3+/v3+/f7+/v3//v3+/v3+/f3+/v3+/v3+/v3//f79//3+/v7+/v7+//3+/v7+/v7+//39/v7+/v3+//7+/v3+//7+/v3+/v3+//7+/v7+///9/v7+///+//7+///+/v7+///+//7+/v/+//7+//7+///+/v7+///+//7+/v/9//7+///+///+///+//7+///+///+///+/v/+///+///+///+/wD+///+/3auZnAUTm5+AAAAAElFTkSuQmCC","Cold and Hot":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQD//wD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+AAD9AAD+AAD+AAD+AAD+/gAA9gAA9gAA9gAA9gAA9gAA9gAA9gAA9gAA9gAA9gAA9gAA9goA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9hQA9gUC/QACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAhCkACOKayFAAAAAElFTkSuQmCC","GBBr":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQA8MAACAgABAQACAgABAgACAgACAgABAQACAgACAgABAgACAgECAQABAgACAgACAgABAgACAgECAQECAgABAgECAgECAgEBAgECAQACAgECAgECAgEBAgECAgECAgECAgEBAQMCAgICAgMCAgICAgICAgICAgICAgICAgICAgICAgIBAQICAgICAgECAgICAgICAgMCAgMCAgMCAgMCAgMDAgMCAgICAgMCAgMCAgMCAgICAgMCAgICAgMCAgMCAgIDAQMBAgMCAgMCAgMCAgMCAgMCAQMCAgMCAgMCAgMBAgMCAgICAQMCAgMCAgMCAgMCAgMBAQMBAgIBAQMCAgMBAQMBAQMBAgIBAQMBAgMBAQMCAQIBAgMBAQMBAgMBAQIBAgMBAAIBAQIAAQIBAQIBAQIAAQMBAQIBAQIAAQIBAQIBAQIBAQMAAAIBAQIBAQIAAQIBAQIAAAEBAQIAAAIAAQIBAQEAAAIBAQIAAAIAAQEBAAIAAQIBAAIAAQEAAAIBAQD//gAA/gD//gAA/gD//gAA/gH//gAA/gD//gAA/gD//gAA/gD//wAA/gD//gAA/v///QD//gD//v///QD//gD//v///QD//gD//v///gD//f///gD//gD//f8A/gD//v/+/f///f/+/f///v/+/QD//f/+/f///v/+/f///f/+/v///f/+/f///f/+/v///f/9/f/+/f/9/f/+/P/+/f79/f/+/f/+/f/9/f/+/f79/f/+/f/+/f/9/f7+/f/+/f/9/f7+/f/9/v/+/f7+/f/9/v7+/f/9/f7+/v/+/f79/f/+/v7+/f/9/f/+/f79/v7//v7+//7+/v7+//7+//7+/v7+//7+//7+/v7///7+//7+/v7+//7+/v7+//7+//7///7+//3/AP7+//7///7+AP7///7+AP7///7+//3/AP7+//7/AP7+//7///7+AP7/AP3/AP7+AP7///7/AP7/AP3+AP7/AP7/AP7+AP7///3/AP7/AP7+//7/AAe1R5q091pBAAAAAElFTkSuQmCC","hsv":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af8AAAAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABgAABv0AA/oAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAPoAAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAD/QAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gAA+gYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAP9AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AMmhggGGnlS6AAAAAElFTkSuQmCC","Red to Blue Rainbow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af8AAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAP8DAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAP4AAgAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAD9AQD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AIbOggE4NSmLAAAAAElFTkSuQmCC","Wild Flower":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AT0QUgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOJdAKE04LvdAAAAAElFTkSuQmCC","RdOrYl":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYAAJgIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAEBAAIB/wEAAAEBAAEBAAEB/wEAAAIBAAEB/wEBAAEBAAEB/wIBAAEBAAEA/wEBAAEBAAIB/wEBAAEBAAEBAAEB/wEAAAIBAAEB/wEBAAEBAAEA/wIBAAEBAAEB/wEAAAEDAQECAAEBAAACAQECAAECAQEBAAACAQECAAEBAAECAQEBAAABAQECAAEBAQECAAEBAQACAAECAAECAQEBAAACAQECAAEBAQECAAACAQEBAAECAAEBAQACAAEBAQECAAACAQACAAACAQACAAADAQACAQACAAACAQABAAACAQACAAACAQACAQECAAACAQABAAACAQADAAACAQACAAACAQACAQACAAABAQACAAACAQACAAACAQACAQACAAACAQACAAABAQABAAABAQABAAABAQACAAABAQABAAABAQABAAABAQACAAABAQABAAEBAQABAAABAQACAAABAQABAAABAQABAAABAQACAQABAAABAQABAAABAQABAAABAQACAAABAQABAQABAQABAgACAQABAQABAgABAQACAQABAgABAQABAQABAgACAQABAQABAgABAQACAQABAgABAQABAQABAgACAQABAQABAQABAgABAQACAQABAgABAQABAQABAgABAQABAQABAgAAAQABAQABAgAAAQABAQAAAgABAQABAQAAAgABAQABAQEAAQABAgABAQAAAQABAgAAAQABAQABAgAAAQABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQAAAQABAgAAAQABAQAAAgABAQAAAgABAQABAQAAAgABAQAAAgABAQABAQAAAgABAQAAAQABAgAAAQABAgAAAQABAQABAgAAAQABAQAAAgABAQAAAgABAWLODMw9Uh6tAAAAAElFTkSuQmCC","erdc_rainbow_dark":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAbAACAgABAQECAgACAQACAgACAQACAgACAgACAQACAgACAQABAgACAQACAv8BAgACAQABAgACAQECAgACAgACAQABAgECAQACAgACAQACAgABAgACAQACAv8CAQABAgACAv8CAQACAgABAQECAAACAQEBAQACAQABAQACAAACAQEBAf8CAQABAQACAAACAQABAf8CAQACAP8BAQECAQABAAECAQABAAACAQEBAAACAQACAAABAAACAQABAAACAf8BAAACAf8BAAACAf8BAAECAAIC/wEB/wEC/wEB/wECAAAB/wEC/wAB/wAC//8BAAAC//8C//8B//8C//4BAP8C/wIB/gMC/gMB/gIC/gIB/QEB/gEC/gAB/gAC/gAB/v8C/gAB/f4C/v4B/v4C/v0B/fwC/gIB/gUB/gUB/QMB/gMB/QIB/gIB/gEB/QIB/gEC/QEB/gAB/QEB/gAB/QEB/QAB/gAB/QMB/QYB/gQB/QQB/gQB/QQA/gMB/QMB/QMB/QIB/QMB/QMB/QIA/AIB/QIB/AIB/AIB+wMA/QQB/wMA/wMA/wQA/gMB/wMA/wMA/wMB/gIA/wMA/gMA/gMB/gIA/gMA/gIA/gMB/QMA/gP/AAMA/wMAAAIAAAMAAAMA/wMAAAIAAAP//wMAAAIAAAMA/wIAAAMAAAL/AAMA/wIAAAP/AAIAAAL/AAIAAAL//wIAAAP/AAIAAAL/AAL/AAIAAAL//wIAAAL/AAIAAAL/AAL/AAL/AAIAAAH/AAL/AAL/AAH/AAL/AAL/AAH/AAL/AAIAAAH/AAL/AAH/AAL/AAL/AAH/AAH+AQD+AQH+AgH/AQD+AQH+AQD+AQH+AQH+AQD/AAH+AQD+AQH+AQD+AQH+AQD+AAH+AgD+AgD+AgD9AwD+Af/+AgD9AgD+AQD9AgD+AQD+AgD9AQD9Af/+AQD9AQD+AQD9AQD9AQD+AgD+AgD+AgD+Av/+AQD9AgD+AQD+AgD9AQD+AgD9AQD9Av/+AQD9AQD9AgD9AcpWwX6tAroUAAAAAElFTkSuQmCC","Haze_green":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/V4v//AP/+AP//////AP//AP/+AP//////AP//AP/+////AP//AP//AP/+////AP//AP//AP/+AP/////+AP//AP/+AP//AP/+////AP//AP/+AP//AP/+////AP/+AP//AP////7+//////7/AP/+//7///7////+//7/AP////7+//////7////+AP7///7////+//7////+//7///7////+//7///7+//////7+//////7///7+//////7+//7////+//7///7+//7+//7///7+///+//7///7+//7+//7///7+///+//7///7+//7+//7+//7+//7+//7+//7+///+//7+//7+//7+//7+//7+//7+//7+//7+//7+//7+//7+//7+//7+///+//7+//7///7+//7+//7+//7+///+//7+//7+//7+//7+//7+//7+//7////+//7+//7///7+//7+///+//7+//7+//7+//7+//7+//7+//7+//7+/wEC/wIC/wEC/wED/wEB/wEC/wEC/wEC/wEB/wEC/wEB/wEC/wAB/wEB/wEC/wEB/wECAAEC/wED/wEC/wAC/wEC/wEC/wEC/wEC/wAC/wEC/wAC/wEB/gEC/wAC/wAC/wECAAEC/wEC/wEC/wEC/wEC/wAC/wEC/wEC/wAC/wEB/wEC/wAC/wEC/wAC/wEC/wECAAAC/wEB/wEC/wECAAAC/wEC/wEB/wEC/wAC/wECAAAB/wEC/wEC/wAC/wEC/wEB/wAC/wECAAEC/wEC/wACAAEB/wEC/wAC/wEC/wEC/wAC/wEC/wEB/wAC/wEC/wECAAAC/wEC/wEBAAAC/wEC/wECAAEC/wAC/wEB/wEC/wAC/wEC/wEC/wAC/wEC/wEB/wECAAAC/wECAAEB/wAC/wEC/wECAAAB/wEC/wEC/wAC/wEB/wEC/wAC/wEC/wEB/wECAAAC/wEC/wEBAAAC/wEC/wECAAEB/wAC/wEC/wEC/wEB/wAC/wEC/58J1J88/US0AAAAAElFTkSuQmCC","X Ray":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////0fV/SBizts0AAAAAElFTkSuQmCC","blue2cyan":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMDCQMECAMDBgMDBQIDBQEDBQACBQACBQACBf8CBv8CBf8CBv4CBv0CBf0CBvwCBgACAgABAQACAgABAgECAQACAgABAgACAQABAgACAgACAQABAv8CAgACAgABAQACAgABAgACAQABAgACAQABAgACAgABAQACAgABAgACAQABAgACAQABAgACAgABAQACAgABAgACAQABAgACAQABAgACAQABAgACAQABAgACAgABAQACAgABAQACAgABAQACAgABAgACAQABAgACAQABAgACAgABAQACAgABAgACAQABAgACAQABAgACAgABAQACAgABAgACAQABAgACAQABAgACAQABAgABAQACAgABAgACAQABAgACAQABAgACAQABAgABAQACAgABAQACAgABAQACAgABAQABAgACAQABAgACAQABAgACAQABAgACAQABAgEBAQIBAAEBAQIAAAEBAQIBAAEBAQEBAAIBAQEBAQEBAAEAAQEBAAEBAQEBAAEBAQQBAAMCAAIBAAMBAAICAAIBAAMCAAEBAAIBAAICAAIBAAEBAAICAAEBAAICAAEBAAIBAAMCAAIBAAIBAAIBAAICAAIBAAIBAAICAAEBAAIBAAICAAEBAAIBAAECAAIBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIAAAIBAAIBAAIBAAIBAAIBAAEBAAIBAAIBAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAIAAAIAAAEAAAIAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAMAAAIAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAPshCv+Hc/rSAAAAAElFTkSuQmCC","Green-Blue Asymmetric Divergent (62Blbc)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AR8zJQECAgICAQECAgICAQECAgICAQECAgICAQECAgICAgECAQICAgECAQICAQECAQECAgECAQICAQECAQECAQECAQICAQECAQECAQECAQECAQEBAQECAQEBAAECAQABAAEBAQECAQEBAAECAQEBAQACAAEBAQECAAEBAQECAQEBAAACAQEBAQECAAEBAQECAAEBAQACAQEBAAECAQIBAQECAAIBAQECAQIBAQEBAAICAQIBAQECAAIBAQECAQIBAAIBAQICAAMCAQIBAAMCAAICAQMBAAICAAMCAQIBAAMCAAICAQMBAAICAAIBAAICAQIBAAICAAICAAIBAQICAAIBAAICAAIBAAICAQICAAEBAQIAAQIBAQEBAQIBAAIBAQIAAQEBAQIBAQIBAQIAAQEBAQIBAQIBAQEBAgIBAQIBAgEBAQIBAQIBAgEBAQIBAgEBAQIBAgIBAQEBAQIBAQIBAQIBAQEAAQIBAQIBAAIBAQEAAQIBAQIBAQEBAQIBAQEAAQEAAwEBAgEAAwEAAgEBAgEAAwEAAgABAwEAAgEAAwEBAgEAAgAAAgEBAgAAAgEBAgAAAgABAQEAAgABAgAAAgEBAgAAAQEBAgAAAgEBBgECBQEBBgEBBQEBBgECBQEBBgEBBgEBBQECBvf///X//ff//v3+/vz+//3+/v3+//z+//3+/v3+//z+/v3///3+//z+/v3+//3+/v7///7+//////7//v7+//7///7+/////v7///7+//7///7+/v7+/v78/f79/f39/v79/f78/f79/f39/v79/f79/f38/f79/v79/f39/f78/f39/f38/f39/f78/P39/f39/f78/f39/f79/f38/f79/v7+/v79/v79/v/9/v7+/v79/v79/v/+/v79/v7+/v/9/v79/v7+/v/+/v79/v/+/v7+/v/+/v7+/v/9/v7+/v/+/v7+/v/+/f7+/v/9/v7+/v7+/f///v7+/f7+/v/+/f7+/v7+/f/+/v79+/78+v79+nb6FIcurEwLAAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBYJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHlxAH4ezj+pAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AcxMAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFPfARyFjSLKAAAAAElFTkSuQmCC","nic_CubicL":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AXoDhwEBAwEAAwEBAwAAAgEBAwEBAwAAAwEBAwEBAgAAAwEBAwEBAwABAwEBAwEAAgABAwAFAwAEAgAEAwADAgADAwADAv8DAwADAwACAgADA/8CAgADAwACAv8CAwACAwADAv8CAv8CAgADAv8CAv8CAv8DAv8CAgACAf8CAv8CAv8CAv8CAv8CAv8CAv4CAv8CAv8CAAAD//8CAP8CAP8CAP8CAAAC//8CAP8CAP8CAP8BAP8C//8CAP8CAP8CAP4CAAAC/v8B//8C//8C/v8B/wAC//8C/v8B//8C//4B/v8C//8C//8B/v8C//4B//8C/v8B//8C/v8B/gAC/v8B/v8C//4B/v8C/v8B/v8B/v4C//8B/v4C/v8B/v4C/v4B/wAB/QEB/gAC/gEB/gAB/gAB/gAB/gAC/gAB/gAB/gAB/f8B/gAB/gAC/v8B/gAB/gEB/gEB/QEB/gEB/gEB/gEA/QEB/gEB/gEB/gAB/gEB/QAB/gEB/gAB/QEB/gAA/gEB/QEB/gEB/gAB/gEB/gEA/QEB/gAB/gEB/gAB/QEA/gAB/QEB/gAB/gEB/QAB/QIAAAEB/wIA/wEB/wIB/wEA/wIB/wEB/wIA/wEB/wIB/wEA/wIB/wEB/wEA/wIB/wIAAAMBAQMAAQMAAAIAAQMBAAIAAQMAAAIBAQMAAQIAAAIAAQMBAAIAAQIAAAMBAQIAAAMAAQIAAAIAAAIAAQMAAAIAAAIAAQMAAAIAAAIAAQIAAAIAAAIBAQMAAAIAAAH/AAIAAQIAAAEAAAIAAAH/AAIAAAEAAQIAAAL/AAEAAAIAAAEAAQL/AAEAAAIAAAH/AAH/AAH+AAH/AQH/AAH/AAL/AAH+AAH/AAH/AAH/AAH/AQH+AAH/AAH/AAH/AAH+AAH+AAL/AAH+AAH+AQH/AAH+AAH+AAL/AAH+AAH+AAH+AAH/AAH+AAH+AAH+AQH+/wD+AAD9AAH+AAD+AAD9/wH+AAD+AAD9AAH+AAD9/wD+AAD9AAH+AAD9AJkf1/MfUlDSAAAAAElFTkSuQmCC","erdc_marine2gold_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIBBQEBBgIBBAIBBAEBAwIBAwEBAwEBAgEBAwEBAwABAwABA/8BAwABA/8BA/8BA/8BAgAAAgABAgABAv8AAgABAwAAAgABAv8BAgAAAwABAv8AAgABAv8BA/8AAgABAgABAv8AAgABAgABAQABAgAAAgABAv8BAQABAgABAgAAAv8BAQABAgABAgAAAv8BAgIBAAEBAQEBAQIBAQEBAQIBAQEBAQEBAQIBAQEBAQEBAQEBAAEBAQEBAQEBAQEBAQIBAAIBAQIBAAEBAQIBAAEBAAIBAQEBAAIBAQEBAAEBAAEBAQIBAAEBAAEBAQEBAAIBAAECAAIBAAIBAAEBAAIBAAEBAAEB/wIBAAEBAAEBAAEBAAIBAAEBAAECAAEBAAIB/wIBAAIB/wIBAAEB/wIBAAIB/wEBAAIB/wIBAAEB/wIBAAEB/wIBAAEB/wEBAAIB/wIB/wIBAAIB/wEBAAIB/wIBAAIB/wEBAAIB/wEB/wIBAAIA/wEBAAIB/wEB/wIB/wIB/wIB/gIB/wIB/gIB/wIB/gIB/wIB/gEB/wIB/gIB/wIB/gEB/wIB/gIB/wEA/gIB/wIB/gIB/wIB/gEB/wIB/gIB/gIB/wEB/gIB/wIB/gEA/gIB/gIB/wEB/gIBAAEB/wIBAAEB/wIBAAEBAAIB/wEBAAIB/wEBAAIB/wEBAAIBAAEB/wIBAAEB/wEBAQEBAAIBAAEBAQEBAAEBAQIBAAEBAQEBAAEBAAIBAQEBAAEBAQEBAAIBAQEBAAEBAQEBAgECAQEBAQEBAQABAgEBAQEBAQECAQEBAQEBAgEBAQEBAQEBAQEBAQECAgABAwEBAwEBAwACAwEBAwABAgEBAwEBAwACAwEBAwABAwEBAwACAwEBAgABAwEBAwABBAECBAABBAEBBAABBAABBAEBBAACBAABBAEBBAABAwABBAACBAEBBAABBAABBAABBAEBAwACBAEBBAABBAEBAwABBAEBBAABBAABAwEBBAACBAABAwEBBAABBIQxSf+xsLpkAAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBEGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACKXAGGhf2dSAAAAAElFTkSuQmCC","erdc_purple2pink_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMABAMBBQMABAMBAwIAAwMBAwIAAgIBAgEAAwIBAgEAAgEBAgEAAwEBAgEAAgEAAwEBAgEBAQEAAgAAAgEBAQEAAgEAAgEAAgEBAQEAAgEAAgEAAgEAAQEAAgEBAgEAAgEAAQEAAgEBAgEAAQEAAgEBAQEAAgEAAgEBAQEAAgEBAgEAAQEAAgEBAgEAAQEAAgEBAQEAAgEBAQEAAgEBAQEAAgEAAgEBAQEAAgEBAQEAAgEBAQEAAgEAAQEBAgEAAgEBAQEBAQEAAQEBAQEBAQEAAQIBAQEBAgEAAQEBAQEBAQEAAQEBAQEBAQEAAQIBAgEBAAEBAQEAAAIBAQEBAAEBAQEBAAIBAQEAAAEBAQEBAAIBAQEBAAEBAQEAAQIBAAEBAAEBAAEBAQIBAAEBAAEBAAIBAAEAAAEBAQIBAAEBAAEBAAEBAAIBAAEBAAEBAQEBAAIAAAEBAAEBAAIBAQEBAAEBAAEBAAIBAAEAAQEBAAEBAAIBAAEBAAEBAAIBAQEAAAEBAAIBAAEBAAIBAAEAAAEBAAIBAAEBAQEBAAIBAAEAAAIBAAEBAAEBAAIBAAEAAAIBAAEBAAEBAAIBAAEAAAIBAAEBAAIBAAEBAAEAAAIBAAEBAAIBAAEBAAEBAAIAAQEBAAEBAQEBAAEBAQIBAAEBAAEBAQEAAAIBAQEBAAEBAQEBAAEBAQIBAAEBAAEBAQEBAQABAQEBAQEBAQEBAQEBAQABAQEBAQEBAQECAQEBAQEBAQABAQEBAQEBAQABAQECAQABAQABAQECAQABAQACAQABAQEBAQACAQABAQEBAQACAQABAQEBAQACAQABAAACAf8BAQACAQACAQABAAACAQABAQACAf8BAQACAAABAQACAQABAf8CAQABAAACAQABAf8CAAABAQACAf8CAAABAQACAP8BAQACAQABAP8CAQABAQACAP8BAQACAAABAf8CAAABAQACAAABAQABAf8CAAABAQACAAABAf8CAAABAQABAAACAf8BAIAsDqjPQRFDAAAAAElFTkSuQmCC","erdc_green2yellow_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAACAQACAQADAQACAQACAQACAQACAQACAQABAQACAQABAQABAQACAQABAQABAQABAAABAQEAAQABAQEBAQABAAABAQABAQAAAAABAQABAQABAAABAf8BAQABAP8BAQABAQABAAABAQAAAQABAQABAQABAAABAQABAQABAQABAQABAAABAQABAQABAQABAQABAQABAAABAQABAQABAQABAAABAQABAQABAQABAQABAAABAQABAQABAQABAAABAQABAQABAAABAQABAAABAQABAAABAQABAQABAAABAQABAAABAQABAAABAQABAAABAQABAAABAAABAAABAAABAAABAAACAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAAB/wABAAEBAAABAAAB/wABAAABAAAB/wABAP8BAAACAAAB/wABAAABAAEBAAEB/wEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAABAAEBAAEB/wUBAAQBAAMBAAQBAAMBAAIBAAMBAAMBAAIBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAMBAAIBAAMBAAIBAQIBAAIBAAMBAAIBAQIBAAIBAAIBAAIBAQIBAAIBAAIBAQIBAAIAAQMBAQIBAQIBAQIBAQIBAQIBAQIBAQIBAQIBAQIBAQIBAQIAAQIBAQIBAQIBAQIBAQEBAQIBAgIBAQEBAgIBAQIBAgEBAQIBAgIBAQEBAgIBAQIBAgEBAQIBAgEAAQIBAgIBAgEBAgIBAwIBAgEBAgIBAgEBAgIBAgIBAgEBAgIBAgIBAgEAAgIBAwEBAgIBAgIBAwEBAgIBAwEBAwIBAgIBAwEAAgIBAwEBAgIBAwIBAwEBAgIBAwEBAgIBAwEAAwIBAgIBAwEBAwIBAwIBAgEBAwIAAwEBAwIBAgIBAwEBAwIBAwEBAgIAAwEBAwIBAgIBAwEBAwIBAgIBAwEAAgIBAwIBAwEBAgIBAwIBAwEAAgIBAwEBAgIBA6n+C//3rnSOAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQGFcQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOm5APkFomP2AAAAAElFTkSuQmCC","Brewer Diverging Spectral (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATKIvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGk8AXnG2pBwAAAAAElFTkSuQmCC","BuPu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQI4WAABAgABAQABAgABAgABAQABAgABAQABAgECAgABAQABAgABAgABAgABAQABAgABAgABAQABAgABAgABAQABAgABAQABAgECAgABAQABAgABAgABAQABAgABAgABAQABAgABAQAAAQABAQABAQABAgAAAQABAQABAQAAAQABAQABAQAAAQABAQABAQEAAgABAQABAQABAQAAAQABAQABAQAAAQABAQABAQAAAQABAgABAQAAAQABAQABAQABAQAAAQMBAQIBAAIBAQIBAAIBAQEBAAIBAQEBAAIBAQEBAAEBAQIBAAEBAQEBAAEBAQEBAAIBAQIBAAIBAQEBAAIBAQIBAAEBAQIBAAEBAQIBAAEBAQEBAAIBAQEBAAEBAQIBAAIBAQIBAAIBAQMAAAIBAQIBAAIBAAIBAQEAAAIBAQIBAAIBAQIAAAEBAQIBAAIBAQIBAAIAAQIBAAIBAQIBAAIBAQIAAAIBAAIBAQIBAAIAAQIBAAEBAQIBAAIBAQIAAAEBAQIBAAIAAAEBAQIAAAEBAAIBAQIAAAEBAQIBAAEAAAIBAQEAAAIBAAEBAQIAAAEBAQIBAAIAAAEBAQIAAAEBAAIBAQIAAAEBAQIBAAEAAAIBAQEBAAIAAAEBAQIAAAEBAQEBAAIAAAEBAQEBAAIAAAEBAQEAAAIBAAEBAQEAAAIBAAEBAQEAAAIBAAEAAQEBAAIBAAEAAQEBAAEBAAIAAQEBAAEAAQIBAAEBAAEAAQIBAAEBAAEAAQEBAAIBAAEAAQABAAEBAAEAAQEBAAEBAQEAAAEBAAEBAQAAAAEBAAEBAQEAAAEBAQEBAAEBAAEAAQABAAEBAAEAAQEBAAEBAQEAAAEBAAABAQEAAAEBAAEBAQEAAAEBAQEBAAEAAAABAQEAAAABAAEAAAEBAQAAAAEBAAAAAQEBAAAAAAEBAAEAAQABAAEAAAABAAEAAQEBAAAAAAEBAQAAAAEBAAEAAAABAQEAAAABAAEAAQEBAAAAAAEBAAABAQEAAJCpAvOgKS5SAAAAAElFTkSuQmCC","Muted Blue-Green":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARxGTQECAgECAgEBAgECAgECAgEBAQABAQEBAgEBAQABAQEBAgEBAQABAQECAgEBAQEBAgABAgECAQEBAgEBAQABAgECAQEBAgEBAgEBAQABAgEBAQEBAQEBAQEBAgABAQEBAQEAAQEBAgABAQEBAQEBAQEBAgEBAQEBAQEBAgIBAQEAAQEBAgIBAQEBAQEBAgEBAQIBAQEBAgEBAQIBAgEBAQICAgEBAgIBAQEBAgIBAQIBAgECAgIBAQEBAgIBAgEBAQICAgIBAgIBAQICAgIBAQEBAgICAQIBAgIBAQICAgEBAgIBAQICAgMCAgICAgMCAgMBAgICAgMCAgICAgMCAgMCAgICAgMCAgICAgMCAgMCAgMCAgICAgMCAgMCAQMCAgICAgMCAgMCAgMCAQICAgMCAgIBAQICAQIBAAMBAQICAQIBAQIBAAICAQIBAQIBAQICAQIBAAMCAQMCAQMCAQMCAQMCAAMCAQQCAQICAAMCAAMCAAMCAAMCAAMCAAUF8v///f8A/v///v8A/f///v8A/v7//v3//f7//v7+/v7//v7//v7//v4A//7//////v7///8A//7///7//v////7///4A/v////7///8A//7/AP8A//////4A//8AAP////4A////AP8A//4A////AP8A//7+/v7//v7+//7//v7//v7+//7//v7+/v7///7//v7+/v7///7+/v7///7+/v7///////7+/v7///7+/v7///7///7+/v7///7+/v////7+///+//7//v/+//7+//7//v/+//7////+//7+/v////7+//7+/v79/v7+/v39/v7+/v7+//79/v7+/v7+/v79/v7+/v7+/v79//7+/v7+/v7+/v7+/v79/v7+/v7+/v7+/v7+/v79//7+/v7+/v7+/v7+///+/v7+/v7+///+/v7+///+/v7+//7+/v/+/v79//7//v/+///+//////////7+/v/////+//////////7+/v/////+/////4i7bLGoK3RYAAAAAElFTkSuQmCC","Haze_lime":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AbTI//7+////AP/////+////AP/+///////+//7/AP/+///////+AP/////+////AP7+///////+////AP/+////////AP/+///////+AP////7+///////+AP/////////+AP/////+////AP/+//////7////+AP/////+////AP/////+////AP/+///////////+AP/////+////AP/////+////AP/+//7////////+AP/////////+AP/////+////AP/////+////////AP/+////////AP/+////////AP/+///////////+AP/////////+AP//////////AP/+///////////+AP/////////+AP//////////AP/+/////////wD/AP/+////////AP/////+////////AP/////+////AP/////+////AP///////////wD/AP/////////+AP//////////AAD////////////+AP///////wECAAIB/wEC/wEBAAEB/wEC/wEBAAEB/wEC/wEB/wEBAAEC/wEB/wEBAAEB/wEB/wECAAEB/wEC/wIB/wEBAAEC/wEB/wEBAAEC/wEB/wEBAAEC/wEB/wAB/wECAAEB/wEB/wICAAEB/wEC/wEBAAEB/wEC/wEB/wEBAAEC/wEB/wEBAAEC/wEB/wECAAEB/wEB/wEC/wIBAAEB/wEC/wEBAAEC/wEB/wEBAAEC/wEB/wECAAEB/wEB/wEC/wEBAAIC/wEB/wEBAAEC/wEB/wICAAEB/wEB/wEC/wEBAAEC/wEB/wECAAEB/wEB/wEC/wIBAAEC/wEB/wECAAEB/wIB/wECAAEB/wEC/wEBAAEC/wEB/wIC/wEBAAEC/wEB/wEBAAEC/wEB/wICAAEB/wEC/wEBAAEC/wIB/wECAAEB/wEC/wEB/wECAAEB/wIC/wEB/wECAAEB/wECAAIB/wEC/wEB/wECAAEB/wIC/wEBAAEC/wEB/wEC/wEBAOlWsOrQV3KgAAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AZmOwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMI5AezgZGV2AAAAAElFTkSuQmCC","Brewer Diverging Spectral (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATKIvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGk8AXnG2pBwAAAAAElFTkSuQmCC","erdc_blue2yellow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARUAfgEBAgEAAQEBAQEBAQEBAgEBAQEAAQEBAQEBAgEBAQEBAQEBAQEBAgABAQEBAQEBAQEBAQEBAAEBAQEBAAEBAQABAAEBAQEAAAEBAQEBAAABAQEBAAEBAQEBAAAAAQEBAAEBAAEB/wEBAAAB/wEBAAEB/wABAAEAAAEB/wABAAEB/wABAAEB/wEBAAAA/wEBAAEBAAAB/wEBAAEB/wABAAEB/wEAAAAB/wEBAAEBAAAB/wEBAAEB/wABAAEA/wABAAEB/wEBAAAB/wEBAAEBAAEB/wAAAAEB/wEBAAAB/wEBAAAB/wEBAAEBAAAA/wEBAAAB/wEBAAEB/wEBAAAB/wEBAAEAAAAB/wEBAAEB/wABAAEB/wABAAEB/wEAAAAB/wEBAAEBAAAB/wEBAAEB/wABAAEA/wEBAAAB/wEBAAEBAAAB/wEBAAEB/wABAAEA/wEBAAAB/wEBAAEB/wEB/wEAAAEB/wABAAEB/wEB/wEBAAEA/wABAAEB/wEB/wEBAAEB/wEA/wEBAAEB/wEB/wEB/wEAAAEB/wEB/wEB/wEBAAEA/wEB/wEB/wEBAAAB/wIA/wEB/wEB/wEBAAEA/wEB/wEB/wIB/wEA/wEB/wEBAAEB/wEA/wEB/wEB/wEB/wEA/wEB/wIBAAEB/wEA/wEB/wEB/wEB/wEBAAEA/wEB/wIB/wEB/wEA/wEB/wEB/wEB/wEAAAEB/wEB/wIB/wEA/wEBAAEB/wEB/wEA/wEB/wEB/wEB/wIB/wEA/wEB/wEBAAEB/wEA/wEB/wEBAAEB/wIA/wEB/wEB/wEB/wEA/wEBAAEB/wEB/wEA/wEB/wIB/wEB/wEA/wEBAAEB/wEB/wEB/wEAAAEB/wIB/wEB/wEA/wEB/wEB/wEB/wEA/wEBAAEBAQEBAAAAAQEBAAEBAQEBAAEAAQABAAEBAQEBAAEAAQEBAAABAQEBAAEAAQABBAEBAwABAwAAAwEBAwABAwABAwEAAwABAgABAwABAgEAAwABAgABAwEAAvL7gA00dmH9AAAAAElFTkSuQmCC","Brewer Diverging Spectral (10)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV5PogAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPGcAVHQ6DqeAAAAAElFTkSuQmCC","copper_Matlab":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAEBAQIBAAEAAQIBAAEBAQIBAAEBAQEBAAIAAQEBAAEBAQEBAAEBAQEAAAEBAQEBAAIBAQEBAAEBAQIBAAEBAQEBAAEAAQEBAAEBAQIBAAEAAQEBAAEBAQIAAAEBAQEBAAEAAQEBAAIBAQEBAAEBAQEAAAIBAQEBAAEBAQEBAAIAAQEBAAEBAQEBAAIBAQEAAAEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAEAAQIBAAEBAQEBAAEBAQIAAAEBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEAAAEBAQEBAAEBAQEBAAEAAQEBAAABAQEBAAEBAQEAAAEBAQEBAAEBAQEBAAEAAQABAAABAQABAAABAQAAAAABAQABAAABAQABAAAAAQABAAABAQABAAABAQAAAAABAQABAAABAQABAAAAAQABAAABAQABAAABAQAAAAABAQABAAABAQABAAAAAQABAAABAQABAAABAQAAAAABAQABAAABAQABAAAAAQABAAABAQABAAABAQAAAAABAQABAb+nAk0ERdenAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (5)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AZk0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHjkANPzsXBSAAAAAElFTkSuQmCC","erdc_blue2green_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIBBQIBBgIBBAIBBAEAAwIBAwIBAwEBAwEBAwABAgEBAwABAwABA/8BA/8BAwABAwAAAwABAwAAAgEBAwAAAwAAAwAAAgEBAwAAAwAAAwAAAwABAwAAAgAAAwAAAwAAAwABAwAAAgABAgEAAwAAAgABAwAAAgABAgAAAwABAgAAAwEAAgABAwAAAgABAwAAAgEBAgABAQEBAgEAAgABAQEBAgEBAQABAgEBAgEBAQEAAgABAgEBAQEBAgABAQEBAgEBAAACAQEBAAECAQEBAAABAQECAAEBAAACAQEBAAABAQECAAABAQEBAAACAAEBAQAC/wEB/wACAAAC/wEB/wAC/wACAAAB/wAC/wAB/wACAAAC/wAB/wAC/wABAP8C/wEB/gAC/wEB/wAC/gAB/wAC/gAB/wAC/gAC/wAB/wAC/v8B/wAC/v8B//8C/gAB/wAB/wEC/wEB/gAB/wEC/wAB/wEB/wAB/gAC/wEB/wAB/wAC/wAB/gAB/wAC/wAB/wEB/gEB/wIC/gEB/wEB/wEB/gEC/wAB/gEB/wEB/gEC/wAB/gEB/wEB/gAC/gEB/wIB/gEB/wIB/gIB/wIB/gEB/wIC/gEB/gIB/wEB/gIB/gEB/gIB/wEC/gEB/gEB/gIBAAIB/wIBAAIB/wIBAAIB/wIB/wIBAAIB/wIBAAIB/wIBAAEB/wIB/wIBAAIB/wIBAQIBAAEBAQIBAAIBAQIBAAIBAQIBAAIBAQEBAAIBAQIBAAIBAQIBAQIBAAEBAQIBAQIBAQIBAgIBAQIAAQIBAgEBAQIBAQIBAgIBAQIBAQIBAgEBAQIBAQIBAgIBAQIBAwIBAwEAAwIBAwIBAwIBAwIBAwIBAwEBAwIBAwIBAwIAAgEBAwIBAwIBAwIBAwIBBAEABAIBBAIBBAIBBAIBBAEABAIBBAIBBAIBBAEABAIBBAIBBAEBBAIBBAIABAEBBAIBAwIABAIBBAIBBAEBBAIAAwIBBAIBBAEABAIBBAIBBAIBAwEABAIBBEaYXf8iR9WoAAAAAElFTkSuQmCC","Blue to Red Rainbow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAA/wAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAD/wAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AIA/gQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAH9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAbMggHoSfkgAAAAAElFTkSuQmCC","nic_CubicYF":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYMMqwEDAgADAgACAgACAgACAgACAgACAgACAgECAgACAwABAgACAgACAgABAgACAgABAv8CAgACAgACAf8CAgACAgACAv8BAQACAv8CAgABAgACAv8CAQABAv8CAv8BAgACAv8CAf8BAQACAf8BAf8CAf8BAQACAv8BAf8BAf8CAf8BAf8CAf8BAv8BAf8CAf8BAQACAP8BAAACAP8BAP8CAAABAP8BAP8CAAABAP8CAf8BAAABAP8CAP8BAAABAP8CAP8B/wAB//8C//8B/wAC//8B//8B//8C/wAB//8BAP8B//8C//8B//8B//8C//8B/wAB//8B/wAC//8B/v8B//8B/wAB//8C//8B//8B//8B/v8B//8B//8C//8B//8B/wAB/v8B//8B/wAB/v8C//8B/v8B//8B//8B/v8B//8B/v8B//8B/v8C//8B//4B/gAB/wAA/gAB/wAB/gAB/wAB/gAB/wAB/gAA/wAB/v8B/gAB/wAB/v8B/wAB/v8B/wEA/gEB/gEB/wEA/gAB/wEB/gEB/gAA/wEB/gAB/gEB/wAA/gAB/gEB/wAB/gAA/gEB/wEB/gAA/gEB/wEB/gAA/gEB/gEB/wAA/gEB/gAB/gEB/wAA/gAB/gEB/gAA/gEB/wAA/gEB/wEA/gAB/gEB/wAA/gEB/gAA/gEB/wAA/gEB/gAB/gEA/wAB/gAA/gEB/wEA/wEB/wEB/wEA/wEB/wAA/wEB/wEA/wEB/wEA/wEB/wAA/wEB/wEA/gEB/wIAAQEBAAIAAAIAAQIBAAIAAAEAAQIBAAIAAAEAAQIAAAIBAAEAAQIAAAEBAAIAAQIAAAMAAAIAAQIBAAIAAAIAAQMAAAIAAQIAAAIAAAIBAQIAAAIAAQIAAAIAAAIAAQIAAAEAAAIAAAEAAAIAAQEAAAIAAAEAAAIAAAEAAAIAAQEAAAIAAAEAAAIAAAEAAAEAAQIAAAEAAAIAAAEAAAIAAAEAAQEAAAIAAAEAAAIAAAEAAAEAAQIAAAEAAF6XyxT/RDXjAAAAAElFTkSuQmCC","Rainbow Blended White":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af////r6APr6APr6APr6APv7APr6APr6APr6APr6APr6APr6APr6APv7APr6APr6APr6APr6APr6APr6APr6APr6APv7APr6APr6APr6APr6APr6APr6APr6APv7APr6APr6APr6APr6APr6APr6APr6APr6APv7APr6APr6APr6APr6AP4CAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAE/gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gMA/QYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAX/AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AP//BQAABv8AB/8ABv8ABgAABv8AB/8ABv8ABgAABv8AB/8ABv8ABgAABv8AB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABlmWzuFQQKPWAAAAAElFTkSuQmCC","erdc_divHi_purpleGreen":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AUwAfQIDAQEDAQIDAQIDAgEDAQICAQIDAQECAgICAQICAQEDAQICAgICAQECAQICAgICAQECAQICAgICAQICAgIDAQICAQECAgICAQICAgICAQICAgECAQICAQICAgIDAQICAgECAQICAgICAQIDAgICAQECAgICAQICAgIDAQICAgICAQECAgICAQIDAgICAQICAQECAgICAQIDAgECAQICAQICAgEDAQICAQICAgECAQIDAQICAgECAQICAQICAgEDAQICAQECAQICAQECAQICAgECAQECAQICAQEDAQICAQECAQICAQECAQECAQICAQECAQECAQECAQECAAEBAQECAQECAAECAQECAQIBAAECAQECAQECAAECAQEBAQECAAECAQABAAEBAAACAAEBAAEBAQABAAECAAABAAEBAAACAAEBAAABAAEBAAACAQEBAAABAAAB/wAAAAAB/wAAAAAB/wAAAAAB/wABAAAA/wABAAAA/wABAAAA/wABAAAA/wABAP8A/////gAA//8A//8A/wAA/////v8A/wAA//8A//8A/wD//v8A//8A//8A/wD///7//v8A/v///v///v7//////v///v///v7//////v///v7//v////8A/v///v7//v/+/v7//v7+/v///v7+/v7//f///v7+/v7//v7+/v///v7+/v7//f///v7+/v7//v7+/v7+/f7+/v7//v/+/f7+/v7+/v7//f7+/v7+/v7+/f7//v7+/v7+/f7+/v7//v7+/f7+/v7+/f7+/v7+/v7+/f3+/v7+/f7+/v7+/v7+/f7//v7+/v7+/f7+/v7+/v7+/f7+/v7+/v7+/f7//v7+/v3+/f7+/v7+/v7+/f7+/v7+/v7//f7+/v7+/v7+/f7+/v7//v7+/v7+/f7+/v7//v7+/f7+/v7//f7+/v/+/f7//f7+/f7+/v7+/f7//v7+AP//AP7+AP//AP7/AP/+AP7/AP/+AP7/AP/+AP//AP7/AP/+//7/AP/+AASSZGPuoQ8aAAAAAElFTkSuQmCC","Traffic Lights For Deuteranopes 2":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Ac0AzQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANKkAZyoIPjoAAAAAElFTkSuQmCC","erdc_pbj_lin":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIBAgIBAgEBAwIBAgIBAgIBAgIBAgEBAgEBAQIBAgEBAQEBAQEBAgEBAQEBAQEBAQEAAQEBAgEBAQEAAQIBAgEAAQEAAQEBAgEAAQEBAgEAAQEAAQEBAgIAAQEBAgEAAQEAAQEBAgEAAQEBAQEAAQEBAgEAAQEBAQEAAQEBAgEAAQEBAQEAAgEBAQEAAQEBAQEAAQEBAgEBAQIAAQEBAQEAAQEBAQEAAQEBAQEBAQEAAQEBAQEAAgEBAQEBAQEAAQEBAQEBAAIAAQEBAQEBAQEAAAEBAQEBAQEAAQEBAQEBAAEAAQEBAQIBAQEAAAEBAQEBAAEBAAIAAAEBAAEBAAEBAAIBAAEAAAEBAAEBAAEBAAIBAAEAAAEBAAEBAAIBAAEB/wEAAAEB/wIBAAEB/wEBAAEB/wEBAAIB/wEAAAEB/wEBAAEB/wEBAAIB/wEBAAEB/wEBAAEAAAEB/wEBAAEBAAIBAAEB/wEBAAEB/wEBAAEAAAEB/wEBAAEBAAIB/wEBAAEBAAEB/wEBAAEA/wIBAAEB/wEBAAEB/wEBAAEBAAEB/wIAAAEB/wEBAAEB/wEBAAEB/wEBAAIBAAEB/wEBAAEA/wEBAAEB/wEBAAEB/wIBAAEBAAEB/wEBAAEB/wEBAQEBAAEBAAABAQEBAAEBAAEBAQEBAAEBAQABAAEBAAEBAQEBAAEBAAEBAQABAAEBAQEBAgABAQECAQABAgEBAQEBAQABAQEBAgEBAQABAQEBAQABAgECAQABAQEBAgABAQEBAgABAgEBAgACAgABAgEBAQABAgEBAgABAgABAgECAgABAQABAgEBAgABAgABAgECAgABAgABAgABAwEBAgABAgABAgACAgEBAgABAgABAwABAgEBAgACAgABAgABAgEBAgABAwABAgABAgEBAgACAgABAgABAwEBAgABAgABAgABAgABAwECAgABAgABAgABAgEBAgABAgABAgEBAgABAgACAgEBAgABAgABAgEBAgABAgABAgABAqDgHqjlkvMEAAAAAElFTkSuQmCC","Brewer Diverging Spectral (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATKIvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGk8AXnG2pBwAAAAAElFTkSuQmCC","jet":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAjwAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAAAwAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAADAQAEAAAEAAADAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAADAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAADAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAADAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAQA/AMA/QQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AMA/QQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AMA/QQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AMA/QQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AQA/AP//QD8AAD9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AP/+APwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAP0AAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAPwAAP0AAOFGpIIPnWFaAAAAAElFTkSuQmCC","erdc_iceFire_H":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIDCAMCBwIDBQICBAIDBAICBAACBQACBAABBP8CBf8BBP4CBf8BBP4CBf0BBP0CBQABBAACAwABAwACBAABAwACBAABAwACBAABAwACBAABBAACAwABBAACAwACBAABBAECAgECAgECAgECAgECAgACAwECAgECAgECAgECAgEDAgECAgECAwECAgACAgECAgICAQIDAQICAQECAQIDAQECAQECAQEDAQECAQECAQEDAQECAQECAQADAQECAQEDAQECAQECAQEDAQECAQICAQEDAgECAQECAQADAQECAQEDAQECAQECAgEDAQACAQEDAQMCAQICAgMCAQIDAQMCAQICAgICAQIDAQICAgICAQMDAQICAgICAQIDAQICAQICAgUCAQUCAQUBAQUCAQUCAQUBAQQCAQUCAQQBAQQCAQQCAQQCAQQBAQQCAQQCAQQCAQUA/gYA/gQB/gUA/gUA/gQA/gUB/wQA/gQA/gUB/gQA/gQA/gMB/gQA/gQA/wQB/gL++gH/+gL/+gH/+gL++wH/+gH/+gH/+gH++gH/+wH/+gH/+gH/+gD++gH/+gH/+v/++gD9+//++//++wD9+v/++//++gD9+//++v/++v/++f/9+QD++P/+9//99f/+7v/9AP/9AP/+AAD9AP/9AP/9AP/9AAD9AP/9AP/+AP/9AP/9AP/9AAD9AP/9AP/9AP/9AP7+AP/9AP/9AP/9AP/9AP7+AP/9AP/9AP/9AP79AP/9AP/9AP/9AP79AP/9AP/+AP79AP79AP/9AP7+AP79AP/9AP79AP79AP/9AP79AP79AP/8Af79AP78AP/8AP3/AP3+AP7+AP3+Af3+AP7+AP3+AP3+AP7+AP39//7+AP39AP39AP7+AP39//7+APwAAP0AAPwAAf0AAP0AAPwAAP0AAPwAAP0AAP0AAPwAAP0AAP0AAP0AAP0A//wAAPwCAPwCAPsBAPwCAPwBAPsBAPwAAPwAAP3/APz/APz/APv/APv+APn/APb/AOCACRYGsv2NAAAAAElFTkSuQmCC","gist_earth":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAcCCwcCCAYCBgQCBQICBgMCBgMABgMBBgMABgQABgP/BwMABgP/BwT/BgP/BwP+B/8GAv8GAv8EA/8EAv8EAv4EAv4DA/8DAv4DAv0DAv4EA/0DAvwCAv0DAvsDA/oDAgECAAABAAACAAEBAAAC/wABAAACAAACAAABAAACAAABAAACAAAB/wACAP8BAAACAAEBAAACAAAB/wEBAAACAAEBAAAB/wABAAACAAABAAAB/wACAAABAAABAAAC/wABAAEBAAAC/wEBAAEC/wABAAEC/wABAAAB/wACAAEB/wACAAAB/wACAAAB/wACAAAB/wEB/wEB/wAB/wEB/wEC/wABAAEB/wAB/wEB/wAB/wEB/wAB/wAC/wEB/wAB/wAB/wEB/wEB/wAB/wEA/wEB/wEB/wAB/wEB/wEB/wAB/wEB/wAA/wEB/wAB/wEB/wAB/wIB/wEB/wIB/wEB/gIB/wEB/wIB/wEB/wIC/gEB/wEB/wEB/gIB/wEB/wEB/gEB/wMBAAQB/wMBAAMB/wMAAAMBAAMB/wMBAAMB/wMBAAMB/wIBAAMA/wMBAAIB/wMBAAQAAQMAAAQBAQQAAAMAAQQAAAMBAQMAAAQAAQMAAQMAAAMAAQQBAAMAAQMAAAMAAQQAAQT/AQMAAQQAAQT/AQMAAQT/AgMAAQQAAQP/AQQAAQP/AQQAAQP/AQQAAQP/AQL/AgH/AwIAAgH/AwH/AgL/AgEAAwL/AgH/AgL/AwH/AgH/AgIAAgH/AwL/AgH/AgAAAwAAAwEBAwAAAwAAAgAAAwABAwAAAwEAAwAAAwABAwAAAwAAAgAAAwABAwAAAwABAQABAgABAQABAQABAQABAgABAQABAQABAgABAQABAQABAgABAQABAQABAgABAQABAQACAgABAQABAQABAQACAgABAQABAQACAgABAQABAQACAgABAQABAQACAgABAQACAgACAgADAgACAwACAgACAgACAgADAwACAgACAgADAwACAgACAgADAwACArWEcP+ZulYAAAAAAElFTkSuQmCC","erdc_iceFire_L":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Ad7p1PwAAvz/AvwAAfz/AvwAAvwAAfz/AvsAAfz/AvsAAvsAAfz/AvsAAfr/AvsAAvv/Afz///z+//z+//z+//z+//z///z+//z+//z+//z///v+//z+//v+/vv///v+//v+//7+//79//7+/v7+//79//7+//7+/v79//7+//7+//3+/v79//7+//7+/v39//7+///+///9///+/v/+///9/wD+///9///+/v/+//79///+///+///9///+/v7+///9/wD+///+/wD9///+///+///9/wD+///9AP/+///+//79///+///+//79//7+//7+///+/v/+/QD+/v/9/v/+/f/+/v/+/v/+/gD+/f/+/v/+/v/+/f/+/gD+/v/+/v///gD+/AD+/AD//AD+/QD//AD+/QD//AD+/AD//QD+/AD//QD+/AD//QD+/QD//AD+/QP/+wP+/AL//AL/+wL+/AH//AH/+wD+/AD+/AD+/P/+/f/+/P7++/7++/79+f7++QoBAAcBAAUCAAUBAAQBAAMCAAQAAAQBAAT/AAQAAAT/AAT/AAX+AAT/AAT+AAX+AAMAAAMAAAMAAQQAAAMAAAMAAAMAAAQAAAMAAAMAAAQAAAMAAAQAAAMA/wMAAAQAAAIDAAMDAQIDAAMDAAIDAAMCAQIDAAMCAAIDAAMCAAMCAAIC/wMCAAICAAMCAAICAAIEAAIDAAID/wEDAAIEAAIDAAEDAAIDAAICAAEDAAIDAAIDAAEDAAICAAIDAAEDAAEDAAIDAAEDAAEDAAEDAAEDAAIDAAECAAEDAAEDAAEDAAEDAAEDAAEDAAICAAEDAAEDAAADAAEDAAEDAAEDAAECAAEDAAEDAAEDAAADAAECAAEDAAEDAAEDAAEDAAACAAEDFAECDAECCQECCAEDBwACBwECBwEDBgACBgECBgECBgADBgECBQACBgADBgECBf8BBv8BBv8BBgACBv8BBf8BBv8BBv4BBv8BBf8CBv4BBv8BBv4BBf8BBv4CBt63X6xO9tvVAAAAAElFTkSuQmCC","Oranges":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AX8nBAEAAAEBAAIAAAEBAAEAAAEBAAEAAAIBAAEAAAEBAAEAAAIBAAEAAAEBAAEAAAIB/wEAAAEAAAEBAAEAAAIBAAEAAAEBAAEAAAIBAAEAAAEBAAEAAAEBAAIAAAEBAAEAAAIBAAEAAAIBAAIAAAEBAAIAAAEBAAIBAAIA/wEBAAIAAAEBAAIAAAIBAAEBAAIAAAEBAAIAAAIBAAEAAAIBAAEBAAIAAAEBAAIAAAIBAAEA/wIBAAEBAAIAAAIBAAEAAAEBAQEBAAABAQECAAEBAQEBAAABAQEBAAEBAQEBAAABAQEBAQEBAAEBAQABAQEBAAEBAQEBAAABAQEBAQEBAAEBAQABAAEBAQEBAQEBAAABAQEBAAEBAQEBAAABAQEBAAECAgABAQABAgEBAQABAgABAQEBAQACAQEBAgABAQABAQEBAQABAgABAQEBAQACAQEBAQABAgABAQEBAQABAgABAQEBAQACAgEBAQABAQABAQEBAgABAQABAQEBAQACAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQACAgABAQABAgABAQABAgABAQABAgABAgABAQABAgABAgABAQABAgABAgABAgABAQABAgABAgACAgABAQABAgABAgABAQABAgABAgABAgABAQABAgABAgABAQABAgABAgABAQABAgABAgABAgABAQACAgAAAQABAgABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQABAgEAAQABAQABAgABAQAAAQABAgABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQABAQAAAgABAQAAAQABAQAAAAABAQAAAQABAQAAAQABAQAAAQABAQAAAQABAQAAAQEAAAABAQAAAQABAQAAAQABAQAAAQABAQAAAQABAQAAAQABAAAAAQABAQAAAQABAQAAAfPZBeH5c1YpAAAAAElFTkSuQmCC","erdc_magenta_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMBAwMAAgMBAwMBAgMBAwIAAgIBAgIBAQIBAgEAAgIBAQEBAQIBAgEAAQEBAQIBAgEAAQIAAQEBAgIAAQEAAQIAAgIAAQEAAQIAAgEAAQIAAQIAAgEAAQIAAgL/AQEAAQIAAgEAAQIAAQEAAQIAAgEAAQIAAQIAAgH/AQIAAQEAAQIAAgL/AQEAAQIAAgEAAQIAAQEAAQIAAQEAAgIAAQEAAQIAAQEAAQIAAgEAAQIAAQEAAQIAAQEAAgIAAQEAAQIBAQEAAQIBAgEAAQEAAQIBAQEAAQIAAQEBAgIAAQEBAQIAAQEAAQIBAQEAAgEAAQIBAQEBAQIAAQEBAQEAAgIBAQEBAQIAAQEBAQEBAQIAAgEBAQIAAQEBAQEBAQIAAgEBAQIBAQEBAQEAAQIBAgEBAQEBAQIAAQEBAQEBAgIBAQEAAQEBAQIBAQEBAgIAAQEBAQEBAQEBAQIBAgEBAQEBAQIBAQEBAQEAAgEBAQIBAQEBAQEBAgIBAQEBAQEBAQEBAQIBAgEBAQEBAQEBAQEBAQEBAgIBAQEBAQEBAQEBAgEBAQEBAQIBAQEBAQEBAgECAQEBAQECAQEBAQABAQECAQEBAQECAQEBAQEBAQECAQEBAQEBAQECAQABAQEBAQECAQACAQEBAQECAAABAQECAQACAQEBAQACAAEBAQACAQECAQEBAQACAAEBAQACAQACAQEBAAACAQACAAECAQABAAACAQACAAEBAQACAAACAQABAAECAQACAAABAQACAQACAAABAAACAQECAAACAAABAQACAAACAAABAQACAAACAAABAQACAAACAAABAQACAAACAAABAQACAAACAAABAAACAQACAAABAAACAAABAQACAAACAAABAAACAQABAAACAAACAAABAQACAAABAAACAAABAQACAAABAAACAAACAQABAAACAAABAQACAAABAAACAAABAQACAAABAAACAQABAAABAAECAQABAAACAAABAQACAAABAAACAQABAAABAFtPBdtEtGP7AAAAAElFTkSuQmCC","PiYG":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AY4BUgIBAgIBAQIBAgMBAgIAAQIBAgICAgIBAQIBAgIBAgMBAQIBAgIBAgIBAgIBAQMBAgEDAgIDAQICAgECAgIDAgICAgECAQICAgICAgECAgICAQIBAgECAgICAgICAgEBAQEFAgEEAgIEAgEEAgEEAgEEAgEDAgEEAgEDAgEEAgADAgEDAQEEAgEDAgEDAgEDAgEDAgEDAgECAQADAgEDAgEDAgECAQEDAgADAgECAgEDAgEDAQACAgEDAgEDAgECAQACAgEDAQECAgECAQADAgECAgECAQADAgECAQECAgACAQEDAgECAQACAgECAQEDAgABAQECAQACAAEBAQACAQECAQABAQECAAACAQABAQECAQACAQEBAQACAAEBAQACAQABAQABAAACAQABAAABAQABAAABAQECAAABAQABAAABAQABAAABAQACAAABAQABAP8BAAABAQABAAABAP8AAAABAQABAAABAP8BAAABAQABAAAAAP8BAAABAQABAAABAP8A//8A/gAA//8A/v8A/wAA/v////8A/gAA/v8A//8A/gAA//8A/v8A/wAA/v8A/////v8A/f8A/v7//v8A/v///v8A/v8A/v///v4A/f///v8A/v8A/v///v8A/v4A/v///f7//f7//f7//f8A/f7//f7//f7//v7//f8A/f7//f7//f7//f4A/f7//f///f3//v7+/f7//f7//f7+/v7//f3//f7+/f7//v7+/f7//f7//v3+/f7//f7//f7+/f7//v7+/v3//v7+/f7//v7+/v7//f7+/v3//v7+/f7//v7+/v7//f7+/v3//f7+/v7///7+/v7+//7///7+//7+/v7///7+//////7+/v7+//7///7+//7+/v7///7+//7+//7/AP/+//7+///+AP7+//7////+AP7+//7+////AP7+//7+AP////7+//7+AP/+//7+AP//AP7+///+AP7+AP/+AP7+////AP7+AP/+//7+AP//AP7+///+AEkjULUlAO38AAAAAElFTkSuQmCC","erdc_brown_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAQBAAQBAAQBAAMAAAMBAAIBAAIBAAIBAAIBAAIBAAIAAAIBAAEBAAIBAAEBAAEAAAIBAAEBAAEAAAEBAAEAAAIAAAEBAAEAAAIBAAEAAAEBAAEAAAIAAAEBAAEAAAIBAAEAAAEBAAEAAAEBAAIAAAEBAAEAAAEBAAEAAAIBAAEAAAEAAAEBAAEAAAIBAAEAAAEBAAEBAAEAAAEBAAEBAAEAAAIBAAEAAAEBAAEBAAEAAAEBAAEBAAEAAAEBAAEAAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAABAAEAAAEBAAEBAAEBAAEBAAEBAAABAAEBAAEBAAEAAAEBAAEBAAEBAAABAAEBAAEBAAEBAAEBAAEBAAABAAEAAAEBAAEBAAEBAAEBAAABAAEBAAEBAAEBAAEBAAEBAAEBAAABAAEBAAEAAAEBAAEBAAEBAAEBAAEBAAEBAAABAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAQABAAEBAQEBAAEBAQEBAAEBAQEBAAEAAQEBAQEBAAEBAQEBAQEBAAEBAQEBAQEBAQEBAgEBAQEBAgEBAQEBAQEBAgEAAQEBAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQABAQEBAQEBAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAgEBAQEBAQEBAQABAgEBAQECAQEBAQEBAQABAgEBAQEBAQEBAQABAQEBAgEBAgEBAgABAQEBAgEBAgACAQEBAgEBAgABAgEBAQEBAgABAgEBAQEBAgABAgEBAgACAgEBAgEBAgABAgEBAgABAgEBAgEBAgABAgEBAwABAgECAgEBAgABAgEBAgABAgEBAgABAgEBAgEBAgABAwEBAgACAgEBAgEBAgABAgEBAgABAgEBAwABAj/iAn3X3vLYAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYhWpwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJOaAYfzM+85AAAAAElFTkSuQmCC","Linear Blue (8_31f)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfX/+v3///3//v0A//7///3//v3///0A//3//v3///3///3//v0A//3///3///4A//3///3///0A//3/AP0A//3///3///4A//3///3///0AAP7///4AAP3///4AAP7///7///0AAP7///4AAP3///4AAP7///4AAP7/////AP4AAP////7/AP8A//7/AP4AAP////7/AP8A//7/AP//AP///wAAAP//////AP//AAAA////AP//////AP//AAAA////AP//AP8A////AAD/AP8A////AP//AAAA////AP8AAP//////AAAAAP///wD/AP8AAAD///8AAAD/////AAAAAAD/////AAAA////AAD/////AP///wD////+/wD/////AAD//////wD////+AAD//////wD//////wD/AP///wD+/////wD/AP///wD//////wD/////AAD//////wD/AP///wD//wD/AP///wD/////AAD/////AAD/////////AP/////////////+////AP/////////+////AP////7////+/wD//wD/AAD//////wD//wD//wD/AAD//wD//wD/////AAD//wD//wD//wD/////AAD//wD+/wD//////wD/AAD//wD//////wD/AAD//wD/AAD//wAAAAD//wD/AAAAAAD//wD/AAD//wAAAAD/AAD//wAAAAD//wD/AAAAAAD//wH/AAD//wAAAAD/AAD//wAAAAD//wD/AAD/AAD//wD//wD/AAAA/wD//wD/AP///wD/AAD//wD//wD/AAD//wD//wD/AAAA/////wD/AAD//wD/AAAA/wD/////AAD//wAA/wD/AP///wD//////wD/AP///wD/////////AAD//////wD//////wD//////////wD//////wD//////////wD//////////wD//////wD//////wD////////+AAD//////wD//////wD////+/wD//////4IrCq/rpO7pAAAAAElFTkSuQmCC","Brewer Diverging Spectral (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATKIvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGk8AXnG2pBwAAAAAElFTkSuQmCC","GnBuPu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQFGNgABAQABAQACAQABAQABAQABAQABAgABAQACAQABAQABAQABAQABAQACAQABAQABAgABAQABAQACAQABAQABAQABAQABAQABAQACAQABAgABAQABAQABAQACAQABAQABAQABAgAAAQEBAgABAQAAAgABAQABAgAAAQABAgABAQAAAgABAgABAQAAAgABAQABAgAAAQABAgABAQAAAgABAQEBAgAAAQABAgABAgAAAQABAgAAAQABAgABAQAAAv8BAQMBAgIAAgIBAQIAAgIAAgIBAgIAAQEBAgIAAgEBAQIAAgEBAgEAAQEBAgEAAgIBAgIAAQIBAgEAAQIBAgIAAgIBAQEAAgIAAgIBAQEAAgIBAgEAAQEBAgIAAgEBAQIAAgEBAQIBAAIBAQEAAAIBAQIBAAEBAAIBAQEAAAIBAQEBAAIBAQEAAAEBAQIBAAEBAQIBAAIAAQEBAAIBAQEBAAIAAQIBAAEBAAIBAQEBAAIAAQEBAAIBAQEBAAIBAQEAAAIBAQIBAAIAAAIBAQIAAAIBAAIBAQIAAAIBAQIBAAIAAAIBAQIAAAIBAAIBAQIAAAIBAQIBAAIAAAIBAQIAAAIBAAIBAQIAAAIBAQEBAAIAAAIBAQIBAAIAAAIBAQIAAAEBAQEBAAIAAAEBAQEBAAIAAAEBAQEAAAIBAAEBAQEAAAIBAAEBAQEAAAIBAAEAAQEBAAIBAAEAAQEBAAEBAAIAAQEBAAEAAAIBAQEBAAEAAQIBAAEBAAEAAQEBAAIAAAEBAQAAAAEBAAEBAAEAAQEBAAEAAAEBAQEAAAABAAEAAQEBAAEAAAEBAQEAAAEBAAEAAQABAAEBAAEAAQEBAAEAAAEBAAEAAQABAAEAAAEBAQEAAAEBAAEAAQEBAAEBAAAAAQEBAAABAAEAAQEBAAABAAEAAQABAAEBAAAAAQEBAAEAAAABAQEBAAAAAAEBAQEBAAAAAQEBAAABAAEAAQEBAAABAAEAAQABAAEBAAEAAQABAAEBAAAAAQEBAK7OA/NiRy3uAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQFmXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFP+AMf72HzHAAAAAElFTkSuQmCC","erdc_sapphire2gold_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARsbGwIBBAEAAwIAAwEAAwIAAwEAAwEBAwIAAwEABAEAAwEAAwEAAwEABAEAAwEAAwEABAEAAgEAAwEAAwEAAwEAAwEAAgAAAwEAAwEAAwEAAwEAAwAAAwEAAwEAAwEAAgAAAwEAAwEBAgEAAwAAAgEAAgEAAwEBAgAAAwEAAgEAAgEAAwAAAgEBAwEAAgAAAwEAAgEBAgEBAQEAAgEBAQEBAgEBAgEAAQEBAgEBAQEAAgEBAgEBAQEBAgEAAQEBAgEBAgEBAAEBAQEBAAEBAQICAAEBAAEBAQEBAAEBAQEBAAEBAQEBAAECAQEBAAEBAQEBAAIB/wEBAAEB/wEB/wEC/wIB/wEBAAEB/wEB/wEB/wEBAAEB/wEC/wEB/wEB/wEBAAEB/gIB/gEB/gEB/wEC/gEB/gIB/wEB/gEB/gEB/gEB/wEB/gEC/gEB/wAB/gEB/gIB/wEB/gEB/gEB/wEB/gIC/wEB/gEB/gEB/wEB/gEB/wEB/gEC/gEB/wEB/gEB/gEB/wEB/gEB/gIB/gEB/wEC/gEB/gEB/gEB/wEB/gEB/gEB/gEC/wEB/gEB/gEB/gEB/gIB/wEB/gEB/gEC/wEB/gEB/gEB/wEB/gEB/gIB/gEB/wEC/gEB/gEB/gEB/gEB/wEBAAEB/wEBAAEC/wEBAAEB/wIBAAEB/wEBAAEB/wEBAAEC/wEB/wEBAAEB/wEBAAEBAQIBAAEBAQECAAEBAAEBAQEBAAEBAAEBAQEBAAEBAAECAQIBAAEBAAEBAQABAQEBAQEBAQEBAQABAgEBAQEBAQECAQABAQEBAgEBAQEBAQABAQEBAQEBAgABAQEBAwABAwECAwABAwEBAwABAwEBAwABAwEBAwABAgEBAwACAwABAwEBAwABAwABAwEBBAABBAEBBAABAwABBAEBBAABBAACBAABBAEBBAABBAABBAABBAABBAABBAABBAEBAwABBAEBBAABAwABBAEBBAABAwABBAEBBAABAwABBAABBAEBBAABAwABBIvOV/+D8eB+AAAAAElFTkSuQmCC","BrBG":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVQwBQIBAAICAQIBAAMBAAIBAQICAAIBAAIBAAICAAMBAAIBAQIBAAICAAMBAAIBAAICAAIBAQICAAIBAQICAQMBAAICAQIBAQICAAIBAQICAQIBAQICAAMCAQIBAQICAAIBAQICAQICAgICAQICAgICAQIBAQICAgICAQICAQICAgICAQICAgICAQICAQIBAgICAQEDAwICAwEDAwICAgECAwIDAwECAwEDAwICAgECAwIDAwECAwEDAwICAgEDAwECAwICAwEDAwECAwECAwIDAwECAwECAwEDAwECAwECAwIDAwECAwECAwEDAwECBAECAwECAgEBAwECAwEBAwECAgEBAwECAwEBAgECAwABAwECAwEBAgECAwEBAwECAwEBAwABAgABAgEBAgABAwAAAgEBAgABAgABAwEBAgABAgABAgEBAwAAAgABAgABAgEBAwABAQAAAv8BAgAAAgAAAgABAgAAAgABAgAAAgABAQAAAgABAgAAAv8BAgAAAgABAv7///8A//4AAP7///4AAP7///8A//7/AP4A//4A//7/AP8A//7/AP4A//7///4AAP7///7///4A//3///7///7///4A//7///3///4A//7///7///3///4A//7///7///3///3//v3///7//v3+//3///3//v7///3//v3///3///3+/v7///3//v3///3///3+/v3+/v3+/v7+/v3+/v3+/v3+/v3+/v3+//3+/v3+/v3+/v3+/v3+/v3+/v3+//7+/v3+/v7+/v3+/v7+/v3+/v3+/v7+/v3+/v3+/v7+/v39/v3+/v3+/v3+/v3+/v7+/v7+/v/+/v7//v7+//7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v3+/v7+/v3////+/v/+/gD+/v/+/v///v/+/v/+/v/+/wD//v/+/v/+/gD//v/+/gD+///+/gD//gD+/gD+/gD////+/gD+/gD//gD+/gD+/gD//wD+/gD+/gD//gD+/gD//wD+/nflWX1zTMk+AAAAAElFTkSuQmCC","RdOr":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AX8AAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAIAAAEAAAIAAAECAQECAQIBAQECAAECAQEBAQECAQECAQEBAQECAQIBAQEBAgECAQEBAQEBAQEBAQECAQECAQICAQEBAQECAQEBAQECAQEBAQECAQEBAQICAQEBAQEBAAECAQEBAQEBAQECAgECAQACAQECAgEBAQECAQECAQACAgEBAQECAQEBAgACAQEBAQECAQACAgEBAQECAQECAQEBAgACAQECAQEBAQECAgACAQEBAQECAgECAQABAQECAQEBAgACAQEBAQECAQABAAABAQECAAABAQEBAAABAQACAAEBAQABAQEBAAACAQABAAEBAQABAAECAQABAAABAQEBAAACAQEBAQABAAEBAQACAAABAQEBAAACAQABAAEBAQABAQEBAAACAQABAQACAQABAgACAQABAQACAgABAQABAQACAgEBAQACAQABAgACAQABAgABAQACAQABAgACAQABAQACAgABAQABAQACAgABAQACAQABAQABAgACAQABAQACAgABAQABAgABAAABAQABAQABAQAAAQABAAABAQABAQABAQAAAQABAAABAQABAQAAAQABAQABAQABAAABAQAAAQABAQABAQABAQAAAAABAQABAQABAQABAQAAAQABAAABAQABAQAAAQABAQABAgAAAQABAQABAgAAAQABAQAAAgABAQABAQAAAQABAgABAQEAAQABAgABAQAAAQABAgAAAQABAQABAgAAAQABAQAAAgABAQABAQAAAQABAgABAQAAAQABAgAAAQABAQAAAQABAQAAAQABAgAAAQABAQAAAQABAQAAAQABAQAAAgABAQAAAQEAAQABAQAAAQABAQAAAQABAgAAAQABAQAAAQABAQAAAQABAQAAAQABAgAAAQABAQAAAWfPAuSW3R8HAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AU0ASwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM17AJphMz7rAAAAAElFTkSuQmCC","Reds":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWcADQIAAAIBAQIAAAIAAAIBAQEAAAIBAAIAAAIBAQIAAAIBAAIAAAIBAAIAAQIBAAIBAAIAAAIAAQIBAAIAAAIBAAIAAQIBAAEAAAIBAAIAAQIBAAIAAAIBAAIAAQIBAAIAAAEAAAIBAQEAAAEAAAEAAAEBAQEAAAIAAAEBAAEAAQEAAAEAAAIBAAEAAQEAAAEBAAEAAAIAAQEAAAEBAAEAAAEAAQIBAAEAAAEAAAEBAQEAAAEAAAIAAAEBAQEAAAEAAAECAQIBAAEBAQEBAAEBAAEBAQECAAEBAQEBAAIBAQEBAAEBAQEBAAEBAQEBAAEBAQEBAAIBAQEBAAECAQEBAAEBAQEBAAEBAAEBAQEBAAIBAQEBAAEBAQEBAAECAQEBAAEBAQACAQABAQECAQACAQABAQECAQABAQEBAQACAQABAQECAQABAQABAQECAAABAQECAQABAQACAQEBAQACAQABAQECAQABAQECAQABAQACAQEBAQABAQACAQEBAQACAQABAQABAQACAQABAgABAQABAQACAQABAgABAQABAQACAQABAgEBAQABAQACAQABAgABAQABAQACAQABAgABAQABAQACAgABAQABAQABAQACAgABAQABAQABAQACAgABAQABAQABAgACAQABAgABAQACAgABAQABAgABAQACAgABAQABAgACAQABAgABAQABAgACAQABAQABAgACAQABAgABAQABAgACAQABAgABAQACAgABAQABAgABAQACAgABAQABAgABAQABAgACAQEBAgABAQABAgABAQABAgABAQACAgABAgABAQABAgABAQABAgACAQABAgABAQABAgABAQEBAgABAQACAgABAQABAgABAQABAgABAQABAgABAQACAgAAAQABAQABAQAAAQABAQABAAAAAQABAQABAQAAAQABAQAAAQABAQABAQEAAQABAQABAQAAAQABAQABAQAAAQABAQABAAAAAQABAQABAQAAAQABAQABAQAAAQABARRxAuZN+jl5AAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBtLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANBMAJtwOX2uAAAAAElFTkSuQmCC","BuGnYl":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQgdWAEBAgEAAgEBAgEBAQEBAgEAAgABAgEBAgEAAgEBAgEBAgEBAQEAAgEBAgEBAgEBAgAAAgEBAgEBAgEAAQEBAgEBAgEBAgEAAgEBAgEBAgAAAgEBAQEBAgEBAgEAAgEBAgACAQABAAABAQACAQABAAABAQABAAACAQABAQABAP8CAQABAQABAAACAQABAP8BAQECAQABAAABAQACAQABAAABAf8CAQABAAABAQABAAACAQABAQABAP8CAQABAQABAAACAQACAQABAAACAQABAQACAQACAAABAQACAf8BAQACAAACAQABAf8CAQABAP8CAQECAQABAQACAAABAQACAQABAf8CAAACAQABAQACAQABAAACAf8CAQABAQACAP8BAQICAAEBAAIBAAEBAQEBAAEBAAICAAEBAAEBAAEBAAEBAAEBAQEBAAECAAEBAAEBAAEBAAEBAAEBAAICAQEBAAEBAAEBAAEBAAIBAAEBAAECAAEBAAEBAQEBAAEBAAEBAAIBAAMB/wIBAAIAAAIB/wIBAAIAAAIBAAIB/wIBAAIAAAEB/wIBAAIAAAEBAAIB/wIBAAIAAAMBAAIB/wIBAAIAAAIB/wIBAAIAAAEBAAIB/wIBAAIAAAIB/wIBAAEBAAMAAAIB/wMBAAIBAAIBAAMBAAIB/wIBAAIAAAMBAAIB/wIBAAIBAAIBAAIBAAMB/wIAAAIBAAIBAAMBAAIB/wIBAAIBAAMAAAIB/wIBAAIBAAIBAAIBAAMB/wIAAAIBAAEBAAEAAAIBAAEAAAEB/wEAAAEBAAIAAAEBAAEAAAEBAAEAAAEAAAIBAAEAAAEB/wEAAAEBAAEAAAIBAAEAAAEBAAEAAAEBAAEAAAIAAAEBAAEAAAEBAAEAAAEBAAEAAAEAAQEBAgAAAQEAAQAAAQEBAgAAAQEAAQEAAQAAAgEBAQAAAQEAAQAAAgEAAQEBAQAAAQEAAgAAAQEBAQAAAQEAAgEAAQAAAQEBAQAAAgEAAQAAAQEBAQAAAgEAAVcmHtkUuHOdAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AW4BawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJNJANwTjcz2AAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (10)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AS0ASwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG17AHpSYyyxAAAAAElFTkSuQmCC","PuRd":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AUkAagIAAAEAAQIAAAEAAQIAAAEAAAIAAQEAAAIAAQIAAAEAAAIAAQEAAAIAAQEAAAIBAQEAAAIAAAEAAQIAAAEAAQIAAAEAAAIAAQIAAAEAAQIAAAEAAAIAAQEAAAIAAQEAAAIAAAEAAAIAAQIAAAEAAAIAAAIAAQEAAAIAAAIAAAEAAAIAAQEAAAIAAAIAAAEAAQIAAAIAAAEAAAIAAAEAAQIAAAIAAAEAAAIAAQIAAAEAAAIAAAEAAQIAAAIAAAEAAAICAQECAQICAQECAAICAQECAQIBAQECAAICAQEBAQICAQEBAQIBAAECAQEBAQIBAQECAQICAAECAQIBAQECAQICAAEBAQICAQEBAQICAAEBAQECAQIBAQECAQIBAAECAQEBAAECAQECAAECAAABAQECAAECAAEBAQECAAACAAEBAQECAAEBAAECAQEBAAACAAEBAAECAQECAAECAAABAQECAAECAAEBAQECAAABAAECAQECAAEBAAACAQEBAAECAAACAQACAQABAAECAQACAAACAQABAQACAAACAQACAQABAAACAQACAAABAQACAQEBAAACAQACAQACAAABAQACAAACAQACAQABAAECAQACAQABAAACAQACAAABAQACAQACAAABAQABAAABAAACAQABAAABAAEBAQABAAACAAABAQABAAABAAABAQABAAACAAABAQABAAABAAABAQACAAABAQABAAEBAAABAQABAAACAAABAQABAAABAQABAAABAAACAQAAAQABAAABAQABAQABAQABAQABAQAAAQABAQABAQABAQABAQABAAABAQEAAQABAQABAQABAQABAQABAQAAAQABAQABAQABAAABAQABAQAAAQABAQABAQABAQABAQABAQAAAAABAQABAQABAAAAAQABAQEBAAAAAQABAQABAAABAQAAAQABAQABAAAAAQABAQABAAABAQAAAQABAAABAQABAQEAAAABAQABAQAAAQABAAABAQABAQAAAAABAa8HAuvMO25IAAAAAElFTkSuQmCC","RED_TEMPERATURE":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIAAAIAAAEAAAIAAAIAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAEAAAEAAAEAAAEAAAIAAAIAAAEAAAIAAAIAAAEAAAEAAAIAAAEAAAEBAAIAAAEAAAEAAAH/AAIAAAEAAAEAAAIBAAEAAAEAAAIAAAEBAAL/AAEAAAIAAAEAAAEAAAIAAAEAAAL/AAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAIAAAEAAAEBAAIBAAEBAAIAAAEBAAIBAAEBAAEBAAIBAAEBAAIBAAEBAAIBAAEBAAIBAAEBAAEDAAICAAECAAICAAECAAICAAECAAECAAICAAECAAIBAAECAAIBAAECAAIBAAECAAECAAICAAECAAICAAECAAICAAECAAECAAICAAEBAAICAAECAAICAAECAAIBAAECAAECAAICAAECAAICAAECAAICAAEBAAICAAECAAICAAECAAICAAECAAIBAAECAAICAAACAAACAQACAAACAAACAQACAAACAQACAAACAAACAQACAAACAQABAAACAQACAAACAQACCAACBgACBQACBAABBAACBAACBAACAwACBAACAwACAwABAwACAwACAwACAwACAwACBAACBAABBAACBAACBAACBAACBAABBAACBAACBAACBAACAwACBAACBAACBAACBAACBAABBAACAwACBAACBAABBAACBAACBAACBAACBAACBAACBAACBAACBAACBAACBAACBAABAwACBAACBAACBAACBAACBAACBAACAwACBAACBAACBQACBAACBAACBMq0Bf9jUuLbAAAAAElFTkSuQmCC","Blues":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQgwawABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQACAgABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAQABAgABAgABAQEBAQEBAQEBAAEBAQEBAQEBAQABAQEBAAEBAQEBAQABAQEBAAEBAQABAQEBAQEBAQEBAAABAQEBAQEBAQEBAQEBAAEBAQABAQEBAQEBAAEBAQABAQEBAQEBAQEBAAABAQEBAQIBAAEBAQEBAAEBAQEBAAEBAQEBAAECAQEBAAEBAQEBAQEBAAEBAQEBAAEBAQEBAAEBAQEBAAEBAQEBAAEBAQIBAAEBAQEBAAEBAQEBAQEBAAEBAQEBAAEBAQABAAIBAQEBAAIBAQEBAAEBAQIBAAEAAQEBAAEBAQIBAAEBAQEBAAEBAQIBAAEBAQEAAAEBAQIBAAEBAQEBAAIBAQEBAAEBAQIAAAEBAQEBAAIBAQEBAAEBAQEBAAIBAQEAAAEBAQIBAAIBAAEBAQIBAAIBAAEBAQIAAAIBAAEBAQIBAAEBAAIBAQEBAAIBAAEAAQIBAAIBAAEBAQIBAAIBAAEBAQIBAAEAAAIBAQEBAAIBAQIBAAEBAAIBAQEAAAIBAAEBAQEAAAIBAQEAAAEBAAEBAQIAAAEBAQEAAAEBAQIAAAEBAQEAAAEBAAIAAQEBAAEAAQEBAAIAAQEBAAEBAAEAAQIBAAEAAQEBAAEAAQEBAAIAAAEBAQEAAAEBAQIAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEAAQEBAAEAAAEBAAAAAQEBAAEAAAEBAAEAAQABAAEAAAEBAAEAAQABAAEAAAEBAAEAAQEBAAAAAAEBAAEAAQEBAAEAAAABAAEAAQEBAAEAAAABAAEBAQEAALIYAvPDVIvFAAAAAElFTkSuQmCC","BuRd":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQUwYQECAwECAwECAwECAgECAwECAwICAwEDAwECAwECAwECAwECAwECAwECAwEDAwICAwECAgECAgECAgICAgECAgECAwEBAgECAgICAgECAgECAgECAgECAgECAwICAgECAgECAQICAQECAQIBAAECAQECAQICAQEBAQECAQICAQECAQECAQEBAQICAAECAQECAQMCAQMBAQMCAQMCAQMCAQMCAQMCAgMCAQICAQMCAQMCAQICAQMCAQICAQMCAQIBAQMCAQQCAQMCAQMCAQMBAQMCAQMCAQMCAQMCAQMBAQICAQMCAQMCAQMCAQMCAAMBAQICAQMBAQIBAQMBAAICAQMBAQIBAAMBAQICAQMBAQIBAAMBAQICAQIBAAMBAQIBAQIBAAIBAQIBAAIBAQIBAAEBAAIBAQIBAAIBAQIBAAIAAQIBAAEBAAIBAQIBAAIBAQEBAAIAAAEBAAIBAQEAAAIBAAEBAAIAAAEBAQEBAAIAAAEBAAIBAAEAAQIBAAEAAAD//gH//gD//gD//gH//wD//gD//gD//gH//gD+/gD//gD//gD//wH//gD//gD//gD+/gD//QD+/gD//gD+/gD//QD+/gD//gD+/gD+/QD//gD+/gD//gD+/QD//gD+/v/+/QD+/gD+/QD+/f/+/QD9/gD+/f/+/QD+/v/+/QD+/QD+/f/+/gD+/f/9/QD+/v/+/v/9/f/+/v/9/v/9/v/+/v/9/f/9/v/+/v/9/v/+/v/9/f79/v/+/v/9/v/9/v/+/v/9/v/+/v79/v/9/v/9/v/+/v/9//79/v/+/v/9/v/9/v79/v/9/v/+//79/v/9/v/+//79///+/v79///9/v/+//79///9/v79///+///9//78/v/9//79///9/v3+AP7///3+//7///7+//3/AP7+//3///7+//3/AP7+//7+//3///7+AP3+//7+//3/AP3///3/AP3+//3/AP3///3/AP3///3/AP3///4AAP3///3/AP0A//3/ANxURZfn+HcyAAAAAElFTkSuQmCC","BrOrYl":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AWYlBgIAAAEBAAIAAAEBAAIAAAEBAAIAAAIBAAEAAAIBAAEAAAIB/wIAAAEBAAIAAAIBAAEAAAIAAAEBAAIAAAIBAAEAAAIBAAEAAAIBAAIAAAEB/wIAAAEBAAIAAAIBAAEAAAIBAAEBAAIAAAIBAAEBAAIBAAEAAAIBAAIBAAEB/wIAAAEBAAIBAAIBAAEAAAIBAAEBAAIBAAIAAAEBAAIBAAEBAAIAAAEBAAIBAAIBAAEA/wIBAAEBAAIBAAIBAAEAAAEBAQECAAEBAQEBAAEBAQEBAAEBAQEBAAECAQEBAAEBAQEBAQEBAAEBAQEBAQEBAAECAQEBAAEBAQEBAQEBAAEBAQEBAAEBAQECAAEBAQEBAQEBAAEBAQEBAAEBAQEBAAECAQABAQEBAAECAQABAQEBAAACAQEBAQABAAEBAQACAQEBAAEBAQACAQEBAAABAQEBAAACAQEBAQABAQECAAEBAQABAQEBAAACAQEBAQABAAECAQABAQEBAAABAQECAQABAQABAQACAQABAgACAQABAQABAQACAQABAgABAQACAQABAQABAQACAQABAgABAQACAQABAQABAQACAgABAQABAQACAQABAgABAQACAQABAQABAQACAgABAQABAQACAQABAgABAwABAgAAAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAwABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgAAAgABAQABAgAAAQABAQABAgAAAQABAQAAAgABAQABAgAAAQABAQABAgEAAQABAQABAgAAAQABAQAAAgABAQABAQAAAgABAQAAAQABAgABAQAAAQABAgAAAQABAQABAgAAAQAAAQABAgAAAQAAAQAAAgABAQAAAQAAAQAAAgABAQAAAQAAAgAAAQABAQAAAQAAAgAAAQABAQAAAgAAAQAAAQABAQAAAgAAAQAAAQABAgAAAQAAAQAAAQABAgAAAZvXBuVXnaVfAAAAAElFTkSuQmCC","PuBu":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AU0ASwIAAgEBAQIAAgEAAQIBAgIAAQEBAgIAAQIBAgEAAQIBAgEAAQIBAgIAAQEBAgIBAgIAAQEAAgIBAQEAAgIBAQIAAgEBAQIAAgIBAQEAAgIBAQEAAgIBAQIAAgEBAgIAAQACAQECAQACAQACAQACAQABAQECAQACAQABAQABAQECAQABAgABAQACAQABAQEBAQACAQACAQACAQEBAQACAQABAQACAQACAQEBAQACAQABAQACAQABAQEBAQACAQABAQACAQABAAABAQECAQABAAACAQABAQABAAABAQACAAEBAQABAQACAAABAQABAQABAAACAQABAAABAQECAQABAAABAQACAQABAAABAQACAAEBAQABAQACAAABAQABAQACAAABAQABAQACAAABAQABAQACAAABAQABAQACAAABAQABAAACAQABAQABAAACAQABAQABAAACAQABAQABAAACAQABAQACAAABAQABAQACAAABAQABAQACAAABAQABAQACAAEBAQABAQEBAAEBAQACAAEBAQABAQEBAAABAQEBAQECAAABAQEBAAABAQEBAQACAAEBAQABAQEBAAEBAQACAAEBAQABAQEBAAEBAQABAQECAAABAQEBAAABAQEBAQEBAAEBAQEBAAEBAAEAAQEBAAEBAAEAAQEBAAEBAQEBAAEAAAEBAQEBAAEBAQEAAAEBAAEBAQEAAAEBAAEBAQEBAAEAAQEBAAIBAAEBAQEAAAEBAAEBAQEAAAEBAQEBAAEBAAEAAQEBAAEBAQEBAAEAAQEBAAEBAAEBAQEBAAEAAQEBAAEBAQEBAAEBAAEAAQEBAAEBAQEBAAEAAQEBAAEBAQEBAAEBAAEAAQIBAAEBAQEBAAEAAQEBAAEBAAEBAQEAAAABAQEAAAEBAAEAAAABAQEAAAEBAAAAAQEBAAEAAAEBAAAAAQEBAAEAAAABAAEAAQEBAAEAAAABAQEAAAEBAAEAAAABAQEAAAEBAAAAAQEBAAEAAAEBAAABAQEAALXMAvJg4fvHAAAAAElFTkSuQmCC","Spectral_lowBlue":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AV5Pov8CAf8DAf4CAf8CAf8DAf4CAf8CAf4CAf4DAv8CAf4CAf4CAf4CAf0CAf4DAf0CAQECAAACAAACAQADAAACAAACAf8CAAADAAACAAACAAACAf8DAAACAP8CAAADAf8CAAMC/wMC/wIC/wMD/wIC/wIC/wIDAAIC/wIC/wIC/wID/wIC/wEC/wID/wEC/wIC/wMBAAMC/wIBAAMBAAMCAAIBAAMB/wMBAAICAAMBAAIBAAMC/wIBAAIBAAMBAAIC/wMBAAMBAAIBAAMBAAMBAAMBAAIBAAMB/wIBAAMBAAMBAAIBAAMBAAIBAAMBAAIB/wMBAAIB/wIBAAMBAAIB/wIBAAMB/wIBAAIB/wMBAAIB/wIBAAIB/wMAAAIB/wIBAAIBAQEBAAIAAQEBAQIAAQEBAAEBAQIAAQEBAQIAAQEBAAIBAQEAAQIBAQEAAQIBAAEAAgEBAQEAAgEAAQEBAQEAAgAAAQEBAgEAAQEAAQEBAgEAAQEAAgEBAQEAAgEAAQD//gD//gD//gD+/gD//gD//gD//gD//gD+/gD//gD//gD//QD//gD+/v///gD//gD+/gD//wD+/gD//gD+/gD//gD+/gD//gD+/wD//gD+/gD+/gD//gD+/gD//gD+/gD+/wD+/gD+/gD+/wD//gD+/wD+/gD+/gD+/wD+/gD+/gD+///+/gD+/gD+/wD+/gD+/wD9///+/gD9/wD+/wD9///+/gD+/wD9///+/wD9/gD+///9/wD+/wD9/v/+/wD9///+AAD+///9/wD+///+///+AAD9///+/wD9///+AAD+///9///+/wD9AP/+///+AP/+Af/+AP7/Af/+Af/+AP/+AP7+Af/+AP//Af/+AP/+Af7+AP/+Af/+AP/+AP7+AP7+AP7+AP7+AP7+AP/+//7+AP7+AP79AP7+AP7+AP/+//79AP7+AP79AP7+AP7+//7+AP7+//7+AP3+//7+AP7+//7+AP7+//79AP79//39AP79//79AP79/w5+RPICPM2FAAAAAElFTkSuQmCC","heated_object":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAsDAAkCAAYDAAUDAAQCAAQCAAUBAQUBAAUBAAQBAAUAAAUBAAUBAAYA/wUBAAUAAAIBAAECAAIBAAECAQIBAAIBAAECAAIBAAEBAAICAAIBAAECAAIB/wIBAAECAAIBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEAAAIBAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEAAAEBAAABAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAABAAEBAAEAAAEBAAEBAAEBAAAAAAEBAAEAAAABAAEAAAEBAAAAAAEBAAEBAAEAAAABAAEAAAEBAAAAAAEBAAEBAAAAAAEBAAEAAAEBAAABAAEAAAEBAAEBAAAAAAEBAAEAAAEBAAABAAEAAAEBAAEBAAAAAAEBAAEAAAEBAAABAAEAAAEBAAEBAAAAAAEBAAEAAAEBAAABAAEAAAEBAAEBAAEAAAEBAAABAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAABAAEBAAEAAAEBAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEAAAIBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAABAAEBAAABAAEBAAABAAEBAAABAAEAAAABAAEBAAABAAEBAAABAAEBAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAABAAACCwABCAACBwACBQABBQACBQACBAABBAACBAACAwABBAACAwACAwABBAACAwACAwACCAACBwACBwACBwACBwACBgADBwACBgACBwADBwACBgADBwACBwADBgADBwADBwAABQAABAABBQAABAAABQAABAABBQAABAABBQAABQABBQAABAABBQAABQABBWm4BP8SQskKAAAAAElFTkSuQmCC","Rainbow Blended Grey":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVFXbv7+A/7+BP7+A//+A/7+BP7+A/7+A/7+BP7+A/7+A/7+BP/+A/7+A/7+BP7+A/7+BP7+A/7+A/7+BP/+A/7+A/7+BP7+A/7+A/7+BP7+A//+A/7+BP7+A/7+A/7+BP7+A/7+A/7+BP/+A/7+A/7+BP7+A/7+A/7+BP7+A//+A/7+BP8DAQAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAFAAAGAAAGAAAGAAAGAAAGAAAE/gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gAA+gAA+gAA+QAA+gMA/QYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAUAAAYAAAYAAAYAAAYAAAX/AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD6AAD7AAD6AAD6AAD6AAD6AAD6AP//BQAABv8AB/8ABv8ABgAABv8AB/8ABv8ABgAABv8AB/8ABv8ABgAABv8AB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABv8ABgAABv8AB/8ABv8ABgAAB/8ABv8ABtsGzuG8pAatAAAAAElFTkSuQmCC","Brewer Qualitative Paired":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af//mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMk6ApkeZPJzAAAAAElFTkSuQmCC","magenta":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAsCBAgCAwYCBAUCAwUCAgQCAwUAAgUAAgYAAgX/AgX/Agb/AgX+Agb+AgX+Agb9AgIAAgEAAQIAAgIAAQEAAgIAAgIAAQEAAgIAAQIAAgEAAgIAAQIAAgIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQEAAgIAAQEAAgIAAQIAAgEAAQIAAgEAAQIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQIAAgEAAQIAAgIAAQEAAgIAAQEAAgIAAQEAAgIAAQEAAQIAAgIAAQEAAgIAAQEAAgIAAQEAAgIAAQEAAQIAAgEAAQIAAgEAAQIAAgEAAQIAAQEAAgIAAQEAAgIAAQEAAgIAAQEAAgIAAQEBAQACAQEBAQACAAEBAQABAQECAQEBAQABAQECAQABAQEBAAABAQEBAQABAQEBAQADAQADAgADAQACAQACAgADAQACAQACAgABAQACAgACAQACAQABAgACAQABAgACAQACAQACAgADAQACAQACAQACAgABAQACAQACAgACAQACAQABAgACAQACAQABAgACAQACAQACAQADAQACAQACAQACAAACAQACAQACAQACAQACAQACAQABAQACAQACAQACAQACAAACAAACAAABAAACAAACAAACAAABAAACAAACAAACAAABAAACAAACAAABAAACAAACAAABAAACAAACAAABAAACAAACAAABAAACAAABAAACAAACAAABAAACAAABAAACAAACAAABAAACAAABAAACAAABAAACAAACAAABAAACAAABAAACAAABAAACAAABAAACAAACAAABAAACAAACAAACAAABAAACAAACAAACAAABAAACAAACAAACAAABAAACAAACAAACAAACAAACAAADAAACAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAEo3Cf+aWbnhAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (3)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AdlfDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANe0AUgb20NpAAAAAElFTkSuQmCC","rainbow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAA/wAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAEAAAD/wAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AAA/AIA/gQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAQAAAH9AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAD8AAbMggHoSfkgAAAAAElFTkSuQmCC","GyRd":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARoaGgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMDAwICAgICAgICAgICAgICAgICAgMDAwICAgICAgICAgICAgMDAwICAgICAgICAgMDAwICAgICAgMDAwICAgICAgMDAwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMDAwICAgICAgICAgICAgICAgICAgICAgICAgICAgEBAQICAgICAgICAgICAgICAgICAgICAgICAgEBAQICAgICAgICAgICAgEBAQICAgEBAQICAgEBAQICAgEBAQICAgEBAQICAgEBAQICAgEBAQICAgEBAQEBAQICAgEBAQEBAQICAgEBAQEBAQICAgEBAQEBAQICAgEBAQEBAQICAgEBAQEBAQEBAQEBAQICAQEBAgEBAQEBAQEBAQIBAQEBAQEBAQECAQEBAQEBAgIBAQEBAQEBAQD//gD+/QD//gD//gD+/gD//gD+/QD//gD//v/+/gD//gD+/QD//gD//gD+/gD//gD+/f/+/gD//QD+/gD+/gD+/QD//v/+/QD+/gD+/QD//gD+/v/+/QD//gD+/QD+/v/+/QD+/gD+/QD+/f/+/QD9/gD+/f/+/QD+/v/+/QD+/QD+/f/+/gD+/f/9/QD+/v/+/v/9/f/+/v/9/v/9/v/+/v/9/f/9/v/+/v/9/v/+/v/9/f79/v/+/v/9/v/9/v/+/v/9/v/+/v79/v/9/v/9/v/+/v/9//79/v/+/v/9/v/9/v79/v/9/v/+//79/v/9/v/+//79///+/v79///9/v/+//79///9/v79///+///9//78/v/9//79///9/v3+AP7///3+//7///7+//3/AP7+//3///7+//3/AP7+//7+//3///7+AP3+//7+//3/AP3///3/AP3+//3/AP3///3/AP3///3/AP3///4AAP3///3/AP0A//3/AMpPSZeMBuR0AAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (11)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AS0ASwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG17AHpSYyyxAAAAAElFTkSuQmCC","Brewer Qualitative Set3":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Af/tbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABWgAl0Jfoe/AAAAAElFTkSuQmCC","Brewer Sequential Blue-Green (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ASOLRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN4LAPW6NH9bAAAAAElFTkSuQmCC","Brewer Qualitative Set1":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AZmZmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGWCAc0Sa/XWAAAAAElFTkSuQmCC","Black-Body Radiation":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAIAAAIAAAMAAAIAAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAACAAACAAADAAACAAAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABQEBBQAABZuWAv8QIrzHAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (4)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYhBnQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADbDAWhvpF1wAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (6)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQFmXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFP+AMf72HzHAAAAAElFTkSuQmCC","erdc_blue2green_muted":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ARsbGwEBAwEAAgEBAwEAAwAAAgEBAwAAAgEAAwEBAgAAAwABAwEAAgAAAwEBAwAAAgAAAwEBAgEAAwAAAgEAAgEBAwAAAgEAAwAAAgEBAwEAAgAAAgEAAwABAgEAAwAAAgEAAwABAgEAAgAAAgEBAgAAAgEBAgAAAgEAAgABAgEAAgAAAgEBAgAAAgEBAwAAAgEAAgABAQEBAQAAAgABAQEBAQAAAgEBAQABAQEAAgABAQEBAQABAgEAAQABAQEBAgAAAQABAAECAQABAAABAAABAAEBAQABAAABAAABAQECAAABAAABAAABAQABAAEBAAABAQAC/wAB/wABAAAC/wAB//8B/wACAAAB/wAB/wACAAAB//8B/wAC/wABAP8B/wAC/wAB/wAB/wAB/gAC/wAB/wAB/v8C/wAB/wAB/wAB/v8C/wAB//8B/gAB//8C/wAB/gAB/wAB/wEB/wAB/wAB/wEB/wAB/wAC/wAB/wAB/wAB/wAB/gAB/wAB/wAB/wAB/wEB/wEB/gEB/wAB/wEB/wEB/gAB/wEB/wEB/gAB/wEB/wAB/gEB/wAB/wEB/gAB/wEB/wIB/gEB/wEB/wIB/gEB/wEB/wEA/gIB/wEB/gEB/wEB/gEB/wEB/wEB/gEB/gIAAAEBAAIB/wEBAAIB/wEAAAIBAAEB/wIBAAEB/wIAAAEB/wIBAAEB/wIBAAEA/wIBAQEBAAIBAQEAAAIBAAEBAQIBAAEAAQIBAAEBAAEBAQIAAAEBAQIBAAEBAAIAAQEBAQIBAQEBAQIAAQEBAQIBAQEBAQIAAQEBAQEBAQIBAQEAAQIBAQEBAQIAAQEBAQIBAgEBAwIAAgEBAwIBAgEAAgEBAwIBAgEAAgIBAwEBAgIAAgEBAwEBAgIAAgEBAwIBAwEAAwIBBAEAAwEBAwIABAEBAwIBAwEAAwEBBAIAAwEBAwEBBAIAAwEBAwEAAwIBAwEABAIBAwEAAwEBAwIBAwEAAwIBAwEAAwIBBAEAAwEBAwIAAwEBAwEAA18lXKjeqZWeAAAAAElFTkSuQmCC","Black, Blue and White":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQAAAgAAAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQABAgACAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgABAQACAgEBAQMCAAIBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAAMCAAMBAIJYAv+DAxumAAAAAElFTkSuQmCC","GnRP":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBEGwECAQACAQECAQECAQECAQECAQECAgECAQECAQECAQICAQECAQECAQICAQEDAQECAgICAQICAQECAQICAgICAQECAQICAgICAQECAQICAgECAQICAQECAgIDAQICAQECAgMCAQICAgMCAgMCAQICAgMCAQICAgIDAgMCAQICAgMCAgICAQMCAgICAgICAQMDAgMBAgMCAwMCAgMCAgICAwMCAgMBAgMCAgMCAwMCAgMCAgMCAwIBAgMCAgMCAwMCAgMCAgIBAwMCAgMBAgMCAwIBAgMCAwMBAgMCAgMCAwIBAgMCAgMBAwMCAgIBAwMCAgIBAgIBAgIAAgIBAgIBAgIBAgIBAgIBAgIAAgIBAgIBAgIBAgIBAgIAAgIBAgIBAgEBAgIAAQEBAgIAAgEAAQIBAgEAAQIBAgEAAgIBAQEAAgIBAgEAAQIBAgEAAQIBAgEAAQEAAgEAAQEBAgEAAQIAAQEAAgEBAQEAAQEAAgEAAQEAAQEBAgEAAQIAAQEAAv//////AAD+/////wD+AP//////AAD+////////AAD+////AAD+////////AAD+////AP/+///////+///+////AP/+///////+////AP/+///+///////+AP/////+//7+///+//7////+///+//7+///+//7+///+//7////+//7+///+///+//7+//////7+//79///+/v7+///+//7+/v/+//7+//7+/v/+//7+///+/v7+//7+///+/v7+///+/v79///+//7+/v/+//79/v7+///+/v7+///9/v7+///+/v7+///9//7+/v/+//79/v/+///9/v79/v/+//79/v/9///+/v79///9/v/9/v79///+/v79///9/v/9//7+/v7+/v7+/v7+/v7+/v7+/v7+/v/+/v7+/v7+/v7+/v7+/v7+/v7+/v/+/v7+/v7+/v3+/f7//v7+/v7+/v7//v7+/f7+/v3+/v7+/v7+/v7//f7//v7+/v7//ijdbZyCWrLQAAAAAElFTkSuQmCC","Brewer Diverging Brown-Blue-Green (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQFmXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFP+AMf72HzHAAAAAElFTkSuQmCC","erdc_gold_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMBAAMBAAMBAAMBAAMBAAICAAIBAAIBAAIBAAEBAAIBAAEBAAIBAAEBAAEAAAIBAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAIAAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEAAAEBAAIBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAEAAAEBAAIBAAEBAAEBAAEBAAEAAAEBAAEBAAEBAAEBAAIBAAEAAAEBAAEBAAEBAAEBAAEBAAIAAAEBAAEBAAEBAAEBAAEBAAIBAAEAAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEAAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAIBAAEBAAEAAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAIAAAEBAAEBAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAECAAEBAAEBAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAECAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAECAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAECAAEBAAEBAAABAAEBAAEBAgEBAgECAgEBAQEBAgEBAgEBAgEBAgACAgEBAQEBAgEBAQEBAQEBAgECAQEBAQEBAwABAgEBAwEBAgECAgEBAgEBAwABAgEBAgECAgEBAQEBAgEBAgABAgECAgEBAgEBAgEBAgABAwECAgEBAgEBAgEBAgABAwECAgEBAgEBAgEBAgABAgECAgEBAgEBAgABAgECAgABAgEBAgABAgEBAwACAgEBAgABAgEBAgABAgECAgEBAgABAgEBAgACAgABAQABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAgABAnFLApwjqFaEAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYwtBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADzrAL96bdahAAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (9)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVQniAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA34AQVdYF9GAAAAAElFTkSuQmCC","Traffic Lights":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Ac0AzQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANKkAZyoIPjoAAAAAElFTkSuQmCC","nic_Edge":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78ATExMQL/BgP+BwL/BgL+BwH/BgL+BwH+BgH+BwH9BwD+BwD9BwD8BwD9Bv/7CP/5B//4BwABBAABAwAABAABBAABBAABBAABBP8BBAABBAABBP8BBAABBP8BBAABBP8BBP8BBAAGAgAEAv8FAgAEAf8DAgAEAv8DAgADAv8EAv8DAf8CAv8DAv8DAv8DAv8CAv8DAQEFAQIGAAEFAAAFAQEEAAAFAQAFAAAFAAAEAf8FAP8EAP8FAP4EAf4FAP0EAP0FAQMF/wMEAAMF/wIFAAEE/wEFAAEF/wEEAAAF/wAFAP8F//8EAP8F//4FAP4F//0E/wUCAQUCAAQCAAQCAAQCAQMCAAQCAAMCAAMCAQMCAAMCAAMCAAIBAQMCAAICAAMCAAcAAQYAAAYAAAUAAAUAAQYAAAQAAAUAAQUAAAQAAAUAAAQAAQQAAAQAAAQAAQQAAAX//wUA/wX//wUA/wT//wX//wQAAAT//wUA/wT//wT//wQA/wT//wT//wQAAAP//wEB+wEA/AEB+wEA/AEB/AEB+wEA/AEB+wAB/AEA+wEB/AAB+wEA/AAB+wEB/AAA+wAA/AAA+/8A/AAA+wAA+wAA/P8A+wAA+wAA/P8A+wAA+wAA+/8A+wAA+v8A+wAA+gD+/gD9/QD+/f/+/QD+/QD+/QD+/QD9/QD+/QD+/f/+/QD+/QD+/AD9/f/+/AD+/AH7AAH8AAH7AAD8/wH7AAH8AAD7/wH7AAD7AAD8/wH7AAD7AAD7AAH7/wD7AAD7AAD8Af/8AAD8AQD8Af/8AAD7AQD8Af/8AAD7Af/7AAD7Af/7AAD7AP/7AQD6AP/6AP79Af7+Af/9Af7+Af79Af79AP7+Af79Af79Af78AP79Af79Af78AP77Af77AP76AfwAAPz/Afz/APz/APv/APz/Afz/APwAAPz/Afz/APwAAPz/APwAAPz/AfsAAPz/APoN//kI//oG//kE//kDAPoD//kC//kC//oC//kBAPkB//kB//kA//gBAPkA/yPRGqSIJnklAAAAAElFTkSuQmCC","erdc_cyan2orange":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQw3agAAAAEBAAABAQEAAAABAQABAAEAAAABAQABAAAAAQEBAAABAAAAAQEBAAABAQAAAAEBAAABAQEAAAABAAEBAQABAAEAAQABAAEBAAAAAQABAAEBAAAAAQEBAAABAAAAAQEBAAEBAQAAAAEBAAEBAQAAAAEBAAABAQEAAAEBAAABAQEAAAABAAEBAQAAAAEBAAEBAAEAAQEBAAEBAAEAAQEBAAABAAEAAAEBAQEBAAEAAAEBAQEBAAAAAAEBAAEBAQIAAAEBAAEAAAIBAAEBAQEAAAIBAAEAAAEBAAEBAQIAAAEBAAEAAAEBAAEBAAEAAQIBAAEAAAIBAAEAAAIBAAEBAAEAAAIBAQEAAAEBAAIAAAEBAAEAAAEBAAIBAAEAAAEBAAIAAAEBAAIAAQEBAAEAAAIBAAEAAAIBAAEBAAEAAAIBAAEAAAEBAAIAAAEBAAEAAAIBAAEAAAEBAAIAAAEBAAEAAAIBAAEBAAEAAAIBAAEAAAEBAAIAAAEBAAEAAAEBAAIAAQEBAAEAAAEBAAIAAAEBAAEAAAEBAQIBAAEAAAEBAAEAAAIBAAEAAQEBAAEAAAIBAAEAAAEBAAEAAAIBAAEAAAEBAQIAAAEBAAEAAAEBAAIAAAEBAAEAAAEBAAIAAQEBAAEAAAIBAAEAAAEBAAEAAAIBAAEAAAEBAAIAAAEBAQEAAAEBAAIAAAEBAAEAAAIBAAEAAAEBAAIAAAEBAAEAAAEBAAIAAAEBAQEAAAIBAAEAAAEBAAIAAAEBAAEBAAEAAAEBAAEAAAEBAQEAAAEBAAIBAAEAAAEBAAEAAQEBAAEBAAEAAAEBAAEAAAEBAQEBAAABAAEAAQEBAAABAAEBAAEAAQABAAEBAAEBAQAAAAEBAAABAQEBAAEAAAABAQEBAAABAQABAAEBAAABAQABAAEAAQABAAEBAQABAAABAQEBAAABAAABAQEAAAABAQABAAEBAQABAAABAQABAAEBAQABAAABAQABAAEAAAABAQABAAABAQEBAK4xAnerkAt9AAAAAElFTkSuQmCC","Traffic Lights For Deuteranopes":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78Ac0AzQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANKkAZyoIPjoAAAAAElFTkSuQmCC","Purples":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AT8AfQEBAQABAAECAQEBAAABAQEBAAECAQABAQEBAAECAQABAAEBAQEBAAABAQECAAEBAQABAQEBAAECAQABAAEBAQECAAABAQEBAQEBAAABAQECAAEBAQABAAEBAQABAQEBAAECAQEBAAABAQECAQEBAAABAQECAAEBAQABAQECAAEBAQABAQEBAAECAQABAAEBAQECAQEBAAABAQECAQEBAAABAQECAQEBAAABAQECAAEBAQABAQEBAAECAQEBAQABAAECAQEBAQABAAECAQEBAQACAQEBAAEBAQACAQEBAAECAQEBAQABAQECAAEBAQABAQECAAEBAQACAQEBAQEBAAACAQEBAQEBAAECAQABAQEBAQECAAABAQECAQEBAAABAQEBAQEBAAEBAAEBAQEBAAEBAQEBAAEBAQEAAAEBAQEBAAEBAAEBAQEBAAABAQEBAAEBAQEBAAEBAQEBAAEAAAEBAQEBAAEBAQEBAAEBAQEBAAEBAQEBAAEBAAEBAQABAAEBAQEBAQEBAAEBAQEBAAEBAQEBAQEBAAEBAQEBAQECAAEBAQEBAAEBAQEBAQEBAAABAQEBAQEBAAEBAQECAAEBAQEBAQEBAAEBAQEBAQEBAAEBAQEBAAEBAQEBAQECAAEAAQABAAEBAQEBAAEBAQEBAAEBAQEBAAEBAQEBAAEBAAEAAQEBAAEBAQEBAAEBAQEBAAEBAQABAAEBAQEBAAEAAQEBAAEBAQEBAAEBAAEBAQEBAAEBAQEBAAEBAQAAAAEBAQEBAAAAAAEBAAEAAQABAAEBAAEAAQABAAEAAAEBAQABAAEAAAEBAQAAAAEBAAEBAQAAAAEBAAEAAAABAQEBAAEAAAABAQEAAAABAAEAAQEBAAABAAEAAQEBAAAAAAEBAAAAAQEBAAAAAAABAAEAAQAAAAEBAAAAAAABAQEAAAABAAEAAAABAQAAAAEAAAABAAEAAQABAAEAAAABAAAAAQEAAAABAAEAAAABAQAAAAEBAAAAAAEBAQAAAOmNAvbMp2ZGAAAAAElFTkSuQmCC","Brewer Qualitative Set2":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AbOzswAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE9DAhsevSXNAAAAAElFTkSuQmCC","blue2yellow":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAA/wwD/wgD/wcD/wUD/wQC/wQD/wMC/wMC/wMC/wMB/wMC/wIC/wIB/wIC/wIB/wIB/wIC/wIB/wIB/wEC/wIB/wIB/wEB/wEB/wIB/wEB/wIC/wEB/wEB/wEB/wEB/wIB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEA/wAB/wEB/wEB/wEB/wEB/wEB/wAB/wEB/wEB/wAA/wEB/wEB/wEB/wAB/wEB/wAA/wEB/wEB/wAB/wEB/wAB/wEA/wAB/wEB/wAB/wEB/wAA/wEB/wAB/wEB/wAB/wEA/wAB/wAB/wEB/wAB/wEA/wAB/wAB/wEB/wAA/wAB/wEB/wAB/wAA/wEB/wAB/wAB/wAA/wEB/wAB/wAB/wAA/wEB/wAB/wAB/wAA/wAB/wEB/wAB/wAA/wAB/wAB/wAA/wAB/wEB/wAB/wAA/wAB/wAB/wAA/wAB/wAB/wAB/wAA/wAB/wAB/wEA/wAB/wAB/wAB/wAA/wAB/wAB/wAA/wAB/wAB/wEBAAEBAAIB/wEBAAEB/wEBAAEA/wEBAAEBAAEB/wIBAAEB/wEBAAEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEAAAIB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEBAAEB/wEB/wEBAAEB/wEBAAEB/wEBAAEB/wEB/wEBAAEB/wEBAAEB/wEB/wEBAAEB/wEB/wEBAAEB/wEB/wEBAAEB/wEB/wEBAAEB/wEB/wEB/wEBAAEB/wEB/wEB/wAB/wEBAAEB/wEB/wEB/wEB/wEBAAEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEB/wEC/wAB/gEB/wEB/wEB/wEB/gEB/wEB/wEB/gEB/wEB/gEB/wEB/gEB/gEB/gEB/wEB/gEB/QEB/gAB/gEC/QEB/gEB/AEB/QEB/AEB+wEB+gEB+fjg2wCZpyqHAAAAAElFTkSuQmCC","Brewer Diverging Purple-Orange (8)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AVQniAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA34AQVdYF9GAAAAAElFTkSuQmCC","GnYlRd":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQBoNwECAQECAQACAQEBAQECAQECAQECAQECAQECAQICAQECAQEBAQECAQECAQECAQECAQMCAQIBAAICAQICAQICAQIBAQICAQECAQIBAQICAAECAQICAQIBAQECAQICAQEBAQQCAQQBAAMCAQMBAQMCAQMBAAMCAQMBAQMBAQMCAAMBAQMCAQIBAQMCAAIBAQMCAQMBAAMBAAIBAQMBAAMBAQICAAMBAAMBAQIBAAMBAAIBAQMCAAIBAAMBAQIBAAMBAQIBAAMBAQIBAAIBAQMCAAIBAQMBAAIBAQIBAAMBAQIBAAMBAQIBAAIBAQMBAAIBAQIBAQIBAQIBAQIAAgIBAQIBAQIBAgIBAQIBAQIBAQIBAgIAAQIBAQIBAgIBAQIBAQIBAgEAAgIBAgIBAQEAAgIBAgIBAgEBAQIAAgIBAgIBAgEAAQIBAgIBAgEBAgIAAQEBAgIAAgEBAgIBAgEAAgIBAgEAAgEBAgIAAgEBAgIBAQEAAgIBAgEAAgIBAgEAAgD//gD//gD//gD+/gD//gD//gD//gD//gD+/gD//gD//gD//QD//gD+/v///gD//gD+/gD//wD+/gD//gD+/gD//gD+/gD//gD+/wD//gD+/gD+/gD//gD+/gD//gD+/gD+/wD+/gD+/gD+/wD//gD+/wD+/gD+/gD+/wD+/gD+/gD+///+/gD+/gD+/wD+/gD+/wD9///+/gD9/wD+/wD9///+/gD+/wD9///+/wD9/gD+///9/wD+/wD9/v/+/wD9///+/wD9///+/gD+///9/wD+///9/wD+///9/v/+/wD9///9/wD+///9///9///+/v/+///+///+///9///+///+//79///+///+///9/v/+///9///9//7+///9///+AP7///7+AP/+//7+AP7+AP7+///+AP7+//7+AP/+AP7+//7+AP/9//7+AP79AP7/AP7+AP7/AP7+AP/+AP7///7+AP7+AP7+AP7+AP7+AP79AP7+AP7+AP7+AOJqJdzQEL2wAAAAAElFTkSuQmCC","Brewer Sequential Yellow-Orange-Brown (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AYwtBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADzrAL96bdahAAAAAElFTkSuQmCC","Spectrum":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AaZWKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHGJASYKgLW3AAAAAElFTkSuQmCC","Citrus":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AfmDJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOVzAaKNLBIxAAAAAElFTkSuQmCC","PuOr":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AX87CAIBAAIBAAIBAAIBAAICAAIBAAIBAAIBAAIBAAIB/wIBAAICAAIBAAIBAAMBAAIBAAICAAEBAAIBAAICAAIBAQIBAAICAAIBAAIBAAICAAIBAQIBAAICAAIBAAIBAAECAQIBAAICAQICAAEBAQICAAICAQIBAAICAQEBAQICAAICAQIBAAECAQICAAIBAQICAAECBAECAwICAwECAwECAwECAgICAwECAgECAwECAgICAwECAgECAgECAwICAgEDAgECBAECAwEBAwECAwECAwECBAACAwECAwECAwECAwECAwECAwECAwECAwACAwECAwACBAACAwEBAwACBAABAwACAwABAwACBAACAwABAwACAwABAwACBAABAwACAwACAwABAwABAwABAwABA/8BAgABAwACAwABAwABAwABA/8BAgABAwACAwABAwABA/8BAgABAwABAgABA/8AAgABAwABAgABA/8BAgABAwAAAv8BAgABAwABAv8BAwABAv8AA///////AP//////AP7/////AP/+////AP7/AP//////AP//////AP7+////AP//////AP7+///////+//7/AP/////+//7/AP/+//////7+AP/////+//7/AP/////+//7+///+//7////+//7+///+//7+///+//7+//////7+///+//7+///+//7+//////79//7+//7+/v7+//7+/v7+//79///+/v7+//7+/v7+//7+/v7+//7+//79/v/+//7+/v79//7+/v7+//79//7+/v79//7+/v7+///9/v7+//7+/v79//7+/v79//7+/v79///9//79/v/9//79/v79//79/v/9//79//79/v79///9/v79//79//79/v79///+/v7+/v/+/f7+/v7//v/+/v7+/v/+/v7+/v/+/v79/v7+/v/+/v7+/v/+/v7+/v7+/f///v7+/v/+/f7//v/+/f7+/v///f7+/v/+/v7//f/+/v7//v///f7//oGweYlzdUIuAAAAAElFTkSuQmCC","Cool to Warm (Extended)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAWQECAQECAQECAQICAQECAQECAQICAQECAQECAQECAQECAQABAQECAQECAQABAQECAQECAQECAgEDAQECAQECAQECAgACAQECAQEDAgICAQEDAgECAgEDAQECAgEDAgECAQEDAQICAgECAQEDAQECAQEDAgECAQECAQICAQECAQECAQECAQICAQECAAEBAQECAQICAQECAQECAQECAQICAQECAQECAQEBAQIDAgECAgICAQECAgICAQECAgICAgEDAQICAgICAgECAQIDAgICAgECAQICAgEDAQICAgICAQECAgICAQICAgECAQICAgICAgICAgMDAgIDAgMCAwIDAgMDAgICAwMDAgQDAgMCAQMDAgQCAgMDAgQDAgMCAgMDAQMBAQICAQMBAQMCAQIBAQMCAQIBAQMCAQMBAQQCAQMCAQMBAQMCAQMBAQMCAQMCAQIBAQMBAQIBAQICAQIBAQMBAQIBAQMBAAQBAQMBAQQBAAQBAQQBAAMBAQQBAQ766QD//QD//gD//QD//gD//QD+/P/9/QD+/f/+/AD9/f/9/AD+/P/9/AD9/P/9/QD9/P/9/AD9/f/8/P/9/QD9/P/9/f/8/AD9/f/+/v/9/QD+/v/9/QD9/v/+/f/9/gD9/f/+/v/9/gD9/f/9/gD+/v/9/f/9/v/9/f/8/v/9/f/9/f/8/v/9/f/9/f/8/v/9/v/+/f/+/v7+/v/9/v/+/v/+/v7+/v79/f79/v39/f79/v39/v79/f39/v79/v79/v7+//79/v79//7+/v79//79//7+/v/+//7+//7+/v////7+///+//7+/v7+//////7+//7+///+//7+///+/v7+//79////AP7/AP4AAP//Af7/AP7/AP//AP7/AP8AAf7/Af8AAf7/Af8AAP7/Af8AAf7/Af8AAf4AAv4AAf8AAv4BAf4AAv8AAf4AAv4AAf8AAP4AAf8AAf4AAP4AAf8AAP4AAf4BAf8AAP4BAf8AAf4BAP4AAf8BAP4AAVyaJ7KVZg9PAAAAAElFTkSuQmCC","erdc_orange_BW":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AQAAAAMBAAQBAAMBAAMBAAMBAAIBAAIBAAIBAAIBAAIBAAIBAAEBAAIBAAEBAAEAAAIBAAEBAAEBAAIAAAEBAAEAAAIBAAEAAAIAAAEBAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIAAAEBAAEAAAIBAAEAAAIBAAEAAAIBAAIAAAEBAAIAAAEBAAIAAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAIAAAEBAAIAAAEBAAIAAAEBAAIBAAEAAAIBAAEAAAIBAAEAAAIBAAIAAAEBAAIAAAEBAAIBAAEAAAIBAAEAAAIBAAEBAAIAAAEBAAIBAAEAAAIBAAEBAAIAAAEBAAIBAAEAAAIBAAEBAAIAAAEBAAIBAAEBAAEBAAIAAAEBAAIBAAEBAAIAAAEBAAIBAAEBAAEBAAIAAAEBAAIBAAEBAAEBAAIBAAEBAAEBAAEBAAIBAAEBAAEBAAIBAAEBAAEAAAIBAAEBAAEBAAIBAAEBAAECAAEBAAEBAAEBAAIBAAEBAAEBAAEBAAEBAAEBAAIBAAEBAAECAAEBAAEBAAEBAAEBAAEBAAECAAEBAAEBAAEBAAEBAAECAAEBAAEBAAEBAAEBAAICAAEBAAABAQEBAAECAQEBAAEBAQEBAAECAQEBAAEBAQECAAABAQEBAQEBAAECAQEBAQEBAAACAgEBAwABAgECAQABAgEBAgACAQEBAgABAQACAgEBAQABAQECAgABAQEBAQACAgABAgABAwABAwACAgABAwABAgACAgABAgABAwACAgABAgACAgABAgABAgACAgABAgABAwABAwACAgABAwABAgACAwABAgABAwACAgABAwABAgACAwABAgABAwACAgABAwABAgACAgABAwABAgACAwABAgABAgACAwABAgABAgACAwABAgABAgACAwABAgACAwABAgABAgACAgABAwACAgABAgACAgABAwABAgACAgABAwACAgABAgACAwABApaiArJC2yPPAAAAAElFTkSuQmCC","Brewer Sequential Blue-Purple (7)":"iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAIAAAC+O+cgAAADDElEQVQoFQEBA/78AW4BawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJNJANwTjcz2AAAAAElFTkSuQmCC"}
