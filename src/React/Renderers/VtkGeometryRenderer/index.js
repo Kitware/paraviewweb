@@ -10,6 +10,7 @@ import vtkInteractorStyleManipulator from 'vtk.js/Sources/Interaction/Style/Inte
 import vtkTrackballPan from 'vtk.js/Sources/Interaction/Manipulators/TrackballPan';
 import vtkTrackballZoom from 'vtk.js/Sources/Interaction/Manipulators/TrackballZoom';
 import vtkTrackballRotate from 'vtk.js/Sources/Interaction/Manipulators/TrackballRotate';
+import vtkFPSMonitor from 'vtk.js/Sources/Interaction/UI/FPSMonitor';
 
 import BusyMonitor from '../../../Common/Misc/BusyMonitor';
 
@@ -51,6 +52,19 @@ export default class VtkGeometryRenderer extends React.Component {
     this.renderWindow = vtkSynchronizableRenderWindow.newInstance(
       initialValues
     );
+
+    // FPS monitor
+    this.fpsMonitor = vtkFPSMonitor.newInstance();
+    this.fpsMonitor.setRenderWindow(this.renderWindow);
+    // Update fps style
+    const v = this.props.showFPS;
+    this.fpsMonitor.setMonitorVisibility(v, v, v);
+    const fpsDOM = this.fpsMonitor.getFpsMonitorContainer();
+    fpsDOM.style.position = 'absolute';
+    fpsDOM.style.bottom = '10px';
+    fpsDOM.style.right = '10px';
+    fpsDOM.style.borderRadius = '5px';
+    fpsDOM.style.background = 'rgba(255,255,255,0.5)';
 
     // OpenGlRenderWindow
     this.openGlRenderWindow = vtkOpenGLRenderWindow.newInstance({
@@ -102,6 +116,7 @@ export default class VtkGeometryRenderer extends React.Component {
   }
 
   componentDidMount() {
+    this.fpsMonitor.setContainer(this.rootContainer);
     this.openGlRenderWindow.setContainer(this.rootContainer);
     this.interactor.bindEvents(this.rootContainer);
 
@@ -137,12 +152,18 @@ export default class VtkGeometryRenderer extends React.Component {
       this.renderWindow.addView(this.openGlRenderWindow);
     }
 
+    if (nextProps.showFPS !== this.props.showFPS) {
+      const v = nextProps.showFPS;
+      this.fpsMonitor.setMonitorVisibility(v, v, v);
+    }
+
     if (nextProps.onImageReady !== this.props.onImageReady) {
       this.setNotifyImageReady(nextProps.onImageReady);
     }
   }
 
   componentWillUnmount() {
+    this.fpsMonitor.delete();
     this.interactor.unbindEvents(this.rootContainer);
     this.unsubscribeViewChangeTopic();
     this.removeViewObserver(this.state.viewId);
@@ -195,13 +216,15 @@ export default class VtkGeometryRenderer extends React.Component {
     });
   }
 
-  setCameraParameters({ position, focalPoint, viewUp, centerOfRotation }) {
-    const activeCamera =
-      this.activeCamera ||
-      this.renderWindow.getRenderers()[0].getActiveCamera();
-    activeCamera.set({ position, focalPoint, viewUp });
-    this.interactorStyle.setCenterOfRotation(centerOfRotation);
-    this.renderWindow.render();
+  setCameraParameters({ position, focalPoint, viewUp, centerOfRotation } = {}) {
+    if (position && focalPoint && viewUp && centerOfRotation) {
+      const activeCamera =
+        this.activeCamera ||
+        this.renderWindow.getRenderers()[0].getActiveCamera();
+      activeCamera.set({ position, focalPoint, viewUp });
+      this.interactorStyle.setCenterOfRotation(centerOfRotation);
+      this.renderWindow.render();
+    }
   }
 
   getRenderWindow() {
@@ -226,6 +249,7 @@ export default class VtkGeometryRenderer extends React.Component {
     const dims = this.rootContainer.getBoundingClientRect();
     this.openGlRenderWindow.setSize(dims.width, dims.height);
     this.renderWindow.render();
+    this.fpsMonitor.update();
   }
 
   unsubscribeViewChangeTopic() {
@@ -322,6 +346,7 @@ VtkGeometryRenderer.propTypes = {
   viewIdUpdated: PropTypes.func.isRequired,
   onBusyChange: PropTypes.func,
   client: PropTypes.object.isRequired,
+  showFPS: PropTypes.bool,
 };
 
 VtkGeometryRenderer.defaultProps = {
@@ -333,6 +358,7 @@ VtkGeometryRenderer.defaultProps = {
   clearOneTimeUpdatersOnUnmount: false,
   clearInstanceCacheOnUnmount: false,
   clearArrayCacheOnUnmount: false,
+  showFPS: false,
   onImageReady: null,
   onBusyChange: null,
 };
