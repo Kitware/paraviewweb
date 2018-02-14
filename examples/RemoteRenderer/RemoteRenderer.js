@@ -378,6 +378,7 @@ function chain() {
 //     - fireMutualInformationSubscriptionChange(request)
 //     - subscribeToMutualInformation(onDataReady, variables = [], metadata = {})
 //     - setMutualInformation(data)
+//     - hasMutualInformation(request, variable)
 //     - destroy()
 // ----------------------------------------------------------------------------
 
@@ -473,6 +474,23 @@ function dataSubscriber(publicAPI, model, dataName, dataHandler) {
         return flushDataToListener(dataListener, data);
       });
     }
+  };
+  // Retrieve data for a single variable from our cache, given current request.
+  // Call from inside on{dataName}SubscriptionChange to find out if
+  // cache needs to be updated.
+  publicAPI['has' + capitalize(dataName)] = function (inRequest, variable) {
+    try {
+      if (inRequest) {
+        var request = Object.assign({}, inRequest, { variables: [variable] });
+        var dataToForward = dataHandler.get(model[dataContainerName], request, null);
+        if (dataToForward) {
+          return true;
+        }
+      }
+    } catch (err) {
+      console.log('has ' + dataName + ' error caught:', err);
+    }
+    return false;
   };
 
   publicAPI.destroy = chain(off, publicAPI.destroy);
@@ -1792,6 +1810,7 @@ var DEFAULT_SESSION_MANAGER_URL = exports.DEFAULT_SESSION_MANAGER_URL = window.l
 function wsConnect(publicAPI, model) {
   var wsConnection = _WebsocketConnection2.default.newInstance({ urls: model.config.sessionURL, secret: model.config.secret, retry: model.config.retry });
   model.subscriptions.push(wsConnection.onConnectionReady(publicAPI.readyForwarder));
+  model.subscriptions.push(wsConnection.onConnectionError(publicAPI.errorForwarder));
   model.subscriptions.push(wsConnection.onConnectionClose(publicAPI.closeForwarder));
 
   // Add to the garbage collector
@@ -2739,6 +2758,35 @@ function Session(publicAPI, model) {
     return deferred.promise;
   };
 
+  // split out to support a message with a bare binary attachment.
+  function getAttachment(binaryKey) {
+    // console.log('Adding binary attachment', binaryKey);
+    var index = attachments.findIndex(function (att) {
+      return att.key === binaryKey;
+    });
+    if (index !== -1) {
+      var result = attachments[index].data;
+      // TODO if attachment is sent mulitple times, we shouldn't remove it yet.
+      attachments.splice(index, 1);
+      return result;
+    }
+    console.error('Binary attachment key found without matching attachment');
+    return null;
+  }
+  // To do a full traversal of nested objects/lists, we need recursion.
+  function addAttachment(obj_list) {
+    for (var key in obj_list) {
+      if (typeof obj_list[key] === 'string' && regexAttach.test(obj_list[key])) {
+        var binaryKey = obj_list[key];
+        var replacement = getAttachment(binaryKey);
+        if (replacement !== null) obj_list[key] = replacement;
+      } else if (_typeof(obj_list[key]) === 'object') {
+        // arrays are also 'object' with this test.
+        addAttachment(obj_list[key]);
+      }
+    }
+  }
+
   publicAPI.onmessage = function (event) {
     if (event.data instanceof ArrayBuffer || event.data instanceof Blob) {
       // we've gotten a header with the keys for this binary data.
@@ -2779,32 +2827,12 @@ function Session(publicAPI, model) {
         }
       } else {
         if (payload.result && attachments.length > 0) {
-          // To do a full traversal of nested objects/lists, we need recursion.
-          var addAttachment = function addAttachment(obj_list) {
-            for (var key in obj_list) {
-              if (typeof obj_list[key] === 'string' && regexAttach.test(obj_list[key])) {
-                (function () {
-                  var binaryKey = obj_list[key];
-                  // console.log('Adding binary attachment', binaryKey);
-                  var index = attachments.findIndex(function (att) {
-                    return att.key === binaryKey;
-                  });
-                  if (index !== -1) {
-                    obj_list[key] = attachments[index].data;
-                    // TODO if attachment is sent mulitple times, we shouldn't remove it yet.
-                    attachments.splice(index, 1);
-                  } else {
-                    console.error('Binary attachment key found without matching attachment');
-                  }
-                })();
-              } else if (_typeof(obj_list[key]) === 'object') {
-                // arrays are also 'object' with this test.
-                addAttachment(obj_list[key]);
-              }
-            }
-          };
-
-          addAttachment(payload.result);
+          if (typeof payload.result === 'string' && regexAttach.test(payload.result)) {
+            var replacement = getAttachment(payload.result);
+            if (replacement !== null) payload.result = replacement;
+          } else {
+            addAttachment(payload.result);
+          }
         }
         var match = regexRPC.exec(payload.id);
         if (match) {
@@ -26310,10 +26338,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = createMethods;
+exports.useBase64Delivery = useBase64Delivery;
+exports.useBinaryDelivery = useBinaryDelivery;
+var binaryDelivery = true;
+
 function createMethods(session) {
   return {
     getArray: function getArray(hash) {
-      return session.call('viewport.geometry.array.get', [hash]);
+      var binary = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : binaryDelivery;
+      return session.call('viewport.geometry.array.get', [hash, binary]);
     },
     onViewChange: function onViewChange(callback) {
       return session.subscribe('viewport.geometry.view.subscription', callback);
@@ -26328,6 +26361,14 @@ function createMethods(session) {
       return session.call('viewport.geometry.view.observer.remove', [viewId]);
     }
   };
+}
+
+function useBase64Delivery() {
+  binaryDelivery = false;
+}
+
+function useBinaryDelivery() {
+  binaryDelivery = true;
 }
 
 /***/ }),
