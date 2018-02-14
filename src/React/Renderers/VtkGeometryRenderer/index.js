@@ -315,6 +315,7 @@ export default class VtkGeometryRenderer extends React.Component {
   }
 
   render() {
+    this.fpsMonitor.update();
     return (
       <div
         className={this.props.className}
