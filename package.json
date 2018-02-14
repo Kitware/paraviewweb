@@ -17,12 +17,12 @@
         "commander": "2.13.0",
         "jszip": "3.1.5",
         "pako": "1.0.6",
-        "plotly.js": "1.33.1",
-        "shelljs": "0.7.8",
-        "vtk.js": "6.2.5",
-        "wslink": "0.1.4"
+        "shelljs": "0.7.8"
     },
     "devDependencies": {
+        "plotly.js": "1.33.1",
+        "vtk.js": "6.2.7",
+        "wslink": "0.1.4",
         "monologue.js": "0.3.5",
         "mout": "1.1.0",
         "react": "16.2.0",
