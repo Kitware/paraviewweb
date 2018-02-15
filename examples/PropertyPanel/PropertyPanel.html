@@ -23335,9 +23335,9 @@ var SliderProperty = function (_React$Component) {
     value: function valueChange(idx, newVal) {
       var newData = this.state.data;
       if (idx === null) {
-        newData.value = newVal;
+        newData.value = Number(newVal);
       } else {
-        newData.value[idx] = newVal;
+        newData.value[idx] = Number(newVal);
       }
       this.setState({
         data: newData
