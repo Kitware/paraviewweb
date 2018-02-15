@@ -51,9 +51,9 @@ export default class SliderProperty extends React.Component {
   valueChange(idx, newVal) {
     const newData = this.state.data;
     if (idx === null) {
-      newData.value = newVal;
+      newData.value = Number(newVal);
     } else {
-      newData.value[idx] = newVal;
+      newData.value[idx] = Number(newVal);
     }
     this.setState({
       data: newData,
