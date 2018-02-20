@@ -25588,7 +25588,8 @@ var VtkMouseListener = function () {
     _classCallCheck(this, VtkMouseListener);
 
     this.client = vtkWebClient;
-    this.ready = true;
+    this.lastEventTime = Date.now();
+    this.throttleTime = 16.6; // ms => 30 fps
     this.width = width;
     this.height = height;
     this.viewId = viewId;
@@ -25624,7 +25625,8 @@ var VtkMouseListener = function () {
           _this.emit(INTERATION_TOPIC, true);
         }
         if (_this.client) {
-          if (_this.ready || vtkEvent.action !== 'move') {
+          var tNow = Date.now();
+          if (tNow > _this.lastEventTime + _this.throttleTime || vtkEvent.action !== 'move') {
             // Make sure we only send the last down or first up before/after a move
             if (vtkEvent.action !== 'move' && _this.lastEvent) {
               // eat first down action
@@ -25639,9 +25641,8 @@ var VtkMouseListener = function () {
               }
             }
             _this.lastEvent = vtkEvent;
-            _this.ready = false;
+            _this.lastEventTime = tNow;
             _this.client.MouseHandler.interaction(vtkEvent).then(function (resp) {
-              _this.ready = true;
               _this.doneCallback(vtkEvent.action !== 'up');
             }, function (err) {
               console.log('event err', err);
@@ -25680,13 +25681,12 @@ var VtkMouseListener = function () {
           _this.emit(INTERATION_TOPIC, true);
         }
         if (_this.client) {
-          if (_this.ready || vtkEvent.action !== 'move') {
-            _this.ready = false;
+          var tNow = Date.now();
+          if (tNow > _this.lastEventTime + _this.throttleTime || vtkEvent.action !== 'move') {
+            _this.lastEventTime = tNow;
             _this.client.MouseHandler.interaction(vtkEvent).then(function (resp) {
-              _this.ready = true;
               _this.doneCallback(vtkEvent.action !== 'up');
             }, function (err) {
-              _this.ready = true;
               _this.doneCallback(vtkEvent.action !== 'up');
             });
           }
@@ -25707,6 +25707,18 @@ var VtkMouseListener = function () {
     key: 'setInteractionDoneCallback',
     value: function setInteractionDoneCallback(callback) {
       this.doneCallback = callback || NoOp;
+    }
+  }, {
+    key: 'setThrottleTime',
+    value: function setThrottleTime() {
+      var tTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 16.6;
+
+      this.throttleTime = tTime;
+    }
+  }, {
+    key: 'getThrottleTime',
+    value: function getThrottleTime() {
+      return this.throttleTime;
     }
   }, {
     key: 'updateSize',
