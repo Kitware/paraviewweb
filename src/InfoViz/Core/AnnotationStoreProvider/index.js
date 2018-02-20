@@ -1,6 +1,6 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
-import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import AnnotationBuilder from 'paraviewweb/src/Common/Misc/AnnotationBuilder';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
 
 // ----------------------------------------------------------------------------
 // Annotation Store Provider

@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ButtonSelectorWidget from '..';
+import ButtonSelectorWidget from 'paraviewweb/src/React/Widgets/ButtonSelectorWidget';
 
 const container = document.querySelector('.content');
 

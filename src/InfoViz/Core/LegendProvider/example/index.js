@@ -3,8 +3,8 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import LegendProvider from '..';
-import SvgIconWidget from '../../../../React/Widgets/SvgIconWidget';
+import LegendProvider from 'paraviewweb/src/InfoViz/Core/LegendProvider';
+import SvgIconWidget from 'paraviewweb/src/React/Widgets/SvgIconWidget';
 
 const legendEntries = [
   'Aashish',

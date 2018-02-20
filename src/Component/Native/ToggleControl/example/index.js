@@ -1,8 +1,8 @@
 import 'normalize.css';
 
-import ToggleControlComponent from '..';
-import BGColorComponent from '../../BackgroundColor';
-import Spacer from '../../Spacer';
+import ToggleControlComponent from 'paraviewweb/src/Component/Native/ToggleControl';
+import BGColorComponent from 'paraviewweb/src/Component/Native/BackgroundColor';
+import Spacer from 'paraviewweb/src/Component/Native/Spacer';
 
 const container = document.querySelector('.content');
 container.style.height = '100vh';

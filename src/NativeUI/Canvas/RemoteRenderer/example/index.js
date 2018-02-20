@@ -2,9 +2,9 @@ import 'normalize.css';
 
 import SmartConnect from 'wslink/src/SmartConnect';
 
-import RemoteRenderer from '..';
-import SizeHelper from '../../../../Common/Misc/SizeHelper';
-import ParaViewWebClient from '../../../../IO/WebSocket/ParaViewWebClient';
+import RemoteRenderer from 'paraviewweb/src/NativeUI/Canvas/RemoteRenderer';
+import SizeHelper from 'paraviewweb/src/Common/Misc/SizeHelper';
+import ParaViewWebClient from 'paraviewweb/src/IO/WebSocket/ParaViewWebClient';
 
 document.body.style.padding = '0';
 document.body.style.margin = '0';

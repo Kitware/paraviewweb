@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import LightControl from '..';
+import LightControl from 'paraviewweb/src/React/CollapsibleControls/LightControl';
 
 document.body.style.padding = '10px';
 

@@ -1,5 +1,5 @@
 import style from 'PVWStyle/NativeUI/RemoteRendererStatsTable.mcss';
-import htmlTemplate from './template.html';
+import htmlTemplate from 'paraviewweb/src/NativeUI/Renderers/RemoteRendererStatsTable/template.html';
 
 export default class RemoteRendererStatsTable {
   constructor(container = null) {

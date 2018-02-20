@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TogglePanelWidget from '..';
+import TogglePanelWidget from 'paraviewweb/src/React/Widgets/TogglePanelWidget';
 
 const container = document.querySelector('.content');
 

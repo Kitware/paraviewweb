@@ -1,8 +1,8 @@
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/FieldSelector.mcss';
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import template from './template.html';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import template from 'paraviewweb/src/InfoViz/Native/FieldSelector/template.html';
 
 // ----------------------------------------------------------------------------
 // Global

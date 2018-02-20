@@ -2,12 +2,12 @@ import d3 from 'd3';
 
 import style from 'PVWStyle/InfoVizNative/InformationDiagram.mcss';
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import htmlContent from './body.html';
-import iconImage from './InfoDiagramIconSmall.png';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import htmlContent from 'paraviewweb/src/InfoViz/Native/MutualInformationDiagram/body.html';
+import iconImage from 'paraviewweb/src/InfoViz/Native/MutualInformationDiagram/InfoDiagramIconSmall.png';
 // import multiClicker from '../../Core/D3MultiClick';
-import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
-import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
+import AnnotationBuilder from 'paraviewweb/src/Common/Misc/AnnotationBuilder';
 
 import {
   calculateAngleAndRadius,

@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CollapsibleWidget from '..';
+import CollapsibleWidget from 'paraviewweb/src/React/Widgets/CollapsibleWidget';
 
 function Accordion(props) {
   const mainStyle = {

@@ -3,8 +3,8 @@ import deepEquals from 'mout/src/lang/deepEquals';
 
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
-import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
-import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
+import AnnotationBuilder from 'paraviewweb/src/Common/Misc/AnnotationBuilder';
 
 // import downArrowImage from './down_arrow.png';
 

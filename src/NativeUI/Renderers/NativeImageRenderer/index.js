@@ -1,8 +1,8 @@
 /* global document Image */
 
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
+import MouseHandler from 'paraviewweb/src/Interaction/Core/MouseHandler';
 
-import SizeHelper from '../../../Common/Misc/SizeHelper';
+import SizeHelper from 'paraviewweb/src/Common/Misc/SizeHelper';
 
 function formatSize(memorySize) {
   if (!memorySize) {

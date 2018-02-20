@@ -1,4 +1,4 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
 
 const DEFAULT_FIELD_STATE = {
   range: [0, 1],

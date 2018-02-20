@@ -1,5 +1,5 @@
-import { generateUUID } from '../UUID';
-import SelectionBuilder from '../SelectionBuilder';
+import { generateUUID } from 'paraviewweb/src/Common/Misc/UUID';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
 
 // ----------------------------------------------------------------------------
 // Internal helpers

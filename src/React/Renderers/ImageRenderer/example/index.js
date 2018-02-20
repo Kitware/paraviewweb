@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ImageRenderer from '..';
+import ImageRenderer from 'paraviewweb/src/React/Renderers/ImageRenderer';
 
 const container = document.createElement('div');
 const btn = document.createElement('button');

@@ -3,8 +3,8 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ColorMapEditorWidget from '..';
-import presets from './presets.json';
+import ColorMapEditorWidget from 'paraviewweb/src/React/Widgets/ColorMapEditorWidget';
+import presets from 'paraviewweb/src/React/Widgets/ColorMapEditorWidget/example/presets.json';
 
 const container = document.querySelector('.content');
 

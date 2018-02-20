@@ -1,5 +1,5 @@
 import Monologue from 'monologue.js';
-import Presets from './Presets';
+import Presets from 'paraviewweb/src/Common/Core/LookupTable/Presets';
 
 const CHANGE_TOPIC = 'LookupTable.change';
 

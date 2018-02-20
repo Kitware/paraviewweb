@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import MultiViewControl from '..';
+import MultiViewControl from 'paraviewweb/src/React/CollapsibleControls/MultiViewControl';
 
 document.body.style.padding = '10px';
 

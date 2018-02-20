@@ -5,10 +5,10 @@ import ReactDOM from 'react-dom';
 
 import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
-import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import Probe3DViewer from '..';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import ImageBuilder from 'paraviewweb/src/Rendering/Image/DataProberImageBuilder';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
+import Probe3DViewer from 'paraviewweb/src/React/Viewers/Probe3DViewer';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
 
 const bodyElement = document.querySelector('.content');
 

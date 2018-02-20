@@ -1,4 +1,4 @@
-import CompositeClosureHelper from '../../Core/CompositeClosureHelper';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
 
 // ----------------------------------------------------------------------------
 // Global

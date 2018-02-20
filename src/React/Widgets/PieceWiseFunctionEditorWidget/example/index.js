@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import PieceWiseFunctionEditorWidget from '..';
+import PieceWiseFunctionEditorWidget from 'paraviewweb/src/React/Widgets/PieceWiseFunctionEditorWidget';
 
 const container = document.querySelector('.content');
 

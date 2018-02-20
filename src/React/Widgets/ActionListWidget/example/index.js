@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ActionListWidget from '..';
+import ActionListWidget from 'paraviewweb/src/React/Widgets/ActionListWidget';
 
 const container = document.querySelector('.content');
 const list = [

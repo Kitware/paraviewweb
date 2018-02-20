@@ -1,5 +1,5 @@
-import histogram2d from './histogram2d';
-import counts from './counts';
+import histogram2d from 'paraviewweb/src/InfoViz/Core/SelectionProvider/histogram2d';
+import counts from 'paraviewweb/src/InfoViz/Core/SelectionProvider/counts';
 
 const dataMapping = {
   histogram2d,

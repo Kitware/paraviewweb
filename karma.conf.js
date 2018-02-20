@@ -1,6 +1,9 @@
 /* eslint-disable global-require */
 /* eslint-disable react/require-extension */
+var path = require('path');
 var loaders = require('./config/webpack.loaders.js');
+
+var styles = path.join(__dirname, './style');
 
 module.exports = function karmaConf(config) {
   config.set({
@@ -43,6 +46,12 @@ module.exports = function karmaConf(config) {
       },
       module: {
         rules: [].concat(loaders),
+      },
+      resolve: {
+        alias: {
+          paraviewweb: __dirname,
+          PVWStyle: styles,
+        },
       },
     },
 

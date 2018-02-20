@@ -1,5 +1,5 @@
 /* global Blob window URL */
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
 
 function wslinkImageStream(publicAPI, model) {
   if (!model.client) throw Error('Client must be provided');

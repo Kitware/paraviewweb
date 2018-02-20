@@ -1,5 +1,5 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import dataHelper from './dataHelper';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import dataHelper from 'paraviewweb/src/InfoViz/Core/SelectionProvider/dataHelper';
 
 // ----------------------------------------------------------------------------
 // Selection Provider

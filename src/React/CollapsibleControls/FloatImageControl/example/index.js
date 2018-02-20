@@ -3,8 +3,8 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import FloatImageControl from '..';
-import jsonData from './pipeline';
+import FloatImageControl from 'paraviewweb/src/React/CollapsibleControls/FloatImageControl';
+import jsonData from 'paraviewweb/src/React/CollapsibleControls/FloatImageControl/example/pipeline';
 
 document.body.style.padding = '10px';
 

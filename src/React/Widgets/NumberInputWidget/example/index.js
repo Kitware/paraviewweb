@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import NumberInputWidget from '..';
+import NumberInputWidget from 'paraviewweb/src/React/Widgets/NumberInputWidget';
 
 function onChange(value, name) {
   console.log(name, value);

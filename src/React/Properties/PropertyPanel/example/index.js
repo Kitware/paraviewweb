@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import PropertyPanel from '..';
+import PropertyPanel from 'paraviewweb/src/React/Properties/PropertyPanel';
 
 const container = document.querySelector('.content');
 let currVal = 1;

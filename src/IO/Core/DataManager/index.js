@@ -2,9 +2,9 @@ import JSZip from 'jszip';
 import Monologue from 'monologue.js';
 
 // Module dependencies and constants
-import request from './request';
-import htmlRequest from './htmlRequest';
-import PatternMap from './pattern';
+import request from 'paraviewweb/src/IO/Core/DataManager/request';
+import htmlRequest from 'paraviewweb/src/IO/Core/DataManager/htmlRequest';
+import PatternMap from 'paraviewweb/src/IO/Core/DataManager/pattern';
 
 const typeFnMap = {
   json: request.fetchJSON,

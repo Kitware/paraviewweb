@@ -1,17 +1,17 @@
 import 'normalize.css';
 
-import sizeHelper from '../../../../Common/Misc/SizeHelper';
+import sizeHelper from 'paraviewweb/src/Common/Misc/SizeHelper';
 
-import ParallelCoordinates from '../../../Native/ParallelCoordinates';
-import FieldSelector from '../../../Native/FieldSelector';
+import ParallelCoordinates from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates';
+import FieldSelector from 'paraviewweb/src/InfoViz/Native/FieldSelector';
 
-import CompositeClosureHelper from '../../../../../src/Common/Core/CompositeClosureHelper';
-import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
-import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
-import Histogram2DProvider from '../../../../../src/InfoViz/Core/Histogram2DProvider';
-import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
-// import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
-import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import FieldProvider from 'paraviewweb/src/InfoViz/Core/FieldProvider';
+import Histogram1DProvider from 'paraviewweb/src/InfoViz/Core/Histogram1DProvider';
+import Histogram2DProvider from 'paraviewweb/src/InfoViz/Core/Histogram2DProvider';
+import LegendProvider from 'paraviewweb/src/InfoViz/Core/LegendProvider';
+// import MutualInformationProvider from 'paraviewweb/src/InfoViz/Core/MutualInformationProvider';
+import HistogramBinHoverProvider from 'paraviewweb/src/InfoViz/Core/HistogramBinHoverProvider';
 
 import dataModel from './state.json';
 

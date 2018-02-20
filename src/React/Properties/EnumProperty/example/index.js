@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import EnumProperty from '..';
+import EnumProperty from 'paraviewweb/src/React/Properties/EnumProperty';
 
 const container = document.querySelector('.content');
 let currVal = 1;

@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ContentEditableWidget from '..';
+import ContentEditableWidget from 'paraviewweb/src/React/Widgets/ContentEditableWidget';
 
 const container = document.querySelector('.content');
 const html = 'initial value';

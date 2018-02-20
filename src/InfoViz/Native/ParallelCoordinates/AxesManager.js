@@ -1,6 +1,6 @@
-import { dataToScreen } from '.';
-import Axis from './Axis';
-import SelectionBuilder from '../../../Common/Misc/SelectionBuilder';
+import { dataToScreen } from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates';
+import Axis from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/Axis';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
 
 function toEndpoint(closeLeft, closeRight) {
   const result = [];

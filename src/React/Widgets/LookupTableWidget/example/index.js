@@ -3,8 +3,8 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import LookupTableWidget from '..';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
+import LookupTableWidget from 'paraviewweb/src/React/Widgets/LookupTableWidget';
 
 // Get react component
 const lookupTableManager = new LookupTableManager();

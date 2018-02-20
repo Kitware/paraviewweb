@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ComponentReact/WorkbenchController.mcss';
-import LayoutsWidget from '../../../React/Widgets/LayoutsWidget';
+import LayoutsWidget from 'paraviewweb/src/React/Widgets/LayoutsWidget';
 
-import TwoByTwo from '../../../React/Widgets/LayoutsWidget/TwoByTwo';
-import OneByTwo from '../../../React/Widgets/LayoutsWidget/OneByTwo';
-import TwoByOne from '../../../React/Widgets/LayoutsWidget/TwoByOne';
-import OneByOne from '../../../React/Widgets/LayoutsWidget/OneByOne';
-import TwoLeft from '../../../React/Widgets/LayoutsWidget/TwoLeft';
-import TwoTop from '../../../React/Widgets/LayoutsWidget/TwoTop';
-import TwoRight from '../../../React/Widgets/LayoutsWidget/TwoRight';
-import TwoBottom from '../../../React/Widgets/LayoutsWidget/TwoBottom';
+import TwoByTwo from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoByTwo';
+import OneByTwo from 'paraviewweb/src/React/Widgets/LayoutsWidget/OneByTwo';
+import TwoByOne from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoByOne';
+import OneByOne from 'paraviewweb/src/React/Widgets/LayoutsWidget/OneByOne';
+import TwoLeft from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoLeft';
+import TwoTop from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoTop';
+import TwoRight from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoRight';
+import TwoBottom from 'paraviewweb/src/React/Widgets/LayoutsWidget/TwoBottom';
 
 const LAYOUT_VIEW = {
   '2x2': TwoByTwo,

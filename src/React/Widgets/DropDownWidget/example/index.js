@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import { render } from 'react-dom';
 
-import DropDownWidget from '..';
+import DropDownWidget from 'paraviewweb/src/React/Widgets/DropDownWidget';
 
 document.body.style.padding = '10px';
 

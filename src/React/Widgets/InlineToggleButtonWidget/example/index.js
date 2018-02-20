@@ -4,8 +4,8 @@ import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import { render } from 'react-dom';
 
-import InlineToggleButtonWidget from '..';
-import logo from '../../../../../documentation/images/ui.png';
+import InlineToggleButtonWidget from 'paraviewweb/src/React/Widgets/InlineToggleButtonWidget';
+import logo from 'paraviewweb/documentation/images/ui.png';
 
 function onChange(obj, idx) {
   console.log('Active', obj, idx);

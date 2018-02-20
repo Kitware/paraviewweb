@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import PixelOperatorControl from '..';
+import PixelOperatorControl from 'paraviewweb/src/React/CollapsibleControls/PixelOperatorControl';
 
 let operationValue = 'a+2/5';
 const operator = {

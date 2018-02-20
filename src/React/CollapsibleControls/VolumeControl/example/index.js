@@ -3,11 +3,11 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import EqualizerState from '../../../../Common/State/EqualizerState';
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
+import EqualizerState from 'paraviewweb/src/Common/State/EqualizerState';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
 
-import ToggleState from '../../../../Common/State/ToggleState';
-import VolumeControl from '..';
+import ToggleState from 'paraviewweb/src/Common/State/ToggleState';
+import VolumeControl from 'paraviewweb/src/React/CollapsibleControls/VolumeControl';
 
 const computation = new ToggleState();
 const intensity = new ToggleState();

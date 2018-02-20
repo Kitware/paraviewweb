@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import { render } from 'react-dom';
 
-import EqualizerWidget from '..';
+import EqualizerWidget from 'paraviewweb/src/React/Widgets/EqualizerWidget';
 
 document.body.style.margin = 0;
 document.body.style.padding = 0;
