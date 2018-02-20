@@ -10427,9 +10427,9 @@ var _QueryDataModel = __webpack_require__(93);
 
 var _QueryDataModel2 = _interopRequireDefault(_QueryDataModel);
 
-var _ = __webpack_require__(167);
+var _QueryDataModelWidget = __webpack_require__(167);
 
-var _2 = _interopRequireDefault(_);
+var _QueryDataModelWidget2 = _interopRequireDefault(_QueryDataModelWidget);
 
 var _info = __webpack_require__(179);
 
@@ -10441,7 +10441,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var dataModel = new _QueryDataModel2.default(_info2.default, '/');
 document.body.style.padding = '10px';
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, { model: dataModel }), document.querySelector('.content'));
+_reactDom2.default.render(_react2.default.createElement(_QueryDataModelWidget2.default, { model: dataModel }), document.querySelector('.content'));
 
 /***/ }),
 /* 79 */

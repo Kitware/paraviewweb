@@ -2772,9 +2772,9 @@ var _reactDom = __webpack_require__(35);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(44);
+var _ProxyEditorWidget = __webpack_require__(44);
 
-var _2 = _interopRequireDefault(_);
+var _ProxyEditorWidget2 = _interopRequireDefault(_ProxyEditorWidget);
 
 var _sourceProxy = __webpack_require__(98);
 
@@ -2796,7 +2796,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var container = document.querySelector('.content');
 var sections = [Object.assign({ name: 'source', collapsed: false }, _sourceProxy2.default), Object.assign({ name: 'representation', collapsed: true }, _representationProxy2.default), Object.assign({ name: 'view', collapsed: true }, _viewProxy2.default)];
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, { sections: sections }), container);
+_reactDom2.default.render(_react2.default.createElement(_ProxyEditorWidget2.default, { sections: sections }), container);
 
 document.body.style.margin = '10px';
 

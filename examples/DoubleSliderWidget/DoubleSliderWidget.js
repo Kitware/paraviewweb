@@ -1491,9 +1491,9 @@ var _reactDom = __webpack_require__(27);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(36);
+var _DoubleSliderWidget = __webpack_require__(36);
 
-var _2 = _interopRequireDefault(_);
+var _DoubleSliderWidget2 = _interopRequireDefault(_DoubleSliderWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1501,7 +1501,7 @@ function onChange(name, value) {
   console.log(name, value);
 }
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_DoubleSliderWidget2.default, {
   name: 'sample',
   min: '0',
   max: '100',

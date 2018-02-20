@@ -2285,9 +2285,9 @@ var _reactDom = __webpack_require__(26);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(35);
+var _CollapsibleWidget = __webpack_require__(35);
 
-var _2 = _interopRequireDefault(_);
+var _CollapsibleWidget2 = _interopRequireDefault(_CollapsibleWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2300,7 +2300,7 @@ function Accordion(props) {
     'main',
     { style: mainStyle },
     _react2.default.createElement(
-      _2.default,
+      _CollapsibleWidget2.default,
       { title: 'Charmander', subtitle: 'stage 1' },
       _react2.default.createElement('img', {
         alt: 'demo',
@@ -2308,7 +2308,7 @@ function Accordion(props) {
       })
     ),
     _react2.default.createElement(
-      _2.default,
+      _CollapsibleWidget2.default,
       { title: 'Charmeleon', subtitle: 'stage 2', open: false },
       _react2.default.createElement('img', {
         alt: 'demo',
@@ -2316,7 +2316,7 @@ function Accordion(props) {
       })
     ),
     _react2.default.createElement(
-      _2.default,
+      _CollapsibleWidget2.default,
       { title: 'Charizard', subtitle: 'final form', open: false },
       _react2.default.createElement('img', {
         alt: 'demo',

@@ -1523,13 +1523,13 @@ var _reactDom = __webpack_require__(27);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(36);
+var _LayoutsWidget = __webpack_require__(36);
 
-var _2 = _interopRequireDefault(_);
+var _LayoutsWidget2 = _interopRequireDefault(_LayoutsWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, { onChange: console.log }), document.querySelector('.content'));
+_reactDom2.default.render(_react2.default.createElement(_LayoutsWidget2.default, { onChange: console.log }), document.querySelector('.content'));
 
 /***/ }),
 /* 22 */

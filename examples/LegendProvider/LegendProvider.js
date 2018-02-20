@@ -2289,9 +2289,9 @@ var _reactDom = __webpack_require__(27);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(36);
+var _LegendProvider = __webpack_require__(36);
 
-var _2 = _interopRequireDefault(_);
+var _LegendProvider2 = _interopRequireDefault(_LegendProvider);
 
 var _SvgIconWidget = __webpack_require__(51);
 
@@ -2304,7 +2304,7 @@ var legendEntries = ['Aashish', 'Alex', 'Alexis', 'Alvaro', 'Andinet', 'Andrew',
 var optionIdx = 0;
 var priorityOptions = [['colors'], ['shapes'], ['shapes', 'colors'], ['colors', 'shapes'], []];
 
-var legend = _2.default.newInstance({ legendEntries: legendEntries });
+var legend = _LegendProvider2.default.newInstance({ legendEntries: legendEntries });
 var container = document.querySelector('.content');
 //
 

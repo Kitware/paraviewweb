@@ -5846,9 +5846,9 @@ var _reactDom = __webpack_require__(43);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(52);
+var _ColorByWidget = __webpack_require__(52);
 
-var _2 = _interopRequireDefault(_);
+var _ColorByWidget2 = _interopRequireDefault(_ColorByWidget);
 
 var _sourceProxy = __webpack_require__(107);
 
@@ -5872,7 +5872,7 @@ function onChange(event) {
   console.log(event);
 }
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_ColorByWidget2.default, {
   source: _sourceProxy2.default,
   representation: _representationProxy2.default,
   scalarBar: scalarBar,

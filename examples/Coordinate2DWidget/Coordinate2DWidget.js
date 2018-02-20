@@ -1545,16 +1545,16 @@ var _reactDom = __webpack_require__(29);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(38);
+var _Coordinate2DWidget = __webpack_require__(38);
 
-var _2 = _interopRequireDefault(_);
+var _Coordinate2DWidget2 = _interopRequireDefault(_Coordinate2DWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var height = 100;
 var width = 100;
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_Coordinate2DWidget2.default, {
   height: height,
   width: width,
   onChange: console.log,

@@ -1388,9 +1388,9 @@ function updateLink (link, options, obj) {
 
 __webpack_require__(6);
 
-var _ = __webpack_require__(9);
+var _ToggleControl = __webpack_require__(9);
 
-var _2 = _interopRequireDefault(_);
+var _ToggleControl2 = _interopRequireDefault(_ToggleControl);
 
 var _BackgroundColor = __webpack_require__(21);
 
@@ -1408,7 +1408,7 @@ container.style.height = '100vh';
 var green = new _BackgroundColor2.default('green');
 var spacer = new _Spacer2.default('200px');
 
-var toggleView = new _2.default(green, spacer);
+var toggleView = new _ToggleControl2.default(green, spacer);
 
 toggleView.setContainer(container);
 toggleView.render();

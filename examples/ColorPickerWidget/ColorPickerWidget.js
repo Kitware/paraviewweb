@@ -1457,9 +1457,9 @@ var _reactDom = __webpack_require__(25);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(34);
+var _ColorPickerWidget = __webpack_require__(34);
 
-var _2 = _interopRequireDefault(_);
+var _ColorPickerWidget2 = _interopRequireDefault(_ColorPickerWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1470,7 +1470,7 @@ function colorChange(color) {
   console.log('color', color);
 }
 
-component = _reactDom2.default.render(_react2.default.createElement(_2.default, {
+component = _reactDom2.default.render(_react2.default.createElement(_ColorPickerWidget2.default, {
   color: [122, 10, 30],
   onChange: colorChange
 }), document.querySelector('.content'));

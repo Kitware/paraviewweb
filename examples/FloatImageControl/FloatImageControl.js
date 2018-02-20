@@ -2351,9 +2351,9 @@ var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(37);
+var _FloatImageControl = __webpack_require__(37);
 
-var _2 = _interopRequireDefault(_);
+var _FloatImageControl2 = _interopRequireDefault(_FloatImageControl);
 
 var _pipeline = __webpack_require__(54);
 
@@ -2411,7 +2411,7 @@ _pipeline2.default.layers.forEach(function (item) {
 });
 
 // Keep element for rerendering it
-var element = _react2.default.createElement(_2.default, { model: model });
+var element = _react2.default.createElement(_FloatImageControl2.default, { model: model });
 
 function render() {
   _reactDom2.default.render(element, document.querySelector('.content'));

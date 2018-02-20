@@ -2351,9 +2351,9 @@ var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(37);
+var _MultiViewControl = __webpack_require__(37);
 
-var _2 = _interopRequireDefault(_);
+var _MultiViewControl2 = _interopRequireDefault(_MultiViewControl);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2388,7 +2388,7 @@ var renderer = {
   }
 };
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, { renderer: renderer }), document.querySelector('.content'));
+_reactDom2.default.render(_react2.default.createElement(_MultiViewControl2.default, { renderer: renderer }), document.querySelector('.content'));
 
 /***/ }),
 /* 23 */

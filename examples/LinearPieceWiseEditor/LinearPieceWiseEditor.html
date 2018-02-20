@@ -143,9 +143,9 @@ module.exports = function(module) {
 
 __webpack_require__(4);
 
-var _ = __webpack_require__(9);
+var _LinearPieceWiseEditor = __webpack_require__(9);
 
-var _2 = _interopRequireDefault(_);
+var _LinearPieceWiseEditor2 = _interopRequireDefault(_LinearPieceWiseEditor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -155,7 +155,7 @@ container.setAttribute('height', 300);
 
 document.body.appendChild(container);
 
-var editor = new _2.default(container);
+var editor = new _LinearPieceWiseEditor2.default(container);
 
 editor.onChange(function (controlPoints, envelope) {
   console.log(controlPoints);

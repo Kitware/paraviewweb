@@ -2327,9 +2327,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(27);
 
-var _ = __webpack_require__(36);
+var _FileBrowserWidget = __webpack_require__(36);
 
-var _2 = _interopRequireDefault(_);
+var _FileBrowserWidget2 = _interopRequireDefault(_FileBrowserWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2341,7 +2341,7 @@ function onAction(type, files, aaa) {
   console.log(type, files, aaa);
 }
 
-(0, _reactDom.render)(_react2.default.createElement(_2.default, {
+(0, _reactDom.render)(_react2.default.createElement(_FileBrowserWidget2.default, {
   directories: ['a', 'b', 'c'],
   groups: [{ label: 'd', files: ['da', 'db', 'dc'] }, { label: 'e', files: ['ea', 'eb', 'ec'] }, { label: 'f', files: ['fa', 'fb', 'fc'] }],
   files: ['g', 'h', 'i', 'Super long name with not much else bla bla bla bla bla bla bla bla bla bla bla bla.txt'],

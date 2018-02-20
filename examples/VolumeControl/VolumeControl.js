@@ -2862,9 +2862,9 @@ var _ToggleState = __webpack_require__(49);
 
 var _ToggleState2 = _interopRequireDefault(_ToggleState);
 
-var _ = __webpack_require__(50);
+var _VolumeControl = __webpack_require__(50);
 
-var _2 = _interopRequireDefault(_);
+var _VolumeControl2 = _interopRequireDefault(_VolumeControl);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2879,7 +2879,7 @@ var lookupTable = {
 };
 var container = document.querySelector('.content');
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_VolumeControl2.default, {
   computation: computation,
   equalizer: equalizer,
   intensity: intensity,

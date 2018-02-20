@@ -1517,9 +1517,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(36);
 
-var _ = __webpack_require__(45);
+var _InlineToggleButtonWidget = __webpack_require__(45);
 
-var _2 = _interopRequireDefault(_);
+var _InlineToggleButtonWidget2 = _interopRequireDefault(_InlineToggleButtonWidget);
 
 var _ui = __webpack_require__(62);
 
@@ -1531,7 +1531,7 @@ function onChange(obj, idx) {
   console.log('Active', obj, idx);
 }
 
-(0, _reactDom.render)(_react2.default.createElement(_2.default, {
+(0, _reactDom.render)(_react2.default.createElement(_InlineToggleButtonWidget2.default, {
   activeColor: 'red',
   defaultColor: 'green',
   height: '0.75em',

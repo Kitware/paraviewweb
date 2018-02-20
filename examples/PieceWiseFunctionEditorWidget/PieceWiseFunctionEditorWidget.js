@@ -3435,9 +3435,9 @@ var _reactDom = __webpack_require__(37);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(46);
+var _PieceWiseFunctionEditorWidget = __webpack_require__(46);
 
-var _2 = _interopRequireDefault(_);
+var _PieceWiseFunctionEditorWidget2 = _interopRequireDefault(_PieceWiseFunctionEditorWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3478,7 +3478,7 @@ var PieceWiseTestWidget = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_2.default, {
+      return _react2.default.createElement(_PieceWiseFunctionEditorWidget2.default, {
         points: this.state.points,
         rangeMin: 0,
         rangeMax: 100,

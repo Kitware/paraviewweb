@@ -1985,9 +1985,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(29);
 
-var _ = __webpack_require__(38);
+var _EqualizerWidget = __webpack_require__(38);
 
-var _2 = _interopRequireDefault(_);
+var _EqualizerWidget2 = _interopRequireDefault(_EqualizerWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1999,7 +1999,7 @@ function onChange(opacityList) {
   console.log(opacityList);
 }
 
-(0, _reactDom.render)(_react2.default.createElement(_2.default, {
+(0, _reactDom.render)(_react2.default.createElement(_EqualizerWidget2.default, {
   layers: [0, 0.1, 0.2, 1.0, 0.8, 0.4, 0.1, 0.2, 1.0, 0.8, 0.4, 0.1, 0.2, 1.0, 0.8, 0.4, 0.1, 0.2, 1.0, 0.8],
   onChange: onChange,
   height: 512

@@ -10660,9 +10660,9 @@ var _index = __webpack_require__(108);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _ = __webpack_require__(109);
+var _MultiLayoutRenderer = __webpack_require__(109);
 
-var _2 = _interopRequireDefault(_);
+var _MultiLayoutRenderer2 = _interopRequireDefault(_MultiLayoutRenderer);
 
 var _LookupTableManager = __webpack_require__(121);
 
@@ -10743,7 +10743,7 @@ container.style.width = '100%';
 container.style.height = '100%';
 container.style.position = 'absolute';
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_MultiLayoutRenderer2.default, {
   renderers: {
     XY: { builder: imageBuilderA, name: 'XY' },
     ZY: { builder: imageBuilderB, name: 'ZY' },

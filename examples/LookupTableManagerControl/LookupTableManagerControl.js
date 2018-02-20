@@ -2820,9 +2820,9 @@ var _LookupTableManager = __webpack_require__(38);
 
 var _LookupTableManager2 = _interopRequireDefault(_LookupTableManager);
 
-var _ = __webpack_require__(46);
+var _LookupTableManagerControl = __webpack_require__(46);
 
-var _2 = _interopRequireDefault(_);
+var _LookupTableManagerControl2 = _interopRequireDefault(_LookupTableManagerControl);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2837,7 +2837,7 @@ lookupTableManager.addLookupTable('Pressure', [0, 15000], 'spectral');
 lookupTableManager.addLookupTable('Velocity', [5, 150], 'rainbow');
 
 // Render
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_LookupTableManagerControl2.default, {
   field: 'Temperature',
   lookupTableManager: lookupTableManager
 }), document.querySelector('.content'));

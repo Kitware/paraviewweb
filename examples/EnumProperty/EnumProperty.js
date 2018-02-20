@@ -2348,9 +2348,9 @@ var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(37);
+var _EnumProperty = __webpack_require__(37);
 
-var _2 = _interopRequireDefault(_);
+var _EnumProperty2 = _interopRequireDefault(_EnumProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2427,9 +2427,9 @@ function render() {
   _reactDom2.default.render(_react2.default.createElement(
     'div',
     { style: { maxWidth: '300px' } },
-    _react2.default.createElement(_2.default, properties),
-    _react2.default.createElement(_2.default, properties3),
-    _react2.default.createElement(_2.default, properties2)
+    _react2.default.createElement(_EnumProperty2.default, properties),
+    _react2.default.createElement(_EnumProperty2.default, properties3),
+    _react2.default.createElement(_EnumProperty2.default, properties2)
   ), container);
 }
 

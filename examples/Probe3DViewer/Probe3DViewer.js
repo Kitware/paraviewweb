@@ -11493,9 +11493,9 @@ var _LookupTableManager = __webpack_require__(148);
 
 var _LookupTableManager2 = _interopRequireDefault(_LookupTableManager);
 
-var _ = __webpack_require__(151);
+var _Probe3DViewer = __webpack_require__(151);
 
-var _2 = _interopRequireDefault(_);
+var _Probe3DViewer2 = _interopRequireDefault(_Probe3DViewer);
 
 var _QueryDataModel = __webpack_require__(180);
 
@@ -11509,7 +11509,7 @@ var bodyElement = document.querySelector('.content');
 _index2.default.metadata.dimensions = [50, 50, 50];
 var dataModel = new _QueryDataModel2.default(_index2.default, '/paraviewweb' + '/data/probe/');
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_Probe3DViewer2.default, {
   queryDataModel: dataModel,
   imageBuilder: new _DataProberImageBuilder2.default(dataModel, new _LookupTableManager2.default()),
   probe: true

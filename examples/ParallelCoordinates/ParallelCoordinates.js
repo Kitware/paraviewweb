@@ -14071,7 +14071,7 @@ var _state2 = _interopRequireDefault(_state);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import MutualInformationProvider from '../../../../../src/InfoViz/Core/MutualInformationProvider';
+// import MutualInformationProvider from 'paraviewweb/src/InfoViz/Core/MutualInformationProvider';
 var bodyElt = document.querySelector('body');
 
 var parallelCoordinatesContainer = document.createElement('div');
@@ -34515,7 +34515,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ = __webpack_require__(8);
+var _ParallelCoordinates = __webpack_require__(8);
 
 var _Axis = __webpack_require__(31);
 
@@ -34876,7 +34876,7 @@ var AxesManager = function () {
               index: index,
               selectionIndex: selectionIndex,
               screenX: screenX,
-              screenRangeY: [(0, _.dataToScreen)(model, selection.interval[0], axis), (0, _.dataToScreen)(model, selection.interval[1], axis)],
+              screenRangeY: [(0, _ParallelCoordinates.dataToScreen)(model, selection.interval[0], axis), (0, _ParallelCoordinates.dataToScreen)(model, selection.interval[1], axis)],
               color: selection.color ? selection.color : 'rgb(105, 195, 255)'
             });
           });

@@ -2323,9 +2323,9 @@ var _reactDom = __webpack_require__(34);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(43);
+var _TextInputWidget = __webpack_require__(43);
 
-var _2 = _interopRequireDefault(_);
+var _TextInputWidget2 = _interopRequireDefault(_TextInputWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2343,8 +2343,8 @@ function render(name, value) {
   _reactDom2.default.render(_react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(_2.default, { name: name, value: value, onChange: onChange }),
-    _react2.default.createElement(_2.default, {
+    _react2.default.createElement(_TextInputWidget2.default, { name: name, value: value, onChange: onChange }),
+    _react2.default.createElement(_TextInputWidget2.default, {
       name: name + '-search',
       value: 'search',
       icon: 'fa-search'

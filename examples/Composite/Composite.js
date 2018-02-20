@@ -560,9 +560,9 @@ module.exports = g;
 
 __webpack_require__(5);
 
-var _ = __webpack_require__(8);
+var _Composite = __webpack_require__(8);
 
-var _2 = _interopRequireDefault(_);
+var _Composite2 = _interopRequireDefault(_Composite);
 
 var _BackgroundColor = __webpack_require__(11);
 
@@ -575,7 +575,7 @@ container.style.position = 'relative';
 container.style.width = '100%';
 container.style.height = '600px';
 
-var composite = new _2.default();
+var composite = new _Composite2.default();
 var green = new _BackgroundColor2.default('green');
 var red = new _BackgroundColor2.default('red');
 var blue = new _BackgroundColor2.default('blue');

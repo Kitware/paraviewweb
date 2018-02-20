@@ -1459,9 +1459,9 @@ var _reactDom = __webpack_require__(25);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(34);
+var _NumberSliderWidget = __webpack_require__(34);
 
-var _2 = _interopRequireDefault(_);
+var _NumberSliderWidget2 = _interopRequireDefault(_NumberSliderWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1533,21 +1533,21 @@ var ColorField = function (_React$Component) {
       return _react2.default.createElement(
         'section',
         { style: { margin: '20px' } },
-        _react2.default.createElement(_2.default, {
+        _react2.default.createElement(_NumberSliderWidget2.default, {
           value: r,
           max: '255',
           min: '0',
           onChange: this.updateVal,
           name: 'r'
         }),
-        _react2.default.createElement(_2.default, {
+        _react2.default.createElement(_NumberSliderWidget2.default, {
           value: g,
           max: '255',
           min: '0',
           onChange: this.updateVal,
           name: 'g'
         }),
-        _react2.default.createElement(_2.default, {
+        _react2.default.createElement(_NumberSliderWidget2.default, {
           value: b,
           max: '255',
           min: '0',

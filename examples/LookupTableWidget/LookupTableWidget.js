@@ -2820,9 +2820,9 @@ var _LookupTableManager = __webpack_require__(38);
 
 var _LookupTableManager2 = _interopRequireDefault(_LookupTableManager);
 
-var _ = __webpack_require__(46);
+var _LookupTableWidget = __webpack_require__(46);
 
-var _2 = _interopRequireDefault(_);
+var _LookupTableWidget2 = _interopRequireDefault(_LookupTableWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2833,7 +2833,7 @@ var lookupTable = lookupTableManager.addLookupTable('demo', [-5, 15], 'spectral'
 document.body.style.padding = '10px';
 
 var component = _reactDom2.default.render( // eslint-disable-line
-_react2.default.createElement(_2.default, {
+_react2.default.createElement(_LookupTableWidget2.default, {
   lookupTable: lookupTable,
   originalRange: [-5, 15],
   inverse: true,

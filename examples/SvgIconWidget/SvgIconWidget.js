@@ -2743,9 +2743,9 @@ var _reactDom = __webpack_require__(27);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(36);
+var _SvgIconWidget = __webpack_require__(36);
 
-var _2 = _interopRequireDefault(_);
+var _SvgIconWidget2 = _interopRequireDefault(_SvgIconWidget);
 
 var _style = __webpack_require__(41);
 
@@ -2774,11 +2774,11 @@ var container = document.querySelector('.content');
 _reactDom2.default.render(_react2.default.createElement(
   'div',
   null,
-  _react2.default.createElement(_2.default, { width: '30px', height: '30px' }),
-  _react2.default.createElement(_2.default, { className: _style2.default.smallIcon, icon: _paraview2.default }),
-  _react2.default.createElement(_2.default, { className: _style2.default.mediumIcon, icon: _paraviewweb2.default }),
-  _react2.default.createElement(_2.default, { className: _style2.default.bigIcon, icon: _functionGaussian2.default }),
-  _react2.default.createElement(_2.default, { className: _style2.default.redIcon, icon: _functionLinear2.default })
+  _react2.default.createElement(_SvgIconWidget2.default, { width: '30px', height: '30px' }),
+  _react2.default.createElement(_SvgIconWidget2.default, { className: _style2.default.smallIcon, icon: _paraview2.default }),
+  _react2.default.createElement(_SvgIconWidget2.default, { className: _style2.default.mediumIcon, icon: _paraviewweb2.default }),
+  _react2.default.createElement(_SvgIconWidget2.default, { className: _style2.default.bigIcon, icon: _functionGaussian2.default }),
+  _react2.default.createElement(_SvgIconWidget2.default, { className: _style2.default.redIcon, icon: _functionLinear2.default })
 ), container);
 
 document.body.style.margin = '10px';

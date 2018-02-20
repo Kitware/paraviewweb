@@ -2918,9 +2918,9 @@ render.defaultProps = {
 
 __webpack_require__(32);
 
-var _ = __webpack_require__(35);
+var _Workbench = __webpack_require__(35);
 
-var _2 = _interopRequireDefault(_);
+var _Workbench2 = _interopRequireDefault(_Workbench);
 
 var _ToggleControl = __webpack_require__(43);
 
@@ -2989,7 +2989,7 @@ var viewports = {
   }
 };
 
-var workbench = new _2.default();
+var workbench = new _Workbench2.default();
 workbench.setComponents(viewports);
 workbench.setLayout('2x2');
 

@@ -10703,9 +10703,9 @@ var _LookupTableManager = __webpack_require__(157);
 
 var _LookupTableManager2 = _interopRequireDefault(_LookupTableManager);
 
-var _ = __webpack_require__(160);
+var _MultiLayoutViewer = __webpack_require__(160);
 
-var _2 = _interopRequireDefault(_);
+var _MultiLayoutViewer2 = _interopRequireDefault(_MultiLayoutViewer);
 
 var _QueryDataModel = __webpack_require__(183);
 
@@ -10791,7 +10791,7 @@ function updateChartPainters(data, envelope) {
 }
 
 // Create UI element
-_reactDom2.default.render(_react2.default.createElement(_2.default, {
+_reactDom2.default.render(_react2.default.createElement(_MultiLayoutViewer2.default, {
   queryDataModel: dataModel,
   renderers: {
     XY: { builder: imageBuilderA, name: 'XY' },

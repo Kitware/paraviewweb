@@ -1149,9 +1149,9 @@ var _SmartConnect = __webpack_require__(12);
 
 var _SmartConnect2 = _interopRequireDefault(_SmartConnect);
 
-var _ = __webpack_require__(19);
+var _RemoteRenderer = __webpack_require__(19);
 
-var _2 = _interopRequireDefault(_);
+var _RemoteRenderer2 = _interopRequireDefault(_RemoteRenderer);
 
 var _SizeHelper = __webpack_require__(4);
 
@@ -1178,7 +1178,7 @@ var config = { sessionURL: 'ws://localhost:1234/ws' };
 var smartConnect = _SmartConnect2.default.newInstance({ config: config });
 smartConnect.onConnectionReady(function (connection) {
   var pvwClient = _ParaViewWebClient2.default.createClient(connection, ['MouseHandler', 'ViewPort', 'ViewPortImageDelivery']);
-  var renderer = new _2.default(pvwClient);
+  var renderer = new _RemoteRenderer2.default(pvwClient);
   renderer.setContainer(divRenderer);
   renderer.onImageReady(function () {
     console.log('We are good');

@@ -1459,9 +1459,9 @@ var _reactDom = __webpack_require__(33);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(42);
+var _ActionListWidget = __webpack_require__(42);
 
-var _2 = _interopRequireDefault(_);
+var _ActionListWidget2 = _interopRequireDefault(_ActionListWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1482,7 +1482,7 @@ function onClick(name, action, user) {
   console.log(name, action, user);
 }
 
-_reactDom2.default.render(_react2.default.createElement(_2.default, { list: list, onClick: onClick }), container);
+_reactDom2.default.render(_react2.default.createElement(_ActionListWidget2.default, { list: list, onClick: onClick }), container);
 
 document.body.style.margin = '10px';
 

@@ -2323,9 +2323,9 @@ var _reactDom = __webpack_require__(34);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _ = __webpack_require__(43);
+var _ToggleIconButtonWidget = __webpack_require__(43);
 
-var _2 = _interopRequireDefault(_);
+var _ToggleIconButtonWidget2 = _interopRequireDefault(_ToggleIconButtonWidget);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2341,27 +2341,27 @@ function onChange(value, name) {
 _reactDom2.default.render(_react2.default.createElement(
   'div',
   null,
-  _react2.default.createElement(_2.default, {
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, {
     name: 'wifi',
     icon: 'fa-wifi',
     value: true,
     onChange: onChange
   }),
-  _react2.default.createElement(_2.default, {
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, {
     name: 'btooth',
     icon: 'fa-bluetooth',
     value: false,
     onChange: onChange
   }),
-  _react2.default.createElement(_2.default, { name: 'a', icon: 'fa-at', onChange: onChange }),
-  _react2.default.createElement(_2.default, { name: 'b', icon: 'fa-ban', toggle: true, onChange: onChange }),
-  _react2.default.createElement(_2.default, {
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, { name: 'a', icon: 'fa-at', onChange: onChange }),
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, { name: 'b', icon: 'fa-ban', toggle: true, onChange: onChange }),
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, {
     name: 'c',
     icon: 'fa-bank',
     alwaysOn: true,
     onChange: onChange
   }),
-  _react2.default.createElement(_2.default, {
+  _react2.default.createElement(_ToggleIconButtonWidget2.default, {
     name: 'check',
     icon: 'fa-check-square-o',
     iconDisabled: 'fa-square-o',
