@@ -32,6 +32,8 @@ export default class NativeImageRenderer {
     this.drawFPS = drawFPS;
     this.subscriptions = [];
     this.imageProvider = imageProvider;
+    this.fpsBuffer = [];
+    this.fpsBufferSize = 30;
 
     this.image.onload = () => {
       this.updateDrawnImage();
@@ -55,6 +57,10 @@ export default class NativeImageRenderer {
         this.fps = data.fps;
         this.memsize = data.metadata.memory || '';
         this.workTime = data.metadata.workTime;
+        this.fpsBuffer.push(this.fps);
+        while (this.fpsBufferSize < this.fpsBuffer.length) {
+          this.fpsBuffer.shift();
+        }
       })
     );
 
@@ -74,6 +80,25 @@ export default class NativeImageRenderer {
 
   setDrawFPS(visible) {
     this.drawFPS = visible;
+  }
+
+  getStats() {
+    let min = Number.MAX_VALUE;
+    let max = -Number.MAX_VALUE;
+    let total = 0;
+    const size = this.fpsBuffer.length;
+    for (let i = 0; i < size; i++) {
+      const value = Number(this.fpsBuffer[i]);
+      if (value < min) {
+        min = value;
+      }
+      if (max < value) {
+        max = value;
+      }
+      total += value;
+    }
+    total /= size;
+    return `${Math.round(min)}<${Math.round(total)}<${Math.round(max)}`;
   }
 
   destroy() {
@@ -105,7 +130,7 @@ export default class NativeImageRenderer {
       this.ctx.fillText(
         `${this.workTime}ms - ${formatSize(this.memsize)}${this.image.width}x${
           this.image.height
-        } - ${this.fps} FPS`,
+        } - ${this.fps} FPS - ${this.getStats()}`,
         this.size.clientWidth - 5,
         5
       );
