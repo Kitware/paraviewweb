@@ -3,11 +3,11 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ColorByWidget from '..';
+import ColorByWidget from 'paraviewweb/src/React/Widgets/ColorByWidget';
 
-import source from '../../ProxyEditorWidget/example/source-proxy.json';
-import representation from '../../ProxyEditorWidget/example/representation-proxy.json';
-import presets from './presets.json';
+import source from 'paraviewweb/src/React/Widgets/ProxyEditorWidget/example/source-proxy.json';
+import representation from 'paraviewweb/src/React/Widgets/ProxyEditorWidget/example/representation-proxy.json';
+import presets from 'paraviewweb/src/React/Widgets/ColorByWidget/example/presets.json';
 
 const container = document.querySelector('.content');
 const useGaussian = true;

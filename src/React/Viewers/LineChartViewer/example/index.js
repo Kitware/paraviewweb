@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ChartViewer from '..';
+import ChartViewer from 'paraviewweb/src/React/Viewers/LineChartViewer';
 
 // Get react component
 const container = document.querySelector('.content');

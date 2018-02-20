@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import { render } from 'react-dom';
 
-import FileBrowserWidget from '..';
+import FileBrowserWidget from 'paraviewweb/src/React/Widgets/FileBrowserWidget';
 
 document.body.style.margin = 0;
 document.body.style.padding = 0;

@@ -1,9 +1,9 @@
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import multiClicker from '../../Core/D3MultiClick';
-import score from './score';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import multiClicker from 'paraviewweb/src/InfoViz/Core/D3MultiClick';
+import score from 'paraviewweb/src/InfoViz/Native/HistogramSelector/score';
 
 // ----------------------------------------------------------------------------
 // Histogram Selector

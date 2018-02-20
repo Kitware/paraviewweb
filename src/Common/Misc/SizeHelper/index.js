@@ -1,5 +1,5 @@
-import Observable from '../Observable';
-import { debounce } from '../Debounce';
+import Observable from 'paraviewweb/src/Common/Misc/Observable';
+import { debounce } from 'paraviewweb/src/Common/Misc/Debounce';
 
 /* eslint-disable no-use-before-define */
 

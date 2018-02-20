@@ -5,7 +5,7 @@ import pako from 'pako';
 
 import vtk from 'vtk.js/Sources/vtk';
 import Monologue from 'monologue.js';
-import DataManager from '../DataManager';
+import DataManager from 'paraviewweb/src/IO/Core/DataManager';
 
 let dataManager = new DataManager();
 const OBJECT_READY_TOPIC = 'object-ready';

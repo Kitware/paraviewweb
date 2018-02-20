@@ -1,4 +1,4 @@
-import WebGl from '../WebGl';
+import WebGl from 'paraviewweb/src/Common/Misc/WebGl';
 
 export default class PingPong {
   constructor(gl, fbos, textures) {

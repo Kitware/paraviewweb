@@ -85,6 +85,8 @@ $ cd MyWebProject
 $ npm init
 $ npm install paraviewweb  --save
 $ npm install kw-web-suite --save-dev
+$ npm install normalize.css --save-dev
+$ npm install monologue.js --save-dev
 ```
 
 ## Creating your own project
@@ -92,48 +94,42 @@ $ npm install kw-web-suite --save-dev
 ### Webpack config
 
 ``` js webpack.config.js
-var path = require('path'),
-    webpack = require('webpack'),
-    loaders = require('./node_modules/paraviewweb/config/webpack.loaders.js'),
-    plugins = [];
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-if(process.env.NODE_ENV === 'production') {
-    console.log('==> Production build');
-    plugins.push(new webpack.DefinePlugin({
-        "process.env": {
-            NODE_ENV: JSON.stringify("production"),
-        },
-    }));
-}
+const rules = require('./node_modules/paraviewweb/config/webpack.loaders.js');
+const plugins = [
+  new HtmlWebpackPlugin({
+    inject: 'body',
+  }),
+];
+
+const entry = path.join(__dirname, './src/index.js');
+const outputPath = path.join(__dirname, './dist');
+const styles = path.resolve('./node_modules/paraviewweb/style');
 
 module.exports = {
-  plugins: plugins,
-  entry: './src/index.js',
+  plugins,
+  entry,
   output: {
-    path: './dist',
+    path: outputPath,
     filename: 'MyWebApp.js',
+    libraryTarget: 'umd',
   },
   module: {
-        preLoaders: [{
-            test: /\.js$/,
-            loader: "eslint-loader",
-            exclude: /node_modules/,
-        }],
-        loaders: [
-            { test: require.resolve("./src/index.js"), loader: "expose?MyWebApp" },
-        ].concat(loaders),
+    rules: [
+     { test: entry, loader: "expose-loader?MyWebApp" },
+    ].concat(rules),
+  },
+  resolve: {
+    alias: {
+      PVWStyle: styles,
     },
-    resolve: {
-        alias: {
-            PVWStyle: path.resolve('./node_modules/paraviewweb/style'),
-        },
-    },
-    postcss: [
-        require('autoprefixer')({ browsers: ['last 2 versions'] }),
-    ],
-    eslint: {
-        configFile: '.eslintrc',
-    },
+  },
+  devServer: {
+    contentBase: './dist/',
+    port: 9999,
+  },
 };
 
 ```
@@ -146,12 +142,17 @@ You should extend the generated **package.json** file with the following set of 
 {
   [...]
   "scripts": {
-    "build": "fix-autobahn && webpack",
-    "build:debug": "fix-autobahn && webpack --display-modules",
-    "build:release": "export NODE_ENV=production && fix-autobahn && webpack -p",
+    "build": "webpack",
+    "build:debug": "webpack --display-modules",
+    "build:release": "webpack -p",
+    "start": "webpack-dev-server",
 
     "commit": "git cz",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
   },
 }
 ```
+
+### Run 
+
+To build your application you can run `npm run build` and to test/debug it `npm start` while opening `http://localhost:9999`.

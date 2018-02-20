@@ -1,5 +1,5 @@
 import Monologue from 'monologue.js';
-import createOperation from './Operations';
+import createOperation from 'paraviewweb/src/Common/Misc/TimeProbeManager/Operations';
 
 const TIME_PROBE_CHANGE = 'TimeProbe.change';
 const EDGE_WIDTH_FOR_GRAB = 4;

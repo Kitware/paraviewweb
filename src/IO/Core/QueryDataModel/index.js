@@ -6,7 +6,7 @@ import now from 'mout/src/time/now';
 import omit from 'mout/object/omit';
 import size from 'mout/object/size';
 
-import DataManager from '../DataManager';
+import DataManager from 'paraviewweb/src/IO/Core/DataManager';
 
 // ============================================================================
 const dataManager = new DataManager();

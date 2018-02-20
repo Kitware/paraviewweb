@@ -2,9 +2,9 @@
 /* eslint-disable no-underscore-dangle */
 
 import Monologue from 'monologue.js';
-import MouseHandler from '../../../Interaction/Core/MouseHandler';
-import VtkWebMouseListener from '../../../Interaction/Core/VtkWebMouseListener';
-import SizeHelper from '../../../Common/Misc/SizeHelper';
+import MouseHandler from 'paraviewweb/src/Interaction/Core/MouseHandler';
+import VtkWebMouseListener from 'paraviewweb/src/Interaction/Core/VtkWebMouseListener';
+import SizeHelper from 'paraviewweb/src/Common/Misc/SizeHelper';
 
 const IMAGE_READY_TOPIC = 'image-ready';
 const IMAGE_LOADED_TOPIC = 'image-loaded';

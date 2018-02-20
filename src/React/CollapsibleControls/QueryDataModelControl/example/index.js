@@ -3,9 +3,9 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import jsonData from '../../../Widgets/QueryDataModelWidget/example/info';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import QueryDataModelControl from '..';
+import jsonData from 'paraviewweb/src/React/Widgets/QueryDataModelWidget/example/info';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
+import QueryDataModelControl from 'paraviewweb/src/React/CollapsibleControls/QueryDataModelControl';
 
 // Get react component
 const dataModel = new QueryDataModel(jsonData, '/');

@@ -3,10 +3,10 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import QueryDataModelWidget from '..';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
+import QueryDataModelWidget from 'paraviewweb/src/React/Widgets/QueryDataModelWidget';
 
-import jsonData from './info';
+import jsonData from 'paraviewweb/src/React/Widgets/QueryDataModelWidget/example/info';
 
 // Get react component
 const dataModel = new QueryDataModel(jsonData, '/');

@@ -1,6 +1,6 @@
 import 'normalize.css';
 
-import LinearPieceWiseEditor from '..';
+import LinearPieceWiseEditor from 'paraviewweb/src/NativeUI/Canvas/LinearPieceWiseEditor';
 
 const container = document.createElement('canvas');
 container.setAttribute('width', 400);

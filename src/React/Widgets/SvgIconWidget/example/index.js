@@ -3,13 +3,13 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import SvgIconWidget from '..';
-import style from './style.mcss';
+import SvgIconWidget from 'paraviewweb/src/React/Widgets/SvgIconWidget';
+import style from 'paraviewweb/src/React/Widgets/SvgIconWidget/example/style.mcss';
 
-import pv from '../../../../../svg/paraview.svg';
-import pvw from '../../../../../svg/paraviewweb.svg';
-import gau from '../../../../../svg/function-gaussian.svg';
-import lin from '../../../../../svg/function-linear.svg';
+import pv from 'paraviewweb/svg/paraview.svg';
+import pvw from 'paraviewweb/svg/paraviewweb.svg';
+import gau from 'paraviewweb/svg/function-gaussian.svg';
+import lin from 'paraviewweb/svg/function-linear.svg';
 
 const container = document.querySelector('.content');
 

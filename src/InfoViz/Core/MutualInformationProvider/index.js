@@ -1,6 +1,6 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
 
-import PMI from './pmi';
+import PMI from 'paraviewweb/src/InfoViz/Core/MutualInformationProvider/pmi';
 
 // ----------------------------------------------------------------------------
 // Global

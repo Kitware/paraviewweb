@@ -4,9 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jsonData from 'tonic-arctic-sample-data/data/earth/index.json';
 
-import AbstractViewerMenu from '..';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
-import ImageBuilder from '../../../../Rendering/Image/QueryDataModelImageBuilder';
+import AbstractViewerMenu from 'paraviewweb/src/React/Viewers/AbstractViewerMenu';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
+import ImageBuilder from 'paraviewweb/src/Rendering/Image/QueryDataModelImageBuilder';
 
 const bodyElement = document.querySelector('.content');
 const queryDataModel = new QueryDataModel(

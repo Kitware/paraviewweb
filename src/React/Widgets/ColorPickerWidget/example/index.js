@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ColorPickerWidget from '..';
+import ColorPickerWidget from 'paraviewweb/src/React/Widgets/ColorPickerWidget';
 
 let component = null;
 

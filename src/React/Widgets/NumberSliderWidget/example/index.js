@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import NumberSliderWidget from '..';
+import NumberSliderWidget from 'paraviewweb/src/React/Widgets/NumberSliderWidget';
 
 class ColorField extends React.Component {
   constructor(props) {

@@ -6,11 +6,11 @@ import equals from 'mout/src/array/equals';
 
 import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
-import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
-import LineChartPainter from '../../../../Rendering/Painter/LineChartPainter';
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import MultiLayoutViewer from '..';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import ImageBuilder from 'paraviewweb/src/Rendering/Image/DataProberImageBuilder';
+import LineChartPainter from 'paraviewweb/src/Rendering/Painter/LineChartPainter';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
+import MultiLayoutViewer from 'paraviewweb/src/React/Viewers/MultiLayoutViewer';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
 
 const bodyElement = document.querySelector('.content');
 const dataModel = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);

@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import MapProperty from '..';
+import MapProperty from 'paraviewweb/src/React/Properties/MapProperty';
 
 const container = document.querySelector('.content');
 

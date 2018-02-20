@@ -3,8 +3,8 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import LookupTableManagerControl from '..';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
+import LookupTableManagerControl from 'paraviewweb/src/React/CollapsibleControls/LookupTableManagerControl';
 
 document.body.style.padding = '10px';
 

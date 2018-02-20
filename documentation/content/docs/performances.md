@@ -26,6 +26,19 @@ Download: 170 Mps
 Upload: 22 Mbps
 ```
 
+## Idle resource usage
+
+|                            | MacBookPro Memory | MacBookPro Real Memory |
+| -------------------------- | ----------------- | ---------------------- |
+| ParaView Qt client         | 344.2 MB          | 540.8 MB               |
+| pvserver                   | 22.2 MB           | 57.1 MB                |
+| pvpython                   | 13.0 MB           | 40.6 MB                |
+| pvpython + pv lib (1)      | 83.6 MB           | 147.4 MB               |
+| visualizer (server) (2)    | 123.4 MB          | 195.5 MB               |
+
+__Real Memory:__ Total Memory currently consumed by an application (including Virtual pages)
+__Memory:__ Memory used in RAM
+
 ## Loading cost analysis
 
 This section only focus on the intial cost of starting a given process.
@@ -64,6 +77,8 @@ __Compression modes\*:__
  2) LZ4 (default settings)
  3) Squirt (default settings)
  4) zlib (default settings)
+
+ParaView - Visualizer in that example was not compressing the image by lowering the JPEG quality or lowering the image resolution while interacting. If any compression is used JPEG or image size, we easily reach +50 fps while interacting.
 
 ### Running on __EC2__
 

@@ -1,6 +1,6 @@
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import legendShapes from './shapes';
-import palettes from '../../../Common/Misc/ColorPalettes';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import legendShapes from 'paraviewweb/src/InfoViz/Core/LegendProvider/shapes';
+import palettes from 'paraviewweb/src/Common/Misc/ColorPalettes';
 
 // ----------------------------------------------------------------------------
 // Global

@@ -1,12 +1,12 @@
 import 'normalize.css';
 
-import Workbench from '..';
-import ToggleControl from '../../ToggleControl';
-import BGColor from '../../BackgroundColor';
-import Spacer from '../../Spacer';
-import Composite from '../../Composite';
-import ReactAdapter from '../../../React/ReactAdapter';
-import WorkbenchController from '../../../React/WorkbenchController';
+import Workbench from 'paraviewweb/src/Component/Native/Workbench';
+import ToggleControl from 'paraviewweb/src/Component/Native/ToggleControl';
+import BGColor from 'paraviewweb/src/Component/Native/BackgroundColor';
+import Spacer from 'paraviewweb/src/Component/Native/Spacer';
+import Composite from 'paraviewweb/src/Component/Native/Composite';
+import ReactAdapter from 'paraviewweb/src/Component/React/ReactAdapter';
+import WorkbenchController from 'paraviewweb/src/Component/React/WorkbenchController';
 
 import { debounce } from '../../../../Common/Misc/Debounce';
 

@@ -5,11 +5,11 @@ import ReactDOM from 'react-dom';
 
 import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
-import ImageBuilder from '../../../../Rendering/Image/DataProberImageBuilder';
-import PixelOperatorImageBuilder from '../../../../Rendering/Image/PixelOperatorImageBuilder';
-import LookupTableManager from '../../../../Common/Core/LookupTableManager';
-import MultiLayoutViewer from '..';
-import QueryDataModel from '../../../../IO/Core/QueryDataModel';
+import ImageBuilder from 'paraviewweb/src/Rendering/Image/DataProberImageBuilder';
+import PixelOperatorImageBuilder from 'paraviewweb/src/Rendering/Image/PixelOperatorImageBuilder';
+import LookupTableManager from 'paraviewweb/src/Common/Core/LookupTableManager';
+import MultiLayoutViewer from 'paraviewweb/src/React/Viewers/MultiLayoutViewer';
+import QueryDataModel from 'paraviewweb/src/IO/Core/QueryDataModel';
 
 const bodyElement = document.querySelector('.content');
 const dataModelA = new QueryDataModel(jsonData, `${__BASE_PATH__}/data/probe/`);

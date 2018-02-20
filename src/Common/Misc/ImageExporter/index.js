@@ -1,6 +1,6 @@
 /* global XMLHttpRequest Image */
 
-import CanvasOffscreenBuffer from '../CanvasOffscreenBuffer';
+import CanvasOffscreenBuffer from 'paraviewweb/src/Common/Misc/CanvasOffscreenBuffer';
 
 export default class ImageExporter {
   constructor(format = 'image/jpeg', padding = 3) {

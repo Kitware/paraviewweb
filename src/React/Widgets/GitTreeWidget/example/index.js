@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import GitTreeWidget from '..';
+import GitTreeWidget from 'paraviewweb/src/React/Widgets/GitTreeWidget';
 
 const nodes = [
   { name: 'another branch', visible: true, id: '40', parent: '1' },

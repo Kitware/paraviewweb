@@ -4,7 +4,7 @@ import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TextInputWidget from '..';
+import TextInputWidget from 'paraviewweb/src/React/Widgets/TextInputWidget';
 
 const container = document.querySelector('.content');
 const textValue = 'Some text example...';

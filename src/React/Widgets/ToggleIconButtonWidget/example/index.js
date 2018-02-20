@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ToggleIconButtonWidget from '..';
+import ToggleIconButtonWidget from 'paraviewweb/src/React/Widgets/ToggleIconButtonWidget';
 
 const container = document.querySelector('.content');
 document.body.style.padding = '10px';

@@ -3,9 +3,9 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import SelectionEditorWidget from '..';
-import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
-import LegendProvider from '../../../../InfoViz/Core/LegendProvider';
+import SelectionEditorWidget from 'paraviewweb/src/React/Widgets/SelectionEditorWidget';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
+import LegendProvider from 'paraviewweb/src/InfoViz/Core/LegendProvider';
 
 const rangeSelection = SelectionBuilder.range({
   pressure: [

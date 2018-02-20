@@ -3,11 +3,11 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ProxyEditorWidget from '..';
+import ProxyEditorWidget from 'paraviewweb/src/React/Widgets/ProxyEditorWidget';
 
-import source from './source-proxy.json';
-import representation from './representation-proxy.json';
-import view from './view-proxy.json';
+import source from 'paraviewweb/src/React/Widgets/ProxyEditorWidget/example/source-proxy.json';
+import representation from 'paraviewweb/src/React/Widgets/ProxyEditorWidget/example/representation-proxy.json';
+import view from 'paraviewweb/src/React/Widgets/ProxyEditorWidget/example/view-proxy.json';
 
 // --------------------------------------------------------------------------
 // Main proxy editor widget example

@@ -3,10 +3,10 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AnnotationEditorWidget from '..';
-import SelectionBuilder from '../../../../Common/Misc/SelectionBuilder';
-import AnnotationBuilder from '../../../../Common/Misc/AnnotationBuilder';
-import LegendProvider from '../../../../InfoViz/Core/LegendProvider';
+import AnnotationEditorWidget from 'paraviewweb/src/React/Widgets/AnnotationEditorWidget';
+import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
+import AnnotationBuilder from 'paraviewweb/src/Common/Misc/AnnotationBuilder';
+import LegendProvider from 'paraviewweb/src/InfoViz/Core/LegendProvider';
 
 const scores = [
   { name: 'Yes', color: '#00C900', value: 100 },

@@ -1,7 +1,7 @@
 import 'normalize.css';
 
-import CompositeComponent from '..';
-import BGColorComponent from '../../BackgroundColor';
+import CompositeComponent from 'paraviewweb/src/Component/Native/Composite';
+import BGColorComponent from 'paraviewweb/src/Component/Native/BackgroundColor';
 
 const container = document.querySelector('.content');
 container.style.position = 'relative';

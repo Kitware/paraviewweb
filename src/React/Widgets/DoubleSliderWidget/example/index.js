@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import DoubleSliderWidget from '..';
+import DoubleSliderWidget from 'paraviewweb/src/React/Widgets/DoubleSliderWidget';
 
 function onChange(name, value) {
   console.log(name, value);

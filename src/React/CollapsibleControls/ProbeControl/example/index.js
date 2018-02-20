@@ -3,7 +3,7 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ProbeControl from '..';
+import ProbeControl from 'paraviewweb/src/React/CollapsibleControls/ProbeControl';
 
 let crossHair = true;
 let renderMethod = 'XY';

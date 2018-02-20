@@ -3,12 +3,12 @@
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/ParallelCoordinates.mcss';
 
-import AnnotationBuilder from '../../../Common/Misc/AnnotationBuilder';
-import AxesManager from './AxesManager';
+import AnnotationBuilder from 'paraviewweb/src/Common/Misc/AnnotationBuilder';
+import AxesManager from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/AxesManager';
 // import axisControlSvg from './AxisControl-svg.html';
-import CompositeClosureHelper from '../../../Common/Core/CompositeClosureHelper';
-import htmlContent from './body.html';
-import iconImage from './ParallelCoordsIconSmall.png';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import htmlContent from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/body.html';
+import iconImage from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/ParallelCoordsIconSmall.png';
 
 // ----------------------------------------------------------------------------
 // Global

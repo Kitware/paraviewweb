@@ -35,6 +35,7 @@ module.exports = {
     },
     resolve: {
       alias: {
+        paraviewweb: path.resolve('.'),
         PVWStyle: path.resolve('./style'),
       },
     },

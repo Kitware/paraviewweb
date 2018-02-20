@@ -1,16 +1,16 @@
 import 'normalize.css';
 
-import sizeHelper from '../../../../Common/Misc/SizeHelper';
+import sizeHelper from 'paraviewweb/src/Common/Misc/SizeHelper';
 
-import CompositeClosureHelper from '../../../../../src/Common/Core/CompositeClosureHelper';
-import FieldProvider from '../../../../../src/InfoViz/Core/FieldProvider';
-import LegendProvider from '../../../../../src/InfoViz/Core/LegendProvider';
-import Histogram1DProvider from '../../../../../src/InfoViz/Core/Histogram1DProvider';
-import HistogramBinHoverProvider from '../../../../../src/InfoViz/Core/HistogramBinHoverProvider';
-import ScoresProvider from '../../../../../src/InfoViz/Core/ScoresProvider';
-import SelectionProvider from '../../../../../src/InfoViz/Core/SelectionProvider';
-import HistogramSelector from '../../../Native/HistogramSelector';
-import FieldSelector from '../../../Native/FieldSelector';
+import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
+import FieldProvider from 'paraviewweb/src/InfoViz/Core/FieldProvider';
+import LegendProvider from 'paraviewweb/src/InfoViz/Core/LegendProvider';
+import Histogram1DProvider from 'paraviewweb/src/InfoViz/Core/Histogram1DProvider';
+import HistogramBinHoverProvider from 'paraviewweb/src/InfoViz/Core/HistogramBinHoverProvider';
+import ScoresProvider from 'paraviewweb/src/InfoViz/Core/ScoresProvider';
+import SelectionProvider from 'paraviewweb/src/InfoViz/Core/SelectionProvider';
+import HistogramSelector from 'paraviewweb/src/InfoViz/Native/HistogramSelector';
+import FieldSelector from 'paraviewweb/src/InfoViz/Native/FieldSelector';
 
 import dataModel from './state.json';
 
