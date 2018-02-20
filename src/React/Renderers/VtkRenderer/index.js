@@ -106,6 +106,8 @@ export default class VtkRenderer extends React.Component {
     if (this.imageRenderer.setDrawFPS) {
       this.imageRenderer.setDrawFPS(nextProps.showFPS);
     }
+
+    this.mouseListener.setThrottleTime(nextProps.throttleTime);
   }
 
   componentWillUnmount() {
@@ -157,6 +159,8 @@ VtkRenderer.propTypes = {
   interactiveQuality: PropTypes.number,
   stillRatio: PropTypes.number,
   interactiveRatio: PropTypes.number,
+
+  throttleTime: PropTypes.number,
 };
 
 VtkRenderer.defaultProps = {
@@ -172,4 +176,6 @@ VtkRenderer.defaultProps = {
   interactiveQuality: 50,
   stillRatio: 1,
   interactiveRatio: 0.5,
+
+  throttleTime: 16.6,
 };
