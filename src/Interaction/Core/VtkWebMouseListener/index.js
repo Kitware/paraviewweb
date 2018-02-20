@@ -120,7 +120,10 @@ export default class VtkMouseListener {
         }
         if (this.client) {
           const tNow = Date.now();
-          if (tNow > this.lastEventTime + this.throttleTime || vtkEvent.action !== 'move') {
+          if (
+            tNow > this.lastEventTime + this.throttleTime ||
+            vtkEvent.action !== 'move'
+          ) {
             this.lastEventTime = tNow;
             this.client.MouseHandler.interaction(vtkEvent).then(
               (resp) => {
