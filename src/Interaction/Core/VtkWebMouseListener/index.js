@@ -14,7 +14,8 @@ const NoOp = () => {};
 export default class VtkMouseListener {
   constructor(vtkWebClient, width = 100, height = 100, viewId = -1) {
     this.client = vtkWebClient;
-    this.ready = true;
+    this.lastEventTime = Date.now();
+    this.throttleTime = 16.6; // ms => 30 fps
     this.width = width;
     this.height = height;
     this.viewId = viewId;
@@ -50,7 +51,11 @@ export default class VtkMouseListener {
           this.emit(INTERATION_TOPIC, true);
         }
         if (this.client) {
-          if (this.ready || vtkEvent.action !== 'move') {
+          const tNow = Date.now();
+          if (
+            tNow > this.lastEventTime + this.throttleTime ||
+            vtkEvent.action !== 'move'
+          ) {
             // Make sure we only send the last down or first up before/after a move
             if (vtkEvent.action !== 'move' && this.lastEvent) {
               // eat first down action
@@ -71,10 +76,9 @@ export default class VtkMouseListener {
               }
             }
             this.lastEvent = vtkEvent;
-            this.ready = false;
+            this.lastEventTime = tNow;
             this.client.MouseHandler.interaction(vtkEvent).then(
               (resp) => {
-                this.ready = true;
                 this.doneCallback(vtkEvent.action !== 'up');
               },
               (err) => {
@@ -115,15 +119,14 @@ export default class VtkMouseListener {
           this.emit(INTERATION_TOPIC, true);
         }
         if (this.client) {
-          if (this.ready || vtkEvent.action !== 'move') {
-            this.ready = false;
+          const tNow = Date.now();
+          if (tNow > this.lastEventTime + this.throttleTime || vtkEvent.action !== 'move') {
+            this.lastEventTime = tNow;
             this.client.MouseHandler.interaction(vtkEvent).then(
               (resp) => {
-                this.ready = true;
                 this.doneCallback(vtkEvent.action !== 'up');
               },
               (err) => {
-                this.ready = true;
                 this.doneCallback(vtkEvent.action !== 'up');
               }
             );
@@ -142,6 +145,14 @@ export default class VtkMouseListener {
 
   setInteractionDoneCallback(callback) {
     this.doneCallback = callback || NoOp;
+  }
+
+  setThrottleTime(tTime = 16.6) {
+    this.throttleTime = tTime;
+  }
+
+  getThrottleTime() {
+    return this.throttleTime;
   }
 
   updateSize(w, h) {
