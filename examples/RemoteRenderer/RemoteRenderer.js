@@ -26427,6 +26427,21 @@ function createMethods(session) {
     },
     invalidateCache: function invalidateCache(viewId) {
       return session.call('viewport.image.push.invalidate.cache', [viewId]);
+    },
+    setMaxFrameRate: function setMaxFrameRate() {
+      var fps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
+      return session.call('viewport.image.animation.fps.max', [fps]);
+    },
+    getCurrentFrameRate: function getCurrentFrameRate() {
+      return session.call('viewport.image.animation.fps.get', []);
+    },
+    startViewAnimation: function startViewAnimation() {
+      var viewId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+      return session.call('viewport.image.animation.start', [viewId]);
+    },
+    stopViewAnimation: function stopViewAnimation() {
+      var viewId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+      return session.call('viewport.image.animation.stop', [viewId]);
     }
   };
 }
