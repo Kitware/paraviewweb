@@ -22,5 +22,13 @@ export default function createMethods(session) {
       ]),
     invalidateCache: (viewId) =>
       session.call('viewport.image.push.invalidate.cache', [viewId]),
+    setMaxFrameRate: (fps = 30) =>
+      session.call('viewport.image.animation.fps.max', [fps]),
+    getCurrentFrameRate: () =>
+      session.call('viewport.image.animation.fps.get', []),
+    startViewAnimation: (viewId = -1) =>
+      session.call('viewport.image.animation.start', [viewId]),
+    stopViewAnimation: (viewId = -1) =>
+      session.call('viewport.image.animation.stop', [viewId]),
   };
 }
