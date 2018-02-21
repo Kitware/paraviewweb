@@ -30,13 +30,14 @@ function wslinkImageStream(publicAPI, model) {
       model.stillRatio
     );
 
-  publicAPI.setViewSize = (width, height) => {
-    model.client.VtkImageDelivery.viewSize(model.view_id, width, height);
-  };
+  publicAPI.setMaxFrameRate = (maxFPS) =>
+    model.client.VtkImageDelivery.setMaxFrameRate(maxFPS);
 
-  publicAPI.invalidateCache = () => {
+  publicAPI.setViewSize = (width, height) =>
+    model.client.VtkImageDelivery.viewSize(model.view_id, width, height);
+
+  publicAPI.invalidateCache = () =>
     model.client.VtkImageDelivery.invalidateCache(model.view_id);
-  };
 
   publicAPI.updateQuality = (stillQuality = 100, interactiveQuality = 50) => {
     model.stillQuality = stillQuality;
