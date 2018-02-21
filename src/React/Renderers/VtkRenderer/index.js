@@ -103,6 +103,10 @@ export default class VtkRenderer extends React.Component {
       );
     }
 
+    if (this.binaryImageStream.setMaxFrameRate) {
+      this.binaryImageStream.setMaxFrameRate(nextProps.maxFPS);
+    }
+
     if (this.imageRenderer.setDrawFPS) {
       this.imageRenderer.setDrawFPS(nextProps.showFPS);
     }
@@ -161,6 +165,7 @@ VtkRenderer.propTypes = {
   interactiveRatio: PropTypes.number,
 
   throttleTime: PropTypes.number,
+  maxFPS: PropTypes.number,
 };
 
 VtkRenderer.defaultProps = {
@@ -178,4 +183,5 @@ VtkRenderer.defaultProps = {
   interactiveRatio: 0.5,
 
   throttleTime: 16.6,
+  maxFPS: 30,
 };
