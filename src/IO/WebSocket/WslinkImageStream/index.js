@@ -7,7 +7,8 @@ function wslinkImageStream(publicAPI, model) {
   model.metadata = null;
   model.activeURL = null;
   model.fps = 0;
-  model.lastTime = +new Date();
+  model.lastTime = Date.now();
+  model.urlToRevoke = [];
 
   model.lastImageReadyEvent = null;
 
@@ -111,11 +112,15 @@ function wslinkImageStream(publicAPI, model) {
       type: model.mimeType,
     });
     if (model.activeURL) {
-      window.URL.revokeObjectURL(model.activeURL);
+      model.urlToRevoke.push(model.activeURL);
       model.activeURL = null;
+      while (model.urlToRevoke.length > 60) {
+        const url = model.urlToRevoke.shift();
+        window.URL.revokeObjectURL(url);
+      }
     }
     model.activeURL = URL.createObjectURL(imgBlob);
-    const time = +new Date();
+    const time = Date.now();
     model.fps = Math.floor(10000 / (time - model.lastTime)) / 10;
     model.lastTime = time;
 
@@ -172,6 +177,9 @@ function wslinkImageStream(publicAPI, model) {
   function cleanUp() {
     publicAPI.removeRenderObserver(model.view_id);
     publicAPI.unsubscribeRenderTopic();
+    while (model.urlToRevoke.length) {
+      window.URL.revokeObjectURL(model.urlToRevoke.pop());
+    }
   }
 
   publicAPI.destroy = CompositeClosureHelper.chain(cleanUp, publicAPI.destroy);
