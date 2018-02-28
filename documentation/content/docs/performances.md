@@ -13,10 +13,10 @@ Memory: 16 GB 2133 MHz LPDDR3
 GPU: Radeon Pro 460 4 GB
 ```
 
-__Server - Amazon EC2 - Oregon ([map](https://www.google.com/maps/dir/Santa+Fe,+NM/Amazon+Data+Center,+Boardman,+OR+97818/@40.5028874,-117.2515113,6z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x87185043e79852a9:0x8c902373fd88df40!2m2!1d-105.937799!2d35.6869752!1m5!1m1!1s0x54a2b2b4a09c7c29:0x6cfb9b9e8655843!2m2!1d-119.6536926!2d45.8409449))__
+__Server - Amazon EC2 - N Virginia ([map](https://www.google.com/maps/place/Amazon+Sortation+Center+RIC5/@34.0346852,-109.0484094,4.25z/data=!4m5!3m4!1s0x89b13c128823b5e3:0xf048c52753badeaa!8m2!3d37.7290999!4d-77.4565854))__
 ```
-Amazon EC2 - g2.2xlarge - US West (Oregon)
-ParaView 5.4.1 / EGL build
+Amazon EC2 - g2.2xlarge - US East (N Virginia)
+ParaView 5.5 / EGL build
 ```
 
 __[Speed test results](http://www.speedtest.net/)__
@@ -38,6 +38,18 @@ Upload: 22 Mbps
 
 __Real Memory:__ Total Memory currently consumed by an application (including Virtual pages)
 __Memory:__ Memory used in RAM
+
+## Interactive resource usage
+
+The test was done on the EC2 server using top to monitor the resources taken by ParaView.
+The loaded data was the Lidar one which report 228 MB in the information panel.
+The filter was a clip which created a new dataset that was 181.3 MB in the information panel.
+
+| ParaView - Visualizer on EC2 | CPU  | Memory                      |
+| ---------------------------- | ---- | --------------------------- |
+| Idle                         |   1% | const (6.5%)                |
+| Interacting 30 FPS           | 265% | const (6.5%)                |
+| Apply a filter               | 100% | const + filter data (10.2%) |
 
 ## Loading cost analysis
 
@@ -67,28 +79,41 @@ For the rendering performances we've loaded the same dataset of 4.8 Million poin
 
 ### Running on __localhost__
 
-| Image resolution | ParaView Qt client | ParaView* (client/server) | ParaView - Visualizer |
-| ---------------- | ------------------ | ------------------------- | --------------------- |
-| 1280 x 720       | + 600 fps          | 27/22/21/4 fps            | 27 fps                |
-| 1920 x 1080      | + 600 fps          | 16/12/11/4 fps            | 14 fps                |
+| Image resolution | ParaView Qt client | ParaView* (client/server) | ParaView* - Visualizer |
+| ---------------- | ------------------ | ------------------------- | ---------------------- |
+| 1280 x 720       | + 600 fps          | 27/22/21/4 fps            | 30 fps                 |
+| 1920 x 1080      | + 600 fps          | 16/12/11/4 fps            | 30 fps                 |
 
 __Compression modes\*:__
- 1) No compression (~ BMP)
- 2) LZ4 (default settings)
- 3) Squirt (default settings)
- 4) zlib (default settings)
 
-ParaView - Visualizer in that example was not compressing the image by lowering the JPEG quality or lowering the image resolution while interacting. If any compression is used JPEG or image size, we easily reach +50 fps while interacting.
+| ParaView* (client/server) | ParaView* - Visualizer       |
+| ------------------------- | ---------------------------- |
+| No compression (~ BMP)    | 50% JPEG / Ratio 1 - Default |
+| LZ4 (default settings)    | 25% JPEG / Ratio 1           |
+| Squirt (default settings) | 50% JPEG / Ratio 0.5         |
+| zlib (default settings)   | 25% JPEG / Ratio 0.25        |
 
 ### Running on __EC2__
 
 | Image resolution | ParaView* (client/server) | ParaView - Visualizer |
 | ---------------- | ------------------------- | --------------------- |
-| 1280 x 720       | 3/3/3/2 fps               | 9 fps                 |
-| 1920 x 1080      | 3/1/2/2 fps               | 6 fps                 |
+| 1280 x 720       | 3/3/3/2 fps               | 30/30/30/30 fps       |
+| 1920 x 1080      | 3/1/2/2 fps               | 23/23/30/30 fps                 |
 
 __Compression modes\*:__
- 1) No compression (~ BMP)
- 2) LZ4 (default settings)
- 3) Squirt (default settings)
- 4) zlib (default settings)
+
+| ParaView* (client/server) | ParaView* - Visualizer       | Web image 1280x720  | Web image 1920x1080 |
+| ------------------------- | ---------------------------- | ------------------- | ------------------- |
+| No compression (~ BMP)    | 50% JPEG / Ratio 1 - Default | 45.6 KB vs 298.2 KB | 83.5 KB vs 563.6 KB |
+| LZ4 (default settings)    | 25% JPEG / Ratio 1           | 31.0 KB vs 295.4 KB | 56.9 KB vs 562.0 KB |
+| Squirt (default settings) | 50% JPEG / Ratio 0.5         | 17.0 KB vs 293.7 KB | 29.9 KB vs 560.8 KB |
+| zlib (default settings)   | 25% JPEG / Ratio 0.25        |  4.6 KB vs 293.9 KB | 7.82 KB vs 560.7 KB |
+
+__Note__: 
+
+ParaViewWeb target 30 FPS hence the constant 30 FPS value.
+When increasing the server FPS value, I was able to reach ~45 FPS with an image of 1280x720 and a JPEG Quality of 50% (Ratio 1 => same image resolution).
+When lowering even more the quality of the transfered image I was getting the 60 FPS which was the targeted framerate set on the server side. 
+
+
+
