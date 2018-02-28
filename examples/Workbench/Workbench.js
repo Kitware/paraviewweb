@@ -366,8 +366,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./LayoutsWidget.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./LayoutsWidget.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./LayoutsWidget.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./LayoutsWidget.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -3057,8 +3057,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--63-2!./normalize.css", function() {
-			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--63-2!./normalize.css");
+		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--64-2!./normalize.css", function() {
+			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--64-2!./normalize.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -23438,8 +23438,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./Workbench.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./Workbench.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./Workbench.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./Workbench.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -23926,8 +23926,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./ToggleControl.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./ToggleControl.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./ToggleControl.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./ToggleControl.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -24250,8 +24250,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./Composite.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./Composite.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./Composite.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./Composite.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -42424,8 +42424,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./WorkbenchController.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--56-1!../../node_modules/postcss-loader/lib/index.js??ref--56-2!./WorkbenchController.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./WorkbenchController.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--57-1!../../node_modules/postcss-loader/lib/index.js??ref--57-2!./WorkbenchController.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});

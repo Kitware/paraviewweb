@@ -2094,8 +2094,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--45-2!./normalize.css", function() {
-			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--45-2!./normalize.css");
+		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--46-2!./normalize.css", function() {
+			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--46-2!./normalize.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -40188,8 +40188,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--38-1!../../node_modules/postcss-loader/lib/index.js??ref--38-2!./ImageRenderer.mcss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--38-1!../../node_modules/postcss-loader/lib/index.js??ref--38-2!./ImageRenderer.mcss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--39-1!../../node_modules/postcss-loader/lib/index.js??ref--39-2!./ImageRenderer.mcss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--39-1!../../node_modules/postcss-loader/lib/index.js??ref--39-2!./ImageRenderer.mcss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});

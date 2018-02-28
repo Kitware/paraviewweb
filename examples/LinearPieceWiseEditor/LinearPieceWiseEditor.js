@@ -175,8 +175,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--58-2!./normalize.css", function() {
-			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--58-2!./normalize.css");
+		module.hot.accept("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--59-2!./normalize.css", function() {
+			var newContent = require("!!../css-loader/index.js!../postcss-loader/lib/index.js??ref--59-2!./normalize.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
