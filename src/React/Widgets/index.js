@@ -25,6 +25,7 @@ import NumberSliderWidget from './NumberSliderWidget';
 import OverlayTitleBar from './OverlayTitleBar';
 import PieceWiseFunctionEditorWidget from './PieceWiseFunctionEditorWidget';
 import PresetListWidget from './PresetListWidget';
+import ProgressLoaderWidget from './ProgressLoaderWidget';
 import ProxyEditorWidget from './ProxyEditorWidget';
 import ProxyPropertyGroupWidget from './ProxyPropertyGroupWidget';
 import QueryDataModelWidget from './QueryDataModelWidget';
@@ -66,6 +67,7 @@ export default {
   OverlayTitleBar,
   PieceWiseFunctionEditorWidget,
   PresetListWidget,
+  ProgressLoaderWidget,
   ProxyEditorWidget,
   ProxyPropertyGroupWidget,
   QueryDataModelWidget,
