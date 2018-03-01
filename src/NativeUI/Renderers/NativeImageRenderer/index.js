@@ -24,8 +24,9 @@ export default class NativeImageRenderer {
     mouseListeners = null,
     drawFPS = true
   ) {
-    this.size = SizeHelper.getSize(domElement);
-    this.container = domElement;
+    this.size = domElement
+      ? SizeHelper.getSize(domElement)
+      : { clientWidth: 400, clientHeight: 400 };
     this.canvas = document.createElement('canvas');
     this.image = new Image();
     this.fps = '';
@@ -40,7 +41,8 @@ export default class NativeImageRenderer {
     };
 
     // Update DOM
-    this.container.appendChild(this.canvas);
+    this.setContainer(domElement);
+
     this.ctx = this.canvas.getContext('2d');
     this.ctx.font = '30px Arial';
 
@@ -67,11 +69,13 @@ export default class NativeImageRenderer {
     // Add size listener
     this.subscriptions.push(
       SizeHelper.onSizeChange(() => {
-        this.size = SizeHelper.getSize(domElement);
-        this.canvas.setAttribute('width', this.size.clientWidth);
-        this.canvas.setAttribute('height', this.size.clientHeight);
-        if (this.image.src && this.image.complete) {
-          this.updateDrawnImage();
+        if (this.container) {
+          this.size = SizeHelper.getSize(this.container);
+          this.canvas.setAttribute('width', this.size.clientWidth);
+          this.canvas.setAttribute('height', this.size.clientHeight);
+          if (this.image.src && this.image.complete) {
+            this.updateDrawnImage();
+          }
         }
       })
     );
@@ -99,6 +103,31 @@ export default class NativeImageRenderer {
     }
     total /= size;
     return `${Math.round(min)}<${Math.round(total)}<${Math.round(max)}`;
+  }
+
+  setContainer(container) {
+    if (this.container) {
+      this.container.removeChild(this.canvas);
+    }
+    this.container = container;
+    if (this.container) {
+      this.container.appendChild(this.canvas);
+    }
+  }
+
+  resize() {
+    if (this.container) {
+      this.size = SizeHelper.getSize(this.container);
+    }
+  }
+
+  setSize(clientWidth = 400, clientHeight = 400) {
+    this.size = { clientWidth, clientHeight };
+    this.canvas.setAttribute('width', this.size.clientWidth);
+    this.canvas.setAttribute('height', this.size.clientHeight);
+    if (this.image.src && this.image.complete) {
+      this.updateDrawnImage();
+    }
   }
 
   destroy() {

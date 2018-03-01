@@ -124,8 +124,8 @@ ParallelCoordinatesTool.propTypes = {
   provider: PropTypes.object.isRequired,
   size: PropTypes.string,
 
-  activeWindow: PropTypes.object.isRequired,
-  onActiveWindow: PropTypes.func.isRequired,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 
   showOnlySelection: PropTypes.bool,
   partitionScores: PropTypes.array,
@@ -135,4 +135,6 @@ ParallelCoordinatesTool.defaultProps = {
   size: '35px',
   showOnlySelection: false,
   partitionScores: [0, 1, 2],
+  activeWindow: null,
+  onActiveWindow: null,
 };
