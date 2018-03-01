@@ -125,6 +125,9 @@ export default class NativeImageRenderer {
     this.size = { clientWidth, clientHeight };
     this.canvas.setAttribute('width', this.size.clientWidth);
     this.canvas.setAttribute('height', this.size.clientHeight);
+    if (this.image.src && this.image.complete) {
+      this.updateDrawnImage();
+    }
   }
 
   destroy() {
