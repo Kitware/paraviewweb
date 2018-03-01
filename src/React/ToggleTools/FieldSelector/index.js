@@ -95,12 +95,14 @@ FieldSelectorTool.propTypes = {
   provider: PropTypes.object.isRequired,
   size: PropTypes.string,
 
-  activeWindow: PropTypes.object.isRequired,
-  onActiveWindow: PropTypes.func.isRequired,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
   overlayVisible: PropTypes.bool,
 };
 
 FieldSelectorTool.defaultProps = {
   overlayVisible: false,
   size: '35px',
+  activeWindow: null,
+  onActiveWindow: null,
 };

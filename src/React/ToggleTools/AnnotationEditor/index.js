@@ -119,11 +119,13 @@ AnnotationEditorTool.propTypes = {
   size: PropTypes.string,
   showUncertainty: PropTypes.bool,
 
-  activeWindow: PropTypes.object.isRequired,
-  onActiveWindow: PropTypes.func.isRequired,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 };
 
 AnnotationEditorTool.defaultProps = {
   size: '35px',
   showUncertainty: true,
+  activeWindow: null,
+  onActiveWindow: null,
 };

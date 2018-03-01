@@ -87,12 +87,15 @@ export default class WorkbenchLayoutTool extends React.Component {
 WorkbenchLayoutTool.propTypes = {
   size: PropTypes.string,
 
-  workbench: PropTypes.object.isRequired,
+  workbench: PropTypes.object,
 
-  activeWindow: PropTypes.object.isRequired,
-  onActiveWindow: PropTypes.func.isRequired,
+  activeWindow: PropTypes.object,
+  onActiveWindow: PropTypes.func,
 };
 
 WorkbenchLayoutTool.defaultProps = {
   size: '35px',
+  workbench: null,
+  activeWindow: null,
+  onActiveWindow: null,
 };
