@@ -25863,35 +25863,39 @@ var _MouseHandler = __webpack_require__(32);
 
 var _MouseHandler2 = _interopRequireDefault(_MouseHandler);
 
-var _ProxyManager = __webpack_require__(33);
+var _ProgressUpdate = __webpack_require__(33);
+
+var _ProgressUpdate2 = _interopRequireDefault(_ProgressUpdate);
+
+var _ProxyManager = __webpack_require__(34);
 
 var _ProxyManager2 = _interopRequireDefault(_ProxyManager);
 
-var _SaveData = __webpack_require__(34);
+var _SaveData = __webpack_require__(35);
 
 var _SaveData2 = _interopRequireDefault(_SaveData);
 
-var _TimeHandler = __webpack_require__(35);
+var _TimeHandler = __webpack_require__(36);
 
 var _TimeHandler2 = _interopRequireDefault(_TimeHandler);
 
-var _ViewPort = __webpack_require__(36);
+var _ViewPort = __webpack_require__(37);
 
 var _ViewPort2 = _interopRequireDefault(_ViewPort);
 
-var _ViewPortGeometryDelivery = __webpack_require__(37);
+var _ViewPortGeometryDelivery = __webpack_require__(38);
 
 var _ViewPortGeometryDelivery2 = _interopRequireDefault(_ViewPortGeometryDelivery);
 
-var _ViewPortImageDelivery = __webpack_require__(38);
+var _ViewPortImageDelivery = __webpack_require__(39);
 
 var _ViewPortImageDelivery2 = _interopRequireDefault(_ViewPortImageDelivery);
 
-var _VtkGeometryDelivery = __webpack_require__(39);
+var _VtkGeometryDelivery = __webpack_require__(40);
 
 var _VtkGeometryDelivery2 = _interopRequireDefault(_VtkGeometryDelivery);
 
-var _VtkImageDelivery = __webpack_require__(40);
+var _VtkImageDelivery = __webpack_require__(41);
 
 var _VtkImageDelivery2 = _interopRequireDefault(_VtkImageDelivery);
 
@@ -25902,6 +25906,7 @@ var protocolsMap = {
   FileListing: _FileListing2.default,
   KeyValuePairStore: _KeyValuePairStore2.default,
   MouseHandler: _MouseHandler2.default,
+  ProgressUpdate: _ProgressUpdate2.default,
   ProxyManager: _ProxyManager2.default,
   SaveData: _SaveData2.default,
   TimeHandler: _TimeHandler2.default,
@@ -26099,6 +26104,26 @@ exports.default = createMethods;
 /* eslint-disable arrow-body-style */
 function createMethods(session) {
   return {
+    onProgressUpdate: function onProgressUpdate(callback) {
+      return session.subscribe('paraview.progress', callback);
+    }
+  };
+}
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createMethods;
+/* eslint-disable arrow-body-style */
+function createMethods(session) {
+  return {
     create: function create(functionName) {
       var parentId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '0';
 
@@ -26141,7 +26166,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26163,7 +26188,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26225,7 +26250,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26280,7 +26305,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26318,7 +26343,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26340,7 +26365,7 @@ function createMethods(session) {
 }
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26384,7 +26409,7 @@ function useBinaryDelivery() {
 }
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
