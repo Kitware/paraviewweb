@@ -24,7 +24,22 @@ export default class VtkRenderer extends React.Component {
         client: this.props.client,
       });
     }
+
+    this.updateQuality({
+      stillQuality: this.props.stillQuality,
+      interactiveQuality: this.props.interactiveQuality,
+    });
+
+    this.updateResolutionRatio({
+      stillRatio: this.props.stillRatio,
+      interactiveRatio: this.props.interactiveRatio,
+    });
+
+    this.updateMaxFrameRate(this.props.maxFPS);
+
     this.mouseListener = new VtkWebMouseListener(this.props.client);
+
+    this.updateThrottleTime(this.props.throttleTime);
 
     // Attach interaction listener for image quality
     this.mouseListener.onInteraction((interact) => {
@@ -83,35 +98,21 @@ export default class VtkRenderer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const viewIdAsNumber = Number(nextProps.viewId);
-    if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
-      if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
-        this.binaryImageStream.invalidateCache();
-        sizeHelper.triggerChange();
-      }
-    }
-    if (this.binaryImageStream.updateQuality) {
-      this.binaryImageStream.updateQuality(
-        nextProps.stillQuality,
-        nextProps.interactiveQuality
-      );
-    }
-    if (this.binaryImageStream.updateResolutionRatio) {
-      this.binaryImageStream.updateResolutionRatio(
-        nextProps.stillRatio,
-        nextProps.interactiveRatio
-      );
-    }
+    this.updateViewId(nextProps.viewId);
 
-    if (this.binaryImageStream.setMaxFrameRate) {
-      this.binaryImageStream.setMaxFrameRate(nextProps.maxFPS);
-    }
+    this.updateQuality({
+      stillQuality: nextProps.stillQuality,
+      interactiveQuality: nextProps.interactiveQuality,
+    });
 
-    if (this.imageRenderer.setDrawFPS) {
-      this.imageRenderer.setDrawFPS(nextProps.showFPS);
-    }
+    this.updateResolutionRatio({
+      stillRatio: nextProps.stillRatio,
+      interactiveRatio: nextProps.interactiveRatio,
+    });
 
-    this.mouseListener.setThrottleTime(nextProps.throttleTime);
+    this.updateMaxFrameRate(nextProps.maxFPS);
+
+    this.updateThrottleTime(nextProps.throttleTime);
   }
 
   componentWillUnmount() {
@@ -133,6 +134,40 @@ export default class VtkRenderer extends React.Component {
     if (this.binaryImageStream) {
       this.binaryImageStream.destroy();
       this.binaryImageStream = null;
+    }
+  }
+
+  updateViewId(viewId) {
+    const viewIdAsNumber = Number(viewId);
+    if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
+      if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
+        this.binaryImageStream.invalidateCache();
+        sizeHelper.triggerChange();
+      }
+    }
+  }
+
+  updateQuality(quality) {
+    if (this.binaryImageStream.updateQuality) {
+      this.binaryImageStream.updateQuality(quality);
+    }
+  }
+
+  updateResolutionRatio(resolutionRatio) {
+    if (this.binaryImageStream.updateResolutionRatio) {
+      this.binaryImageStream.updateResolutionRatio(resolutionRatio);
+    }
+  }
+
+  updateMaxFrameRate(maxFrameRate) {
+    if (this.binaryImageStream.setMaxFrameRate) {
+      this.binaryImageStream.setMaxFrameRate(maxFrameRate);
+    }
+  }
+
+  updateThrottleTime(throttleTime) {
+    if (this.mouseListener) {
+      this.mouseListener.setThrottleTime(throttleTime);
     }
   }
 
