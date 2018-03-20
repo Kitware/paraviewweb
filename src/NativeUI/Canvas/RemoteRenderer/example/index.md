@@ -96,7 +96,7 @@ class _WebCone(vtk_wslink.ServerProtocol):
 
             # VTK Web application specific
             _WebCone.view = renderWindow
-            self.Application.GetObjectIdMap().SetActiveObject("VIEW", renderWindow)
+            self.getApplication().GetObjectIdMap().SetActiveObject("VIEW", renderWindow)
 
 # =============================================================================
 # Main: Parse args and start server
