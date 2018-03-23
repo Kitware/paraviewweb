@@ -7,6 +7,8 @@ import NativeImageRenderer from '../../../NativeUI/Renderers/NativeImageRenderer
 import sizeHelper from '../../../Common/Misc/SizeHelper';
 import VtkWebMouseListener from '../../../Interaction/Core/VtkWebMouseListener';
 
+/* eslint-disable react/no-unused-prop-types */
+
 export default class VtkRenderer extends React.Component {
   componentWillMount() {
     // Make sure we monitor window size if it is not already the case
@@ -79,6 +81,7 @@ export default class VtkRenderer extends React.Component {
         // Update size and do a force push
         sizeHelper.triggerChange();
         this.binaryImageStream.invalidateCache();
+        this.pushSettingsToServer(this.props);
       });
 
     // Push settings at load time
@@ -86,35 +89,7 @@ export default class VtkRenderer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const viewIdAsNumber = Number(nextProps.viewId);
-    if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
-      if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
-        this.binaryImageStream.invalidateCache();
-        sizeHelper.triggerChange();
-      }
-    }
-    if (this.binaryImageStream.updateQuality) {
-      this.binaryImageStream.updateQuality(
-        nextProps.stillQuality,
-        nextProps.interactiveQuality
-      );
-    }
-    if (this.binaryImageStream.updateResolutionRatio) {
-      this.binaryImageStream.updateResolutionRatio(
-        nextProps.stillRatio,
-        nextProps.interactiveRatio
-      );
-    }
-
-    if (this.binaryImageStream.setMaxFrameRate) {
-      this.binaryImageStream.setMaxFrameRate(nextProps.maxFPS);
-    }
-
-    if (this.imageRenderer.setDrawFPS) {
-      this.imageRenderer.setDrawFPS(nextProps.showFPS);
-    }
-
-    this.mouseListener.setThrottleTime(nextProps.throttleTime);
+    this.pushSettingsToServer(nextProps);
   }
 
   componentWillUnmount() {
@@ -136,6 +111,66 @@ export default class VtkRenderer extends React.Component {
     if (this.binaryImageStream) {
       this.binaryImageStream.destroy();
       this.binaryImageStream = null;
+    }
+  }
+
+  pushSettingsToServer(settings = {}) {
+    if ('viewId' in settings && this.binaryImageStream) {
+      const viewIdAsNumber = Number(settings.viewId);
+      if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
+        if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
+          this.binaryImageStream.invalidateCache();
+          sizeHelper.triggerChange();
+        }
+      }
+    }
+
+    if (
+      'stillQuality' in settings &&
+      'interactiveQuality' in settings &&
+      this.binaryImageStream &&
+      this.binaryImageStream.updateQuality
+    ) {
+      this.binaryImageStream.updateQuality(
+        settings.stillQuality,
+        settings.interactiveQuality
+      );
+    }
+
+    if (
+      'stillRatio' in settings &&
+      'interactiveRatio' in settings &&
+      this.binaryImageStream &&
+      this.binaryImageStream.updateResolutionRatio
+    ) {
+      this.binaryImageStream.updateResolutionRatio(
+        settings.stillRatio,
+        settings.interactiveRatio
+      );
+    }
+
+    if (
+      'maxFPS' in settings &&
+      this.binaryImageStream &&
+      this.binaryImageStream.setMaxFrameRate
+    ) {
+      this.binaryImageStream.setMaxFrameRate(settings.maxFPS);
+    }
+
+    if (
+      'showFPS' in settings &&
+      this.binaryImageStream &&
+      this.imageRenderer.setDrawFPS
+    ) {
+      this.imageRenderer.setDrawFPS(settings.showFPS);
+    }
+
+    if (
+      'throttleTime' in settings &&
+      this.mouseListener &&
+      this.mouseListener.setThrottleTime
+    ) {
+      this.mouseListener.setThrottleTime(settings.throttleTime);
     }
   }
 
