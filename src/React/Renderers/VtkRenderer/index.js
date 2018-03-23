@@ -80,6 +80,9 @@ export default class VtkRenderer extends React.Component {
         sizeHelper.triggerChange();
         this.binaryImageStream.invalidateCache();
       });
+
+    // Push settings at load time
+    this.componentWillReceiveProps(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
