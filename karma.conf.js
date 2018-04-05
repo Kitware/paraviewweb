@@ -11,7 +11,6 @@ module.exports = function karmaConf(config) {
       require('karma-webpack'),
       require('karma-tap'),
       require('karma-chrome-launcher'),
-      require('karma-electron'),
       require('karma-coverage'),
       require('karma-tap-pretty-reporter'),
     ],
@@ -41,6 +40,7 @@ module.exports = function karmaConf(config) {
     },
 
     webpack: {
+      mode: 'development',
       node: {
         fs: 'empty',
       },
@@ -75,6 +75,13 @@ module.exports = function karmaConf(config) {
 
     client: {
       useIframe: false,
+    },
+
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox'],
+      },
     },
 
     port: 9876,
