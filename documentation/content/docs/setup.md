@@ -142,9 +142,9 @@ You should extend the generated **package.json** file with the following set of 
 {
   [...]
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode development",
     "build:debug": "webpack --display-modules",
-    "build:release": "webpack -p",
+    "build:release": "webpack --mode production",
     "start": "webpack-dev-server",
 
     "commit": "git cz",
