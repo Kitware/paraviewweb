@@ -93,6 +93,7 @@ export default class InputCell extends React.Component {
       <td className={style.inputCell}>
         <label className={style.inputCellLabel}>{this.props.label}</label>
         <input
+          readOnly={this.props.domain && this.props.domain.readOnly}
           className={style.inputCellInput}
           value={this.state.editing ? this.state.valueRep : this.props.value}
           onChange={this.valueChange}

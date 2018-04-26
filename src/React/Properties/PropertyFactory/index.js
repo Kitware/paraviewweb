@@ -2,6 +2,7 @@ import React from 'react';
 
 import CellProperty from '../CellProperty';
 import CheckboxProperty from '../CheckboxProperty';
+import ColorProperty from '../ColorProperty';
 import CollapsiblePropertyGroup from '../CollapsiblePropertyGroup';
 import EnumProperty from '../EnumProperty';
 import MapProperty from '../MapProperty';
@@ -54,6 +55,16 @@ const factoryMapping = {
   ),
   Map: (prop, viewData, onChange) => (
     <MapProperty
+      key={prop.data.id}
+      data={prop.data}
+      ui={prop.ui}
+      viewData={viewData}
+      show={prop.show}
+      onChange={onChange || prop.onChange}
+    />
+  ),
+  Color: (prop, viewData, onChange) => (
+    <ColorProperty
       key={prop.data.id}
       data={prop.data}
       ui={prop.ui}
