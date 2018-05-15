@@ -1,7 +1,6 @@
 import max from 'mout/object/max';
 import merge from 'mout/src/object/merge';
-import vec3 from 'gl-matrix/src/gl-matrix/vec3';
-import vec4 from 'gl-matrix/src/gl-matrix/vec4';
+import { vec3, vec4 } from 'gl-matrix';
 
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 import WebGlUtil from '../../../Common/Misc/WebGl';
