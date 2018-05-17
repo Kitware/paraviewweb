@@ -1,29 +1,18 @@
 # Introduction
 
-This repository contains images useful for running/deploying ParaViewWeb.  This
-documentation, along with the Dockerfiles used to build the images (as well as
-everything else related to ParaViewWeb) are hosted on our Github 
-[repo](https://github.com/Kitware/paraviewweb).
+This repository contains images useful for running/deploying ParaViewWeb.  This documentation, along with the Dockerfiles used to build the images (as well as everything else related to ParaViewWeb) are hosted on our Github [repo](https://github.com/Kitware/paraviewweb).
 
 ## Images
 
-There are currently three images available, though you would normally only need to run
-the `pvw-visualizer-5.5.0` one for the simplest deployment:
+There are currently three images available, though you would normally only need to run the `pvw-visualizer-5.5.0` one for the simplest deployment:
 
-- `pv-5.5.0`: Base image containing ParaView 5.5 binary with EGL rendering
-support.  This image is based off the [nvidia/opengl](https://hub.docker.com/r/nvidia/opengl/)
-images.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/paraview/Dockerfile)
-- `pvw-base-5.5.0`: Built on top of the `pv-5.5.0` image, this adds the
-Apache webserver, along with some extra scripts and configuration files
-used by the next image in the stack.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/paraviewweb/Dockerfile)
-- `pvw-visualizer-5.5.0`: Built on top of the `pvw-base-5.5.0` image, this
-adds an Apache endpoint for the ParaViewWeb Visualizer application, and
-brings a custom launcher config.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/visualizer/Dockerfile)
+- `pv-5.5.0`: Base image containing ParaView 5.5 binary with EGL rendering support.  This image is based off the [nvidia/opengl](https://hub.docker.com/r/nvidia/opengl/) images.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/paraview/Dockerfile)
+- `pvw-base-5.5.0`: Built on top of the `pv-5.5.0` image, this adds the Apache webserver, along with some extra scripts and configuration files used by the next image in the stack.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/paraviewweb/Dockerfile)
+- `pvw-visualizer-5.5.0`: Built on top of the `pvw-base-5.5.0` image, this adds an Apache endpoint for the ParaViewWeb Visualizer application, and brings a custom launcher config.  [Dockerfile](https://github.com/Kitware/paraviewweb/tree/master/tools/docker/visualizer/Dockerfile)
 
 ## Example deployment on EC2
 
-For this setup we have used an AWS EC2 instance with an NVidia GPU, and
-running Ubuntu 16.04.  Below we describe the steps.
+For this setup we have used an AWS EC2 instance with an NVidia GPU, and running Ubuntu 16.04.  Below we describe the steps.
 
 ### Machine setup
 
@@ -82,8 +71,7 @@ Then update the package index and install Docker community edition:
     sudo apt-get update
     sudo apt-get install docker-ce
 
-Now we can install the `nvidia-docker2` package, using a similar approach to the
-one just above.  First install the `nvidia-docker` gpg key:
+Now we can install the `nvidia-docker2` package, using a similar approach to the one just above.  First install the `nvidia-docker` gpg key:
 
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 
@@ -94,8 +82,7 @@ Add sources from the `nvidia-docker` sources list to `apt`:
         sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 ```
 
-Update the package index again, install `nvidia-docker2`, then reload the docker
-daemon configuration:
+Update the package index again, install `nvidia-docker2`, then reload the docker daemon configuration:
 
     sudo apt-get update
     sudo apt-get install nvidia-docker2
@@ -140,13 +127,11 @@ Verify that it's working:
 
 ### Setting up a world-facing WebServer
 
-We installed Apache on the instance to act as the front-end for our webapps.  All
-we needed was the `apache2` package and some confguration.
+We installed Apache on the instance to act as the front-end for our webapps.  All we needed was the `apache2` package and some confguration.
 
     sudo apt-get install apache2
 
-Now we can configure that webserver.  First enable some extra modules, saving
-the restart for last:
+Now we can configure that webserver.  First enable some extra modules, saving the restart for last:
 
     sudo a2enmod vhost_alias
     sudo a2enmod proxy
@@ -188,15 +173,13 @@ Just paste this content there for a start:
     </VirtualHost>
 ```
 
-Now create the simple website directory structure and possibly add a basic
-landing page:
+Now create the simple website directory structure and possibly add a basic landing page:
 
     mkdir -p /home/ubuntu/paraviewweb-docker/testsite/www
     mkdir /home/ubuntu/paraviewweb-docker/testsite/logs
     vim /home/ubuntu/paraviewweb-docker/testsite/www/index.html
 
-Here you could copy the following example landing page, though it's not
-really necessary for validation of the ParaViewWeb Docker image:
+Here you could copy the following example landing page, though it's not really necessary for validation of the ParaViewWeb Docker image:
 
 ```
     <!DOCTYPE html>
@@ -213,8 +196,7 @@ really necessary for validation of the ParaViewWeb Docker image:
     </html>
 ```
 
-Now disable the default site, and enable the one you created above, and finally
-restart the webserver:
+Now disable the default site, and enable the one you created above, and finally restart the webserver:
     
     sudo a2dissite 000-default
     sudo a2ensite 001-pvw-forward
@@ -224,14 +206,11 @@ All that's left is to run the docker image as follows:
 
     sudo docker run --runtime=nvidia -p 127.0.0.1:8081:80 -t -i -v <host-data-directory>:/data kitware/paraviewweb:pvw-visualizer-5.5.0 "ws://<ec2-hostname-or-ip>"
 
-You will obviously replace `<host-data-directory>` with some real directory where
-your datasets are located, and replace `<ec2-hostname-or-ip>` with the actual
-hostname or IP address of the instance.
+You will obviously replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip>` with the actual hostname or IP address of the instance.
 
 ### Try it out
 
-If you chose to create a simple landing page, just point your browser at the
-running instance now:
+If you chose to create a simple landing page, just point your browser at the running instance now:
 
     http://<ec2-hostname-or-ip>
 

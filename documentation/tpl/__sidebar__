@@ -15,7 +15,7 @@ docs:
     architecture: architecture.html
     multi_user_setup: multi_user_setup.html
     apache_front_end: apache_front_end.html
-    ami: ami.html
+    ec2: ec2.html
     performances: performances.html
   launchers:
     launcher_api: launcher_api.html
