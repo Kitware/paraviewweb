@@ -34,7 +34,7 @@ sidebar:
     architecture: Architecture
     multi_user_setup: Multi-user setup
     apache_front_end: Using Apache
-    ami: EC2 AMIs
+    ec2: EC2
     performances: Performances
     launchers: Launchers
     launcher_api: API
