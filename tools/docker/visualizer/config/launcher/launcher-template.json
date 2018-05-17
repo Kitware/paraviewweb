@@ -1,0 +1,50 @@
+{
+  "resources": [ {"port_range": [9001, 9103], "host": "localhost"} ],
+  "sessionData": {
+    "updir": "/Home"
+  },
+  "configuration": {
+    "log_dir": "/opt/wslink-launcher/log",
+    "host": "localhost",
+    "endpoint": "paraview",
+    "sessionURL": "SESSION_URL_ROOT/proxy?sessionId=${id}&path=ws",
+    "timeout": 25,
+    "upload_dir": "/data/upload",
+    "fields": ["file", "updir"],
+    "port": 9000,
+    "proxy_file": "/opt/wslink-launcher/proxy-mapping.txt",
+    "sanitize": {
+      "version": {
+          "type": "regexp",
+          "regexp": "^v[0-9]+.[0-9]+.[0-9]+$",
+          "default": "v0.0.0"
+      },
+      "file": {
+          "type": "regexp",
+          "regexp": "^[-\\\\w./]+$",
+          "default": "emptyFile"
+      }
+    }
+  },
+  "properties": {
+    "dataDir": "/data",
+    "webapps_dir": "/opt/paraview/install/share/paraview-5.5/web",
+    "python_exec": "/opt/paraview/install/bin/pvpython"
+  },
+  "apps": {
+    "visualizer": {
+      "cmd": [
+        "${python_exec}",
+        "-dr",
+        "${webapps_dir}/visualizer/server/pvw-visualizer.py",
+        "--port", "${port}",
+        "--data", "${dataDir}/visualizer",
+        "--authKey", "${secret}",
+        "--viewport-max-width", "1920",
+        "--viewport-max-height", "1080",
+        "--timeout", "30"
+      ],
+      "ready_line" : "Starting factory"
+    }
+  }
+}
