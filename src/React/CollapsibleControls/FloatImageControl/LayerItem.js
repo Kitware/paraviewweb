@@ -64,7 +64,9 @@ export default class FloatImageControlLayerItem extends React.Component {
           <i
             className={
               meshAvailable
-                ? meshVisible ? style.meshButtonOn : style.meshButtonOff
+                ? meshVisible
+                  ? style.meshButtonOn
+                  : style.meshButtonOff
                 : style.hidden
             }
             onClick={this.toggleMesh}

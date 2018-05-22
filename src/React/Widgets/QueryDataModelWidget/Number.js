@@ -181,7 +181,9 @@ export default class ParameterSetNumber extends React.Component {
             <i
               className={
                 this.state.button
-                  ? this.state.advanced ? style.lastButton : style.nextButton
+                  ? this.state.advanced
+                    ? style.lastButton
+                    : style.nextButton
                   : style.hidden
               }
               onClick={this.state.advanced ? this.last : this.next}

@@ -50,10 +50,16 @@ export default class InlineToggleButtonWidget extends React.Component {
             : this.props.defaultColor;
           const className =
             idx === 0
-              ? isActive ? 'activeFirst' : 'first'
+              ? isActive
+                ? 'activeFirst'
+                : 'first'
               : idx === this.props.options.length - 1
-                ? isActive ? 'activeLast' : 'last'
-                : isActive ? 'activeMiddle' : 'middle';
+                ? isActive
+                  ? 'activeLast'
+                  : 'last'
+                : isActive
+                  ? 'activeMiddle'
+                  : 'middle';
           if (obj.label) {
             return (
               <button
