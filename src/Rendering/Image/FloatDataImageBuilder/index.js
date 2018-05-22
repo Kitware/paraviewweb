@@ -49,7 +49,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
       updateValue: () => {
         this.timeProbe.value = this.timeProbe.dataValues
           ? this.timeProbe.dataValues[this.timeProbe.tIdx]
-          : this.timeProbe.pending ? 'Fetching...' : '';
+          : this.timeProbe.pending
+            ? 'Fetching...'
+            : '';
       },
       triggerChange: () => {
         this.timeProbe.forceUpdate = false;
@@ -336,7 +338,9 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
           const flipedY = flipY(i);
           const color = lut.getColor(layer.data[flipedY]);
           const light = layer.light
-            ? layer.light[flipedY] ? layer.light[flipedY] - this.light : 0
+            ? layer.light[flipedY]
+              ? layer.light[flipedY] - this.light
+              : 0
             : 0;
 
           if (color[3]) {

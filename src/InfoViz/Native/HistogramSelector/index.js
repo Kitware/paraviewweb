@@ -326,11 +326,18 @@ function histogramSelector(publicAPI, model) {
 
     if (model.provider.isA('LegendProvider') && model.singleModeName) {
       const { color, shape } = model.provider.getLegend(model.singleModeName);
-      d3.select(model.container).select(`.${style.jsHeaderSingleField}`)
-        .html(`<svg class='${
-        style.legendSvg
-      }' width='${legendSize}' height='${legendSize}'
-                fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
+      d3
+        .select(model.container)
+        .select(`.${style.jsHeaderSingleField}`)
+        .html(
+          `<svg class='${
+            style.legendSvg
+          }' width='${legendSize}' height='${legendSize}' viewBox='${
+            shape.viewBox
+          }' fill='${color}' stroke='black'><use xlink:href='#${
+            shape.id
+          }'/></svg>`
+        );
     } else {
       d3
         .select(model.container)
@@ -647,8 +654,12 @@ function histogramSelector(publicAPI, model) {
         const { color, shape } = model.provider.getLegend(def.name);
         legendCell.html(`<svg class='${
           style.legendSvg
-        }' width='${legendSize}' height='${legendSize}'
-                  fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
+        }' width='${legendSize}' height='${legendSize}' viewBox='${
+          shape.viewBox
+        }'
+                  fill='${color}' stroke='black'><use xlink:href='#${
+          shape.id
+        }'/></svg>`);
       } else {
         legendCell.html('<i></i>').select('i');
       }

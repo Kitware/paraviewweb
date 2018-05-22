@@ -12,7 +12,8 @@ document.body.style.padding = '10px';
 
 const model = new PipelineState(jsonData);
 
-const component = ReactDOM.render( // eslint-disable-line
+/* eslint-disable react/no-render-return-value */
+const component = ReactDOM.render(
   React.createElement(CompositePipelineWidget, {
     pipeline: jsonData.CompositePipeline,
     model,

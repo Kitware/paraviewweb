@@ -406,6 +406,7 @@ function parallelCoordinate(publicAPI, model) {
         d3
           .select(this)
           .select('svg')
+          .attr('viewBox', d.legend.shape.viewBox)
           .attr('fill', d.legend.color)
           .attr('stroke', 'black')
           .attr('width', glyphSize)
@@ -415,7 +416,7 @@ function parallelCoordinate(publicAPI, model) {
           .select('use')
           .classed(style.colorToFill, true) // Firefox SVG use color bug workaround fix
           .classed(style.blackStroke, true)
-          .attr('xlink:href', d.legend.shape);
+          .attr('xlink:href', `#${d.legend.shape.id}`);
       });
 
       // Augment the legend glyphs with extra DOM for annotated axes
