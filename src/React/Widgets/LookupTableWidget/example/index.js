@@ -16,8 +16,8 @@ const lookupTable = lookupTableManager.addLookupTable(
 
 document.body.style.padding = '10px';
 
+/* eslint-disable react/no-render-return-value */
 const component = ReactDOM.render(
-  // eslint-disable-line
   React.createElement(LookupTableWidget, {
     lookupTable,
     originalRange: [-5, 15],
