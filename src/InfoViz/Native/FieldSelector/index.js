@@ -212,8 +212,12 @@ function fieldSelector(publicAPI, model) {
         const { color, shape } = model.provider.getLegend(fieldName);
         legendCell.html(`<svg class='${
           style.legendSvg
-        }' width='${legendSize}' height='${legendSize}'
-                  fill='${color}' stroke='black'><use xlink:href='${shape}'/></svg>`);
+        }' width='${legendSize}' height='${legendSize}' viewBox='${
+          shape.viewBox
+        }'
+                  fill='${color}' stroke='black'><use xlink:href='#${
+          shape.id
+        }'/></svg>`);
       } else {
         legendCell
           .html('<i></i>')
