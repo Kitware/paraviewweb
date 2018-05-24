@@ -131,6 +131,7 @@ export function proxyPropToProp(property, ui) {
       domain: ui.domain || extractDomain(ui),
       componentLabels: [],
       size: extractSize(ui),
+      sort: ui.sort,
     },
     data: {
       id: [property.id, property.name].join(':'),
