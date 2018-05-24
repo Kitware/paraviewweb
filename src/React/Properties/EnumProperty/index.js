@@ -101,7 +101,12 @@ export default class EnumProperty extends React.Component {
         ret.push(<option key="empty-value" value={null} />);
       }
 
-      Object.keys(this.props.ui.domain).forEach((key) => {
+      const keys = Object.keys(this.props.ui.domain);
+      if (this.props.ui.sort) {
+        keys.sort();
+      }
+
+      keys.forEach((key) => {
         ret.push(
           <option
             value={valueToString(this.props.ui.domain[key])}
