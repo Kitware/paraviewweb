@@ -87,6 +87,7 @@ export default class VtkRenderer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const viewIdAsNumber = Number(nextProps.viewId);
+    this.mouseListener.viewId = viewIdAsNumber;
     if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
       if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
         this.binaryImageStream.invalidateCache();

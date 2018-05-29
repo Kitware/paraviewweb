@@ -38,6 +38,7 @@ function vtkRenderer(publicAPI, model) {
 
   publicAPI.setViewId = (viewId = -1) => {
     model.viewId = Number(viewId);
+    model.mouseListener.viewId = model.viewId;
     if (
       model.binaryImageStream &&
       model.binaryImageStream.setViewId(model.viewId)
