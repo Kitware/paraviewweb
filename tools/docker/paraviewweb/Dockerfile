@@ -9,7 +9,8 @@
 # sudo docker run --runtime=nvidia -P -ti pvw-base-5.5.0 bash
 #
 
-FROM kitware/paraviewweb:pv-5.5.0
+ARG BASE_IMAGE=kitware/paraviewweb:pv-5.5.0
+FROM ${BASE_IMAGE}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         apache2-dev \

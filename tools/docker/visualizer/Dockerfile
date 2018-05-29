@@ -25,7 +25,8 @@
 # sudo docker run --runtime=nvidia --entrypoint=bash -ti pvw-visualizer-5.5.0
 #
 
-FROM kitware/paraviewweb:pvw-base-5.5.0
+ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-5.5.0
+FROM ${BASE_IMAGE}
 
 # Copy the launcher config template
 COPY config/launcher/launcher-template.json /opt/wslink-launcher/launcher-template.json
