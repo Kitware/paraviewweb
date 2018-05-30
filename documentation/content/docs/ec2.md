@@ -2,6 +2,8 @@
 
 We have built Docker images containing ParaView 5.5 for NVidia GPUs w/ EGL rendering support for ParaViewWeb.  You can find these images [here](https://hub.docker.com/r/kitware/paraviewweb). One of them exposes Visualizer as a standalone deployment.
 
+A similar image exist for CPU only using OSMesa-lvm.
+
 ## Example deployment on EC2
 
 For this setup we have used an AWS EC2 instance with an NVidia GPU, and running Ubuntu 16.04.  Below we describe the steps.

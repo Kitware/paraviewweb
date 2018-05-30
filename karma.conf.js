@@ -17,7 +17,6 @@ module.exports = function karmaConf(config) {
     basePath: '',
     frameworks: ['tap'],
     files: [
-      './node_modules/babel-polyfill/dist/polyfill.min.js',
       './src/**/tests/*.js',
       { pattern: 'data/**', watched: false, included: false, served: true },
       {
