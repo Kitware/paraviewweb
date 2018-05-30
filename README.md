@@ -28,9 +28,8 @@ set of commands:
 ```js
 $ git clone https://github.com/kitware/paraviewweb.git
 $ cd paraviewweb
-$ npm run install:global
 $ npm install
-$ npm run build
+$ npm run build:release
 ```
 
 ### Licensing
