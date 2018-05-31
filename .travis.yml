@@ -3,40 +3,45 @@ os: linux
 sudo: required
 dist: trusty
 group: travis_lts
+
 notifications:
   email:
     recipients:
       - sebastien.jourdain@kitware.com
     on_success: change
     on_failure: always
+
 cache:
   directories:
-    - node_modules
-    - documentation/www/node_modules
+    - "$HOME/.npm"
+
 node_js:
   - '8'
-env:
-  - CXX=g++-4.8
+
 addons:
   chrome: stable
-  sources:
-    - ubuntu-toolchain-r-test
-  apt:
-    packages:
-      - g++-4.8
-env:
-  CXX=g++-4.8
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libgif-dev
+  - npm i -g npm@6.0.1 # this should be deleted once 5.7.X is out of "pre-release"
+  - npm install node-pre-gyp@0.10.0
+  - npm install canvas@1.6.9
+
+install:
+  - npm ci
 
 script:
-  - npm install
   - npm run build:release -- --bail
   - npm run test:travis
   - git config --global user.name "Travis CI"
   - git config --global user.email "sebastien.jourdain@kitware.com"
   - export GIT_PUBLISH_URL=https://${GH_TOKEN}@github.com/Kitware/paraviewweb.git
   - if [ "$TRAVIS_BRANCH" == "master" ]; then npm run doc:publish; fi
+
 after_success:
   - npm run semantic-release
+
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"

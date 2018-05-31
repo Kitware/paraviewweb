@@ -1,12 +1,10 @@
 ## ParaViewWeb on EC2
 
-We have built Docker images containing ParaView 5.5 for NVidia GPUs w/ EGL rendering support for ParaViewWeb.  You can find these images [here](https://hub.docker.com/r/kitware/paraviewweb). One of them exposes Visualizer as a standalone deployment.
-
-A similar image exist for CPU only using OSMesa-lvm.
+We have built Docker images containing ParaView 5.5 which support ParaViewWeb applications.  These images currently come in two flavors: One for NVidia GPUs w/ EGL rendering support, and another with support for OSMesa (including the `llvm` and `swr` rendering backends).  You can find these images [here](https://hub.docker.com/r/kitware/paraviewweb).  Each of the flavors mentioned above exposes Visualizer as a standalone deployment.
 
 ## Example deployment on EC2
 
-For this setup we have used an AWS EC2 instance with an NVidia GPU, and running Ubuntu 16.04.  Below we describe the steps.
+For this setup we have used an AWS EC2 instance with an NVidia GPU, and running Ubuntu 16.04.  Below we describe the steps.  Note that if your instance doesn't have an NVidia GPU, you can still try the `osmesa` image.  For that, just skip the instructions having to do with graphics card driver installation and `nvidia-docker2` package installation, and use the `osmesa` run example at the bottom of this document.  All the rest of the steps should remain the same.
 
 ### Machine setup
 
@@ -199,10 +197,24 @@ Now disable the default site, and enable the one you created above, and finally 
 All that's left is to run the docker image as follows:
 
 ```
-    sudo docker run --runtime=nvidia -p 127.0.0.1:8081:80 -t -i -v <host-data-directory>:/data kitware/paraviewweb:pvw-visualizer-5.5.0 "ws://<ec2-hostname-or-ip>"
+    sudo docker run --runtime=nvidia -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-5.5.0 "ws://<ec2-hostname-or-ip[:port]>"
 ```
 
-You will obviously replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip>` with the actual hostname or IP address of the instance.
+You will obviously replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip[:port]>` with the actual hostname or IP address (and possibly port) of the instance.
+
+Some other run examples follow.  To run the osmesa image, you don't need the `nvidia` runtime:
+
+```
+    sudo docker run -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://<ec2-hostname-or-ip[:port]>"
+```
+
+Additionally, extra arguments can be passed to the `pvpython` process that will be launched.  Note that while the session url shown in the examples above (`ws://<ec2-hostname-or-ip[:port]>`) is normally optional, it *must* be provided if you want to pass extra arguments to `pvpython`.  So, for example, you could pick the `swr` rendering backend while preventing loading of ParaView registry values like this:
+
+```
+    sudo docker run -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://<ec2-hostname-or-ip[:port]>" "-dr" "--mesa-swr"
+```
+
+The quotes around the extra arguments to `pvpython` are only necessary if those arguments contain spaces or other characters that will treatly specially by the shell interpreting the `docker run` command.
 
 ### Try it out
 

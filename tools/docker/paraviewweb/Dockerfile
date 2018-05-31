@@ -4,6 +4,10 @@
 #
 # sudo docker build -t pvw-base-5.5.0 .
 #
+# Or, to specify a differnt base paraview image:
+#
+# sudo docker build --build-arg BASE_IMAGE=paraview-osmesa -t pvw-base-5.5.0 .
+#
 # To run the container and inspect it using the shell:
 #
 # sudo docker run --runtime=nvidia -P -ti pvw-base-5.5.0 bash

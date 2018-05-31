@@ -35,10 +35,10 @@
     "visualizer": {
       "cmd": [
         "${python_exec}",
-        "-dr",
+        EXTRA_PVPYTHON_ARGS
         "${webapps_dir}/visualizer/server/pvw-visualizer.py",
         "--port", "${port}",
-        "--data", "${dataDir}/visualizer",
+        "--data", "${dataDir}",
         "--authKey", "${secret}",
         "--viewport-max-width", "1920",
         "--viewport-max-height", "1080",

@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
 #
-# Patches launcher configuration session url, then restarts the apache
-# webserver and starts the launcher in the foreground.  You can optionally
-# pass a custom session root url (e.g: "wss://www.example.com") which will
-# be used instead of the default.
+# Patches launcher configuration session url, as well as perhaps any
+# additional arguments to pvpython, then restarts the apache webserver
+# and starts the launcher in the foreground.  You can optionally pass a
+# custom session root url (e.g: "wss://www.example.com") which will be
+# used instead of the default.
+#
+# You can also pass extra arguments after the session url that will be
+# provided as extra arguments to pvpython.  In this case, you must also
+# pass the session url argument first.
 #
 # Examples
 #
@@ -21,19 +26,32 @@
 #
 #     "sessionURL": "SESSION_URL_ROOT/proxy?sessionId=${id}&path=ws"
 #
+# To add extra arguments to be passed to pvpython:
+#
+#     ./start.sh "ws://localhost" -dr "--mesa-swr"
+#
 
 ROOT_URL="ws://localhost"
+REPLACEMENT_ARGS=""
 
 LAUNCHER_TEMPLATE_PATH=/opt/wslink-launcher/launcher-template.json
 LAUNCHER_PATH=/opt/wslink-launcher/launcher.json
 
-if [ "$#" -eq 1 ]
+if [ "$#" -ge 1 ]
 then
   ROOT_URL=$1
+  shift
+
+  while (($#))
+  do
+    REPLACEMENT_ARGS="${REPLACEMENT_ARGS}\"$1\", "
+    shift
+  done
 fi
 
 INPUT=$(<"${LAUNCHER_TEMPLATE_PATH}")
 OUTPUT="${INPUT//"SESSION_URL_ROOT"/$ROOT_URL}"
+OUTPUT="${OUTPUT//"EXTRA_PVPYTHON_ARGS"/$REPLACEMENT_ARGS}"
 echo -e "$OUTPUT" > "${LAUNCHER_PATH}"
 
 # Make sure the apache webserver is running

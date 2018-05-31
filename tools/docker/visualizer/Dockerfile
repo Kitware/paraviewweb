@@ -1,6 +1,11 @@
 
+# To build this image:
 #
 # sudo docker build -t pvw-visualizer-5.5.0 .
+#
+# To build the image using a different base image:
+#
+# sudo docker build --build-arg BASE_IMAGE=pvw-base-osmesa -t pvw-visualizer-5.5.0 .
 #
 # The following will configure all EXPOSED ports to be mapped to random
 # ports on the host.  After which, you will use "docker port <container>"
@@ -23,6 +28,10 @@
 # In order to run the container with a bash shell instead (for debugging):
 #
 # sudo docker run --runtime=nvidia --entrypoint=bash -ti pvw-visualizer-5.5.0
+#
+# To run the container mounting a host directory for access by the container:
+#
+# sudo docker run --runtime=nvidia -v /data/openfoam-vtk:/data -p 127.0.0.1:8081:80 -ti pvw-visualizer-5.5.0
 #
 
 ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-5.5.0
