@@ -41,6 +41,7 @@ RUN mkdir -p /opt/cmake/3.11.1 && cd /opt/cmake/3.11.1 && \
     -DENABLE_visitbridge:BOOL=ON \
     -DENABLE_mesa:BOOL=OFF \
     -DENABLE_osmesa:BOOL=ON \
+    -Dmesa_USE_SWR:BOOL=ON \
     -DENABLE_ffmpeg:BOOL=ON \
     -DPARAVIEW_DEFAULT_SYSTEM_GL:BOOL=OFF \
     -DENABLE_nvidiaindex:BOOL=OFF \
