@@ -30,8 +30,6 @@ Currently ParaViewWeb includes our recommended [Python launcher](python_launcher
 
 ParaViewWeb is simply ParaView, compiled with the Python option turned on.  Any machine where it is to be run must either have a suitable graphics environment, or else ParaView must also be compiled with OSMesa support so that it can do offscreen (software) rendering.
 
-There is some basic information about getting up and running with ParaViewWeb in the [Setup](setup.html) guide.
-
 ### Rendering environment
 
 Perhaps the first task to be undertaken is to decide whether you want hardware or software rendering.  There is a great deal of information available throughout these guides regarding how to do either task.
