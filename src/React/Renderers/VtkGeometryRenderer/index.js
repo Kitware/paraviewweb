@@ -202,6 +202,9 @@ export default class VtkGeometryRenderer extends React.Component {
     // FIXME: find the proper way to get the renderer we care about
     // Calling getCurrentRenderer() on the interactorStyle seems to return null
     // const activeCamera = this.interactorStyle.getCurrentRenderer().getActiveCamera();
+    if (!this.activeCamera && !this.renderWindow.getRenderers().length) {
+      return null;
+    }
     const activeCamera =
       this.activeCamera ||
       this.renderWindow.getRenderers()[0].getActiveCamera();
