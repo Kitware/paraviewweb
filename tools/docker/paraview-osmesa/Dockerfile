@@ -3,10 +3,18 @@
 # where this Dockerfile lives, then:
 #
 # sudo docker build -t pv-osmesa .
+#
+# Or, to build from specific version of superbuild and paraview:
+#
+# sudo docker build --build-arg PARAVIEW_TAG=v5.5.2 --build-arg SUPERBUILD_TAG=v5.5.2 -t pv-osmesa-5.5.2 .
+#
 # sudo docker run -ti pv-osmesa bash
 #
 
 FROM ubuntu:16.04
+
+ARG PARAVIEW_TAG=master
+ARG SUPERBUILD_TAG=master
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         autoconf \
@@ -26,7 +34,7 @@ RUN mkdir -p /opt/cmake/3.11.1 && cd /opt/cmake/3.11.1 && \
     curl -L https://cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.tar.gz | tar --strip-components=1 -xzv && \
     mkdir -p /opt/paraview && cd /opt/paraview && \
     git clone --recursive https://gitlab.kitware.com/paraview/paraview-superbuild.git src && \
-    cd src && git checkout tags/v5.5.0 -b version-5_5_0 && git submodule update && cd .. && \
+    cd src && git checkout ${SUPERBUILD_TAG} && git submodule update && cd .. && \
     mkdir build && cd build && \
     /opt/cmake/3.11.1/bin/cmake \
     -DCTEST_USE_LAUNCHERS:BOOL=1 \
@@ -79,7 +87,8 @@ RUN mkdir -p /opt/cmake/3.11.1 && cd /opt/cmake/3.11.1 && \
     -DENABLE_acusolve:BOOL=ON \
     -DENABLE_fontconfig:BOOL=ON \
     -Dparaview_FROM_GIT:BOOL=ON \
-    -Dparaview_SOURCE_SELECTION:STRING=5.5.0 \
+    -Dparaview_GIT_TAG:STRING=${PARAVIEW_TAG} \
+    -Dparaview_SOURCE_SELECTION:STRING=git \
     -DCTEST_USE_LAUNCHERS:BOOL=TRUE \
     "-GUnix Makefiles" \
     ../src && \
