@@ -1,8 +1,18 @@
 /* eslint-disable arrow-body-style */
 export default function createMethods(session) {
   return {
-    create: (functionName, parentId = '0') => {
-      return session.call('pv.proxy.manager.create', [functionName, parentId]);
+    create: (
+      functionName,
+      parentId = '0',
+      initialValues = {},
+      skipDomain = false
+    ) => {
+      return session.call('pv.proxy.manager.create', [
+        functionName,
+        parentId,
+        initialValues,
+        skipDomain,
+      ]);
     },
     open: (relativePath) => {
       return session.call('pv.proxy.manager.create.reader', [relativePath]);
