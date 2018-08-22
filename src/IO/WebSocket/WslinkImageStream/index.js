@@ -112,7 +112,9 @@ function wslinkImageStream(publicAPI, model) {
 
   publicAPI.viewChanged = (data) => {
     const msg = data[0];
-    if (!msg || !msg.image || msg.id !== model.view_id) return;
+    /* eslint-disable eqeqeq */
+    if (!msg || !msg.image || msg.id != model.view_id) return;
+    /* eslint-enable eqeqeq */
     const imgBlob = new Blob([msg.image], {
       type: model.mimeType,
     });
