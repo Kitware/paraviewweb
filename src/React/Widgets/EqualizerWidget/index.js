@@ -134,7 +134,7 @@ export default class EqualizerWidget extends React.Component {
     const idx = Math.min(
       this.state.layers.length - 1,
       Math.floor(
-        x / (rect.width - 4 * this.props.spacing) * this.state.layers.length
+        (x / (rect.width - 4 * this.props.spacing)) * this.state.layers.length
       )
     );
     let opacity = 1.0 - y / effectiveHeight;

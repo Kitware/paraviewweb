@@ -2,7 +2,7 @@ import AbstractImageBuilder from '../AbstractImageBuilder';
 import CanvasOffscreenBuffer from '../../../Common/Misc/CanvasOffscreenBuffer';
 
 function affine(inMin, val, inMax, outMin, outMax) {
-  return (val - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+  return ((val - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
 }
 
 export default class Histogram2DImageBuilder extends AbstractImageBuilder {

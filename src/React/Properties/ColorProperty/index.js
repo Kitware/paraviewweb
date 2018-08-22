@@ -9,14 +9,14 @@ import ColorItem from './ColorItem';
 export function hex2float(hexStr, outFloatArray = [0, 0.5, 1]) {
   switch (hexStr.length) {
     case 3: // abc => #aabbcc
-      outFloatArray[0] = parseInt(hexStr[0], 16) * 17 / 255;
-      outFloatArray[1] = parseInt(hexStr[1], 16) * 17 / 255;
-      outFloatArray[2] = parseInt(hexStr[2], 16) * 17 / 255;
+      outFloatArray[0] = (parseInt(hexStr[0], 16) * 17) / 255;
+      outFloatArray[1] = (parseInt(hexStr[1], 16) * 17) / 255;
+      outFloatArray[2] = (parseInt(hexStr[2], 16) * 17) / 255;
       return outFloatArray;
     case 4: // #abc => #aabbcc
-      outFloatArray[0] = parseInt(hexStr[1], 16) * 17 / 255;
-      outFloatArray[1] = parseInt(hexStr[2], 16) * 17 / 255;
-      outFloatArray[2] = parseInt(hexStr[3], 16) * 17 / 255;
+      outFloatArray[0] = (parseInt(hexStr[1], 16) * 17) / 255;
+      outFloatArray[1] = (parseInt(hexStr[2], 16) * 17) / 255;
+      outFloatArray[2] = (parseInt(hexStr[3], 16) * 17) / 255;
       return outFloatArray;
     case 6: // ab01df => #ab01df
       outFloatArray[0] = parseInt(hexStr.substr(0, 2), 16) / 255;

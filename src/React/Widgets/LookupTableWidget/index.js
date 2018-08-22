@@ -137,7 +137,7 @@ export default class LookupTableWidget extends React.Component {
           imageData.data[x * 4] +
             imageData.data[x * 4 + 1] +
             imageData.data[x * 4 + 2] >
-          3 * 255 / 2
+          (3 * 255) / 2
             ? 0
             : 255;
         imageData.data[x * 4 + 0] = this.props.inverse

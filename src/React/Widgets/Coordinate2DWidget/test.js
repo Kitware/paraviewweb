@@ -28,7 +28,7 @@ describe('CoordinateControl', function() {
   });
 
   function convertToCoord(val, size) {
-    return (val * 2 / (size * 2) - 0.5) * 2;
+    return ((val * 2) / (size * 2) - 0.5) * 2;
   }
 
   it('has two inputs and a canvas', function() {

@@ -15,7 +15,7 @@ import iconImage from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/Parall
 // ----------------------------------------------------------------------------
 
 export function affine(inMin, val, inMax, outMin, outMax) {
-  return (val - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+  return ((val - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
 }
 
 export function perfRound(val) {
@@ -211,8 +211,7 @@ function parallelCoordinate(publicAPI, model) {
               : d.screenRangeY[0];
           let barHeight = d.screenRangeY[1] - d.screenRangeY[0];
           if (barHeight < 0) barHeight = -barHeight;
-          d3
-            .select(this)
+          d3.select(this)
             .attr(
               'transform',
               `translate(${d.screenX -
@@ -333,8 +332,8 @@ function parallelCoordinate(publicAPI, model) {
       .classed(style.rightsideUp, (d, i) => d.orient)
       .attr('transform', function inner(d, i) {
         const elt = d3.select(this).select('g.axis-controls-group-container');
-        const tx = d.centerX - elt.attr('width') * scale / 2;
-        const ty = d.centerY - elt.attr('height') * scale / 2;
+        const tx = d.centerX - (elt.attr('width') * scale) / 2;
+        const ty = d.centerY - (elt.attr('height') * scale) / 2;
         return `translate(${tx}, ${ty}) scale(${scale})`;
       })
       .on('click', function inner(d, i) {
@@ -403,8 +402,7 @@ function parallelCoordinate(publicAPI, model) {
         });
 
       glyphEnter.each(function applyLegendStyle(d, i) {
-        d3
-          .select(this)
+        d3.select(this)
           .select('svg')
           .attr('viewBox', d.legend.shape.viewBox)
           .attr('fill', d.legend.color)
@@ -666,31 +664,25 @@ function parallelCoordinate(publicAPI, model) {
       !model.container ||
       model.containerHidden === true
     ) {
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('svg.parallel-coords-overlay')
         .classed(style.hidden, true);
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('canvas')
         .classed(style.hidden, true);
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('div.parallel-coords-placeholder')
         .classed(style.hidden, false);
       return;
     }
 
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('svg.parallel-coords-overlay')
       .classed(style.hidden, false);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('canvas')
       .classed(style.hidden, false);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('div.parallel-coords-placeholder')
       .classed(style.hidden, true);
 
@@ -916,8 +908,7 @@ function parallelCoordinate(publicAPI, model) {
     const clientRect = model.canvas.parentElement.getBoundingClientRect();
     model.canvas.setAttribute('width', clientRect.width);
     model.canvas.setAttribute('height', clientRect.height);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('svg')
       .selectAll('rect.hover-bin-indicator')
       .remove();
@@ -941,8 +932,7 @@ function parallelCoordinate(publicAPI, model) {
 
     if (model.container) {
       model.container.innerHTML = htmlContent;
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('div.parallel-coords-placeholder')
         .select('img')
         .attr('src', iconImage);
@@ -1012,8 +1002,7 @@ function parallelCoordinate(publicAPI, model) {
     hoverBinNodes.exit().remove();
 
     const axesCenters = model.axes.extractAxesCenters(model);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('svg')
       .select('g.hover-bins')
       .selectAll('rect.hover-bin-indicator')

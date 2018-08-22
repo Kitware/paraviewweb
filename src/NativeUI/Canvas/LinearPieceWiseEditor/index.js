@@ -53,8 +53,8 @@ function getNormalizePosition(event, ctx, margin) {
     x: (event.clientX - rect.left - margin) / width,
     y: 1 - (event.clientY - rect.top - margin) / height,
     epsilon: {
-      x: 2 * margin / width,
-      y: 2 * margin / height,
+      x: (2 * margin) / width,
+      y: (2 * margin) / height,
     },
   };
 }

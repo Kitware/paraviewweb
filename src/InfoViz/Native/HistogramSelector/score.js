@@ -387,8 +387,7 @@ export default function init(inPublicAPI, inModel) {
 
   function updateHeader() {
     if (enabled()) {
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select(`.${style.jsShowScoredIcon}`)
         // apply class - 'false' should come first to not remove common base class.
         .classed(
@@ -1059,15 +1058,13 @@ export default function init(inPublicAPI, inModel) {
             if (oldRangeMax === oldRangeMin) {
               // space dividers evenly in the middle - i.e. punt.
               divider.value =
-                (index + 1) /
-                  (def.dividers.length + 1) *
+                ((index + 1) / (def.dividers.length + 1)) *
                   (hobj.max - hobj.min) +
                 hobj.min;
             } else {
               // this set the divider to hobj.min if the new hobj.min === hobj.max.
               divider.value =
-                (divider.value - oldRangeMin) /
-                  (oldRangeMax - oldRangeMin) *
+                ((divider.value - oldRangeMin) / (oldRangeMax - oldRangeMin)) *
                   (hobj.max - hobj.min) +
                 hobj.min;
             }

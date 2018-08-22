@@ -13,7 +13,7 @@ function createField(name, size, scale) {
   const data = [];
   for (let i = 0; i < size; i++) {
     data.push(
-      Math.random() * scale * 0.1 + Math.sin(i / size * Math.PI * 4) * scale
+      Math.random() * scale * 0.1 + Math.sin((i / size) * Math.PI * 4) * scale
     );
   }
   return { name, data };

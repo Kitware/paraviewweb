@@ -91,8 +91,7 @@ function informationDiagram(publicAPI, model) {
 
     model.clientRect = model.container.getBoundingClientRect();
 
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('div.status-bar-container')
       .attr('data-width', `${model.clientRect.width - 20}px`);
 
@@ -156,8 +155,7 @@ function informationDiagram(publicAPI, model) {
     // select text so user can press ctrl-c if desired.
     if (model.statusBarVisible) {
       // https://www.sitepoint.com/javascript-copy-to-clipboard/
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('input.status-bar-text')
         .node()
         .select();
@@ -188,13 +186,11 @@ function informationDiagram(publicAPI, model) {
 
     if (variableList.length < 2 || !model.container) {
       // Select the main circle and hide it and unhide placeholder
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('svg.information-diagram')
         .classed(style.informationDiagramSvgShow, false)
         .classed(style.informationDiagramSvgHide, true);
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('div.info-diagram-placeholder')
         .classed(style.hidden, false);
       publicAPI.updateStatusBarText('');
@@ -222,12 +218,10 @@ function informationDiagram(publicAPI, model) {
     // Update
     updateStatusBarVisibility();
 
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('div.info-diagram-placeholder')
       .classed(style.hidden, true);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('svg.information-diagram')
       .classed(style.informationDiagramSvgHide, false)
       .classed(style.informationDiagramSvgShow, true);
@@ -918,21 +912,17 @@ function informationDiagram(publicAPI, model) {
         // drop the middle 50%.
         let testStrLen = Math.floor(strLength * 0.25);
         // estimate new length, +2 to account for adding '...'
-        d.textLength = (testStrLen * 2 + 2) / strLength * textLength;
+        d.textLength = ((testStrLen * 2 + 2) / strLength) * textLength;
         if (d.textLength < availLength) {
-          d3
-            .select(this)
-            .text(
-              `${fullText.slice(0, testStrLen)}...${fullText.slice(
-                -testStrLen
-              )}`
-            );
+          d3.select(this).text(
+            `${fullText.slice(0, testStrLen)}...${fullText.slice(-testStrLen)}`
+          );
           return;
         }
         // start at 1/3 of the string, go down to 3 chars plus ...
         testStrLen = Math.floor(strLength / 2.99);
         while (testStrLen >= 3) {
-          d.textLength = (testStrLen + 2) / strLength * textLength;
+          d.textLength = ((testStrLen + 2) / strLength) * textLength;
           if (d.textLength < availLength) {
             d3.select(this).text(`${fullText.slice(0, testStrLen)}...`);
             return;
@@ -968,8 +958,8 @@ function informationDiagram(publicAPI, model) {
         // Start at edge of arc, move to text anchor, back up half of text length and glyph size
         const glyphAngle =
           glyphData.startAngle +
-          pathLength * 0.25 / outerRadius -
-          (textLength + model.glyphSize) * 0.5 / avgRadius;
+          (pathLength * 0.25) / outerRadius -
+          ((textLength + model.glyphSize) * 0.5) / avgRadius;
         // console.log(model.mutualInformationData.vmap[glyphData.index].name, textLength, pathLength, glyphAngle);
 
         glyph
@@ -1029,8 +1019,8 @@ function informationDiagram(publicAPI, model) {
 
     function getBinRange(index, numberOfBins, paramRange) {
       return [
-        index / numberOfBins * paramRange[2] + paramRange[0],
-        (index + 1) / numberOfBins * paramRange[2] + paramRange[0],
+        (index / numberOfBins) * paramRange[2] + paramRange[0],
+        ((index + 1) / numberOfBins) * paramRange[2] + paramRange[0],
       ];
     }
 
@@ -1056,7 +1046,7 @@ function informationDiagram(publicAPI, model) {
           endAngle: (i + 1) * delta + groupData.startAngle,
           innerRadius: outerRadius + 10,
           outerRadius:
-            outerRadius + 10 + d / maxcnt * (histoRadius - outerRadius),
+            outerRadius + 10 + (d / maxcnt) * (histoRadius - outerRadius),
           index: i,
           value: d / total,
         };

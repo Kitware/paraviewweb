@@ -1,5 +1,5 @@
 function affine(inMin, val, inMax, outMin, outMax) {
-  return (val - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+  return ((val - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
 }
 
 export default function HistXYZ(chartState, histogram, chartType) {

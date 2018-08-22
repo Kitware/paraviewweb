@@ -91,7 +91,7 @@ export function freqToProb(src) {
     for (let j = 0; j < hsz; ++j) {
       const pj = pAB[i][j];
       if (pj > 0) {
-        pmi[i][j] = -1 * Math.log(pj / pA[i][0] / pB[0][j]) / Math.log(pj);
+        pmi[i][j] = (-1 * Math.log(pj / pA[i][0] / pB[0][j])) / Math.log(pj);
       }
     }
   }
