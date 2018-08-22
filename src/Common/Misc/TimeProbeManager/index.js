@@ -232,7 +232,7 @@ export class TimeProbeManager {
     } else {
       const width = this.lastSize ? this.lastSize[0] : 200;
       const height = this.lastSize ? this.lastSize[1] : 200;
-      const extent = [width / 4, 3 * width / 4, height / 4, 3 * height / 4];
+      const extent = [width / 4, (3 * width) / 4, height / 4, (3 * height) / 4];
       this.addProbe(
         new TimeProbe(`Probe ${this.probes.length + 1}`, 'mean', extent)
       );
@@ -281,10 +281,10 @@ export class TimeProbeManager {
   drag(event) {
     const { activeArea, relative } = event;
     const x = Math.round(
-      (relative.x - activeArea[0]) / activeArea[2] * this.lastSize[0]
+      ((relative.x - activeArea[0]) / activeArea[2]) * this.lastSize[0]
     );
     const y = Math.round(
-      (relative.y - activeArea[1]) / activeArea[3] * this.lastSize[1]
+      ((relative.y - activeArea[1]) / activeArea[3]) * this.lastSize[1]
     );
     const scale = this.lastSize[0] / activeArea[2];
 

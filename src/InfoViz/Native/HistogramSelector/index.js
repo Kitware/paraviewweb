@@ -286,18 +286,15 @@ function histogramSelector(publicAPI, model) {
   function updateHeader(dataLength) {
     if (model.singleModeSticky) {
       // header isn't useful for a single histogram.
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select(`.${style.jsHeader}`)
         .style('display', 'none');
       return;
     }
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select(`.${style.jsHeader}`)
       .style('display', null);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select(`.${style.jsFieldsIcon}`)
       // apply class - 'false' should come first to not remove common base class.
       .classed(
@@ -310,24 +307,20 @@ function histogramSelector(publicAPI, model) {
       );
     scoreHelper.updateHeader();
 
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select(`.${style.jsHeaderBoxes}`)
       .style('display', model.singleModeName === null ? null : 'none');
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select(`.${style.jsHeaderBoxesNum}`)
       .text(`${model.boxesPerRow} /row`);
 
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select(`.${style.jsHeaderSingle}`)
       .style('display', model.singleModeName === null ? 'none' : null);
 
     if (model.provider.isA('LegendProvider') && model.singleModeName) {
       const { color, shape } = model.provider.getLegend(model.singleModeName);
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select(`.${style.jsHeaderSingleField}`)
         .html(
           `<svg class='${
@@ -339,8 +332,7 @@ function histogramSelector(publicAPI, model) {
           }'/></svg>`
         );
     } else {
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select(`.${style.jsHeaderSingleField}`)
         .text(() => {
           let name = model.singleModeName;
@@ -366,9 +358,10 @@ function histogramSelector(publicAPI, model) {
     const deltaHeader = model.singleModeSticky ? 0 : model.headerSize;
     if (clientRect.width !== 0 && clientRect.height > deltaHeader) {
       model.containerHidden = false;
-      d3
-        .select(model.listContainer)
-        .style('height', `${clientRect.height - deltaHeader}px`);
+      d3.select(model.listContainer).style(
+        'height',
+        `${clientRect.height - deltaHeader}px`
+      );
       // scrollbarWidth = model.listContainer.offsetWidth - clientRect.width;
       publicAPI.render();
     } else {
@@ -538,8 +531,7 @@ function histogramSelector(publicAPI, model) {
         reusableNode = exitNodes[0][i];
         if (reusableNode) {
           exitNodes[0][i] = undefined;
-          d3
-            .select(reusableNode)
+          d3.select(reusableNode)
             .selectAll('table')
             .classed(style.hiddenBox, true);
           return reusableNode;
@@ -729,7 +721,7 @@ function histogramSelector(publicAPI, model) {
           )
           .attr('pname', def.name)
           .attr('y', (d) => model.histHeight * (1.0 - d / cmax))
-          .attr('x', (d, i) => model.histWidth / hsize * i)
+          .attr('x', (d, i) => (model.histWidth / hsize) * i)
           .attr('height', (d) => model.histHeight * (d / cmax))
           .attr('width', Math.ceil(model.histWidth / hsize));
 
@@ -747,7 +739,9 @@ function histogramSelector(publicAPI, model) {
             svgOverlay
               .on('mousemove.hs', (d, i) => {
                 const mCoords = publicAPI.getMouseCoords(tdsl);
-                const binNum = Math.floor(mCoords[0] / model.histWidth * hsize);
+                const binNum = Math.floor(
+                  (mCoords[0] / model.histWidth) * hsize
+                );
                 const state = {};
                 state[def.name] = [binNum];
                 model.provider.setHoverState({ state });
@@ -796,7 +790,9 @@ function histogramSelector(publicAPI, model) {
           // if they aren't 'nice'. Make exactly 5 ticks.
           const myTicks = d3
             .range(numTicks)
-            .map((d) => minRange + d / (numTicks - 1) * (maxRange - minRange));
+            .map(
+              (d) => minRange + (d / (numTicks - 1)) * (maxRange - minRange)
+            );
           def.xAxis.tickValues(myTicks);
         } else {
           def.xAxis.tickValues(def.xScale.domain());

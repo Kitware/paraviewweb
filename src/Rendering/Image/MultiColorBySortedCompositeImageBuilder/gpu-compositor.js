@@ -515,7 +515,7 @@ export default class GPUCompositor {
 
   sampleLookupTable(lut, colorBy, range, index) {
     function affine(value, inMin, inMax, outMin, outMax) {
-      return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+      return ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
     }
 
     for (let i = 0; i < 256; ++i) {

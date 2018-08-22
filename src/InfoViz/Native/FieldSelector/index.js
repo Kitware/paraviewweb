@@ -43,8 +43,7 @@ function fieldSelector(publicAPI, model) {
 
     if (el) {
       d3.select(model.container).html(template);
-      d3
-        .select(model.container)
+      d3.select(model.container)
         .select('.fieldSelector')
         .classed(style.fieldSelector, true);
 
@@ -81,16 +80,13 @@ function fieldSelector(publicAPI, model) {
     const legendSize = 15;
 
     // Apply style
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('thead')
       .classed(style.thead, true);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('tbody')
       .classed(style.tbody, true);
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('th.field-selector-mode')
       .on('click', (d) => {
         model.displayUnselected = !model.displayUnselected;
@@ -119,8 +115,7 @@ function fieldSelector(publicAPI, model) {
       : model.provider.getFieldNames().length;
 
     // Update header label
-    d3
-      .select(model.container)
+    d3.select(model.container)
       .select('th.field-selector-label')
       .style('text-align', 'left')
       .text(
@@ -274,7 +269,7 @@ function fieldSelector(publicAPI, model) {
               )
               .attr('pname', fieldName)
               .attr('y', (d) => model.fieldHistHeight * (1.0 - d / cmax))
-              .attr('x', (d, i) => model.fieldHistWidth / hsize * i)
+              .attr('x', (d, i) => (model.fieldHistWidth / hsize) * i)
               .attr('height', (d) => model.fieldHistHeight * (d / cmax))
               .attr('width', model.fieldHistWidth / hsize);
 
@@ -286,7 +281,7 @@ function fieldSelector(publicAPI, model) {
                 .on('mousemove', function inner(d, i) {
                   const mCoords = d3.mouse(this);
                   const binNum = Math.floor(
-                    mCoords[0] / model.fieldHistWidth * hsize
+                    (mCoords[0] / model.fieldHistWidth) * hsize
                   );
                   const state = {};
                   state[fieldName] = [binNum];

@@ -216,7 +216,7 @@ export default class AxesManager {
   }
 
   getAxisCenter(index, width) {
-    return index * width / (this.axes.length - 1);
+    return (index * width) / (this.axes.length - 1);
   }
 
   toggleOrientation(index) {

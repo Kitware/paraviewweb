@@ -251,7 +251,7 @@ export default class LookupTable {
       return this.colorNaN;
     }
     const idxValue = Math.floor(
-      this.colorTableSize * (scalar - this.scalarRange[0]) / this.delta
+      (this.colorTableSize * (scalar - this.scalarRange[0])) / this.delta
     );
     if (idxValue < 0) {
       return this.colorTable[0];

@@ -51,7 +51,7 @@ export default class DoubleSliderWidget extends React.Component {
     const max = Number(this.props.max);
     const delta = max - min;
     const value =
-      delta * Number(e.target.value) / Number(this.props.size) + min;
+      (delta * Number(e.target.value)) / Number(this.props.size) + min;
 
     this.setState({ value, txtValue: null });
     if (this.props.onChange) {
@@ -72,7 +72,7 @@ export default class DoubleSliderWidget extends React.Component {
         <input
           type="range"
           className={style.rangeInput}
-          value={Math.floor((value - min) / (max - min) * size)}
+          value={Math.floor(((value - min) / (max - min)) * size)}
           onChange={this.sliderInput}
           min="0"
           max={size}

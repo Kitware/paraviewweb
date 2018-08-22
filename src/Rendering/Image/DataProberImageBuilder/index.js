@@ -239,7 +239,9 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
     if (sliceIdx === undefined) {
       sliceIdx = this.probeXYZ[2];
     }
-    return this.metadata.sprite_size - sliceIdx % this.metadata.sprite_size - 1;
+    return (
+      this.metadata.sprite_size - (sliceIdx % this.metadata.sprite_size) - 1
+    );
   }
 
   // ------------------------------------------------------------------------
@@ -655,10 +657,10 @@ export default class DataProberImageBuilder extends AbstractImageBuilder {
 
     while (idx < size) {
       const value =
-        (pixBuffer[idx] +
+        ((pixBuffer[idx] +
           256 * pixBuffer[idx + 1] +
           65536 * pixBuffer[idx + 2]) /
-          16777216 *
+          16777216) *
           delta +
         fieldRange[0];
       array[arrayIdx] = value;
