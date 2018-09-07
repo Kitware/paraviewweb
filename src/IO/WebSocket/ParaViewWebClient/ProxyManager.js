@@ -5,13 +5,15 @@ export default function createMethods(session) {
       functionName,
       parentId = '0',
       initialValues = {},
-      skipDomain = false
+      skipDomain = false,
+      subProxyValues = {}
     ) => {
       return session.call('pv.proxy.manager.create', [
         functionName,
         parentId,
         initialValues,
         skipDomain,
+        subProxyValues,
       ]);
     },
     open: (relativePath) => {
