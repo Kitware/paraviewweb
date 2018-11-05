@@ -1,0 +1,27 @@
+{
+  "configuration": {
+    "host" : "localhost",
+    "port" : 8080,
+    "endpoint": "paraview",
+    "content": "PARAVIEW_LITE_WWW",
+    "proxy_file" : "PARAVIEW_LITE_SERVER/proxy.txt",
+    "sessionURL" : "ws://${host}:${port}/ws",
+    "timeout" : 5,
+    "log_dir" : "PARAVIEW_LITE_SERVER",
+    "fields" : []
+  },
+  "resources" : [ { "host" : "localhost", "port_range" : [9001, 9005] } ],
+  "properties" : {
+    "dataDir": "PARAVIEW_DATA",
+    "python_exec" : "PARAVIEW_PVPYTHON"
+  },
+  "apps": {
+    "paraview-lite": {
+        "cmd": [
+            "${python_exec}", "-dr", "PARAVIEW_LITE_SERVER/pvw-lite.py",
+            "--port", "${port}", "--data", "${dataDir}", "--authKey", "${secret}"
+        ],
+        "ready_line" : "Starting factory"
+    }
+  }
+}

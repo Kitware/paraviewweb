@@ -1,0 +1,1 @@
+window.PARAVIEW_LITE_VERSION = "1.2.0";

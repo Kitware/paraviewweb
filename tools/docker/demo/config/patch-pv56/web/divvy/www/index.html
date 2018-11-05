@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <title>ParaViewWeb Divvy</title>
+  </head>
+  <body>
+    <div class="content"></div>
+  <script type="text/javascript" src="divvy.js"></script>
+  <script>
+    divvy.connect({ application: 'divvy' }, true);
+    divvy.autoStopServer(10);
+  </script>
+</body>
+</html>
