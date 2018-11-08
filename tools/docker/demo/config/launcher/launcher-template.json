@@ -1,5 +1,5 @@
 {
-  "resources": [ {"port_range": [9001, 9103], "host": "localhost"} ],
+  "resources": [ {"port_range": [9010, 9014], "host": "localhost"} ],
   "sessionData": {
     "updir": "/Home"
   },

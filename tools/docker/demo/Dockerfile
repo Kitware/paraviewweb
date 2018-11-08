@@ -42,8 +42,8 @@ COPY config/website/ /var/www/html/
 # =====================================
 # Make ParaView 5.5 looks like a 5.6
 # =====================================
-COPY config/patch-pv56/web /opt/paraview/install/share/paraview-5.6/web
-COPY config/patch-pv56/protocols.py /opt/paraview/install/lib/python2.7/site-packages/paraview/web/protocols.py
+# COPY config/patch-pv56/web /opt/paraview/install/share/paraview-5.6/web
+# COPY config/patch-pv56/protocols.py /opt/paraview/install/lib/python2.7/site-packages/paraview/web/protocols.py
 # =====================================
 
 # Copy the launcher config template
