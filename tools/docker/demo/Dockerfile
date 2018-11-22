@@ -33,7 +33,7 @@
 # sudo docker run --runtime=nvidia -v /data/openfoam-vtk:/data -p 127.0.0.1:8081:80 -ti pvw-demo-5.6.0
 #
 
-ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-5.6.0
+ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-v5.6.0
 FROM ${BASE_IMAGE}
 
 # Copy welcome site
