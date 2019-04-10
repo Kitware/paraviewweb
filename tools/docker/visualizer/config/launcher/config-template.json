@@ -4,7 +4,7 @@
     "updir": "/Home"
   },
   "configuration": {
-    "log_dir": "/opt/wslink-launcher/log",
+    "log_dir": "/opt/launcher/log",
     "host": "localhost",
     "endpoint": "paraview",
     "sessionURL": "SESSION_URL_ROOT/proxy?sessionId=${id}&path=ws",
@@ -12,7 +12,7 @@
     "upload_dir": "/data/upload",
     "fields": ["file", "updir"],
     "port": 9000,
-    "proxy_file": "/opt/wslink-launcher/proxy-mapping.txt",
+    "proxy_file": "/opt/launcher/proxy-mapping.txt",
     "sanitize": {
       "version": {
           "type": "regexp",
@@ -28,8 +28,8 @@
   },
   "properties": {
     "dataDir": "/data",
-    "webapps_dir": "/opt/paraview/install/share/paraview-5.5/web",
-    "python_exec": "/opt/paraview/install/bin/pvpython"
+    "webapps_dir": "/opt/paraview/share/paraview-5.5/web",
+    "python_exec": "/opt/paraview/bin/pvpython"
   },
   "apps": {
     "visualizer": {

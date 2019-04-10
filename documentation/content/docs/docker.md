@@ -1,10 +1,10 @@
 # ParaView 5.6
 
-This guide gather setups and command lines that can be used to configure a linux box as a ParaViewWeb server using our ParaView 5.6 docker image.
+This guide gathers setups and command lines that can be used to configure a linux box as a ParaViewWeb server using our kitware/paraviewweb docker images.
 
 We split that `How to` into sections assuming we start from a clean system like the one you get on an EC2 instance. Therefore, it will be up to you to skip the sections that may not apply to your setup.
 
-This guide assume a Linux Ubuntu 16 or 18 with a Nvidia GPU that support EGL. 
+This guide assume a Linux Ubuntu 16 or 18 with a Nvidia GPU that support EGL.
 
 ## Required packages
 
@@ -75,7 +75,7 @@ sudo docker run --runtime=nvidia --rm nvidia/cuda:9.0-base nvidia-smi
 
 ### Apache configuration
 
-This section can be skipped if you don't plan to use Apache as front end to expose your service over HTTPS. 
+This section can be skipped if you don't plan to use Apache as front end to expose your service over HTTPS.
 
 For that frontend, we will need a couple of module that we will enable with the following command lines.
 
@@ -155,19 +155,19 @@ In the following command some fields need to be changed to match the user needs.
 - `${DATA}`: This is a local path on your system where your data files are stored so that the Web application will have access and load them.
 - `${PORT}`: The port that you want the docker image to run on. For the Apache virtual host configuration, we assume the value to be `9000`.
 
-So the command line should looks like that:
+So the command line should look like this:
 
 ```
 PORT=9000
 DATA=/mnt/data
-SERVER_NAME=pvw.company.com
 
-sudo docker run --runtime=nvidia             \
-    -p 0.0.0.0:${PORT}:80                     \
-    -v ${DATA}:/data                           \
+sudo docker run --runtime=nvidia           \
+    -p 0.0.0.0:${PORT}:80                   \
+    -v ${DATA}:/data                         \
+    -e "SERVER_NAME=pvw.company.com"          \
+    -e "PROTOCOL=ws"                           \
     --restart unless-stopped                    \
-    -dti kitware/paraviewweb:pvw-egl-demo-v5.6.0 \
-    "${PROTOCOL}://${SERVER_NAME}/"
+    -dti kitware/paraviewweb:pvw-egl-demo-v5.6.0
 ```
 And you can access it by pointing your browser to `https://${SERVER_NAME}/`, assuming you used Apache for HTTPS as frontend.
 
@@ -176,11 +176,26 @@ If you want to stop the service you can look for the container ID using the `sud
 Also if you just want to run it locally to demo it as a process, that you can kill with a `ctrl+c`, you can use the following command line.
 
 ```
-sudo docker run --runtime=nvidia             \
-    -p 0.0.0.0:9000:80                        \
-    -v ~:/data                                 \
-    -ti kitware/paraviewweb:pvw-egl-demo-v5.6.0 \
-    "ws://localhost:9000/"
+sudo docker run --runtime=nvidia           \
+    -p 0.0.0.0:9000:80                      \
+    -v ~:/data                               \
+    -e "SERVER_NAME=localhost:9000"           \
+    -e "PROTOCOL=ws"                           \
+    -ti kitware/paraviewweb:pvw-egl-demo-v5.6.0
 ```
 
 And you can access it by pointing your browser to `http://localhost:9000`
+
+Note how in the commands above, the information needed to build the root of the session url is provided as environment variables to the `docker run` command.  In the same way, you can provide extra arguments to be passed to the pvpython instances which are started: just use the environment variable named `EXTRA_PVPYTHON_ARGS`, as in the following example:
+
+```
+sudo docker run --runtime=nvidia           \
+    -p 0.0.0.0:9000:80                      \
+    -v ~:/data                               \
+    -e SERVER_NAME="localhost:9000"           \
+    -e PROTOCOL="ws"                           \
+    -e EXTRA_PVPYTHON_ARGS="-dr,--mesa-swr"     \
+    -ti kitware/paraviewweb:pvw-egl-demo-v5.6.0
+```
+
+When passed this way via environment variables, the extra pvpython args are comma-separated and no extra spaces are inserted.

@@ -18,6 +18,9 @@ docs:
     ec2: ec2.html
     docker: docker.html
     performances: performances.html
+  containers:
+    container_overview: container_overview.html
+    container_diy: build_yours.html
   launchers:
     launcher_api: launcher_api.html
     python_launcher: python_launcher.html

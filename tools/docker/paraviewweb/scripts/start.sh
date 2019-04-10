@@ -17,35 +17,47 @@
 #
 #     ./start.sh
 #
-# To choose 'wss' and 'www.customhost.com':
+# To choose 'wss' and 'www.customhost.com', set the following two environment
+# variables before invoking this script:
 #
-#     ./start.sh "wss://www.customhost.com"
+#    export SERVER_NAME="'www.customhost.com"
+#    export PROTOCOL="wss"
 #
-# Makes the assumption that there is a template launcher config where the
-# "sessionURL" key/value looks like:
+# You can also pass any extra args to pvpython in an environment variable
+# as follows:
 #
-#     "sessionURL": "SESSION_URL_ROOT/proxy?sessionId=${id}&path=ws"
+#    export EXTRA_PVPYTHON_ARGS="-dr,--mesa-swr"
 #
-# To add extra arguments to be passed to pvpython:
+# Note that the extra args to be passed to pvpython should be separated by
+# commas, and no extra spaces are used.
 #
-#     ./start.sh "ws://localhost" -dr "--mesa-swr"
+# When this script is used as the entrypoint in a Docker image, the environment
+# variables can be provided using as many "-e" arguments to the "docker run..."
+# command as necessary:
+#
+#     docker run --rm \
+#         -e SERVER_NAME="www.customhost.com" \
+#         -e PROTOCOL="wss"
+#         -e EXTRA_PVPYTHON_ARGS="-dr,--mesa-swr" \
+#         ...
 #
 
 ROOT_URL="ws://localhost"
 REPLACEMENT_ARGS=""
 
-LAUNCHER_TEMPLATE_PATH=/opt/wslink-launcher/launcher-template.json
-LAUNCHER_PATH=/opt/wslink-launcher/launcher.json
+LAUNCHER_TEMPLATE_PATH=/opt/launcher/config-template.json
+LAUNCHER_PATH=/opt/launcher/config.json
 
-if [ "$#" -ge 1 ]
+if [[ ! -z "${SERVER_NAME}" ]] && [[ ! -z "${PROTOCOL}" ]]
 then
-  ROOT_URL=$1
-  shift
+  ROOT_URL="${PROTOCOL}://${SERVER_NAME}"
+fi
 
-  while (($#))
-  do
-    REPLACEMENT_ARGS="${REPLACEMENT_ARGS}\"$1\", "
-    shift
+if [[ ! -z "${EXTRA_PVPYTHON_ARGS}" ]]
+then
+  IFS=',' read -ra EXTRA_ARGS <<< "${EXTRA_PVPYTHON_ARGS}"
+  for arg in "${EXTRA_ARGS[@]}"; do
+    REPLACEMENT_ARGS="${REPLACEMENT_ARGS}\"$arg\", "
   done
 fi
 
@@ -60,4 +72,4 @@ service apache2 restart
 
 # Run the pvw launcher in the foreground so this script doesn't end
 echo "Starting the wslink launcher"
-/opt/paraview/install/bin/pvpython /opt/paraview/install/lib/python2.7/site-packages/wslink/launcher.py ${LAUNCHER_PATH}
+/opt/paraview/bin/pvpython /opt/paraview/lib/python2.7/site-packages/wslink/launcher.py ${LAUNCHER_PATH}

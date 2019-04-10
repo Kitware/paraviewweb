@@ -76,7 +76,7 @@ Then loading data will add-up to those numbers
 
 ## Rendering performances with GPU
 
-For the rendering performances we've loaded the same dataset of 4.8 Million point cloud and interact with it. The times reported are while interacting leaving the still render out of the picture. In either case the last render does not affect how the tools performance is percived. 
+For the rendering performances we've loaded the same dataset of 4.8 Million point cloud and interact with it. The times reported are while interacting leaving the still render out of the picture. In either case the last render does not affect how the tools performance is percived.
 
 ### Running on __localhost__
 
@@ -110,10 +110,10 @@ __Compression modes\*:__
 | Squirt (default settings) | 50% JPEG / Ratio 0.5         | 17.0 KB vs 293.7 KB | 29.9 KB vs 560.8 KB |
 | zlib (default settings)   | 25% JPEG / Ratio 0.25        |  4.6 KB vs 293.9 KB | 7.82 KB vs 560.7 KB |
 
-__Note__: 
+__Note__:
 
-ParaViewWeb target 30 FPS hence the constant 30 FPS value.
-When increasing the server FPS value, I was able to reach ~45 FPS with an image of 1280x720 and a JPEG Quality of 50% (Ratio 1 => same image resolution).
+ParaViewWeb targets 30 FPS hence the constant 30 FPS value.
+When increasing the server FPS value, I was able to reach approximately 45 FPS with an image of 1280x720 and a JPEG Quality of 50% (Ratio 1 => same image resolution).
 When lowering even more the quality of the transfered image I was getting the 60 FPS which was the targeted framerate set on the server side.
 
 ## Rendering performances with CPU
@@ -157,7 +157,13 @@ r4.2xlarge ($0.532)| r4.4xlarge ($1.064)
 Docker command line used to run the following tests
 
 ```
-docker run -v /test-data:/data -p 0.0.0.0:8081:80 -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://localhost:8081" --mesa-llvm
+docker run                           \
+    -v /test-data:/data               \
+    -e "SERVER_NAME=localhost:8081"    \
+    -e "PROTOCOL=ws"                    \
+    -e "EXTRA_PVPYTHON_ARGS=--mesa-llvm" \
+    -p 0.0.0.0:8081:80                    \
+    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0
 open http://localhost:8081
 ```
 
@@ -193,7 +199,13 @@ Rendering configuration settings
 Docker command line used to run the following tests
 
 ```
-docker run -v /test-data:/data -p 0.0.0.0:8081:80 -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://localhost:8081" --mesa-swr
+docker run                          \
+    -v /test-data:/data              \
+    -p 0.0.0.0:8081:80                \
+    -e "SERVER_NAME=localhost:8081"    \
+    -e "PROTOCOL=ws"                    \
+    -e "EXTRA_PVPYTHON_ARGS=--mesa-swr"  \
+    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0
 open http://localhost:8081
 ```
 

@@ -35,6 +35,9 @@ sidebar:
     multi_user_setup: Multi-user setup
     apache_front_end: Using Apache
     ec2: EC2
+    containers: Containers
+    container_overview: Overview
+    container_diy: Build Yours
     docker: Docker
     performances: Performances
     launchers: Launchers
