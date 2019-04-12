@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#"><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <title>ParaViewWeb</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://kitware.github.io/paraviewweb/docs/build_yours.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://kitware.github.io/paraviewweb/docs/build_yours.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/paraviewweb/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/paraviewweb/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/paraviewweb/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/paraviewweb/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/paraviewweb/icon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/paraviewweb/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/paraviewweb/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/paraviewweb/icon/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/paraviewweb/icon/favicon-32x32.png" sizes="32x32">
+  <meta name="msapplication-TileColor" content="#2f83cd">
+  <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  <!-- endbuild -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <!-- RSS -->
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <!-- Open Graph -->
+  <meta name="description" content="Build Your Own ContainerThis document focuses on how you can leverage the images we have built using the Dockerfiles in this repo.  The high-level summary is that you should build on top of the paravi">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ParaViewWeb">
+<meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/build_yours.html">
+<meta property="og:site_name" content="ParaViewWeb">
+<meta property="og:description" content="Build Your Own ContainerThis document focuses on how you can leverage the images we have built using the Dockerfiles in this repo.  The high-level summary is that you should build on top of the paravi">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-04-12T23:45:34.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ParaViewWeb">
+<meta name="twitter:description" content="Build Your Own ContainerThis document focuses on how you can leverage the images we have built using the Dockerfiles in this repo.  The high-level summary is that you should build on top of the paravi">
+  <!-- Google Analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-90338862-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/paraviewweb/" id="logo">ParaViewWeb</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
+      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search...">
+      </div>
+    </nav>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name"></h1>
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <h1 id="Build-Your-Own-Container" class="article-heading"><a href="#Build-Your-Own-Container" class="headerlink" title="Build Your Own Container"></a>Build Your Own Container<a class="article-anchor" href="#Build-Your-Own-Container" aria-hidden="true"></a></h1><p>This document focuses on how you can leverage the images we have built using the Dockerfiles in this repo.  The high-level summary is that you should build on top of the paraviewweb base container, and then bring your own launcher configuration file as well as add your application endpoint(s) wherever you’d like them to live.</p>
+<h2 id="Example-of-a-custom-application-Dockerfile" class="article-heading"><a href="#Example-of-a-custom-application-Dockerfile" class="headerlink" title="Example of a custom application Dockerfile"></a>Example of a custom application Dockerfile<a class="article-anchor" href="#Example-of-a-custom-application-Dockerfile" aria-hidden="true"></a></h2><p>Let’s look at an example to get a feel for how it looks, then discuss in a bit more detail each of the pieces.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-sys-python-v5.56.0</span><br><span class="line">FROM $&#123;BASE_IMAGE&#125;</span><br><span class="line"></span><br><span class="line"># Copy the launcher config template</span><br><span class="line">COPY config/launcher/launcher-template.json /opt/wslink-launcher/launcher-template.json</span><br><span class="line"></span><br><span class="line">#</span><br><span class="line"># Now we run this script which will update the apache vhost file.  We use bash</span><br><span class="line"># instead of &quot;sh&quot; due to the use of &quot;read -d&quot; in the script.  Also, it is bash, not</span><br><span class="line"># docker which manages the env variable interpolation, so we must use bash if we</span><br><span class="line"># want that convenience.</span><br><span class="line">#</span><br><span class="line">RUN [&quot;/opt/paraviewweb/scripts/addEndpoints.sh&quot;, \</span><br><span class="line">  &quot;DOCUMENT-ROOT-DIRECTORY&quot;, &quot;/mounted/path/to/root&quot;, \</span><br><span class="line">  &quot;&lt;your-alias-1&gt;&quot;, &quot;/mounted/path/to/app1/www&quot;, \</span><br><span class="line">  &quot;&lt;your-alias-2&gt;&quot;, &quot;/mounted/path/to/app2/www&quot; \</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"># Start the container</span><br><span class="line">ENTRYPOINT [&quot;/opt/paraviewweb/scripts/start.sh&quot;]</span><br></pre></td></tr></table></figure>
+<p>The first thing to note is that you could make the container upon which your application container is based an argument so that you can easily change base images if that makes sense in your case.</p>
+<p>Next, within your Dockerfile directory, you could have a <code>config/launcher/</code> directory containing your custom launcher configuration file.  See the <code>tools/docker/demo/config/launcher/launcher-template.json</code> launcher configuration file for an example.  You should copy that template into your container, with the idea that whenever you run the container, the <code>start.sh</code> script we show above as the <code>ENTRYPOINT</code> will take some runtime environment variables and replace values in the launcher configuration template.  This gives you control over things like the <code>sessionUrl</code> or extra arguments to be passed to <code>pvpython</code> at runtime, instead of determined at the time you build the container.</p>
+<p>Finally, note the <code>RUN</code> section in the Dockerfile above.  This is running a shell script put into the paraviewweb base container, where the goal is to dynamically update the apache virtual host configuration inside the container to add endpoints for your application.  The <code>addEndpoints.sh</code> shell script can be found in <code>tools/docker/paraviewweb/scripts/addEndpoint.sh</code> if you want to see exactly what’s going on, but in essence, it expects arguments to come in pairs.  In each pair the first item should be an alias (just a short string), and the second item should be a path within the container (probably one you expect to mount when you run it).  For each pair, the script will generate some lines in the apach config for you.  For example, if you run the script like this:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/opt/paraviewweb/scripts/addEndpoints.sh foo /pvw/www</span><br></pre></td></tr></table></figure>
+<p>Then the <code>/etc/apache2/sites-enabled/001-pvw.conf</code> will be amended to contain:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Alias foo /pvw/www</span><br><span class="line"></span><br><span class="line">&lt;Directory /pvw/www&gt;</span><br><span class="line">  Options Indexes FollowSymLinks</span><br><span class="line">  Order allow,deny</span><br><span class="line">  Allow from all</span><br><span class="line">  AllowOverride None</span><br><span class="line">  Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<p>You can add as many pairs of arguments as you like.  Note that the special string <code>DOCUMENT-ROOT-DIRECTORY</code> is treated differently: if the script sees that instead of an alias, then it does not add a new <code>Alias</code> or <code>Directory</code> to the virtual host config file.  Instead it just replaces <code>DOCUMENT-ROOT-DIRECTORY</code> whereever it appears in the apache config template installed into the base image.  You can see that file in <code>tools/docker/paraviewweb/config/apache/001-pvw.conf</code>.</p>
+<h2 id="Running-your-application" class="article-heading"><a href="#Running-your-application" class="headerlink" title="Running your application"></a>Running your application<a class="article-anchor" href="#Running-your-application" aria-hidden="true"></a></h2><p>Once you build the container you defined above, for example:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker build -t my-custom-app-image .</span><br></pre></td></tr></table></figure>
+<p>You can run it with a few different environment variables to control at runtime some of the functionality.  First note that if you followed the example in <code>tools/docker/demo/config/launcher/launcher-template.json</code>, then your launcher configuration file has a line like:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;sessionURL&quot;: &quot;SESSION_URL_ROOT/proxy?sessionId=$&#123;id&#125;&amp;path=ws&quot;,</span><br></pre></td></tr></table></figure>
+<p>This <code>sessionURL</code> is what the launcher hands back to clients once it has started a pvpython visualization process on their behalf.  We use the environment variables <code>SERVER_NAME</code> and <code>PROTOCOL</code> to build the string that will be written in place of <code>SESSION_URL_ROOT</code> when you run the container.  So if you want the launcher to tell clients to connect to <code>ws://my.example.com</code>, then you’d run your container as follows:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --runtime=nvidia           \</span><br><span class="line">    -p 0.0.0.0:9000:80                      \</span><br><span class="line">    -v ...                               \</span><br><span class="line">    -e SERVER_NAME=&quot;my.example.com&quot;           \</span><br><span class="line">    -e PROTOCOL=&quot;ws&quot;                           \</span><br><span class="line">    -ti my-custom-app-image</span><br></pre></td></tr></table></figure>
+<p>and you would then point your browser at:</p>
+
+              </div>
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2019-04-12T23:45:34.926Z" itemprop="dateModified">Last updated: 2019-04-12</time>
+                <a href="container_overview.html" class="article-footer-prev" title="Overview"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="launcher_api.html" class="article-footer-next" title="API"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+              
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Build-Your-Own-Container"><span class="toc-text">Build Your Own Container</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-of-a-custom-application-Dockerfile"><span class="toc-text">Example of a custom application Dockerfile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Running-your-application"><span class="toc-text">Running your application</span></a></li></ol></li></ol>
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link current">Build Yours</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+</aside>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2019 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
+    </div>
+    <div id="footer-links">
+      <a href="https://github.com/kitware/paraviewweb" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <a href="/paraviewweb/docs/" class="mobile-nav-link">Docs</a><a href="/paraviewweb/api/" class="mobile-nav-link">API</a><a href="/paraviewweb/examples/" class="mobile-nav-link">Examples</a><a href="/paraviewweb/applications/" class="mobile-nav-link">Applications</a>
+      <li class="mobile-nav-item">
+        <a href="https://github.com/kitware/paraviewweb" class="mobile-nav-link" rel="external" target="_blank">GitHub</a>
+      </li>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link current">Build Yours</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/build_yours.html">
+      
+        <option value="en" selected>English</option>
+      
+    </select>
+  </div>
+</nav>
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+<script src="/paraviewweb/js/lang_select.js"></script>
+<script src="/paraviewweb/js/toc.js"></script>
+<script src="/paraviewweb/js/mobile_nav.js"></script>
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
+
+
+
+</body>
+</html>
