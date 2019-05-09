@@ -38,6 +38,7 @@ sidebar:
     containers: Containers
     container_overview: Overview
     container_diy: Build Yours
+    container_cheatsheet: Cheat sheet
     docker: Docker
     performances: Performances
     launchers: Launchers
