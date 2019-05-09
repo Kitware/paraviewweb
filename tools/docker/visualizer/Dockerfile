@@ -5,7 +5,7 @@
 #
 # To build the image using a different base image:
 #
-# sudo docker build --build-arg BASE_IMAGE=pvw-base-osmesa -t pvw-visualizer-5.5.0 .
+# sudo docker build --build-arg BASE_IMAGE=pvw-v5.6.0-osmesa -t pvw-visualizer-5.5.0 .
 #
 # The following will configure all EXPOSED ports to be mapped to random
 # ports on the host.  After which, you will use "docker port <container>"
@@ -34,11 +34,11 @@
 # sudo docker run --runtime=nvidia -v /data/openfoam-vtk:/data -p 127.0.0.1:8081:80 -ti pvw-visualizer-5.5.0
 #
 
-ARG BASE_IMAGE=kitware/paraviewweb:pvw-base-5.5.0
+ARG BASE_IMAGE=kitware/paraviewweb:pvw-v5.6.0-egl
 FROM ${BASE_IMAGE}
 
 # Copy the launcher config template
-COPY config/launcher/launcher-template.json /opt/wslink-launcher/launcher-template.json
+COPY config/launcher/config-template.json /opt/launcher/config-template.json
 
 #
 # Now w run this script which will update the apache vhost file.  We use bash

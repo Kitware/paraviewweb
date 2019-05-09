@@ -197,24 +197,40 @@ Now disable the default site, and enable the one you created above, and finally 
 All that's left is to run the docker image as follows:
 
 ```
-    sudo docker run --runtime=nvidia -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-5.5.0 "ws://<ec2-hostname-or-ip[:port]>"
+    sudo docker run --runtime=nvidia               \
+        -p 127.0.0.1:8081:80                        \
+        -v <host-data-directory>:/data               \
+        -e "SERVER_NAME=<ec2-hostname-or-ip[:port]>"  \
+        -e "PROTOCOL=ws"                               \
+        -ti kitware/paraviewweb:pvw-visualizer-5.5.0
 ```
 
-You will obviously replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip[:port]>` with the actual hostname or IP address (and possibly port) of the instance.
+Do not forget to replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip[:port]>` with the actual hostname or IP address (and possibly port) of the instance.
 
 Some other run examples follow.  To run the osmesa image, you don't need the `nvidia` runtime:
 
 ```
-    sudo docker run -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://<ec2-hostname-or-ip[:port]>"
+    sudo docker run                                \
+        -p 127.0.0.1:8081:80                        \
+        -v <host-data-directory>:/data               \
+        -e "SERVER_NAME=<ec2-hostname-or-ip[:port]>"  \
+        -e "PROTOCOL=ws"                               \
+        -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0
 ```
 
-Additionally, extra arguments can be passed to the `pvpython` process that will be launched.  Note that while the session url shown in the examples above (`ws://<ec2-hostname-or-ip[:port]>`) is normally optional, it *must* be provided if you want to pass extra arguments to `pvpython`.  So, for example, you could pick the `swr` rendering backend while preventing loading of ParaView registry values like this:
+Additionally, extra arguments can be passed to the `pvpython` process that will be launched by providing the "EXTRA_PVPYTHON_ARGS" environment variable in the docker command.  For example, you could pick the `swr` rendering backend while at the same time preventing loading of ParaView registry values like this:
 
 ```
-    sudo docker run -p 127.0.0.1:8081:80 -v <host-data-directory>:/data -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0 "ws://<ec2-hostname-or-ip[:port]>" "-dr" "--mesa-swr"
+    sudo docker run                                \
+        -p 127.0.0.1:8081:80                        \
+        -v <host-data-directory>:/data               \
+        -e "SERVER_NAME=<ec2-hostname-or-ip[:port]>"  \
+        -e "PROTOCOL=ws"                               \
+        -e "EXTRA_PVPYTHON_ARGS=-dr,--mesa-swr"         \
+        -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0
 ```
 
-The quotes around the extra arguments to `pvpython` are only necessary if those arguments contain spaces or other characters that will treatly specially by the shell interpreting the `docker run` command.
+Note in the above that the extra pvpython args are comma-separated, with no additional spaces inserted.
 
 ### Try it out
 
