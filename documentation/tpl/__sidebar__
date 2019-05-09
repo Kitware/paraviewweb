@@ -21,7 +21,7 @@ docs:
   containers:
     container_overview: container_overview.html
     container_diy: build_yours.html
-    dcontainer_cheatsheet: docker_cheatsheet.html
+    container_cheatsheet: docker_cheatsheet.html
   launchers:
     launcher_api: launcher_api.html
     python_launcher: python_launcher.html
