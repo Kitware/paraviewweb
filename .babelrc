@@ -1,11 +1,10 @@
 {
   presets: [
-    'react',
-    ['env', {
-      targets: {
-        browsers: ['last 2 versions'],
-      },
+    ["@babel/preset-env", {
+      "debug": false,
+      "useBuiltIns": false,
     }],
+    "@babel/preset-react",
   ],
   env: {
     test: {

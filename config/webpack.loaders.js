@@ -69,17 +69,38 @@ module.exports = [
   {
     test: /\.js$/,
     include: /node_modules(\/|\\)paraviewweb(\/|\\)/,
-    loader: 'babel-loader?presets[]=env,presets[]=react',
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+        },
+      },
+    ],
   },
   {
     test: /\.js$/,
     include: /node_modules(\/|\\)vtk.js(\/|\\)/,
-    loader: 'babel-loader?presets[]=env,presets[]=react',
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+        },
+      },
+    ],
   },
   {
     test: /\.js$/,
     include: /node_modules(\/|\\)wslink(\/|\\)/,
-    loader: 'babel-loader?presets[]=env',
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
+      },
+    ],
   },
   {
     test: /\.glsl$/,
@@ -88,6 +109,13 @@ module.exports = [
   {
     test: /\.js$/,
     exclude: /node_modules/,
-    loader: 'babel-loader?presets[]=env,presets[]=react',
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+        },
+      },
+    ],
   },
 ];

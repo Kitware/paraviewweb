@@ -6,7 +6,7 @@ module.exports = [
       {
         loader: 'babel-loader',
         options: {
-          presets: ['env'],
+          presets: ['@babel/preset-env'],
           // presets: [['env', { targets: { browsers: 'last 2 versions' } }]],
         },
       },

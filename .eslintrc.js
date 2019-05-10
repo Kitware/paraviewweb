@@ -9,7 +9,13 @@ module.exports = {
     'no-multi-spaces': ["error", { exceptions: { "ImportDeclaration": true } }],
     'no-param-reassign': ["error", { props: false }],
     'no-unused-vars': ["error", { args: 'none' }],
-    'prefer-destructuring': ["error", { VariableDeclarator: { array: false, object: true }, AssignmentExpression: { array: false, object: false } }, { enforceForRenamedProperties: false }],
+    'prefer-destructuring': [
+      'error',
+      {
+        VariableDeclarator: { array: false, object: true },
+        AssignmentExpression: { array: false, object: false } },
+      { enforceForRenamedProperties: false }
+    ],
     'import/no-extraneous-dependencies': 0, // Needed for tests
     // 'no-mixed-operators': 'error', // Wish we can put it back with prettier
 
