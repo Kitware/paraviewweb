@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "plotly.js": "1.43.2",
-        "vtk.js": "7.13.8",
+        "vtk.js": "8.5.2",
         "wslink": "0.1.7",
         "monologue.js": "0.3.5",
         "mout": "1.1.0",
