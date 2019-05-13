@@ -398,7 +398,7 @@ export default class LookupTableWidget extends React.Component {
               className={style.previousButton}
             />
             <div className={style.label}>
-              {this.state.currentControlPointIndex + 1} /{' '}
+              {this.state.currentControlPointIndex + 1}/{' '}
               {this.props.lookupTable.getNumberOfControlPoints()}
             </div>
             <i onClick={this.nextControlPoint} className={style.nextButton} />

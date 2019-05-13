@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactWidgets/ScatterPlotCameraControl.mcss';
-import InlineToggleButtonWidget from '../../Widgets/InlineToggleButtonWidget';
+import InlineToggleButtonWidget from '../InlineToggleButtonWidget';
 
 const SELECTED_COLOR = '#cdcdcd';
 const DEFAULT_COLOR = '#fff';

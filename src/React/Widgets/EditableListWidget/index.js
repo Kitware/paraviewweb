@@ -173,6 +173,7 @@ class EditableList extends React.PureComponent {
           <div className={style.rowContent}>{cells}</div>
           <div className={style.remove}>
             <button
+              type="button"
               className={style.icon}
               onClick={() => this.props.onDelete(item.key)}
             >
@@ -218,6 +219,7 @@ class EditableList extends React.PureComponent {
         </div>
         <div className={style.row}>
           <button
+            type="button"
             className={style.addButton}
             onClick={() => this.props.onAdd(rows.length)}
           >

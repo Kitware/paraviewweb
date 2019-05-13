@@ -611,10 +611,18 @@ export default class ImageRenderer extends React.Component {
               </div>
             </div>
             <div className={style.buttons}>
-              <button className={style.button} onClick={this.toggleDialog}>
+              <button
+                className={style.button}
+                type="button"
+                onClick={this.toggleDialog}
+              >
                 Cancel
               </button>
-              <button className={style.button} onClick={this.updateMetadata}>
+              <button
+                className={style.button}
+                type="button"
+                onClick={this.updateMetadata}
+              >
                 Save
               </button>
             </div>

@@ -13,6 +13,7 @@ import Coordinate2DWidget from './Coordinate2DWidget';
 import CountToolbar from './CountToolbar';
 import DoubleSliderWidget from './DoubleSliderWidget';
 import DropDownWidget from './DropDownWidget';
+import EditableListWidget from './EditableListWidget';
 import EqualizerWidget from './EqualizerWidget';
 import FileBrowserWidget from './FileBrowserWidget';
 import GitTreeWidget from './GitTreeWidget';
@@ -55,6 +56,7 @@ export default {
   CountToolbar,
   DoubleSliderWidget,
   DropDownWidget,
+  EditableListWidget,
   EqualizerWidget,
   FileBrowserWidget,
   GitTreeWidget,
