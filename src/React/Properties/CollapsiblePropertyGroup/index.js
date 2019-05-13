@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import style from 'PVWStyle/ReactProperties/CollapsiblePropertyGroup.mcss';
-import factory from '../../Properties/PropertyFactory';
+import factory from '../PropertyFactory';
 
 export default function render(props) {
   const isCollapsed = !props.prop.data.value[0];

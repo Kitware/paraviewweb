@@ -48,7 +48,7 @@ ReactDOM.render(
         You can put HTML or a React component here, a{' '}
         <em>QueryDataModelWidget</em> for example goes well here.
       </p>,
-      <button key="c" onClick={() => alert('button pressed')}>
+      <button type="button" key="c" onClick={() => alert('button pressed')}>
         Press me
       </button>,
     ]

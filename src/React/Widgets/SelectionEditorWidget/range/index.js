@@ -103,7 +103,7 @@ render.propTypes = {
   selection: PropTypes.object,
   // ranges: PropTypes.object,
   onChange: PropTypes.func,
-  // getLegend: PropTypes.func,
+  getLegend: PropTypes.func,
   className: PropTypes.string,
 };
 
@@ -111,4 +111,5 @@ render.defaultProps = {
   selection: undefined,
   className: undefined,
   onChange: undefined,
+  getLegend: undefined,
 };

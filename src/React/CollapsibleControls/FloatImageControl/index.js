@@ -89,11 +89,9 @@ export default class FloatImageControl extends React.Component {
     return (
       <div className={style.container}>
         <CollapsibleWidget title="Scene">
-          {floatImageModel
-            .getLayers()
-            .map((item, idx) => (
-              <LayerItem key={idx} item={item} model={floatImageModel} />
-            ))}
+          {floatImageModel.getLayers().map((item, idx) => (
+            <LayerItem key={idx} item={item} model={floatImageModel} />
+          ))}
           <div className={style.item}>
             <div className={style.label}>Light</div>
             <div className={style.actions}>

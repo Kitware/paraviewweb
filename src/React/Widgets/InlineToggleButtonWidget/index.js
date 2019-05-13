@@ -63,6 +63,7 @@ export default class InlineToggleButtonWidget extends React.Component {
           if (obj.label) {
             return (
               <button
+                type="button"
                 style={{ lineHeight, fontSize, background }}
                 key={idx}
                 onClick={this.activateButton}

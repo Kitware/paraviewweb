@@ -9,7 +9,13 @@ module.exports = {
     'no-multi-spaces': ["error", { exceptions: { "ImportDeclaration": true } }],
     'no-param-reassign': ["error", { props: false }],
     'no-unused-vars': ["error", { args: 'none' }],
-    'prefer-destructuring': ["error", { VariableDeclarator: { array: false, object: true }, AssignmentExpression: { array: false, object: false } }, { enforceForRenamedProperties: false }],
+    'prefer-destructuring': [
+      'error',
+      {
+        VariableDeclarator: { array: false, object: true },
+        AssignmentExpression: { array: false, object: false } },
+      { enforceForRenamedProperties: false }
+    ],
     'import/no-extraneous-dependencies': 0, // Needed for tests
     // 'no-mixed-operators': 'error', // Wish we can put it back with prettier
 
@@ -33,6 +39,16 @@ module.exports = {
     'no-nested-ternary': 0,
     'react/forbid-prop-types': 0,
     'react/no-array-index-key': 0,
+
+    // When updating to kw-web-suite 8.0.0, we have more lint issues
+    // and no time to fix
+    'react/destructuring-assignment': 0,
+    'react/no-access-state-in-setstate': 0,
+    'react/jsx-one-expression-per-line': 0, // creates a conflict with prettier
+    'jsx-a11y/label-has-associated-control': 0,
+    'no-else-return': 0,
+    'import/no-cycle': 0,
+    'react/jsx-wrap-multilines': 0,
   },
   plugins: [
     'prettier'

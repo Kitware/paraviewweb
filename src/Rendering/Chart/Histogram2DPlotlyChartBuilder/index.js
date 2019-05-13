@@ -105,6 +105,7 @@ export default class Histogram2DPlotlyChartBuilder {
   getHistogram() {
     return this.histogram;
   }
+
   getScatter() {
     return this.scatter;
   }
@@ -123,6 +124,7 @@ export default class Histogram2DPlotlyChartBuilder {
     this.histogram = histogram;
     this.buildChart();
   }
+
   setScatter(scatter) {
     // we need a new plot if the axes change, as opposed to just the data.
     if (
@@ -137,6 +139,7 @@ export default class Histogram2DPlotlyChartBuilder {
     this.scatter = scatter;
     this.buildChart();
   }
+
   setPlot(plot) {
     this.chartState.forceNewPlot = true;
     this.plot = plot;
@@ -177,6 +180,7 @@ export default class Histogram2DPlotlyChartBuilder {
   getChartType() {
     return this.chartState.chartType;
   }
+
   getDataType() {
     return chartFactory[this.chartState.chartType].data;
   }
