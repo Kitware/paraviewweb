@@ -4,7 +4,7 @@
     "description": "Web framework for building interactive visualization relying on VTK or ParaView to produce visualization data",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kitware/paraviewweb.git"
+        "url": "https://github.com/kitware/paraviewweb.git"
     },
     "license": "BSD-3-Clause",
     "bugs": {
