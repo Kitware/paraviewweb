@@ -50,7 +50,7 @@ COPY config/launcher/config-template.json /opt/launcher/config-template.json
 # "/opt/paraview/.../www".
 #
 RUN ["/opt/paraviewweb/scripts/addEndpoints.sh", \
-  "visualizer", "/opt/paraview/install/share/paraview-5.5/web/visualizer/www" \
+  "visualizer", "/opt/paraview/share/paraview-5.6/web/visualizer/www" \
 ]
 
 # Start the container

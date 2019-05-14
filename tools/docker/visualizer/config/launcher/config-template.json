@@ -28,7 +28,7 @@
   },
   "properties": {
     "dataDir": "/data",
-    "webapps_dir": "/opt/paraview/share/paraview-5.5/web",
+    "webapps_dir": "/opt/paraview/share/paraview-5.6/web",
     "python_exec": "/opt/paraview/bin/pvpython"
   },
   "apps": {
