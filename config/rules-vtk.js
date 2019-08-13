@@ -17,4 +17,16 @@ module.exports = [
       },
     ],
   },
+  {
+    test: /\.worker\.js$/,
+    include: /node_modules(\/|\\)vtk.js(\/|\\)/,
+    use: [
+      { loader: 'worker-loader', options: { inline: true, fallback: false } },
+    ],
+  },
+  {
+    test: /\.svg$/,
+    include: /node_modules(\/|\\)vtk.js(\/|\\)/,
+    use: [{ loader: 'raw-loader' }],
+  },
 ];

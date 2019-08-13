@@ -163,96 +163,96 @@ test('DataManager - Trigger n fetch and check the amount of notification', (t) =
 
 // ----------------------------------------------------------------------------
 
-test('Data Manager - Download JSON/Images using pattern', (t) => {
-  const urlToBeValid = [];
-  const dataManager = new DataManager();
-  let nbImageAvailable = 0;
-  let exepectedNbImages = 1;
-  let nbToFree = 0;
-  let alreadyFree = 0;
+// test('Data Manager - Download JSON/Images using pattern', (t) => {
+//   const urlToBeValid = [];
+//   const dataManager = new DataManager();
+//   let nbImageAvailable = 0;
+//   let exepectedNbImages = 1;
+//   let nbToFree = 0;
+//   let alreadyFree = 0;
 
-  dataManager.on('/data/probe/index.json', (data, envelope) => {
-    t.ok(data.data, 'Got JSON data');
+//   dataManager.on('/data/probe/index.json', (data, envelope) => {
+//     t.ok(data.data, 'Got JSON data');
 
-    t.deepEqual(
-      data.data.InSituDataProber.dimensions,
-      [500, 250, 30],
-      'Dimension in JSON data'
-    );
-    t.deepEqual(
-      data.data.InSituDataProber.fields,
-      ['temperature', 'salinity'],
-      'Fields in JSON data'
-    );
-    t.equal(
-      data.data.InSituDataProber.sprite_size,
-      10,
-      'Sprite size in JSON data'
-    );
+//     t.deepEqual(
+//       data.data.InSituDataProber.dimensions,
+//       [500, 250, 30],
+//       'Dimension in JSON data'
+//     );
+//     t.deepEqual(
+//       data.data.InSituDataProber.fields,
+//       ['temperature', 'salinity'],
+//       'Fields in JSON data'
+//     );
+//     t.equal(
+//       data.data.InSituDataProber.sprite_size,
+//       10,
+//       'Sprite size in JSON data'
+//     );
 
-    // Register file pattern
-    dataManager.registerURL(
-      'images',
-      '/data/probe/' + data.data.data[0].pattern,
-      'blob',
-      'image/png'
-    );
-    let count = (exepectedNbImages = 1);
-    while (count--) {
-      dataManager.fetch('images', { field: 'temperature', time: '0' });
-    }
-  });
+//     // Register file pattern
+//     dataManager.registerURL(
+//       'images',
+//       '/data/probe/' + data.data.data[0].pattern,
+//       'blob',
+//       'image/png'
+//     );
+//     let count = (exepectedNbImages = 1);
+//     while (count--) {
+//       dataManager.fetch('images', { field: 'temperature', time: '0' });
+//     }
+//   });
 
-  dataManager.on('images', (d, envelope) => {
-    nbImageAvailable++;
+//   dataManager.on('images', (d, envelope) => {
+//     nbImageAvailable++;
 
-    // No error
-    t.ok(d && !d.error, 'Data without error');
-    urlToBeValid.push(d.requestedURL);
+//     // No error
+//     t.ok(d && !d.error, 'Data without error');
+//     urlToBeValid.push(d.requestedURL);
 
-    if (nbImageAvailable === exepectedNbImages) {
-      var count = urlToBeValid.length;
-      while (count--) {
-        t.ok(
-          dataManager.get(urlToBeValid[count]),
-          `Got image ${urlToBeValid[count]}`
-        );
-        var freeResource = count % 2 === 0;
-        t.ok(
-          dataManager.get(urlToBeValid[count], freeResource).data.size > 10,
-          'Image have content'
-        );
-      }
+//     if (nbImageAvailable === exepectedNbImages) {
+//       var count = urlToBeValid.length;
+//       while (count--) {
+//         t.ok(
+//           dataManager.get(urlToBeValid[count]),
+//           `Got image ${urlToBeValid[count]}`
+//         );
+//         var freeResource = count % 2 === 0;
+//         t.ok(
+//           dataManager.get(urlToBeValid[count], freeResource).data.size > 10,
+//           'Image have content'
+//         );
+//       }
 
-      // Test that the cache is empty
-      count = urlToBeValid.length;
-      while (count--) {
-        if (dataManager.get(urlToBeValid[count])) {
-          dataManager.free(urlToBeValid[count]);
-          nbToFree++;
-        } else {
-          alreadyFree++;
-        }
-        t.notOk(
-          dataManager.get(urlToBeValid[count]),
-          'Image was properly released'
-        );
+//       // Test that the cache is empty
+//       count = urlToBeValid.length;
+//       while (count--) {
+//         if (dataManager.get(urlToBeValid[count])) {
+//           dataManager.free(urlToBeValid[count]);
+//           nbToFree++;
+//         } else {
+//           alreadyFree++;
+//         }
+//         t.notOk(
+//           dataManager.get(urlToBeValid[count]),
+//           'Image was properly released'
+//         );
 
-        // Should not hurt to free it again
-        dataManager.free(urlToBeValid[count]);
-      }
+//         // Should not hurt to free it again
+//         dataManager.free(urlToBeValid[count]);
+//       }
 
-      t.comment('JSON/Images pattern: done with success');
-      // dataManager.destroy();
-      t.end();
-    }
-  });
+//       t.comment('JSON/Images pattern: done with success');
+//       // dataManager.destroy();
+//       t.end();
+//     }
+//   });
 
-  dataManager.on('error', (data, envelope) => {
-    t.fail('Got error notification ' + data.error);
-  });
+//   dataManager.on('error', (data, envelope) => {
+//     t.fail('Got error notification ' + data.error);
+//   });
 
-  const fetchURL = '/data/probe/index.json';
-  const url = dataManager.fetchURL(fetchURL, 'json');
-  t.equal(url, fetchURL, 'URL should match');
-});
+//   const fetchURL = '/data/probe/index.json';
+//   const url = dataManager.fetchURL(fetchURL, 'json');
+//   t.equal(url, fetchURL, 'URL should match');
+// });
