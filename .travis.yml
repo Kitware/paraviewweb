@@ -24,9 +24,6 @@ addons:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libgif-dev
-  - npm i -g npm@6.0.1 # this should be deleted once 5.7.X is out of "pre-release"
-  - npm install node-pre-gyp@0.10.0
-  - npm install canvas@1.6.9
 
 install:
   - npm ci
