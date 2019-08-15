@@ -4,7 +4,12 @@
 # If we find it, we can pip install those.
 if [ -f "/pvw/requirements.txt" ]
 then
-  pip install -r "/pvw/requirements.txt"
+  if [ -z "${SYSTEM_PYTHON_PIP}" ]; then
+    PIP_CMD=pip
+  else
+    PIP_CMD="${!SYSTEM_PYTHON_PIP}"
+  fi
+  "${PIP_CMD}" install -r "/pvw/requirements.txt"
 fi
 
 # Copy the launcher config into the location where the start script expects
