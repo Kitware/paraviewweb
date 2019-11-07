@@ -6,30 +6,26 @@ This document focuses on how you can build your application container leveraging
 
 ## Example of a custom application `Dockerfile`
 
-As an example, let's look at the `Dockerfile` for the `demo` container provided in this repository (`tools/docker/demo/Dockerfile`).  The goal of the `demo` application is to host four different demonstration applications, all reachable from a single static html front page.  When the user clicks on one of the demonstration application icons, the appropriate application python process will be started, and connection information will be returned to the client so it can connect to that particular application and the user can begin interacting with it.
+As an example, let's look at the `Dockerfile` for the `visualizer` container provided in this repository (`tools/docker/visualizer/Dockerfile`).  The goal of the `visualizer` application is to host the ParaViewWeb Visualizer application.
 
 ```
 ARG BASE_IMAGE=kitware/paraviewweb:pvw-v5.6.0-egl
 FROM ${BASE_IMAGE}
 
-# Copy welcome site
-COPY config/website/ /var/www/html/
-
 # Copy the launcher config template
 COPY config/launcher/config-template.json /opt/launcher/config-template.json
 
 #
-# Now we run this script which will update the apache vhost file.  We use bash
+# Now w run this script which will update the apache vhost file.  We use bash
 # instead of "sh" due to the use of "read -d" in the script.  Also, it is bash, not
 # docker which manages the env variable interpolation, so we must use bash if we
 # want that convenience.
 #
-
+# To add more endpoints, simply add more pairs of arguments beyond "visualizer" and
+# "/opt/paraview/.../www".
+#
 RUN ["/opt/paraviewweb/scripts/addEndpoints.sh", \
-  "glance", "/opt/paraview/install/share/paraview-5.6/web/glance/www", \
-  "lite", "/opt/paraview/install/share/paraview-5.6/web/lite/www", \
-  "divvy", "/opt/paraview/install/share/paraview-5.6/web/divvy/www", \
-  "visualizer", "/opt/paraview/install/share/paraview-5.6/web/visualizer/www" \
+  "visualizer", "/opt/paraview/share/paraview-5.6/web/visualizer/www" \
 ]
 
 # Start the container
@@ -40,13 +36,11 @@ Now let's look at each of the pieces in the `Dockerfile` in more detail.
 
 The first thing to note is that we make the base container an argument so that we can easily change base images, allowing us to more easily create several different versions of our application container.
 
-For the `demo` container, we have added a static website directory to the directory where our `Dockerfile` lives, and into that directory we have copied a tree of files containing the content to be hosted.  We copy all of that into `/var/www/html` of the container, knowing that the `addEndpoints.sh` script is going to update the apache virtual host configuration within the container such that `/var/www/html` will be set up as the `DocumentRoot`.
-
-Next, within our `Dockerfile` directory, we have created a `config/launcher/` directory containing our custom launcher configuration file, which could either be the launcher configuration we need already, or might be a template with some values to be replaced any time the container is run.  Have a look at that file (`tools/docker/demo/config/launcher/config-template.json`) to see what it contains.  The `Dockerfile` above copies that template into our container, with the idea that whenever we run the container, the `start.sh` script provided in the paraviewweb base container (the script we use as the `ENTRYPOINT` above) will take some runtime environment variables and replace specific values in the launcher configuration template.  This gives us runtime control over the `sessionUrl` returned to clients by the launcher whenever it starts a visualization process on their behalf.  It also lets us specify (again, at the time we run the container) any extra arguments to be passed to the launched `pvpython` processes.
+Next, within our `Dockerfile` directory, we have created a `config/launcher/` directory containing our custom launcher configuration file, which could either be the launcher configuration we need already, or might be a template with some values to be replaced any time the container is run.  Have a look at that file (`tools/docker/visualizer/config/launcher/config.json`) to see what it contains.  The `Dockerfile` above copies that template into our container, with the idea that whenever we run the container, the `start.sh` script provided in the paraviewweb base container (the script we use as the `ENTRYPOINT` above) will take some runtime environment variables and replace specific values in the launcher configuration template.  This gives us runtime control over the `sessionUrl` returned to clients by the launcher whenever it starts a visualization process on their behalf.  It also lets us specify (again, at the time we run the container) any extra arguments to be passed to the launched `pvpython` processes.
 
 At the time of this writing, there are only two values we expect to get replaced in the launcher configuration template: `SESSION_URL_ROOT` and `EXTRA_PVPYTHON_ARGS`.
 
-Next note the `RUN` section in the `Dockerfile` above.  This is running a shell script put into the paraviewweb container, where the goal is to dynamically update the apache virtual host configuration inside the container to add endpoints for our application.  The `addEndpoints.sh` shell script can be found in `tools/docker/paraviewweb/scripts/addEndpoint.sh` if you want to see exactly what's going on, but in essence, it expects arguments to come in pairs.  In each pair the first item should be an alias (just a short string), and the second item should be a directory path available within the container.  In this case, those paths already exist in the ParaView install directory due to the use of the ParaView Superbuild, but in general the paths could be anywhere, even ones you expect to mount when you run the container.  For each argument pair, the script will insert some lines in the apache config for you.  For example, if you run the script like this:
+Next note the `RUN` section in the `Dockerfile` above.  This is running a shell script put into the paraviewweb container, where the goal is to dynamically update the apache virtual host configuration inside the container to add endpoints for our application.  The `addEndpoints.sh` shell script can be found in `tools/docker/paraviewweb/scripts/addEndpoint.sh` if you want to see exactly what's going on, but in essence, it expects arguments to come in pairs.  In each pair the first item should be an alias (just a short string), and the second item should be a directory path available within the container.  In this case, the path already exists in the ParaView install directory due to the use of the ParaView Superbuild, but in general the paths could be anywhere, even ones you expect to mount when you run the container.  For each argument pair, the script will insert some lines in the apache config for you.  For example, if you run the script like this:
 
 ```
 /opt/paraviewweb/scripts/addEndpoints.sh foo /pvw/www
@@ -68,7 +62,7 @@ Then the `/etc/apache2/sites-enabled/001-pvw.conf` will be amended to contain:
 
 And in that case you should add `/foo` to the url in order to reach your application, similar to `http(s)//<host>:<port>/foo`.
 
-So the `Dockerfile` above results in a container where the apache virtual host configuration has four endpoints exposed, aliased by `glance`, `lite`, `divvy`, and `visualizer`.  You can add as many pairs of arguments as you like when you invoke the `addEndpoints.sh` script.
+So the `Dockerfile` above results in a container where the apache virtual host configuration has a single endpoint exposed, aliased by `visualizer`.  You can add as many pairs of arguments as you like when you invoke the `addEndpoints.sh` script.
 
 One final note on the `addEndpoints.sh` script: the special string `DOCUMENT-ROOT-DIRECTORY` is treated differently: if the script sees that instead of any other value for the alias, then it does not add a new `Alias` or `Directory` to the virtual host config file.  Instead it just replaces `DOCUMENT-ROOT-DIRECTORY` in the two places it appears in the apache config template installed into the base image.  This allows you to expose your application at the root of the webserver if you wish.  In that case, you will just point to a url like `http(s)//<host>:<port>` to reach your application. If you do not add `DOCUMENT-ROOT-DIRECTORY` along with some directory you want as the `DocumentRoot`, then by default `/var/www/html` will be configured as the `DocumentRoot` by the `addEndpoints.sh` script (in addition to any aliases it may have created based on other args to `addEndpoints.sh`).
 
@@ -83,7 +77,7 @@ cd <path-to-dir-containing-Dockerfile-and-resources>
 docker build -t my-custom-app-image .
 ```
 
-You can run it with a few different environment variables to control at runtime some of the functionality.  First note that if you followed the example in `tools/docker/demo/config/launcher/launcher-template.json`, then your launcher configuration file has a line like:
+You can run it with a few different environment variables to control at runtime some of the functionality.  First note that if you followed the example in `tools/docker/visualizer/config/launcher/config.json`, then your launcher configuration file has a line like:
 
 ```
     "sessionURL": "SESSION_URL_ROOT/proxy?sessionId=${id}&path=ws",
@@ -94,11 +88,11 @@ This `sessionURL` is what the launcher hands back to clients once it has started
 If you want the launcher to tell clients to connect to `ws://my.example.com`, then you'd run your container as follows:
 
 ```
-docker run --runtime=nvidia           \
-    -p 0.0.0.0:80:80                      \
-    -v ...                               \
-    -e SERVER_NAME="my.example.com"           \
-    -e PROTOCOL="ws"                           \
+docker run --gpus all              \
+    -p 0.0.0.0:80:80                \
+    -v ...                           \
+    -e SERVER_NAME="my.example.com"   \
+    -e PROTOCOL="ws"                   \
     -ti my-custom-app-image
 ```
 

@@ -60,60 +60,44 @@ Now set up the "stable" repository:
 
 Then update the package index and install Docker community edition:
 
+```
     sudo apt-get update
     sudo apt-get install docker-ce
+```
 
-Now we can install the `nvidia-docker2` package, using a similar approach to the one just above.  First install the `nvidia-docker` gpg key:
+Note that the `nvidia-docker2` package is now deprecated (as of Docker 19.03), and the current way of installing nvidia support for gpus within containers is as follows:
 
+```
+    # Add the package repositories
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-Add sources from the `nvidia-docker` sources list to `apt`:
-
-```
-    curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu16.04/nvidia-docker.list | \
-        sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+    sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+    sudo systemctl restart docker
 ```
 
-Update the package index again, install `nvidia-docker2`, then reload the docker daemon configuration:
-
-    sudo apt-get update
-    sudo apt-get install nvidia-docker2
-    sudo pkill -SIGHUP dockerd
+See the source of that documentation [here](https://github.com/NVIDIA/nvidia-docker) for full details.
 
 Verify that it's working:
 
 ```
-    sudo docker run --runtime=nvidia --rm nvidia/cuda nvidia-smi
-    Unable to find image 'nvidia/cuda:latest' locally
-    latest: Pulling from nvidia/cuda
-    297061f60c36: Pull complete
-    e9ccef17b516: Pull complete
-    dbc33716854d: Pull complete
-    8fe36b178d25: Pull complete
-    686596545a94: Pull complete
-    f611dfbee954: Pull complete
-    c51814f3e9ba: Pull complete
-    5da0fc07e73a: Pull complete
-    97462b1887aa: Pull complete
-    924ea239f6fe: Pull complete
-    Digest: sha256:69f3780f80a72cb7cebc7f401a716370f79412c5aa9362306005ca4eb84d0f3c
-    Status: Downloaded newer image for nvidia/cuda:latest
-    Thu May 17 19:56:53 2018
+    sudo docker run --rm --gpus all nvidia/cuda:9.0-base nvidia-smi
+    Wed Nov  6 23:34:43 2019       
     +-----------------------------------------------------------------------------+
-    | NVIDIA-SMI 384.111                Driver Version: 384.111                   |
+    | NVIDIA-SMI 430.50       Driver Version: 430.50       CUDA Version: 10.1     |
     |-------------------------------+----------------------+----------------------+
     | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
     | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
     |===============================+======================+======================|
-    |   0  GRID K520           Off  | 00000000:00:03.0 Off |                  N/A |
-    | N/A   37C    P0    37W / 125W |      0MiB /  4036MiB |      0%      Default |
+    |   0  GeForce RTX 208...  Off  | 00000000:04:00.0  On |                  N/A |
+    | 30%   46C    P5    29W / 250W |   1864MiB / 11019MiB |     11%      Default |
     +-------------------------------+----------------------+----------------------+
-    
+                                                                                   
     +-----------------------------------------------------------------------------+
     | Processes:                                                       GPU Memory |
     |  GPU       PID   Type   Process name                             Usage      |
     |=============================================================================|
-    |  No running processes found                                                 |
     +-----------------------------------------------------------------------------+
 ```
 
@@ -197,7 +181,7 @@ Now disable the default site, and enable the one you created above, and finally 
 All that's left is to run the docker image as follows:
 
 ```
-    sudo docker run --runtime=nvidia               \
+    sudo docker run --gpus all                     \
         -p 127.0.0.1:8081:80                        \
         -v <host-data-directory>:/data               \
         -e "SERVER_NAME=<ec2-hostname-or-ip[:port]>"  \
@@ -207,7 +191,7 @@ All that's left is to run the docker image as follows:
 
 Do not forget to replace `<host-data-directory>` with some real directory where your datasets are located, and replace `<ec2-hostname-or-ip[:port]>` with the actual hostname or IP address (and possibly port) of the instance.
 
-Some other run examples follow.  To run the osmesa image, you don't need the `nvidia` runtime:
+Some other run examples follow.  To run the osmesa image, you don't need the `--gpus` argument:
 
 ```
     sudo docker run                                \
