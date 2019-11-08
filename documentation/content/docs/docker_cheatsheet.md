@@ -10,12 +10,14 @@ This docker image aims to ease any ParaViewWeb application deployment by offerin
     <APP_ROOT>/www/
     <APP_ROOT>/launcher/config.json
     <APP_ROOT>/requirements.txt        (optional)
+    <APP_ROOT>/endpoints.txt           (optional)
     <APP_ROOT>/server/                 (optional)
 ```
 
 __www__ is the directory that will be served by Apache inside docker.
 __launcher/config.json__ is the launcher configuration where __SESSION_URL_ROOT__ and __EXTRA_PVPYTHON_ARGS__ would be replaced with the proper docker environments properties.
 __requirements.txt__ allow you to install additional Python packages which will then be usable inside your ParaViewWeb application.
+__endpoints.txt__ allows you to set up custon endpoints (apache aliases) before apache is started within the container.
 __server/__ is the directory where we tend to put our ParaViewWeb server scripts by convention.
 
 ### Launcher configuration
@@ -148,10 +150,10 @@ export DEPLOY=/my-pvw-app/
 export SERVER_NAME=localhost:443
 export PROTOCOL=wss
 
-sudo docker run --runtime=nvidia        \
-    -p 0.0.0.0:${PORT}:80                \
-    -v ${DATA}:/data                      \
-    -v ${DEPLOY}:/pvw                      \
+sudo docker                              \
+    -p 0.0.0.0:${PORT}:80                 \
+    -v ${DATA}:/data                       \
+    -v ${DEPLOY}:/pvw                       \
     -e "SERVER_NAME=${SERVER_NAME}"          \
     -e "PROTOCOL=${PROTOCOL}"                 \
     -e EXTRA_PVPYTHON_ARGS="-dr,--mesa-swr"    \
@@ -167,7 +169,7 @@ export DEPLOY=/my-pvw-app/
 export SERVER_NAME=localhost:443
 export PROTOCOL=wss
 
-sudo docker run --runtime=nvidia        \
+sudo docker run --gpus all              \
     -p 0.0.0.0:${PORT}:80                \
     -v ${DATA}:/data                      \
     -v ${DEPLOY}:/pvw                      \

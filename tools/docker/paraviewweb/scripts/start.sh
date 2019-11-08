@@ -72,4 +72,4 @@ service apache2 restart
 
 # Run the pvw launcher in the foreground so this script doesn't end
 echo "Starting the wslink launcher"
-/opt/paraview/bin/pvpython /opt/paraview/lib/python2.7/site-packages/wslink/launcher.py ${LAUNCHER_PATH}
+/opt/paraview/bin/pvpython $(find /opt/paraview/lib | grep "launcher\\.py") ${LAUNCHER_PATH}

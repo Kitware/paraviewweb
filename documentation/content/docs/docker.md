@@ -56,21 +56,19 @@ sudo apt-get install docker-ce
 For levergaring your GPU and get better performances, you will need to add the nvidia runtime for docker. A full guide on how to do it is available [here](https://github.com/NVIDIA/nvidia-docker), but a summary is also availble below assuming things didn't change.
 
 ```
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
-  sudo apt-key add -
+# Add the package repositories
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
-  sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-sudo apt-get update
-sudo apt-get install nvidia-docker2
-sudo pkill -SIGHUP dockerd
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
 ```
 
 Then if you want to make sure the new runtime works, you can run the following command.
 
 ```
-sudo docker run --runtime=nvidia --rm nvidia/cuda:9.0-base nvidia-smi
+sudo docker run --gpus all --rm nvidia/cuda:9.0-base nvidia-smi
 ```
 
 ### Apache configuration
@@ -161,7 +159,7 @@ So the command line should look like this:
 PORT=9000
 DATA=/mnt/data
 
-sudo docker run --runtime=nvidia           \
+sudo docker run --gpus all                 \
     -p 0.0.0.0:${PORT}:80                   \
     -v ${DATA}:/data                         \
     -e "SERVER_NAME=pvw.company.com"          \
@@ -176,7 +174,7 @@ If you want to stop the service you can look for the container ID using the `sud
 Also if you just want to run it locally to demo it as a process, that you can kill with a `ctrl+c`, you can use the following command line.
 
 ```
-sudo docker run --runtime=nvidia           \
+sudo docker run --gpus all                 \
     -p 0.0.0.0:9000:80                      \
     -v ~:/data                               \
     -e "SERVER_NAME=localhost:9000"           \
@@ -189,7 +187,7 @@ And you can access it by pointing your browser to `http://localhost:9000`
 Note how in the commands above, the information needed to build the root of the session url is provided as environment variables to the `docker run` command.  In the same way, you can provide extra arguments to be passed to the pvpython instances which are started: just use the environment variable named `EXTRA_PVPYTHON_ARGS`, as in the following example:
 
 ```
-sudo docker run --runtime=nvidia           \
+sudo docker run --gpus all                 \
     -p 0.0.0.0:9000:80                      \
     -v ~:/data                               \
     -e SERVER_NAME="localhost:9000"           \
