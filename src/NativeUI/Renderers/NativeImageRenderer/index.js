@@ -131,6 +131,9 @@ export default class NativeImageRenderer {
   }
 
   destroy() {
+    if (this.container) {
+      this.container.removeChild(this.canvas);
+    }
     while (this.subscriptions.length) {
       this.subscriptions.pop().unsubscribe();
     }
