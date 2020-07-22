@@ -14,79 +14,92 @@ export default class VtkRenderer extends React.Component {
   }
 
   componentDidMount() {
+    // Push settings at load time
+    this.componentDidUpdate({ maxFPS: -1, client: null });
+  }
+
+  componentDidUpdate(prevProps) {
     const container = this.rootContainer;
 
-    if (this.props.oldImageStream) {
+    if (
+      this.props.oldImageStream &&
+      prevProps.oldImageStream !== this.props.oldImageStream
+    ) {
       const wsbUrl = `${this.props.connection.urls}b`;
+      if (this.binaryImageStream) {
+        this.binaryImageStream.destroy();
+      }
       this.binaryImageStream = new BinaryImageStream(wsbUrl);
-    } else {
+    } else if (prevProps.client !== this.props.client) {
+      if (this.binaryImageStream) {
+        this.binaryImageStream.destroy();
+      }
       this.binaryImageStream = WslinkImageStream.newInstance({
         client: this.props.client,
       });
     }
-    this.mouseListener = new VtkWebMouseListener(this.props.client);
+    if (prevProps.client !== this.props.client) {
+      this.mouseListener = new VtkWebMouseListener(this.props.client);
 
-    // Attach interaction listener for image quality
-    this.mouseListener.onInteraction((interact) => {
-      if (this.interacting === interact) {
-        return;
-      }
-      this.interacting = interact;
-      if (interact) {
-        this.binaryImageStream.startInteractiveQuality();
-      } else {
-        this.binaryImageStream
-          .stopInteractiveQuality()
-          .then(this.binaryImageStream.invalidateCache);
-        setTimeout(
-          this.binaryImageStream.invalidateCache,
-          this.props.interactionTimout
-        );
-      }
-    });
-
-    // Attach size listener
-    this.subscription = sizeHelper.onSizeChange(() => {
-      /* eslint-disable no-shadow */
-      const { clientWidth, clientHeight } = sizeHelper.getSize(container);
-      /* eslint-enable no-shadow */
-      this.mouseListener.updateSize(clientWidth, clientHeight);
-      if (this.binaryImageStream.setViewSize) {
-        this.binaryImageStream.setViewSize(clientWidth, clientHeight);
-      } else {
-        this.props.client.session.call('viewport.size.update', [
-          parseInt(this.props.viewId, 10),
-          clientWidth,
-          clientHeight,
-        ]);
-      }
-    });
-
-    // Create render
-    this.imageRenderer = new NativeImageRenderer(
-      container,
-      this.binaryImageStream,
-      this.mouseListener.getListeners(),
-      this.props.showFPS
-    );
-
-    // Establish image stream connection
-    this.binaryImageStream
-      .connect({
-        view_id: parseInt(this.props.viewId, 10),
-      })
-      .then(() => {
-        // Update size and do a force push
-        sizeHelper.triggerChange();
-        this.binaryImageStream.invalidateCache();
+      // Attach interaction listener for image qualitya
+      this.mouseListener.onInteraction((interact) => {
+        if (this.interacting === interact) {
+          return;
+        }
+        this.interacting = interact;
+        if (interact) {
+          this.binaryImageStream.startInteractiveQuality();
+        } else {
+          this.binaryImageStream
+            .stopInteractiveQuality()
+            .then(this.binaryImageStream.invalidateCache);
+          setTimeout(
+            this.binaryImageStream.invalidateCache,
+            this.props.interactionTimout
+          );
+        }
       });
 
-    // Push settings at load time
-    this.componentWillReceiveProps(this.props);
-  }
+      // Attach size listener
+      this.subscription = sizeHelper.onSizeChange(() => {
+        /* eslint-disable no-shadow */
+        const { clientWidth, clientHeight } = sizeHelper.getSize(container);
+        /* eslint-enable no-shadow */
+        this.mouseListener.updateSize(clientWidth, clientHeight);
+        if (this.binaryImageStream.setViewSize) {
+          this.binaryImageStream.setViewSize(clientWidth, clientHeight);
+        } else {
+          this.props.client.session.call('viewport.size.update', [
+            // TODO: viewId change after component mounted isn't handled properly.
+            parseInt(this.props.viewId, 10),
+            clientWidth,
+            clientHeight,
+          ]);
+        }
+      });
+      if (this.imageRenderer) {
+        this.imageRenderer.destroy();
+      }
+      // Create render
+      this.imageRenderer = new NativeImageRenderer(
+        container,
+        this.binaryImageStream,
+        this.mouseListener.getListeners(),
+        this.props.showFPS
+      );
 
-  componentWillReceiveProps(nextProps) {
-    const viewIdAsNumber = Number(nextProps.viewId);
+      // Establish image stream connection
+      this.binaryImageStream
+        .connect({
+          view_id: parseInt(this.props.viewId, 10),
+        })
+        .then(() => {
+          // Update size and do a force push
+          sizeHelper.triggerChange();
+          this.binaryImageStream.invalidateCache();
+        });
+    }
+    const viewIdAsNumber = Number(this.props.viewId);
     this.mouseListener.viewId = viewIdAsNumber;
     if (this.binaryImageStream.setViewId && viewIdAsNumber !== -1) {
       if (this.binaryImageStream.setViewId(viewIdAsNumber)) {
@@ -96,26 +109,29 @@ export default class VtkRenderer extends React.Component {
     }
     if (this.binaryImageStream.updateQuality) {
       this.binaryImageStream.updateQuality(
-        nextProps.stillQuality,
-        nextProps.interactiveQuality
+        this.props.stillQuality,
+        this.props.interactiveQuality
       );
     }
     if (this.binaryImageStream.updateResolutionRatio) {
       this.binaryImageStream.updateResolutionRatio(
-        nextProps.stillRatio,
-        nextProps.interactiveRatio
+        this.props.stillRatio,
+        this.props.interactiveRatio
       );
     }
 
-    if (this.binaryImageStream.setMaxFrameRate) {
-      this.binaryImageStream.setMaxFrameRate(nextProps.maxFPS);
+    if (
+      this.binaryImageStream.setMaxFrameRate &&
+      this.props.maxFPS !== prevProps.maxFPS
+    ) {
+      this.binaryImageStream.setMaxFrameRate(this.props.maxFPS);
     }
 
     if (this.imageRenderer.setDrawFPS) {
-      this.imageRenderer.setDrawFPS(nextProps.showFPS);
+      this.imageRenderer.setDrawFPS(this.props.showFPS);
     }
 
-    this.mouseListener.setThrottleTime(nextProps.throttleTime);
+    this.mouseListener.setThrottleTime(this.props.throttleTime);
   }
 
   componentWillUnmount() {
