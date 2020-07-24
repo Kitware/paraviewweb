@@ -6,6 +6,7 @@
 ![npm-download](https://img.shields.io/npm/dm/paraviewweb.svg)
 ![npm-version-requirement](https://img.shields.io/badge/npm->=3.0.0-brightgreen.svg)
 ![node-version-requirement](https://img.shields.io/badge/node->=5.0.0-brightgreen.svg)
+[![Kitware is Hiring](https://img.shields.io/badge/Kitware-Hiring-green)](https://www.kitware.com/careers)
 
 ### Introduction
 
