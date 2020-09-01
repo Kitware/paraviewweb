@@ -42,7 +42,10 @@ export default class PieceWiseFunctionEditorWidget extends React.Component {
     this.editor.onEditModeChange(this.props.onEditModeChange);
 
     if (this.props.width === -1 || this.props.height === -1) {
-      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+      this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+        this.rootContainer,
+        this.updateDimensions
+      );
       sizeHelper.startListening();
       this.updateDimensions();
     }

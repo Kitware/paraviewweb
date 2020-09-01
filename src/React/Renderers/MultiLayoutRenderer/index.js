@@ -80,15 +80,17 @@ export default class MultiViewRenderer extends React.Component {
         active: false,
       });
     });
-
-    // Listen to window resize
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-
-    // Make sure we monitor window size if it is not already the case
-    sizeHelper.startListening();
   }
 
   componentDidMount() {
+    // Listen to window resize
+    this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+      this.canvasRenderer.parentNode,
+      this.updateDimensions
+    );
+
+    // Make sure we monitor window size if it is not already the case
+    sizeHelper.startListening();
     this.updateDimensions();
 
     // Attach mouse listener

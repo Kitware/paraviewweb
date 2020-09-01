@@ -68,7 +68,7 @@ export default class NativeImageRenderer {
 
     // Add size listener
     this.subscriptions.push(
-      SizeHelper.onSizeChange(() => {
+      SizeHelper.onSizeChangeForElement(this.container, () => {
         if (this.container) {
           this.size = SizeHelper.getSize(this.container);
           this.canvas.setAttribute('width', this.size.clientWidth);

@@ -38,15 +38,18 @@ export default class LineChartViewer extends React.Component {
 
   componentWillMount() {
     this.xPosition = 0;
-    // Listen to window resize
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-
-    // Make sure we monitor window size if it is not already the case
-    sizeHelper.startListening();
   }
 
   componentDidMount() {
     this.isReady = true;
+    // Listen to window resize
+    this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+      this.rootContainer.parentNode,
+      this.updateDimensions
+    );
+
+    // Make sure we monitor window size if it is not already the case
+    sizeHelper.startListening();
     this.updateDimensions();
     // this.drawChart();
   }

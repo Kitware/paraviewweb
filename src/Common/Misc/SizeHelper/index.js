@@ -41,8 +41,31 @@ function getSize(domElement, clearCache = false) {
   return cachedSize;
 }
 
+let observer = null;
+
+class Subscriber {
+  constructor(domElement, callback) {
+    observer.observe(domElement);
+    this.fn = observableInstance.on(TOPIC, callback);
+    this.domElement = domElement;
+    this.unsubscribe = this.unsubscribe.bind(this);
+  }
+
+  unsubscribe() {
+    observer.unobserve(this.domElement);
+    this.fn.unsubscribe();
+  }
+}
+
 function onSizeChange(callback) {
   return observableInstance.on(TOPIC, callback);
+}
+
+function onSizeChangeForElement(domElement, callback) {
+  if (!observer) {
+    observer = new ResizeObserver(windowListener);
+  }
+  return new Subscriber(domElement, callback);
 }
 
 function triggerChange() {
@@ -79,6 +102,7 @@ export default {
   getSize,
   isListening,
   onSizeChange,
+  onSizeChangeForElement,
   startListening,
   stopListening,
   triggerChange,
