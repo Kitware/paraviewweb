@@ -68,6 +68,7 @@ export default class VtkRenderer extends React.Component {
         this.mouseListener.updateSize(clientWidth, clientHeight);
         if (this.binaryImageStream.setViewSize) {
           this.binaryImageStream.setViewSize(clientWidth, clientHeight);
+          this.binaryImageStream.stillRender(clientWidth, clientHeight);
         } else {
           this.props.client.session.call('viewport.size.update', [
             // TODO: viewId change after component mounted isn't handled properly.
