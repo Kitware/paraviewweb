@@ -16,15 +16,15 @@ export default class GeometryRenderer extends React.Component {
     this.resetCamera = this.resetCamera.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Listen to window resize
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+    this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+      this.canvasRenderer.parentNode,
+      this.updateDimensions
+    );
 
     // Make sure we monitor window size if it is not already the case
     sizeHelper.startListening();
-  }
-
-  componentDidMount() {
     if (this.props.geometryBuilder) {
       this.props.geometryBuilder.configureRenderer(this.canvasRenderer);
       this.props.geometryBuilder.render();

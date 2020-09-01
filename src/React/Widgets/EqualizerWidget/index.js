@@ -23,15 +23,15 @@ export default class EqualizerWidget extends React.Component {
     this.clicked = this.clicked.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Listen to window resize
-    this.sizeSubscription = SizeHelper.onSizeChange(this.updateDimensions);
+    this.sizeSubscription = SizeHelper.onSizeChangeForElement(
+      this.rootContainer.parentNode,
+      this.updateDimensions
+    );
 
     // Make sure we monitor window size if it is not already the case
     SizeHelper.startListening();
-  }
-
-  componentDidMount() {
     this.updateDimensions();
     this.draw();
     this.mouseHandler = new MouseHandler(this.canvas);

@@ -58,7 +58,10 @@ export default class PieceWiseGaussianFunctionEditorWidget extends React.Compone
     }
 
     if (this.props.width === -1 || this.props.height === -1) {
-      this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
+      this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+        this.rootContainer,
+        this.updateDimensions
+      );
       sizeHelper.startListening();
       this.updateDimensions();
     }

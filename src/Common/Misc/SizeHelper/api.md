@@ -15,6 +15,12 @@ Return true only if the SizeHelper has started to listen on Window size change.
 
 Register a callback to be aware when the size of the Window is changing with automatic debouncing.
 
+## onSizeChangeForElement(domElement, callback)
+
+Register a callback to be aware when the size of the given element is changing with automatic debouncing.
+It returns a class with single method, "unsubscribe()". The caller must run unsubscribe to stop
+listening to the size-change events.
+
 ## startListening()
 
 Start listening on Window size change.
