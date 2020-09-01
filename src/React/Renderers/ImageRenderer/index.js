@@ -215,12 +215,6 @@ export default class ImageRenderer extends React.Component {
     this.imageToDraw.onload = onImageLoaded;
     this.imageToDraw.firstRender = true;
 
-    // Listen to window resize
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-
-    // Make sure we monitor window size if it is not already the case
-    sizeHelper.startListening();
-
     // Listen to keyDown
     document.addEventListener('keydown', this.handleKeyDown);
 
@@ -230,6 +224,15 @@ export default class ImageRenderer extends React.Component {
   }
 
   componentDidMount() {
+    // Listen to window resize
+    this.sizeSubscription = sizeHelper.onSizeChange(
+      this.rootContainer,
+      this.updateDimensions
+    );
+
+    // Make sure we monitor window size if it is not already the case
+    sizeHelper.startListening();
+
     this.updateDimensions();
     if (this.imageToDraw.drawToCanvas) {
       this.imageToDraw.drawToCanvas();

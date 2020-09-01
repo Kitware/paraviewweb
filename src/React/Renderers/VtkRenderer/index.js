@@ -61,7 +61,7 @@ export default class VtkRenderer extends React.Component {
       });
 
       // Attach size listener
-      this.subscription = sizeHelper.onSizeChange(() => {
+      this.subscription = sizeHelper.onSizeChangeForElement(container, () => {
         /* eslint-disable no-shadow */
         const { clientWidth, clientHeight } = sizeHelper.getSize(container);
         /* eslint-enable no-shadow */

@@ -15,12 +15,6 @@ export default class PlotlyRenderer extends React.Component {
   }
 
   componentWillMount() {
-    // Listen to window resize
-    this.sizeSubscription = sizeHelper.onSizeChange(this.updateDimensions);
-
-    // Make sure we monitor window size if it is not already the case
-    sizeHelper.startListening();
-
     this.dataSubscription = this.props.chartBuilder.onDataReady((data) => {
       const container = this.chartRenderer;
       if (!container) {
@@ -65,6 +59,15 @@ export default class PlotlyRenderer extends React.Component {
   }
 
   componentDidMount() {
+    // Listen to window resize
+    this.sizeSubscription = sizeHelper.onSizeChangeForElement(
+      this.chartRenderer,
+      this.updateDimensions
+    );
+
+    // Make sure we monitor window size if it is not already the case
+    sizeHelper.startListening();
+
     this.updateDimensions();
   }
 
