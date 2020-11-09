@@ -41,16 +41,19 @@ function getSize(domElement, clearCache = false) {
   return cachedSize;
 }
 
+let observer = null;
+
 class Subscriber {
   constructor(domElement, callback) {
     observer.observe(domElement);
     this.fn = observableInstance.on(TOPIC, callback);
     this.domElement = domElement;
+    this.unsubscribe = this.unsubscribe.bind(this);
   }
 
   unsubscribe() {
     observer.unobserve(this.domElement);
-    this.fn();
+    this.fn.unsubscribe();
   }
 }
 

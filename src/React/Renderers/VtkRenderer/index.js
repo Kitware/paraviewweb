@@ -64,6 +64,10 @@ export default class VtkRenderer extends React.Component {
       this.subscription = sizeHelper.onSizeChangeForElement(container, () => {
         /* eslint-disable no-shadow */
         const { clientWidth, clientHeight } = sizeHelper.getSize(container);
+        if (!this.mouseListener) {
+          // already unmounted?
+          return;
+        }
         /* eslint-enable no-shadow */
         this.mouseListener.updateSize(clientWidth, clientHeight);
         if (this.binaryImageStream.setViewSize) {

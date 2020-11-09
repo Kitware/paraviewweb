@@ -17,6 +17,11 @@ const eventTypeMapping = {
 };
 const TIMEOUT_BETWEEN_ZOOM = 300;
 
+// If the value is N, one mouse-wheel click is equivalent to dragging the cursor
+// (120 * N) th of the screen. The magic constant 120 corresponds to one wheel
+// click in most browsers.
+const MOUSE_WHEEL_SCALE_FACTOR = 1.0 / (120 * 200);
+
 let handlerCount = 0;
 
 function getModifier(e) {
@@ -168,21 +173,22 @@ export default class MouseHandler {
           event.isFinal = false;
         }
 
+        const clientWidth = this.el.getClientRects()[0].width;
+        const clientHeight = this.el.getClientRects()[0].height;
         if (e.wheelDeltaX === undefined) {
           event.zoom = this.lastScrollZoomFactor;
           this.scrollInternal.deltaY -= e.detail * 2.0;
         } else {
           event.zoom = this.lastScrollZoomFactor;
-          this.scrollInternal.deltaX += e.wheelDeltaX;
-          this.scrollInternal.deltaY += e.wheelDeltaY;
+          this.scrollInternal.deltaX += e.wheelDeltaX * clientWidth * MOUSE_WHEEL_SCALE_FACTOR;
+          this.scrollInternal.deltaY += e.wheelDeltaY * clientHeight * MOUSE_WHEEL_SCALE_FACTOR;
         }
 
         event.deltaX = this.scrollInternal.deltaX;
         event.deltaY = this.scrollInternal.deltaY;
-        event.scale = 1.0 + event.deltaY / this.el.getClientRects()[0].height;
+        event.scale = 1.0 + event.deltaY / clientHeight;
         event.scale = event.scale < 0.1 ? 0.1 : event.scale;
         this.scrollInternal.ts = currentTime;
-
         this.finalZoomEvent = event;
       }
 
