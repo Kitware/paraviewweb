@@ -7,7 +7,7 @@ const modifier = {
   SHIFT: 4,
   CTRL: 8,
 };
-const INTERATION_TOPIC = 'vtk.web.interaction';
+const INTERACTION_TOPIC = 'vtk.web.interaction';
 
 const NoOp = () => {};
 
@@ -48,7 +48,7 @@ export default class VtkMouseListener {
           vtkEvent.action = 'move';
         }
         if (vtkEvent.action !== 'up') {
-          this.emit(INTERATION_TOPIC, true);
+          this.emit(INTERACTION_TOPIC, true);
         }
         if (this.client) {
           const tNow = Date.now();
@@ -89,7 +89,7 @@ export default class VtkMouseListener {
           }
         }
         if (vtkEvent.action === 'up') {
-          this.emit(INTERATION_TOPIC, false);
+          this.emit(INTERACTION_TOPIC, false);
         }
       },
       zoom: (event) => {
@@ -116,7 +116,7 @@ export default class VtkMouseListener {
           vtkEvent.action = 'move';
         }
         if (vtkEvent.action !== 'up') {
-          this.emit(INTERATION_TOPIC, true);
+          this.emit(INTERACTION_TOPIC, true);
         }
         if (this.client) {
           const tNow = Date.now();
@@ -136,7 +136,7 @@ export default class VtkMouseListener {
           }
         }
         if (vtkEvent.action === 'up') {
-          this.emit(INTERATION_TOPIC, false);
+          this.emit(INTERACTION_TOPIC, false);
         }
       },
     };
@@ -164,7 +164,7 @@ export default class VtkMouseListener {
   }
 
   onInteraction(callback) {
-    return this.on(INTERATION_TOPIC, callback);
+    return this.on(INTERACTION_TOPIC, callback);
   }
 
   destroy() {

@@ -43,6 +43,9 @@ export default class VtkRenderer extends React.Component {
 
       // Attach interaction listener for image qualitya
       this.mouseListener.onInteraction((interact) => {
+        if (this.props.onInteraction) {
+          this.props.onInteraction(interact);
+        }
         if (this.interacting === interact) {
           return;
         }
@@ -191,6 +194,11 @@ VtkRenderer.propTypes = {
 
   throttleTime: PropTypes.number,
   maxFPS: PropTypes.number,
+
+  // Optional callback that runs on a VtkWebMouseListener.onInteraction event.
+  // Takes a single boolean arg. The arg is true for a mouse down, false for a
+  // mouse up event.
+  onInteraction: PropTypes.func,
 };
 
 VtkRenderer.defaultProps = {
