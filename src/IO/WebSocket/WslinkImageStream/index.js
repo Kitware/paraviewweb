@@ -56,16 +56,18 @@ function wslinkImageStream(publicAPI, model) {
   };
 
   publicAPI.unsubscribeRenderTopic = () => {
-    model.client.VtkImageDelivery.offRenderChange(
-      model.renderTopicSubscription
-    ).then(
-      (unsubSuccess) => {
-        console.log('Unsubscribe resolved ', unsubSuccess);
-      },
-      (unsubFailure) => {
-        console.log('Unsubscribe error ', unsubFailure);
-      }
-    );
+    if (model.renderTopicSubscription) {
+      model.client.VtkImageDelivery.offRenderChange(
+          model.renderTopicSubscription
+      ).then(
+          (unsubSuccess) => {
+              console.log('Unsubscribe resolved ', unsubSuccess);
+          },
+          (unsubFailure) => {
+              console.log('Unsubscribe error ', unsubFailure);
+          }
+      );
+    }
   };
 
   // subscribeRenderTopic = () => {
