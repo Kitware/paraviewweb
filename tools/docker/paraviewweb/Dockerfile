@@ -13,7 +13,7 @@
 # sudo docker run --runtime=nvidia -P --entrypoint /bin/bash -ti pvw-v5.6.0-egl
 #
 
-ARG BASE_IMAGE=kitware/paraviewweb:pv-5.6.0-egl
+ARG BASE_IMAGE=kitware/paraviewweb:pv-v5.6.0-egl
 FROM ${BASE_IMAGE}
 
 USER root
