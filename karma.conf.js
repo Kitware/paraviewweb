@@ -1,7 +1,13 @@
 /* eslint-disable global-require */
 /* eslint-disable react/require-extension */
-var path = require('path');
-var loaders = require('./config/webpack.loaders.js');
+const path = require('path');
+const webpack = require('webpack');
+
+const pvwRules = require('./config/wp5/rules-pvw.js');
+const vtkRules = require('./config/wp5/rules-vtk.js');
+const wslinkRules = require('./config/wp5/rules-wslink.js');
+
+const sourcePath = path.join(__dirname, './src');
 
 var styles = path.join(__dirname, './style');
 
@@ -15,7 +21,7 @@ module.exports = function karmaConf(config) {
       require('karma-tap-pretty-reporter'),
     ],
     basePath: '',
-    frameworks: ['tap'],
+    frameworks: ['tap', 'webpack'],
     files: [
       './src/**/tests/*.js',
       { pattern: 'data/**', watched: false, included: false, served: true },
@@ -40,18 +46,25 @@ module.exports = function karmaConf(config) {
 
     webpack: {
       mode: 'development',
-      node: {
-        fs: 'empty',
-      },
       module: {
-        rules: [].concat(loaders),
+        rules: [].concat(pvwRules, vtkRules, wslinkRules),
       },
       resolve: {
+        modules: [path.resolve(__dirname, 'node_modules'), sourcePath],
         alias: {
           paraviewweb: __dirname,
           PVWStyle: styles,
+          stream: 'stream-browserify',
+          buffer: 'buffer',
+        },
+        fallback: {
+          path: false,
+          fs: false,
         },
       },
+      plugins: [
+        new webpack.ProvidePlugin({ process: ['process/browser'] }),
+      ],
     },
 
     webpackMiddleware: {
@@ -79,7 +92,7 @@ module.exports = function karmaConf(config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox'],
+        flags: ['--no-sandbox', '--ignore-gpu-blacklist'],
       },
     },
 
