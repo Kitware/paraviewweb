@@ -1,3 +1,6 @@
+// Required now with vtk.js 18+
+import 'vtk.js/Sources/Rendering/OpenGL/Profiles/All';
+
 /* eslint-disable import/no-named-as-default */
 import vtkActor from 'vtk.js/Sources/Rendering/Core/Actor';
 import vtkColorTransferFunction from 'vtk.js/Sources/Rendering/Core/ColorTransferFunction';

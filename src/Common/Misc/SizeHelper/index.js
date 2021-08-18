@@ -14,6 +14,7 @@ const sizeProperties = [
 ];
 const windowListener = debounce(invalidateSize, 250);
 
+let observer = null;
 let timestamp = 0;
 let listenerAttached = false;
 
@@ -50,7 +51,7 @@ class Subscriber {
 
   unsubscribe() {
     observer.unobserve(this.domElement);
-    this.fn();
+    this.fn.unsubscribe();
   }
 }
 
