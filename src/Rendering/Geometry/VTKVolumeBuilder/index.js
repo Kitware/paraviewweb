@@ -1,5 +1,8 @@
 import Monologue from 'monologue.js';
 
+// Required now with vtk.js 18+
+import 'vtk.js/Sources/Rendering/OpenGL/Profiles/All';
+
 /* eslint-disable import/no-named-as-default */
 import vtkOpenGLRenderWindow from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
 import vtkRenderer from 'vtk.js/Sources/Rendering/Core/Renderer';

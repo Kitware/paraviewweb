@@ -3,6 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Required now with vtk.js 18+
+import 'vtk.js/Sources/Rendering/OpenGL/Profiles/All';
+
 import vtkOpenGLRenderWindow from 'vtk.js/Sources/Rendering/OpenGL/RenderWindow';
 import vtkSynchronizableRenderWindow from 'vtk.js/Sources/Rendering/Misc/SynchronizableRenderWindow';
 import vtkRenderWindowInteractor from 'vtk.js/Sources/Rendering/Core/RenderWindowInteractor';
