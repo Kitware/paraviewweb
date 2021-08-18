@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head prefix="og: http://ogp.me/ns#"><meta name="generator" content="Hexo 3.9.0">
+<head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <title>Setup | ParaViewWeb</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -31,13 +31,15 @@
   <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
   <!-- CSS -->
   <!-- build:css build/css/navy.css -->
-  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  
+<link rel="stylesheet" href="/paraviewweb/css/navy.css">
+
   <!-- endbuild -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
   <!-- RSS -->
-  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb" type="application/atom+xml">
   <!-- Open Graph -->
   <meta name="description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
 <meta property="og:type" content="website">
@@ -45,11 +47,11 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/setup.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-24T21:32:07.359Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:modified_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:author" content="Kitware Inc.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Setup">
-<meta name="twitter:description" content="Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  troubleshooting guide, raise an issue on GitHub or start a topic on the Mailing list">
   <!-- Google Analytics -->
   
 <script>
@@ -62,7 +64,9 @@
   ga('send', 'pageview');
 </script>
 
-</head>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
@@ -73,7 +77,7 @@
     </h1>
     <nav id="main-nav">
       <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
-      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -100,46 +104,56 @@
                 <h1 class="article-title" itemprop="name">Setup</h1>
               </header>
               <div class="article-content" itemprop="articleBody">
-                <p>Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  <a href="troubleshooting.html">troubleshooting guide</a>, raise an issue on <a href="https://github.com/kitware/paraviewweb/issues" target="_blank" rel="noopener">GitHub</a> or start a topic on the <a href="http://www.paraview.org/mailman/listinfo/paraview" target="_blank" rel="noopener">Mailing list</a>.</p>
+                <p>Welcome to the ParaViewWeb documentation. If you encounter any problems when using ParaViewWeb, have a look at the  <a href="troubleshooting.html">troubleshooting guide</a>, raise an issue on <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb/issues">GitHub</a> or start a topic on the <a target="_blank" rel="noopener" href="http://www.paraview.org/mailman/listinfo/paraview">Mailing list</a>.</p>
 <h2 id="What-is-ParaViewWeb" class="article-heading"><a href="#What-is-ParaViewWeb" class="headerlink" title="What is ParaViewWeb?"></a>What is ParaViewWeb?<a class="article-anchor" href="#What-is-ParaViewWeb" aria-hidden="true"></a></h2><p>ParaViewWeb is a Web framework that can leverage ParaView and VTK to build interactive application<br>inside your Web browser.</p>
-<h2 id="Installation" class="article-heading"><a href="#Installation" class="headerlink" title="Installation"></a>Installation<a class="article-anchor" href="#Installation" aria-hidden="true"></a></h2><p>It only takes few minutes to set up ParaViewWeb. If you encounter a problem and can’t find the solution here, please <a href="https://github.com/kitware/paraviewweb/issues" target="_blank" rel="noopener">submit a GitHub issue</a> and I’ll try to solve it.</p>
+<h2 id="Installation" class="article-heading"><a href="#Installation" class="headerlink" title="Installation"></a>Installation<a class="article-anchor" href="#Installation" aria-hidden="true"></a></h2><p>It only takes few minutes to set up ParaViewWeb. If you encounter a problem and can’t find the solution here, please <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb/issues">submit a GitHub issue</a> and I’ll try to solve it.</p>
 <h3 id="Requirements" class="article-heading"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements<a class="article-anchor" href="#Requirements" aria-hidden="true"></a></h3><p>Installing ParaViewWeb as a dependency inside your Web project is quite easy. However, you do need to have a couple of other things installed first:</p>
 <ul>
-<li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li>
-<li><a href="http://git-scm.com/" target="_blank" rel="noopener">Git</a></li>
+<li><a target="_blank" rel="noopener" href="http://nodejs.org/">Node.js</a></li>
+<li><a target="_blank" rel="noopener" href="http://git-scm.com/">Git</a></li>
 </ul>
 <p>If your computer already has these, congratulations! Just install ParaViewWeb with npm:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install paraviewweb --save</span><br></pre></td></tr></table></figure>
+
 <p>If not, please follow the following instructions to install all the requirements.</p>
 <blockquote class="note warn"><strong class="note-title">For Mac users</strong><p>You may encounter some problems when compiling. Please install Xcode from App Store first. After Xcode is installed, open Xcode and go to <strong>Preferences -&gt; Download -&gt; Command Line Tools -&gt; Install</strong> to install command line tools.</p>
 </blockquote>
+
 <h3 id="Install-Git" class="article-heading"><a href="#Install-Git" class="headerlink" title="Install Git"></a>Install Git<a class="article-anchor" href="#Install-Git" aria-hidden="true"></a></h3><ul>
-<li>Windows: Download &amp; install <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">git</a>.</li>
-<li>Mac: Install it with <a href="http://mxcl.github.com/homebrew/" target="_blank" rel="noopener">Homebrew</a>, <a href="http://www.macports.org/" target="_blank" rel="noopener">MacPorts</a> or <a href="http://sourceforge.net/projects/git-osx-installer/" target="_blank" rel="noopener">installer</a>.</li>
+<li>Windows: Download &amp; install <a target="_blank" rel="noopener" href="https://git-scm.com/download/win">git</a>.</li>
+<li>Mac: Install it with <a target="_blank" rel="noopener" href="http://mxcl.github.com/homebrew/">Homebrew</a>, <a target="_blank" rel="noopener" href="http://www.macports.org/">MacPorts</a> or <a target="_blank" rel="noopener" href="http://sourceforge.net/projects/git-osx-installer/">installer</a>.</li>
 <li>Linux (Ubuntu, Debian): <code>sudo apt-get install git-core</code></li>
 <li>Linux (Fedora, Red Hat, CentOS): <code>sudo yum install git-core</code></li>
 </ul>
-<h3 id="Install-Node-js" class="article-heading"><a href="#Install-Node-js" class="headerlink" title="Install Node.js"></a>Install Node.js<a class="article-anchor" href="#Install-Node-js" aria-hidden="true"></a></h3><p>The best way to install Node.js is with <a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">nvm</a>.</p>
+<h3 id="Install-Node-js" class="article-heading"><a href="#Install-Node-js" class="headerlink" title="Install Node.js"></a>Install Node.js<a class="article-anchor" href="#Install-Node-js" aria-hidden="true"></a></h3><p>The best way to install Node.js is with <a target="_blank" rel="noopener" href="https://github.com/creationix/nvm">nvm</a>.</p>
 <p>cURL:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure>
+
 <p>Wget:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure>
+
 <p>Once nvm is installed, restart the terminal and run the following command to install Node.js.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure>
-<p>Alternatively, download and run <a href="http://nodejs.org/" target="_blank" rel="noopener">the installer</a>.</p>
+
+<p>Alternatively, download and run <a target="_blank" rel="noopener" href="http://nodejs.org/">the installer</a>.</p>
 <h3 id="Install-ParaViewWeb" class="article-heading"><a href="#Install-ParaViewWeb" class="headerlink" title="Install ParaViewWeb"></a>Install ParaViewWeb<a class="article-anchor" href="#Install-ParaViewWeb" aria-hidden="true"></a></h3><p>Once all the requirements are installed, you can install Hexo with npm.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install paraviewweb --save</span><br></pre></td></tr></table></figure>
+
 <h3 id="Getting-ParaViewWeb-source-code-for-contributing" class="article-heading"><a href="#Getting-ParaViewWeb-source-code-for-contributing" class="headerlink" title="Getting ParaViewWeb source code for contributing"></a>Getting ParaViewWeb source code for contributing<a class="article-anchor" href="#Getting-ParaViewWeb-source-code-for-contributing" aria-hidden="true"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/kitware/paraviewweb.git</span><br><span class="line">$ <span class="built_in">cd</span> paraviewweb</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+
 <p>This documentation will explain how to create a new Web project that can leverage ParaViewWeb.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir MyWebProject</span><br><span class="line">$ <span class="built_in">cd</span> MyWebProject</span><br><span class="line">$ npm init</span><br><span class="line">$ npm install paraviewweb  --save</span><br><span class="line">$ npm install kw-web-suite --save-dev</span><br><span class="line">$ npm install normalize.css --save-dev</span><br><span class="line">$ npm install monologue.js --save-dev</span><br></pre></td></tr></table></figure>
-<h2 id="Creating-your-own-project" class="article-heading"><a href="#Creating-your-own-project" class="headerlink" title="Creating your own project"></a>Creating your own project<a class="article-anchor" href="#Creating-your-own-project" aria-hidden="true"></a></h2><h3 id="Webpack-config" class="article-heading"><a href="#Webpack-config" class="headerlink" title="Webpack config"></a>Webpack config<a class="article-anchor" href="#Webpack-config" aria-hidden="true"></a></h3><figure class="highlight js"><figcaption><span>webpack.config.js</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rules = <span class="built_in">require</span>(<span class="string">'./node_modules/paraviewweb/config/webpack.loaders.js'</span>);</span><br><span class="line"><span class="keyword">const</span> plugins = [</span><br><span class="line">  <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">    inject: <span class="string">'body'</span>,</span><br><span class="line">  &#125;),</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> entry = path.join(__dirname, <span class="string">'./src/index.js'</span>);</span><br><span class="line"><span class="keyword">const</span> outputPath = path.join(__dirname, <span class="string">'./dist'</span>);</span><br><span class="line"><span class="keyword">const</span> styles = path.resolve(<span class="string">'./node_modules/paraviewweb/style'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  plugins,</span><br><span class="line">  entry,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: outputPath,</span><br><span class="line">    filename: <span class="string">'MyWebApp.js'</span>,</span><br><span class="line">    libraryTarget: <span class="string">'umd'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">     &#123; <span class="attr">test</span>: entry, <span class="attr">loader</span>: <span class="string">"expose-loader?MyWebApp"</span> &#125;,</span><br><span class="line">    ].concat(rules),</span><br><span class="line">  &#125;,</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">      PVWStyle: styles,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: <span class="string">'./dist/'</span>,</span><br><span class="line">    port: <span class="number">9999</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Creating-your-own-project" class="article-heading"><a href="#Creating-your-own-project" class="headerlink" title="Creating your own project"></a>Creating your own project<a class="article-anchor" href="#Creating-your-own-project" aria-hidden="true"></a></h2><h3 id="Webpack-config" class="article-heading"><a href="#Webpack-config" class="headerlink" title="Webpack config"></a>Webpack config<a class="article-anchor" href="#Webpack-config" aria-hidden="true"></a></h3><figure class="highlight js"><figcaption><span>webpack.config.js</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rules = <span class="built_in">require</span>(<span class="string">&#x27;./node_modules/paraviewweb/config/webpack.loaders.js&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> plugins = [</span><br><span class="line">  <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">    <span class="attr">inject</span>: <span class="string">&#x27;body&#x27;</span>,</span><br><span class="line">  &#125;),</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> entry = path.join(__dirname, <span class="string">&#x27;./src/index.js&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> outputPath = path.join(__dirname, <span class="string">&#x27;./dist&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> styles = path.resolve(<span class="string">&#x27;./node_modules/paraviewweb/style&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  plugins,</span><br><span class="line">  entry,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">path</span>: outputPath,</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;MyWebApp.js&#x27;</span>,</span><br><span class="line">    <span class="attr">libraryTarget</span>: <span class="string">&#x27;umd&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">     &#123; <span class="attr">test</span>: entry, <span class="attr">loader</span>: <span class="string">&quot;expose-loader?MyWebApp&quot;</span> &#125;,</span><br><span class="line">    ].concat(rules),</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="attr">PVWStyle</span>: styles,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">contentBase</span>: <span class="string">&#x27;./dist/&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">9999</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="package-json" class="article-heading"><a href="#package-json" class="headerlink" title="package.json"></a>package.json<a class="article-anchor" href="#package-json" aria-hidden="true"></a></h3><p>You should extend the generated <strong>package.json</strong> file with the following set of scripts.</p>
-<figure class="highlight"><figcaption><span>package.json</span></figcaption><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  [...]</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    "build": "webpack --mode development",</span><br><span class="line">    "build:debug": "webpack --display-modules",</span><br><span class="line">    "build:release": "webpack --mode production",</span><br><span class="line">    "start": "webpack-dev-server",</span><br><span class="line"></span><br><span class="line">    "commit": "git cz",</span><br><span class="line">    "semantic-release": "semantic-release"</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><figcaption><span>package.json</span></figcaption><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  [...]</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;build&quot;</span>: <span class="string">&quot;webpack --mode development&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;build:debug&quot;</span>: <span class="string">&quot;webpack --display-modules&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;build:release&quot;</span>: <span class="string">&quot;webpack --mode production&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;start&quot;</span>: <span class="string">&quot;webpack-dev-server&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;commit&quot;</span>: <span class="string">&quot;git cz&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;semantic-release&quot;</span>: <span class="string">&quot;semantic-release&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="Run" class="article-heading"><a href="#Run" class="headerlink" title="Run"></a>Run<a class="article-anchor" href="#Run" aria-hidden="true"></a></h3><p>To build your application you can run <code>npm run build</code> and to test/debug it <code>npm start</code> while opening <code>http://localhost:9999</code>.</p>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2020-07-24T21:32:07.359Z" itemprop="dateModified">Last updated: 2020-07-24</time>
+                <time class="article-footer-updated" datetime="2021-08-18T22:35:45.617Z" itemprop="dateModified">Last updated: 2021-08-18</time>
                 <a href="index.html" class="article-footer-prev" title="Overview"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="roadmap.html" class="article-footer-next" title="Roadmap"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -155,7 +169,7 @@
         </div>
       </article>
       <aside id="sidebar" role="navigation">
-  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link current">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link current">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
 </aside>
     </div>
   </div>
@@ -164,7 +178,7 @@
     <footer id="footer" class="wrapper">
   <div class="inner">
     <div id="footer-copyright">
-      &copy; 2020 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
+      &copy; 2021 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
     </div>
 
     <div id="footer-links">
@@ -173,7 +187,7 @@
   </div>
     <a
       style="position: fixed; background: #00529b; color: white; top: 0; right: 0; height: 70px"
-      href="https://www.kitware.com/careers"
+      target="_blank" rel="noopener" href="https://www.kitware.com/careers"
     >
       <div style="position: relative; text-align: center;">
         <div
@@ -195,7 +209,7 @@
       </li>
     </ul>
     
-      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link current">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link current">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
     
   </div>
   <div id="mobile-lang-select-wrap">
@@ -209,9 +223,15 @@
 </nav>
   <!-- Scripts -->
 <!-- build:js build/js/main.js -->
+
 <script src="/paraviewweb/js/lang_select.js"></script>
+
+
 <script src="/paraviewweb/js/toc.js"></script>
+
+
 <script src="/paraviewweb/js/mobile_nav.js"></script>
+
 <!-- endbuild -->
 <script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
 

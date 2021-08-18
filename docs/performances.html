@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head prefix="og: http://ogp.me/ns#"><meta name="generator" content="Hexo 3.9.0">
+<head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <title>ParaViewWeb vs ParaView | ParaViewWeb</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -31,25 +31,27 @@
   <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
   <!-- CSS -->
   <!-- build:css build/css/navy.css -->
-  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  
+<link rel="stylesheet" href="/paraviewweb/css/navy.css">
+
   <!-- endbuild -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
   <!-- RSS -->
-  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Performance analysisThis document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client/server architecture of ParaVi">
+  <meta name="description" content="Performance analysisThis document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client&#x2F;server architecture of ParaVi">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ParaViewWeb vs ParaView">
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/performances.html">
 <meta property="og:site_name" content="ParaViewWeb">
-<meta property="og:description" content="Performance analysisThis document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client/server architecture of ParaVi">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-24T21:32:07.359Z">
+<meta property="og:description" content="Performance analysisThis document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client&#x2F;server architecture of ParaVi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:modified_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:author" content="Kitware Inc.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParaViewWeb vs ParaView">
-<meta name="twitter:description" content="Performance analysisThis document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client/server architecture of ParaVi">
   <!-- Google Analytics -->
   
 <script>
@@ -62,7 +64,9 @@
   ga('send', 'pageview');
 </script>
 
-</head>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
@@ -73,7 +77,7 @@
     </h1>
     <nav id="main-nav">
       <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
-      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -101,9 +105,15 @@
               </header>
               <div class="article-content" itemprop="articleBody">
                 <h1 id="Performance-analysis" class="article-heading"><a href="#Performance-analysis" class="headerlink" title="Performance analysis"></a>Performance analysis<a class="article-anchor" href="#Performance-analysis" aria-hidden="true"></a></h1><p>This document aims to provide informations regarding the performance you can expect from a ParaViewWeb setup vs similar configuration using the client/server architecture of ParaView and its Qt client.<br>The test were performed on:</p>
-<p><strong>Client - New Mexico (<a href="https://www.google.com/maps/dir/Santa+Fe,+NM/Amazon+Data+Center,+Boardman,+OR+97818/@40.5028874,-117.2515113,6z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x87185043e79852a9:0x8c902373fd88df40!2m2!1d-105.937799!2d35.6869752!1m5!1m1!1s0x54a2b2b4a09c7c29:0x6cfb9b9e8655843!2m2!1d-119.6536926!2d45.8409449" target="_blank" rel="noopener">map</a>)</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MacBook Pro (15-inch, 2016) - macOS High Sierra (10.13.3)</span><br><span class="line">Processor: 2.9 GHz Intel Core i7</span><br><span class="line">Memory: 16 GB 2133 MHz LPDDR3</span><br><span class="line">GPU: Radeon Pro 460 4 GB</span><br></pre></td></tr></table></figure></p>
-<p><strong>Server - Amazon EC2 - N Virginia (<a href="https://www.google.com/maps/place/Amazon+Sortation+Center+RIC5/@34.0346852,-109.0484094,4.25z/data=!4m5!3m4!1s0x89b13c128823b5e3:0xf048c52753badeaa!8m2!3d37.7290999!4d-77.4565854" target="_blank" rel="noopener">map</a>)</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Amazon EC2 - g2.2xlarge ($0.650) - US East (N Virginia)</span><br><span class="line">ParaView 5.5 / EGL build</span><br></pre></td></tr></table></figure></p>
-<p><strong><a href="http://www.speedtest.net/" target="_blank" rel="noopener">Speed test results</a></strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Ping: 22ms</span><br><span class="line">Download: 170 Mps</span><br><span class="line">Upload: 22 Mbps</span><br></pre></td></tr></table></figure></p>
+<p><strong>Client - New Mexico (<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Santa+Fe,+NM/Amazon+Data+Center,+Boardman,+OR+97818/@40.5028874,-117.2515113,6z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x87185043e79852a9:0x8c902373fd88df40!2m2!1d-105.937799!2d35.6869752!1m5!1m1!1s0x54a2b2b4a09c7c29:0x6cfb9b9e8655843!2m2!1d-119.6536926!2d45.8409449">map</a>)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MacBook Pro (15-inch, 2016) - macOS High Sierra (10.13.3)</span><br><span class="line">Processor: 2.9 GHz Intel Core i7</span><br><span class="line">Memory: 16 GB 2133 MHz LPDDR3</span><br><span class="line">GPU: Radeon Pro 460 4 GB</span><br></pre></td></tr></table></figure>
+
+<p><strong>Server - Amazon EC2 - N Virginia (<a target="_blank" rel="noopener" href="https://www.google.com/maps/place/Amazon+Sortation+Center+RIC5/@34.0346852,-109.0484094,4.25z/data=!4m5!3m4!1s0x89b13c128823b5e3:0xf048c52753badeaa!8m2!3d37.7290999!4d-77.4565854">map</a>)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Amazon EC2 - g2.2xlarge ($0.650) - US East (N Virginia)</span><br><span class="line">ParaView 5.5 / EGL build</span><br></pre></td></tr></table></figure>
+
+<p><strong><a target="_blank" rel="noopener" href="http://www.speedtest.net/">Speed test results</a></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Ping: 22ms</span><br><span class="line">Download: 170 Mps</span><br><span class="line">Upload: 22 Mbps</span><br></pre></td></tr></table></figure>
+
 <h2 id="Idle-resource-usage" class="article-heading"><a href="#Idle-resource-usage" class="headerlink" title="Idle resource usage"></a>Idle resource usage<a class="article-anchor" href="#Idle-resource-usage" aria-hidden="true"></a></h2><table>
 <thead>
 <tr>
@@ -112,8 +122,7 @@
 <th>MacBookPro Real Memory</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>ParaView Qt client</td>
 <td>344.2 MB</td>
 <td>540.8 MB</td>
@@ -138,8 +147,7 @@
 <td>123.4 MB</td>
 <td>195.5 MB</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p><strong>Real Memory:</strong> Total Memory currently consumed by an application (including Virtual pages)<br><strong>Memory:</strong> Memory used in RAM</p>
 <h2 id="Interactive-resource-usage" class="article-heading"><a href="#Interactive-resource-usage" class="headerlink" title="Interactive resource usage"></a>Interactive resource usage<a class="article-anchor" href="#Interactive-resource-usage" aria-hidden="true"></a></h2><p>The test was done on the EC2 server using top to monitor the resources taken by ParaView.<br>The loaded data was the Lidar one which report 228 MB in the information panel.<br>The filter was a clip which created a new dataset that was 181.3 MB in the information panel.</p>
 <table>
@@ -150,8 +158,7 @@
 <th>Memory</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Idle</td>
 <td>1%</td>
 <td>const (6.5%)</td>
@@ -166,8 +173,7 @@
 <td>100%</td>
 <td>const + filter data (10.2%)</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="Loading-cost-analysis" class="article-heading"><a href="#Loading-cost-analysis" class="headerlink" title="Loading cost analysis"></a>Loading cost analysis<a class="article-anchor" href="#Loading-cost-analysis" aria-hidden="true"></a></h2><p>This section only focus on the intial cost of starting a given process.</p>
 <table>
 <thead>
@@ -177,8 +183,7 @@
 <th>EC2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>ParaView Qt client</td>
 <td>~ 2.4s</td>
 <td></td>
@@ -203,9 +208,11 @@
 <td></td>
 <td>~ 4s</td>
 </tr>
-</tbody>
-</table>
-<p>1) Starting Python interpreted and loading the ParaView library.<br>2) Starting Python interpreted, loading the ParaView library and starting web server.</p>
+</tbody></table>
+<ol>
+<li>Starting Python interpreted and loading the ParaView library.</li>
+<li>Starting Python interpreted, loading the ParaView library and starting web server.</li>
+</ol>
 <p>Then loading data will add-up to those numbers</p>
 <table>
 <thead>
@@ -214,8 +221,7 @@
 <th>Load time</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1 MB exodus file</td>
 <td>+ 0.4s</td>
 </tr>
@@ -227,8 +233,7 @@
 <td>2.25 GB data + extract surface</td>
 <td>+ 34.5s</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="Rendering-performances-with-GPU" class="article-heading"><a href="#Rendering-performances-with-GPU" class="headerlink" title="Rendering performances with GPU"></a>Rendering performances with GPU<a class="article-anchor" href="#Rendering-performances-with-GPU" aria-hidden="true"></a></h2><p>For the rendering performances we’ve loaded the same dataset of 4.8 Million point cloud and interact with it. The times reported are while interacting leaving the still render out of the picture. In either case the last render does not affect how the tools performance is percived.</p>
 <h3 id="Running-on-localhost" class="article-heading"><a href="#Running-on-localhost" class="headerlink" title="Running on localhost"></a>Running on <strong>localhost</strong><a class="article-anchor" href="#Running-on-localhost" aria-hidden="true"></a></h3><table>
 <thead>
@@ -239,8 +244,7 @@
 <th>ParaView* - Visualizer</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1280 x 720</td>
 <td>+ 600 fps</td>
 <td>27/22/21/4 fps</td>
@@ -252,8 +256,7 @@
 <td>16/12/11/4 fps</td>
 <td>30 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p><strong>Compression modes*:</strong></p>
 <table>
 <thead>
@@ -262,8 +265,7 @@
 <th>ParaView* - Visualizer</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>No compression (~ BMP)</td>
 <td>50% JPEG / Ratio 1 - Default</td>
 </tr>
@@ -279,8 +281,7 @@
 <td>zlib (default settings)</td>
 <td>25% JPEG / Ratio 0.25</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Running-on-EC2" class="article-heading"><a href="#Running-on-EC2" class="headerlink" title="Running on EC2"></a>Running on <strong>EC2</strong><a class="article-anchor" href="#Running-on-EC2" aria-hidden="true"></a></h3><table>
 <thead>
 <tr>
@@ -289,8 +290,7 @@
 <th>ParaView - Visualizer</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1280 x 720</td>
 <td>3/3/3/2 fps</td>
 <td>30/30/30/30 fps</td>
@@ -300,8 +300,7 @@
 <td>3/1/2/2 fps</td>
 <td>23/23/30/30 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p><strong>Compression modes*:</strong></p>
 <table>
 <thead>
@@ -312,8 +311,7 @@
 <th>Web image 1920x1080</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>No compression (~ BMP)</td>
 <td>50% JPEG / Ratio 1 - Default</td>
 <td>45.6 KB vs 298.2 KB</td>
@@ -337,8 +335,7 @@
 <td>4.6 KB vs 293.9 KB</td>
 <td>7.82 KB vs 560.7 KB</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p><strong>Note</strong>:</p>
 <p>ParaViewWeb targets 30 FPS hence the constant 30 FPS value.<br>When increasing the server FPS value, I was able to reach approximately 45 FPS with an image of 1280x720 and a JPEG Quality of 50% (Ratio 1 =&gt; same image resolution).<br>When lowering even more the quality of the transfered image I was getting the 60 FPS which was the targeted framerate set on the server side.</p>
 <h2 id="Rendering-performances-with-CPU" class="article-heading"><a href="#Rendering-performances-with-CPU" class="headerlink" title="Rendering performances with CPU"></a>Rendering performances with CPU<a class="article-anchor" href="#Rendering-performances-with-CPU" aria-hidden="true"></a></h2><p>For software rendering performance analysis we are going to compare both <code>llvm</code> and <code>OpenSWR</code> backend across a various set of dataset and hardware. Then we will tune some parameters to see how they affect interactive rendering performances.<br>All the testings will be done with ParaView Visualizer.</p>
@@ -350,8 +347,7 @@
 <th>Purpose</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>disk_out_ref.ex2</td>
 <td>700 KB / 7x10^3 Cells</td>
 <td>Small dataset not stressing rendering</td>
@@ -366,13 +362,16 @@
 <td>260 MB / 3x10^6 Cells</td>
 <td>Surface mesh with a decent number of triangles</td>
 </tr>
-</tbody>
-</table>
-<h3 id="Hardware" class="article-heading"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware<a class="article-anchor" href="#Hardware" aria-hidden="true"></a></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MacBook Pro (15-inch, 2016) - macOS High Sierra (10.13.3)</span><br><span class="line">Processor: 2.9 GHz Intel Core i7</span><br><span class="line">Memory: 16 GB 2133 MHz LPDDR3</span><br><span class="line">GPU: Radeon Pro 460 4 GB</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dell Precision Tower 7910 - Ubuntu 16.04 LTS</span><br><span class="line">Processor: Intel® Xeon(R) CPU E5-2640 v3 @ 2.60GHz × 32</span><br><span class="line">Memory: 128 GB</span><br><span class="line">Graphics: Quadro K2200/PCIe/SSE2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Amazon EC2 - US East (N Virginia)</span><br><span class="line">ParaView 5.5 / OSMesa build</span><br><span class="line">c5.2xlarge ($0.34) | c5.4xlarge ($0.68) | c5.9xlarge ($1.53)</span><br><span class="line">r4.2xlarge ($0.532)| r4.4xlarge ($1.064)</span><br></pre></td></tr></table></figure>
+</tbody></table>
+<h3 id="Hardware" class="article-heading"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware<a class="article-anchor" href="#Hardware" aria-hidden="true"></a></h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MacBook Pro (15-inch, 2016) - macOS High Sierra (10.13.3)</span><br><span class="line">Processor: 2.9 GHz Intel Core i7</span><br><span class="line">Memory: 16 GB 2133 MHz LPDDR3</span><br><span class="line">GPU: Radeon Pro 460 4 GB</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Dell Precision Tower 7910 - Ubuntu 16.04 LTS</span><br><span class="line">Processor: Intel® Xeon(R) CPU E5-2640 v3 @ 2.60GHz × 32</span><br><span class="line">Memory: 128 GB</span><br><span class="line">Graphics: Quadro K2200/PCIe/SSE2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Amazon EC2 - US East (N Virginia)</span><br><span class="line">ParaView 5.5 / OSMesa build</span><br><span class="line">c5.2xlarge ($0.34) | c5.4xlarge ($0.68) | c5.9xlarge ($1.53)</span><br><span class="line">r4.2xlarge ($0.532)| r4.4xlarge ($1.064)</span><br></pre></td></tr></table></figure>
+
 <h3 id="Rendering-with-osmesa-llvm" class="article-heading"><a href="#Rendering-with-osmesa-llvm" class="headerlink" title="Rendering with osmesa-llvm"></a>Rendering with osmesa-llvm<a class="article-anchor" href="#Rendering-with-osmesa-llvm" aria-hidden="true"></a></h3><p>Docker command line used to run the following tests</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run                           \</span><br><span class="line">    -v /test-data:/data               \</span><br><span class="line">    -e &quot;SERVER_NAME=localhost:8081&quot;    \</span><br><span class="line">    -e &quot;PROTOCOL=ws&quot;                    \</span><br><span class="line">    -e &quot;EXTRA_PVPYTHON_ARGS=--mesa-llvm&quot; \</span><br><span class="line">    -p 0.0.0.0:8081:80                    \</span><br><span class="line">    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0</span><br><span class="line">open http://localhost:8081</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run                           \</span><br><span class="line">    -v /test-data:/data               \</span><br><span class="line">    -e &quot;SERVER_NAME=localhost:8081&quot;    \</span><br><span class="line">    -e &quot;PROTOCOL=ws&quot;                    \</span><br><span class="line">    -e &quot;EXTRA_PVPYTHON_ARGS=--mesa-llvm&quot; \</span><br><span class="line">    -p 0.0.0.0:8081:80                    \</span><br><span class="line">    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0</span><br><span class="line">open http://localhost:8081</span><br></pre></td></tr></table></figure>
+
 <p>On local network</p>
 <table>
 <thead>
@@ -384,8 +383,7 @@
 <th>Enclosure.vtm</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>MacBook Pro</td>
 <td>1280 x 720</td>
 <td>20/23/20/20/20/20 fps</td>
@@ -399,8 +397,7 @@
 <td>.5/0.5/0.5/0.4/0.4/0.4 fps</td>
 <td>.5/.5/.5/0.5/.6/.6 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>On EC2 with DSL network</p>
 <table>
 <thead>
@@ -412,8 +409,7 @@
 <th>Enclosure.vtm</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>c5.2xlarge</td>
 <td>1280 x 720</td>
 <td>30/30/20/20/20/20 fps</td>
@@ -448,8 +444,7 @@
 <td>0.8/1.0/1.0/0.7/0.6/0.6 fps</td>
 <td>0.9/0.9/0.9/0.9/1.0/1.0 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>Rendering configuration settings</p>
 <table>
 <thead>
@@ -463,8 +458,7 @@
 <th>f</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Max interactive server FPS</td>
 <td>30</td>
 <td>30</td>
@@ -509,10 +503,10 @@
 <td>0</td>
 <td>1</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Rendering-with-osmesa-swr" class="article-heading"><a href="#Rendering-with-osmesa-swr" class="headerlink" title="Rendering with osmesa-swr"></a>Rendering with osmesa-swr<a class="article-anchor" href="#Rendering-with-osmesa-swr" aria-hidden="true"></a></h3><p>Docker command line used to run the following tests</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run                          \</span><br><span class="line">    -v /test-data:/data              \</span><br><span class="line">    -p 0.0.0.0:8081:80                \</span><br><span class="line">    -e &quot;SERVER_NAME=localhost:8081&quot;    \</span><br><span class="line">    -e &quot;PROTOCOL=ws&quot;                    \</span><br><span class="line">    -e &quot;EXTRA_PVPYTHON_ARGS=--mesa-swr&quot;  \</span><br><span class="line">    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0</span><br><span class="line">open http://localhost:8081</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run                          \</span><br><span class="line">    -v /test-data:/data              \</span><br><span class="line">    -p 0.0.0.0:8081:80                \</span><br><span class="line">    -e &quot;SERVER_NAME=localhost:8081&quot;    \</span><br><span class="line">    -e &quot;PROTOCOL=ws&quot;                    \</span><br><span class="line">    -e &quot;EXTRA_PVPYTHON_ARGS=--mesa-swr&quot;  \</span><br><span class="line">    -ti kitware/paraviewweb:pvw-visualizer-osmesa-5.5.0</span><br><span class="line">open http://localhost:8081</span><br></pre></td></tr></table></figure>
+
 <p>On local network</p>
 <table>
 <thead>
@@ -524,8 +518,7 @@
 <th>Enclosure.vtm</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>MacBook Pro</td>
 <td>1280 x 720</td>
 <td>12/28/20/20/20 fps</td>
@@ -539,8 +532,7 @@
 <td>2.6/3.1/3.1/1.6/0.3/0.3 fps</td>
 <td>8/  9/10/15/20/20 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>On EC2 with DSL network</p>
 <table>
 <thead>
@@ -552,8 +544,7 @@
 <th>Enclosure.vtm</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>c5.2xlarge</td>
 <td>1280 x 720</td>
 <td>15/28/20/20/20/20 fps</td>
@@ -588,8 +579,7 @@
 <td>1.2/1.6/1.6/0.8/0.3/0.3 fps</td>
 <td>4/ 5/ 5/ 9/20/20 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>Rendering configuration settings</p>
 <table>
 <thead>
@@ -603,8 +593,7 @@
 <th>f</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Max interactive server FPS</td>
 <td>30</td>
 <td>30</td>
@@ -649,8 +638,7 @@
 <td>0</td>
 <td>1</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Performance-comments" class="article-heading"><a href="#Performance-comments" class="headerlink" title="Performance comments"></a>Performance comments<a class="article-anchor" href="#Performance-comments" aria-hidden="true"></a></h3><p>The framerate is noticeably impacted by the resolution of the image that needs to be generated, that’s why by reducing the image ratio while interacting greatly increase the framerate which is not the case for GPU rendering.</p>
 <h2 id="WebGL-download-time" class="article-heading"><a href="#WebGL-download-time" class="headerlink" title="WebGL download time"></a>WebGL download time<a class="article-anchor" href="#WebGL-download-time" aria-hidden="true"></a></h2><table>
 <thead>
@@ -660,8 +648,7 @@
 <th>Purpose</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>disk_out_ref.ex2</td>
 <td>700 KB / 7x10^3 Cells</td>
 <td>Small dataset not stressing rendering</td>
@@ -676,8 +663,7 @@
 <td>260 MB / 3x10^6 Cells</td>
 <td>Surface mesh with a decent number of triangles</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>Download time</p>
 <table>
 <thead>
@@ -688,8 +674,7 @@
 <th>FPS on MacBookPro</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>disk_out_ref.ex2</td>
 <td>209 ms</td>
 <td>116 ms</td>
@@ -707,12 +692,11 @@
 <td>22841 ms</td>
 <td>60/60 fps</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2020-07-24T21:32:07.359Z" itemprop="dateModified">Last updated: 2020-07-24</time>
+                <time class="article-footer-updated" datetime="2021-08-18T22:35:45.617Z" itemprop="dateModified">Last updated: 2021-08-18</time>
                 <a href="docker.html" class="article-footer-prev" title="Docker"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="container_overview.html" class="article-footer-next" title="Overview"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -728,7 +712,7 @@
         </div>
       </article>
       <aside id="sidebar" role="navigation">
-  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link current">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link current">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
 </aside>
     </div>
   </div>
@@ -737,7 +721,7 @@
     <footer id="footer" class="wrapper">
   <div class="inner">
     <div id="footer-copyright">
-      &copy; 2020 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
+      &copy; 2021 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
     </div>
 
     <div id="footer-links">
@@ -746,7 +730,7 @@
   </div>
     <a
       style="position: fixed; background: #00529b; color: white; top: 0; right: 0; height: 70px"
-      href="https://www.kitware.com/careers"
+      target="_blank" rel="noopener" href="https://www.kitware.com/careers"
     >
       <div style="position: relative; text-align: center;">
         <div
@@ -768,7 +752,7 @@
       </li>
     </ul>
     
-      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link current">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link current">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
     
   </div>
   <div id="mobile-lang-select-wrap">
@@ -782,9 +766,15 @@
 </nav>
   <!-- Scripts -->
 <!-- build:js build/js/main.js -->
+
 <script src="/paraviewweb/js/lang_select.js"></script>
+
+
 <script src="/paraviewweb/js/toc.js"></script>
+
+
 <script src="/paraviewweb/js/mobile_nav.js"></script>
+
 <!-- endbuild -->
 <script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
 

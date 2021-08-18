@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head prefix="og: http://ogp.me/ns#"><meta name="generator" content="Hexo 3.9.0">
+<head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <title>ParaViewWeb</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -31,13 +31,15 @@
   <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
   <!-- CSS -->
   <!-- build:css build/css/navy.css -->
-  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  
+<link rel="stylesheet" href="/paraviewweb/css/navy.css">
+
   <!-- endbuild -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
   <!-- RSS -->
-  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb" type="application/atom+xml">
   <!-- Open Graph -->
   <meta name="description" content="ParaViewWeb on  WindowsThis readme described the process of setting up a Paraview Web Server instance on a Windows 10 workstation. Once the ParaView Web is setup, the Visualizer app may be embedded in">
 <meta property="og:type" content="website">
@@ -45,11 +47,11 @@
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/docs/windows_10.html">
 <meta property="og:site_name" content="ParaViewWeb">
 <meta property="og:description" content="ParaViewWeb on  WindowsThis readme described the process of setting up a Paraview Web Server instance on a Windows 10 workstation. Once the ParaView Web is setup, the Visualizer app may be embedded in">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-24T21:32:07.359Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:modified_time" content="2021-08-18T22:35:45.617Z">
+<meta property="article:author" content="Kitware Inc.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParaViewWeb">
-<meta name="twitter:description" content="ParaViewWeb on  WindowsThis readme described the process of setting up a Paraview Web Server instance on a Windows 10 workstation. Once the ParaView Web is setup, the Visualizer app may be embedded in">
   <!-- Google Analytics -->
   
 <script>
@@ -62,7 +64,9 @@
   ga('send', 'pageview');
 </script>
 
-</head>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
@@ -73,7 +77,7 @@
     </h1>
     <nav id="main-nav">
       <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
-      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -101,11 +105,12 @@
               </header>
               <div class="article-content" itemprop="articleBody">
                 <h1 id="ParaViewWeb-on-Windows" class="article-heading"><a href="#ParaViewWeb-on-Windows" class="headerlink" title="ParaViewWeb on  Windows"></a>ParaViewWeb on  Windows<a class="article-anchor" href="#ParaViewWeb-on-Windows" aria-hidden="true"></a></h1><p>This readme described the process of setting up a Paraview Web Server instance on a Windows 10 workstation. Once the ParaView Web is setup, the Visualizer app may be embedded in some other application’s web page (as an internal frame). </p>
-<h2 id="Download-the-correct-binaries" class="article-heading"><a href="#Download-the-correct-binaries" class="headerlink" title="Download the correct binaries"></a>Download the correct binaries<a class="article-anchor" href="#Download-the-correct-binaries" aria-hidden="true"></a></h2><p>This guide has been created while using Paraview 5.2.0 installation binaries. There are a few choices available and among those, the binary for Windows MPI was used. The following details were specified while downloading the file from <a href="http://www.paraview.org/download/" target="_blank" rel="noopener">http://www.paraview.org/download/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Version of ParaView: v5.2</span><br><span class="line">Type of Download: ParaView Binary Installers</span><br><span class="line">Operating System: Windows 64 bit</span><br><span class="line">File to Download: ParaView-5.2.0-Qt4-OpenGL2-MPI-Windows-64bit.exe</span><br></pre></td></tr></table></figure>
+<h2 id="Download-the-correct-binaries" class="article-heading"><a href="#Download-the-correct-binaries" class="headerlink" title="Download the correct binaries"></a>Download the correct binaries<a class="article-anchor" href="#Download-the-correct-binaries" aria-hidden="true"></a></h2><p>This guide has been created while using Paraview 5.2.0 installation binaries. There are a few choices available and among those, the binary for Windows MPI was used. The following details were specified while downloading the file from <a target="_blank" rel="noopener" href="http://www.paraview.org/download/">http://www.paraview.org/download/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Version of ParaView: v5.2</span><br><span class="line">Type of Download: ParaView Binary Installers</span><br><span class="line">Operating System: Windows 64 bit</span><br><span class="line">File to Download: ParaView-5.2.0-Qt4-OpenGL2-MPI-Windows-64bit.exe</span><br></pre></td></tr></table></figure>
+
 <p>Before installing ParaView, the following libraries need to be present:</p>
 <ul>
-<li><strong>Microsoft Message Passing Interface (MS MPI) Libraries</strong> - download the MS MPI libraries from the <a href="https://msdn.microsoft.com/en-us/library/bb524831(v=vs.85).aspx" target="_blank" rel="noopener">Microsoft Website</a></li>
+<li><strong>Microsoft Message Passing Interface (MS MPI) Libraries</strong> - download the MS MPI libraries from the <a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/bb524831(v=vs.85).aspx">Microsoft Website</a></li>
 </ul>
 <p>Run the downloaded executable file and follow the onscreen installation instructions to install the ParaView Desktop application. Once the application has been installed:</p>
 <ul>
@@ -117,8 +122,8 @@
 <h2 id="Install-Apache-Web-Server" class="article-heading"><a href="#Install-Apache-Web-Server" class="headerlink" title="Install Apache Web Server"></a>Install Apache Web Server<a class="article-anchor" href="#Install-Apache-Web-Server" aria-hidden="true"></a></h2><p>The Apache web server acts as the front end to the ParaView Web application.</p>
 <h3 id="Download-Apache-Web-Server-for-Windows" class="article-heading"><a href="#Download-Apache-Web-Server-for-Windows" class="headerlink" title="Download Apache Web Server for Windows"></a>Download Apache Web Server for Windows<a class="article-anchor" href="#Download-Apache-Web-Server-for-Windows" aria-hidden="true"></a></h3><p>The Apache web server is not natively supported on Windows. To get a Windows installer, a modified server can be downloaded from a number of third party vendors like:</p>
 <ul>
-<li><a href="http://www.apachehaus.com/cgi-bin/download.plx" target="_blank" rel="noopener">ApacheHaus</a></li>
-<li><a href="http://www.apachelounge.com/download/" target="_blank" rel="noopener">Apache Lounge</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.apachehaus.com/cgi-bin/download.plx">ApacheHaus</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.apachelounge.com/download/">Apache Lounge</a></li>
 </ul>
 <p><em>Note:</em> It is important to download the corresponding version of Visual C++ Runtime libraries</p>
 <p>Once the Apache HTTPD is installed the server needs to be configured for:</p>
@@ -129,49 +134,59 @@
 <h2 id="Configuring-the-Apache-httpd-Server" class="article-heading"><a href="#Configuring-the-Apache-httpd-Server" class="headerlink" title="Configuring the Apache httpd Server"></a>Configuring the Apache httpd Server<a class="article-anchor" href="#Configuring-the-Apache-httpd-Server" aria-hidden="true"></a></h2><p>For the purpose of this document, the Apache server is extracted to the <code>C:</code> drive in a directory named Apache24 (<code>C:\Apache24</code>). Henceforth, this directory will be referred to as <code>&lt;apache-root&gt;</code>.</p>
 <h3 id="Adding-Virtual-Hosts" class="article-heading"><a href="#Adding-Virtual-Hosts" class="headerlink" title="Adding Virtual Hosts"></a>Adding Virtual Hosts<a class="article-anchor" href="#Adding-Virtual-Hosts" aria-hidden="true"></a></h3><p>Open the <code>&lt;apache-root&gt;\conf\extra\httpd-vhosts.conf</code> file and add the following sections:</p>
 <p>Grant all access rights in the <paraview-root> directory to the httpd server.</paraview-root></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Directory &lt;paraview-root&gt;&gt;</span><br><span class="line">  Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Directory &lt;paraview-root&gt;&gt;</span><br><span class="line">  Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+
 <p>Create a default host config for traffic directed to <code>http://localhost</code>:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  DocumentRoot &lt;apache-root&gt;/htdocs</span><br><span class="line">  ServerName localhost</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  DocumentRoot &lt;apache-root&gt;/htdocs</span><br><span class="line">  ServerName localhost</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+
 <p>Create a virutal host named “paraview” which will be used for directing all traffic to the ParaView Web:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  ServerName   paraview</span><br><span class="line">  ServerAdmin  admin@paraview.com</span><br><span class="line">  DocumentRoot &lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/www</span><br><span class="line">  ErrorLog &lt;paraview-root&gt;/error.log</span><br><span class="line">  CustomLog  &lt;paraview-root&gt;/log/apache2/access.log combined</span><br><span class="line">  &lt;Directory &quot;&lt;paraview-root&gt;&quot;&gt;</span><br><span class="line">      Options Indexes FollowSymLinks</span><br><span class="line">      Order allow,deny</span><br><span class="line">      Allow from all</span><br><span class="line">      AllowOverride None</span><br><span class="line">      Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">  # Handle launcher forwarding</span><br><span class="line">  # port and endpoint should match launcher.config</span><br><span class="line">  ProxyPass /paraview http://localhost:9000/paraview</span><br><span class="line"></span><br><span class="line">  # Handle WebSocket forwarding</span><br><span class="line">  RewriteEngine On</span><br><span class="line"></span><br><span class="line">  # This is the path the mapping file Jetty creates</span><br><span class="line">  # path to proxy should match launcher.config</span><br><span class="line">  RewriteMap session-to-port txt:&lt;apache-root&gt;/proxy.txt</span><br><span class="line"></span><br><span class="line">  # This is the rewrite condition. Look for anything with a sessionId= in the</span><br><span class="line">  # query part of the URL and capture the value to use below.</span><br><span class="line">  RewriteCond %&#123;QUERY_STRING&#125; ^sessionId=(.*)&amp;path=(.*)$ [NC]</span><br><span class="line"></span><br><span class="line">  # This does the rewrite using the mapping file and the sessionId</span><br><span class="line">  RewriteRule ^/proxy.*$  ws://$&#123;session-to-port:%1&#125;/%2  [P]</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  ServerName   paraview</span><br><span class="line">  ServerAdmin  admin@paraview.com</span><br><span class="line">  DocumentRoot &lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/www</span><br><span class="line">  ErrorLog &lt;paraview-root&gt;/error.log</span><br><span class="line">  CustomLog  &lt;paraview-root&gt;/log/apache2/access.log combined</span><br><span class="line">  &lt;Directory &quot;&lt;paraview-root&gt;&quot;&gt;</span><br><span class="line">      Options Indexes FollowSymLinks</span><br><span class="line">      Order allow,deny</span><br><span class="line">      Allow from all</span><br><span class="line">      AllowOverride None</span><br><span class="line">      Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">  # Handle launcher forwarding</span><br><span class="line">  # port and endpoint should match launcher.config</span><br><span class="line">  ProxyPass /paraview http://localhost:9000/paraview</span><br><span class="line"></span><br><span class="line">  # Handle WebSocket forwarding</span><br><span class="line">  RewriteEngine On</span><br><span class="line"></span><br><span class="line">  # This is the path the mapping file Jetty creates</span><br><span class="line">  # path to proxy should match launcher.config</span><br><span class="line">  RewriteMap session-to-port txt:&lt;apache-root&gt;/proxy.txt</span><br><span class="line"></span><br><span class="line">  # This is the rewrite condition. Look for anything with a sessionId= in the</span><br><span class="line">  # query part of the URL and capture the value to use below.</span><br><span class="line">  RewriteCond %&#123;QUERY_STRING&#125; ^sessionId=(.*)&amp;path=(.*)$ [NC]</span><br><span class="line"></span><br><span class="line">  # This does the rewrite using the mapping file and the sessionId</span><br><span class="line">  RewriteRule ^/proxy.*$  ws://$&#123;session-to-port:%1&#125;/%2  [P]</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+
 <p>Save the <code>&lt;apache-root&gt;\conf\extra\httpd-vhosts.conf</code> file and:</p>
 <ol>
 <li>create the folder(s): <code>&lt;paraview-root&gt;\log\apache2</code></li>
 <li>create an empty file named <code>proxy.txt</code> in the <code>&lt;apache-root&gt;</code> directory</li>
-<li>open the <code>&lt;apache-root&gt;\conf\httpd.conf</code> file and enable (uncomment) the following modules:<ul>
+<li>open the <code>&lt;apache-root&gt;\conf\httpd.conf</code> file and enable (uncomment) the following modules:</li>
+</ol>
+<ul>
 <li>vhost_alias</li>
 <li>proxy</li>
 <li>proxy_http</li>
 <li>proxy_wstunnel</li>
 <li>rewrite</li>
 </ul>
-</li>
+<ol start="4">
 <li>open the <code>C:\Windows\System32\drivers\etc\hosts</code> file and add an entry for paraview:</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1            paraview</span><br><span class="line">&lt;your-ip-address&gt;    paraview</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">127.0.0.1            paraview</span><br><span class="line">&lt;your-ip-address&gt;    paraview</span><br></pre></td></tr></table></figure>
+
 <h2 id="Creating-the-ParaView-Web-Launcher-configuration" class="article-heading"><a href="#Creating-the-ParaView-Web-Launcher-configuration" class="headerlink" title="Creating the ParaView Web Launcher configuration"></a>Creating the ParaView Web Launcher configuration<a class="article-anchor" href="#Creating-the-ParaView-Web-Launcher-configuration" aria-hidden="true"></a></h2><p>Once the virtual hosts have been setup, the ParaView Web launcher configuration needs to be created so the requests for ParaView Web are processed appropriately. To do this, create a file named <code>launcher.config</code> in the ParaView installation directory. (<code>&lt;paraview-root&gt;\launcher.config</code>). The content of the file is as follows:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;configuration&quot;: &#123;</span><br><span class="line">    &quot;host&quot; : &quot;localhost&quot;,</span><br><span class="line">    &quot;port&quot; : 9000,</span><br><span class="line">    &quot;endpoint&quot;: &quot;paraview&quot;,</span><br><span class="line">  &quot;content&quot;: &quot;&lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/www&quot;,</span><br><span class="line">    &quot;proxy_file&quot; : &quot;&lt;apache-root&gt;/proxy.txt&quot;,</span><br><span class="line">    &quot;sessionURL&quot; : &quot;ws://paraview:80/proxy?sessionId=$&#123;id&#125;&amp;path=ws&quot;,</span><br><span class="line">    &quot;timeout&quot; : 30,</span><br><span class="line">    &quot;log_dir&quot; : &quot;&lt;paraview-root&gt;/log/&quot;,</span><br><span class="line">    &quot;fields&quot; : []</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;resources&quot; : [ &#123;</span><br><span class="line">  &quot;host&quot; : &quot;localhost&quot;,</span><br><span class="line">  &quot;port_range&quot; : [9001, 9999]</span><br><span class="line">  &#125; ],</span><br><span class="line">  &quot;properties&quot; : &#123;</span><br><span class="line">    &quot;python_exec&quot; : &quot;&lt;paraview-root&gt;/bin/pvpython.exe&quot;,</span><br><span class="line">    &quot;visualizer&quot;: &quot;&lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/server/pvw-visualizer.py&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;apps&quot;: &#123;</span><br><span class="line">    &quot;visualizer&quot;: &#123;</span><br><span class="line">        &quot;cmd&quot;: [</span><br><span class="line">            &quot;$&#123;python_exec&#125;&quot;, &quot;-dr&quot;, &quot;$&#123;visualizer&#125;&quot;, &quot;--port&quot;, &quot;$&#123;port&#125;&quot;, &quot;--authKey&quot;, &quot;$&#123;secret&#125;&quot;,  &quot;--data&quot;, &quot;$&#123;dataDir&#125;&quot;, &quot;--load-file&quot;, &quot;$&#123;dataFile&#125;&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;ready_line&quot; : &quot;Starting factory&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;configuration&quot;: &#123;</span><br><span class="line">    &quot;host&quot; : &quot;localhost&quot;,</span><br><span class="line">    &quot;port&quot; : 9000,</span><br><span class="line">    &quot;endpoint&quot;: &quot;paraview&quot;,</span><br><span class="line">  &quot;content&quot;: &quot;&lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/www&quot;,</span><br><span class="line">    &quot;proxy_file&quot; : &quot;&lt;apache-root&gt;/proxy.txt&quot;,</span><br><span class="line">    &quot;sessionURL&quot; : &quot;ws://paraview:80/proxy?sessionId=$&#123;id&#125;&amp;path=ws&quot;,</span><br><span class="line">    &quot;timeout&quot; : 30,</span><br><span class="line">    &quot;log_dir&quot; : &quot;&lt;paraview-root&gt;/log/&quot;,</span><br><span class="line">    &quot;fields&quot; : []</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;resources&quot; : [ &#123;</span><br><span class="line">  &quot;host&quot; : &quot;localhost&quot;,</span><br><span class="line">  &quot;port_range&quot; : [9001, 9999]</span><br><span class="line">  &#125; ],</span><br><span class="line">  &quot;properties&quot; : &#123;</span><br><span class="line">    &quot;python_exec&quot; : &quot;&lt;paraview-root&gt;/bin/pvpython.exe&quot;,</span><br><span class="line">    &quot;visualizer&quot;: &quot;&lt;paraview-root&gt;/share/paraview-5.2/web/visualizer/server/pvw-visualizer.py&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;apps&quot;: &#123;</span><br><span class="line">    &quot;visualizer&quot;: &#123;</span><br><span class="line">        &quot;cmd&quot;: [</span><br><span class="line">            &quot;$&#123;python_exec&#125;&quot;, &quot;-dr&quot;, &quot;$&#123;visualizer&#125;&quot;, &quot;--port&quot;, &quot;$&#123;port&#125;&quot;, &quot;--authKey&quot;, &quot;$&#123;secret&#125;&quot;,  &quot;--data&quot;, &quot;$&#123;dataDir&#125;&quot;, &quot;--load-file&quot;, &quot;$&#123;dataFile&#125;&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;ready_line&quot; : &quot;Starting factory&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Modify-the-index-html" class="article-heading"><a href="#Modify-the-index-html" class="headerlink" title="Modify the index.html"></a>Modify the index.html<a class="article-anchor" href="#Modify-the-index-html" aria-hidden="true"></a></h2><p>Add the following script to the <code>&lt;paraview-root&gt;\share\paraview-5.2\web\visualizer\www\index.html</code> file (replace the existing script):</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;    </span><br><span class="line">  function getFileToLoad() &#123;</span><br><span class="line">    var directoryPath = window.name;</span><br><span class="line">    var filename = directoryPath.split(&apos;\\&apos;).slice(-1).join(&apos;\\&apos;);</span><br><span class="line">    var directory = directoryPath.substring(0, directoryPath.indexOf(filename));</span><br><span class="line">    return &#123;</span><br><span class="line">      dataFile:filename,</span><br><span class="line">      dataDir:directory</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">  Visualizer.connect(&#123;</span><br><span class="line">      application: &apos;visualizer&apos;,</span><br><span class="line">      dataFile: getFileToLoad().dataFile,</span><br><span class="line">      dataDir: getFileToLoad().dataDir</span><br><span class="line">  &#125;);</span><br><span class="line">  Visualizer.autoStopServer(10);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;    </span><br><span class="line">  function getFileToLoad() &#123;</span><br><span class="line">    var directoryPath = window.name;</span><br><span class="line">    var filename = directoryPath.split(&#x27;\\&#x27;).slice(-1).join(&#x27;\\&#x27;);</span><br><span class="line">    var directory = directoryPath.substring(0, directoryPath.indexOf(filename));</span><br><span class="line">    return &#123;</span><br><span class="line">      dataFile:filename,</span><br><span class="line">      dataDir:directory</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">  Visualizer.connect(&#123;</span><br><span class="line">      application: &#x27;visualizer&#x27;,</span><br><span class="line">      dataFile: getFileToLoad().dataFile,</span><br><span class="line">      dataDir: getFileToLoad().dataDir</span><br><span class="line">  &#125;);</span><br><span class="line">  Visualizer.autoStopServer(10);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
 <p>In the above script, the following properties are being passed:</p>
 <ul>
 <li><strong>dataFile</strong> - the name of the file to be rendered in the Visualizer</li>
 <li><strong>dataDir</strong> - the location of the data directory under which the data file(s) are present</li>
 </ul>
 <p>If the dataDir location is fixed then it can be hard coded in the script, and only the dataFile name needs to be passed. In such a case, the following script should be used:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// grab the parameter from the URL</span><br><span class="line">function getUrlParameter(name) &#123;</span><br><span class="line">  name = name.replace(/[\[]/, &apos;\\[&apos;).replace(/[\]]/, &apos;\\]&apos;);</span><br><span class="line">  var regex = new RegExp(&apos;[\\?&amp;]&apos; + name + &apos;=([^&amp;#]*)&apos;);</span><br><span class="line">  var results = regex.exec(location.search);</span><br><span class="line">  return results === null ? &apos;&apos; : decodeURIComponent(results[1].replace(/\+/g, &apos; &apos;));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Visualizer.connect(&#123;</span><br><span class="line">  application: &apos;visualizer&apos;,</span><br><span class="line">  dataFile: getUrlParameter(&apos;data&apos;),</span><br><span class="line">  dataDir: &apos;C:\\SomeFolder\\Data\\Files&apos;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// grab the parameter from the URL</span><br><span class="line">function getUrlParameter(name) &#123;</span><br><span class="line">  name = name.replace(/[\[]/, &#x27;\\[&#x27;).replace(/[\]]/, &#x27;\\]&#x27;);</span><br><span class="line">  var regex = new RegExp(&#x27;[\\?&amp;]&#x27; + name + &#x27;=([^&amp;#]*)&#x27;);</span><br><span class="line">  var results = regex.exec(location.search);</span><br><span class="line">  return results === null ? &#x27;&#x27; : decodeURIComponent(results[1].replace(/\+/g, &#x27; &#x27;));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Visualizer.connect(&#123;</span><br><span class="line">  application: &#x27;visualizer&#x27;,</span><br><span class="line">  dataFile: getUrlParameter(&#x27;data&#x27;),</span><br><span class="line">  dataDir: &#x27;C:\\SomeFolder\\Data\\Files&#x27;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
 <p>The URL to invoke this would be: <code>http://paraview/?data=can.ex2</code></p>
 <h2 id="Starting-up-from-the-command-line" class="article-heading"><a href="#Starting-up-from-the-command-line" class="headerlink" title="Starting up from the command line"></a>Starting up from the command line<a class="article-anchor" href="#Starting-up-from-the-command-line" aria-hidden="true"></a></h2><p>Open a command prompt to run each of the following:</p>
 <ul>
 <li>Start the apache httd server by running: <code>&lt;apache-root&gt;\bin\httpd.exe</code></li>
 <li>Create a launcher script (<code>launcher.bat</code>) to start the ParaView Web Server with the following commands:</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set PV_HOME=&lt;paraview-root&gt;</span><br><span class="line">%PV_HOME%\bin\pvpython.exe %PV_HOME%\bin\Lib\site-packages\vtk\web\launcher.py %PV_HOME%\launcher.config</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set PV_HOME=&lt;paraview-root&gt;</span><br><span class="line">%PV_HOME%\bin\pvpython.exe %PV_HOME%\bin\Lib\site-packages\vtk\web\launcher.py %PV_HOME%\launcher.config</span><br></pre></td></tr></table></figure>
+
 <p>Run <code>launcher.bat</code> file</p>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2020-07-24T21:32:07.359Z" itemprop="dateModified">Last updated: 2020-07-24</time>
+                <time class="article-footer-updated" datetime="2021-08-18T22:35:45.617Z" itemprop="dateModified">Last updated: 2021-08-18</time>
                 <a href="ubuntu_14_04.html" class="article-footer-prev" title="Ubuntu 14.04 LTS"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="ansible.html" class="article-footer-next" title="Ansible playbook"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -187,7 +202,7 @@
         </div>
       </article>
       <aside id="sidebar" role="navigation">
-  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link current">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
+  <div class="inner"><strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="setup.html" class="sidebar-link">Setup</a><a href="roadmap.html" class="sidebar-link">Roadmap</a><a href="events.html" class="sidebar-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="sidebar-link">Releases</a><strong class="sidebar-title">Basic Usage</strong><a href="import.html" class="sidebar-link">Import</a><strong class="sidebar-title">Miscellaneous</strong><a href="tools.html" class="sidebar-link">Developer guide</a><a href="troubleshooting.html" class="sidebar-link">Troubleshooting</a><a href="contributing.html" class="sidebar-link">Contributing</a><strong class="sidebar-title">Server</strong><a href="architecture.html" class="sidebar-link">Architecture</a><a href="multi_user_setup.html" class="sidebar-link">Multi-user setup</a><a href="apache_front_end.html" class="sidebar-link">Using Apache</a><a href="ec2.html" class="sidebar-link">EC2</a><a href="docker.html" class="sidebar-link">Docker</a><a href="performances.html" class="sidebar-link">Performances</a><strong class="sidebar-title">Containers</strong><a href="container_overview.html" class="sidebar-link">Overview</a><a href="build_yours.html" class="sidebar-link">Build Yours</a><a href="docker_cheatsheet.html" class="sidebar-link">Cheat sheet</a><strong class="sidebar-title">Launchers</strong><a href="launcher_api.html" class="sidebar-link">API</a><a href="python_launcher.html" class="sidebar-link">Python</a><a href="launching_examples.html" class="sidebar-link">Examples</a><strong class="sidebar-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="sidebar-link">EC2</a><a href="os_mesa.html" class="sidebar-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="sidebar-link">VirtualGL and TurboVNC</a><strong class="sidebar-title">Deployment</strong><a href="ubuntu_14_04.html" class="sidebar-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="sidebar-link current">Windows 10</a><a href="ansible.html" class="sidebar-link">Ansible playbook</a><a href="vagrant.html" class="sidebar-link">Vangrant setup</a><a href="nvidia_redhat.html" class="sidebar-link">Nvidia on RedHat</a><strong class="sidebar-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="sidebar-link">VTK</a><a href="configure_and_build_pvweb.html" class="sidebar-link">ParaView</a></div>
 </aside>
     </div>
   </div>
@@ -196,7 +211,7 @@
     <footer id="footer" class="wrapper">
   <div class="inner">
     <div id="footer-copyright">
-      &copy; 2020 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
+      &copy; 2021 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
     </div>
 
     <div id="footer-links">
@@ -205,7 +220,7 @@
   </div>
     <a
       style="position: fixed; background: #00529b; color: white; top: 0; right: 0; height: 70px"
-      href="https://www.kitware.com/careers"
+      target="_blank" rel="noopener" href="https://www.kitware.com/careers"
     >
       <div style="position: relative; text-align: center;">
         <div
@@ -227,7 +242,7 @@
       </li>
     </ul>
     
-      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link current">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><a href="setup.html" class="mobile-nav-link">Setup</a><a href="roadmap.html" class="mobile-nav-link">Roadmap</a><a href="events.html" class="mobile-nav-link">Events</a><a target="_blank" rel="noopener" href="https://github.com/Kitware/paraviewweb/releases" class="mobile-nav-link">Releases</a><strong class="mobile-nav-title">Basic Usage</strong><a href="import.html" class="mobile-nav-link">Import</a><strong class="mobile-nav-title">Miscellaneous</strong><a href="tools.html" class="mobile-nav-link">Developer guide</a><a href="troubleshooting.html" class="mobile-nav-link">Troubleshooting</a><a href="contributing.html" class="mobile-nav-link">Contributing</a><strong class="mobile-nav-title">Server</strong><a href="architecture.html" class="mobile-nav-link">Architecture</a><a href="multi_user_setup.html" class="mobile-nav-link">Multi-user setup</a><a href="apache_front_end.html" class="mobile-nav-link">Using Apache</a><a href="ec2.html" class="mobile-nav-link">EC2</a><a href="docker.html" class="mobile-nav-link">Docker</a><a href="performances.html" class="mobile-nav-link">Performances</a><strong class="mobile-nav-title">Containers</strong><a href="container_overview.html" class="mobile-nav-link">Overview</a><a href="build_yours.html" class="mobile-nav-link">Build Yours</a><a href="docker_cheatsheet.html" class="mobile-nav-link">Cheat sheet</a><strong class="mobile-nav-title">Launchers</strong><a href="launcher_api.html" class="mobile-nav-link">API</a><a href="python_launcher.html" class="mobile-nav-link">Python</a><a href="launching_examples.html" class="mobile-nav-link">Examples</a><strong class="mobile-nav-title">Graphics setup</strong><a href="graphics_on_ec2_g2.html" class="mobile-nav-link">EC2</a><a href="os_mesa.html" class="mobile-nav-link">Offscreen OSMesa</a><a href="virtualgl_turbovnc_howto.html" class="mobile-nav-link">VirtualGL and TurboVNC</a><strong class="mobile-nav-title">Deployment</strong><a href="ubuntu_14_04.html" class="mobile-nav-link">Ubuntu 14.04 LTS</a><a href="windows_10.html" class="mobile-nav-link current">Windows 10</a><a href="ansible.html" class="mobile-nav-link">Ansible playbook</a><a href="vagrant.html" class="mobile-nav-link">Vangrant setup</a><a href="nvidia_redhat.html" class="mobile-nav-link">Nvidia on RedHat</a><strong class="mobile-nav-title">Compilation</strong><a href="configure_and_build_vtkweb.html" class="mobile-nav-link">VTK</a><a href="configure_and_build_pvweb.html" class="mobile-nav-link">ParaView</a>
     
   </div>
   <div id="mobile-lang-select-wrap">
@@ -241,9 +256,15 @@
 </nav>
   <!-- Scripts -->
 <!-- build:js build/js/main.js -->
+
 <script src="/paraviewweb/js/lang_select.js"></script>
+
+
 <script src="/paraviewweb/js/toc.js"></script>
+
+
 <script src="/paraviewweb/js/mobile_nav.js"></script>
+
 <!-- endbuild -->
 <script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
 

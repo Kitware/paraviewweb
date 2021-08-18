@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head prefix="og: http://ogp.me/ns#"><meta name="generator" content="Hexo 3.9.0">
+<head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <title>Convert | ParaViewWeb</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -31,25 +31,27 @@
   <meta name="msapplication-TileImage" content="/paraviewweb/icon/mstile-144x144.png">
   <!-- CSS -->
   <!-- build:css build/css/navy.css -->
-  <link rel="stylesheet" href="/paraviewweb/css/navy.css">
+  
+<link rel="stylesheet" href="/paraviewweb/css/navy.css">
+
   <!-- endbuild -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
   <!-- RSS -->
-  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb">
+  <link rel="alternate" href="/paraviewweb/atom.xml" title="ParaViewWeb" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="ConvertThis is a set of methods used to convert primary types. import Convert             from &apos;paraviewweb/src/Common/Misc/Convert&apos;;import &amp;#123; string, boolean &amp;#125; from &apos;paraviewweb/src/Common/M">
+  <meta name="description" content="ConvertThis is a set of methods used to convert primary types. import Convert             from &amp;#x27;paraviewweb&#x2F;src&#x2F;Common&#x2F;Misc&#x2F;Convert&amp;#x27;;import &amp;#123; string, boolean &amp;#125; from &amp;#x27;paravieww">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Convert">
 <meta property="og:url" content="https://kitware.github.io/paraviewweb/api/Common_Misc_Convert.html">
 <meta property="og:site_name" content="ParaViewWeb">
-<meta property="og:description" content="ConvertThis is a set of methods used to convert primary types. import Convert             from &apos;paraviewweb/src/Common/Misc/Convert&apos;;import &amp;#123; string, boolean &amp;#125; from &apos;paraviewweb/src/Common/M">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-24T21:32:07.463Z">
+<meta property="og:description" content="ConvertThis is a set of methods used to convert primary types. import Convert             from &amp;#x27;paraviewweb&#x2F;src&#x2F;Common&#x2F;Misc&#x2F;Convert&amp;#x27;;import &amp;#123; string, boolean &amp;#125; from &amp;#x27;paravieww">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-18T22:35:45.701Z">
+<meta property="article:modified_time" content="2021-08-18T22:35:45.701Z">
+<meta property="article:author" content="Kitware Inc.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Convert">
-<meta name="twitter:description" content="ConvertThis is a set of methods used to convert primary types. import Convert             from &apos;paraviewweb/src/Common/Misc/Convert&apos;;import &amp;#123; string, boolean &amp;#125; from &apos;paraviewweb/src/Common/M">
   <!-- Google Analytics -->
   
 <script>
@@ -62,7 +64,9 @@
   ga('send', 'pageview');
 </script>
 
-</head>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
@@ -73,7 +77,7 @@
     </h1>
     <nav id="main-nav">
       <a href="/paraviewweb/docs/" class="main-nav-link">Docs</a><a href="/paraviewweb/api/" class="main-nav-link">API</a><a href="/paraviewweb/examples/" class="main-nav-link">Examples</a><a href="/paraviewweb/applications/" class="main-nav-link">Applications</a>
-      <a href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
+      <a target="_blank" rel="noopener" href="https://github.com/kitware/paraviewweb" class="main-nav-link"><i class="fa fa-github-alt"></i></a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -101,16 +105,17 @@
               </header>
               <div class="article-content" itemprop="articleBody">
                 <h1 id="Convert" class="article-heading"><a href="#Convert" class="headerlink" title="Convert"></a>Convert<a class="article-anchor" href="#Convert" aria-hidden="true"></a></h1><p>This is a set of methods used to convert primary types.</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Convert             <span class="keyword">from</span> <span class="string">'paraviewweb/src/Common/Misc/Convert'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; string, boolean &#125; <span class="keyword">from</span> <span class="string">'paraviewweb/src/Common/Misc/Convert'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( boolean(value) &amp;&amp; Convert.boolean(value) ) &#123;</span><br><span class="line">    <span class="comment">// Both condition are similar</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Convert             <span class="keyword">from</span> <span class="string">&#x27;paraviewweb/src/Common/Misc/Convert&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; string, boolean &#125; <span class="keyword">from</span> <span class="string">&#x27;paraviewweb/src/Common/Misc/Convert&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( boolean(value) &amp;&amp; Convert.boolean(value) ) &#123;</span><br><span class="line">    <span class="comment">// Both condition are similar</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="integer-val" class="article-heading"><a href="#integer-val" class="headerlink" title="integer(val)"></a>integer(val)<a class="article-anchor" href="#integer-val" aria-hidden="true"></a></h2><p>Return an integer from a string.</p>
 <h2 id="double-val" class="article-heading"><a href="#double-val" class="headerlink" title="double(val)"></a>double(val)<a class="article-anchor" href="#double-val" aria-hidden="true"></a></h2><p>Return a double from a string.</p>
 <h2 id="string-val" class="article-heading"><a href="#string-val" class="headerlink" title="string(val)"></a>string(val)<a class="article-anchor" href="#string-val" aria-hidden="true"></a></h2><p>Convert the object to a string.</p>
 <h2 id="boolean-val" class="article-heading"><a href="#boolean-val" class="headerlink" title="boolean(val)"></a>boolean(val)<a class="article-anchor" href="#boolean-val" aria-hidden="true"></a></h2><p>Return a boolean (true, false, 1, 0…)</p>
-<h1 id="Source" class="article-heading"><a href="#Source" class="headerlink" title="Source"></a>Source<a class="article-anchor" href="#Source" aria-hidden="true"></a></h1><figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">integer</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">parseInt</span>(v, <span class="number">10</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseInt</span>(val, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">double</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">parseFloat</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseFloat</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">string</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">String</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">String</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">boolean</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">Boolean</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Boolean</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">proxy</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  integer,</span><br><span class="line">  int: integer,</span><br><span class="line"></span><br><span class="line">  double,</span><br><span class="line">  dbl: double,</span><br><span class="line">  float: double,</span><br><span class="line"></span><br><span class="line">  string,</span><br><span class="line">  str: string,</span><br><span class="line"></span><br><span class="line">  boolean,</span><br><span class="line">  bool: boolean,</span><br><span class="line"></span><br><span class="line">  proxy,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="Source" class="article-heading"><a href="#Source" class="headerlink" title="Source"></a>Source<a class="article-anchor" href="#Source" aria-hidden="true"></a></h1><figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">integer</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">parseInt</span>(v, <span class="number">10</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseInt</span>(val, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">double</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">parseFloat</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseFloat</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">string</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">String</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">String</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">boolean</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">    <span class="keyword">return</span> val.map(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">Boolean</span>(v));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Boolean</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">proxy</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  integer,</span><br><span class="line">  <span class="attr">int</span>: integer,</span><br><span class="line"></span><br><span class="line">  double,</span><br><span class="line">  <span class="attr">dbl</span>: double,</span><br><span class="line">  <span class="attr">float</span>: double,</span><br><span class="line"></span><br><span class="line">  string,</span><br><span class="line">  <span class="attr">str</span>: string,</span><br><span class="line"></span><br><span class="line">  boolean,</span><br><span class="line">  <span class="attr">bool</span>: boolean,</span><br><span class="line"></span><br><span class="line">  proxy,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
               </div>
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2020-07-24T21:32:07.463Z" itemprop="dateModified">Last updated: 2020-07-24</time>
+                <time class="article-footer-updated" datetime="2021-08-18T22:35:45.701Z" itemprop="dateModified">Last updated: 2021-08-18</time>
                 <a href="Common_Misc_ColorPalettes.html" class="article-footer-prev" title="ColorPalettes"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="Common_Misc_ConvertProxyProperty.html" class="article-footer-next" title="ConvertProxyProperty"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
               
@@ -135,7 +140,7 @@
     <footer id="footer" class="wrapper">
   <div class="inner">
     <div id="footer-copyright">
-      &copy; 2020 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
+      &copy; 2021 <a href="https://www.kitware.com/" target="_blank">Kitware Inc.</a>
     </div>
 
     <div id="footer-links">
@@ -144,7 +149,7 @@
   </div>
     <a
       style="position: fixed; background: #00529b; color: white; top: 0; right: 0; height: 70px"
-      href="https://www.kitware.com/careers"
+      target="_blank" rel="noopener" href="https://www.kitware.com/careers"
     >
       <div style="position: relative; text-align: center;">
         <div
@@ -180,9 +185,15 @@
 </nav>
   <!-- Scripts -->
 <!-- build:js build/js/main.js -->
+
 <script src="/paraviewweb/js/lang_select.js"></script>
+
+
 <script src="/paraviewweb/js/toc.js"></script>
+
+
 <script src="/paraviewweb/js/mobile_nav.js"></script>
+
 <!-- endbuild -->
 <script src="https://cdn.jsdelivr.net/retinajs/1.3.0/retina.min.js" async></script>
 
