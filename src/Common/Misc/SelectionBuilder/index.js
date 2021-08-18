@@ -61,7 +61,13 @@ export const ruleTypes = {
   },
   '5C': {
     terms: 5,
-    operators: { values: [['<', '<='], ['<', '<=']], index: [1, 3] },
+    operators: {
+      values: [
+        ['<', '<='],
+        ['<', '<='],
+      ],
+      index: [1, 3],
+    },
     variable: 2,
     values: [0, 4],
   },

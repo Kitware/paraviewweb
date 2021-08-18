@@ -3,7 +3,7 @@ function jsonToString(data) {
   return JSON.stringify(data);
 }
 
-export default function({
+export default function ({
   client,
   filterQuery,
   mustContain,

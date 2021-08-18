@@ -118,10 +118,7 @@ export function build(config = window.location, ...extensions) {
   } = {
     extractLocalToken() {
       try {
-        return document.cookie
-          .split('girderToken=')[1]
-          .split(';')[0]
-          .trim();
+        return document.cookie.split('girderToken=')[1].split(';')[0].trim();
       } catch (e) {
         return undefined;
       }
@@ -156,9 +153,7 @@ export function build(config = window.location, ...extensions) {
         updateGirderInstance();
 
         // Broadcast information
-        /* eslint-disable babel/new-cap */
         loginPromise = state ? loginPromiseBuilder() : logoutPromiseBuilder();
-        /* eslint-enable babel/new-cap */
         notification.emit(AUTH_CHANGE_TOPIC, isAuthenticated);
         if (isAuthenticated && eventSource === null) {
           connectToNotificationStream();

@@ -291,9 +291,7 @@ export default class LookupTableWidget extends React.Component {
     const range = this.state.originalRange;
     const currentRange = this.props.lookupTable.getScalarRange();
     console.log(
-      `LookupTableWidget current range: [${currentRange[0]}, ${
-        currentRange[1]
-      }], new range: [${range[0]}, ${range[1]}]`
+      `LookupTableWidget current range: [${currentRange[0]}, ${currentRange[1]}], new range: [${range[0]}, ${range[1]}]`
     );
     this.props.lookupTable.setScalarRange(range[0], range[1]);
   }

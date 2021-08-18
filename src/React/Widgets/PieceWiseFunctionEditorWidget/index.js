@@ -271,7 +271,10 @@ PieceWiseFunctionEditorWidget.propTypes = {
 PieceWiseFunctionEditorWidget.defaultProps = {
   height: 200,
   width: -1,
-  points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+  points: [
+    { x: 0, y: 0 },
+    { x: 1, y: 1 },
+  ],
   rangeMin: 0,
   rangeMax: 1,
   onChange: undefined,

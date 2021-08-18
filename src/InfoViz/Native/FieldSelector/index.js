@@ -51,22 +51,10 @@ function fieldSelector(publicAPI, model) {
         model.fieldShowHistogram && model.provider.isA('Histogram1DProvider');
       // append headers for histogram columns
       if (model.fieldShowHistogram) {
-        const header = d3
-          .select(model.container)
-          .select('thead')
-          .select('tr');
-        header
-          .append('th')
-          .text('Min')
-          .classed(style.jsHistMin, true);
-        header
-          .append('th')
-          .text('Histogram')
-          .classed(style.jsSparkline, true);
-        header
-          .append('th')
-          .text('Max')
-          .classed(style.jsHistMax, true);
+        const header = d3.select(model.container).select('thead').select('tr');
+        header.append('th').text('Min').classed(style.jsHistMin, true);
+        header.append('th').text('Histogram').classed(style.jsSparkline, true);
+        header.append('th').text('Max').classed(style.jsHistMax, true);
       }
       publicAPI.render();
     }
@@ -80,12 +68,8 @@ function fieldSelector(publicAPI, model) {
     const legendSize = 15;
 
     // Apply style
-    d3.select(model.container)
-      .select('thead')
-      .classed(style.thead, true);
-    d3.select(model.container)
-      .select('tbody')
-      .classed(style.tbody, true);
+    d3.select(model.container).select('thead').classed(style.thead, true);
+    d3.select(model.container).select('tbody').classed(style.tbody, true);
     d3.select(model.container)
       .select('th.field-selector-mode')
       .on('click', (d) => {
@@ -156,10 +140,7 @@ function fieldSelector(publicAPI, model) {
         }
       }
     }
-    const header = d3
-      .select(model.container)
-      .select('thead')
-      .select('tr');
+    const header = d3.select(model.container).select('thead').select('tr');
     header
       .selectAll(`.${style.jsHistMin}`)
       .style('display', hideField.minMax ? 'none' : null);
@@ -205,14 +186,8 @@ function fieldSelector(publicAPI, model) {
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(fieldName);
-        legendCell.html(`<svg class='${
-          style.legendSvg
-        }' width='${legendSize}' height='${legendSize}' viewBox='${
-          shape.viewBox
-        }'
-                  fill='${color}' stroke='black'><use xlink:href='#${
-          shape.id
-        }'/></svg>`);
+        legendCell.html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}' viewBox='${shape.viewBox}'
+                  fill='${color}' stroke='black'><use xlink:href='#${shape.id}'/></svg>`);
       } else {
         legendCell
           .html('<i></i>')
@@ -263,9 +238,8 @@ function fieldSelector(publicAPI, model) {
             hdata.enter().append('rect');
             // changes apply to both enter and update data join:
             hdata
-              .attr(
-                'class',
-                (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd)
+              .attr('class', (d, i) =>
+                i % 2 === 0 ? style.histRectEven : style.histRectOdd
               )
               .attr('pname', fieldName)
               .attr('y', (d) => model.fieldHistHeight * (1.0 - d / cmax))

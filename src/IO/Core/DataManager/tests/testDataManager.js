@@ -76,7 +76,7 @@ test('DataManager - Download Binary Data', (t) => {
   });
 
   function processData(name) {
-    dataManager.on('/base/data/binary/' + name, function(d, envelope) {
+    dataManager.on('/base/data/binary/' + name, function (d, envelope) {
       t.ok(d, `Response for ${name}`);
       t.notOk(d.error, `${name} has no error`);
 

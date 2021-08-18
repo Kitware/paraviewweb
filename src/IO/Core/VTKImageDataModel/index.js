@@ -107,9 +107,7 @@ export default class VTKImageDataModel {
             imageDataJSON[location].arrays.length
           ) {
             imageDataJSON[location].arrays.forEach((dataArray) => {
-              let url = `${this.basepath}${dataArray.data.ref.basepath}/${
-                dataArray.data.ref.id
-              }`;
+              let url = `${this.basepath}${dataArray.data.ref.basepath}/${dataArray.data.ref.id}`;
               if (this.fetchGzip) {
                 url += '.gz';
               }

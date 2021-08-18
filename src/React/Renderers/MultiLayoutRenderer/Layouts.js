@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  '2x2': function(center, spacing, width, height) {
+  '2x2': function (center, spacing, width, height) {
     return [
       [spacing, spacing, center[0] - 1.5 * spacing, center[1] - 1.5 * spacing],
       [
@@ -23,10 +23,10 @@ export default {
       ],
     ];
   },
-  '1x1': function(center, spacing, width, height) {
+  '1x1': function (center, spacing, width, height) {
     return [[spacing, spacing, width - 2 * spacing, height - 2 * spacing]];
   },
-  '1x2': function(center, spacing, width, height) {
+  '1x2': function (center, spacing, width, height) {
     return [
       [spacing, spacing, width - 2 * spacing, center[1] - 1.5 * spacing],
       [
@@ -37,7 +37,7 @@ export default {
       ],
     ];
   },
-  '2x1': function(center, spacing, width, height) {
+  '2x1': function (center, spacing, width, height) {
     return [
       [spacing, spacing, center[0] - 1.5 * spacing, height - 2 * spacing],
       [
@@ -48,7 +48,7 @@ export default {
       ],
     ];
   },
-  '3xT': function(center, spacing, width, height) {
+  '3xT': function (center, spacing, width, height) {
     return [
       [spacing, spacing, width - 2 * spacing, center[1] - 1.5 * spacing],
       [
@@ -65,7 +65,7 @@ export default {
       ],
     ];
   },
-  '3xL': function(center, spacing, width, height) {
+  '3xL': function (center, spacing, width, height) {
     return [
       [spacing, spacing, center[0] - 1.5 * spacing, height - 2 * spacing],
       [
@@ -82,7 +82,7 @@ export default {
       ],
     ];
   },
-  '3xR': function(center, spacing, width, height) {
+  '3xR': function (center, spacing, width, height) {
     return [
       [spacing, spacing, center[0] - 1.5 * spacing, center[1] - 1.5 * spacing],
       [
@@ -99,7 +99,7 @@ export default {
       ],
     ];
   },
-  '3xB': function(center, spacing, width, height) {
+  '3xB': function (center, spacing, width, height) {
     return [
       [spacing, spacing, center[0] - 1.5 * spacing, center[1] - 1.5 * spacing],
       [

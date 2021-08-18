@@ -50,8 +50,8 @@ export default class FloatDataImageBuilder extends AbstractImageBuilder {
         this.timeProbe.value = this.timeProbe.dataValues
           ? this.timeProbe.dataValues[this.timeProbe.tIdx]
           : this.timeProbe.pending
-            ? 'Fetching...'
-            : '';
+          ? 'Fetching...'
+          : '';
       },
       triggerChange: () => {
         this.timeProbe.forceUpdate = false;

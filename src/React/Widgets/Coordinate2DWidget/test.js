@@ -20,8 +20,8 @@ class Mock extends React.Component {
   }
 }
 
-describe('CoordinateControl', function() {
-  afterEach(function(done) {
+describe('CoordinateControl', function () {
+  afterEach(function (done) {
     ReactDOM.unmountComponentAtNode(document.body);
     document.body.innerHTML = '';
     setTimeout(done);
@@ -31,7 +31,7 @@ describe('CoordinateControl', function() {
     return ((val * 2) / (size * 2) - 0.5) * 2;
   }
 
-  it('has two inputs and a canvas', function() {
+  it('has two inputs and a canvas', function () {
     var el = TestUtils.renderIntoDocument(<CoordinateControl hideXY={false} />),
       canvas = TestUtils.scryRenderedDOMComponentsWithTag(el, 'canvas'),
       inputs = TestUtils.scryRenderedDOMComponentsWithTag(el, 'input');
@@ -39,7 +39,7 @@ describe('CoordinateControl', function() {
     expect(inputs.length).toBe(2);
     expect(inputs[0].value).toBe(inputs[1].value);
   });
-  it('can hide XY inputs', function() {
+  it('can hide XY inputs', function () {
     var el = TestUtils.renderIntoDocument(<CoordinateControl hideXY={true} />),
       inputsContainer = TestUtils.findRenderedDOMComponentWithClass(
         el,
@@ -47,7 +47,7 @@ describe('CoordinateControl', function() {
       );
     expect(inputsContainer.classList.contains('is-hidden')).toBe(true);
   });
-  it('keeps coordinate state and XY inputs in sync', function() {
+  it('keeps coordinate state and XY inputs in sync', function () {
     var el = TestUtils.renderIntoDocument(<CoordinateControl />),
       inputs = TestUtils.scryRenderedDOMComponentsWithTag(el, 'input'),
       newXVal = 0.6,
@@ -57,7 +57,7 @@ describe('CoordinateControl', function() {
 
     expect(el.coordinates()).toEqual({ x: newXVal, y: newYVal });
   });
-  it('can update coordinates externally', function() {
+  it('can update coordinates externally', function () {
     var el = TestUtils.renderIntoDocument(
         <CoordinateControl x={0.25} y={0.45} />
       ),
@@ -67,7 +67,7 @@ describe('CoordinateControl', function() {
     el.updateCoordinates({ x: newXVal, y: newYVal });
     expect(el.coordinates()).toEqual({ x: newXVal, y: newYVal });
   });
-  it('updates values when dragged', function() {
+  it('updates values when dragged', function () {
     var size = 400,
       el = TestUtils.renderIntoDocument(
         <CoordinateControl x={0.25} y={0.45} width={size} height={size} />
@@ -84,7 +84,7 @@ describe('CoordinateControl', function() {
       y: -convertToCoord(newYVal, size),
     });
   });
-  it('triggers a given onChange function', function() {
+  it('triggers a given onChange function', function () {
     var el = TestUtils.renderIntoDocument(<Mock />),
       input = TestUtils.scryRenderedDOMComponentsWithTag(el, 'input')[0],
       newXVal = 0.88;
@@ -92,7 +92,7 @@ describe('CoordinateControl', function() {
     TestUtils.Simulate.change(input, { target: { value: newXVal } });
     expect(el.state.x).toEqual(newXVal);
   });
-  it('takes a click on the canvas and updates it to state', function() {
+  it('takes a click on the canvas and updates it to state', function () {
     var size = 400,
       el = TestUtils.renderIntoDocument(
         <CoordinateControl width={size} height={size} />
@@ -117,7 +117,7 @@ describe('CoordinateControl', function() {
     expect(el.state.x).toBe(convertToCoord(newXVal, size));
     expect(el.state.y).toBe(-convertToCoord(newYVal, size));
   });
-  it('destroys listeners when removed', function() {
+  it('destroys listeners when removed', function () {
     var el = TestUtils.renderIntoDocument(<CoordinateControl />);
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(el).parentNode);
     expect(el.mouseHandler.hammer.element).toNotExist();

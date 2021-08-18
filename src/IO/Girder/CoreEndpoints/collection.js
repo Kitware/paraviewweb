@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-export default function({
+export default function ({
   client,
   filterQuery,
   mustContain,

@@ -209,10 +209,7 @@ export default class VTKVolumeBuilder {
 
     if (this.pipeline.source !== imageData) {
       this.pipeline.source = imageData;
-      this.pipeline.range = imageData
-        .getPointData()
-        .getScalars()
-        .getRange();
+      this.pipeline.range = imageData.getPointData().getScalars().getRange();
       this.pipeline.mapper.setInputData(this.pipeline.source);
 
       this.emit(IMAGE_READY_TOPIC, firstTime);

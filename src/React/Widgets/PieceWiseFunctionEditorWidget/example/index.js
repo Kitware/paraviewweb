@@ -14,7 +14,10 @@ class PieceWiseTestWidget extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+      points: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
     };
 
     // Bind callback

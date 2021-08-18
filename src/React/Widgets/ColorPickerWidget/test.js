@@ -4,21 +4,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-describe('ColorPicker', function() {
-  afterEach(function(done) {
+describe('ColorPicker', function () {
+  afterEach(function (done) {
     ReactDOM.unmountComponentAtNode(document.body);
     document.body.innerHTML = '';
     setTimeout(done);
   });
 
-  it('has an initial start color', function() {
+  it('has an initial start color', function () {
     var startColor = [20, 40, 80],
       el = TestUtils.renderIntoDocument(<ColorPicker color={startColor} />);
 
     expect(el.state.color).toEqual(startColor);
   });
 
-  it('changes color state when an input changes', function() {
+  it('changes color state when an input changes', function () {
     var startColor = [20, 40, 80],
       el = TestUtils.renderIntoDocument(<ColorPicker color={startColor} />),
       inputs = TestUtils.scryRenderedDOMComponentsWithTag(el, 'input'),
@@ -30,7 +30,7 @@ describe('ColorPicker', function() {
     expect(el.state.color).toEqual([255, 40, 80]);
   });
 
-  it('can change color with a function', function() {
+  it('can change color with a function', function () {
     var startColor = [20, 40, 80],
       newColor = [255, 255, 255],
       el = TestUtils.renderIntoDocument(<ColorPicker color={startColor} />);

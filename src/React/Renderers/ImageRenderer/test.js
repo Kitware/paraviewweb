@@ -5,9 +5,9 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 const container = document.createElement('body');
 
-describe('ImageRenderer', function() {
+describe('ImageRenderer', function () {
   var el;
-  beforeAll(function() {
+  beforeAll(function () {
     el = TestUtils.renderIntoDocument(
       React.createElement(ImageRenderer, {}),
       container
@@ -19,11 +19,11 @@ describe('ImageRenderer', function() {
     });
   });
 
-  it('renders on a page', function() {
+  it('renders on a page', function () {
     expect(el).toExist();
   });
 
-  it('has a dialog', function() {
+  it('has a dialog', function () {
     var dialog = TestUtils.findRenderedDOMComponentWithClass(
       el,
       'UpdateDialog'
@@ -39,7 +39,7 @@ describe('ImageRenderer', function() {
     expect(contents[1].innerHTML).toBe('No description');
   });
 
-  it('can zoom on an image', function() {
+  it('can zoom on an image', function () {
     expect(el.zoom).toEqual(1); //sanity
 
     el.mouseHandler.emit('zoom', {

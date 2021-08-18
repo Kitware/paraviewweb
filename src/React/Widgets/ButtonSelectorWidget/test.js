@@ -4,14 +4,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-describe('ButtonSelector', function() {
-  afterEach(function(done) {
+describe('ButtonSelector', function () {
+  afterEach(function (done) {
     ReactDOM.unmountComponentAtNode(document.body);
     document.body.innerHTML = '';
     setTimeout(done);
   });
 
-  it('lists buttons given an array of objects', function() {
+  it('lists buttons given an array of objects', function () {
     var options = [
         { name: 'Choice A' },
         { name: 'Choice B' },
@@ -24,7 +24,7 @@ describe('ButtonSelector', function() {
     expect(buttons[0].name).toBe(options[0].name);
   });
 
-  it('lists buttons given an array of objects', function() {
+  it('lists buttons given an array of objects', function () {
     var changling = 0,
       countOut = -1,
       arrayOut = [],

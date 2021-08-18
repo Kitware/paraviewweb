@@ -483,7 +483,7 @@ const layouts = {
 };
 /* eslint-enable */
 
-export default function(data, ui, callback) {
+export default function (data, ui, callback) {
   if (!{}.hasOwnProperty.call(ui, 'layout')) {
     ui.layout = 'NO_LAYOUT';
   }

@@ -33,14 +33,14 @@ class Mock extends React.Component {
   }
 }
 
-describe('NumberSliderControl', function() {
-  afterEach(function(done) {
+describe('NumberSliderControl', function () {
+  afterEach(function (done) {
     ReactDOM.unmountComponentAtNode(document.body);
     document.body.innerHTML = '';
     setTimeout(done);
   });
 
-  it('has two inputs whose values are equal', function() {
+  it('has two inputs whose values are equal', function () {
     var el = TestUtils.renderIntoDocument(
         <NumberSliderControl min={20} value={25} max={30} />
       ),
@@ -48,14 +48,14 @@ describe('NumberSliderControl', function() {
     expect(inputs.length).toBe(2);
     expect(inputs[0].value).toBe(inputs[1].value);
   });
-  it('takes an external value and a value can be read with the same function', function() {
+  it('takes an external value and a value can be read with the same function', function () {
     var el = TestUtils.renderIntoDocument(<NumberSliderControl />),
       newVal = 75;
 
     el.value(newVal);
     expect(el.value()).toEqual(newVal);
   });
-  it('clamps a value if a given value is too big', function() {
+  it('clamps a value if a given value is too big', function () {
     var el = TestUtils.renderIntoDocument(<NumberSliderControl />),
       newVal = 250,
       expectedVal = 100;
@@ -63,7 +63,7 @@ describe('NumberSliderControl', function() {
     el.value(newVal);
     expect(el.value()).toEqual(expectedVal);
   });
-  it('keeps the values of two inputs the same', function() {
+  it('keeps the values of two inputs the same', function () {
     var oldName = 'razzmatazz',
       newName = 'pogo';
 

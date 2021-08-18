@@ -273,10 +273,7 @@ function histogramSelector(publicAPI, model) {
       .append('i')
       .classed(style.headerSinglePrev, true)
       .on('click', () => changeSingleField(-1));
-    singleSpan
-      .append('span')
-      .classed(style.jsHeaderSingleField, true)
-      .text('');
+    singleSpan.append('span').classed(style.jsHeaderSingleField, true).text('');
     singleSpan
       .append('i')
       .classed(style.headerSingleNext, true)
@@ -323,13 +320,7 @@ function histogramSelector(publicAPI, model) {
       d3.select(model.container)
         .select(`.${style.jsHeaderSingleField}`)
         .html(
-          `<svg class='${
-            style.legendSvg
-          }' width='${legendSize}' height='${legendSize}' viewBox='${
-            shape.viewBox
-          }' fill='${color}' stroke='black'><use xlink:href='#${
-            shape.id
-          }'/></svg>`
+          `<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}' viewBox='${shape.viewBox}' fill='${color}' stroke='black'><use xlink:href='#${shape.id}'/></svg>`
         );
     } else {
       d3.select(model.container)
@@ -547,10 +538,7 @@ function histogramSelector(publicAPI, model) {
 
     // now put the data into the boxes
     const boxes = rows.selectAll('table').data((d) => d.value);
-    boxes
-      .enter()
-      .append('table')
-      .classed(style.hiddenBox, true);
+    boxes.enter().append('table').classed(style.hiddenBox, true);
 
     // free up any extra boxes
     boxes.exit().remove();
@@ -644,14 +632,8 @@ function histogramSelector(publicAPI, model) {
       // Apply legend
       if (model.provider.isA('LegendProvider')) {
         const { color, shape } = model.provider.getLegend(def.name);
-        legendCell.html(`<svg class='${
-          style.legendSvg
-        }' width='${legendSize}' height='${legendSize}' viewBox='${
-          shape.viewBox
-        }'
-                  fill='${color}' stroke='black'><use xlink:href='#${
-          shape.id
-        }'/></svg>`);
+        legendCell.html(`<svg class='${style.legendSvg}' width='${legendSize}' height='${legendSize}' viewBox='${shape.viewBox}'
+                  fill='${color}' stroke='black'><use xlink:href='#${shape.id}'/></svg>`);
       } else {
         legendCell.html('<i></i>').select('i');
       }
@@ -715,9 +697,8 @@ function histogramSelector(publicAPI, model) {
         hdata.enter().append('rect');
         // changes apply to both enter and update data join:
         hdata
-          .attr(
-            'class',
-            (d, i) => (i % 2 === 0 ? style.histRectEven : style.histRectOdd)
+          .attr('class', (d, i) =>
+            i % 2 === 0 ? style.histRectEven : style.histRectOdd
           )
           .attr('pname', def.name)
           .attr('y', (d) => model.histHeight * (1.0 - d / cmax))
@@ -777,10 +758,7 @@ function histogramSelector(publicAPI, model) {
 
         if (typeof def.xAxis === 'undefined') {
           const formatter = d3.format('.3s');
-          def.xAxis = d3.svg
-            .axis()
-            .tickFormat(formatter)
-            .orient('bottom');
+          def.xAxis = d3.svg.axis().tickFormat(formatter).orient('bottom');
         }
         def.xAxis.scale(def.xScale);
         let numTicks = 2;
@@ -806,9 +784,8 @@ function histogramSelector(publicAPI, model) {
           .selectAll('text')
           .classed(style.axisText, true);
         numTicks = tickLabels.size();
-        tickLabels.style(
-          'text-anchor',
-          (d, i) => (i === 0 ? 'start' : i === numTicks - 1 ? 'end' : 'middle')
+        tickLabels.style('text-anchor', (d, i) =>
+          i === 0 ? 'start' : i === numTicks - 1 ? 'end' : 'middle'
         );
         gAxis.selectAll('line').classed(style.axisLine, true);
         gAxis.selectAll('path').classed(style.axisPath, true);

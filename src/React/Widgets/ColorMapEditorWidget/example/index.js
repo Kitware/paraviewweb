@@ -15,7 +15,10 @@ class ColorMapEditorTestWidget extends React.Component {
       currentPreset: 'Cool to Warm',
       rangeMin: 0,
       rangeMax: 200,
-      points: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+      points: [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
     };
 
     // Bind callback

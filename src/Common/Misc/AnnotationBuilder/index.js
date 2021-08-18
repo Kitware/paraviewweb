@@ -85,9 +85,7 @@ function setDefaultName(annotationObject) {
     }
     annotationObject.name += ' (range)';
   } else if (annotationObject.selection.type === 'partition') {
-    annotationObject.name = `${
-      annotationObject.selection.partition.variable
-    } (partition)`;
+    annotationObject.name = `${annotationObject.selection.partition.variable} (partition)`;
   } else {
     annotationObject.name = 'unknown';
   }

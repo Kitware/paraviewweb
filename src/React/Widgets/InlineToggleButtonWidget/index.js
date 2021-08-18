@@ -54,12 +54,12 @@ export default class InlineToggleButtonWidget extends React.Component {
                 ? 'activeFirst'
                 : 'first'
               : idx === this.props.options.length - 1
-                ? isActive
-                  ? 'activeLast'
-                  : 'last'
-                : isActive
-                  ? 'activeMiddle'
-                  : 'middle';
+              ? isActive
+                ? 'activeLast'
+                : 'last'
+              : isActive
+              ? 'activeMiddle'
+              : 'middle';
           if (obj.label) {
             return (
               <button

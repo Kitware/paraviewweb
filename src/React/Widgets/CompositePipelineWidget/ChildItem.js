@@ -41,8 +41,8 @@ export default class CompositePipelineWidgetChildItem extends React.Component {
             !inEditMode
               ? style.deleteButtonOff
               : isActive
-                ? style.activeButton
-                : style.deleteButtonOn
+              ? style.activeButton
+              : style.deleteButtonOn
           }
           onClick={this.toggleActiveLayer}
         />

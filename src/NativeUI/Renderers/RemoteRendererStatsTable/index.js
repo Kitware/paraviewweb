@@ -49,12 +49,12 @@ export default class RemoteRendererStatsTable {
           .querySelector('.render-stats-table')
           .classList.remove(style.hidden);
 
-        this.container.querySelector('.total-frames-value').innerHTML = `${
-          this.statData.renderCount
-        }`;
-        this.container.querySelector('.stale-frames-value').innerHTML = `${
-          this.statData.staleRenderCount
-        }`;
+        this.container.querySelector(
+          '.total-frames-value'
+        ).innerHTML = `${this.statData.renderCount}`;
+        this.container.querySelector(
+          '.stale-frames-value'
+        ).innerHTML = `${this.statData.staleRenderCount}`;
         this.container.querySelector(
           '.avg-network-time-value'
         ).innerHTML = `${avgRoundTrip.toFixed(1)} ms`;

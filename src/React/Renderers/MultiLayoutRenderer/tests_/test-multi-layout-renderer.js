@@ -19,9 +19,9 @@ const container = document.querySelector('body'),
   imageBuilderB = new ImageBuilder(dataModel, lutManager),
   imageBuilderC = new ImageBuilder(dataModel, lutManager);
 
-describe('MultiViewRenderer', function() {
+describe('MultiViewRenderer', function () {
   var el;
-  beforeAll(function() {
+  beforeAll(function () {
     // Taken from demo.
     // Configure Image builders
     var field = imageBuilderA.getFields()[0];
@@ -44,7 +44,7 @@ describe('MultiViewRenderer', function() {
     function updateProbeLocationFromA(data, envelope) {
       var builders = [imageBuilderB, imageBuilderC];
 
-      builders.forEach(function(builder) {
+      builders.forEach(function (builder) {
         if (!equals(data, builder.getProbe())) {
           builder.setProbe(data[0], data[1], data[2]);
         }
@@ -53,7 +53,7 @@ describe('MultiViewRenderer', function() {
     function updateProbeLocationFromB(data, envelope) {
       var builders = [imageBuilderA, imageBuilderC];
 
-      builders.forEach(function(builder) {
+      builders.forEach(function (builder) {
         if (!equals(data, builder.getProbe())) {
           builder.setProbe(data[0], data[1], data[2]);
         }
@@ -62,7 +62,7 @@ describe('MultiViewRenderer', function() {
     function updateProbeLocationFromC(data, envelope) {
       var builders = [imageBuilderA, imageBuilderB];
 
-      builders.forEach(function(builder) {
+      builders.forEach(function (builder) {
         if (!equals(data, builder.getProbe())) {
           builder.setProbe(data[0], data[1], data[2]);
         }
@@ -95,11 +95,11 @@ describe('MultiViewRenderer', function() {
     dataModel.fetchData();
   });
 
-  it('renders on a page', function() {
+  it('renders on a page', function () {
     expect(el).toExist();
   });
 
-  it('can change layouts', function() {
+  it('can change layouts', function () {
     el.getLayouts().forEach((layout) => {
       el.setLayout(layout);
       expect(el.getActiveLayout()).toEqual(layout);

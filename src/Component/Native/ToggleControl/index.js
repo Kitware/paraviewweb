@@ -49,9 +49,7 @@ export default class CompositeControlContainer {
 
       const controlContainer = document.createElement('div');
       controlContainer.classList.add(style.control);
-      controlContainer.innerHTML = `<div><i class="${
-        style.toggleControlButton
-      }"></i></div><div class="${style.controlContent}"></div>`;
+      controlContainer.innerHTML = `<div><i class="${style.toggleControlButton}"></i></div><div class="${style.controlContent}"></div>`;
       this.container.appendChild(controlContainer);
 
       this.controlViewport.setContainer(

@@ -26,14 +26,14 @@ class TestCollapsibleElement extends React.Component {
   }
 }
 
-describe('CollapsibleElement', function() {
-  afterEach(function(done) {
+describe('CollapsibleElement', function () {
+  afterEach(function (done) {
     ReactDOM.unmountComponentAtNode(document.body);
     document.body.innerHTML = '';
     setTimeout(done);
   });
 
-  it('can be hidden completely', function() {
+  it('can be hidden completely', function () {
     var el = TestUtils.renderIntoDocument(
         <CollapsibleElement visible={false} />
       ),
@@ -44,7 +44,7 @@ describe('CollapsibleElement', function() {
     expect(container.style.display).toEqual('none');
   });
 
-  it('can be collapsed and expanded by clicking the header', function() {
+  it('can be collapsed and expanded by clicking the header', function () {
     var el = TestUtils.renderIntoDocument(
         <CollapsibleElement>
           <strong>Some Content</strong>
@@ -66,7 +66,7 @@ describe('CollapsibleElement', function() {
     expect(el.isExpanded()).toEqual(true);
   });
 
-  it('can take an onChange listener', function() {
+  it('can take an onChange listener', function () {
     var el = TestUtils.renderIntoDocument(<TestCollapsibleElement />);
     var header = TestUtils.findRenderedDOMComponentWithClass(
       el,

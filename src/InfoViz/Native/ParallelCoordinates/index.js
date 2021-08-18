@@ -157,8 +157,9 @@ function parallelCoordinate(publicAPI, model) {
           d.screenRangeY[0] > d.screenRangeY[1]
             ? d.screenRangeY[1]
             : d.screenRangeY[0];
-        return `translate(${d.screenX -
-          model.selectionBarWidth / 2}, ${startPoint})`;
+        return `translate(${
+          d.screenX - model.selectionBarWidth / 2
+        }, ${startPoint})`;
       })
       .on('mousemove', function inner(d, i) {
         const moveCoords = d3.mouse(svg.node());
@@ -214,8 +215,9 @@ function parallelCoordinate(publicAPI, model) {
           d3.select(this)
             .attr(
               'transform',
-              `translate(${d.screenX -
-                model.selectionBarWidth / 2}, ${startPoint + deltaYScreen})`
+              `translate(${d.screenX - model.selectionBarWidth / 2}, ${
+                startPoint + deltaYScreen
+              })`
             )
             .attr('height', barHeight);
         });
@@ -378,10 +380,7 @@ function parallelCoordinate(publicAPI, model) {
 
       glyphGroup.exit().remove();
 
-      const glyphEnter = glyphGroup
-        .enter()
-        .append('g')
-        .classed('glyphs', true);
+      const glyphEnter = glyphGroup.enter().append('g').classed('glyphs', true);
 
       // Create nested structure
       const svgGroup = glyphEnter.append('svg');
@@ -438,8 +437,9 @@ function parallelCoordinate(publicAPI, model) {
         .attr(
           'transform',
           (d, i) =>
-            `translate(${d.centerX - (glyphSize * 0.5 + 1)}, ${glyphPadding -
-              1.5})`
+            `translate(${d.centerX - (glyphSize * 0.5 + 1)}, ${
+              glyphPadding - 1.5
+            })`
         )
         .classed(style.axisAnnotated, (d, i) => d.annotated);
     } else {
@@ -650,9 +650,7 @@ function parallelCoordinate(publicAPI, model) {
       gCtx.lineTo(xright, yRightMax);
       gCtx.lineTo(xright, yRightMin);
       gCtx.closePath();
-      gCtx.fillStyle = `rgba(${colors[0]},${colors[1]},${
-        colors[2]
-      },${opacity})`;
+      gCtx.fillStyle = `rgba(${colors[0]},${colors[1]},${colors[2]},${opacity})`;
       gCtx.fill();
     }
   }
@@ -667,9 +665,7 @@ function parallelCoordinate(publicAPI, model) {
       d3.select(model.container)
         .select('svg.parallel-coords-overlay')
         .classed(style.hidden, true);
-      d3.select(model.container)
-        .select('canvas')
-        .classed(style.hidden, true);
+      d3.select(model.container).select('canvas').classed(style.hidden, true);
       d3.select(model.container)
         .select('div.parallel-coords-placeholder')
         .classed(style.hidden, false);
@@ -679,9 +675,7 @@ function parallelCoordinate(publicAPI, model) {
     d3.select(model.container)
       .select('svg.parallel-coords-overlay')
       .classed(style.hidden, false);
-    d3.select(model.container)
-      .select('canvas')
-      .classed(style.hidden, false);
+    d3.select(model.container).select('canvas').classed(style.hidden, false);
     d3.select(model.container)
       .select('div.parallel-coords-placeholder')
       .classed(style.hidden, true);
@@ -705,12 +699,7 @@ function parallelCoordinate(publicAPI, model) {
       .classed('parallel-coords-overlay', true)
       .classed(style.parallelCoordsOverlay, true);
 
-    if (
-      d3
-        .select(model.container)
-        .selectAll('g')
-        .empty()
-    ) {
+    if (d3.select(model.container).selectAll('g').empty()) {
       // Have not added groups yet, do so now.  Order matters.
       svg.append('g').classed('axis-lines', true);
       svg.append('g').classed('selection-bars', true);
@@ -1014,8 +1003,9 @@ function parallelCoordinate(publicAPI, model) {
           d.bin,
           !axis.isUpsideDown()
         );
-        return `translate(${axesCenters[axis.idx] -
-          model.hoverIndicatorWidth / 2}, ${screenOffset})`;
+        return `translate(${
+          axesCenters[axis.idx] - model.hoverIndicatorWidth / 2
+        }, ${screenOffset})`;
       });
   }
 

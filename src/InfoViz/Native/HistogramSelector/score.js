@@ -69,7 +69,10 @@ export default function init(inPublicAPI, inModel) {
   // add implicit bounds for the histogram min/max to dividers list
   function getRegionBounds(def) {
     const [minRange, maxRange] = getHistRange(def);
-    return [minRange].concat(def.dividers.map((div) => div.value), maxRange);
+    return [minRange].concat(
+      def.dividers.map((div) => div.value),
+      maxRange
+    );
   }
 
   function getUncertScale(def) {
@@ -873,10 +876,7 @@ export default function init(inPublicAPI, inModel) {
       .style('display', 'none');
     const table = dPopupDiv.append('table');
     const tr1 = table.append('tr');
-    tr1
-      .append('td')
-      .classed(style.popupCell, true)
-      .text('Value:');
+    tr1.append('td').classed(style.popupCell, true).text('Value:');
     tr1
       .append('td')
       .classed(style.popupCell, true)
@@ -886,10 +886,7 @@ export default function init(inPublicAPI, inModel) {
       .attr('step', 'any')
       .style('width', '6em');
     const tr2 = table.append('tr');
-    tr2
-      .append('td')
-      .classed(style.popupCell, true)
-      .text('Uncertainty:');
+    tr2.append('td').classed(style.popupCell, true).text('Uncertainty:');
     tr2
       .append('td')
       .classed(style.popupCell, true)
@@ -927,10 +924,7 @@ export default function init(inPublicAPI, inModel) {
       .style('display', 'none');
     const table = dPopupDiv.append('table');
     const tr1 = table.append('tr');
-    tr1
-      .append('td')
-      .classed(style.popupCell, true)
-      .text('Value:');
+    tr1.append('td').classed(style.popupCell, true).text('Value:');
     tr1
       .append('td')
       .classed(style.popupCell, true)
@@ -1236,10 +1230,7 @@ export default function init(inPublicAPI, inModel) {
       { sel: scoreRegions, opacity: 0.2, class: style.scoreRegionFg },
       { sel: scoreBgRegions, opacity: 1.0, class: style.scoreRegionBg },
     ].forEach((reg) => {
-      reg.sel
-        .enter()
-        .append('rect')
-        .classed(reg.class, true);
+      reg.sel.enter().append('rect').classed(reg.class, true);
       // first and last region should hang 6 pixels over the start/end of the axis.
       const overhang = 6;
       reg.sel

@@ -237,17 +237,11 @@ function informationDiagram(publicAPI, model) {
     const formatMI = d3.format('.2f');
     const formatVal = d3.format('.2s');
 
-    const arc = d3.svg
-      .arc()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius);
+    const arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
     const histoArc = d3.svg.arc().innerRadius(outerRadius + 10);
 
-    const insideArc = d3.svg
-      .arc()
-      .innerRadius(1)
-      .outerRadius(innerRadius);
+    const insideArc = d3.svg.arc().innerRadius(1).outerRadius(innerRadius);
 
     const layout = d3.layout
       .chord()
@@ -726,12 +720,10 @@ function informationDiagram(publicAPI, model) {
         svg
           .selectAll('g.group')
           .select(`.${style.jsMouseArc}`)
-          .attr(
-            'class',
-            (data, idx) =>
-              model.mutualInformationData.vmap[idx].name === groupInsideName
-                ? style.mouseArcViz
-                : style.mouseArcHidden
+          .attr('class', (data, idx) =>
+            model.mutualInformationData.vmap[idx].name === groupInsideName
+              ? style.mouseArcViz
+              : style.mouseArcHidden
           );
 
         if (clearStatusBar === true) {
@@ -833,12 +825,10 @@ function informationDiagram(publicAPI, model) {
     const group = svg
       .selectAll('.group')
       // set a key === field name, so groups are re-used. Need a fall-back for removed fields, though.
-      .data(
-        layout.groups,
-        (d) =>
-          model.mutualInformationData.vmap[d.index]
-            ? model.mutualInformationData.vmap[d.index].name
-            : d.index
+      .data(layout.groups, (d) =>
+        model.mutualInformationData.vmap[d.index]
+          ? model.mutualInformationData.vmap[d.index].name
+          : d.index
       );
     const groupEnter = group
       .enter()
@@ -1057,10 +1047,7 @@ function informationDiagram(publicAPI, model) {
         .attr('param-name', gname)
         .selectAll('path.htile')
         .data(groupData.histo);
-      htile
-        .enter()
-        .append('path')
-        .classed('htile', true);
+      htile.enter().append('path').classed('htile', true);
       htile
         .attr('d', (d, i) => histoArc.outerRadius(d.outerRadius)(d))
         .attr('data-details', (d, i) => {
