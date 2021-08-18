@@ -28,6 +28,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           git config --global user.name "Github Actions"
@@ -36,5 +37,5 @@ jobs:
       - name: Publish docs
         if: github.ref == 'refs/heads/master'
         env:
-          GIT_PUBLISH_URL: https://${{ secrets.GH_PUBLISH_CREDS }}@github.com/Kitware/paraviewweb.git
+          GIT_PUBLISH_URL: https://${{ secrets.GH_TOKEN }}@github.com/Kitware/paraviewweb.git
         run: npm run doc:publish
