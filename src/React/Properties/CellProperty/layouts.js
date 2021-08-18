@@ -355,6 +355,114 @@ const layouts = {
       </tbody>
     );
   },
+  '3x3+1': (data, ui, callback) => {
+    ui.componentLabels = arrayFill(ui.componentLabels, 10);
+    data.value = arrayFill(data.value, 10, null);
+    return (
+      <tbody>
+        <tr className={style.inputRow} key={data.id + '_0'}>
+          <InputCell
+            idx={0}
+            label={ui.componentLabels[0]}
+            type={ui.type}
+            value={data.value[0]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={1}
+            label={ui.componentLabels[1]}
+            type={ui.type}
+            value={data.value[1]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={2}
+            label={ui.componentLabels[2]}
+            type={ui.type}
+            value={data.value[2]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+        </tr>
+        <tr className={style.inputRow} key={data.id + '_1'}>
+          <InputCell
+            idx={3}
+            label={ui.componentLabels[3]}
+            type={ui.type}
+            value={data.value[3]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={4}
+            label={ui.componentLabels[4]}
+            type={ui.type}
+            value={data.value[4]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={5}
+            label={ui.componentLabels[5]}
+            type={ui.type}
+            value={data.value[5]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+        </tr>
+        <tr className={style.inputRow} key={data.id + '_2'}>
+          <InputCell
+            idx={6}
+            label={ui.componentLabels[6]}
+            type={ui.type}
+            value={data.value[6]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={7}
+            label={ui.componentLabels[7]}
+            type={ui.type}
+            value={data.value[7]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <InputCell
+            idx={8}
+            label={ui.componentLabels[8]}
+            type={ui.type}
+            value={data.value[8]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+        </tr>
+        <tr className={style.inputRow} key={data.id + '_3'}>
+          <InputCell
+            idx={9}
+            label={ui.componentLabels[9]}
+            type={ui.type}
+            value={data.value[9]}
+            name={data.name}
+            domain={ui.domain}
+            onChange={callback}
+          />
+          <td />
+          <td />
+        </tr>
+      </tbody>
+    );
+  },
   NO_LAYOUT: (data, ui, callback) => {
     return (
       <tbody>

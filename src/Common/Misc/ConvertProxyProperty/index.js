@@ -46,6 +46,10 @@ function extractLayout(ui) {
     return '2x3';
   }
 
+  if (ui.size === 10) {
+    return '3x3+1';
+  }
+
   if (!isGroupWidget(ui.widget)) {
     console.log('Could not find layout for', ui);
   }
