@@ -44,7 +44,8 @@
     "tape": "4.9.0",
     "tape-catch": "1.0.6",
     "vtk.js": "19.2.2",
-    "wslink": "0.1.11",
+    "wslink": "0.1.15",
+    "eslint-plugin-import": "^2.17.2",
     "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz"
   },
   "scripts": {
