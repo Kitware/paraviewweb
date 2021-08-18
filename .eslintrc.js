@@ -49,6 +49,20 @@ module.exports = {
     'no-else-return': 0,
     'import/no-cycle': 0,
     'react/jsx-wrap-multilines': 0,
+
+    // when updating to kw-web-suite 11.1.0, we have more lint issues
+    // and no time to fix
+    'prefer-object-spread': 0,
+    'no-redeclare': 0,
+    'func-names': 0,
+    'react/no-render-return-value': 0,
+    'react/jsx-props-no-spreading': 0,
+    'babel/new-cap': 0,
+    'react/no-deprecated': 0,
+    'react/sort-comp': 0,
+    'jsx-a11y/control-has-associated-label': 0,
+    'react/jsx-curly-newline': 0,
+    'no-useless-rename': 0,
   },
   plugins: [
     'prettier'

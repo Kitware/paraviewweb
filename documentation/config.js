@@ -1,9 +1,9 @@
 const path = require('path');
 
-const linterRules = require('../config/rules-linter.js');
-const pvwRules = require('../config/rules-pvw.js');
-const vtkRules = require('../config/rules-vtk.js');
-const wslinkRules = require('../config/rules-wslink.js');
+const linterRules = require('../config/wp5/rules-linter.js');
+const pvwRules = require('../config/wp5/rules-pvw.js');
+const vtkRules = require('../config/wp5/rules-vtk.js');
+const wslinkRules = require('../config/wp5/rules-wslink.js');
 
 module.exports = {
   baseUrl: '/paraviewweb',
@@ -38,6 +38,7 @@ module.exports = {
         paraviewweb: path.resolve('.'),
         PVWStyle: path.resolve('./style'),
       },
+      fallback: { stream: require.resolve('stream-browserify') },
     },
   },
   copy: [],
