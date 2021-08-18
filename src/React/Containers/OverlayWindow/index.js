@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
 /* eslint-disable react/no-unused-prop-types */

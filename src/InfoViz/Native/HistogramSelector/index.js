@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import style from 'PVWStyle/InfoVizNative/HistogramSelector.mcss';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import CompositeClosureHelper from 'paraviewweb/src/Common/Core/CompositeClosureHelper';
 import multiClicker from 'paraviewweb/src/InfoViz/Core/D3MultiClick';
 import score from 'paraviewweb/src/InfoViz/Native/HistogramSelector/score';

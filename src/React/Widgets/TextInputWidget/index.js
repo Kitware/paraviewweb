@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ReactWidgets/TextInputWidget.mcss';
 
 export default class TextInputWidget extends React.Component {

@@ -6,6 +6,7 @@ import now from 'mout/src/time/now';
 import omit from 'mout/object/omit';
 import size from 'mout/object/size';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import DataManager from 'paraviewweb/src/IO/Core/DataManager';
 
 // ============================================================================

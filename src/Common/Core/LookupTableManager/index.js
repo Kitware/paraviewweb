@@ -1,5 +1,6 @@
 import Monologue from 'monologue.js';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import LookupTable from 'paraviewweb/src/Common/Core/LookupTable';
 
 const TOPIC = {

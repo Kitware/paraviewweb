@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
 

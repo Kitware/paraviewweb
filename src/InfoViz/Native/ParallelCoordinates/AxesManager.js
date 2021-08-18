@@ -1,3 +1,4 @@
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import { dataToScreen } from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates';
 import Axis from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/Axis';
 import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';

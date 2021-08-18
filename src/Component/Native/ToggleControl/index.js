@@ -1,5 +1,5 @@
 /* global document */
-
+import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ComponentNative/ToggleControl.mcss';
 
 const SELECTOR_BUTTON_CLASS = style.jsControlButton;
