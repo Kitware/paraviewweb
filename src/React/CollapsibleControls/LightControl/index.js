@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ReactCollapsibleControls/LightControl.mcss';
 
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
@@ -24,11 +23,11 @@ export default class LightControl extends React.Component {
     const newState = {};
     newState[name] = newVal;
     this.setState(newState);
-    setImmediate(() => {
+    setTimeout(() => {
       this.props.light.setLightProperties({
         lightTerms: newState,
       });
-    });
+    }, 0);
   }
 
   onLightPositionChange(event) {

@@ -6,7 +6,6 @@ import now from 'mout/src/time/now';
 import omit from 'mout/object/omit';
 import size from 'mout/object/size';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import DataManager from 'paraviewweb/src/IO/Core/DataManager';
 
 // ============================================================================
@@ -136,9 +135,9 @@ export default class QueryDataModel {
 
       if (hasPending) {
         // put the request back in the queue
-        setImmediate(() => {
+        setTimeout(() => {
           this.requests.push(request);
-        });
+        }, 0);
       } else if (!hasError) {
         // We are good to go
         // Broadcast data to the category
@@ -192,11 +191,11 @@ export default class QueryDataModel {
 
       if (minValue === maxValue && (dataSize === 1 ? minValue === 0 : true)) {
         // Handling requests after any re-queue
-        setImmediate(() => {
+        setTimeout(() => {
           while (this.requests.length) {
             processRequest(this.requests.pop());
           }
-        });
+        }, 0);
       }
     };
 
@@ -260,7 +259,7 @@ export default class QueryDataModel {
 
     this.explorationSubscription = this.onDataChange(() => {
       if (this.exploreState.animate && this.exploreState.onDataReady) {
-        setImmediate((_) => this.nextExploration());
+        setTimeout((_) => this.nextExploration(), 0);
       }
     });
   }

@@ -3,8 +3,6 @@ import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
-
 import jsonData from 'tonic-arctic-sample-data/data/probe/index.json';
 
 import ImageBuilder from 'paraviewweb/src/Rendering/Image/DataProberImageBuilder';
@@ -27,6 +25,6 @@ ReactDOM.render(
   bodyElement
 );
 
-setImmediate(() => {
+setTimeout(() => {
   dataModel.fetchData();
-});
+}, 0);

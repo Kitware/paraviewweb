@@ -1,4 +1,3 @@
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import { dataToScreen } from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates';
 import Axis from 'paraviewweb/src/InfoViz/Native/ParallelCoordinates/Axis';
 import SelectionBuilder from 'paraviewweb/src/Common/Misc/SelectionBuilder';
@@ -258,7 +257,7 @@ export default class AxesManager {
   }
 
   triggerSelectionChange(reset = true) {
-    setImmediate(() => {
+    setTimeout(() => {
       if (reset) {
         this.selection = null;
       }
@@ -269,7 +268,7 @@ export default class AxesManager {
           listener(selection);
         }
       });
-    });
+    }, 0);
   }
 
   onAxisListChange(callback) {
@@ -282,14 +281,14 @@ export default class AxesManager {
   }
 
   triggerAxisListChange() {
-    setImmediate(() => {
+    setTimeout(() => {
       // Notify listeners
       this.axisListChangeListeners.forEach((listener) => {
         if (listener) {
           listener(this.getAxesPairs());
         }
       });
-    });
+    }, 0);
   }
 
   getSelection() {

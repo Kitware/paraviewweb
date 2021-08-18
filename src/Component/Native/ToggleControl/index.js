@@ -1,5 +1,4 @@
 /* global document */
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ComponentNative/ToggleControl.mcss';
 
 const SELECTOR_BUTTON_CLASS = style.jsControlButton;
@@ -18,7 +17,7 @@ export default class CompositeControlContainer {
         this.container.querySelector(
           `.${style.jsControlContent}`
         ).style.display = this.controlVisible ? 'flex' : 'none';
-        setImmediate(() => this.resize());
+        setTimeout(() => this.resize(), 0);
       }
     };
   }

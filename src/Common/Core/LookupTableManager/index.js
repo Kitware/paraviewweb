@@ -1,6 +1,5 @@
 import Monologue from 'monologue.js';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import LookupTable from 'paraviewweb/src/Common/Core/LookupTable';
 
 const TOPIC = {
@@ -57,9 +56,9 @@ export default class LookupTableManager {
   }
 
   updateActiveLookupTable(name) {
-    setImmediate(() => {
+    setTimeout(() => {
       this.emit(TOPIC.ACTIVE_CHANGE, name);
-    });
+    }, 0);
     this.activeField = name;
   }
 

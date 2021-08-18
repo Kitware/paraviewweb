@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ReactWidgets/TextInputWidget.mcss';
 
 export default class TextInputWidget extends React.Component {
@@ -55,10 +54,10 @@ export default class TextInputWidget extends React.Component {
       this.setState({ valueRep: this.props.value });
       if (this.props.escEndsEdit) {
         // needs to happen at next idle so it happens after setState.
-        setImmediate(() => {
+        setTimeout(() => {
           this.textInput.blur();
           if (!this.props.blurEndsEdit) this.endEditing();
-        });
+        }, 0);
       }
     }
   }

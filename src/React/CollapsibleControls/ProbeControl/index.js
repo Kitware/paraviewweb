@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import NumberSliderWidget from '../../Widgets/NumberSliderWidget';
 import CollapsibleWidget from '../../Widgets/CollapsibleWidget';
 
@@ -76,7 +75,7 @@ export default class ProbeControl extends React.Component {
       showFieldValue: isProbeOpen,
     });
 
-    setImmediate(() => {
+    setTimeout(() => {
       if (this.props.imageBuilders) {
         Object.keys(this.props.imageBuilders).forEach((key) => {
           const builder = this.props.imageBuilders[key].builder;
@@ -88,7 +87,7 @@ export default class ProbeControl extends React.Component {
         this.props.imageBuilder.setCrossHairEnable(isProbeOpen);
         this.props.imageBuilder.render();
       }
-    });
+    }, 0);
   }
 
   attachImageBuilderListeners(imageBuilder) {

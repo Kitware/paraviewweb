@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { setImmediate } from 'paraviewweb/src/Common/Core';
 import style from 'PVWStyle/ReactContainers/OverlayWindow.mcss';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -364,7 +363,7 @@ export default class OverlayWindow extends React.Component {
     const actionStruct = this.computeActionRegion(evt);
     this.dragHandler = this.mouseMove;
     this.setState({ cursor: actionStruct.cursor, dragging: false });
-    setImmediate(() => this.props.onActive(false, this));
+    setTimeout(() => this.props.onActive(false, this), 0);
   }
 
   render() {
