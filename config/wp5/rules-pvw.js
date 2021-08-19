@@ -49,9 +49,6 @@ module.exports = [
     test: /\.svg$/,
     loader: 'svg-sprite-loader',
     exclude: /fonts/,
-    options: {
-      runtimeCompat: true,
-    },
   },
   {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
