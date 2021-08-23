@@ -44,13 +44,17 @@ function getSize(domElement, clearCache = false) {
 
 class Subscriber {
   constructor(domElement, callback) {
-    observer.observe(domElement);
+    if (domElement) {
+      observer.observe(domElement);
+    }
     this.fn = observableInstance.on(TOPIC, callback);
     this.domElement = domElement;
   }
 
   unsubscribe() {
-    observer.unobserve(this.domElement);
+    if (this.domElement) {
+      observer.unobserve(this.domElement);
+    }
     this.fn.unsubscribe();
   }
 }

@@ -49,7 +49,7 @@
     "tape-catch": "1.0.6",
     "tonic-arctic-sample-data": "http://www.paraview.org/files/dependencies/tonic-arctic-sample-data-1.2.2.tgz",
     "vtk.js": "19.2.2",
-    "wslink": "0.1.15"
+    "wslink": "1.0.6"
   },
   "scripts": {
     "install": "./config/prebuild.sh",
