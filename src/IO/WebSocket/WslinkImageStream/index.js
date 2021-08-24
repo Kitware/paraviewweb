@@ -58,7 +58,7 @@ function wslinkImageStream(publicAPI, model) {
   publicAPI.unsubscribeRenderTopic = () => {
     model.client.VtkImageDelivery.offRenderChange(
       model.renderTopicSubscription
-    ).promise.then(
+    ).then(
       (unsubSuccess) => {
         console.log('Unsubscribe resolved ', unsubSuccess);
       },
