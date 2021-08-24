@@ -267,7 +267,9 @@ export default class VtkGeometryRenderer extends React.Component {
   }
 
   subscribeViewChangeTopic() {
-    this.props.client.VtkGeometryDelivery.onViewChange(this.viewChanged).promise.then(
+    this.props.client.VtkGeometryDelivery.onViewChange(
+      this.viewChanged
+    ).promise.then(
       (subscription) => {
         this.geometryTopicSubscription = subscription;
       },
